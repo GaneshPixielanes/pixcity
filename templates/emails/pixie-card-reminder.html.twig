@@ -1,0 +1,14 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+
+    <p>Bonjour {{ firstname }},</p>
+
+    <p>La date de livraison de ta card {{ project.name | upper }} arrive à expiration dans 24 heures ! Tu n’es pas en retard, mais presque :)</p>
+    <p>Envoie un mail à <a href="mailTo:redaction@pix.city">redaction@pix.city</a> si tu souhaites repousser la date. Pour rappel, tu ne pourras pas garder la primeur sur ce sujet plus de 24 heures après l’expiration du délai.</p>
+    <p>On compte sur toi !</p>
+    <p><a href="{{ url('front_pixie_account_cards_projects') }}" target="_blank">[Aller dans mon espace] </a></p>
+    <p>L’équipe Pix.City</p>
+
+
+{% endblock %}

@@ -1,0 +1,229 @@
+{% extends 'front/page.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} region bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% set header_has_search = true %}
+
+{% block page_content %}
+
+    <!-- PL Home Top Banner -->
+    <div class="topBanner container-fluid" style="background-image: url({{ page.background.getUrl() | imagine_filter('bg_header_slider') }})">
+        <div class="row noMrgn">
+            <div class="col-md-12">
+                <h1>{{ page.name }}</h1>
+            </div>
+
+            <div class="col-md-6 col-md-offset-3">
+                {{ page.content | raw }}
+            </div>
+        </div>
+        <!--/.row-->
+        <div class="alignBottom">
+            <a href="{{ path('front_regions_index', {slug: page.slug}) }}" class="hexagon"><span>{{ totalCards }}</span>CARDS</a>
+            <a href="{{ path('front_pixies_index', {slug: page.region.slug}) }}" class="hexagon"><span>{{ totalPixies }}</span>{{ 'label.pixies'|trans|upper }}</a>
+        </div>
+    </div>
+    <!--/ PL Top Banner -->
+
+    <div class="bcNav container-fluid">
+        <ul class="breadcrumb">
+            <li><a href="{{ path('front_homepage_index') }}">{{ 'label.homepage'|trans }}</a></li>
+            <li><a>{{ 'label.regions'|trans }}</a></li>
+            <li><a>{{ page.name }}</a></li>
+        </ul>
+        <div class="container">
+            {% if page.facebook %}<a id="followFb" href="{{ page.facebook }}" target="_blank" rel="noopener" class="btn green fab fa-facebook-f transFx"><span>{{ 'action.follow_region_facebook'|trans }}</span></a>{% endif %}
+        </div>
+    </div>
+
+    <div class="container main clearfix">
+
+        <!-- TOP 10 CARDS REGION -->
+
+        <div id="cards" class="col-md-7 toggle-category list-of-cards no-autoscroll" data-api-route="{{ path('api_cards_list') }}" data-page="1" data-region="{{ page.region.id }}">
+            <div class="row">
+                <div class="col-md-9">
+                    <h2>{{ 'title.discover_cards_region'|trans }} {{ page.name }}</h2>
+                </div>
+
+                <!-- Btns droite -->
+                <div class="col-md-3 rightBtns">
+
+                    {% include 'front/_shared/orderby-dropdown.html.twig' %}
+
+                    <!-- BTNS MAP -->
+                    <a href="#" id="toggleMap" class="btn green transFx fa fa-map"><span>{{ 'label.map'|trans }}</span></a>
+                    <a href="#" id="toggleMapMobile" class="btn green transFx fa fa-map"><span>{{ 'label.map'|trans }}</span></a>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <!-- dropdown pour v° mobile -->
+                    <div class="dropdown show">
+                        <a class="dropdown-toggle dnc" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                            {{ 'label.categories'|trans }} <i class="fa fa-chevron-down"></i>
+                        </a>
+
+                        <div id="catsDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <ul id="filters" class="categories">
+                                <li class="transFx fa fa-th {% if (app.request.get('categories') is not defined) or (app.request.get('categories') is empty) %}is-checked{% endif %} all"><span>{{ 'label.all'|trans }}</span></li>
+                                {% for category in categories %}
+                                    {{ macro.categoryItem(category) }}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!--filtres-->
+
+                    <!--cards-->
+                    <div class="row cardsMrgn loader-container">
+                        <div class="loader"></div>
+                        <div id="cardsGrid" class="regionCards cards-grid">
+                            {% for card in cards %}
+                                {{ macro.cardItem(card) }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="align-center load-more">
+                            <button class="btn green fa fa-arrow-down transFx"><span>{{ 'label.load_more_cards'|trans }}</span></button>
+                        </div>
+                    </div>
+                    <!--/cardsMrgn -->
+                </div>
+                <!--/col-md-12-->
+
+                <!-- NO RESULTS -->
+                <div id="noResult" class="row no-results">
+                    <div class="col-md-12">
+                        <p>{{ 'text.nocards'|trans }}</p>
+                        <div class="noCardIco"></div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!--/.row-->
+            <!--/.toogle-->
+
+        </div>
+
+        <!-- MAP -->
+        <div class="map col-md-5 open">
+            <button class="mobile-close">X</button>
+            <div id="map-france"></div>
+        </div>
+
+
+    </div>
+    <!--/.container-->
+
+    <div class="main container sliders-container">
+        <div class="col-md-12">
+            <!-- CAROUSELS CARDS -->
+            <div class="row">
+                <div class="col-md-12 regionCards">
+
+                    <h2>{{ 'title.month_push'|trans }}</h2>
+
+                    <div class="row cardsMrgn">
+
+                        <div class="slider carrousel-search">
+
+                            {% for card in newestCards %}
+                                {{ macro.cardItem(card) }}
+                            {% endfor %}
+
+                        </div>
+                        <!--/carrousel-->
+                    </div>
+                    <!--/cardsMrgn-->
+                </div>
+            </div>
+            <!--/.row-->
+
+            {% if mostPopularCards is not empty %}
+            <!--CAROUSEL CARDS 2-->
+            <div class="row">
+                <div class="col-md-12 regionCards">
+
+                    <h2>{{ 'title.most_popular_cards'|trans }}</h2>
+                    <div class="row cardsMrgn">
+
+                        <div class="slider carrousel-search">
+
+                            {% for card in mostPopularCards %}
+                                {{ macro.cardItem(card) }}
+                            {% endfor %}
+
+                        </div>
+                        <!--/carrousel-->
+                    </div>
+                    <!--/cardsMrgn-->
+                </div>
+            </div>
+            {% endif %}
+            <!--/.row-->
+        </div>
+    </div>
+
+
+    <!-- DEVENEZ UN PIXIE ! -->
+    <div id="becomePixie" class="text-center">
+        <span class="hugeTypo">{{ page.name }}</span>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h2>{{ 'title.become_pixie'|trans }}</h2>
+                    <p>{{ 'title.pixies_pitch'|trans }}</p>
+                </div>
+            </div>
+
+            <div id="portraitsPixies" class="row">
+                <h3>{{ 'title.few_pixies'|trans }}</h3>
+
+                {% for user in pixies %}
+                    <div class="col-sm-15">
+                        {{ macro.pixieItem(user) }}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="row">
+                <div id="btnPixies" class="col-sm-12 text-center">
+                    <a href="{{ path('front_pixies_index', {slug: 'france'}) }}" class="btn ghost transFx fa fa-users"><span>{{ 'label.all_pixies'|trans }}</span></a>
+                    {% if not is_granted('ROLE_PIXIE') %}
+                        <a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):path('front_pixie_register_mode') }}" class="btn white transFx fa fa-user-plus"><span>{{ 'action.become_a_pixie'|trans }}</span></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/#becomePixie-->
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var mapSettings = {
+            icon: "{{ asset('build/images/marker.png') }}",
+            iconActive: "{{ asset('build/images/marker_active.png') }}",
+        }
+    </script>
+    <script src="{{ asset('build/front/js/pages/search.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+{% endblock %}

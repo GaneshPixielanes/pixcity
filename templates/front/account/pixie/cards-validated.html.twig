@@ -1,0 +1,125 @@
+{% extends 'front/account/pixie/base.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} pixieAccount account{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+    <div class="container main">
+        <div class="col-md-12 text-center">
+            <p style="color:#484848 !important; padding-top:20px; font-size:20px;"><strong>
+                {% if totalCards > 1 %}
+                    Mes <span>{{ totalCards }}</span> Cards validées
+                {% elseif totalCards == 1 %}
+                    Ma Card validée
+                {% else %}
+                    Vous n'avez aucune card validée pour le moment.
+                {% endif %}
+            </p>
+        </div>
+
+
+        {% if cards | length > 0 %}
+
+        <div class="list-of-cards no-autoscroll" data-api-route="{{ path('api_cards_list') }}" data-user="{{ app.user.id }}" data-page="1">
+
+            <div class="col-md-12 filters-container">
+
+                <div id="filters">
+
+                    <div class="dropdown btn-group">
+                        <a href="#" class="dropdown-toggle dnc" role="button" aria-expanded="false">Région<i class="fa fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu filter option-set clearfix regions-list" role="menu">
+                            <li class="all is-checked">Toutes</li>
+                            {% for region in regions %}
+                                {{ macro.regionItem(region) }}
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="dropdown btn-group">
+
+                        <a href="#" class="dropdown-toggle dnc" role="button" aria-expanded="false">
+                            Catégories <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <ul class="dropdown-menu categories">
+
+                            <li class="transFx fa fa-th is-checked all"><span>Tout</span></li>
+                            {% for category in categories %}
+                                {{ macro.categoryItem(category) }}
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+
+                </div>
+                <!--filtres-->
+
+                <!-- BTNS MAP -->
+                <a href="#" id="toggleMap" class="btn green transFx fa fa-map"><span>{{ 'label.map'|trans }}</span></a>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-5 toggle">
+
+                    <!--cards-->
+                    <div class="row cardsMrgn loader-container">
+                        <div class="loader"></div>
+                        <div id="cardsGrid" class="regionCards cards-grid">
+                            {% for card in cards %}
+                                {{ macro.cardItem(card) }}
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    <!--/cardsMrgn -->
+
+                    <!-- NO RESULTS -->
+                    <div id="noResult" class="row no-results">
+                        <div class="col-md-12">
+                            <p>{{ 'text.nocards'|trans }}</p>
+                            <div class="noCardIco"></div>
+                        </div>
+                    </div>
+
+                    {% include 'front/_shared/pagination.html.twig' with {'pagination': pagination} %}
+
+                </div>
+
+                <!-- MAP -->
+                <div class="map col-md-7 open">
+                    <div id="map-france"></div>
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var mapSettings = {
+            icon: "{{ asset('build/images/marker.png') }}",
+            iconActive: "{{ asset('build/images/marker_active.png') }}",
+        }
+    </script>
+    <script src="{{ asset('build/front/js/pages/search.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+{% endblock %}
+
+
+{% block footer_class %}simpleFooter{% endblock %}

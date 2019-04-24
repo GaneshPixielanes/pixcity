@@ -1,0 +1,50 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+    <p>Bonjour {{ firstname }},</p>
+    <p>Retrouvez les dernières cards créées par vos Pixies : </p>
+
+    <table width="100%">
+        {% for row in cards|batch(2) %}
+            <tr>
+            {% for card in row %}
+                <td>
+
+                    <a href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}" style="color: #FFF; text-decoration: none;">
+                        <table width="100%">
+                            <tr>
+                                <td style="border-radius: 6px; background-size: cover; background-position: center center;" width="234" height="310" background="{% if card.thumb %}{{ card.thumb.getUrl() | imagine_filter('bg_card_item') }}{% endif %}" bgcolor="#e6e6e6" valign="bottom">
+                                    <!--[if gte mso 9]>
+                                    <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:120px;height:92px;">
+                                        <v:fill type="tile" src="{% if card.thumb %}{{ card.thumb.getUrl() | imagine_filter('bg_card_item') }}{% endif %}" color="#e6e6e6" />
+                                        <v:textbox inset="0,0,0,0">
+                                    <![endif]-->
+
+                                        <div style="padding: 15px; color: #FFF; font-size: 14px;">
+                                            <div style="display: block; font-size: 20px; line-height: 24px; font-weight: normal; margin-bottom: 8px; text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);">{{ card.name }}</div>
+                                            <div style="display: block; font-size: 16px; line-height: 24px; font-weight: normal; margin-bottom: 8px; text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);">Par {{ card.pixie }}</div>
+                                        </div>
+
+                                    <!--[if gte mso 9]>
+                                    </v:textbox>
+                                    </v:rect>
+                                    <![endif]-->
+                                </td>
+
+                            </tr>
+                        </table>
+                    </a>
+
+
+
+                </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <p>
+        À tout de suite sur Pix.City !
+    </p>
+
+{% endblock %}

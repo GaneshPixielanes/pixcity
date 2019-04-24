@@ -1,0 +1,42 @@
+
+
+{% if isCardFavoritedFirstTime is defined and isCardFavoritedFirstTime is not null %}
+<div class="modal card-favorite-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {#<h5 class="modal-title">INFO</h5>#}
+            </div>
+            <form>
+                <div class="modal-body">
+                    <p>Retrouvez vos cards enregistrées dans votre compte voyageur pour ajouter directement vos adresses dans Google maps et agenda.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn green btn-primary remove-favorite-modal" data-dismiss="modal">OK, merci !</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+<script>
+    $(window).on('shown.bs.modal',function()
+    {
+        var height = 0;
+        $('.notification-message').each(function(i, value){
+            height += parseInt($(this).height());
+        });
+
+        height += '';
+        console.log(height);
+        $(".notification-body").scrollTop(1000);
+    })
+
+
+    $(".card-favorite-modal").on("hide.bs.modal", function () {
+        $('.card-favorite-modal').removeClass('card-favorite-modal');
+    });
+</script>

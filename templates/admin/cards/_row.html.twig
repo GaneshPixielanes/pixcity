@@ -1,0 +1,64 @@
+<tr data-id="{{ item.id }}">
+    <td>
+        <span class="label bg-status-{{ item.status }}">{{ ('label.cardstatus.' ~ item.status)|trans }}</span>
+    </td>
+    <td>{{ item.name }}</td>
+    <td class="col-region"><a href="{{ path('admin_cards_list', {cards_filters: {region: item.region.id}}) }}">{{ item.region.name }}</a></td>
+    <td class="col-region">{%if item.department.id is defined %}<a href="{{ path('admin_cards_list', {cards_filters: {department: item.department.id}}) }}">{{ item.department.name }}</a> {% endif %}</td>
+    <td>
+        {% if item.pixie is not null %}
+            <a href="{{ path('admin_users_edit', {id: item.pixie.id}) }}" class="icon-link"><i class="material-icons">person_pin</i> <span>{{ item.pixie.firstname ~ ' ' ~ item.pixie.lastname }}</span></a>
+        {% endif %}
+    </td>
+    <td class="col-blameable">
+        <span class="hidden">{{ item.updatedAt|date("YmdHis") }}</span>
+        {% if item.updatedBy is not null %}<span class="name">{{ item.updatedBy.firstname ~ ' ' ~ item.updatedBy.lastname }}</span>{% endif %}
+        <span class="date">{{ item.updatedAt|localizeddate('medium', 'short') }}</span>
+    </td>
+
+    <td class="col-visibility public">
+        {% if item.indexed == 0 %}
+            <i class="material-icons off">visibility_off</i>
+        {% else %}
+            <i class="material-icons on">visibility</i>
+        {% endif %}
+    </td>
+    <td>
+        {% if item.isInterview is defined and item.isInterview == 1 %}
+            <i class="material-icons on">check_circle</i>
+        {% else %}
+            <i class="material-icons off">close</i>
+        {% endif %}
+    </td>
+    <td class="text-right">
+        <div class="item-actions">
+
+            <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_cards_edit', {id: item.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                <i class="material-icons">edit</i>
+            </a>
+
+            {% if not item.deleted %}
+                <form action="" data-softdelete="{{ url('admin_cards_soft_delete', { id: item.id }) }}" data-harddelete="{{ url('admin_cards_hard_delete', { id: item.id }) }}" method="post" class="delete-form-cards">
+                    <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                    <button type="button" title="{{ 'action.delete'|trans }}" class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                </form>
+            {% else %}
+                <form action="{{ url('admin_cards_restore_soft_delete', { id: item.id }) }}"  method="post" class="restore-card">
+                    <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                    <button type="submit" title="Restaurer le compte" class="btn btn-circle bg-blue waves-effect waves-circle waves-float"><i class="material-icons">settings_backup_restore</i></button>
+                </form>
+            {% endif %}
+
+            {% if item.status == "validated" %}
+
+                &nbsp;|&nbsp;
+
+                <a title="{{ 'action.view_on_website'|trans }}" href="{{ path('front_card_single', {slug: item.slug}) }}" target="_blank" rel="noopener" class="btn btn-circle bg-green waves-effect waves-circle waves-float">
+                    <i class="material-icons">open_in_new</i>
+                </a>
+
+            {% endif %}
+
+        </div>
+    </td>
+</tr>

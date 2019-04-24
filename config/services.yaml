@@ -1,0 +1,202 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    router.request_context.host: '%env(APP_DOMAIN)%'
+    router.request_context.scheme: 'https'
+    locale: 'fr'
+    upload_directory: '%kernel.project_dir%/public/uploads'
+    google_analytics_json_key: '../config/datas/analytics/google_service_account.json'
+    google_calendars_json_key: '../config/datas/calendars/google_service_calendar.json'
+    google_maps_api_key: '%env(GOOGLE_MAPS_API_KEY)%'
+    google_analytics_id: '%env(GOOGLE_ANALYTICS_ID)%'
+    email_sender: '%env(EMAIL_SENDER)%'
+    email_sender_name: '%env(EMAIL_SENDER_NAME)%'
+    email_admin: '%env(EMAIL_ADMIN)%'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    App\Controller\CustomExceptionController:
+        public: true
+        arguments:
+            $debug: '%kernel.debug%'
+
+    App\Controller\Admin\Pages\DashboardController:
+        public: true
+        arguments:
+            $analyticsKey: '%google_analytics_json_key%'
+
+    App\Service\GoogleCalendar:
+        public: true
+        arguments:
+            $googleCalendarKey: '%google_calendars_json_key%'
+
+    App\Service\FileUploader:
+        arguments:
+            $uploadDir: '%upload_directory%'
+
+    App\Form\Extension\HelpExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
+    App\Form\Extension\ImageFileExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FileType }
+
+
+
+    # ------------------------------------------------------
+    # Event listeners
+
+    App\Security\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
+
+    # ------------------------------------------------------
+    # Entities listeners
+
+    card_project_listener:
+        class: App\Entity\Listener\CardProjectListener
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    card_listener:
+        class: App\Entity\Listener\CardListener
+        arguments: ["@security.token_storage"]
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    card_media_listener:
+        class: App\Entity\Listener\CardMediaListener
+        arguments: ['%kernel.root_dir%/../']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    card_collection:
+        class: App\Entity\Listener\CardCollectionListener
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    transaction_listener:
+        class: App\Entity\Listener\TransactionListener
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    user_pixie_billing_listener:
+        class: App\Entity\Listener\UserPixieBillingListener
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    # ------------------------------------------------------
+    # Twig Extensions (Lazy Loaded)
+
+    App\Twig\AdminRuntime:
+        public: false
+        tags:
+            - { name: twig.runtime }
+
+    App\Twig\FrontRuntime:
+        public: false
+        tags:
+            - { name: twig.runtime }
+
+    # ------------------------------------------------------
+    # Security - Authenticator
+
+    google_authenticator:
+        class: App\Security\GoogleAuthenticator
+        autowire: true
+
+    facebook_authenticator:
+        class: App\Security\FacebookAuthenticator
+        autowire: true
+
+
+
+kms_froala_editor:
+  serialNumber: "IH1A5B8C3pD1D1E1A3E1A3A15B3D8C4khpbI2C-21tjf=="
+  saveInterval: 0
+  includeJS: false
+  includeCodeMirror: false
+  includeJQuery: false
+  includeCSS: true
+  includeFontAwesome: false
+  iconsTemplate: 'font_awesome_5'
+  language: "fr"
+  toolbarInline: false
+  heightMin: 200
+  pluginsEnabled: []
+  pluginsDisabled: []
+  colorsStep: 7
+  fontFamily:
+    '"Montserrat", sans-serif': 'Montserrat'
+    'Lobster': 'Lobster'
+  colorsBackground: ['#484848', '#183555', '#5db597', '#ef5285', '#FFFFFF', '#ededed', '#000000']
+  colorsText: ['#484848', '#183555', '#5db597', '#ef5285', '#FFFFFF', '#ededed', '#000000']
+  toolbarButtons: ['bold', 'italic', 'underline', 'strikeThrough', '|', 'paragraphFormat', 'fontFamily', 'fontSize', 'color', 'paragraphStyle', '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '-', 'insertLink', 'insertImage', 'insertVideo', 'embedly', 'insertFile', 'insertTable', '|', 'emoticons', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|', 'html', 'fullscreen', '|', 'undo', 'redo']
+  imageAllowedTypes: ['jpeg', 'jpg', 'png']
+  imageUploadMethod: 'POST'
+  imageMaxSize: 10485760
+  imageUploadParams: {id: 'my_editor'}
+  fileUploadPath: "uploads/file"
+  fileUploadFolder: "uploads/file"
+  imageUploadFolder: "uploads/img"
+  imageUploadPath: "uploads/img"
+  publicDir: "/public"
+
+
+knpu_oauth2_client:
+    clients:
+        # the key "facebook_main" can be anything, it
+        # will create a service: "knpu.oauth2.client.facebook_main"
+        facebook:
+            # this will be one of the supported types
+            type: facebook
+            client_id: 189312131770555
+            client_secret: f3d712af21aa45ef71e0b8dae5868198
+            # the route that you're redirected to after
+            # see the controller example below
+            redirect_route: front_login_facebook_check
+            # route parameters to pass to your route, if needed
+            redirect_params: {}
+            graph_api_version: v2.12
+
+        google:
+            # must be "google" - it activates that type!
+            type: google
+            # add and configure client_id and client_secret in parameters.yml
+            client_id: 658961786418-ehrnljfisg7ab64bqrjhu2umv35v2pv0.apps.googleusercontent.com
+            client_secret: Ue3yahszyQ7sbjuX6CDeubRr
+            # a route name you'll create
+            redirect_route: front_login_google_check
+            redirect_params: {}
+            # Optional value for sending access_type parameter. More detail: https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters
+            # access_type: ''
+            # Optional value for sending hd parameter. More detail: https://developers.google.com/identity/protocols/OpenIDConnect#hd-param
+            # hosted_domain: ''
+            # Optional value for additional fields to be requested from the user profile. If set, these values will be included with the defaults. More details: https://developers.google.com/+/web/api/rest/latest/people
+            # user_fields: {}
+            # whether to check OAuth2 "state": defaults to true
+            # use_state: true
+
+sverraest_revolut_php:
+    api_key: '%env(REVOLUT_KEY)%'
+    mode: '%env(REVOLUT_MODE)%' # options are production or sandbox

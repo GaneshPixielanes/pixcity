@@ -1,0 +1,64 @@
+{% import "front/_shared/macros.html.twig" as macro %}
+<div class="container main">
+		<div class="col-md-12 text-center">
+				<p style="color:#484848 !important; padding-top:20px; font-size:20px;"><strong>
+						{% if totalCards > 1 %}
+								Mes <span>{{ totalCards }}</span> Cards validées
+						{% elseif totalCards == 1 %}
+								Ma Card validée
+						{% else %}
+								Vous n'avez aucune card validée pour le moment.
+						{% endif %}
+				</p>
+		</div>
+
+
+		{% if cards | length > 0 %}
+
+		<div class="list-of-cards no-autoscroll" data-api-route="{{ path('api_cards_list') }}" data-user="{{ app.user.id }}" data-page="1">
+
+
+
+				<div class="row">
+						<div class="col-md-5 toggle">
+
+								<!--cards-->
+								<div class="row cardsMrgn loader-container">
+										<div class="loader"></div>
+										<div id="cardsGrid" class="regionCards cards-grid">
+												{% for card in cards %}
+														{{ macro.cardSingle(card) }}
+												{% endfor %}
+										</div>
+
+								</div>
+								<!--/cardsMrgn -->
+
+								<!-- NO RESULTS -->
+								<div id="noResult" class="row no-results">
+										<div class="col-md-12">
+												<p>{{ 'text.nocards'|trans }}</p>
+												<div class="noCardIco"></div>
+										</div>
+								</div>
+						</div>
+
+						<!-- MAP -->
+						<div class="map col-md-7 open">
+								<div id="map" class="map-wrap"></div>
+						</div>
+
+				</div>
+		</div>
+		{% endif %}
+		<div id="api-box" data-api-url="/api/maps/city-maker-card/{{ app.user.id }}"
+         data-api-search-url="/api/maps/city-maker-card-search/{{ app.user.id }}/"
+    ></div>
+</div>
+
+
+<script>
+		var coordinates = {};
+
+</script>
+<script src="{{ asset('build/js/map.js') }}"></script>

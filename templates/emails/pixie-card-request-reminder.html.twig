@@ -1,0 +1,19 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+<p>
+    Bonjour {{ firstname }},
+</p>
+<p>
+    Est-ce que tout va bien ? Nous n’avons reçu aucune proposition de cards de ta part depuis 30 jours. Oui, tu nous manques !
+</p>
+<p>
+    Doit-on garder ton compte ouvert ? Non ! Alors écris vite à redaction@pix.city pour proposer de nouveaux sujets :)
+</p>
+<p>
+    On compte sur toi !
+</p>
+<p>
+    <a href="{{ url('front_pixie_account_cards_projects') }}">[Aller dans mon espace]</a>
+</p>
+{% endblock %}

@@ -1,0 +1,62 @@
+<div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="fa fa-times"></span>
+            </button>
+            <a id="help" class="btn ghost" href="{{ path('front_pages_index', {slug: 'besoin-daide-nous-contactez-nous'}) }}" target="_blank" rel="noopener">Aide</a>
+            <h5 class="modal-title">Description de la demande</h5>
+        </div>
+        <form>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="headContract col-sm-3">Région concernée<span>{{ project.region }}</span></div>
+                    <div class="headContract col-sm-3">A rédiger pour le <span>{{ project.deliveryDate | localizeddate('short', 'none') }}</span></div>
+                    <div class="headContract col-sm-3">Rémunération<span><i class="fa fa-euro-sign"></i> {{ project.price }}</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="headContract">Description</span>
+                        <div class="contractDesc">
+                            <div class="scrollbar">
+                                {{ project.description | raw }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if project.attachments | length > 0 %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span class="headContract">Fichiers joints</span>
+                            <ul class="fichiersJoints">
+                                {% for attachment in project.attachments %}
+                                    <li>
+                                        {% if attachment.type == "image" %}
+                                            <a href="{{ attachment.url }}" download="{{ attachment.name }}">
+                                                <img src="{{ attachment.url }}"><span>{{ attachment.name }}</span>
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ attachment.url }}" download="{{ attachment.name }}">
+                                                <div class="pjDemande fa fa-file-pdf"></div><span>{{ attachment.name }}</span>
+                                            </a>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    </div>
+                {% endif %}
+
+            </div>
+            <div class="modal-footer">
+                {% if project.status == 'assigned' %}
+                <div class="col-sm-6 text-right"><button type="button" data-id="{{ project.id }}" id="refuse-project" class="btn ghost transFx fa fa-times-circle"><span>Refuser</span></button></div>
+                <div class="col-sm-6 text-left"> <button type="button" data-id="{{ project.id }}" id="confirm-accept-project" class="btn green transFx fa fa-plus-circle"><span>Accepter</span></button></div>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<div class="container" style="margin-top: 30px">
+		<div class="col-md-12 row">
+				<div class="col-md-4 offset-md-3 text-right">
+						<h1>Mes rémunérations</h1>
+				</div>
+				<div class="col-md">
+					{# {% if totalPayementPending > 0 %} }#}
+					{% if 1 == 1 %}
+					<div class="float-right">
+							<span style="font-size:36px;color:#103558"><i class="fa fa-euro-sign"></i>&nbsp;{{ totalPayementPending }}</span>
+							<a href="javascript:;" class="btn btn-green btn-rollover show-more-cards" style="width:80%;margin-top:0px;margin-bottom:20px"><span class="text">
+								DEMANDE LE PAIEMENT
+								{% if app.user.pixie.billing.billingType == "check" %}PAR  CHÉQUE{% endif %}
+								{% if app.user.pixie.billing.billingType == "banktransfer" %}PAR VIREMENT{% endif %}
+							</span><i class="fas fa-euro-sign"></i></a>
+
+							{% if not isWrongData %}
+							{% if not ongoingRegistration %}
+									<form action="{{ path('front_pixie_transaction_'~app.user.pixie.billing.billingType~'_payment') }}" class="d-none">
+											<button type="submit" class="btn green transFx fa fa-euro-sign" {{ (totalPayementPending < 20)?"disabled='disabled'":"" }}>
+													<span>
+															Demander le paiement
+															{% if app.user.pixie.billing.billingType == "check" %}par chèque{% endif %}
+															{% if app.user.pixie.billing.billingType == "banktransfer" %}par virement{% endif %}
+													</span>
+											</button>
+									</form>
+							{% else %}
+									<button type="submit" class="btn green transFx fa fa-euro-sign" disabled='disabled'>
+											<span>
+													Demander le paiement
+													{% if app.user.pixie.billing.billingType == "check" %}par chèque{% endif %}
+													{% if app.user.pixie.billing.billingType == "banktransfer" %}par virement{% endif %}
+											</span>
+									</button>
+									<div class="col-sm-12">
+											<p>
+													Pour pouvoir demander le paiement de vos cards, vous devez compléter les informations de votre société dans les <a href="{{ path('front_pixie_account_settings') }}">paramètres de votre compte</a>.
+											</p>
+									</div>
+							{% endif %}
+							{% endif %}
+						</div>
+					{% endif %}
+				</div>
+		</div>
+
+
+		{% if isWrongData %}
+				<div class="alert alert-info">
+						<strong> Vérifiez vos infos personnelles avant de cliquer sur demander le paiement (onglet paramètres : infos bancaires et adresse postale en priorité). Merci et à bientôt pour une nouvelle collaboration ;)</strong>
+				</div>
+		{% endif %}
+		{% if unpayedProjects | length > 0 %}
+				<table class="table table-hover pc-table-payment">
+						<thead class="table-success">
+								<tr>
+										<th scope="col" class="dateCard green">Date</th>
+										<th scope="col" class="green">Titre de la demande</th>
+										<th scope="col" class="remuneration green"><span class="hom">Rémunération</span> <span class="som">€</span></th>
+								</tr>
+						</thead>
+						<tbody>
+						{% for project in unpayedProjects %}
+								<tr class="ligne">
+										<td class="dateCard">{{ project.createdAt | localizeddate('short', 'none') }}</td>
+										<td class="titreCard">{{ project.name }} / <a href="{{ path('front_card_single', {slug: project.card.slug}) }}">{{ project.card.name }}</a></td>
+										<td class="remuneration"><i class="fa fa-euro-sign hom"></i>{{ project.price }}</td>
+								</tr>
+						{% endfor %}
+
+						</tbody>
+				</table>
+
+		{% endif %}
+
+		{% if unpayedProjects | length > 0 and transactions | length > 0  %}
+				<h1 class="text-center" style="margin-top: 1em;">Historique des transactions</h1>
+		{% endif %}
+		{% if transactions | length > 0 %}
+
+				<table id="royaltees" class="table  table-hover pc-table-payment">
+						<thead class="green">
+						<tr>
+								<th scope="col">Date</th>
+								<th scope="col">Nom</th>
+								<th scope="col" class="text-center">Nombre de cards</th>
+								<th scope="col"><span class="hom">Rémunération</span><span class="som">€</span></th>
+								<th scope="col" class="text-center">Statut</th>
+								<th scope="col" class="text-center">Bon de commande</th>
+
+						</tr>
+						</thead>
+						<tbody>
+								{% for transaction in transactions %}
+										<tr>
+												<td class="dateCard">{{ transaction.createdAt | localizeddate('short', 'none') }}</td>
+												<td class="titreCard">
+														{{ transaction.name }}
+												</td>
+												<td class="source">
+														{{ transaction.projects | length }}
+												</td>
+												<td class="remuneration"><i class="fa fa-euro-sign"></i>{{ transaction.total }}</td>
+												<td class="statutCard"><span class="transaction-status-{{ transaction.status }}">{{ ('label.transactiontype.'~transaction.status) | trans }}</span></td>
+												<td class="facture">
+														<a href="{{ path('front_pixie_transaction_invoice', {id: transaction.id}) }}" class="fa fa-file-pdf"></a>
+												</td>
+										</tr>
+								{% endfor %}
+						</tbody>
+				</table>
+
+
+		{% endif %}
+
+</div>

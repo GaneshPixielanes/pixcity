@@ -1,0 +1,30 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+
+<p>Bonjour {{ firstName }},</p>
+
+<p>Félicitations, ta 1ere CARD test a été mise en ligne, tu deviens donc officiellement un(e) CITY MAKER !</p>
+
+<p>Tu peux la consulter <a href="{{ url('front_homepage_index')~slug~'.html' }}" style="background-color:#30b996;color:#fff;padding:5px 10px;display:inline-block;text-decoration:none;border-radius:4px">ici</a> !</p>
+
+<p>Pour la suite, tu peux dès à présent envoyer tes sujets de CARDS à l’adresse mail
+ <a href="mailto:redaction@pix.city">redaction@pix.city</a>.</p>
+<p>Elles seront alors disponibles dans ton espace perso.</p>
+
+ <p>Afin que l’on puisse reposter ta card {{ cardName }} sur notre compte insta <strong><a href="https://www.instagram.com/pix_city/?hl=fr">@pix_city</a></strong>, nous t’avons mis en forme le post avec 2 photos.</p>
+
+ <p>Tu as les deux photos ci-dessous et en pièces jointes. Pense à nous faire un petit coucou dans ton post en ajoutant <strong><a href="https://www.instagram.com/pix_city/?hl=fr">@pix_city</a></strong> : et les hashtags nous permettant de t'identifier</p>
+<p>
+ <img src="{{ url('front_homepage_index') }}{{ card.thumb.getUrl() }}" style="height:250px;width:250px" alt="pic" title="pic"/>
+</p>
+ <img src="{{ url('front_homepage_index') }}{{ bannerUrl }}" style="height:250px;width:450px" alt="pic" title="pic"/>
+</p>
+ #pix_city #pixcity{{ cityName|replace({' ': ''}) }} #pixcity{{ regionName }}</p>
+
+
+
+
+<p>A très vite!
+
+{%  endblock %}

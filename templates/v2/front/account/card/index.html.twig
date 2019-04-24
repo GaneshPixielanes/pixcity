@@ -1,0 +1,304 @@
+{% extends 'v2/front/base.html.twig' %}
+
+{% import 'front/_shared/macros.html.twig' as macro %}
+{% block body %}
+<!-- Tab panes -->
+
+<div class="tab-content">
+    <div class="tab-pane active" id="mes-cards">
+        <div class="cards-wrap">
+            <div class="container">
+                <div class="container-collections-button row">
+                    <ul>
+                        <li><a href="javascript:void(0);">Toutes les cards</a></li>
+                        <li><a href="javascript:void(0);">Collections</a></li>
+                    </ul>
+                </div>
+                <div id="cards" class="row list-of-cards m-t-50 no-autoscroll" data-api-route="/api/cards/list" data-user-favorite="{{ app.user.id }}">
+                    <div class="col-md-12">
+                        <div class="dropdown-regions">
+                            <a class="dropdown-toggle dnc dropdown-region" href="javascript:;" role="button" id="dropdownMenuRegion" aria-haspopup="true" aria-expanded="false">
+                                Toutes les regions <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <div class="dropdown-menu shadow mb-3" id="regDropdown" aria-labelledby="dropdownMenuRegion" >
+                                {% for region in regions %}
+                                    <a class="dropdown-item region-select-list" href="javascript:;" data-id="{{ region.id }}" data-slug="{{ region.slug }}">{{ region.name }}</a>
+                                {% endfor %}
+                            </div>
+                            {#<ul style="display:none" class="region-list">#}
+                                {#{% for region in regions %}#}
+                                    {#<li href="javascript:;" value="{{ region.id }}" data-slug="{{ region.slug }}">{{ region.name }}</li>#}
+                                {#{% endfor %}#}
+                            </ul>
+                        </div>
+                        <div class="dropdown-categories">
+                            <a class="dropdown-toggle dnc dropdown-moment" href="javascript:void(0);" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                                Catégories <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <div id="catsDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <ul id="filters" class="categories">
+                                    <li class="btn btn-rollover btn-pink is-checked all"><span class="text">Tout</span><i class="fas fa-th"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="7" data-slug="nature"><span class="text">Nature</span><i class="fas fa-tree"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="8" data-slug="site-touristique"><span class="text">Site touristique</span><i class=" fas fa-university"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="9" data-slug="manger"><span class="text">Manger</span><i class="fas fa-utensils"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="22" data-slug="bars-et-cafes"><span class="text">Bars et Cafés</span><i class="fas fa-coffee"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="12" data-slug="sortir"><span class="text">Sortir</span><i class="fas fa-glass-martini"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="17" data-slug="green"><span class="text">Green</span><i class="fas fa-leaf"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="10" data-slug="mobilite"><span class="text">Mobilité</span><i class="fas fa-wheelchair"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="11" data-slug="sport"><span class="text">Sport</span><i class="fas fa-futbol"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="13" data-slug="art-et-culture"><span class="text">Art et culture</span><i class="fas fa-paint-brush"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="14" data-slug="shopping"><span class="text">Shopping</span><i class="fas fa-shopping-bag"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="15" data-slug="consommer-local"><span class="text">Consommer local</span><i class="fas fa-toolbox"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="16" data-slug="enfants"><span class="text">Enfants</span><i class="fas fa-child"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="18" data-slug="dormir"><span class="text">Dormir</span><i class="fas fa fa-bed"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="19" data-slug="bien-etre-et-sante"><span class="text">Bien-être et santé</span><i class="fas fa-spa"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="20" data-slug="evenement"><span class="text">Événement</span><i class="fas fa-calendar-alt"></i></li>
+                                    <li class="btn btn-rollover btn-pink" data-id="21" data-slug="experiences-solidaires"><span class="text">Éxpériences solidaires</span><i class="fas fa-users"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Rounded switch -->
+                        <div class="switch-map">
+                            <span>Map</span><input type="checkbox" id="switch" checked /><label for="switch">Toggle</label><span>Grid</span>
+                        </div>
+                        <div class="card-view">
+                            <div class="row cardsMrgn loader-container">
+                                <div class="loader"></div>
+                                <div id="cardsGrid" class="regionCards cards-grid">
+                                    {% for card in cards %}
+                                        {{ macro.cardSingle(card) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="loadCards"></div>
+                            <div class="col-xs-12 text-center load-more">
+                                <a href="javascript:;" class="btn btn-green btn-rollover show-more-cards"><span class="text">VOIR PLUS DE CARDS</span><i class="fas fa-plus-square"></i></a>
+                            </div>
+                        </div>
+                        <div class="map-view">
+                            <div class="col-md-5 map-view-sidebar">
+                                <div class="row">
+                                    <a href="javascript:;" class="close-sidebar">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                    <!--Sidebar Maps Starts-->
+                                    <div class="col-md-12 map-sidebar" data-simplebar>
+                                        <div class="row">
+                                            <div class="col-md-10 mb-2 sidebar-header pc-name">Restaurant Pita à Paris</div>
+                                            <div class="col-md-2 mb-2 pr-4 text-right favourite-check">
+                                                <div class="pretty p-icon p-toggle p-plain p-bigger">
+                                                    <input type="checkbox" />
+                                                    <div class="state p-off">
+                                                        <i class="icon far fa-heart "></i>
+                                                    </div>
+                                                    <div class="state p-on p-pink-o">
+                                                        <i class="icon fas fa-heart"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2 marker-about pc-category-full">
+                                                <i class="fas fa-utensils"></i>
+                                                <span class="pc-primary-category"></span>
+                                            </div>
+                                            <div class="col-md-6 mb-2 text-right marker-about">
+                                                <i class="fas fa-map-pin"></i><span class="pc-city"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-2 sidebar-view-images">
+                                                <div class="sidebar-slider" id="banner-slider">
+                                                    <div class="sidebar-slider-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/10/73519de4b703e42dccbbc0367d64dcde.jpeg"></div>
+                                                    <div class="sidebar-slider-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/11/0c1b32dee3cd970b2b12ee42a41eee75.jpeg"></div>
+                                                    <div class="sidebar-slider-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/11/ae09ccf13484e7f97b6d55b7fc119566.jpeg"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3 register-button">
+                                                <a href="javascript:;" class="btn btn-pink btn-block shadow">DÉCOUVRIR L’EXPÉRIENCE SUR PIX.CITY</a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 my-3 sidebar-actions">
+                                                <div class="row">
+                                                    <div class="col-md-4 action-links like-check cta-like-card">
+                                                        <div class="pretty p-icon p-toggle p-plain p-bigger">
+                                                            <input type="checkbox" checked />
+                                                            <div class="state p-off">
+                                                                <i class="icon far fa-thumbs-up"></i>
+                                                            </div>
+                                                            <div class="state p-on p-primary-o">
+                                                                <i class="icon fas fa-thumbs-up"></i>
+                                                            </div>
+                                                        </div>
+                                                        <p>J’AIME</p>
+                                                    </div>
+                                                    <div class="col-md-4 action-links cta-favorite-card"  data-id="">
+                                                        <a href="javascript:;">
+                                                            <img src="images/cards-gray.svg">
+                                                            <p>ENREGISTRER LA CARD</p>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-4 action-links">
+                                                        <a href="javascript:;">
+                                                            <i class="far fa-share-square"></i>
+                                                            <p>PARTAGER</p>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <h4 class="col-md-12 pixy-rank">Notre City Maker</h4>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-5 pixie-profile-info">
+                                                <div class="row">
+                                                    <div class="col-md-3 d-flex align-items-center pixie-image">
+                                                        <img src="https://www.pix.city/services/images/95d6eb342f84cc670e694e679996f772.jpeg" class="rounded-circle" alt="Pixie Name">
+                                                    </div>
+                                                    <div class="col-md-8 pixie-info">
+                                                        <div class="row">
+                                                            <div class="col-md-7">
+                                                                <p class="mb-0 insta-name"></p>
+                                                                <p class="mb-1 insta-loc"></p>
+                                                            </div>
+                                                            <div class="col-md-5 p-0 subscribe">
+                                                                <a href="javascript:;" class="btn btn-primary btn-fill btn-block btn-icon-right insta-url">S’abonner <i class="fab fa-instagram"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <p class="about mb-1">Food in Paris 🍰✨ ✉️  Art lover and painter</p>
+                                                                <p class="email"><a href="javascript:;">pariswithlily@gmail.com</a></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 pixie-insta-numbers">
+                                                        <div class="row">
+                                                            <div class="col-md-3">
+                                                                <div class="row">
+                                                                    <div class="col-md-6 grayed">
+                                                                        <span><img src="images/cards-gray.svg"></span>3
+                                                                    </div>
+                                                                    <div class="col-md-6 grayed">
+                                                                        <span><i class="far fa-thumbs-up"></i></span>6
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 blacked">
+                                                                <span class="insta-post-count"></span>publications
+                                                            </div>
+                                                            <div class="col-md-2 blacked">
+                                                                <span class="insta-follower-count"></span>abonnés
+                                                            </div>
+                                                            <div class="col-md-4 blacked">
+                                                                <span class="insta-followed-count"></span>abonnements
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 pix-place">
+                                                <h4 class="google-name">Le Restaurant</h4>
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-3 pix-place-info">
+                                                        <ul>
+                                                            <li><span><i class="fas fa-map-marker-alt"></i></span><span class="google-address"></span>t</li>
+                                                            <li><span><i class="fas fa-globe-europe"></i></span><a href="www.pita-restaurant.com" target="_blank"  class="google-website">www.pita-restaurant.com</a></li>
+                                                            <li><span><i class="fas fa-phone"></i></span><a href="tel:0156362816" class="google-phone">01 56 36 28 16</a></li>
+                                                            <li><span><i class="far fa-calendar-alt"></i></span><span class="google-open-status"></span></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 similar-places">
+                                                <h4>Nos cards liées</h4>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-12">
+                                                            {% embed 'v2/_shared/map-sidebar-footer.html.twig' %}{% endembed %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-center my-3 sidebar-footer">
+                                                <span class="mb-2">powered by</span>
+                                                <img src="{{ absolute_url(asset('build/images/footer-logo-gray.svg')) }}" alt="Pix.City">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Sidebar Maps ends-->
+                                </div>
+                            </div>
+                            <div class="row cardsMrgn loader-container">
+                                <div class="col-md-5 cards-with-map">
+                                    <div class="loader"></div>
+                                    <div id="cardsGrid" class="regionCards cards-grid">
+                                        {% for card in cards %}
+                                            {{ macro.cardSingle(card) }}
+                                        {% endfor %}
+                                    </div>
+                                        <div class="loadCards"></div>
+                                        <div class="col-xs-12 text-center load-more">
+                                            <a href="javascript:;" class="btn btn-green btn-rollover show-more-cards"><span class="text">VOIR PLUS DE CARDS</span><i class="fas fa-plus-square"></i></a>
+                                        </div>
+                                </div>
+                                <div class="col-md-7 map-with-cards">
+                                    <div class="map-container">
+                                        {% include "v2/_shared/map.html.twig" %}
+                                        {#<div style="display: flex; justify-content: center; align-items: center; height: 100%;">#}
+                                            {#<a href="javascript:;" class="icon-click" style="">#}
+                                                {#<img src="images/icons/map-marker-nature.svg" alt="">#}
+                                            {#</a>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="noResult" class="col-md-12 no-results">
+                        <p>Aucune Card dans cette catégorie !</p>
+                        <div class="noCardIco"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Filter Cards Wrap Ends -->
+    </div>
+    <div class="tab-pane" id="mes-agendas">...</div>
+    <div class="tab-pane" id="mes-city-makers">...</div>
+    <div class="tab-pane" id="parameters">...</div>
+</div>
+    <div id="api-box" data-api-url="/api/maps/fav-cards"
+         data-api-search-url="/api/maps/fav-cards-search/"
+         data-show-sidebar="false"
+    ></div>
+
+    <div id="api-user-routes"
+         data-follow-pixie="/api/users/follow/pixie"
+         data-like-card="/api/users/like/card"
+         data-favorite-card="/api/users/favorite/card"
+    ></div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMDtcFiK1e_z3rHF4NwIz9c5E2rWfFOAU&libraries=places" defer></script>
+
+    <script>
+        var coordinates = {};
+
+    </script>
+    <script src="{{ asset('build/js/map.js') }}"></script>
+    <script src="{{ asset('build/js/collection.js') }}"></script>
+{% endblock %}

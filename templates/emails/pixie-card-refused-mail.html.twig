@@ -1,0 +1,17 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+<p>Bonjour {{ firstName }},</p>
+<p>
+Ta card n’a malheureusement pas été retenue par l’équipe Pix.City. Elle ne respecte pas les règles éditos et/ou photos sur Pix :
+</p>
+<p>
+    <a href="{{ url('front_homepage_index')~'p/regles-d-or-editoriales-sur-pix' }}">{{ url('front_homepage_index')~'p/regles-d-or-editoriales-sur-pix' }}</a>
+</p>
+<p>
+    <a href="{{ url('front_homepage_index')~'p/regles-d-or-photos-sur-pix' }}">{{ url('front_homepage_index')~'p/regles-d-or-photos-sur-pix' }}</a>
+</p>
+<p>
+Ce n’est peut-être pas grand chose alors n’hésite pas à contacter la rédaction : <a href="mailto:redaction@pix.city">redaction@pix.city</a>.
+</p>
+{% endblock %}

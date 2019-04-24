@@ -1,0 +1,27 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+    <p>Bonjour {{ firstname }},</p>
+    <p>Bienvenue sur Pix.City !</p>
+
+    <table width="100%">
+        <tr>
+            <td align="center">
+                <a style="background-color: #30b996; color: #FFF; padding: 10px 20px; display: inline-block; text-decoration: none; border-radius: 4px;" href="{{ absolute_url(path('front_user_register_confirm', {token: token})) }}">Je valide mon compte</a>
+            </td>
+        </tr>
+    </table>
+    <p>
+        Avec votre profil personnel, vous allez pouvoir :
+    </p>
+    <ul style="padding-left: 20px;">
+        <li>Choisir vos cards (activités, restaurants, hôtels…)</li>
+        <li>Constituer vos collections de cards et les enregistrer</li>
+        <li>Programmer et réserver vos cards</li>
+    </ul>
+
+    <p>
+        À tout de suite sur Pix.City !
+    </p>
+
+{% endblock %}

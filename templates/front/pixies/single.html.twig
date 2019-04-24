@@ -1,0 +1,178 @@
+{% extends 'front/page.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} profile-template bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+    <!-- PL Home Top Banner -->
+    <div class="topBanner container-fluid">
+
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="portraitPixie" style="background-image: url({{ user.getAvatarUrl() | imagine_filter('user_avatar_large') }})">
+                    <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}"></a>
+                    <a class="pixieLink fa fa-user-plus cta-follow-pixie {{ (app.user is not null and app.user.hasFavoritePixie(user))?"active":"" }}" href="#" data-toggle="tooltip" data-placement="left" title="{{ (app.user is not null and app.user.hasFavoritePixie(user))?"Ne plus suivre":"Suivre le City-maker" }}" data-id="{{ user.id }}"></a>
+                </div>
+            </div>
+            <div class="infosPixieProfile col-sm-7">
+
+                <h1>{{ user }}</h1>
+                <span class="age fa fa-birthday-cake"><span>{{ user.age }} ans</span></span>
+                <span class="lieu fa fa-map-marker"><span>{{ user.currentLocation }}</span></span>
+                {% if user.links |length > 0 %}
+                <div class="rsProfile">
+                    Suivre sur
+                    {% for link in user.links %}
+                        <a href="{{ link.url }}" target="_blank" rel="noopener" class="rsLink fab {{ link.icon }}" data-toggle="tooltip" data-placement="bottom" data-original-title="Suivre sur {{ link.type | capitalize }}"></a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+            </div>
+            <div class="keyNumbers col-sm-12">
+                {% if cards | length > 0 %}<span class="plCards" title="Nombre de cards crées"><span>{{ cards | length }}</span></span>{% endif %}
+                {% if totalLikes > 0 %}<span class="fa fa-thumbs-up" title="Nombre de mentions j'aime sur mes cards"><span>{{ totalLikes }}</span></span>{% endif %}
+                {% if user.followed > 0 %}<span class="fa fa-user" title="Nombre de personnes qui me suivent"><span>{{ user.followed }}</span></span>{% endif %}
+            </div>
+        </div>
+        <!--/.row-->
+
+    </div>
+    <!--/ PL Home Top Banner -->
+
+
+    <div class="col-sm-12 text-center">
+        <ul class="profileTags">
+            {% for category in user.favoriteCategories %}
+                <li>
+                    <a href="{{ path('front_wall_index', {slug: 'recherche', categories: [category.slug]}) }}">
+                        <span class="hexagon"><i class="fa {{ category.icon }}"></i></span>
+                        <p>{{ category.name }}</p>
+                    </a>
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+
+
+
+
+    <div class="container main">
+
+        <!-- CE QUE J AIME -->
+        <div class="row mesGouts">
+
+            {% if user.pixie.likeText is not empty %}
+            <div class="col-md-6 jaime">
+                <h2>Ce que <span>j'aime</span></h2>
+                {{ user.pixie.likeText | raw }}
+
+            </div>
+            {% endif %}
+
+            {% if user.pixie.dislikeText is not empty %}
+            <div class="col-md-6 jeNaimePas">
+                <h2>Ce que <span>je n'aime pas</span></h2>
+                {{ user.pixie.dislikeText | raw }}
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- REGIONS -->
+
+        {% if regions | length > 0 %}
+
+            <div class="row" id="regions">
+
+                <div class="col-md-12">
+                    <h2>Mes régions</h2>
+                </div>
+
+                {% for category in regions %}
+                    {{ macro.regionPageItem(category) }}
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+        <!--/.row-->
+
+        <!-- CARDS POPULAIRES -->
+
+        {% if cards | length > 0 %}
+
+        <div id="cards" class="row">
+            <div class="col-md-12">
+                <h2><span>{{ cards | length }}</span> Cards publiées</h2>
+
+                <!-- CAROUSEL CARDS -->
+                <div class="slider carrouselRows">
+
+                    {% for card in cards %}
+                        {{ macro.cardItem(card) }}
+                    {% endfor %}
+
+                </div>
+
+                <!--/.carousel cards -->
+
+            </div>
+
+        </div>
+        <!--/.row-->
+
+        {% endif %}
+
+
+    </div>
+    <!--/.container-->
+
+    <!-- DEVENEZ UN PIXIE ! -->
+    <div id="becomePixie" class="text-center">
+        <span class="hugeTypo">{{ 'label.pixies'|trans }}</span>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h2>{{ 'title.become_pixie'|trans }}</h2>
+                    <p>{{ 'title.pixies_pitch'|trans }}</p>
+                </div>
+            </div>
+
+            <div id="portraitsPixies" class="row">
+                <h3>{{ 'title.few_pixies'|trans }}</h3>
+
+                {% for user in pixies %}
+                    <div class="col-sm-15">
+                        {{ macro.pixieItem(user) }}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="row">
+                <div id="btnPixies" class="col-sm-12 text-center">
+                    <a href="{{ path('front_pixies_index', {slug: 'france'}) }}" class="btn ghost transFx fa fa-users"><span>{{ 'label.all_pixies'|trans }}</span></a>
+                    {% if not is_granted('ROLE_PIXIE') %}
+                        <a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):path('front_pixie_register_mode') }}" class="btn white transFx fa fa-user-plus"><span>{{ 'action.become_a_pixie'|trans }}</span></a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--/#becomePixie-->
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

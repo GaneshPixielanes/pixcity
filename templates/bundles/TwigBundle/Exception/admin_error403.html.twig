@@ -1,0 +1,8 @@
+{% extends 'admin/page.html.twig' %}
+
+{% block content %}
+    <div class="error-page">
+        <h1><i class="material-icons">error</i> ERROR 403</h1>
+        <p>{{ 'error.not_authorized'|trans }}</p>
+    </div>
+{% endblock %}

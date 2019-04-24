@@ -1,0 +1,13 @@
+error:
+    password:
+        format: Votre mot de passe doit contenir au moins 8 caractères dont au moins 1 chiffre
+    field:
+        mandatory: Ce champ est obligatoire
+    email:
+        exist: Cet email est déjà utilisé par un autre compte
+    image:
+        ext: Le type de fichier envoyé n'est pas compatible
+    vat: Numéro de TVA invalide
+
+    iban: IBAN invalide
+    bic: BIC invalide

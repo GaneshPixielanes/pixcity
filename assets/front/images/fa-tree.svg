@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48.405" height="56" viewBox="0 0 48.405 56">
+  <g id="_Map_Marker_-_Nature_V2_" data-name="📍Map Marker - Nature [V2]" transform="translate(-32 -232)">
+    <path id="_V1_HEXAGONE" data-name="[V1]HEXAGONE" d="M-28.8,0-53,14V42l24.2,14,24.2-14V14Z" transform="translate(85 232)" fill="#ed5485"/>
+    <g id="Category_Icon_-_Nature" data-name="Category Icon - Nature" transform="translate(-399.645 188)">
+      <path id="Category_Icon_-_Nature-2" data-name="Category Icon - Nature" d="M23.647,23.647l-4.993-5.655h1.914a1.42,1.42,0,0,0,1.3-.816,1.378,1.378,0,0,0-.2-1.5L16.78,9.993h1.806a1.416,1.416,0,0,0,1.3-.851,1.391,1.391,0,0,0-.265-1.5L12.732.295a1.029,1.029,0,0,0-1.457,0L4.383,7.637a1.392,1.392,0,0,0-.265,1.5,1.417,1.417,0,0,0,1.3.851H7.228L2.344,15.674a1.38,1.38,0,0,0-.2,1.5,1.42,1.42,0,0,0,1.3.816H5.353L.36,23.647a1.382,1.382,0,0,0-.222,1.516,1.449,1.449,0,0,0,1.313.828H10V27.52L8.111,30.545a1,1,0,0,0,.894,1.447h6a1,1,0,0,0,.894-1.447L14,27.52V25.992h8.553a1.449,1.449,0,0,0,1.313-.828A1.382,1.382,0,0,0,23.647,23.647Z" transform="translate(443.64 56.008)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,112 @@
+{% extends 'v2/front/account/city_maker/page.html.twig' %}
+
+{% import 'front/_shared/macros.html.twig' as macro %}
+{% block page_content %}
+
+<div class="tab-content">
+		<div class="tab-pane active" id="mes-demandes">
+			<div class="cards-wrap">
+				<div class="container">
+						<div id="mes-demandes-container"></div>
+				</div>
+			</div>
+		</div>
+		<!-- Filter Cards Wrap Ends -->
+		<div class="tab-pane" id="mes-cards-attente">
+			<div id="mes-cards-attente-container"></div>
+		</div>
+		<div class="tab-pane load-page-content" id="mes-cards-validees" data-href="#">
+			<div id="mes-cards-validated-container"></div>
+		</div>
+		<div class="tab-pane load-page-content" id="mes-renumerations">
+			<div id="mes-renumerations-container"></div>
+		</div>
+		<div class="tab-pane load-page-content" id="parameters">
+			<div id="settings-container"></div>
+		</div>
+</div>
+<div id="api-routes"
+		 data-modalinfos-route="{{ path('api_projects_modal_infos') }}"
+		 data-acceptproject-route="{{ path('api_projects_accept') }}"
+		 data-refuseproject-route="{{ path('api_projects_refuse') }}"
+></div>
+{% endblock %}
+{% block javascripts %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFjaLU8H-TpATXcUcDzKQ4w05pCQ5mAg&libraries=places" defer></script>
+<script src="{{ asset('build/front/js/pages/pixie-projects-list.js') }}"></script>
+<script>
+$(document).ready(function()
+{
+	var projects = false;
+	var submitted = false;
+	var validated = false;
+	var payment = false;
+	var parameter = false;
+	// Load demandes page on load
+	$.ajax({
+		url: $('#mes-demandes-page').attr('data-href'),
+		method:'POST',
+		success:function(e)
+		{
+			$('#mes-demandes-container').html(e);
+			$('.pc-table').DataTable();
+			$('.dataTables_filter > label, .dataTables_paginate').addClass('float-right');
+		}
+	});
+
+	// Load other pages via ajax
+
+	$('.load-page-content').click(function()
+	{
+		var link = $(this).attr('data-href');
+		var id = $(this).attr('id');
+		console.log(id);
+		$.ajax({
+			url:link,
+			method: 'POST',
+			success: function(e)
+			{
+				if( id == "mes-cards-attente-page"  && submitted == false)
+				{
+					$("#mes-cards-attente-container").html(e);
+					$('.pc-table-submitted').DataTable();
+					$('.dataTables_filter > label, .dataTables_paginate').addClass('float-right');
+					submitted = true;
+				}
+				else if( id == "mes-cards-validated-page" && validated == false)
+				{
+					$("#mes-cards-validated-container").html(e);
+					validated = true;
+				}
+				else if( id == "mes-renumerations-page" && payment == false)
+				{
+
+					$("#mes-renumerations-container").html(e);
+					$('.pc-table-payment').DataTable();
+					$('.dataTables_filter > label, .dataTables_paginate').addClass('float-right');
+					payment = true;
+				}
+				else if( id == "settings-page" && parameter == false)
+				{
+
+					$("#settings-container").html(e);
+					$('.pc-table-payment').DataTable();
+					$('.dataTables_filter > label, .dataTables_paginate').addClass('float-right');
+					parameter = true;
+				}
+			}
+		});
+	});
+
+	$(document).on('mouseenter','.titreCard', function()
+	{
+		$(this).find('.voirDemande').css('visibility','visible');
+	});
+	$(document).on('mouseleave','.titreCard', function()
+	{
+		$(this).find('.voirDemande').css('visibility','hidden');
+	});
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'admin/page.html.twig' %}
+
+{% block content %}
+
+    <ol class="breadcrumb breadcrumb-col-teal">
+        <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+        <li class="active">Revolut</li>
+    </ol>
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Revolut
+                    </h2>
+                </div>
+                <div class="body">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

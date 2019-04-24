@@ -1,0 +1,1088 @@
+//---------------------------------------------------------
+// Vendors
+//---------------------------------------------------------
+
+@import "~bootstrap-select/dist/css/bootstrap-select.min.css";
+@import "~node-waves/dist/waves.css";
+@import "~animate.css/animate.min.css";
+@import "~datatables.net-bs/css/dataTables.bootstrap.css";
+@import "~datatables.net-rowreorder-bs/css/rowReorder.bootstrap.css";
+@import "~select2/dist/css/select2.css";
+
+@import "vendors/bootstrap-material-datetimepicker.css";
+@import "vendors/sweetalert.css";
+@import "vendors/adminbsbmaterialdesign.min.css";
+//@import "~font-awesome/css/font-awesome.css"; // V4
+@import "vendors/fontawesome-all.css"; //V5
+
+@import "~froala-editor/css/third_party/embedly.min";
+@import "~cropperjs/dist/cropper.min.css";
+
+//---------------------------------------------------------
+// Include partials
+//---------------------------------------------------------
+
+@import "includes/variables";
+@import "includes/theme_overrides";
+
+//---------------------------------------------------------
+// CMS Styles
+//---------------------------------------------------------
+
+
+body{
+  &:before{
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/bg-icons.png);
+    background-size: 100%;
+    opacity: 0.5;
+    z-index: -1;
+  }
+}
+
+a{
+  color: $colorPink;
+}
+
+.navbar-brand{
+  img{
+    display: inline-block;
+  }
+
+  small{
+    font-size: 18px;
+    font-weight: 300;
+  }
+}
+
+.navbar-nav>li>a.current-user{
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+
+  .username{
+    margin: 0 5px;
+    font-size: 12px;
+    line-height: 1em;
+  }
+
+  small{
+    display: block;
+    line-height: 1em;
+    margin-bottom: 5px;
+  }
+
+  i{
+    font-size: 40px;
+  }
+}
+
+.form-group-m-b-0{
+  margin-bottom: 0;
+}
+
+.table tbody tr td, .table tbody tr th{
+  vertical-align: middle;
+}
+
+
+.flex-row-space-between,
+.card .header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2{
+    font-family: $fontTitle;
+    font-size: 3rem;
+    color: $colorDeepBlue;
+  }
+
+  .btn{
+    text-transform: uppercase;
+  }
+}
+
+table.dataTable thead th.nosort{
+  pointer-events: none;
+
+  &:after{
+    content: "";
+  }
+}
+
+.error-page{
+  text-align: center;
+}
+
+h1, h2, h3, h4{
+  font-family: $fontTitle;
+  color: $colorDeepBlue;
+  font-weight: 300;
+
+  &:first-child{
+    margin-top: 0;
+  }
+}
+
+.w-100{
+  width: 100%;
+}
+
+.bootstrap-select.btn-group .dropdown-toggle .caret{
+  right: -7px;
+}
+
+.card-summary{
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 12px;
+  background-color: $colorGreen;
+  border: 2px solid #539e85;
+  color: #FFF;
+  display: block;
+
+  &:hover{
+    color: #FFF;
+    text-decoration: none;
+    background-color: #539e85;
+  }
+
+  h5{
+    font-size: 12px;
+    margin: 0 0 3px 0;
+    i, span{vertical-align: middle; line-height: 1em;}
+  }
+}
+
+.card-thumb{
+
+  .thumb-container{
+    position: relative;
+    margin-bottom: 15px;
+    overflow: hidden;
+
+    .delete-item{
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 28px;
+      height: 28px;
+      line-height: 20px;
+      padding: 0;
+
+      i{
+        font-size: 20px;
+        left: 0px;
+        top: 4px;
+      }
+    }
+  }
+
+  .thumb{
+    display: block;
+  }
+
+  .field{
+    display: none;
+  }
+}
+
+.navbar-nav>li>a.btn-visit-site{
+  padding: 3px 10px;
+  margin: 20px 10px 5px;
+}
+
+//---------------------------------------------------------
+// Forms
+//---------------------------------------------------------
+
+
+[type="checkbox"]+label{
+  margin-right: 15px;
+}
+
+[type="radio"]+label{
+  margin-right: 15px;
+}
+
+.error-message{
+  color: #FFF;
+
+  ul{
+    background-color: $colorDeepBlue; padding: 5px 10px; margin-bottom: 0;
+  }
+}
+
+.row.type-switch{
+  .form-group .form-line{
+    border: 0;
+
+    &:after{
+      border: 0;
+    }
+
+    .switch{
+      padding: 8px 0;
+    }
+  }
+}
+
+.row.type-froala{
+  .form-group .form-line{
+    border: 0;
+
+    &:after{
+      border: 0;
+    }
+  }
+}
+
+.row.type-date{
+  .form-group .form-line{
+    border: 0;
+
+    &:after{
+      border: 0;
+    }
+  }
+}
+
+.form-group{
+  .form-line-disabled{
+    opacity: 0.5;
+    &:after{
+      display: none;
+    }
+  }
+}
+
+.row.multiple-checkboxes{
+  .form-group .form-line{
+    border: 0;
+
+    .form-control{height: auto;}
+
+    &:after{
+      border: 0;
+    }
+  }
+}
+
+select{
+  color: #000;
+}
+
+.form-control-label{
+  label {
+    margin-bottom: 0;
+  }
+
+  .field-help{
+    font-size: 11px; color: #AAA;
+    display: block;
+  }
+}
+
+.body{
+  .nav-tabs{
+    margin-bottom: 10px;
+    &>li{
+      &>a{
+        padding-top: 0;
+      }
+    }
+  }
+}
+
+.row.user-avatar{
+  .file-preview{
+    border-radius: 100px; border: 2px solid $colorPink;
+  }
+}
+
+.pac-container{
+  &:after{
+    content: none !important;
+    height: 0;
+    display: none;
+  }
+}
+
+.drag-handle{
+  cursor: move;
+}
+
+.drag-handle-col{
+  width: 40px !important;
+}
+
+.side-card{
+  input[type='text'], input[type='number']{
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+    border: 1px solid #CCCCCC;
+    height: 35px; line-height: 35px;
+    padding: 0 5px;
+  }
+
+  .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+    width: 100%;
+  }
+}
+
+.date-field{
+  input{cursor: pointer;}
+}
+
+.label-align-left{
+  .form-control-label{
+    text-align: left;
+  }
+}
+
+//---------------------------------------------------------
+// Table
+//---------------------------------------------------------
+
+.col-blameable{
+  .name{
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .date{
+    display: inline-block;
+    font-size: 11px;
+    background-color: #eaeaea;
+    color: #989898;
+    padding: 1px 3px;
+    white-space: nowrap;
+  }
+}
+
+.single-checkbox{
+  height: 20px;
+
+  label{
+    margin: 0;
+    padding-left: 20px;
+    height: 20px;
+    line-height: 20px;
+  }
+}
+
+.blameable-zone{
+
+  border-collapse: collapse;
+  width: 100%;
+
+  td{
+    padding: 3px 5px;
+    border: 1px solid #FFF;
+  }
+  .title{
+    font-size: 12px;
+    background-color: #ececec;
+  }
+  .name{
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .date{
+    font-size: 10px;
+    font-weight: 400;
+  }
+}
+
+.icon-link{
+  font-size: 12px;
+  i, span{vertical-align: middle; display: inline-block;}
+
+  &:hover{
+    text-decoration: none;
+  }
+}
+
+.col-region{
+  a{
+    font-size: 11px;
+    color: #8c8c8c;
+  }
+}
+
+.item-actions{
+  min-width: 90px;
+  white-space: nowrap;
+}
+
+.delivery-date{
+  font-size: 11px;
+  i, span{vertical-align: middle; display: inline-block;}
+
+  i{
+    font-size: 21px;
+    margin: 0px 2px;
+  }
+
+  &.warning{
+    background-color: $colorError; color: #FFF;
+    display: inline-block;
+    padding: 2px 5px 2px 0;
+    border-radius: 5px;
+  }
+}
+
+#bulk-row{
+  td{
+    border: 0 !important;
+    background-color: #ececec !important;
+
+    .btn:not(.btn-link):not(.btn-circle) span{
+
+    }
+  }
+}
+
+.col-card{
+  text-align: center;
+  small{
+    color: #CCC;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  a{
+    font-size: 11px; line-height: 1.2em;
+    display: block;
+
+    div{
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 80px;
+      margin: 0 auto;
+    }
+
+    &:hover{
+      text-decoration: none;
+    }
+  }
+}
+
+.delete-form, .duplicate-form, .delete-form-users, .restore-user, .delete-form-cards, .restore-card,
+.pay-banktransfer-form
+{
+  display: inline-block;
+}
+
+.col-visibility{
+  color: #b1b1b1;
+  i{
+    cursor: default;
+
+    &.off{
+      color: $colorDeepBlue;
+    }
+  }
+
+  &.public{
+    i{
+      &.on{
+        color: $colorPink;
+      }
+    }
+  }
+}
+
+.dataTable{
+  tr.deleted{
+    opacity: 0.75;
+  }
+}
+
+  //---------------------------------------------------------
+// Filters
+//---------------------------------------------------------
+
+#cards-filters{
+  .inner-collapse{
+    background-color: #f9f9f9;
+    border: 1px solid #ececec;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    padding: 10px;
+
+    .btn.dropdown-toggle{
+      background-color: #f9f9f9 !important;
+    }
+
+    .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+      width: 100%;
+    }
+  }
+}
+
+//---------------------------------------------------------
+// Repeater for collections
+//---------------------------------------------------------
+
+.repeater-container{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  li{
+    list-style-type: none;
+  }
+}
+
+
+.collection-row{
+  display: flex;
+  flex-flow: row;
+
+  &.user-link{
+
+    select, input{
+      height: 40px;
+      line-height: 40px;
+      padding: 0 10px;
+      border: 1px solid #DDD;
+    }
+
+    select{
+      border-right: 0;
+      border-radius: 4px 0 0 4px;
+    }
+
+    input{
+      flex: 1;
+      margin-right: 10px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    input + input{
+      border-radius: 4px;
+    }
+  }
+}
+
+
+.menu-items-collection{
+
+  .add-item-container{
+    margin-top: 20px;
+  }
+
+}
+
+.collection-row.menu-item{
+
+  .drag-handle{
+    cursor: move;
+  }
+
+  .position{
+    display: none;
+  }
+
+  .panel{
+    width: 100%;
+    display: block;
+  }
+
+  .panel-primary{
+    border-color: $colorDeepBlue;
+    margin-bottom: 3px;
+
+    &>.panel-heading{
+      border-color: $colorDeepBlue;
+      background-color: $colorDeepBlue;
+      padding: 0;
+      position: relative;
+
+      .panel-title{
+      }
+
+      a.title{
+        display: block;
+        padding: 10px 15px;
+
+        i, span{
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        &:hover, &:active, &:focus{
+          text-decoration: none;
+        }
+      }
+
+      .delete-item{
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        margin-top: -20px;
+      }
+    }
+  }
+
+  input[type='text']{
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #CCCCCC;
+  }
+}
+
+
+//---------------------------------------------------------
+// Pixie billing infos form
+//---------------------------------------------------------
+
+#user_pixie_billing{
+
+  .row{
+    width: 50%;
+    float: left;
+    margin: 0 0 10px 0;
+
+    &:nth-child(2n + 1){
+      clear: both;
+    }
+
+    .form-control-field,
+    .form-control-label{
+      float: none;
+      text-align: left;
+      width: auto;
+      margin-bottom: 5px;
+    }
+  }
+
+  &:after{
+    content: " "; display: block; clear: both;
+  }
+
+}
+
+
+
+//---------------------------------------------------------
+// Bootstrap select
+//---------------------------------------------------------
+
+.bootstrap-select{
+  .btn{
+    color: #000;
+  }
+}
+
+.caret{
+  border-top-color: #000;
+}
+
+#user_birthdate{
+  .bootstrap-select{
+    width: 120px;
+  }
+}
+
+//---------------------------------------------------------
+// Froala
+//---------------------------------------------------------
+
+.fr-toolbar{
+  border-color: $colorDeepBlue !important;
+}
+
+.fr-toolbar .fr-command.fr-btn, .fr-popup .fr-command.fr-btn{
+  color: $colorDeepBlue !important;
+}
+
+.fr-box a.fr-floating-btn svg{
+  fill: $colorDeepBlue !important;
+}
+
+//---------------------------------------------------------
+// Login
+//---------------------------------------------------------
+
+.login-page{
+  background-color: #FFF;
+}
+
+
+//---------------------------------------------------------
+// Dashboard
+//---------------------------------------------------------
+
+.dashboard-stat-list{
+  .name{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    padding-right: 10px;
+  }
+}
+
+
+.swal-footer{
+  text-align: center;
+}
+
+//---------------------------------------------------------
+// Autocomplete
+//---------------------------------------------------------
+
+.autocomplete-container{
+  position: relative;
+  display: inline-block;
+
+  input{
+    box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+    height: 30px;
+    line-height: 30px;
+    padding: 0 5px;
+    border: 0;
+  }
+
+  ul{
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: #FFF;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+
+    li{
+      display: block;
+      border-bottom: 1px solid #EEE;
+
+    }
+  }
+
+  .pixie{
+    text-align: left; padding: 5px;
+    cursor: pointer;
+
+    button{text-align: left}
+
+    .tag{
+      font-size: 10px;
+      padding: 2px 2px;
+      border-radius: 4px;
+      background-color: #EEE;
+      margin-right: 3px;
+    }
+
+    &:hover{
+      background-color: #f7f7f7;
+    }
+  }
+}
+
+//---------------------------------------------------------
+// Attachments
+//---------------------------------------------------------
+
+.media-description{
+  height:230px !important;
+}
+
+.collection-row.attachment{
+  display: inline-block;
+  margin: 5px;
+  position: relative;
+  width: 100px;
+  vertical-align: top;
+
+  .thumb{
+    border: 1px solid #EEEEEE;
+    background-color: #EFEFEF;
+    border-radius: 5px;
+    padding: 5px;
+    height: 250px;
+    width:250px;
+
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+    display: flex;
+
+    i{
+      margin: auto;
+      font-size: 40px;
+    }
+  }
+
+  .name{
+    font-size: 10px; color: #828282;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .delete-item{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+
+    i{
+      font-size: 13px;
+      left: 0px;
+      top: 2px;
+    }
+  }
+
+  .field{
+    display: none;
+  }
+}
+
+.upload-zone{
+  position: relative;
+
+  input{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .progress{
+    display: none;
+    margin: 10px 0;
+
+    .progress-bar{
+      background-color: $colorGreen;
+    }
+  }
+
+  &.uploading{
+    .progress{display: block;}
+  }
+}
+
+//---------------------------------------------------------
+// Address
+//---------------------------------------------------------
+
+#gm-address-map{
+  height: 200px;
+  border-radius: 5px;
+
+  &>*{
+    border-radius: 5px;
+  }
+}
+
+//---------------------------------------------------------
+// SWAL
+//---------------------------------------------------------
+
+.swal-button{
+  background-color: $colorPink;
+}
+
+.swal-button--cancel{
+  background-color: #EFEFEF;
+}
+
+.swal-content__input:focus, .swal-content__textarea:focus{
+  border-color: $colorPink;
+}
+
+//---------------------------------------------------------
+// Typeahead
+//---------------------------------------------------------
+
+.type-typeahead{
+  .form-group .form-line{
+    border: 0;
+  }
+}
+
+.typeahead{
+  .select2-container{
+    width: 100% !important;
+  }
+}
+
+//---------------------------------------------------------
+// Card list
+//---------------------------------------------------------
+
+.cardlist{
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 20px;
+  background: #f1f1f1;
+  padding: 20px;
+  border-radius: 6px;
+
+  .typeahead{
+    margin-bottom: 20px;
+    width: 100%;
+  }
+}
+
+.single-card-preview{
+  padding: 10px;
+  border-radius: 6px;
+  background-position: center center;
+  background-size: cover;
+  background-color: $colorDeepBlue;
+  color: #FFF;
+  width: 200px;
+  height: 260px;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  margin: 10px;
+
+  &:before{
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, .5), rgba(0, 0, 0, 0.2));
+    border-radius: 6px;
+  }
+
+  input{display: none;}
+  .title{
+    display: block;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: normal;
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    margin-top: auto;
+    z-index: 1;
+  }
+
+  .region{
+    height: 18px;
+    line-height: 18px;
+    vertical-align: bottom;
+    text-transform: uppercase;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+    z-index: 1;
+  }
+
+  .delete-item{
+    position: absolute;
+    right: -12px;
+    top: -12px;
+    border: 0;
+    background-color: $colorDeepBlue;
+    color: #FFF;
+    line-height: 1em;
+    border-radius: 30px;
+    padding: 5px;
+  }
+}
+
+.card-short-name{
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.user-avatar{
+  .field{
+    display: none;
+  }
+
+  .thumb{
+    width: 100px;
+    margin-bottom: 10px;
+  }
+}
+
+.active-icon{
+  display: inline-block;
+  vertical-align: middle;
+  color: $colorGreen;
+  font-size: 20px;
+}
+
+.mandatory-col{
+  padding: 0 10px;
+  font-size: 0.8em;
+}
+
+//---------------------------------------------------------
+// Admins
+//---------------------------------------------------------
+
+.bg-role_user{background-color: $colorDeepBlue;}
+.bg-role_admin{background-color: $colorPink;}
+.bg-role_moderator{background-color: $colorGreen;}
+.bg-role_pixie{background-color: $colorPink;}
+
+
+
+//---------------------------------------------------------
+// Status
+//---------------------------------------------------------
+
+.bg-status-created{background-color: #bbbbbb;}
+.bg-status-assigned{background-color: $colorDeepBlue;}
+.bg-status-submitted{background-color: $colorPink;}
+.bg-status-validated{background-color: $colorGreen;}
+.bg-status-saved{    background-color: #eaeaea; color: #989898;}
+.bg-status-refused{background-color: $colorError;}
+.bg-status-pixie_refused{background-color: $colorError;}
+.bg-status-pixie_accepted{background-color: $colorGreen;}
+.bg-status-pixie_submitted{background-color: $colorPink;}
+
+//---------------------------------------------------------
+// Payment status
+//---------------------------------------------------------
+
+.bg-paystatus-pending{display: none;}
+.bg-paystatus-topay{background-color: $colorPink;}
+.bg-paystatus-payed_by_banktransfer{background-color: $colorGreen;}
+.bg-paystatus-payed_by_check{background-color: $colorGreen;}
+
+
+//---------------------------------------------------------
+// Transaction
+//---------------------------------------------------------
+
+.transaction_banktransfer{background-color: $colorDeepBlue;}
+.transaction_check{background-color: $colorPink;}
+.transaction_pixie_asked_banktransfer{background-color: $colorPink;}
+.transaction_pixie_asked_check{background-color: $colorPink;}
+.transaction_banktransfer_success{background-color: $colorGreen;}
+.transaction_banktransfer_error{background-color: $colorError;}
+.transaction_check_success{background-color: $colorGreen;}
+.transaction_check_error{background-color: $colorError;}
+

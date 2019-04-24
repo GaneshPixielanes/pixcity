@@ -1,0 +1,52 @@
+{% extends 'admin/pages/sliders/slides/slides.html.twig' %}
+
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{% block breadcrumb %}
+    <li><a href="{{ path('admin_pages_sliders_slides_list', {slider: slider.id}) }}">{{ 'label.slides'|trans }}</a></li>
+    <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    {{ form_start(form) }}
+
+        <div class="row clearfix">
+            <div class="col-md-9">
+                {{ form_row(form.name) }}
+                {{ form_row(form.description) }}
+            </div>
+            <div class="col-md-3">
+                <h3>{{ 'label.image'|trans }}</h3>
+                <div class="card-thumb">
+                    <ul class="repeater-container slide-attachment attachment-container">
+                        {% embed "admin/pages/sliders/slides/_media.html.twig" with {'field': form.image} %}{% endembed %}
+                    </ul>
+                </div>
+                <h3>{{ 'label.backgroundimage'|trans }}</h3>
+                <div class="card-thumb">
+                    <ul class="repeater-container slide-attachment attachment-container">
+                        {% embed "admin/pages/sliders/slides/_media.html.twig" with {'field': form.background} %}{% endembed %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row-space-between">
+            <a href="{{ path('admin_pages_sliders_slides_list', {slider: slider.id}) }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+        </div>
+
+    {{ form_end(form) }}
+
+
+    <div id="api-routes"
+         data-upload-route="{{ path('admin_pages_sliders_slides_ajax_upload', {slider: slider.id}) }}"
+    ></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/slide.js') }}"></script>
+{% endblock %}

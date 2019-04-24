@@ -1,0 +1,126 @@
+{% extends 'front/account/pixie/base.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} pixieAccount demands account{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+    <div class="container main">
+        <div class="col-md-12 text-center">
+                {% if totalProjects > 1 %}
+                    
+                <p style="color:#484848 !important; padding-top:20px; font-size:20px;"><strong>Mes <span>{{ totalProjects }}</span> demandes</strong></p>
+                {% elseif totalProjects == 1 %}
+                  <p style="color:#484848 !important; padding-top:20px; font-size:20px;"><strong>  Ma demande </strong></p>
+                {% else %}
+                    <p style="color:#484848 !important; padding-top:20px; font-size:20px;">
+                        <strong>Bienvenue sur votre espace city-maker !</strong>
+                    </p>
+                    <p>
+                    Si vous n’avez pas encore de demande de card de la part de la rédaction de Pix.city, n’attendez pas ! <br/>
+                    Envoyez dès maintenant à redaction@pix.city vos 5 adresses (+ 8 photos si possible par endroit) favorites sur vos restos, hôtels, boutiques, activités, patrimoine…nous vous répondrons sous 48H pour savoir si vos bonnes adresses peuvent devenir des cards rémunérées (10 euros par card validée et publiée).
+                    </p>
+                {% endif %}
+            
+        </div>
+
+        {% if projects | length > 0 %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="dateCard">Date</th>
+                    <th scope="col">Titre de la card / interview </th>
+                    <th scope="col" class="remuneration"><span class="hom">Rémunération</span> <span class="som">€</span></th>
+                    <th scope="col" class="dateLimite">Date limite</th>
+                    <th scope="col">Statut</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for project in projects %}
+                    <tr class="ligne">
+                        <td class="dateCard">{{ project.createdAt | localizeddate('short', 'none') }}</td>
+                        <td class="titreCard">
+                            <a href="#">{{ project.name }}</a>
+                            <a href="#" class="voirDemande open-project-infos" data-id="{{ project.id }}" data-contract="{{ path('front_pixie_card_creation_contract', {id: project.id}) }}">Voir la demande</a>
+                            
+                        </td>
+                        <td class="remuneration"><i class="fa fa-euro-sign hom"></i>{{ project.price }}</td>
+                        <td class="dateLimite {% if project.isLate %}warning{% endif %}">{{ project.deliveryDate | localizeddate('short', 'none') }}</td>
+                        <td class="statutCard">
+                            {% if project.status == 'pixie_accepted' and project.card %}
+                                <a href="{{ path('front_pixie_card_creation_project', {id: project.id}) }}" class="btn white transFx fa fa-ellipsis-h"><span>En cours</span></a>
+                            {% elseif project.status == 'pixie_accepted' %}
+                                <a href="{{ path('front_pixie_card_creation_project', {id: project.id}) }}" class="btn green transFx fa fa-pencil" data-id="{{ project.id }}"><span>Rédiger</span></a>
+                            {% else %}
+                                <span class="status-{{ project.status }}">{{ project.statusLabel }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            {% include 'front/_shared/pagination.html.twig' with {'pagination': pagination, 'classic': true} %}
+        {% endif %}
+
+    </div>
+
+
+    <div id="project-infos-modal" class="modal demandContract" tabindex="-1" role="dialog">
+
+    </div>
+
+    <div id="project-confirm" class="modal plConfirm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title">Confirmation</h5>
+                </div>
+                <div class="modal-body">
+                    <p><a class="grey open-contract-pop" href="" target="_blank" rel="noopener"><i class="fa fa-file"></i>Voir le contrat</a></p>
+                    <p class="mrgn"><strong>En acceptant je m'engage <br>et accepte les terme du présent contrat.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn ghostPos" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn green" id="accept-project">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% for message in app.flashes('card_published') %}
+
+        {% embed "front/_modals/card-submitted.html.twig" with {'message': message} %}{% endembed %}
+
+    {% endfor %}
+
+
+
+    <div id="api-routes"
+         data-modalinfos-route="{{ path('api_projects_modal_infos') }}"
+         data-acceptproject-route="{{ path('api_projects_accept') }}"
+         data-refuseproject-route="{{ path('api_projects_refuse') }}"
+    ></div>
+
+    <div class="chat-button">
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/front/js/pages/pixie-projects-list.js') }}"></script>
+
+{% endblock %}
+
+{% block footer_class %}simpleFooter{% endblock %}

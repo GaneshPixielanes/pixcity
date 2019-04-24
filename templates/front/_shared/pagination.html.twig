@@ -1,0 +1,17 @@
+<!-- Pagination -->
+
+<ul class="list-pagination paginationCircles {{ (classic is defined)?"classic no-ajax":"ajax" }}" data-index="{{ pagination.index }}" data-total="{{ pagination.totalPages }}" data-total-items="{{ pagination.totalItems }}" data-limit="{{ pagination.limit }}">
+    <li class="btn-circle btn-first-page"><a href="#" class="fa fa-chevron-double-left"></a></li>
+    <li class="btn-circle btn-prev-page"><a href="#" class="fa fa-chevron-left"></a></li>
+
+    <li class="pages">
+        <ul>
+            <li class="btn-circle"><a href="#">1</a></li>
+            <li class="btn-circle active"><a href="#">2</a></li>
+            <li class="btn-circle"><a href="#">3</a></li>
+        </ul>
+    </li>
+
+    <li class="btn-circle btn-next-page"><a href="#" class="fa fa-chevron-right"></a></li>
+    <li class="btn-circle btn-last-page"><a href="#" class="fa fa-chevron-double-right"></a></li>
+</ul>

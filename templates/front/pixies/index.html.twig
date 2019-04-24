@@ -1,0 +1,93 @@
+{% extends 'front/page.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} allPixies {% if pageCategory is not null %}region{% endif %}  bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+    {% if pageCategory is not null %}
+    <!-- PL Home Top Banner -->
+    <div class="topBanner container-fluid" style="background-image: url({{ pageCategory.background.getUrl() | imagine_filter('bg_header_slider') }})">
+        <div class="row noMrgn">
+            <div class="col-md-12">
+                <span class="hexagon">{{ pixies | length }}</span>
+                <h1>City-makers sont en {{ pageCategory.region.name }} !</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row regionPixies">
+            {% for user in pixies %}
+                {{ macro.pixieItem(user, true) }}
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <!--/ PL Top Banner -->
+    {% endif %}
+
+    {% if pageCategory is null %}
+    <!-- PL Home Top Banner -->
+    <div class="topBanner container">
+        <div class="row">
+            <div class="col-md-12">
+
+                {% include 'front/_shared/search.html.twig' with {searchId: "searchInnerContent", type: "pixies"} %}
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+
+                <!--/RECHERCHE-->
+                <h1><span>{{ pixies | length }}</span> City-Makers sont là pour vous renseigner !</h1>
+
+
+            </div>
+            <!--/.col-sm-12-->
+        </div>
+        <!--/.row-->
+    </div>
+    <!--/.topBanner-->
+
+    <div class="container">
+
+        {% for region in regions %}
+
+            <!--REGION-->
+            <div class="row regionPixies">
+                <div class="col-md-12">
+                    <span class="hexagon">{{ region.pixies | length }}</span>
+                    <h2>{{ region.infos.name }}</h2>
+                </div>
+            </div>
+            <!--/row-->
+
+            <div class="row">
+                {% for user in region.pixies %}
+                    {{ macro.pixieItem(user, true) }}
+                {% endfor %}
+            </div>
+
+        {% endfor %}
+
+    </div>
+    <!--/.container-->
+
+    {% endif %}
+
+
+{% endblock %}
+
+{% block footer_class %}simpleFooter{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,355 @@
+{% extends 'front/base.html.twig' %}
+
+{% block body_class %}{{ parent() }} createCard pixieAccount account bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% form_theme form 'front/_forms/fields.html.twig' %}
+
+{% block body %}
+<style>
+.curved_arrow{
+    color: #30b996;
+}
+</style>
+<div class="col-sm-2 instructions-text"> Au besoin, <br/> retrouve les questions <br/>ici </div>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="fa fa-info-circle"></span></button></div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="defaultNavbar1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="btn green"><a href="#" class="open-project-infos" data-id="{{ project.id }}"><span>Voir la demande</span></a></li>
+                    {% if project.attachments | length > 0 %}<li class="btn green"><a href="{{ path('api_projects_download_files', {id: project.id}) }}"><span>Télécharger les fichiers</span></a></li>{% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="help" class="btn ghostPos transFx fa fa-question-circle"><a href="{{ path('front_pages_index', {slug: 'besoin-daide-nous-contactez-nous'}) }}" target="_blank" rel="noopener"><span>Aide</span></a></li>
+                    <!--li id="save" class="fa fa-save save-form"><a href="#" data-toggle="tooltip" data-placement="left" title="Sauvegarder"></a></li-->
+                </ul>
+                <ul class="infosCreateCard">
+                    <li>Rémunération<span><i class="fa fa-euro-sign"></i> {{ project.price }}</span></li>
+                    <li>Date limite de rédaction<span>{{ project.deliveryDate | localizeddate('short', 'none') }}</span></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+            <!--button id="btnCloseAccount" class="fa fa-times" data-toggle="modal" data-target=".modal2"></button-->
+            <a href="{{ path('front_pixie_account_cards_projects') }}" id="btnCloseAccount" class="fa fa-times"></a>
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div class="container">
+
+        <h1>Création d'une Card</h1>
+
+        <div class="plTabs col-md-12">
+
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <ul class="nav nav-tabs">
+                        <li class="tab1 active"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                        <li class="tab2"><a href="#categories-tab" data-noautscroll="true" data-toggle="tab">Catégories</a></li>
+                        <li class="tab3"><a href="#visuels-tab" data-noautscroll="true" data-toggle="tab">Visuels</a></li>
+                        <li class="tab4"><a href="#infos-tab" data-noautscroll="true" data-toggle="tab">Infos pratiques</a></li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FORMULAIRE -->
+
+            {{ form_start(form) }}
+
+                {{ form_widget(form.submit_type) }}
+
+                <div class="tab-content">
+
+
+                    <!-- Project required -->
+
+                    <div id="project-mandatory-values"
+                         {% if project.region %} data-region="{{ project.region.id }}" {% endif %}
+                         {% if project.department %} data-department="{{ project.department.id }}" {% endif %}
+                         {% if project.categories %} data-categories="{% for category in project.categories %}{{ category.id }}{% if not loop.last %};{% endif %}{% endfor %}" {% endif %}
+                         {% if project.minWords %} data-min-words="{{ project.minWords }}" {% endif %}
+                         {% if project.minPhotos %} data-min-photos="{{ project.minPhotos }}" {% endif %}
+                    ></div>
+
+
+                    <!-- GENERAL -->
+
+                    <div class="tab-pane active tp1" id="general-tab">
+
+
+                        {{ form_row(form.name, {col: 12}) }}
+
+                        <div class="count-words-container">
+                            {% if project.minWords %}
+                                <div class="count-words-status">Nombre de mots minimum : <span class="current"></span>/<span class="limit">{{ project.minWords }}</span></div>
+                            {% endif %}
+                            {{ form_row(form.content, {col: 12}) }}
+                        </div>
+
+                        {{ form_row(form.region) }}
+                        {{ form_row(form.department) }}
+
+                        <div class="requiredInst oblig">Champ obligatoire</div>
+                        <div class="navBtm">
+
+                            <button id="next1" class="btn ghostPos next transFx fa fa-long-arrow-right" type="button"><span>Suivant</span></button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- CATEGORIES -->
+                    <div class="tab-pane tp2" id="categories-tab">
+
+                        <div class="col-md-12">
+                            <p class="plReg">Vous pouvez sélectionner jusqu’à 3 catégories.</p>
+                        </div>
+
+                        {{ form_widget(form.categories) }}
+
+                        <!--btns bottom -->
+                        <div class="navBtm">
+                            <a class="prev" id="prev2" href="#">Précédent</a>
+                            <button id="next2" class="btn ghostPos next transFx fa fa-long-arrow-right" type="button"><span>Suivant</span></button>
+                        </div>
+
+                    </div>
+
+
+                    <!-- VISUELS -->
+
+
+                    <div class="tab-pane tp3" id="visuels-tab">
+
+                        <div class="col-md-12">
+                            <p class="plReg">
+                                Vous pouvez ajouter de 1 image miniature et jusqu’à 6 visuels.</p>
+                        </div>
+
+                        <!-- MINIATURE -->
+                        <div class="row noMrgn">
+                            <div class="col-md-12">
+                                <label for="miniature">Image par defaut</label>
+                                <span class="uploadInst">JPG ou PNG - Taille idéale: 240x310px - 5mo maximum</span>
+
+                            </div>
+
+                            <div class="col-md-12 form-group input-container">
+                                <div id="thumb-upload" class="uploadFormControl {% if form.thumb.vars.value.id is defined %}has-image{% endif %}" {% if form.thumb.vars.value.id is defined %} style="background-image: url({{ form.thumb.vars.value.getUrl() }})" {% endif %}>
+                                    <div class="hidden">
+                                        {{ form_widget(form.thumb.name) }}
+                                    </div>
+                                    <input type="file" class="form-control" name="card-thumb" id="miniature" />
+                                    <i class="fas fa-spinner fa-spin loading"></i>
+                                </div>
+                                <p class='small'>
+                                    Cette photo sera celle affichée comme visuel par défaut sur la Card.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Masterhead -->
+                        <div class="row noMrgn">
+                            <div class="col-md-12">
+                                <label for="miniature">Bannière</label>
+                                <span class="uploadInst">JPG ou PNG - Taille idéale: 1920x600px - 14mo maximum</span>
+
+                            </div>
+
+                            <div class="col-md-12 form-group input-container">
+                                <div id="masterhead-upload" class="uploadFormControl {% if form.masterhead.vars.value.id is defined %}has-image{% endif %}" {% if form.masterhead.vars.value.id is defined %} style="background-image: url({{ form.masterhead.vars.value.getUrl() }})" {% endif %}>
+                                    <div class="hidden">
+                                        {{ form_widget(form.masterhead.name) }}
+                                    </div>
+                                    <input type="file" class="form-control" name="card-masterhead" id="miniature" />
+                                    <i class="fas fa-spinner fa-spin loading"></i>
+                                </div>
+                                <p class='small'>
+                                    Cette bannière sera affichée en haut de votre Card.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- VISUELS -->
+                        <div class="row noMrgn">
+                            <div class="col-md-12 form-group input-container">
+                                <label for="visuels">Visuels</label>
+                                <span class="uploadInst">JPG ou PNG - 14mo par fichier maximum</span>
+
+                                {% if project.minPhotos %}
+                                    <br><div class="count-photos-status">Nombre de photos minimum : <span class="current">{{ form.medias | length }}</span>/<span class="limit">{{ project.minPhotos }}</span></div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-12 form-group text-center">
+                                <label>Envoyez vos photos</label>
+                                <div id="media-upload" class="upload-box" style="text-align:middle">
+                                    <div href="#" class="text-center upload-box-inner"><span class="fa fa-cloud-upload fa-5x upload-box-icon"></span></div>
+                                    <input type="file" class="image-upload-btn" name="card-medias" multiple style="" accept=".png, .jpeg, .jpg"/>
+                                    <p class="text-center "><span class="uploadInst">Glisser vos photos ici</span><br/><span class="uploadInst">ou cliquez-ici</span></p>
+                                    <i class="fas fa-spinner fa-spin loading"></i>
+                                </div>
+                                <ul class="visuelsDemand" id="card-medias-list" data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}">
+
+                                    {% for attachment in form.medias %}
+                                        {{ form_widget(attachment) }}
+                                    {% endfor %}
+
+                                </ul>
+                                <div class="col-md-12 text-center upload-on-progress hidden">
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                </div>
+                                {{ form_errors(form.medias) }}
+                            </div>
+
+                        </div>
+
+                        <!--btns bottom -->
+
+                        <div class="navBtm">
+                            <a id="prev3" class="prev" href="#">Précédent</a>
+                            <button id="next3" class="btn ghostPos next transFx fa fa-long-arrow-right" type="button"><span>Suivant</span></button>
+
+                        </div>
+                    </div>
+
+                    <!-- INFOS PRATIQUES -->
+                    <div class="tab-pane  tp4" id="infos-tab">
+
+                        <!-- colonne gauche -->
+                        <div class="col-md-6">
+
+
+                            <ul class="card-infos-collection">
+
+                                {% for info in form.infos %}
+                                    {{ form_widget(info) }}
+                                {% endfor %}
+
+                            </ul>
+
+
+                        </div>
+                        <!--/col gauche-->
+
+                        <!-- colonne droite -->
+
+                        <div class="col-md-6">
+                            <label class="oblig">{{ 'label.address'|trans }}</label>
+
+                            <div id="gm-address-map"></div>
+
+                            <div style="margin-top: 10px;">
+                                {{ form_widget(form.address.address) }}
+                                {{ form_errors(form.address.address) }}
+                            </div>
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-4">
+                                    {{ form_widget(form.address.zipcode) }}
+                                    {{ form_errors(form.address.zipcode) }}
+                                </div>
+                                <div class="col-md-8">
+                                    {{ form_widget(form.address.city) }}
+                                    {{ form_errors(form.address.city) }}
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px;">
+                                {{ form_widget(form.address.country) }}
+                                {{ form_errors(form.address.country) }}
+                            </div>
+                            <div class="row m-b-15" style="display: none;">
+                                <div class="col-md-6">
+                                    {{ form_label(form.address.latitude) }}
+                                    {{ form_widget(form.address.latitude) }}
+                                    {{ form_errors(form.address.latitude) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_label(form.address.longitude) }}
+                                    {{ form_widget(form.address.longitude) }}
+                                    {{ form_errors(form.address.longitude) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="requiredInst oblig">Champ obligatoire</div>
+                        <!--btns bottom -->
+                        <div class="navBtm">
+                            <a id="prev4" class="prev" href="#">Précédent</a>
+                            <a id="submit-form" class="btn transFx green fa fa-envelope"><span>Soumettre ma Card</span></a>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+
+                {{ form_row(form._token) }}
+            {{ form_end(form, {render_rest: false}) }}
+
+        </div>
+
+
+    </div>
+    <!--/.wrapper-->
+
+    <!-- MODALE CONFIRMATION -->
+
+    <div class="modal modal2 plConfirm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bgPictos">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous sauvegarder avant de quitter ?</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ path('front_pixie_account_cards_projects') }}" type="button" class="btn light">NON</a>
+                    <button type="button" class="btn green btn-primary save-form">Oui, merci !</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="project-infos-modal" class="modal demandContract" tabindex="-1" role="dialog"></div>
+
+    {% embed "front/_modals/image-crop.html.twig" %}{% endembed %}
+
+    <div id="api-routes"
+         data-modalinfos-route="{{ path('api_projects_modal_infos') }}"
+         data-departments-route="{{ path('api_departments_list') }}"
+         data-upload-route="{{ path('front_pixie_card_creation_ajax_upload') }}"
+    ></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/front/js/pages/pixie-card-creation.js') }}"></script>
+    <script>
+        $(document).ready(function()
+        {
+            // $('.curved_arrow').after('<p>Instructions</p>');        
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+    
+    <script src="https://staging.pix.city/build/front/js/curvedarrow.js" type="text/javascript"></script>
+
+{% endblock %}

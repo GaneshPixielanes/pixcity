@@ -1,0 +1,108 @@
+{% extends 'front/page.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} WallCards-template bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+    <div class="bcNav container-fluid">
+        <div class="row">
+            <div id="btnCard">
+
+                <a class="fa fa-share cta-share-popover" title="Partager par" data-toggle="popover" data-placement="top" data-container="body" data-html="true"><span>&nbsp;</span></a>
+
+                <div class="hide share-popover">
+                    Partager par
+                    <button class="fab fa-facebook-f social-share" data-sharer="facebook" data-title="{{ collection.name }}" data-url="{{ absolute_url(path('front_card_single', {slug: collection.slug})) }}"></button>
+                    {#<button class="fab fa-twitter social-share" data-sharer="twitter" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: card.slug})) }}"></button>#}
+                    {#<button class="fab fa-linkedin social-share" data-sharer="linkedin" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: card.slug})) }}"></button>#}
+                    {#<button class="fab fa-whatsapp social-share" data-sharer="whatsapp" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: card.slug})) }}"></button>#}
+                    <button class="fa fa-envelope social-share" data-sharer="email" data-title="Salut,&#013;&#010;&#013;&#010;Je te partage cette adresse:{{ collection.name }}&#013;&#010;{{ absolute_url(path('front_collection_index', {slug: collection.slug})) }}&#013;&#010;&#013;&#010;A+" data-subject="{{ collection.name }}" data-url=" " data-to=";"></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="topBanner container-fluid">
+        <div class="row">
+            <ul class="breadcrumb">
+                <li><a href="{{ path('front_homepage_index') }}">{{ 'label.homepage'|trans }}</a></li>
+                <li><a>{{ 'label.collection'|trans }}</a></li>
+            </ul>
+            <div class="col-md-12 text-center">
+
+                <h1>
+                    {{ collection.user.firstName  }} {{ attribtutes.title }}
+                </h1>
+                <h1>
+                    {{ collection.name }}
+                </h1>
+
+                {% if collection.description %}
+                <div id="introWallCards">
+                    {{ collection.description | raw }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="wallcards-container container-fluid">
+
+        {% if collection.cards | length > 0 %}
+
+            <div class="list-of-cards no-autoscroll">
+
+                <div class="col-md-12">
+                    <a href="#" id="toggleMap" class="btn green transFx fa fa-map pull-right"><span>{{ 'label.map'|trans }}</span></a>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 toggle">
+                        <div class="row cardsMrgn loader-container">
+                            <div class="loader"></div>
+                            <div id="cardsGrid" class="regionCards cards-grid">
+                                {% for card in collection.cards %}
+                                    {{ macro.cardItem(card) }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="map col-md-7 open">
+                        <div id="map-france"></div>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block footer_class %}simpleFooter{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var mapSettings = {
+            icon: "{{ asset('build/images/marker.png') }}",
+            iconActive: "{{ asset('build/images/marker_active.png') }}",
+        }
+    </script>
+    <script src="{{ asset('build/front/js/pages/search.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/combine/npm/lightgallery,npm/lg-thumbnail"></script>
+
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'admin/page.html.twig' %}
+
+{% block content %}
+
+    <div>
+        {% if item is not defined %}
+            <form id="load-template" class="pull-right">
+                <select name="template">
+                    <option value="">Choisissez le modèle</option>
+                    {% for template in templates %}
+                        <option value="{{ template.id }}">{{ template.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="button" class="btn bg-green waves-effect btn-load-template">Charger le modèle</button>
+                &nbsp; | &nbsp;
+                <button type="button" class="btn bg-green waves-effect" id="save-as-template">{{ 'action.save_as_template'|trans }}</button>
+            </form>
+        {% endif %}
+
+        <ol class="breadcrumb breadcrumb-col-teal">
+            <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+            <li><a href="{{ path('admin_cards_projects_list') }}">{{ 'label.cardsprojects'|trans }}</a></li>
+            <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+        </ol>
+    </div>
+
+    {% embed "admin/cards/projects/_fields.html.twig" with {'form': form} %}{% endembed %}
+
+
+    <div id="api-routes"
+         data-departments-route="{{ path('api_departments_list') }}"
+         data-pixies-route="{{ path('api_users_pixies_list') }}"
+         data-upload-route="{{ path('admin_cards_projects_ajax_upload') }}"
+         data-savetemplate-route="{{ path('admin_cards_projects_ajax_save_template') }}"
+         data-loadtemplate-route="{{ path('admin_cards_projects_ajax_load_template') }}"
+    ></div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/cards-projects.js') }}"></script>
+{% endblock %}

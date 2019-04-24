@@ -1,0 +1,29 @@
+{% extends 'admin/admins/admins.html.twig' %}
+
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{% block breadcrumb %}
+    <li><a href="{{ path('admin_admins_list') }}">{{ 'label.administrators'|trans }}</a></li>
+    <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.email) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.roles) }}
+        {{ form_row(form.plainPassword.first) }}
+        {{ form_row(form.plainPassword.second) }}
+
+        <div class="flex-row-space-between">
+            <a href="{{ path('admin_admins_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+        </div>
+
+
+    {{ form_end(form) }}
+
+{% endblock %}

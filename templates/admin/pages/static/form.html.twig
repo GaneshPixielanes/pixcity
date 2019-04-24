@@ -1,0 +1,40 @@
+{% extends 'admin/pages/pages.html.twig' %}
+
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{% block breadcrumb %}
+    <li><a href="{{ path('admin_pages_list') }}">Static Pages </a></li>
+    <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    {{ form_start(form) }}
+
+    {{ form_row(form.name) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.url) }}
+
+
+    {% for attribute in attributes %}
+        <div class="row form-row text-type">
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                <label class="form-label required">Attributes</label>
+                <span class="field-help"></span>
+            </div>
+
+            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 form-control-field">
+                <div class="form-group form-group-m-b-0">
+                    <div class="form-line focused"><input type="text" id="static_pages_title" name="attributes[{{ loop.index }}]" required="required" class="form-control" value="{{ attribute }}"></div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="flex-row-space-between">
+        <a href="{{ path('admin_pages_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+        <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

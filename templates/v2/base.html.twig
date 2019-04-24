@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!-- saved from url=(0025)http://pixielanes.in/new/ -->
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127340360-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ google_analytics_id }}');
+        </script>
+    {#<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">#}
+    {#<style id="stndz-style"></style>#}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block meta_title %}Pix.City{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Vous vous êtes forcément déjà posé cette question. Et si un local, un vrai, vous le disait ? Venez échanger avec nos Pixies et partager des bons plans de leur région.{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
+    {% if card.masterhead.getUrl() is defined and card.masterhead.getUrl()|imagine_filter('bg_header_slider') is not empty %}
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="{{ card.masterhead.getUrl() | imagine_filter('bg_header_slider') }}" />
+    {% for sliderImage in card.medias %}
+        <meta property="og:image" content="{{ sliderImage.getUrl() | imagine_filter('bg_header_slider') }}" />
+    {% endfor %}
+    {% endif %}
+		<link rel="icon" href="{{ asset('icons/favicon.ico') }}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/pretty-checkbox.css')) }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/slick.css')) }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/slick-theme.css')) }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/simplebar.css')) }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/bootstrap-select.css')) }}" />
+
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/lightgallery.css')) }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/style.css')) }}">
+
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_style.min.css' rel='stylesheet' type='text/css' />
+    {% block stylesheets %}{% endblock %}
+
+    </head>
+    <body class="{% if not is_granted('IS_AUTHENTICATED_FULLY') %}logged-out{% else %}logged-in{% endif %} ">
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+				<div id="api-user-routes"
+						 data-follow-pixie="/api/users/follow/pixie"
+						 data-like-card="/api/users/like/card"
+						 data-favorite-card="/api/users/favorite/card"
+				></div>
+				{% endif %}
+        {% embed '/v2/_shared/header.html.twig' %}{% endembed%}
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+        {% embed '/v2/_shared/footer.html.twig' %}{% endembed%}
+
+
+        {% for message in app.flashes('afterloginaction.add_favorite_pixie') %}
+            {% embed "front/_modals/afterlogin-action.html.twig" with {'message': message} %}{% endembed %}
+        {% endfor %}
+
+        {% for message in app.flashes('afterloginaction.add_favorite_card') %}
+            {% embed "front/_modals/afterlogin-action.html.twig" with {'message': message} %}{% endembed %}
+        {% endfor %}
+
+        {% for message in app.flashes('afterloginaction.add_like_card') %}
+            {% embed "front/_modals/afterlogin-action.html.twig" with {'message': message} %}{% endembed %}
+        {% endfor %}
+
+        {%  for message in app.flashes('error') %}
+            {% embed "front/_modals/afterlogin-action.html.twig" with {'message': message} %}{% endembed %}
+        {% endfor %}
+        {%  for message in app.flashes('settings_error') %}
+            {% embed "front/_modals/settings-error.html.twig" with {'message': message|raw} %}{% endembed %}
+        {% endfor %}
+
+        <!-- v2 modals -->
+        {% embed "v2/_shared/modal.html.twig" %}{% endembed %}
+    {#<!-- Scripts -->#}
+
+
+        <script src="{{ absolute_url(asset('build/js/custom.js')) }}"></script>
+        <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/js/froala_editor.min.js'></script>
+        <script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/combine/npm/lightgallery,npm/lg-thumbnail"></script>
+    </body>
+</html>

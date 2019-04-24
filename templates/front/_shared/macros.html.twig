@@ -1,0 +1,247 @@
+{# ------------------------------------------ #}
+{# Cards #}
+{# ------------------------------------------ #}
+
+{% macro cardItem(card, selectable = true) %}
+    <div class="card col-sm-15 01-hotspot {% for category in card.categories %}cat-{{ category.id }} {% endfor %}" data-id="{{ card.id }}" {% if card.address is not null %}data-latitude="{{ card.address.latitude }}" data-longitude="{{ card.address.longitude }}"{% endif %}>
+        <div class="inner" style="{% if card.thumb %}background-image: url({{ card.thumb.getUrl() | imagine_filter('bg_card_item') }}){% endif %}">
+            {% if selectable is same as(true) or selectable == 'true' %}
+                <span class="collCheck" data-toggle="tooltip" data-placement="top" title="Ajouter">
+                    <input type="checkbox" title="Ajouter" name="selectcard[]" value="{{ card.id }}">
+                    <label class="fa"></label>
+                </span>
+            {% else %}
+                <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}"></a>
+            {% endif %}
+
+            {#<a class="fa fa-question-circle cta-like-card" data-id="{{ card.id }}" title="{{ card.pixie.firstname~' '~card.pixie.lastname }}" data-toggle="tooltip" data-placement="top" data-container="body"></a>#}
+            <a class="cardsIco cta-favorite-card {% if app.user is not null and app.user.hasFavorite(card) %}active{% endif %}"
+               data-id="{{ card.id }}"
+               title="{{ (app.user is not null and app.user.hasFavorite(card))?"Retirer de mes favoris":" Enregistrer la card" }}"
+               data-toggle="tooltip" data-placement="top" data-container="body"></a>
+            <a href="#" class="fa fa-thumbs-up load-card-details" data-card-id="{{ card.id }}" onclick="loadCardDetails()"<i class=""></i></a>
+
+            <div class="alignBottom">
+                <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}">{{ card.name }}</a>
+                <form action="{{ path('front_search_index') }}">
+                    <input type="hidden" name="regions[]" value="{{ card.region.slug }}">
+                    <button type="submit" class="regionName">{{ card.region }}</button>
+                </form>
+                <div class="hoverInfo">
+                    {% if card.categories|length > 0 %}
+                        <form action="{{ path('front_search_index') }}">
+                            <input type="hidden" name="categories[]" value="{{ card.categories[0].slug }}">
+                            <button type="submit" class="tag fa {{ card.categories[0].icon }}"><span>{{ card.categories[0] }}</span></button>
+                        </form>
+                    {% endif %}
+
+                    <div class="cardAuth">
+                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}">
+                            <span class="portraitAuth" style="background-image: url({{ card.pixie.getAvatarUrl() | imagine_filter('user_small_avatar') }})"></span>
+                            {{ card.pixie }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro categoryItem(category, filters = []) %}
+    <li class="transFx fa {{ category.icon }} {% if filters.categories is defined and category.slug in filters.categories %}is-checked{% endif %}" data-id="{{ category.id }}" data-slug="{{ category.slug }}"><span>{{ category.name }}</span></li>
+{% endmacro %}
+
+{% macro regionItem(region, filters = []) %}
+    <li class="{% if filters.categories is defined and category.slug in filters.categories %}is-checked{% endif %}" data-id="{{ region.id }}" data-slug="{{ region.slug }}"><span>{{ region.name }}</span></li>
+{% endmacro %}
+
+
+{# ------------------------------------------ #}
+{# Pixies #}
+{# ------------------------------------------ #}
+
+{% macro pixieItem(user, displayCity = false, totalCards = false) %}
+
+    <div class="pixieBlock">
+
+        <div class="portraitPixie" style="background-image: url({{ user.getAvatarUrl() | imagine_filter('user_avatar') }})">
+            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}"></a>
+            <a class="pixieLink fa fa-user-plus cta-follow-pixie {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" href="#" data-toggle="tooltip" data-placement="left" title="{{ (app.user is not null and app.user.hasFavoritePixie(user))?"Ne plus suivre":"Suivre le City Maker" }}" data-id="{{ user.id }}"></a>
+            {% if totalCards %}
+                <form action="{{ path('front_search_index') }}">
+                    <input type="hidden" name="pixie" value="{{ user.id }}">
+                    <button type="submit" class="nbCardsPixieFav" href="#">{{ totalCards }}</button>
+                </form>
+            {% endif %}
+            {% if user.getInstagram() %}<a class="instagramLink fab fa-instagram" href="{{ user.getInstagram() }}" target="_blank" rel="noopener" data-toggle="tooltip" data-placement="right" title="Consultez le profil Instagram de notre City Maker!"></a>{% endif %}
+        </div>
+        <p class="pixieDesc"><span class="pixieName">{{ user }}</span>
+            {% if user.pixie.regions|length > 0 %}<span class="pixieRegion">{{ user.pixie.regions[0] }}</span>{% endif %}
+            {% if displayCity and user.currentLocation %}<span class="pixieCity">{{ user.currentLocation }}</span>{% endif %}
+        </p>
+
+    </div>
+
+{% endmacro %}
+
+
+{# ------------------------------------------ #}
+{# Region #}
+{# ------------------------------------------ #}
+
+{% macro regionPageItem(category) %}
+
+    <div class="regionPl col-sm-6">
+        <div class="inner">
+            <div class="innerBg" style="background-image: url({{ category[0].thumb.getUrl() | imagine_filter('bg_hp_region') }})"></div>
+            <span class="nbCards">{{ category["totalCards"] }}</span>
+            <h3>{{ category[0].name }}</h3>
+            <div class="regionHover">
+                <span class="nbCards">{{ category["totalCards"] }} Cards</span>
+                <span href="#" class="discover">{{ category[0].discover }}</span>
+                {% if category[0].facebook %}<a class="fab fa-facebook-f" href="{{ category[0].facebook }}" target="_blank" rel="noopener"></a>{% endif %}
+            </div>
+            <a class="regionLink" href="{{ path('front_regions_index', {slug: category[0].slug}) }}"></a>
+        </div>
+    </div>
+
+{% endmacro %}
+
+{% macro cardMap(card) %}
+    <div style="width: 224px;">
+        <!--Icon popup ends-->
+        <div class="card shadow map-marker-popup">
+            <div class="row">
+                <div class="col-md-9 mb-2 card-head">{{ card.name | truncate(17)}}</div>
+                <div class="col-md-3 mb-2 pr-4 text-right favourite-check">
+                    <div class="pretty p-icon p-toggle p-plain p-bigger">
+                        <input type="checkbox" />
+                        <div class="state p-off">
+                            <i class="icon far fa-heart "></i>
+                        </div>
+                        <div class="state p-on p-pink-o">
+                            <i class="icon fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-2 marker-about">
+                    <i class="fas fa-utensils"></i>
+                    {% for category in card.categories %}
+                        {% if loop.index == 1 %}
+                        {{ category.name }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-md-6 mb-2 marker-about">
+                    <i class="fas fa-map-pin"></i> Paris, IDF
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-2 map-view-images">
+                    <div class="popup-slider">
+                        {% for media in card.medias %}
+                            {% if loop.index < 4 %}
+                                <div class="popup-slider-image">
+                                    <img src="{{ media.url | imagine_filter('card_gallery_thumb') }}" />
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 link-button">
+                    <a href="{{ path('front_card_single', {slug: card.slug}) }}" class="btn btn-pink btn-block btn-icon-right">ENREGISTRER LA CARD</a>
+                </div>
+            </div>
+        </div>
+        <!--Icon popup ends-->
+    </div>
+
+{#<div class="col-md-12" style="height:300px;width:300px;background-color:#fff">#}
+    {#<a class="pull-right fa fa-thumbs-up cta-like-card {% if app.user is not null and app.user.hasLike(card) %}active{% endif %}" data-id="{{ card.id }}" title="{{ (app.user is not null and app.user.hasLike(card))?"Je n'aime plus":"J'aime" }}" data-toggle="tooltip" data-placement="top" data-container="body">Like button</a><br/>#}
+
+    {#<strong>Card name:{{ card.name }}</strong>#}
+    {#<div class="row">#}
+        {#<strong>Category:</strong>#}
+        {#{% for category in card.categories %}#}
+            {#{{ category.name }}<br/>#}
+        {#{% endfor %}#}
+    {#</div>#}
+    {#<div class="row">#}
+        {#{% for media in card.medias %}#}
+            {#<div class="col-md-2">#}
+                {#<img src="{{ media.url | imagine_filter('card_gallery_thumb') }}" height="75px" width="75px">#}
+            {#</div>#}
+        {#{% endfor %}#}
+    {#</div>#}
+    {#<div class="col-md-12" >#}
+        {#<a class="btn btn-primary btn-rg">Enregister la card</a>#}
+    {#</div>#}
+{#</div>#}
+{% endmacro %}
+
+{% macro cardSingle(card) %}
+<div class="category-card col-sm-15 01-hotspot cat-12" data-id="{{ card.id }}" data-latitude="{{ card.address.latitude }}" data-longitude="{{ card.address.longitude }}">
+    <div class="inner" style="{% if card.thumb %}background-image: url({{ card.thumb.getUrl() | imagine_filter('bg_card_item') }}){% endif %}">
+        <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}"></a>
+        <a class="cardsIco cta-favorite-card {% if app.user is not null and app.user.hasFavorite(card) %} active {% endif %} " data-id="{{ card.id }}" title="" data-toggle="tooltip" data-placement="top" data-container="body" data-original-title=" Enregistrer la card"></a>
+        <div class="alignBottom">
+            <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}">{{ card.name }}</a>
+            <form action="{{ path('front_search_index') }}">
+                <input type="hidden" name="regions[]" value="{{ card.region.slug }}">
+                <button type="submit" class="regionName">{{ card.region }}</button>
+            </form>
+            <div class="hoverInfo">
+                {% if card.categories|length > 0 %}
+                    <form action="{{ path('front_search_index') }}">
+                        <input type="hidden" name="categories[]" value="{{ card.categories[0].slug }}">
+                        <button type="submit" class="tag fa {{ card.categories[0].icon }}"><span>{{ card.categories[0] }}</span></button>
+                    </form>
+                {% endif %}
+                <div class="cardAuth">
+                    <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}">
+                        <span class="portraitAuth" style="background-image: url({{ card.pixie.getAvatarUrl() | imagine_filter('user_small_avatar') }})"></span>
+                        {{ card.pixie }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro cityMakerSingle(user) %}
+<div class="col-md-3 city-maker-container">
+    <div class="col-md-12 card shadow">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" class="city-maker-image" target="_blank">
+                    <img src="{{ user.getAvatarUrl() | imagine_filter('user_avatar') }}" class="rounded-circle" alt="User Name">
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 city-maker-info">
+                <p>{{ user.firstName~' '~user.lastName }}<span>{% if user.pixie.regions|length > 0 %}<span class="pixieRegion">{{ user.pixie.regions[0] }}</span>{% endif %}</span></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-between my-2">
+                <span data-toggle="tooltip" data-placement="bottom" data-container="body" title="Suivre le City Maker">
+                    <a href="javascript:;" class="col-md-3 city-maker-cta cta-follow-city-maker {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" {% if app.user is  null %} data-toggle="modal" data-target="#followCityMakerModal" {% endif %} data-id="{{ user.id }}">
+                        <i class="far fa-user-circle"></i>
+                    </a>
+                </span>
+                <span>
+                    <a href="{{ user.getInstagram() }}" target="_blank" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Consultez le profil Instagram de notre City Maker!">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

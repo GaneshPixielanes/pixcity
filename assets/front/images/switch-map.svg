@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.001" viewBox="0 0 16 16.001">
+  <g id="location-map" transform="translate(0 0)">
+    <g id="Frame_-_24px">
+      <rect id="Rectangle_1633" data-name="Rectangle 1633" width="16" height="16.001" fill="none"/>
+    </g>
+    <g id="Line_Icons" transform="translate(1.333 1.333)">
+      <path id="Path_1197" data-name="Path 1197" d="M14.37,12.555a.667.667,0,0,0,.3-.555V2.667a.667.667,0,0,0-1.036-.555l-3.595,2.4L7.083,2.146A.689.689,0,0,0,6.3,2.112l-4,2.667a.668.668,0,0,0-.3.555v9.333a.667.667,0,0,0,.352.588.668.668,0,0,0,.685-.033l3.595-2.4,2.953,2.362a.662.662,0,0,0,.416.146.57.57,0,0,0,.366-.117ZM3.333,5.69,6,3.913v7.731L3.333,13.421Zm6,7.59-2-1.6V4.055l2,1.6Zm4-1.637-2.667,1.778V5.69l2.667-1.777Z" transform="translate(-2 -2)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

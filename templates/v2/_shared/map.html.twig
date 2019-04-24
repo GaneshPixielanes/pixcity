@@ -1,0 +1,36 @@
+{% include 'v2/_shared/map-sidebar.html.twig' %}
+
+<div class="map-wrap" id="map">
+</div>
+{% if categories is defined %}
+<div class="container d-none" id="pac-input">
+    <div class="map-search">
+    	<form class="form-inline">
+    		<div class="input-group">
+    			<input class="form-control mr-sm-0" type="search" placeholder="Rechercher une card, un lieu" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Rechercher une card, un lieu'" aria-label="Search">
+    			<div class="input-group-append" id="pc-category-filter-icon">
+    				<button class="btn btn-pink" type="" id="categorry-filter-button"><img src="{{ absolute_url(asset('build/images/cards-white.svg')) }}"></button>
+    			</div>
+    			<div class="dropdown-search" data-simplebar>
+    				<ul>
+							<li>
+								<a href="javascript;" data-id="all" class="pc_category_filter" data-category-image="cards-white">
+									<i class="cardsIco"><img src="/img/MAP/cards-white.svg"/></i> Tout
+								</a>
+							</li>
+              {% for category in categories %}
+                    <li>
+
+    					<a href="javascript:;" data-id="{{ category[0].id }}" class="pc_category_filter" data-category-image="{{ category[0].icon }}">
+    						<i class="fas {{ category[0].icon }}"></i> {{ category[0].name }} <span id="count-{{ category[0].icon }}"> {{ category['cardCount'] }}</span>
+    					</a>
+    				</li>
+              {% endfor %}
+
+    				</ul>
+    			</div>
+    		</div>
+    	</form>
+    </div>
+</div>
+{% endif %}

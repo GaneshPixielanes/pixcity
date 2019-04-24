@@ -1,0 +1,115 @@
+{% extends 'admin/page.html.twig' %}
+
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{% block content %}
+
+    <ol class="breadcrumb breadcrumb-col-teal">
+        <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+        <li class="active"><a href="{{ path('admin_pages_categories_list') }}">{{ 'label.pages_categories'|trans }}</a></li>
+    </ol>
+
+    {{ form_start(form) }}
+
+    <div id="card-project-form-container">
+
+        <div class="row clearfix">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            {{ 'label.pages_categories'|trans }}
+                        </h2>
+                    </div>
+                    <div class="body">
+
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.meta_title) }}
+                        {{ form_row(form.meta_description) }}
+                        {{ form_row(form.slug) }}
+                        {{ form_row(form.discover) }}
+                        {{ form_row(form.content) }}
+                        {{ form_row(form.facebook) }}
+
+                        {{ form_row(form._token) }}
+
+                        <div class="flex-row-space-between">
+                            <a href="{{ path('admin_pages_categories_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+                            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+
+                <div class="card side-card">
+                    <div class="body">
+
+                        <div class="m-b-15">
+                            <div>{{ form_label(form.region) }}</div>
+                            {{ form_widget(form.region) }}
+                            {{ form_errors(form.region) }}
+                        </div>
+
+                        <div class="flex-row-space-between">
+                            <a href="{{ path('admin_pages_categories_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+                            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card side-card">
+                    <div class="body">
+                        <div class="m-b-15">
+                            {{ form_label(form.indexed) }}
+                            {{ form_widget(form.indexed) }}
+                        </div>
+                        <div class="m-b-15">
+                            {{ form_label(form.hidden) }}
+                            {{ form_widget(form.hidden) }}
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card side-card">
+                    <div class="body">
+
+                        <h3>{{ 'label.thumb'|trans }}</h3>
+                        <div class="card-thumb">
+                            <ul class="repeater-container slide-attachment">
+                                {% embed "admin/pages/categories/_media.html.twig" with {'field': form.thumb} %}{% endembed %}
+                            </ul>
+                        </div>
+                        <h3>{{ 'label.backgroundimage'|trans }}</h3>
+                        <div class="card-thumb">
+                            <ul class="repeater-container slide-attachment">
+                                {% embed "admin/pages/categories/_media.html.twig" with {'field': form.background} %}{% endembed %}
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form, {render_rest: false}) }}
+
+
+    <div id="api-routes"
+         data-upload-route="{{ path('admin_pages_categories_ajax_upload') }}"
+    ></div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/pagecategory.js') }}"></script>
+{% endblock %}

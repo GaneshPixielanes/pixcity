@@ -1,0 +1,46 @@
+{% if app.user.viewMode == "pixie" %}
+<!-- Filter Cards Wrap Starts -->
+<div class="nav-tabs-wrap">
+    <div class="container">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item load-page-content" style="width:20%" id="mes-demandes-page" data-href="{{ url('v2_front_account_city_maker_cards_projects')}}">
+                <a class="nav-link active" data-toggle="tab" href="#mes-demandes">Demandes de Cards</a>
+            </li>
+            <li class="nav-item load-page-content" data-href="{{ url('v2_front_account_city_maker_cards_submitted')}}" style="width:20%" id="mes-cards-attente-page">
+                <a class="nav-link" data-toggle="tab" href="#mes-cards-attente">Cards en attente</a>
+            </li>
+            <li class="nav-item load-page-content" data-href="{{ url('v2_front_account_city_maker_cards_validated')}}" style="width:20%" id="mes-cards-validated-page">
+                <a class="nav-link" data-toggle="tab" href="#mes-cards-validees">Cards validées</a>
+            </li>
+            <li class="nav-item load-page-content" data-href="{{ url('v2_front_account_city_maker_cards_payments')}}" style="width:20%" id="mes-renumerations-page">
+                <a class="nav-link" data-toggle="tab" href="#mes-renumerations">Mes rémunérations</a>
+            </li>
+            <li class="nav-item load-page-content" data-href="{{ url('v2_front_account_city_maker_cards_settings')}}" style="width:20%" id="settings-page">
+                <a class="nav-link" data-toggle="tab" href="#parameters">Parameters</a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% else %}
+<div class="nav-tabs-wrap">
+	<div class="container">
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs">
+			<li class="nav-item" data-href="">
+				<a class="nav-link active" data-toggle="tab" href="#mes-cards">Mes Cards</a>
+			</li>
+			<li class="nav-item load-page-content" data-href="{{ path('front_v2_user_account_agendas') }}" id="mes-agendas-page">
+				<a class="nav-link" data-toggle="tab" href="#mes-agendas">Mes agendas</a>
+			</li>
+			<li class="nav-item load-page-content" data-href="{{ url('front_v2_user_account_city_maker') }}" id="mes-city-maker">
+				<a class="nav-link" data-toggle="tab" href="#mes-city-makers">Mes City-Makers</a>
+			</li>
+			<li class="nav-item load-page-content" data-href="">
+				<a class="nav-link" data-toggle="tab" href="#parameters">Parameters</a>
+			</li>
+		</ul>
+	</div>
+</div>
+{% endif %}
+<!-- Tab panes -->

@@ -1,0 +1,151 @@
+.social-wrap {
+  clear: both;
+  background: #0E3757;
+}
+
+.brand-footer {
+  float: left;
+  width: 22%;
+  padding-top: 40px;
+}
+
+.container-propos {
+  float: left;
+  width: 25%;
+  padding: 40px 0px;
+  margin-right: 10px;
+
+  h4 {
+    font-size: 15px;
+    text-transform: uppercase;
+    color: #30b495;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    li {
+      a {
+        text-decoration: none;
+        display: inline-block;
+        color: #146a7d;
+        font-size: 14px;
+        margin-bottom: 5px;
+
+        &:hover, &:focus {
+          color: #30b495;
+        }
+      }
+    }
+  }
+}
+
+.container-social {
+  float: left;
+  width: 25%;
+  padding: 40px 0px;
+  margin-right: 10px;
+
+  h4 {
+    font-size: 15px;
+    text-transform: uppercase;
+    color: #30b495;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    li {
+      a {
+        text-decoration: none;
+        display: inline-block;
+        color: #146a7d;
+        font-size: 14px;
+        margin-bottom: 5px;
+
+        i {
+          font-size: 18px;
+          margin-right: 5px;
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        span {
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        &:hover, &:focus {
+          color: #30b495;
+        }
+      }
+    }
+  }
+}
+
+.container-insta {
+  float: right;
+  width: 25%;
+  padding: 40px 0px;
+
+  h4 {
+    font-size: 15px;
+    color: #30b495;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+}
+
+.footer-wrap {
+  clear: both;
+  background: #0C314D;
+  padding: 20px 0px;
+  color: #8396A4;
+  font-size: 18px;
+}
+
+@media (max-width: 767px) {
+  .brand-footer {
+    float: none;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0px 0px;
+  }
+
+  .container-propos {
+    float: none;
+    width: 100%;
+    text-align: center;
+    margin-right: 0px;
+    padding: 20px 0px 0px;
+  }
+
+  .container-social {
+    float: none;
+    width: 100%;
+    text-align: center;
+    margin-right: 0px;
+    padding: 20px 0px 0px;
+  }
+
+  .container-insta {
+    float: none;
+    width: 100%;
+    text-align: center;
+    margin-right: 0px;
+    padding: 20px 0px;
+  }
+
+  .footer-wrap {
+    text-align: center;
+    padding: 10px 0px;
+  }
+}

@@ -1,0 +1,387 @@
+{% extends 'front/base.html.twig' %}
+
+{% block body_class %}{{ parent() }} creaCompte login{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% form_theme form 'front/_forms/fields.html.twig' %}
+
+{% block body %}
+
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-md-4 text-left">
+                <a href="{{ path('front_homepage_index') }}"><img id="logo" src="{{ asset('build/images/logo-color.svg') }}" alt="Pix.City"></a>
+            </div>
+            <div class="col-md-8 text-right loginCancel">
+                <a href="{{ path('front_homepage_index') }}">Annuler</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 left">
+
+                <h1>Créez votre compte City-maker</h1>
+                <p class="intro-tab intro-tab-general">
+                    Vous souhaitez devenir City-maker ?
+                    <br>
+                    <br>
+                    Installez-vous, prenez 6 minutes dans votre journée, une photo de vous, vos infos bancaires et un café ;)
+                    <br>
+                    <br>C’est parti !
+                    <br>
+                    <br>Sur ce 1er onglet, remplissez vos infos générales.
+                    <br>
+                    <br>Les champs notés * sont obligatoires.
+                </p>
+                <p class="intro-tab intro-tab-regions">
+                    Cliquez sur les 2 régions sur lesquelles vous souhaitez rédiger des cards.
+                    <br>
+                    <br>Elles se colorent en rose lors de votre choix.
+                </p>
+                <p class="intro-tab intro-tab-likes">
+                    Ces 2 emplacements “J’aime / J’aime pas” sont en train d’évoluer ! Ne les remplissez pas pour l’instant ;)
+                    <br>Ils apparaissent ici pour l’instant mais seront cachés sur le site
+                    <br>
+                    <br>Choisissez vos 5 catégories préférées !
+                    <br>
+                    <br>Elles seront affichées dans votre profil mais peuvent être sensiblement différentes des cards que vous rédigerez.
+                </p>
+                <p class="intro-tab intro-tab-remuneration" style="display: none;">
+                    Plus qu’une étape !
+                    <br>
+                    <br>- Si vous êtes une société, remplissez bien les champs avec une croix rose qui sont obligatoires et n’oubliez pas vos infos bancaires.
+                    <br>
+                    <br>- Si vous êtes micro-entrepreneur, remplissez bien les champs avec une croix rose qui sont obligatoires et n’oubliez pas vos infos bancaires. 
+                    <br>
+                    <br>- Si vous n’avez encore pas choisi votre statut, vous pouvez cocher en cours d’immatriculation. Il faudra néanmoins choisir pour être payé pour les cards que vous aurez faites.
+                </p>
+
+            </div>
+            <div class="col-md-8 right plTabs">
+
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <ul class="nav nav-tabs">
+                            <li class="tab1 active"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                            <li class="tab2"><a href="#regions-tab" data-noautscroll="true" data-toggle="tab">Régions</a></li>
+                            <li class="tab3"><a href="#jaime-jaimepas-tab" data-noautscroll="true" data-toggle="tab">Catégories favorites</a></li>
+                            <li class="tab4"><a href="#remuneration-tab" data-noautscroll="true" data-toggle="tab">Rémunération</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FORMULAIRE -->
+
+                {{ form_start(form) }}
+
+                    <div class="tab-content" id="myForm">
+
+                    <!-- GENERAL -->
+
+                    <div class="tab-pane active tp1 clearfix" data-slug="general" id="general-tab">
+
+                        {% if not is_granted('ROLE_USER') %}
+
+                            <div class="form-group col-sm-12 input-container">
+                                <span class="maj">Informations générales</span>
+
+                                <div class="portraitCompte fa fa-user user-avatar-field upload-zone">
+                                    <input name="file-avatar" type="file" class="file-input" data-type="single" />
+                                    <div class="field">{{ form_widget(form.avatar.name) }}</div>
+                                    <div class="thumb" style="background-image: url({% if form.avatar.vars.value.id is defined %}{{ form.avatar.vars.value.getUrl() }}{% endif %});"></div>
+                                    <span class="label">
+                                        <span class="text">Ajouter</span>
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            {{ form_row(form.firstname, {'icon': 'fa-user'}) }}
+                            {{ form_row(form.lastname, {'icon': 'fa-user'}) }}
+                            {{ form_row(form.phone, {'icon': 'fa-phone'}) }}
+
+                            <div class="col-sm-6 form-group type-birthdate">
+                                {{ form_label(form.birthdate) }}
+                                <div class="input-container input-group">
+                                    {{ form_widget(form.birthdate) }}
+                                </div>
+                            </div>
+
+
+                            {{ form_row(form.currentLocation, {'icon': 'fa-home'}) }}
+                            {{ form_row(form.gender) }}
+
+                            {{ form_row(form.birthLocation) }}
+
+                        {% endif %}
+
+
+                        <!-- RESEAUX SOCIAUX -->
+
+                        <div class="col-sm-12">
+                            <span class="maj">{{ 'label.socialnetworks'|trans }}</span>
+                        </div>
+
+                        <ul class="repeater-container user-links-collection" data-prototype="{{ form_widget(form.links.vars.prototype)|e('html_attr') }}">
+
+                            {% for link in form.links %}
+                                {{ form_widget(link) }}
+                            {% endfor %}
+
+                            <li class="col-sm-6 align-center addRs-container">
+                                    <label>Ajouter un autre compte </label>
+                                    <div class="form-group">
+                                        <div class="input-group form-row addRs">
+                                            <div class="input-group-addon"><i class="fa fa-link"></i><span class="dropdown"></span></div>
+                                            <select class="form-control" name="other-rs">
+                                                <option value="facebook">{{ 'label.network.facebook'|trans }}</option>
+                                                <option value="twitter">{{ 'label.network.twitter'|trans }}</option>
+                                                <option value="instagram">{{ 'label.network.instagram'|trans }}</option>
+                                                <option value="youtube">{{ 'label.network.youtube'|trans }}</option>
+                                                <option value="blog">{{ 'label.network.blog'|trans }}</option>
+                                                <option value="other">{{ 'label.network.other'|trans }}</option>
+                                            </select>
+                                            <button class="fa fa-plus add-item"></button>
+                                        </div>
+                                    </div>
+                            </li>
+                        </ul>
+
+
+
+                        {% if not is_granted('ROLE_USER') %}
+                            {% if socialLogin is null %}
+
+                                <!-- Données de connexion -->
+                                <div class="col-sm-12">
+                                    <span class="maj">Données de connexion</span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        {{ form_row(form.email, {'icon': 'fa-at'}) }}
+                                    </div>
+                                </div>
+
+                                {{ form_row(form.plainPassword.first, {'icon': 'fa-lock'}) }}
+                                {{ form_row(form.plainPassword.second, {'icon': 'fa-lock'}) }}
+
+                            {% endif %}
+                        {% endif %}
+
+
+                        <div class="navBtm">
+                            <button id="next1" class="btn ghostPos next transFx fa fa-long-arrow-right" type="button"><span>Suivant</span></button>
+                        </div>
+
+                    </div>
+
+                    <!-- REGIONS -->
+                    <div class="tab-pane tp3" data-slug="regions" id="regions-tab">
+                        <div class="col-md-12 maj">J’ai des bons plans dans les régions suivantes (max 2)</div>
+
+                        {{ form_widget(form.pixie.regions) }}
+                        {{ form_errors(form.pixie.regions) }}
+
+
+                        <div class="navBtm">
+                            <a class="prev" id="prev2" href="#">Précédent</a>
+                            <button id="next2" class="btn ghostPos next transFx fa fa-long-arrow-right" type="button"><span>Suivant</span></button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- J AIME / J AIME PAS -->
+
+
+                    <div class="tab-pane tp2" data-slug="likes" id="jaime-jaimepas-tab">
+                        <div class="col-sm-12 maj">
+                            J'aime / J'aime pas</div>
+
+                        <div class="col-sm-6 form-row form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <label>{{ form_label(form.pixie.likeText) }}...</label>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <div class="count-words-status like">Mots <span class="current"></span>/<span class="limit">500</span></div>
+                                </div>
+                            </div>
+                            <div class="input-container">
+                                {{ form_widget(form.pixie.likeText, {'toolbarStickyOffset': 0}) }}
+                                {{ form_errors(form.pixie.likeText) }}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 input-container form-row form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <label>{{ form_label(form.pixie.dislikeText) }}...</label>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <div class="count-words-status dislike">Mots <span class="current"></span>/<span class="limit">500</span></div>
+                                </div>
+                            </div>
+                            <div class="input-container">
+                                {{ form_widget(form.pixie.dislikeText) }}
+                                {{ form_errors(form.pixie.dislikeText) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 maj">
+                            Catégories favorites
+                            <div class="count-categories-status">(<span class="current"></span>/<span class="limit">5</span>)</div>
+                            <small>5 catégories maximum dont 3 obligatoires</small>
+                        </div>
+
+                        {{ form_widget(form.favoriteCategories) }}
+
+                        <div class="navBtm">
+                            <a class="prev" id="prev3" href="#">Précédent</a>
+                            <button id="next3" class="btn ghostPos next transFx fa fa-long-arrow-right" type="button"><span>Suivant</span></button>
+
+                        </div>
+                    </div>
+
+                    <!-- REMUNERATION -->
+                    <div class="tab-pane tp4" data-slug="remuneration" id="remuneration-tab">
+
+                        <div class="col-sm-12">
+                            <span class="maj">Rétribution monétaire</span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{ form_row(form.pixie.billing.status) }}
+                            </div>
+                        </div>
+
+                        {{ form_row(form.pixie.billing.companyName) }}
+                        {{ form_row(form.pixie.billing.firstname) }}
+                        {{ form_row(form.pixie.billing.lastname) }}
+                        {{ form_row(form.pixie.billing.phone) }}
+
+                        <div class="col-md-6 address-module form-group">
+
+                            {{ form_label(form.pixie.billing.address.address) }}
+
+                            <div class="row">
+                                <div class="col-xs-12 input-container">
+                                    {{ form_widget(form.pixie.billing.address.address) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 input-container">
+                                    {{ form_widget(form.pixie.billing.address.zipcode) }}
+                                </div>
+                                <div class="col-md-7 input-container">
+                                    {{ form_widget(form.pixie.billing.address.city) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 input-container">
+                                    {{ form_widget(form.pixie.billing.address.country) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {{ form_row(form.pixie.billing.tva) }}
+
+                        <!--CHOIX DE REMUNERATION -->
+
+                        <div class="col-sm-12 form-group">
+                            <label for="mode-paiement" class="maj">Rémunération</label>
+                        </div>
+
+                        <div class="row" style="display: none;">
+                            <div class="col-xs-12">
+                                {{ form_row(form.pixie.billing.billingType) }}
+                            </div>
+                        </div>
+
+                        {{ form_row(form.pixie.billing.billingName) }}
+                        {{ form_row(form.pixie.billing.billingCountry) }}
+                        {{ form_row(form.pixie.billing.billingIban) }}
+                        {{ form_row(form.pixie.billing.billingBic) }}
+
+                        <div class="navBtm">
+                            <a class="prev" id="prev4" href="#">Précédent</a>
+
+                            <a class="btn transFx green fa fa-envelope" id="submit-form"><span>Créer mon compte</span></a>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                {{ form_row(form._token) }}
+                {{ form_end(form, {render_rest: false}) }}
+
+            </div>
+        </div>
+    </div>
+    <!--/.wrapper-->
+
+    <div class="modal plConfirm" id="modal-rgpd" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">Bienvenue !</h5>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <p>Il ne vous reste plus qu’à accepter les conditions générales de Pix.City pour valider votre inscription. Vous êtes à un clic de rejoindre la communauté Pix.City !</p>
+
+                        <p class="cta-cgu-container">
+                            <a href="{{ path('front_pages_index', {slug: 'conditions-generales-dutilisation'}) }}" class="cta-cgu" target="_blank">Conditions Générales</a>
+                        </p>
+
+                        <div class="form-group">
+                            <div class="form-check text-center">
+                                <label class="pl-check-label">
+                                    <input class="pl-check-input" type="checkbox" name="check_legals" value="accept"><span class="check">J'ai lu et j'accepte les conditions générales de vente</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="form-final-submit" class="btn green btn-primary disabled">VALIDER</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% embed "front/_modals/image-crop.html.twig" %}{% endembed %}
+
+    {% for message in app.flashes('account_creation') %}
+
+        {% embed "front/_modals/register-confirm.html.twig" with {'message': message} %}{% endembed %}
+
+    {% endfor %}
+
+    {% for message in app.flashes('account_pixie_creation') %}
+
+        {% embed "front/_modals/register-pixie-confirm.html.twig" with {'message': message} %}{% endembed %}
+
+    {% endfor %}
+
+    <div id="api-routes"
+         data-upload-route="{{ path('front_user_ajax_upload_avatar') }}"
+    ></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/front/js/pages/pixie-register.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+{% endblock %}

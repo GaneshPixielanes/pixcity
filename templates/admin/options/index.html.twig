@@ -1,0 +1,90 @@
+{% extends 'admin/page.html.twig' %}
+
+{% block content %}
+
+    <ol class="breadcrumb breadcrumb-col-teal">
+        <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+        <li class="active">{{ 'label.options'|trans }}</li>
+    </ol>
+
+    <div class="row clearfix">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        {{ 'label.options'|trans }}
+                    </h2>
+                </div>
+                <div class="body">
+                    <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="0">
+                        <thead>
+                        <tr>
+                            <th scope="col">{{ 'label.name'|trans }}</th>
+                            <th scope="col">{{ 'label.value'|trans }}</th>
+                            <th scope="col" class="text-center nosort"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in list %}
+                                <tr>
+                                    <td>{{ item.label }}</td>
+                                    <td>{{ item.value }}</td>
+
+                                    <td class="text-right">
+                                        <div class="item-actions">
+
+                                            <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_options_edit', {id: item.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                                                <i class="material-icons">edit</i>
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="10" align="center">{{ 'text.noresults'|trans }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Email depuis le serveur
+                    </h2>
+                </div>
+                <div class="body">
+                    <a href="{{ path('admin_options_emailtest') }}" type="submit" class="btn btn-lg bg-pink waves-effect">Envoyer un email test à l'administrateur</a>
+                    <a href="{{ path('admin_options_email_template') }}" target="_blank" class="btn btn-lg bg-green waves-effect">Voir le template</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        {{ 'label.backup'|trans }}
+                    </h2>
+                </div>
+                <div class="body">
+                    <a href="{{ path('admin_options_backup') }}" type="submit" class="btn btn-lg bg-pink waves-effect">{{ 'text.backup.database'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

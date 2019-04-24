@@ -1,0 +1,41 @@
+<div class="container">
+	{% if projects | length > 0 %}
+	<table class="table table-hover pc-table" style="width:100%">
+			<thead class="green">
+			<tr>
+					<th scope="col" class="dateCard">Date</th>
+					<th scope="col">Titre de la card / interview </th>
+					<th scope="col" class="remuneration"><span class="hom">Rémunération</span> <span class="som">€</span></th>
+					<th scope="col" class="dateLimite">Date limite</th>
+					<th scope="col">Statut</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for project in projects %}
+					<tr class="ligne">
+							<td class="dateCard">{{ project.createdAt | localizeddate('short', 'none') }}</td>
+							<td class="titreCard">
+									{{ project.name }}
+									{#<a href="#" class="voirDemande open-project-infos float-right" data-id="{{ project.id }}" data-contract="{{ path('front_pixie_card_creation_contract', {id: project.id}) }}" style="visibility: hidden;">Voir la demande</a> #}
+
+							</td>
+							<td class="remuneration"><i class="fa fa-euro-sign hom"></i>{{ project.price }}</td>
+							<td class="dateLimite {% if project.isLate %}warning{% endif %}">{{ project.deliveryDate | localizeddate('short', 'none') }}</td>
+							<td class="statutCard">
+									{% if project.status == 'pixie_accepted' and project.card %}
+											<a href="{{ path('front_pixie_card_creation_project', {id: project.id}) }}" class="btn btn-info white transFx fa fa-ellipsis-h"><span>En cours</span></a>
+									{% elseif project.status == 'pixie_accepted' %}
+											<a href="{{ path('front_pixie_card_creation_project', {id: project.id}) }}" class="btn btn-green" data-id="{{ project.id }}"><span class="text">Rédiger</span>
+												<i class="fa fa-pencil"></i>
+											</a>
+									{% else %}
+											<span class="status-{{ project.status }}">{{ project.statusLabel }}</span>
+									{% endif %}
+							</td>
+					</tr>
+			{% endfor %}
+
+			</tbody>
+	</table>
+	{% endif %}
+</div>

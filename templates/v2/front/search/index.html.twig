@@ -1,0 +1,157 @@
+{% extends 'v2/base.html.twig' %}
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+{% import 'front/_shared/macros.html.twig' as macro %}
+
+{% block body %}
+    <div class="results-page">
+        <!-- Banner -->
+        <div class="results-banner-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 my-4 breadcrumb-container">
+                        <ul>
+                            <li><a href="javascript:;">Accueil</a></li>
+                            <li><a href="javascript:;">Recherche</a></li>
+                            <li><b>Résultat - {% if filters['text'] is defined %} {{ filters['text'] }} {% else %} NA {% endif %}</b></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 my-4">
+                        <h1>Les city-Makers vous proposent <span id="totalCards">{{ totalCards }}</span> cards</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Banner -->
+<form method="GET">
+<div class="row">
+	<div class="col-md-12 my-4 results-page-search">
+		<div class="col-md-8 mx-auto">
+			<div class="input-group">
+                
+                <input type="hidden" name="start" value="1" />
+                <input type="hidden" name="limit" value="10" />
+				<input type="text" class="form-control btn-light results-search-input" name="search" placeholder="Search" aria-label="" aria-describedby="basic-addon1" value="{% if filters['text'] is defined %}{{ filters['text'] }}{% endif %}">
+				<select class="selectpicker region-selected" data-live-search="true" multiple title="Toutes les régions" name="regions[]" id="region-picker">
+					{% for region in regions() %}
+					<option value="{{ region.slug }}" {% if filters['regions'] is defined and region.slug in filters['regions'] %} selected {% endif %}>{{ region.name}}</option>
+					{% endfor %}
+				</select>
+				<select class="selectpicker" data-live-search="true" multiple title="Catégories" name="categories[]">
+
+					{% for category in categories() %}
+					<option value="{{ category.slug }}" {% if filters['categories'] is defined and category.slug in filters['categories'] %} selected {% endif %}>{{ category.name }}</option>
+					{% endfor %}
+				</select>
+				<div class="input-group-append">
+					<button class="btn btn-green nav-search-btn" type="submit"><i class="fas fa-chevron-right"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+        <!-- Filter Cards Wrap Starts -->
+        <div class="cards-wrap">
+            <div class="container">
+                <div id="cards" class="row list-of-cards m-t-50 no-autoscroll" data-api-route="/api/cards/v2/list?search={{ app.request.query.get('search') }}">
+                    <div class="col-md-12">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle dnc dropdown-moment" href="javascript:;" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                                Catégories <i class="fas fa-chevron-down"></i>
+                            </a>
+														<div id="catsDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+		                            <ul id="filters" class="categories">
+																	<li class="btn btn-rollover btn-pink is-checked all" data-id="0"><span class="text">Tout</span><i class="fas fa-th"></i></li>
+
+																	{% for category in categories %}
+																		{% for cat in category %}
+																			{% if cat.name is defined %}
+																				<li class="btn btn-rollover btn-pink" data-id="{{ cat.id }}" data-slug="{{ cat.slug }}"><span class="text">{{ cat.name }}</span><i class="fas {{ cat.icon }}"></i></li>
+																			{% endif %}
+																		{% endfor %}
+																	{% endfor %}
+		                            </ul>
+		                        </div>
+                        </div>
+                        <div class="row cardsMrgn loader-container">
+                            <div class="loader"></div>
+                            <div id="cardsGrid" class="regionCards cards-grid cards-filter-result">
+                                {% for card in cards %}
+                                    {{ macro.cardSingle(card) }}
+                                {% endfor %}
+                                {% if totalCards > 10 %}
+                                <div class="loadCards"></div>
+                                <div class="col-xs-12 text-center" id="loadCards">
+                                    <a href="javascript:;" class="btn btn-green btn-rollover" id="showMoreCards"><span class="text">VOIR PLUS DE CARDS</span><i class="fas fa-plus-square"></i></a>
+                                </div>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="noResult" class="col-md-12 no-results {% if totalCards > 0 %}d-none{% endif %}">
+                        <p>Aucune Card dans cette catégorie !</p>
+                        <div class="noCardIco"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Cards Wrap Ends -->
+        <!-- Embedded Google map Wrap Starts -->
+        {% include "v2/_shared/map.html.twig" %}
+        <!-- Embedded Google map Wrap Ends -->
+        <!-- City maker profile wrap Starts-->
+        <div class="my-5 city-makers-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Devenez City-Maker !</h3>
+                        <p>Partagez vos bonnes adresses et bons plans, améliorez votre popularité sur Instagram et Facebook, monétisez votre influence et votre expertise.</p>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-around">
+                    {% for user in pixies %}
+                        {{ macro.cityMakerSingle(user) }}
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        <div class="col-md-5 profile-actions">
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <a href="/tous-nos-city-makers-locaux-france" class="btn btn-rollover btn-gray btn-block"><span class="text">TOUS LES CITY-MAKERS</span><i class="fas fa-users"></i></a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="/city-maker/inscription/mode" class="btn btn-rollover btn-outline-gray btn-block"><span class="text">DEVENIR CITY-MAKER</span><i class="fas fa-user-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- City maker profile wrap Ends-->
+    </div>
+    <div id="api-box" data-api-url="/api/maps/all-cards"
+         data-api-search-url="/api/maps/find-all-result-card/{% if app.request.query.get('search') == '' %}search-all/{% else %}{{ app.request.query.get('search') }}/{% endif %}" data-current-location="false"
+    ></div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFjaLU8H-TpATXcUcDzKQ4w05pCQ5mAg&libraries=places" defer></script>
+
+    <script>
+        var coordinates = {};
+
+    </script>
+    <script src="{{ asset('build/js/map.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+{% endblock %}

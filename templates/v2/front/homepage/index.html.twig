@@ -1,0 +1,46 @@
+{% extends 'front/page.html.twig' %}
+
+
+
+{% block page_content %}
+
+	{# Slider starts #}
+    {% if page.slider is not null %}
+        {% include 'front/_shared/hp-slider.twig' with {slider: page.slider} %}
+    {% endif %}
+    <form method="POST">
+    	<input type="text" name="card-search" />	
+    </form>	
+    {# Slider ends #}
+
+	<div class="row">
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        <div class="col-md-10" id="map" style="width:100%;height:600px;">
+
+        </div>
+	</div>    
+	<div class="row" style="padding:20px">
+		<div class="width:50%;height:300px" id="regions_div">
+
+		</div>
+
+	</div>
+
+    <div id="api-box" data-api-url="/api/maps/all-cards"
+    data-api-search-url="/api/maps/find-region-card/1/"
+    ></div>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMDtcFiK1e_z3rHF4NwIz9c5E2rWfFOAU&libraries=places" defer></script>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+ <script>
+     var coordinates = {};
+     var bounds = {{ coordinates }};
+
+ </script>
+<script src="{{ asset('build/front/js/pages/map.js') }}"></script>
+{% endblock %}
+

@@ -1,0 +1,118 @@
+.theme-green .navbar-brand {
+  color: #fff; padding: 8px; }
+.theme-green .navbar-brand:hover {
+  color: #fff; }
+.theme-green .navbar-brand:active {
+  color: #fff; }
+.theme-green .navbar-brand:focus {
+  color: #fff; }
+
+.theme-green .nav > li > a {
+  color: #fff; }
+.theme-green .nav > li > a:hover {
+  background-color: transparent; }
+.theme-green .nav > li > a:focus {
+  background-color: transparent; }
+
+.theme-green .nav .open > a {
+  background-color: transparent; }
+.theme-green .nav .open > a:hover {
+  background-color: transparent; }
+.theme-green .nav .open > a:focus {
+  background-color: transparent; }
+
+.theme-green .bars {
+  color: #fff; }
+
+.theme-green .sidebar .menu .list li.active {
+  background-color: transparent; }
+
+.theme-green .sidebar .menu .list .toggled {
+  background-color: transparent; }
+
+.theme-green .sidebar .menu .list .ml-menu {
+  background-color: transparent; }
+
+.theme-green .sidebar .legal {
+  background-color: #fff; }
+
+
+.form-group .form-line:after,
+.input-group .form-line:after{
+  border-bottom-color: $colorPink;
+}
+
+.btn{
+  background-color: $colorGreen;
+  color: #FFF;
+
+  &:hover{
+    color: #FFF;
+  }
+}
+
+
+.label-count{
+  background-color: $colorDeepBlue;
+}
+
+.breadcrumb{
+  padding-left: 0;
+  padding-right: 0;
+}
+
+
+.bg-pink{
+  background-color: $colorPink !important;
+}
+.bg-green{
+  background-color: $colorGreen !important;
+}
+.bg-blue{
+  background-color: $colorDeepBlue !important;
+}
+
+.theme-green .navbar {
+  background-color: $colorDeepBlue; }
+.theme-green .sidebar .menu .list li.active > :first-child i, .theme-green .sidebar .menu .list li.active > :first-child span {
+  color: $colorGreen; }
+.theme-green .sidebar .legal .copyright a {
+  color: $colorGreen !important; }
+
+.form-control:focus,
+.dataTables_wrapper input[type="search"]:focus, .dataTables_wrapper input[type="search"]:active{
+  border-color: $colorGreen;
+}
+
+.label-count{
+  background-color: $colorPink;
+}
+
+.pagination li.active a{
+  background-color: $colorPink;
+}
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover{
+  background-color: $colorPink;
+}
+
+
+.sidebar{
+  width: 220px;
+}
+
+section.content{
+  margin-left: 235px;
+}
+
+.theme-green .sidebar .menu .list li.active > :first-child i, .theme-green .sidebar .menu .list li.active > :first-child span{
+  color: $colorGreen;
+}
+
+.nav-tabs>li>a:before{
+  border-bottom: 2px solid $colorGreen;
+}
+
+.sidebar .menu .list .ml-menu li a{
+  padding-left: 44px;
+}

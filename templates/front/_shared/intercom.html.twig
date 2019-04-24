@@ -1,0 +1,109 @@
+<script>
+function deleteIntercomCookies()
+{
+		// Get an array of cookies
+	var arrSplit = document.cookie.split(";");
+
+
+	for(var i = 0; i < arrSplit.length; i++)
+	{
+	    var cookie = arrSplit[i].trim();
+	    var cookieName = cookie.split("=")[0];
+
+	    // If the prefix of the cookie's name matches the one specified, remove it
+	    if(cookieName.indexOf("intercom") === 0) {
+	        // Remove the cookie
+	        // document.cookie = cookieName+"=abc;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;domain=pix.city";
+	        document.cookie = cookieName+"=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;domain=.pix.city";
+	    }
+	}
+}
+
+
+
+
+
+function getPlatformType() {
+	if(navigator.userAgent.match(/mobile/i)) {
+		return 'Mobile';
+	} else if (navigator.userAgent.match(/iPad|Android|Touch/i)) {
+		return 'Tablet';
+	} else {
+		return 'Desktop';
+	}
+}
+
+var device = getPlatformType();
+
+</script>
+{% if app.user is not null %}
+
+{%if app.user.pixie is not null %}
+	{% if app.user.viewMode == 'pixie' %}
+		{% set user_type = 'city maker' %}
+	{% else %}
+	{% set user_type = 'voyager' %}
+	{% endif %}
+{% else %}
+{% set user_type = 'voyager' %}	
+{% endif %}
+<script>
+
+
+if(device == "Desktop")
+{
+	var APP_ID = "iswx8vq4";
+	var current_user_email = "{{ app.user.email }}";
+	var current_user_name = "{{ app.user.firstName~' '~app.user.lastName }}";
+	var current_user_id = "{{ app.user.id }}";
+	var user_type = "{{ user_type }}";
+	window.intercomSettings = {
+	    app_id: APP_ID,
+	    name: current_user_name, // Full name
+	    email: current_user_email, // Email address
+	    user_id: current_user_id, // current_user_id
+	    user_type: user_type,
+	    hide_default_launcher: true,
+	  };
+	(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/' + APP_ID;var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+
+	$(document).on('click','.btn-logout, .fa-google, .fa-facebook', function()
+	{
+		Intercom('shutdown');
+	});
+
+	$('.intercom-notifications-dismiss-button').click();
+}
+
+</script>
+{% else %}
+<script>
+if(device == "Desktop")
+{
+  window.intercomSettings = {
+    app_id: "iswx8vq4",
+  };
+
+(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/iswx8vq4';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+}
+
+</script>
+{% endif %}
+<script>
+
+
+
+$('form').on('submit', function(e)
+{
+	// e.preventDefault();
+	deleteIntercomCookies();
+	Intercom('shutdown');
+});
+
+
+	$(document).on('click','.btn-logout, .fa-google, .fa-facebook', function()
+	{
+		deleteIntercomCookies();
+		Intercom('shutdown');
+	});
+</script>

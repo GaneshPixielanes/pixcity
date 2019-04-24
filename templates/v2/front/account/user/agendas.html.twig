@@ -1,0 +1,332 @@
+
+{% import "front/_shared/macros.html.twig" as macro %}
+<div class="container-fluid main">
+
+    <div class="row calendar-container mode-view">
+
+        <div class="col-md-12">
+            <!-- AGENDA -->
+
+            <div class="col-right-agenda {% if redirectUrl is not null %}not-auth{% endif %}">
+
+                {% if redirectUrl is not null %}
+                    <div class="google-calendar-auth">
+                        <p>Pour continuer vous devez autoriser Pix.City à accéder à votre Agenda Google</p>
+                        <a href="{{ redirectUrl }}" class="btn green transFx fa fa-calendar"><span>Autoriser l'accès à mes calendriers</span></a>
+                    </div>
+                {% else %}
+                    <div class="form-group calendar-list-container">
+                        <select class="form-control dropdown" id="select-calendar">
+                            <option value="">Tous les agendas</option>
+                            {% for calendar in calendars %}
+                                <option value="{{ calendar.id }}" data-color="{{ calendar.foregroundColor }}" data-bg-color="{{ calendar.backgroundColor }}">{{ calendar.summary }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="cta-open-new-calendar" title="Créer un agenda" data-toggle="modal" data-target=".modal-create-calendar"><span class="fa fa-plus-circle"></span></button>
+                    </div>
+
+                    <div class="cta-container-right">
+                        <a class="fa fa-trash cta-delete-calendar" href="#" data-toggle="modal" data-target=".modal-confirm-delete"></a>
+                    </div>
+                {% endif %}
+
+                <div id="agenda">
+
+                </div>
+
+                <div class="calendar-legends">
+                    {% for calendar in calendars %}
+                        <div class="calendar-legend" data-id="{{ calendar.id }}" data-color="{{ calendar.foregroundColor }}" data-bg-color="{{ calendar.backgroundColor }}">
+                            <span class="color" style="background-color: {{ calendar.backgroundColor }}"></span>
+                            <span>{{ calendar.summary }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- COLLECTIONS -->
+            <!-- HIDE ON MOBILE -->
+            <div class="md-hom">
+                <div class="col-left-agenda">
+
+                    <div class="btnTop">
+                        <button class="active switch-list-mode transFx fa fa-heart" data-type="collections"><span>Collections</span></button>
+                        <button class="transFx cardPlus switch-list-mode" data-type="cards"><span>Toutes les Cards</span></button>
+                    </div>
+
+                    <div class="list-of-cards no-autoscroll view-mode-cards" style="display: none;" data-api-route="{{ path('api_cards_list') }}" data-user-favorite="{{ app.user.id }}" data-page="1">
+                        <!--cards-->
+                        <div class="content-above-scroll">
+                            <p class="pl17">Faire glisser une carte sur le jour souhaité. </p>
+
+                            <div class="form-group">
+                                <select class="form-control dropdown" id="select-category">
+                                    <option value="">Toutes les catégories</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-left-cards-list-scroll">
+
+                            <div class="cardsMrgn loader-container">
+                                <div class="loader"></div>
+                                <div id="cardsGrid" class="regionCards cards-grid">
+                                    {% for card in cards %}
+                                        {{ macro.cardItem(card, false) }}
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+                            <!--/cardsMrgn -->
+
+                            <!-- NO RESULTS -->
+                            <div id="noResult" class="row no-results">
+                                <div class="col-md-12">
+                                    <p>{{ 'text.nocards'|trans }}</p>
+                                    <div class="noCardIco"></div>
+                                </div>
+                            </div>
+
+                            {% include 'front/_shared/pagination.html.twig' with {'pagination': pagination} %}
+
+                        </div>
+                    </div>
+
+
+                    <div id="collections" class="view-mode-collections">
+
+                        {% if collections | length > 0 %}
+
+                            <div class="content-above-scroll">
+                                <p class="pl17">Faire glisser une carte sur le jour souhaité. </p>
+
+                                <div class="form-group">
+                                    <select class="form-control dropdown" id="select-collections">
+                                        <option value="">Toutes les collections</option>
+                                        {% for collection in collections %}
+                                            <option value="{{ collection.id }}">{{ collection.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-left-cards-list-scroll">
+                                {% for collection in collections %}
+                                    <div class="collection-row" data-id="{{ collection.id }}">
+                                        <h2 class="collection-name">{{ collection.name }}</h2>
+                                        <div class="cards">
+                                            <div class="">
+                                                {% for card in collection.cards %}
+                                                    {{ macro.cardItem(card) }}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+                            <div class="no-collections">
+                                <p class="pl17">Vous n'avez pas de collection pour le moment </p>
+                                <a href="{{ path('front_user_account_collections') }}" class="btn green transFx cardPlus"><span>Créer une collection</span></a>
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+            </div>
+            <!--/hom-->
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- MODALE -->
+<div class="modal modal-agenda-add-card" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-span="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-coll-title">Ajouter une Card le <span class="selected-date"></span></h5>
+
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="strong">Sélection des Cards</p>
+
+                            <div class="btnTop">
+                                <button class="active switch-list-mode transFx fa fa-heart" data-type="collections"><span>Collections</span></button>
+                                <button class="transFx cardPlus switch-list-mode" data-type="cards"><span>Toutes les Cards</span></button>
+
+                                <div class="form-group view-mode-collections">
+                                    <select class="form-control dropdown" id="select-collections-in-modal">
+                                        <option value="">Toutes les collections</option>
+                                        {% for collection in collections %}
+                                            <option value="{{ collection.id }}">{{ collection.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group view-mode-cards" style="display: none;">
+                                    <select class="form-control dropdown" id="select-category-in-modal">
+                                        <option value="">Toutes les catégories</option>
+                                        {% for category in categories %}
+                                            <option value="{{ category.id }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="list-of-cards no-autoscroll view-mode-cards" style="display: none;" data-api-route="{{ path('api_cards_list') }}" data-user-favorite="{{ app.user.id }}" data-page="1">
+
+                            <div class="cardsMrgn loader-container">
+                                <div class="loader"></div>
+                                <div id="cardsGrid" class="regionCards cards-grid">
+                                    {% for card in cards %}
+                                        {{ macro.cardItem(card, true) }}
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+                            <!--/cardsMrgn -->
+
+                            <!-- NO RESULTS -->
+                            <div id="noResult" class="row no-results">
+                                <div class="col-md-12">
+                                    <p>{{ 'text.nocards'|trans }}</p>
+                                    <div class="noCardIco"></div>
+                                </div>
+                            </div>
+
+                            {% include 'front/_shared/pagination.html.twig' with {'pagination': pagination} %}
+
+                    </div>
+
+
+                    <div id="collections" class="view-mode-collections">
+
+                        {% if collections | length > 0 %}
+
+                            {% for collection in collections %}
+                                <div class="collection-row" data-id="{{ collection.id }}">
+                                    <h2 class="collection-name">{{ collection.name }}</h2>
+                                    <div class="cards">
+                                        <div class="row">
+                                            {% for card in collection.cards %}
+                                                {{ macro.cardItem(card, true) }}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        {% else %}
+                            <div class="no-collections">
+                                <p class="pl17">Vous n'avez pas de collection pour le moment </p>
+                                <a href="{{ path('front_user_account_collections') }}" class="btn green transFx cardPlus"><span>Créer une collection</span></a>
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!--/.row-->
+                    <div class="row">
+
+                        <div class="col-md-4 agendaSelect">
+                            <label for="agendas">Agenda</label>
+                            <div class="form-group">
+                                <select class="form-control dropdown" id="select-calendar-in-modal">
+                                    {% for calendar in calendars %}
+                                        <option value="{{ calendar.id }}" data-color="{{ calendar.foregroundColor }}" data-bg-color="{{ calendar.backgroundColor }}">{{ calendar.summary }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn green transFx fa fa-plus-circle" id="add-modal-events"><span>Ajouter <strong class="collection-total-cards">-</strong> Cards à cette date</span></button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--/MODALE-->
+
+<!-- MODALE CONFIRMATION 2 -->
+<div class="modal modal-confirm-delete plConfirm" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bgPictos">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cet agenda ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn light" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn green btn-primary delete-current-calendar">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE CONFIRMATION 2 -->
+<div class="modal modal-create-calendar plConfirm" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bgPictos">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-coll-title">Créer un agenda</h4>
+            </div>
+            <form id="createAgenda">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input class="form-control" type="text" name="agenda" placeholder="Nom de l'agenda">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="submit" class="btn green transFx fa fa-calendar-plus"><span>Créer l'agenda</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="api-routes"
+     data-calendars-route="{{ path('api_users_calendars') }}"
+     data-new-calendar-route="{{ path('api_users_new_calendar') }}"
+     data-delete-calendar-route="{{ path('api_users_delete_calendar') }}"
+     data-new-calendar-event-route="{{ path('api_users_new_calendar_event') }}"
+     data-update-calendar-event-route="{{ path('api_users_update_calendar_event') }}"
+     data-delete-calendar-event-route="{{ path('api_users_delete_calendar_event') }}"
+></div>
+
+<script src="{{ asset('build/front/js/pages/search.js') }}"></script>
+<script src="{{ asset('build/front/js/pages/user-calendars.js') }}"></script>

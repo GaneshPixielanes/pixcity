@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127340360-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ google_analytics_id }}');
+        </script>
+        
+        <!-- Hotjar Tracking Code for https://staging.pix.city:8043/ -->
+        <script>
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:1110464,hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        </script>
+
+
+
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="icon" href="{{ asset('icons/favicon.ico') }}" />
+
+        <meta name="google-site-verification" content="NPSG08HPejEifQNLgvJ3JBQVaM2NEETuQ8MMbCDCf2A" />
+
+        <title>{% block meta_title %}Pix.City{% endblock %}</title>
+        <meta name="description" content="{% block meta_description %}Vous vous êtes forcément déjà posé cette question. Et si un local, un vrai, vous le disait ? Venez échanger avec nos Pixies et partager des bons plans de leur région.{% endblock %}">
+        <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
+        {% if card.masterhead.getUrl() is defined and card.masterhead.getUrl()|imagine_filter('bg_header_slider') is not empty %}
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content="{{ card.masterhead.getUrl() | imagine_filter('bg_header_slider') }}" />
+        {% endif %} 
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ absolute_url(asset('build/front/css/app.css')) }}">
+        {% endblock %}
+
+
+        {% block javascripts %}
+            <script src="{{ absolute_url(asset('build/front/js/app.js')) }}"></script>
+        {% endblock %}
+
+
+        
+    </head>
+    <body class="{% block body_class %}{% if not is_granted('IS_AUTHENTICATED_FULLY') %}logged-out{% else %}logged-in{% endif %} {% endblock %}">
+
+        {% block body %}{% endblock %}
+
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <div id="api-user-routes"
+                 data-follow-pixie="{{ path('api_users_follow_pixie') }}"
+                 data-like-card="{{ path('api_users_like_card') }}"
+                 data-favorite-card="{{ path('api_users_favorite_card') }}"
+            ></div>
+        {% else %}
+
+            {% embed "front/_modals/loggedout-action-alerts.html.twig" %}{% endembed %}
+
+        {% endif %}
+
+
+        {% for message in app.flashes('afterloginaction.add_favorite_pixie') %}
+            {% embed "front/_modals/afterlogin-action.html.twig" with {'message': message} %}{% endembed %}
+        {% endfor %}
+
+        {% for message in app.flashes('afterloginaction.add_favorite_card') %}
+            {% embed "front/_modals/afterlogin-action.html.twig" with {'message': message} %}{% endembed %}
+        {% endfor %}
+
+        {% for message in app.flashes('afterloginaction.add_like_card') %}
+            {% embed "front/_modals/afterlogin-action.html.twig" with {'message': message} %}{% endembed %}
+        {% endfor %}
+
+        {%  for message in app.flashes('error') %}
+            {% embed "front/_modals/afterlogin-action.html.twig" with {'message': message} %}{% endembed %}
+        {% endfor %}
+        {%  for message in app.flashes('settings_error') %}
+            {% embed "front/_modals/settings-error.html.twig" with {'message': message|raw} %}{% endembed %}
+        {% endfor %}
+        {% embed "front/_modals/notification-modal.html.twig" with {'message':'message'} %}{% endembed %}
+        
+
+
+        
+        {% block javascripts_footer %}{% endblock %}
+                <!-- Intercom messenger -->
+        {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+    </body>
+</html>

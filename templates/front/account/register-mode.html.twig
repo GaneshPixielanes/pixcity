@@ -1,0 +1,61 @@
+{% extends 'front/base.html.twig' %}
+
+{% block body_class %}{{ parent() }} login PixieCreateAccount{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block body %}
+
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-md-4 text-left">
+                <a href="{{ path('front_homepage_index') }}"><img id="logo" src="{{ asset('build/images/logo-color.svg') }}" alt="Pix.City"></a>
+            </div>
+            <div class="col-md-8 text-right loginCancel">
+                <a href="{{ path('front_homepage_index') }}">Annuler</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 left box">
+
+            {% if "pixie" == type %}
+                <h1>Créez votre compte City-maker</h1>
+                <p>Partagez vos bonnes adresses et bons plans, améliorez votre popularité sur Instagram et Facebook, monétisez votre influence et votre expertise.</p>
+                <p>Vous pouvez créer votre compte via Facebook, Gmail ou avec votre adresse email.</p>
+            {% else %}
+                <h1>
+                    Bonjour & Bienvenue !
+                    <br><small>Vous souhaitez créer un compte voyageur ?</small>
+                </h1>
+                <p>Vous pouvez créer votre compte via Facebook, Gmail ou avec votre adresse email.</p>
+                <p>Grâce à ce compte, vous pourrez personnaliser votre espace en créant vos collections de cards, suivre vos City-makers préférés, accéder à votre carte et votre agenda pour programmer votre futur voyage.</p>
+            {% endif %}
+
+        </div>
+        <div class="col-md-8 right box">
+
+            <span class="maj">Choix de création de compte</span>
+
+
+            <div class="text-center">
+                <a href="{{ path('front_login_facebook', {type: type}) }}" class="fab fa-facebook-f"></a>
+                <a href="{{ path('front_login_google', {type: type}) }}" class="fab fa-google"></a>
+            </div>
+
+            <span class="sepOu">OU</span>
+
+            <a href="{{ ("pixie" == type)?path('front_pixie_register'):path('front_user_register') }}" class="btn transFx green btn-submit fa fa-at" type="submit"><span>Avec mon adresse email</span></a>
+
+
+        </div>
+
+        <div class="row text-right"><a href="{{ path('front_login') }}" class="greenPos">Vous avez déjà un compte ?</a></div>
+    </div>
+    <!--/.wrapper-->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

@@ -1,0 +1,28 @@
+<tr data-id="{{ item.id }}">
+    <td>{{ item.name }}</td>
+    <td class="col-region">{{ item.region }}</td>
+    <td class="col-region">{{ item.department }}</td>
+
+    <td class="col-blameable">
+        <span class="hidden">{{ item.updatedAt|date("YmdHis") }}</span>
+        {% if item.updatedBy is not null %}
+            <span class="name">{{ item.updatedBy.firstname ~ ' ' ~ item.updatedBy.lastname }}</span>
+        {% endif %}
+        <span class="date">{{ item.updatedAt|localizeddate('medium', 'short') }}</span>
+    </td>
+
+    <td class="text-right">
+        <div class="item-actions">
+
+            <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_cards_templates_edit', {id: item.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                <i class="material-icons">edit</i>
+            </a>
+
+            <form action="{{ url('admin_cards_templates_delete', { id: item.id }) }}" method="post" class="delete-form">
+                <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                <button type="submit" title="{{ 'action.delete'|trans }}" class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+            </form>
+
+        </div>
+    </td>
+</tr>

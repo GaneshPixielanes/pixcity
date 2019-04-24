@@ -1,0 +1,72 @@
+#controllers:
+#    resource: ../../src/Controller/
+#    type: annotation
+#
+##----------------------------------------
+## ADMIN
+##----------------------------------------
+#
+#controllers_admin:
+#    resource: ../../src/Controller/Admin/
+#    type: annotation
+#
+##----------------------------------------
+## API
+##----------------------------------------
+#
+#controllers_api:
+#    resource: ../../src/Controller/Api/
+#    type: annotation
+#
+#
+##----------------------------------------
+## FRONT
+##----------------------------------------
+#
+#controllers_front_homepage:
+#    resource: ../../src/Controller/Front/Pages/HomepageController.php
+#    type: annotation
+#
+#controllers_front_pixie:
+#    resource: ../../src/Controller/Front/Pages/Pixie/
+#    type: annotation
+#
+#controllers_front_user:
+#    resource: ../../src/Controller/Front/Pages/User/
+#    type: annotation
+#
+#controllers_front_collection:
+#    resource: ../../src/Controller/Front/Pages/CollectionController.php
+#    type: annotation
+#
+#controllers_front_login:
+#    resource: ../../src/Controller/Front/Pages/LoginController.php
+#    type: annotation
+#
+#controllers_front_pages:
+#    resource: ../../src/Controller/Front/Pages/PagesController.php
+#    type: annotation
+#
+#controllers_front_pixies:
+#    resource: ../../src/Controller/Front/Pages/PixiesController.php
+#    type: annotation
+#
+#controllers_front_search:
+#    resource: ../../src/Controller/Front/Pages/SearchController.php
+#    type: annotation
+#
+#controllers_front_users:
+#    resource: ../../src/Controller/Front/Pages/UserController.php
+#    type: annotation
+#
+#controllers_front_wall:
+#    resource: ../../src/Controller/Front/Pages/WallCardsController.php
+#    type: annotation
+#
+#controllers_front_card:
+#    resource: ../../src/Controller/Front/Pages/CardController.php
+#    type: annotation
+#
+#controllers_front_regions:
+#    resource: ../../src/Controller/Front/Pages/RegionsController.php
+#    type: annotation

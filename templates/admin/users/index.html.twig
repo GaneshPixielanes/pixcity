@@ -1,0 +1,30 @@
+{% extends 'admin/users/users.html.twig' %}
+
+{% block breadcrumb %}
+    <li class="active">{{ 'label.users'|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    <table class="table table-striped table-middle-aligned datatable-ajax" data-defaultsortby="5" data-ajax="{{ path('admin_users_ajax') }}" style="width:100%; border-collapse: collapse;">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">{{ 'label.firstname'|trans }}</th>
+            <th scope="col">{{ 'label.lastname'|trans }}</th>
+            <th scope="col">{{ 'label.email'|trans }}</th>
+            <th scope="col">{{ 'label.role'|trans }}</th>
+            <th scope="col">{{ 'label.created_at'|trans }}</th>
+            <th scope="col">{{ 'label.visible'|trans }}</th>
+            <th scope="col">Registration Type</th>
+            <th scope="col" class="text-center nosort"></th>
+        </tr>
+        </thead>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/users-list.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'admin/admins/admins.html.twig' %}
+
+{% block breadcrumb %}
+    <li class="active">{{ 'label.administrators'|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="4">
+        <thead>
+        <tr>
+            <th scope="col">{{ 'label.firstname'|trans }}</th>
+            <th scope="col">{{ 'label.lastname'|trans }}</th>
+            <th scope="col">{{ 'label.email'|trans }}</th>
+            <th scope="col">{{ 'label.role'|trans }}</th>
+            <th scope="col">{{ 'label.created_at'|trans }}</th>
+            <th scope="col" class="text-center nosort"></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for item in list %}
+                <tr>
+                    <td>{{ item.firstname }}</td>
+                    <td>{{ item.lastname }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>
+                        <span class="label bg-{{ item.getHighestRole()|lower }}">{{ item.getHighestRole()|trans }}</span>
+                    </td>
+                    <td>{{ item.createdAt|localizeddate('medium', 'short') }}</td>
+
+                    <td class="text-right">
+                        <div class="item-actions">
+
+                            <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_admins_edit', {id: item.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                                <i class="material-icons">edit</i>
+                            </a>
+                            <form action="{{ url('admin_admins_delete', { id: item.id }) }}" method="post" class="delete-form">
+                                <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                                <button type="button" title="{{ 'action.delete'|trans }}" class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                            </form>
+
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" align="center">{{ 'text.noresults'|trans }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

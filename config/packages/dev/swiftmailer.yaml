@@ -1,0 +1,28 @@
+# See https://symfony.com/doc/current/email/dev_environment.html
+
+swiftmailer:
+    #delivery_addresses: ['me@example.com']
+
+    spool:     { type: memory }
+
+    #transport: smtp
+    #host:      smtp.mailtrap.io
+    #username:  1183016d809c33
+    #password:  f0bbb123616405
+    #auth_mode: cram-md5
+
+    url:
+
+    transport: smtp
+    host:      mail.gandi.net
+    username:  noreply@pix.city
+    password:  pMla78Mns9#6QmbcA
+    auth_mode: login
+    port: 465
+    encryption: ssl
+
+    stream_options:
+        ssl:
+            verify_peer: false
+            verify_peer_name: false
+            allow_self_signed: true

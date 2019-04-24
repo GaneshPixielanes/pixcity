@@ -1,0 +1,22 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+
+    <p>Bonjour {{ firstname }},</p>
+
+    <p>
+    Ta card n’a malheureusement pas été retenue par l’équipe Pix.City. Elle ne respecte pas les règles éditos et/ou photos sur Pix [link on this: ]:
+    </p>
+    URLS HERE
+    <p>
+        Ce n’est peut-être pas grand chose alors n’hésite pas à contacter la rédaction : redaction@pix.city.
+    </p>
+    <table width="100%">
+        <tr>
+            <td align="center">
+                <a style="background-color: #30b996; color: #FFF; padding: 10px 20px; display: inline-block; text-decoration: none; border-radius: 4px;" href="{{ absolute_url(path('front_pixie_account_cards_projects')) }}">Mon espace city-maker</a>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

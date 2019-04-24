@@ -1,0 +1,705 @@
+{% extends 'v2/base.html.twig' %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% import 'front/_shared/macros.html.twig' as macros %}
+
+{% block body %}
+<style>
+.content-container > h2{
+    color: rgb(24, 53, 85);
+}
+
+</style>
+    <div class="card-page">
+        <!-- Banner -->
+        <div class="banner-wrap" style="background-image: url({{ card.masterhead.getUrl() | imagine_filter('bg_header_slider') }}) ">
+            <div class="speech-bubble-container">
+                <a href="javascript:;" class="close-speech-bubble">
+                    <i class="fas fa-times"></i>
+                </a>
+                <div class="speech-bubble">Bonjour ! <br />je m'appelle {{ card.pixie.firstName }} <br />et j’y suis {% if card.pixie.gender == 'female' %}allée{% else %}allé{% endif %}</div>
+            </div>
+            <a href="#profileSection" id="bannerFloater" class="banner-floater">
+                <img class="city-maker" src="{{ card.pixie.getAvatar() | imagine_filter('user_avatar') }}">
+                <div class="floater-name">
+                    <div class="row">
+                        <div class="col-md-8 col-8 name">
+                            {{ card.pixie.firstName }} <br /> <span>City-maker</span>
+                        </div>
+                        <div class="col-md-4 col-4 icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="floater-chevron">
+                    <img src="{{  absolute_url(asset('build/images/cards-page-profile-chevron.svg')) }}">
+                </div>
+            </a>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 d-flex align-items-center banner-container">
+                        <a href="javascript:;" class="btn btn-white btn-block show-slideshow" data-id="{{ card.id }}">VOIR LES PHOTOS ({{ card.medias | length }})</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="profileSection"></div>
+        <!-- Banner -->
+        <!-- fixed folder -->
+        <div class="unsync-containers">
+            <div class="mobile-profile-opener-container">
+                <a href="javascript:;" class="opener">
+                    <div class="row">
+                        <div class="col-12 insta-icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 insta-image">
+                            <img src="{{ card.pixie.getAvatar() }}" class="rounded-circle city-maker" alt="{{ card.pixie }}">
+                        </div>
+                    </div>
+                </a>
+                <!-- <div class="row">
+                    <div class="col-12 like-check">
+                        <div class="pretty p-icon p-toggle p-plain p-bigger">
+                            <input type="checkbox" />
+                            <div class="state p-off">
+                                <i class="icon far fa-thumbs-up"></i>
+                            </div>
+                            <div class="state p-on p-primary-o">
+                                <i class="icon fas fa-thumbs-up"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 cards">
+                        <a href="javascript:;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="46.155" height="42.894" viewBox="0 0 46.155 42.894">
+                                <g id="Group_363" data-name="Group 363" transform="translate(-1242.215 -756.641)">
+                                    <path id="Path_232" data-name="Path 232" d="M1286.9,786.564a.2.2,0,0,1-.206.16l-14.39-.022c-.081,0-.2-.079-.2-.181l.05-26.769a.2.2,0,0,1,.2-.181h.009l14.387.037a.187.187,0,0,1,.206.167Z" fill="none" stroke="#103558" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.84"/>
+                                    <path id="Path_233" data-name="Path 233" d="M1269.013,794.046l-2.144,3.92a.216.216,0,0,1-.26.076l-22.9-13.88a.2.2,0,0,1-.04-.26l4.711-8.041" fill="none" stroke="#103558" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.84"/>
+                                    <path id="Path_234" data-name="Path 234" d="M1264.887,788.7l-13.454-23.16a.2.2,0,0,1,.088-.25l12.438-7.231" fill="none" stroke="#103558" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.84"/>
+                                </g>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 share">
+                        <a href="javascript:;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48.174" height="42.84" viewBox="0 0 48.174 42.84">
+                                <path id="Path_231" data-name="Path 231" d="M1359.251,768.727h-10.667s-16-1.229-16,15.771c0,8,8,13.563,8,13.563s-.669-16,10-16h8.667v13.333l18.667-18.667-18.667-18.666Z" transform="translate(-1331.164 -756.641)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.84"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-12 open">
+                        <a href="javascript:;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18.828" height="31.77" viewBox="0 0 18.828 31.77">
+                                <g id="Group_351" data-name="Group 351" transform="matrix(-1, -0.017, 0.017, -1, 68.289, 541.553)">
+                                    <g id="Group_350" data-name="Group 350">
+                                        <path id="Path_225" data-name="Path 225" d="M59.886,539.266l15.25-14.706-15.25-14.705" fill="none" stroke="#103558" stroke-miterlimit="10" stroke-width="2.84"/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="javascript:;" class="header-strip-sidebar">
+                <img src="{{ card.pixie.getAvatar() }}" class="rounded-circle city-maker" alt="{{ card.pixie }}">
+                <img src="{{ absolute_url(asset('build/images/cards-page-profile-chevron.svg')) }}">
+            </a>
+            <div class="sticky-header-strip">
+                <div class="container-fluid">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3 left-column head-strip">
+                                <div class="profile-sidebar-header-container">
+                                    <div class="col-md-12 profile-sidebar-header">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-md-6 profile-person">
+                                                    <img src="{{ card.pixie.getAvatar() }}" class="rounded-circle city-maker" alt="{{ card.pixie }}">
+                                                    <div>
+                                                        <span>{{ card.pixie }}</span><br />City-maker
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 social-link">
+                                                    <a href="{{ card.pixie.instagram }}" target="_blank" onclick="captureOutboundLink('{{ card.pixie.instagram }}');">
+                                                        <i class="fab fa-instagram"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-2 profile-link">
+                                                    <a href="javascript:;" class="cta-follow-city-maker" data-id="{{ card.pixie.id }}">
+                                                        <i class="fas fa-user-plus"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-2 close-profile-sidebar">
+                                                    <a href="javascript:;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="32.012" height="33.887" viewBox="0 0 32.012 33.887">
+                                                            <g id="Group_499" data-name="Group 499" transform="translate(-2362.994 -761.02)">
+                                                                <g id="Group_498" data-name="Group 498">
+                                                                    <line id="Line_91" data-name="Line 91" x2="30" y2="32" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                                                    <line id="Line_92" data-name="Line 92" y1="32" x2="30" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 right-column head-strip">
+                                <div class="d-flex header-strip-container">
+                                    <div class="header-strip">
+                                        <div class="row">
+                                            <div class="col-md-6 col-7">
+                                                <div class="row d-flex align-items-center">
+                                                    <div class="col-md-4 card-cat">
+                                                        Catégorie<span>{{ card.categories.first.name }}</span>
+                                                    </div>
+                                                    <div class="col-md-4 col-6 card-page-pagination">
+                                                        {% if prevCard.slug is defined %}<a href="/{{ prevCard.slug~'.html' }}">PRÉCÉDENT</a>{% endif %}
+                                                    </div>
+                                                    <div class="col-md-4 col-6 card-page-pagination">
+                                                        {% if nextCard.slug is defined %}<a href="/{{ nextCard.slug~'.html' }}">SUIVANT</a>{% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-5 share-links ml-auto">
+                                                <div class="row">
+                                                    <div class="col-md-4 col-4 like-check">
+                                                        <div class="pretty p-icon p-toggle p-plain p-bigger">
+                                                            <input type="checkbox" class="cta-like-card" data-id="{{ card.id }}" {% if app.user is not null and app.user.hasLike(card) %}checked{% endif %}/>
+                                                            <div class="state p-off">
+                                                                <i class="icon far fa-thumbs-up"></i>
+                                                            </div>
+                                                            <div class="state p-on p-primary-o">
+                                                                <i class="icon fas fa-thumbs-up"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-4">
+                                                        <a href="javascript:;" class="cta-favorite-card {% if app.user is not null and app.user.hasFavoritePixie(card.pixie) %} active {% endif %}" data-id="{{ card.id }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="46.155" height="42.894" viewBox="0 0 46.155 42.894">
+                                                                <g id="Group_363" data-name="Group 363" transform="translate(-1242.215 -756.641)">
+                                                                    <path id="Path_232" data-name="Path 232" d="M1286.9,786.564a.2.2,0,0,1-.206.16l-14.39-.022c-.081,0-.2-.079-.2-.181l.05-26.769a.2.2,0,0,1,.2-.181h.009l14.387.037a.187.187,0,0,1,.206.167Z" fill="none" stroke="#103558" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.84"/>
+                                                                    <path id="Path_233" data-name="Path 233" d="M1269.013,794.046l-2.144,3.92a.216.216,0,0,1-.26.076l-22.9-13.88a.2.2,0,0,1-.04-.26l4.711-8.041" fill="none" stroke="#103558" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.84"/>
+                                                                    <path id="Path_234" data-name="Path 234" d="M1264.887,788.7l-13.454-23.16a.2.2,0,0,1,.088-.25l12.438-7.231" fill="none" stroke="#103558" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.84"/>
+                                                                </g>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                        <div class="col-md-4 col-4 share-to">
+                                                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-toggle="dropdown">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="48.174" height="42.84" viewBox="0 0 48.174 42.84">
+                                                                    <path id="Path_231" data-name="Path 231" d="M1359.251,768.727h-10.667s-16-1.229-16,15.771c0,8,8,13.563,8,13.563s-.669-16,10-16h8.667v13.333l18.667-18.667-18.667-18.666Z" transform="translate(-1331.164 -756.641)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.84"/>
+                                                                </svg>
+                                                            </a>
+                                                            <div class="dropdown-menu shadow" data-container="body">
+                                                                <div class="dropdown-block">
+                                                                    <a class="dropdown-item" href="javascript:;" data-sharer="facebook" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}">
+                                                                        <i class="fab fa-facebook-f"></i>
+                                                                    </a>
+                                                                    <a class="dropdown-item" href="mailto:?subject={{ card.name }} à tester !&body=Salut,%0d%0a%0d%0aJe te partage cette adresse:&nbsp;{{ card.name }}%0d%0a%0d%0a%0d%0a{{ absolute_url(path('front_collection_index', {slug: card.slug})) }}%0d%0a%0d%0a%0d%0aA+">
+                                                                        <i class="far fa-envelope"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Profile sidebar starts -->
+            <div class="col-md-4 profile-sidebar-container mobile-version" data-simplebar>
+                <div class="mobile-profile-close-container">
+                    <a href="javascript:;">
+                        <img src="{{ card.pixie.getAvatar() }}" class="city-maker" alt="{{ card.pixie }}">
+                    </a>
+                    <div class="row">
+                        <div class="col-12 insta-icon">
+                            <a href="{{ card.pixie.instagram }}" target="_blank" onclick="captureOutboundLink('{{ card.pixie.instagram }}'); return false;">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 profile-link">
+                            <a href="javascript:;" class="cta-follow-city-maker" data-id="{{ card.id }}">
+                                <i class="fas fa-user-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 close">
+                            <a href="javascript:;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32.012" height="33.887" viewBox="0 0 32.012 33.887">
+                                    <g id="Group_499" data-name="Group 499" transform="translate(-2362.994 -761.02)">
+                                        <g id="Group_498" data-name="Group 498">
+                                            <line id="Line_91" data-name="Line 91" x2="30" y2="32" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                            <line id="Line_92" data-name="Line 92" y1="32" x2="30" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 p-0 profile-sidebar-image" id="profileSideImageMobile">
+                        <div class="img-container">
+                            <img src="{{ card.pixie.getAvatar() }}" class="city-maker" alt="{{ card.pixie }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 profile-sidebar-content">
+                        <div class="row">
+                            <div class="col-md-12 profile-name">
+                                <h3>{{ card.pixie }}</h3>
+                                <!-- <p class="tags">City-maker confirmée</p> -->
+                                <p class="tags">région {{ card.region.name | upper }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 profile-insta-numbers">
+                                <div class="row">
+                                    <div class="col-md-3 col-2 insta-icon">
+                                        <i class="fab fa-instagram"></i>
+                                    </div>
+                                    <div class="col-md-9 col-9 insta-numbers">
+                                        {% if card.pixie.userInstagramDetailsApi.noOfPosts is defined %}<span>{{ card.pixie.userInstagramDetailsApi.noOfPosts | round }}</span> publications<br />{% endif %}
+                                        {% if card.pixie.userInstagramDetailsApi.noOfFollowed is defined %}<span>{{ card.pixie.userInstagramDetailsApi.noOfFollowed | round }}</span> abonnés<br />{% endif %}
+                                        {% if card.pixie.userInstagramDetailsApi.noOfFollowers  is defined %}<span>{{ card.pixie.userInstagramDetailsApi.noOfFollowers | round}}</span> abonnements{% endif %}
+                                    </div>
+                                    <!-- <div class="col-md-3 col-3 follow">
+                                        <a href="javascript:;" class="btn btn-fill">Suivre</a>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 profile-sidebar-button">
+                                <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" class="btn btn-green btn-block btn-rollover"><span class="text">VOIR SES CARDS ({{ card.pixie.cards | length }})</span><img src="{{ absolute_url(asset('build/images/cards-green.svg')) }}"></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 achivements">
+                                <div class="row">
+                                    <div class="col-3 image">
+                                        <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
+                                    </div>
+                                    <div class="col-9 about">
+                                        {{ card.pixie.age }} ans<br /><span> City-maker depuis {{ card.pixie.createdAt | date('M d') }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3 image">
+                                        <img src="{{ absolute_url(asset('build/images/cards-page-strip-cards.svg')) }}">
+                                    </div>
+                                    <div class="col-9 about">
+                                        {{ card.pixie.cards | length }} cards<br />{{ totalLikes }} abonnés
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-3 image">
+                                        <img src="images/cards-page-profile-medal.svg">
+                                    </div>
+                                    <div class="col-9 about">
+                                        CITY-MAKER<br />CONFIRMÉE
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 category-links">
+                                <h4>MES CATÉGORIES</h4>
+                                <ul class="categories">
+                                    {% for category in card.pixie.favoriteCategories %}
+                                        {% if categoryList[category.slug] is defined %}
+                                        <li>
+                                            <a href="/recherche/index?categories={{ category.slug }}&start=1&limit=10&search=" class="btn btn-rollover btn-outline-pink"><span class="text">{{ category.name }} ({{ categoryList[category.slug] }})</span><i class="fas {{ category.icon }}"></i></a>
+                                        </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 profile-sidebar-button">
+                                <a href="javascript:;" class="btn btn-green btn-block btn-rollover cta-follow-city-maker" data-id="{{ card.pixie.id }}"><span class="text">SUIVRE CE CITY-MAKER</span><i class="fas fa-user-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-12 landing-ad">
+                                    <div class="col-md-9 m-auto">
+                                        <h4>C’EST LA SAISON DES <img src="{{ absolute_url(asset('build/images/card-page-hash.svg')) }}"> DANS VOTRE RÉGION ?</h4>
+                                        <p class="tags">Vos adresses & posts nous intéressent, devenez City-Maker Local* <img src="{{ absolute_url(asset('build/images/card-page-logo.svg')) }}"></p>
+                                        <p class="asterisk">* COMMUNITY MANAGER LOCAL</p>
+                                        <div class="tag-image">
+                                            <img src="{{ absolute_url(asset('build/images/card-page-profile-illustration.svg')) }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 find-city-maker">
+                                <div class="bg-find-citymaker">
+                                    <div class="row">
+                                        <div class="col-md-12 content">
+                                            <div class="row">
+                                                <div class="col-md-8 col-8 m-auto">
+                                                    <h4>VOUS AUSSI, CONFIEZ VOS RÉSEAUX SOCIAUX À NOS CITY-MAKERS</h4>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-8 col-10 m-auto">
+                                                    <a href="/services" class="btn btn-white btn-block find-btn" target="_blank">TROUVER MON CITY-MAKER</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-md-2 ml-auto close-profile-sidebar">
+                                <a href="javascript:;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32.012" height="33.887" viewBox="0 0 32.012 33.887">
+                                        <g id="Group_499" data-name="Group 499" transform="translate(-2362.994 -761.02)">
+                                            <g id="Group_498" data-name="Group 498">
+                                                <line id="Line_91" data-name="Line 91" x2="30" y2="32" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                                <line id="Line_92" data-name="Line 92" y1="32" x2="30" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!-- Profile sidebar Ends -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3 left-column">
+                                <!-- Profile sidebar starts -->
+                                <div class="col-md-12 profile-sidebar-container desktop-version">
+                                    <div class="mobile-profile-close-container">
+                                        <a href="javascript:;">
+                                            <img src="{{ card.pixie.getAvatar() }}" class="city-maker" alt="{{ card.pixie }}">
+                                        </a>
+                                        <div class="row">
+                                            <div class="col-12 insta-icon">
+                                                <a href="{{ card.pixie.instagram }}" target="_blank">
+                                                    <i class="fab fa-instagram"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 profile-link">
+                                                <a href="javascript:;" class="cta-follow-city-maker" data-id="{{ card.pixie.id }}">
+                                                    <i class="fas fa-user-plus"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 close">
+                                                <a href="javascript:;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32.012" height="33.887" viewBox="0 0 32.012 33.887">
+                                                        <g id="Group_499" data-name="Group 499" transform="translate(-2362.994 -761.02)">
+                                                            <g id="Group_498" data-name="Group 498">
+                                                                <line id="Line_91" data-name="Line 91" x2="30" y2="32" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                                                <line id="Line_92" data-name="Line 92" y1="32" x2="30" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                                            </g>
+                                                        </g>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 p-0 profile-sidebar-image" id="profileSideImageDesktop">
+                                            <div class="img-container">
+                                                <img src="{{ card.pixie.getAvatar()}}" class="city-maker" alt="{{ card.pixie }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 profile-sidebar-content">
+                                            <div class="row">
+                                                <div class="col-md-12 profile-name">
+                                                    <h3>{{ card.pixie }}</h3>
+                                                    <!-- <p class="tags">City-maker confirmée</p> -->
+                                                    <p class="tags">région {{ card.region.name | upper }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 profile-insta-numbers">
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-2 insta-icon">
+                                                            <i class="fab fa-instagram"></i>
+                                                        </div>
+                                                        <div class="col-md-9 col-9 insta-numbers">
+                                                            {% if card.pixie.userInstagramDetailsApi.noOfPosts is defined %}<span>{{ card.pixie.userInstagramDetailsApi.noOfPosts | round}}</span> publications<br />{% endif %}
+                                                            {% if card.pixie.userInstagramDetailsApi.noOfFollowed is defined %}<span>{{ card.pixie.userInstagramDetailsApi.noOfFollowed | round}}</span> abonnés<br />{% endif %}
+                                                            {% if card.pixie.userInstagramDetailsApi.noOfFollowed is defined %}<span>{{ card.pixie.userInstagramDetailsApi.noOfFollowers | round}}</span> abonnements{% endif %}
+                                                        </div>
+                                                        <!-- <div class="col-md-3 col-3 follow">
+                                                            <a href="javascript:;" class="btn btn-fill">Suivre</a>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 profile-sidebar-button">
+                                                    <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" class="btn btn-green btn-block btn-rollover"><span class="text">VOIR SES CARDS ({{ card.pixie.cards | length }})</span><img src="{{ absolute_url(asset('build/images/cards-green.svg')) }}"></a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 achivements">
+                                                    <div class="row">
+                                                        <div class="col-3 image">
+                                                            <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
+                                                        </div>
+                                                        <div class="col-9 about">
+                                                            {{ card.pixie.age }} ans<br /><span>City-maker depuis  {{ card.pixie.createdAt | date('M d') }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-3 image">
+                                                            <img src="{{ absolute_url(asset('build/images/cards-page-strip-cards.svg')) }}">
+                                                        </div>
+                                                        <div class="col-9 about">
+                                                            {{ card.pixie.cards | length }} cards<br />{{ totalLikes }} abonnés
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="row">
+                                                        <div class="col-3 image">
+                                                            <img src="images/cards-page-profile-medal.svg">
+                                                        </div>
+                                                        <div class="col-9 about">
+                                                            CITY-MAKER<br />CONFIRMÉE
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 category-links">
+                                                    <h4>MES CATÉGORIES</h4>
+                                                    <ul class="categories">
+                                                        {% for category in card.pixie.favoriteCategories %}
+                                                            {% if categoryList[category.slug] is defined %}
+                                                            <li>
+                                                                <a href="/recherche/index?categories={{ category.slug }}&start=1&limit=10&search=" class="btn btn-rollover btn-outline-pink"><span class="text">{{ category.name }} ({{ categoryList[category.slug] }})</span><i class="fas {{ category.icon }}"></i></a>
+                                                            </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 profile-sidebar-button">
+                                                    <a href="javascript:;" class="btn btn-green btn-block btn-rollover cta-follow-city-maker {% if app.user is not null and app.user.hasFavoritePixie(card.pixie) %}active{% endif %}" data-id="{{ card.pixie.id }}"><span class="text">
+                                                        {% if app.user is not null and app.user.hasFavoritePixie(card.pixie) %}
+                                                            NE PLUS SUIVRE
+                                                        {% else %}
+                                                            SUIVRE CE CITY-MAKER
+                                                        {% endif %}
+                                                            </span><i class="fas fa-user-plus"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-12 landing-ad">
+                                                        <div class="col-md-9 m-auto">
+                                                            <h4>C’EST LA SAISON DES <img src="{{ absolute_url(asset('build/images/card-page-hash.svg')) }}"> DANS VOTRE RÉGION ?</h4>
+                                                            <p class="tags">Vos adresses & posts nous intéressent, devenez City-Maker Local* <img src="{{ absolute_url(asset('build/images/card-page-logo.svg')) }}"></p>
+                                                            <p class="asterisk">* COMMUNITY MANAGER LOCAL</p>
+                                                            <div class="tag-image">
+                                                                <img src="{{ absolute_url(asset('build/images/card-page-profile-illustration.svg')) }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 find-city-maker">
+                                                    <div class="bg-find-citymaker">
+                                                        <div class="row">
+                                                            <div class="col-md-12 content">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 col-8 m-auto">
+                                                                        <h4>VOUS AUSSI, CONFIEZ VOS RÉSEAUX SOCIAUX À NOS CITY-MAKERS</h4>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-8 col-10 m-auto">
+                                                                        <a href="/services" class="btn btn-white btn-block find-btn" target="_blank">TROUVER MON CITY-MAKER</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row">
+                                                <div class="col-md-2 ml-auto close-profile-sidebar">
+                                                    <a href="javascript:;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="32.012" height="33.887" viewBox="0 0 32.012 33.887">
+                                                            <g id="Group_499" data-name="Group 499" transform="translate(-2362.994 -761.02)">
+                                                                <g id="Group_498" data-name="Group 498">
+                                                                    <line id="Line_91" data-name="Line 91" x2="30" y2="32" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                                                    <line id="Line_92" data-name="Line 92" y1="32" x2="30" transform="translate(2364 761.964)" fill="none" stroke="#103558" stroke-linejoin="round" stroke-width="2.758"/>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Profile sidebar Ends -->
+                            </div>
+                            <div class="col-md-8 py-4 mb-4 right-column">
+                                <div class="row">
+                                    <div class="col-md-4 card-cat-content">
+                                        Catégorie<span>{{ card.categories.first.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 content-container">
+                                        <h1>{{ card.name }}</h1>
+                                        <h2 class="region">{{ card.region.name | upper }}</h2>
+                                        {% if card.tagLine | trim != '' %}
+                                        <div class="strike">
+                                            <img src="{{ card.pixie.getAvatar() }}" class="rounded-circle" alt="{{ card.pixie }}">«  {{ card.tagLine }} »
+                                        </div>
+                                        {% endif %}
+                                        {{ card.content | trim | replace({'<p><br></p>': ''})| raw }}
+                                        <div class="row">
+                                            <div class="col-md-12 about-content">
+                                                <h4>INFOS PRATIQUES</h4>
+                                                {% if card.infos is defined and card.infos | length > 1 %}
+                                                <ul class="infos">
+                                                    {% for info in card.infos %}
+                                                        {% if info.type == "link" %}
+                                                            <li><a href="{{ info.value }}" target="_blank" class="min"> {{ info.label }}</a></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                                <ul class="budget">
+                                                    {% for info in card.infos %}
+                                                        {% if info.type != "link" %}
+                                                            <span>{{ info.label }}</span>
+                                                            <li>{{  info.getFormattedValue() | raw }}</li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                                {% endif %}
+                                                <div class="contact">
+                                                    <ul>
+                                                        <li><span>Adresse :</span> {{ card.address.getInlineAddress }}</li>
+                                                        {% if card.cardDetailsApi.phone is defined and card.cardDetailsApi.phone | trim != '' %}<li><span>Téléphone :</span> {{ card.cardDetailsApi.phone }}</li>{% endif %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 about-content">
+                                                <h4>CATÉGORIES</h4>
+                                                <ul class="category-links">
+                                                    {% for category in card.categories %}
+                                                    <li>
+                                                        <a href="/recherche/index?categories={{ category.slug }}&start=1&limit=10&search=" class="btn btn-rollover btn-outline-pink"><span class="text">{{ category.name }}</span><i class="fas {{ category.icon }}"></i></a>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- fixed folder -->
+
+    </div>
+    <!-- Embedded Google map Wrap Starts -->
+    {% include "v2/_shared/map.html.twig" %}
+    <!-- Embedded Google map Wrap Ends -->
+    {% if cards | length > 0 %}
+    <div class="user-card-page-card-wrap" style="margin-top:15px">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Autres cards qui pourraient vous intéresser :</h4>
+                    <div id="cards" class="row list-of-cards m-t-50 no-autoscroll" data-api-route="https://www.pix.city/api/cards/list">
+                        <div class="col-md-12">
+                            <div class="row cardsMrgn loader-container">
+                                <div class="loader"></div>
+                                <div id="cardsGrid" class="regionCards cards-grid">
+                                    {% for cmCard in cards %}
+                                        {{ macros.cardSingle(cmCard) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div id="api-box" data-api-url="/api/maps/city-maker-card/{{ card.pixie.id }}"
+         data-api-search-url="/api/maps/find-all-card/" data-current-location="true" data-show-sidebar="true" data-cm-id="{{ card.pixie.id }}" data-latitude="{{ card.address.latitude }}" data-longitude="{{ card.address.longitude }}"
+    ></div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFjaLU8H-TpATXcUcDzKQ4w05pCQ5mAg&libraries=places" defer></script>
+
+    <script>
+        var coordinates = {};
+        var captureOutboundLink = function(url) {
+            console.log(url);
+           ga('send', 'event', 'outbound', 'click', url, {
+             'transport': 'beacon',
+             'hitCallback': function(){document.location = url;}
+           });
+        }
+    </script>
+    <script src="{{ asset('build/js/map.js') }}"></script>
+    <script src="https://cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+{% endblock %}

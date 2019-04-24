@@ -1,0 +1,20 @@
+
+
+{% import 'front/_shared/macros.html.twig' as macro %}
+
+<div class="tab-content">
+    <div class="tab-pane active" id="mes-cards">
+        <div class="cards-wrap">
+        		<div class="container">
+            		<h3 class="text-center">Retrouvez vos city-makers favoris et bientôt toutes leurs adresses pour les enregistrer sur votre compte voyageur</h3>
+          	</div>
+      	</div>
+				<div class="my-5 city-makers-wrap">
+						<div class="row d-flex justify-content-around">
+								{% for cityMaker in cityMakers %}
+										{{ macro.cityMakerSingle(cityMaker) }}
+								{% endfor %}
+						</div>
+				</div>
+    </div>
+</div>

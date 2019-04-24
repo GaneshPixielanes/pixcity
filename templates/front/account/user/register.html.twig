@@ -1,0 +1,199 @@
+{% extends 'front/base.html.twig' %}
+
+{% block body_class %}{{ parent() }} creaCompte login user{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% form_theme form 'front/_forms/fields.html.twig' %}
+
+{% block body %}
+
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-md-4 text-left">
+                <a href="{{ path('front_homepage_index') }}"><img id="logo" src="{{ asset('build/images/logo-color.svg') }}" alt="Pix.City"></a>
+            </div>
+            <div class="col-md-8 text-right loginCancel">
+                <a href="{{ path('front_homepage_index') }}">Annuler</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 left">
+
+                <h1>Créez votre compte voyageur</h1>
+                <p class="intro-tab intro-tab-general">
+                    Prenez maintenant 2 minutes pour rentrer vos infos générales.
+                    <br><br>Les champs notés * sont obligatoires.
+                    <br><br>Cliquez sur “suivant” en bas de page.
+                </p>
+                <p class="intro-tab intro-tab-more" style="display: none;">
+                    Plus qu’une étape !
+                    <br><br>Choisissez  les catégories que vous aimeriez découvrir !
+                    <br><br>Elles seront affichées dans votre profil et vous pourrez recevoir des cards inspirantes sur vos catégories préférées.
+                    <br><br>Puis cliquez sur “créer mon compte”
+                </p>
+
+            </div>
+            <div class="col-md-8 right plTabs">
+
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <ul class="nav nav-tabs">
+                            <li class="active tab1"><a href="#general-tab" data-toggle="tab">Général</a></li>
+                            <li class="tab2"><a href="#decouvrir" data-toggle="tab" class="disable" disabled="">Découvrir</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FORMULAIRE -->
+
+
+
+                    {{ form_start(form) }}
+
+                        <div class="tab-content" id="myForm">
+                            <!-- GENERAL -->
+
+                            <div class="tab-pane active tp1" data-slug="general" id="general-tab">
+                                    <div class="form-group col-sm-12 input-container">
+                                        <span class="maj">Informations générales</span>
+
+                                        <div class="portraitCompte fa fa-user user-avatar-field upload-zone">
+                                            <input name="file-avatar" type="file" class="file-input" data-type="single" />
+                                            <div class="field">{{ form_widget(form.avatar.name) }}</div>
+                                            <div class="thumb" style="background-image: url({% if form.avatar.vars.value.id is defined %}{{ form.avatar.vars.value.getUrl() }}{% endif %});"></div>
+                                            <span class="label">
+                                                <span class="text">Ajouter</span>
+                                                <i class="fas fa-spinner fa-spin"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+                                {{ form_row(form.firstname, {'icon': 'fa-user'}) }}
+                                {{ form_row(form.lastname, {'icon': 'fa-user'}) }}
+                                {{ form_row(form.phone, {'icon': 'fa-phone'}) }}
+
+                                <div class="col-sm-6 form-group type-birthdate">
+                                    {{ form_label(form.birthdate) }}
+                                    <div class="input-container input-group">
+                                        {{ form_widget(form.birthdate) }}
+                                    </div>
+                                </div>
+
+
+                                {{ form_row(form.currentLocation, {'icon': 'fa-home'}) }}
+                                {{ form_row(form.gender) }}
+
+                                {{ form_row(form.birthLocation) }}
+
+
+                                {% if socialLogin is null %}
+
+                                    <!-- Données de connexion -->
+                                    <div class="col-sm-12">
+                                        <span class="maj">Données de connexion</span>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {{ form_row(form.email, {'icon': 'fa-at'}) }}
+                                        </div>
+                                    </div>
+
+                                    {{ form_row(form.plainPassword.first, {'icon': 'fa-lock'}) }}
+                                    {{ form_row(form.plainPassword.second, {'icon': 'fa-lock'}) }}
+
+                                {% endif %}
+
+                                <div class="navBtm">
+                                    <button id="next1" class="btn ghostPos next transFx fa fa-long-arrow-right" type="button"><span>Suivant</span></button>
+                                </div>
+
+                            </div>
+
+                            <!-- Qu’aimez vous découvrir? -->
+
+
+                            <div class="tab-pane tp2" data-slug="more" id="decouvrir">
+                                <div class="col-md-12">
+                                    <div class="maj">
+                                        Qu’aimez vous découvrir?
+                                        <div class="count-categories-status">(<span class="current"></span>/<span class="limit">5</span>)</div>
+                                    </div>
+                                </div>
+
+                                {{ form_widget(form.favoriteCategories) }}
+
+
+                                <div class="navBtm">
+                                    <a class="prev" id="prev2" href="#">Précédent</a>
+
+                                    <a class="btn transFx green fa fa-envelope" id="submit-form"><span>Créer mon compte</span></a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    {{ form_row(form._token) }}
+                    {{ form_end(form, {render_rest: false}) }}
+
+
+            </div>
+
+
+        </div>
+    </div>
+    <!--/.wrapper-->
+
+    {% embed "front/_modals/image-crop.html.twig" %}{% endembed %}
+
+
+    <div class="modal plConfirm" id="modal-rgpd" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">Bienvenue !</h5>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <p>Il ne vous reste plus qu’à accepter les conditions générales de Pix.City pour valider votre inscription. Vous êtes à un clic de rejoindre la communauté Pix.City !</p>
+
+                        <p class="cta-cgu-container">
+                            <a href="{{ path('front_pages_index', {slug: 'conditions-generales-dutilisation'}) }}" class="cta-cgu" target="_blank">Conditions Générales</a>
+                        </p>
+
+                        <div class="form-group">
+                            <div class="form-check text-center">
+                                <label class="pl-check-label">
+                                    <input class="pl-check-input" type="checkbox" name="check_legals" value="accept"><span class="check">J'ai lu et j'accepte les conditions générales de vente</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="form-final-submit" class="btn green btn-primary disabled">VALIDER</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% for message in app.flashes('account_creation') %}
+
+        {% embed "front/_modals/register-confirm.html.twig" with {'message': message} %}{% endembed %}
+
+    {% endfor %}
+
+    <div id="api-routes"
+         data-upload-route="{{ path('front_user_ajax_upload_avatar') }}"
+    ></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/front/js/pages/user-register.js') }}"></script>
+{% endblock %}

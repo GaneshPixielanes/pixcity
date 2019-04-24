@@ -1,0 +1,198 @@
+{% extends 'v2/base.html.twig' %}
+
+{% import "front/_shared/macros.html.twig" as macro %}
+{% block body_class %}{{ parent() }} home bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+{% block body %}
+    <div class="home">
+        <!-- Banner -->
+        <div class="banner-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 d-flex align-items-center banner-container">
+                        <div class="row full-width">
+                            <div class="col-md-6">
+                                <h1><span>#</span>EnjoyLocal</h1>
+                                <p class="tagine">
+                                    Le guide des (très) bonnes adresses locales de nos city-makers*
+                                </p>
+                                <form class="form-inline" action="{{ path('front_search_index') }}" method="GET" id="searchForm">
+                                    <input type="hidden" name="start" value="1" />
+                                    <input type="hidden" name="limit" value="10" />
+                                    <input class="form-control mr-sm-2" name="search" type="search" placeholder="Rechercher par restaurant ou région" aria-label="Search">
+                                    <button class="btn btn-pink my-2 my-sm-0" type="" required="required" id="searchFormSubmitButton"><i class="fas fa-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="scroll-downs">
+                            <div class="mousey">
+                                <div class="scroller"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Banner -->
+        <!-- About illustration wrap starts -->
+        <div class="illustration-wrap">
+            <div class="container">
+                <div class="container-illustration-text">
+                    <h4>C'est La Saison	Des <img src="{{  absolute_url(asset('build/images/about-pink-hash.svg')) }}" alt="pix hash"> Dans Votre Region ?</h4>
+                    <p>Devenez City-Maker Local* <img src="{{  absolute_url(asset('build/images/about-pixcity-logo.svg')) }}" alt="pix.city"></p>
+                    <p>*un local, un vrai influenceur qui fait rayonner sa région, sa ville en partageant ses endroits préférés.</p>
+                    <div class="row">
+                        <div class="col-md-4 mt-4">
+                            <a href="/devenez-city-maker" class="btn btn-pink btn-pill btn-block my-2 my-sm-0" target="_blank">En savoir plus</a>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="container-illustration">
+                    <img src="{{  absolute_url(asset('build/images/about-illustration.svg')) }}" alt="About Illustration" />
+                </div>
+            </div>
+        </div>
+        <!-- About illustration wrap Ends -->
+        <!-- Embedded Google map Wrap Starts -->
+        {% include "v2/_shared/map.html.twig" %}
+        <!-- Embedded Google map Wrap Ends -->
+        <!-- Filter Cards Wrap Starts -->
+        <div class="cards-wrap">
+            <div class="container">
+                <div id="cards" class="row list-of-cards m-t-50 no-autoscroll" data-api-route="/api/cards/v2/list">
+                    <div class="col-md-12">
+                        <h2>Les Cards du moment</h2>
+                        <div class="row">
+                            <div class="col-md-12 dropdown">
+                                <a class="dropdown-toggle dnc" href="javascript:;" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                                    Catégories <i class="fas fa-chevron-down"></i>
+                                </a>
+				                        <div id="catsDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+				                            <ul id="filters" class="categories">
+																			<li class="btn btn-rollover btn-pink is-checked all" data-id="0"><span class="text">Tout</span><i class="fas fa-th"></i></li>
+
+																			{% for category in categories %}
+																				{% for cat in category %}
+																					{% if cat.name is defined %}
+																						<li class="btn btn-rollover btn-pink" data-id="{{ cat.id }}" data-slug="{{ cat.slug }}"><span class="text">{{ cat.name }}</span><i class="fas {{ cat.icon }}"></i></li>
+																					{% endif %}
+																				{% endfor %}
+																			{% endfor %}
+				                            </ul>
+				                        </div>
+                            </div>
+                        </div>
+                        <div class="row cardsMrgn loader-container">
+                            <div class="loader"></div>
+                            <div id="cardsGrid" class="regionCards cards-grid cards-filter-result">
+                                {% for card in cards %}
+                                    {{ macro.cardSingle(card) }}
+                                {% endfor %}
+                                <div class="loadCards"></div>
+                                <div class="col-xs-12 text-center">
+                                    <a href="javascript:;" class="btn btn-green btn-rollover" id="showMoreCards"><span class="text">VOIR PLUS DE CARDS</span><i class="fas fa-plus-square"></i></a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="noResult" class="row no-results d-none">
+                        <div class="col-md-12">
+                            <p>Aucune Card dans cette catégorie !</p>
+                            <div class="noCardIco"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Filter Cards Wrap Ends -->
+        <div class="france-map-wrap">
+            <div class="container">
+                <div class="row">
+                    <!-- SVG Map Starts-->
+                    {% include "v2/_shared/homepage_map.html.twig" %}
+                    <!-- SVG Map Ends-->
+                    <!-- Top Cards Starts-->
+                    <div class="container-top-cards col-md-6">
+                        <h4>Top cards France</h4>
+												<div class="dropdown-regions">
+													<a class="dropdown-toggle dnc dropdown-region" href="javascript:;" role="button" id="dropdownMenuRegion" aria-haspopup="true" aria-expanded="false">
+														Regions <i class="fas fa-chevron-down"></i>
+													</a>
+													<div class="dropdown-menu shadow mb-3" id="regDropdown" aria-labelledby="dropdownMenuRegion">
+														{% for region in regions() %}
+															<a class="dropdown-item" href="/{{ region.slug }}" target="_blank">{{ region.name }}</a>
+														{% endfor %}
+													</div>
+												</div>
+                        <div id="cards" class="list-of-cards m-t-50 no-autoscroll">
+                            <div id="cardsGrid" class="regionCards">
+
+                                {% for card in popularCards %}
+                                <div class="top-card-block mb-4">
+
+                                    {{ macro.cardSingle(card) }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Top Cards Ends-->
+                </div>
+            </div>
+        </div>
+        <!-- City maker profile wrap Starts-->
+        <div class="my-5 city-makers-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Devenez City-Maker !</h3>
+                        <p>Partagez vos bonnes adresses et bons plans, améliorez votre popularité sur Instagram et Facebook, monétisez votre influence et votre expertise.</p>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-around">
+                    {% for user in pixies %}
+                        {{ macro.cityMakerSingle(user) }}
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        <div class="col-md-5 profile-actions">
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <a href="/tous-nos-city-makers-locaux-france" class="btn btn-rollover btn-gray btn-block"><span class="text">TOUS LES CITY-MAKERS</span><i class="fas fa-users"></i></a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="/devenez-city-maker" class="btn btn-rollover btn-outline-gray btn-block"><span class="text">DEVENIR CITY-MAKER</span><i class="fas fa-user-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- City maker profile wrap Ends-->
+    </div>
+    <div id="api-box" data-api-url="/api/maps/all-cards"
+         data-api-search-url="/api/maps/find-all-card/" data-current-location="true" data-show-sidebar="true" data-auto-zoom="false" data-country-code="{{ country }}"
+    ></div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFjaLU8H-TpATXcUcDzKQ4w05pCQ5mAg&libraries=places" defer></script>
+
+    <script>
+        var coordinates = {};
+
+    </script>
+    <script src="{{ asset('build/js/map.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+{% endblock %}

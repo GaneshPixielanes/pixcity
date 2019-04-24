@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#ccc">
+
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAk8YGvxDz6pEyaGQE2sfVvbCGREgi_2Qk&libraries=places"></script>
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script>
+        // This example requires the Places library. Include the libraries=places
+        // parameter when you first load the API. For example:
+        // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+        $(document).ready(function()
+        {
+
+            var map;
+            var service;
+            var infowindow;
+
+            function initMap() {
+                var sydney = new google.maps.LatLng(47.667, -2.989);
+
+                infowindow = new google.maps.InfoWindow();
+
+                map = new google.maps.Map(
+                    document.getElementById('maps'), {center: sydney, zoom: 15});
+
+                var request = {
+                    query: 'Galerie Fleuriot in Auray',
+                    fields: ['name', 'geometry'],
+                };
+
+                service = new google.maps.places.PlacesService(map);
+
+                service.findPlaceFromQuery(request, function(results, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        for (var i = 0; i < results.length; i++) {
+                            createMarker(results[i]);
+                        }
+
+                        map.setCenter(results[0].geometry.location);
+                    }
+                });
+
+            function createMarker(place) {
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location
+                });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent(place.name);
+                    infowindow.open(map, this);
+                });
+            }
+
+            initMap();
+        });
+    </script>
+
+    <div id="maps" style="height:400px;width:400px"></div>
+<script src="{{ absolute_url(asset('build/front/js/landing.js')) }}"></script>
+</body>
+</html>

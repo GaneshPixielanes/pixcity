@@ -1,0 +1,104 @@
+{% extends 'admin/page.html.twig' %}
+
+{% block content %}
+
+    <ol class="breadcrumb breadcrumb-col-teal">
+        <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+        <li class="active">{{ 'label.transactions'|trans }}</li>
+    </ol>
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        {{ 'label.transactions'|trans }}
+                    </h2>
+                </div>
+                <div class="body">
+
+                    <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="1" data-defaultsortdir="desc">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" class="">{{ 'label.type'|trans }}</th>
+                            <th scope="col" class="">{{ 'label.status'|trans }}</th>
+                            <th scope="col" class="">{{ 'label.pixie'|trans }}</th>
+                            <th scope="col" class="">{{ 'label.cards'|trans }}</th>
+                            <th scope="col" class="">{{ 'label.price'|trans }}</th>
+                            <th scope="col">{{ 'label.creation'|trans }}</th>
+                            <th scope="col" class="text-center nosort"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in list %}
+                            <tr>
+                                <td>{{ item.id }}</td>
+                                <td><span class="label transaction_{{ item.type }}">{{ ('label.transactiontype.' ~ item.type)|trans }}</span></td>
+                                <td>
+                                    <span class="label transaction_{{ item.status }}">
+                                        {{ ('label.transactiontype.' ~ item.status)|trans }}
+                                    </span>
+                                    {% if item.status == 'banktransfer_success' %}
+                                        <br/>
+                                        {{ item.updatedAt|localizeddate('medium', 'short') }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ item.user }}</td>
+                                <td>
+                                    {% set total = 0 %}
+                                    {% for project in item.projects %}
+                                        {% set total = total + project.price %}
+                                        <div><a href="{{ path('admin_cards_projects_edit', {id: project.id}) }}" class="card-short-name">- {{ project.name }}</a></div>
+                                    {% endfor %}
+                                </td>
+                                <td>{{ total|localizedcurrency('EUR') }}</td>
+                                <td>{{ item.createdAt|localizeddate('medium', 'short') }}</td><td class="text-right">
+                                    <div class="item-actions">
+                                        {% if item.status == 'pixie_asked_check' %}
+                                        <form action="{{ url('admin_transactions_paid_by_check', { id: item.id }) }}" method="post" class="mark-as-paid-form">
+                                            <input type="hidden" name="token" value="{{ csrf_token('paid') }}" />
+                                            <button type="button" title="Paiement effectué" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">credit_card</i></button>
+                                        </form>
+                                        {% endif %}
+
+                                        {% if item.status == 'pixie_asked_banktransfer' %}
+                                            <form action="{{ url('admin_transactions_paid_by_bank_transfer', { id: item.id }) }}" method="post" class="pay-banktransfer-form">
+                                                <input type="hidden" name="token" value="{{ csrf_token('paid') }}" />
+                                                <button type="button" title="Effectuer le paiement par virement" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">credit_card</i></button>
+                                            </form>
+                                        {% endif %}
+
+                                        <a href="{{ path('admin_transactions_invoice', {id: item.id}) }}" style="display: inline-block;" title="Bon de commande" class="btn btn-circle bg-green waves-effect waves-circle waves-float">
+                                            <i class="material-icons">picture_as_pdf</i>
+                                        </a>
+                                        {% if item.status == 'pixie_asked_banktransfer' %}
+                                        {#<a href="{{  path('admin_transactions_invoice_delete', {slug: item.id}) }}" style="display: inline-block;" title="Remove payment request" class="btn btn-circle bg-red waves-effect waves-circle waves-float delete_payment_request">#}
+                                            {#<i class="material-icons">delete_forever</i>#}
+                                        {#</a>#}
+                                            <a href="{{  path('admin_transactions_regenerate', {id: item.id}) }}" style="display: inline-block;" title="Regenerate invoice" class="btn btn-circle bg-yellow waves-effect waves-circle waves-float delete_payment_request">
+                                                <i class="material-icons">loop</i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="10" align="center">{{ 'text.noresults'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/transactions.js') }}"></script>
+{% endblock %}

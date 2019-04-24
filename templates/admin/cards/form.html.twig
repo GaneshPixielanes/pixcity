@@ -1,0 +1,44 @@
+{% extends 'admin/page.html.twig' %}
+
+{% block content %}
+
+    <div>
+        {% if item is defined and item.slug != ''%}
+        <div class="pull-right">
+            <a title="{{ 'action.view_on_website'|trans }}" href="{{ path('front_card_single', {slug: item.slug}) }}" target="_blank" rel="noopener" class="btn btn-circle bg-green waves-effect waves-circle waves-float">
+                <i class="material-icons">open_in_new</i>
+            </a>
+        </div>
+        {% endif %}
+
+        <ol class="breadcrumb breadcrumb-col-teal">
+            <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+            <li><a href="{{ path('admin_cards_list') }}">{{ 'label.cards'|trans }}</a></li>
+            <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+        </ol>
+
+    </div>
+
+    {% embed "admin/cards/_fields.html.twig" with {'form': form} %}{% endembed %}
+
+
+    {% embed "front/_modals/image-crop.html.twig" %}{% endembed %}
+
+    <div id="api-routes"
+         data-departments-route="{{ path('api_departments_list') }}"
+         data-pixies-route="{{ path('api_users_pixies_list') }}"
+         data-upload-route="{{ path('admin_cards_ajax_upload') }}"
+    ></div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/cards.js') }}"></script>
+    <script src="{{ asset('build/admin/js/shared/address.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+{% endblock %}

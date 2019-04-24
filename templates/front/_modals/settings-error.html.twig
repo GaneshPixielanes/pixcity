@@ -1,0 +1,25 @@
+<div class="modal alert-modal show-on-load" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Information</h5>
+            </div>
+            <form>
+                <div class="modal-body ">
+                    <p>
+                        Vous ne pouvez pas changer vos informations bancaires car votre facture <strong>{{ message }}</strong> est en attente de paiement.
+                        Vous pouvez effectuer ce changement uniquement si vous n’avez pas de paiement en attente. Merci de contacter Pix.city pour toute question:
+                        <a href="mailto:{{ options()["email_support"] }}">{{ options()["email_support"] }}</a>
+                    </p>
+
+                </div>
+                <div class="modal-footer">
+                    <a href="mailto:{{ options()["email_support"] }}" class="btn green btn-primary" data-dismiss="modal">J'ai compris</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

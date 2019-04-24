@@ -1,0 +1,36 @@
+{% extends 'admin/pages/notifications/page.html.twig' %}
+
+{% block inner %}
+    <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="4">
+        <thead>
+            <th>Notification ID</th>
+            <th>Message</th>
+            <th>Sent From</th>
+            <th>Sent To</th>
+            <th>Sent On</th>
+            <th>Comments</th>
+        </thead>
+        <tbody>
+            {% for item in list %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.message }}</td>
+                <td>{{ item.sentFrom.firstname~' '~item.sentFrom.lastName }}</td>
+                <td>
+                    {% if(item.sentTo == 0) %}
+                        <span> All Users </span>
+                    {% elseif(item.sentTo == 1) %}
+                        <span> All Pixies </span>
+                    {% else %}
+                        <span> All Voyagers</span>
+                    {% endif %}
+
+                <td>{{ item.createdAt|localizeddate('medium', 'short')  }}</td>
+                <td>{{ item.comments }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+{% endblock %}

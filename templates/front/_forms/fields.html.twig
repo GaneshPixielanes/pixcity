@@ -1,0 +1,284 @@
+
+{% block form_row -%}
+
+    <div class="col-sm-{% if col is defined %}{{ col }}{% else %}6{% endif %} form-row form-group type-{{ form.vars.block_prefixes.1 }} {{ (form.vars.attr.rowClass is defined)?form.vars.attr.rowClass:'' }} {% if (force_error|default(false)) and not valid %} has-error{% endif %}">
+        <label>
+            {{- form_label(form, null, {'label_attr': {'class': 'form-label ' ~ ((required)?"oblig":"")}}) -}}
+        </label>
+
+        {%- if help is not empty -%}
+            <a href="#" class="fa fa-question-circle text-right" data-toggle="tooltip" data-placement="top" title="{{ help | trans }}" data-original-title="tooltip"></a>
+        {%- endif -%}
+
+        <div class="input-container {% if icon is defined %}input-group{% endif %}">
+            {% if icon is defined %}
+                <div class="input-group-addon"><i class="fa {{ icon }}"></i></div>
+            {% endif %}
+            {{- form_widget(form, {'attr': {'class': 'form-control'}}) -}}
+
+            {{- form_errors(form) -}}
+        </div>
+
+    </div>
+
+{%- endblock form_row %}
+
+
+{%- block form_label -%}
+    {% if label is not same as(false) -%}
+        {% if not compound -%}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {%- endif -%}
+        {% if required -%}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required oblig')|trim}) %}
+        {%- endif -%}
+        {% if label is empty -%}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+                }) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
+        {%- endif -%}
+        <{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
+        {%- if translation_domain is same as(false) -%}
+            {{- label -}}
+        {%- else -%}
+            {{- label|trans({}, translation_domain) -}}
+        {%- endif -%}
+        </{{ element|default('label') }}>
+    {%- endif -%}
+{%- endblock form_label -%}
+
+
+{%- block switch_widget -%}
+    <div class="switch">
+        <label>NON<input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} /><span class="lever"></span>OUI</label>
+    </div>
+{%- endblock switch_widget -%}
+
+{%- block checkbox_row -%}
+
+    <div class="form-group">
+        <label class="pl-check-label">
+            {{- form_widget(form, {'attr': {'class': 'form-control'}}) -}}
+            <span class="check">{{- form_label(form, null, {'label_attr': {'class': 'form-label'}}) -}}</span>
+        </label>
+        {{- form_errors(form) -}}
+    </div>
+
+{%- endblock checkbox_row -%}
+
+
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        {% if form is not rootform %}<span class="error-message">{% else %}<div class="alert alert-danger">{% endif %}
+        <ul class="list-unstyled errors-list">
+        {%- for error in errors -%}
+            <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ error.message|trans }}</li>
+        {%- endfor -%}
+    </ul>
+        {% if form is not rootform %}</span>{% else %}</div>{% endif %}
+    {%- endif %}
+{%- endblock form_errors %}
+
+
+{% block file_widget %}
+    {% spaceless %}
+
+        {% if form.vars.preview is defined and form.vars.preview is not null %}
+            {% if form.vars.download is not defined or form.vars.download != true %}
+                <img class="file-preview" src="{{ asset(form.vars.preview) }}" width="70">
+            {% else %}
+                <a href="{{ asset(form.vars.preview) }}" download="download" class="btn bg-pink waves-effect"><i class="material-icons">file_download</i> <span>{{ 'label.download'|trans }}</span></a>
+            {% endif %}
+        {% endif %}
+
+        {{ block('form_widget') }}
+    {% endspaceless %}
+{% endblock %}
+
+
+
+{% block _user_favoriteCategories_widget %}
+
+    <div class="form-group type-categories">
+        <div class="input-container input-group">
+
+            <div {{ block('widget_container_attributes') }}>
+                {% for choice in form.vars.choices %}
+
+                    {% set checked = false %}
+                    {% for value in form.vars.data %}
+                        {% if value.id == choice.data.id %}
+                            {% set checked = true %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="plCheck transFx fa {{ choice.data.icon }} {% if checked %}clicked{% endif %}">
+                        <span class="form-check-label ">
+                            <input class="form-check-input" type="checkbox" {% if checked %} checked="checked"{% endif %} value="{{ choice.data.id }}" name="{{ form.vars.full_name }}[]"><span>{{ choice.data.name }}</span>
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {{- form_errors(form) -}}
+        </div>
+    </div>
+{% endblock %}
+
+{% block _card_categories_widget %}
+
+    <div class="form-group type-categories">
+        <div class="input-container input-group">
+
+            <div {{ block('widget_container_attributes') }}>
+                {% for choice in form.vars.choices %}
+
+                    {% set checked = false %}
+                    {% for value in form.vars.data %}
+                        {% if value.id == choice.data.id %}
+                            {% set checked = true %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="plCheck transFx fa {{ choice.data.icon }} {% if checked %}clicked{% endif %}">
+                        <span class="form-check-label ">
+                            <input class="form-check-input" type="checkbox" {% if checked %} checked="checked"{% endif %} value="{{ choice.data.id }}" name="{{ form.vars.full_name }}[]"><span>{{ choice.data.name }}</span>
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {{- form_errors(form) -}}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block _user_pixie_regions_widget %}
+
+    <div class="form-group type-categories">
+        <div class="input-container input-group">
+
+            <div {{ block('widget_container_attributes') }}>
+                {% for choice in form.vars.choices %}
+
+                    {% set checked = false %}
+                    {% for value in form.vars.data %}
+                        {% if value.id == choice.data.id %}
+                            {% set checked = true %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="plCheck {% if checked %}clicked{% endif %}">
+                        <span class="form-check-label ">
+                            <input class="form-check-input" type="checkbox" {% if checked %} checked="checked"{% endif %} value="{{ choice.data.id }}" name="{{ form.vars.full_name }}[]"><span>{{ choice.data.name }}</span>
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {{- form_errors(form) -}}
+        </div>
+    </div>
+{% endblock %}
+
+
+{%- block choice_widget_collapsed -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+        {% set required = false %}
+    {%- endif -%}
+    <div class="dropdown-container">
+        <div class="dropdown">
+            <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+                {%- if placeholder is not none -%}
+                    <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+                {%- endif -%}
+                {%- if preferred_choices|length > 0 -%}
+                    {% set options = preferred_choices %}
+                    {{- block('choice_widget_options') -}}
+                    {%- if choices|length > 0 and separator is not none -%}
+                        <option disabled="disabled">{{ separator }}</option>
+                    {%- endif -%}
+                {%- endif -%}
+                {%- set options = choices -%}
+                {{- block('choice_widget_options') -}}
+            </select>
+        </div>
+    </div>
+{%- endblock choice_widget_collapsed -%}
+
+
+{% block _user_links_entry_widget %}
+    <li class="col-sm-6">
+        <div class="col-sm-12 form-group collection-row input-group user-link" data-type="{% if form.vars.value is not null %}{{ form.vars.value.type }}{% endif %}">
+            {{ form_widget(form.type, {'attr': {'class': 'classic'}}) }}
+            <label>{% if form.vars.value is not null %}{{ form.vars.value.name }}{% endif %}</label>
+            <div class="input-group input-container">
+                <div class="input-group-addon"><i class="link-icon {% if form.vars.value is not null %}{{ form.vars.value.icon }}{% endif %}"></i></div>
+                {{ form_widget(form.url, {'attr': {'class': 'form-control'}}) }}
+                <div class="input-group-addon"><a href="#" class="delete-item"><i class="fa fa-trash-alt"></i></a></div>
+            </div>
+            {{- form_errors(form) -}}
+        </div>
+    </li>
+
+{% endblock %}
+
+
+{% block _card_medias_entry_widget %}
+    {% set url, type = '', '' %}
+
+    <li class="pull-right no-bg">
+        <div class="col-sm-6">
+        {% for i in range(1,3) %}
+        <div class="row">
+                <div class="input-container" style="margin-bottom:30px">
+                    <input type="text" name="hashtags[]" class="form-control image-hashtags" placeholder="Hashtag {{ i }}" style="display:inline-block;margin-bottom:5px;" required="required"/>
+                </div>
+        </div>
+
+        {% endfor %}
+        </div>
+        <div class="col-sm-6">
+            <textarea class="form-control" name="image-description[]" maxlength="50" style="height:230px;width:130px" placeholder="Écrivez une brève description ici"></textarea>
+        </div>
+    </li>
+    {% if form.vars.value.id is defined %}
+        {% set url = form.vars.value.getUrl() %}
+        {% set type = form.vars.value.getType() %}
+    {% endif %}
+        <li class="img type-{{ type }} pull-right" style="{%  if type == 'image' %}background-image: url({{ url }}){% endif %}">
+            <div class="field">{{ form_widget(form.name) }}</div>
+            <button class="trash delete-item" data-toggle="tooltip" data-placement="bottom" title="Supprimer" data-original-title="Supprimer"></button>
+        </li>
+{% endblock %}
+
+
+{% block _card_infos_entry_widget %}
+
+    {% set icon = '' %}
+
+    {% if form.vars.value.id is defined %}
+        {% set icon = form.vars.value.getIcon() %}
+    {% endif %}
+
+    <div class="card-info-row form-group input-container input-group type-{{ form.type.vars.value }}">
+        <label class="{{ (form.vars.value.getMandatory())?"oblig":"" }}">{{ form.label.vars.value }}</label>
+        <div class="input-group">
+            {% if icon %}<div class="input-group-addon"><i class="fa {{ icon }}"></i></div>{% endif %}
+            {{ form_widget(form.value, {required: form.vars.value.getMandatory(), 'attr': {'class': 'form-control', 'placeholder': ''}}) }}
+
+            <div style="display: none;">
+                {{ form_widget(form.label) }}
+                {{ form_widget(form.type) }}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

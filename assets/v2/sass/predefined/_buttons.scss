@@ -1,0 +1,198 @@
+.btn {
+  font-size: 15px;
+
+  &.btn-rollover {
+    font-size: 15px;
+    position: relative;
+    overflow: hidden;
+
+    .text {
+      position: relative;
+      top: 0;
+      transition: all 0.2s ease;
+    }
+
+    i {
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      font-size: 15px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      color: $white;
+    }
+
+    &:hover {
+      .text {
+        top: 100px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+      }
+
+      i {
+        top: 30%;
+        opacity: 1;
+        visibility: visible;
+        transition: all 0.2s ease;
+      }
+    }
+  }
+}
+
+.btn:focus, a:focus {
+  outline: none;
+}
+
+.btn.disabled {
+  pointer-events: none;
+}
+
+.btn-pink {
+  color: $white;
+  background-color: $pink;
+  border-color: $pink;
+
+  &:hover {
+    color: $pink;
+    background-color: transparent;
+
+    &.btn-rollover {
+      i {
+        color: $pink;
+      }
+    }
+  }
+}
+
+.btn-outline-pink {
+  color: $pink;
+  background-color: transparent;
+  border-color: $pink;
+
+  &:hover {
+    color: $white;
+    background-color: $pink;
+  }
+}
+
+.btn-green {
+  color: $white;
+  background-color: $green;
+  border-color: $green;
+
+  &:hover {
+    color: $green;
+    background-color: transparent;
+
+    &.btn-rollover {
+      i {
+        color: $green;
+      }
+    }
+  }
+}
+
+.btn-outline-green {
+  color: $green;
+  background-color: transparent;
+  border-color: $green;
+
+  &:hover {
+    color: $white;
+    background-color: $green;
+  }
+}
+
+.btn-gray {
+  color: $white;
+  background-color: $gray;
+  border-color: $gray;
+
+  &:hover {
+    color: $gray;
+    background-color: transparent;
+
+    &.btn-rollover {
+      i {
+        color: $gray;
+      }
+    }
+  }
+}
+
+.btn-outline-gray {
+  color: $gray;
+  background-color: transparent;
+  border-color: $gray;
+
+  &:hover {
+    color: $white;
+    background-color: $gray;
+  }
+}
+
+.btn-pill {
+  border-radius: 25px !important;
+}
+
+.btn-icon-right {
+  text-align: left;
+  padding-right: 45px;
+
+  img, i {
+    position: absolute;
+    top: 8px;
+    right: 30px;
+  }
+
+  &:hover {
+    img, i {
+      color: $white;
+    }
+  }
+
+  &.btn-rollover {
+    i {
+      left: 50%;
+    }
+  }
+}
+
+.favourite-check {
+  .p-on {
+    color: $pink;
+  }
+}
+
+.like-check {
+  .p-on {
+    color: $blue;
+  }
+}
+
+#more {
+  display: none;
+}
+
+#moreBtn {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  background: $pink;
+}
+
+.bootstrap-select .bs-ok-default:after {
+  color: $pink;
+}
+
+.bootstrap-select .dropdown-menu li a {
+  font-size: 14px;
+}

@@ -1,0 +1,9 @@
+twig:
+    paths: ['%kernel.project_dir%/templates']
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    exception_controller: App\Controller\CustomExceptionController::showAction
+    globals:
+        google_analytics_id: '%google_analytics_id%'
+        google_maps_api_key: '%google_maps_api_key%'
+        pathToPublic: "%kernel.project_dir%/public"

@@ -1,0 +1,8 @@
+@mixin backgroundImage($filename) {
+  background-image: url(#{$imageDir}#{$filename});
+}
+
+@function em($target, $context: $baseFontSize) {
+  @if $target == 0 { @return 0 }
+  @return $target / $context + 0em;
+}

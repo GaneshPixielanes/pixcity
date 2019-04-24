@@ -1,0 +1,94 @@
+{% extends 'front/base.html.twig' %}
+
+{% block body %}
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                {% if header_has_search is defined %}<button type="button" id="btnTSearch" class="navbar-toggle" data-toggle="collapse" data-target="#searchNavBar"><span class="fa fa-search"></span></button>{% endif %}
+                <a class="navbar-brand" href="{{ path('front_homepage_index') }}"><img src="{{ asset('build/images/logo-color.svg') }}" alt="Pix.City" /></a>
+            </div>
+
+            {% if header_has_search is defined %}
+                {% include 'front/_shared/search.html.twig' %}
+            {% endif %}
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="defaultNavbar1">
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li id="connexion" class="btn transFx fa fa-arrow-square-right {% if header_has_search is defined %}btn-circle{% endif %}">
+                            <a href="{{ path('front_login') }}">
+                                {% if header_has_search is defined %}
+                                    <i class="fa fa-user"></i>
+                                {% else %}
+                                    <span>{{ 'action.login'|trans }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li id="accountMenu" class="dropdown arrow">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="background-image: url({{ app.user.getAvatarUrl() | imagine_filter('user_avatar') }})"></a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% if app.user.viewMode == "pixie" %}
+                                    <li id="accountMenuTitle">
+                                        Mon compte Pixie
+                                        {% if is_granted('ROLE_USER') and is_granted('ROLE_PIXIE') %}
+                                            <a href="{{ path('front_user_switch_mode') }}" class="switch-account-mode" data-toggle="tooltip" data-placement="left" title="Passer en navigation voyageur"><i class="fa fa-retweet"></i></a>
+                                        {% endif %}
+                                    </li>
+                                    <li><a href="{{ path('front_pixie_account_cards_projects') }}"><i class="fa fa-inbox-in"></i>Demandes</a></li>
+                                    <li><a href="{{ path('front_pixie_account_cards_status') }}"><i class="fa fa-pause-circle"></i>Mes Cards en attente</a></li>
+                                    <li><a href="{{ path('front_pixie_account_cards_validated') }}"><i class="fa fa-check-circle"></i>Mes Cards validées</a></li>
+                                    <li><a href="{{ path('front_pixie_account_cards_payments') }}"><i class="fa fa-euro-sign"></i>Mes rémunérations</a></li>
+                                    <li><a href="{{ path('front_pixie_account_settings') }}"><i class="fa fa-cog"></i>Paramètres</a></li>
+                                {% else %}
+                                    <li id="accountMenuTitle">
+                                        Mon compte voyageur
+                                        {% if is_granted('ROLE_USER') and is_granted('ROLE_PIXIE') %}
+                                            <a href="{{ path('front_user_switch_mode') }}" class="switch-account-mode" data-toggle="tooltip" data-placement="left" title="Passer en navigation Pixie"><i class="fa fa-retweet"></i></a>
+                                        {% endif %}
+                                    </li>
+                                    <li class="cards"><a href="{{ path('front_user_account_cards') }}"><i></i>Mes Cards</a></li>
+                                    <li><a href="{{ path('front_user_account_agendas') }}"><i class="fa fa-calendar-alt"></i>Mes Agendas</a></li>
+                                    <li><a href="{{ path('front_user_account_pixies') }}"><i class="fa fa-user"></i>Mes Pixies</a></li>
+                                    <li><a href="{{ path('front_user_account_settings') }}"><i class="fa fa-cog"></i>Paramètres</a></li>
+                                {% endif %}
+                                <li><a href="{{ path('front_logout') }}"><i class="fa fa-power-off"></i>Déconnexion</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+
+                    {% if not is_granted('ROLE_PIXIE') %}
+                        <li id="inscription" class="btn ghost transFx fa fa-user-plus">
+                            <a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):path('front_user_register_mode') }}">
+                                {% if is_granted('ROLE_USER') %}
+                                    <span>{{ 'action.register_pixie'|trans }}</span>
+                                {% else %}
+                                    <span>{{ 'action.register'|trans }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    {% block page_content %}
+
+    {% endblock %}
+
+    <!-- FOOTER -->
+
+    <footer class="{% block footer_class %}{% endblock %}">
+        {% embed "front/_shared/footer.html.twig" with {'footer_class': 'simpleFooter'} %}{% endembed %}
+    </footer>
+
+{% endblock %}

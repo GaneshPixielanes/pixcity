@@ -1,0 +1,43 @@
+{% extends 'admin/page.html.twig' %}
+
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{% block content %}
+
+    <ol class="breadcrumb breadcrumb-col-teal">
+        <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+        <li><a href="{{ path('admin_options_list') }}">{{ 'label.options'|trans }}</a></li>
+        <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+    </ol>
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        {{ 'label.options'|trans }}
+                    </h2>
+                </div>
+                <div class="body">
+
+                    {{ form_start(form) }}
+
+                        {{ form_row(form.label) }}
+                        {{ form_row(form.value) }}
+
+                        <div class="flex-row-space-between">
+                            <a href="{{ path('admin_options_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+                            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+                        </div>
+
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

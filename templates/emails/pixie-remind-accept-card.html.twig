@@ -1,0 +1,25 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+<p>
+    Bonjour {{ firstname }},
+</p>
+<p>
+    On espère que tout va bien pour toi :) Tu n'as toujours pas accepté la card qui t'a été attribuée il y a 3 jours… et malheureusement, dans un souci d’équité envers la communauté, tu ne pourras pas en garder la primeur plus de 24 heures après ce mail.
+
+</p>
+<p>
+    Alors on compte sur toi pour l’accepter, parce qu’à priori elle est bien à toi cette CARD :)
+
+</p>
+<p>
+    <a href="{{ url('front_pixie_account_cards_projects') }}">[Aller dans mon espace]</a>
+
+</p>
+<p>
+    L’équipe Pix.City
+
+</p>
+{% endblock %}
+
+

@@ -1,0 +1,45 @@
+{% extends 'admin/menus/menus.html.twig' %}
+
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{% block breadcrumb %}
+    <li><a href="{{ path('admin_menus_list') }}">{{ 'label.menus'|trans }}</a></li>
+    <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.slug) }}
+
+        <h3>Liens du menu :</h3>
+        <ul class="repeater-container menu-items-collection" data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
+
+            {% for item in form.items %}
+                {{ form_widget(item) }}
+            {% endfor %}
+
+            <li class="align-center add-item-container"><a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float add-item"><i class="material-icons">add</i></a></li>
+        </ul>
+
+        <div class="flex-row-space-between">
+            <a href="{{ path('admin_menus_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+        </div>
+
+        {{ form_row(form._token) }}
+
+    {{ form_end(form, {render_rest: false}) }}
+
+    <div id="api-routes"
+         data-sort-route="{{ path('admin_menus_sort') }}"
+    ></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/menus.js') }}"></script>
+{% endblock %}

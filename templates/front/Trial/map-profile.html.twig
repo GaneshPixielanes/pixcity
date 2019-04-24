@@ -1,0 +1,150 @@
+{% extends 'front/page.html.twig' %}
+
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block page_content %}
+<div class="row" style="margin-top: 100px; padding:50px;">
+
+    <h2>Personal Info</h2>
+    <div class="col-md-4">
+                <div class="portraitPixie" style="background-image: url({{ user.getAvatarUrl() | imagine_filter('user_avatar_large') }})">
+                </div>
+    </div>
+    <div class="col-md-8">
+            <table>
+                <tr>
+                    <th>Name</th><td>{{ user.firstname~' '~user.lastname }}</td>
+                </tr>
+                <tr>
+                    {% for link in user.links %}
+                        {% if link.type == 'instagram' %}
+                            <th>IG</th><td>{{ link.url }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <th>J'aime</th>
+                    <td>{{ user.pixie.likeText }}</td>
+                    <th>J'aime Pas</th>
+                    <td>{{  user.pixie.dislikeText }}</td>
+                </tr>
+                <tr>
+                </tr>
+                <tr class="text-center">
+                    <td>123123 <strong>publications</strong> </td><td>12312312 <strong>abonnes</strong></td><td>2131212 <strong>abonnements</strong></td>
+                </tr>
+                <tr>
+                    <th>Favorited no.</th><td>{{ totalLikes }}</td>
+                    <th>Followers</th><td>{{ user.followed }}</td>
+                </tr>
+            </table>
+    </div>
+</div>
+    <div class="row" style="margin-top:200px;">
+        <h2>Regions</h2>
+        <div class="col-md-4">
+            {% for region in regions %}
+                <a href="#" class="btn btn-success btn-md"> {{ region.name }}</a>
+            {% endfor %}
+        </div>
+        <div class="col-md-8">
+            <h2>Cards</h2>
+        <div id="cardsGrid" class="regionCards cards-grid">
+            {% for card in cards %}
+                {{ macro.cardItem(card) }}
+            {% endfor %}
+        </div>
+        </div>
+        <div class="col-md-12" style="margin-top:20px">
+            <h2>Categories</h2>
+
+            {% for category in user.favoriteCategories %}
+                <a href="#" class="btn btn-success">{{ category.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+<div class="row">
+    <div class="col-md-8">
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        <div class="col-md-10" id="map" style="width:900px;height:600px;">
+
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    <th>Google</th>
+                    <th>Pix City</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td id="google-name"></td>
+                    <td id="pc-name"></td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td id="google-address"></td>
+                    <td id="pc-address"></td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td id="google-phone"></td>
+                    <td id="pc-phone"></td>
+                </tr>
+                <tr>
+                    <th>Ratings</th>
+                    <td id="google-ratings"></td>
+                    <td id="pc-ratings"></td>
+                </tr>
+                <tr>
+                    <th>Website</th>
+                    <td id="google-website"></td>
+                    <td id="pc-website"></td>
+                </tr>
+                <tr>
+                    <th>Categories</th>
+                    <td id="google-category"></td>
+                    <id id="pc-category"></id>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+ <script src="{{ asset('build/front/js/pages/map.js') }}"></script>
+ <script>
+     $(document).ready(function()
+     {
+        $(document).on('click','.load-card-details',function(e)
+        {
+            console.log('clicked');
+            e.preventDefault();
+            var id = $(this).attr('data-card-id');
+            // $.get('/api/maps/card-details/'+id, function(result)
+            // {
+            //     // var result = JSON.parse(result);
+            //     console.log(result);
+            //     $('#google-name').text(result.name);
+            //     $('#google-address').text(result.address);
+            //     $('#google-phone').text(result.phone);
+            //     $('#google-ratings').text(result.rating);
+            //     $('#google-website').text(result.website);
+            //     $('#google-category').text(result.category);
+            // });
+        });
+     });
+ </script>
+{% endblock %}
+
+{% block javascripts_footer %}
+ <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places" async defer></script>
+{% endblock %}

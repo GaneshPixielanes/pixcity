@@ -1,0 +1,46 @@
+{% import "front/_shared/macros.html.twig" as macro %}
+
+<div class="collection collc collection-{{ collection.id }}" data-id="{{ collection.id }}" data-url="{{ absolute_url(path('front_collection_index', {slug: collection.uuid})) }}">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{{ path('front_collection_index', {slug: collection.uuid}) }}"><h2 class="collection-name">{{ collection.name }}</h2></a>
+            <button class="editColl fa fa-edit cta-edit-collection" data-id="{{ collection.id }}"></button>
+            <button class="deleteColl fa fa-trash-alt cta-delete-collection" data-id="{{ collection.id }}"></button>
+
+            <div class="btnColl">
+                <div id="collComments">
+                    <button class="fa fa-file-alt cta-note-popover" data-placement="bottom" data-toggle="popover" data-container="body" type="button" data-html="true" href="#">
+                        {% if collection.notes | length > 0 %}<span>{{ collection.notes | length }}</span>{% endif %}
+                    </button>
+
+                    <div class="hide note-popover notes-container">
+                        {% embed "front/_shared/notes.html.twig" with {'id': collection.id, 'notes': collection.notes} %}{% endembed %}
+                    </div>
+                </div>
+                <div id="collShare">
+                    <button class="fa fa-share cta-share-popover" data-placement="bottom" data-toggle="popover" data-container="body" type="button" data-html="true" href="#"></button>
+
+                    <div class="hide share-popover">
+                        <button class="fab fa-facebook-f social-share" data-sharer="facebook" data-title="{{ collection.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: collection.uuid})) }}"></button>
+                        <button class="fab fa-twitter social-share" data-sharer="twitter" data-title="{{ collection.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: collection.uuid})) }}"></button>
+                        <button class="fab fa-linkedin social-share" data-sharer="linkedin" data-title="{{ collection.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: collection.uuid})) }}"></button>
+                        <button class="fab fa-whatsapp social-share" data-sharer="whatsapp" data-title="{{ collection.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: collection.uuid})) }}"></button>
+                        <button class="fa fa-envelope social-share" data-sharer="email" data-to=" " data-title="{{ collection.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: collection.uuid})) }}"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row cardsMrgn">
+                <div class="">
+                    {% for card in collection.cards %}
+                        {{ macro.cardItem(card) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

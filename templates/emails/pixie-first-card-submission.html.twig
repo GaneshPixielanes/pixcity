@@ -1,0 +1,15 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+<p>
+    Bonjour {{ firstname }},
+</p>
+<p>
+    Ton premier sujet nous convient parfaitement, tu peux désormais voir ta demande de CARD dans ton espace CITY MAKER sur le site, au niveau MES DEMANDES.
+</p>
+<p>
+    <a href="{{ url('/profil-pixie-local/'~firstname~'-'~lastname~'/'~id) }}">[Aller dans mon espace]</a>
+</p>
+
+
+{%  endblock; %}

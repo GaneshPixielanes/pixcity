@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="604px" height="600px" viewBox="0 0 604 600" style="enable-background:new 0 0 604 600;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#038090;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:0.1,20;}
+	.st1{fill:#FFFFFF;}
+	.st2{fill:#EF5285;}
+</style>
+<title>France</title>
+<desc>Created with Sketch.</desc>
+<image style="overflow:visible;enable-background:new    ;" width="768" height="764" id="Bitmap" xlink:href="3AE40BED.png"  transform="matrix(0.7852 0 0 0.7853 0 0)">
+</image>
+<path id="Line" class="st0" d="M107,191c0,0,16.1,30.4,39.7,49.8s55.8,35.7,55.8,35.7"/>
+<g id="hiking" transform="translate(108.000000, 110.000000)">
+	<path id="Shape" class="st1" d="M106,166.1c1.4,0,2.5-1.1,2.5-2.5c0-1.4-1.1-2.5-2.5-2.5c-1.4,0-2.5,1.1-2.5,2.5
+		C103.5,164.9,104.6,166.1,106,166.1z"/>
+	<path id="Shape_1_" class="st1" d="M115.1,174.1c0-0.7-0.6-1.3-1.3-1.3h-4.4l-2.5-3.5l0-0.1c0.1-0.7-0.1-1.4-0.5-1.9
+		c-0.4-0.5-1-0.9-1.7-1c-0.7-0.1-1.5,0.1-2,0.6V164c0-0.5-0.4-0.9-0.9-0.9h-2.5c-0.5,0-0.9,0.4-0.9,0.9v10.9c0,1.3,1,2.4,2.3,2.6
+		l-0.2,0.5l-1.5,5.8l-3.5,4.7c-0.5,0.7-0.4,1.7,0.3,2.2c0.3,0.2,0.6,0.3,0.9,0.3c0.5,0,1-0.2,1.3-0.6l3.7-4.9
+		c0.1-0.2,0.2-0.3,0.3-0.5l1.1-4l2.9,2.6l-0.4,5.7c-0.1,0.9,0.6,1.6,1.5,1.7c0,0,0.1,0,0.1,0c0.8,0,1.5-0.6,1.6-1.5l0.4-6.5
+		c0-0.5-0.2-0.9-0.5-1.3l-3-2.7l0.9-5.9l1.2,1.8c0.2,0.3,0.6,0.6,1.1,0.6h4.6l0.1,15c0,0.3,0.2,0.5,0.5,0.5c0.3,0,0.5-0.2,0.5-0.5
+		l-0.1-15.1C114.8,175.1,115.1,174.7,115.1,174.1z"/>
+</g>
+<circle id="Oval-3-Copy" class="st2" cx="105" cy="191" r="10"/>
+</svg>

@@ -1,0 +1,7 @@
+_errors:
+    resource: '@TwigBundle/Resources/config/routing/errors.xml'
+    prefix: /admin/_error
+
+#coresphere_console:
+#    resource: .
+#    type: extra

@@ -1,0 +1,83 @@
+{% extends 'front/page.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} WallCards-template bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+    <div class="topBanner container-fluid">
+        <div class="row">
+            <ul class="breadcrumb">
+                <li><a href="{{ path('front_homepage_index') }}">{{ 'label.homepage'|trans }}</a></li>
+                <li><a>{{ 'label.collection'|trans }}</a></li>
+            </ul>
+
+            <div class="col-md-12 text-center">
+                <h1>
+                    {{ collection.name }}
+                </h1>
+
+                {% if collection.description %}
+                <div id="introWallCards">
+                    {{ collection.description | raw }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="wallcards-container container-fluid">
+
+        {% if collection.cards | length > 0 %}
+
+            <div class="list-of-cards no-autoscroll">
+
+                <div class="col-md-12">
+                    <a href="#" id="toggleMap" class="btn green transFx fa fa-map pull-right"><span>{{ 'label.map'|trans }}</span></a>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 toggle">
+                        <div class="row cardsMrgn loader-container">
+                            <div class="loader"></div>
+                            <div id="cardsGrid" class="regionCards cards-grid">
+                                {% for card in collection.cards %}
+                                    {{ macro.cardItem(card) }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="map col-md-5">
+                        <div id="map-france"></div>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block footer_class %}simpleFooter{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var mapSettings = {
+            icon: "{{ asset('build/images/marker.png') }}",
+            iconActive: "{{ asset('build/images/marker_active.png') }}",
+        }
+    </script>
+    <script src="{{ asset('build/front/js/pages/search.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+{% endblock %}

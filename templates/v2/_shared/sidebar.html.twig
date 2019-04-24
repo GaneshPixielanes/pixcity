@@ -1,0 +1,314 @@
+<a href="javascript:;" class="close-sidebar" ><i class="fas fa-times"></i></a>
+<div class="col-md-12 py-3 map-sidebar" style="height:100% !important; " data-simplebar>
+	<div class="row">
+		{#
+		{% if card.name | length < 27 %}
+			<div class="col-md-12 col-12 mb-2 sidebar-header" data-toggle="tooltip" title="{{ card.name }}">{{ card.name  }}</div>
+		{% else %}
+			<div class="col-md-12 col-12 mb-2 sidebar-header" data-toggle="tooltip" title="{{ card.name }}">
+				{{ card.name | slice(0,26)}}
+				<br/>
+				...
+			</div>
+		{% endif %} #}
+		<div class="col-md-12 col-12 mb-2 sidebar-header" data-toggle="tooltip" title="{{ card.name }}" style="font-size:19px !important">{{ card.name   }}</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-12 mb-2 marker-about">
+			<i class="fas {{ card.categories.first.icon }}"></i> {{ card.categories.first.name }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 mb-2 sidebar-view-images">
+			<div class="sidebar-slider">
+				{% for banner in card.medias %}
+					{% if loop.index < 6 %}
+						<div class="sidebar-slider-image"><img src="{{ banner.url | imagine_filter('bg_card_item_without_rotate') }}"></div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 mb-3 register-button">
+			<a href="/{{ card.slug~'.html' }}" class="btn btn-pink btn-block" target="_blank">
+				DÉCOUVRIR L’EXPÉRIENCE SUR PIX.CITY
+				<svg xmlns="http://www.w3.org/2000/svg" width="22.737" height="21.104" viewBox="0 0 22.737 21.104">
+					<g id="PIX_CARDS_ICON" data-name="PIX CARDS ICON" transform="translate(-129 -550)">
+						<path id="Path_950" data-name="Path 950" d="M119.914,59.76l-6.78-.01a1.245,1.245,0,0,0-1.263,1.243l-.021,12.615a1.258,1.258,0,0,0,1.255,1.253l6.78.01h.054a1.25,1.25,0,0,0,1.212-1.237l.021-12.626A1.253,1.253,0,0,0,119.914,59.76Zm.072,13.868c0,.041-.059.08-.1.074l-6.78-.01a.1.1,0,0,1-.095-.085l.023-12.615a.1.1,0,0,1,.095-.085h.005l6.78.018a.088.088,0,0,1,.1.08Z" transform="translate(30.565 490.892)" fill="#ffffff"/>
+						<path id="Path_951" data-name="Path 951" d="M73.507,99.953a.573.573,0,0,0-.788.226l-1.009,1.848a.1.1,0,0,1-.123.036L60.794,95.522a.1.1,0,0,1-.018-.123L63,91.61a.581.581,0,0,0-.994-.6L59.782,94.8a1.234,1.234,0,0,0-.151.94,1.2,1.2,0,0,0,.56.778l10.793,6.541a1.23,1.23,0,0,0,.634.18,1.289,1.289,0,0,0,1.1-.626l1.024-1.866A.581.581,0,0,0,73.507,99.953Z" transform="translate(69.403 467.866)" fill="#ffffff"/>
+						<path id="Path_952" data-name="Path 952" d="M80.366,73.361a.6.6,0,0,0,.506.288.616.616,0,0,0,.29-.08.586.586,0,0,0,.213-.8L75.034,61.86a.09.09,0,0,1,.041-.118l5.861-3.409a.577.577,0,0,0,.208-.793.571.571,0,0,0-.793-.208l-5.859,3.4a1.283,1.283,0,0,0-.585.762,1.238,1.238,0,0,0,.118.95Z" transform="translate(58.801 492.751)" fill="#ffffff"/>
+					</g>
+				</svg>
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 mt-1 mb-3 py-3 sidebar-actions">
+			<div class="row">
+				<div class="col-md-3 action-links like-check">
+					<div class="pretty p-icon p-toggle p-plain p-bigger">
+						<input type="checkbox" class="cta-like-card" data-id="{{ card.id }}" {% if app.user is not null and app.user.hasLike(card) %}checked{% endif %}/>
+						<div class="state p-off">
+							<i class="icon far fa-thumbs-up"></i>
+						</div>
+						<div class="state p-on p-primary-o">
+							<i class="icon fas fa-thumbs-up"></i>
+						</div>
+					</div>
+					<p>J’AIME</p>
+				</div>
+				<div class="col-md-6 action-links">
+					<a href="javascript:;" class="cta-favorite-card" data-id="{{ card.id }}" >
+						<img src="{{ absolute_url(asset('build/images/cards-gray.svg')) }}">
+						{% if app.user is not null and app.user.hasFavorite(card) %}
+							<p>RETIRER DE MES FAVORIS</p>
+						{% else %}
+							<p>ENREGISTRER LA CARD</p>
+						{% endif %}
+					</a>
+				</div>
+
+				<div class="col-md-3 action-links">
+					<a href="javascript:;" data-toggle="dropdown"  class="dropdown-toggle cta-share-popover">
+						<img src="{{ absolute_url(asset('build/images/share-sidebar.svg')) }}">
+						<p>PARTAGER</p>
+					</a>
+					<div class="dropdown-menu shadow" data-container="body">
+						<div class="dropdown-block">
+							<a class="dropdown-item cta-share-popover" href="javascript:;" data-sharer="facebook" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}">
+								<i class="fab fa-facebook-f"></i>
+							</a>
+							<a class="dropdown-item" href="mailto:?subject={{ card.name }} à tester !&body=Salut,%0d%0a%0d%0aJe te partage cette adresse:&nbsp;{{ card.name }}%0d%0a%0d%0a%0d%0a{{ absolute_url(path('front_collection_index', {slug: card.slug})) }}%0d%0a%0d%0a%0d%0aA+">
+								<i class="far fa-envelope"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<h4 class="col-md-12 pixy-rank">Notre City Maker</h4>
+	</div>
+	<div class="row">
+		<div class="col-md-12 mb-5 pixie-profile-info">
+			<div class="row">
+				<div class="col-md-3 d-flex align-items-center pixie-image">
+					<img src="{{ card.pixie.avatar.url | imagine_filter('user_avatar') }}" class="rounded-circle" alt="Pixie Name">
+				</div>
+				<div class="col-md-9 pixie-info">
+					<div class="row">
+						<div class="col-md-7">
+							<p class="mb-0 insta-name">{% if(card.pixie.userInstagramDetailsApi != null) %}{{ card.pixie.userInstagramDetailsApi.name }}{% else %}{{ card.pixie.firstname~' '~card.pixie.lastname }}{% endif %}</p>
+							<p class="mb-1 insta-loc">{{ card.region.name }}</p>
+
+							<p class="mb-1 insta-name"><i class="fa fa-birthday-cake" aria-hidden="true"></i>    {{ card.pixie.age }}</p>
+							<p class="mb-1 insta-name"><i class="fa fa-address-book" aria-hidden="true"></i>    {% if card.pixie.pixie.billing.address.zipcode is defined %}{{ card.pixie.pixie.billing.address.zipcode }}{% else %} &nbsp;{% endif %}</p>
+						</div>
+						<div class="col-md-5 subscribe">
+							<a href="{{ card.pixie.instagram }}" class="btn btn-primary btn-fill btn-block btn-icon-right" target="_blank">S’abonner <i class="fab fa-instagram"></i></a>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 pixie-insta-numbers">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="row">
+								<div class="col-md-6 grayed">
+									<span><img src="{{ absolute_url(asset('build/images/cards-light-gray.svg')) }}"></span>{{ card.pixie.cards | length}}
+								</div>
+								<div class="col-md-6 grayed">
+									<span><img src="{{ absolute_url(asset('build/images/vote-thumb.svg')) }}"></span>{{ details['total_likes'] }}
+								</div>
+							</div>
+						</div>
+						{% if card.pixie.userInstagramDetailsApi.noOfPosts is defined and card.pixie.userInstagramDetailsApi.noOfPosts != '' %}
+						<div class="col-md-3 blacked">
+							<span>{{ card.pixie.userInstagramDetailsApi.noOfPosts }}</span>publications
+						</div>
+						{% endif %}
+						{% if card.pixie.userInstagramDetailsApi.noOfFollowed is defined and card.pixie.userInstagramDetailsApi.noOfFollowed != '' %}
+						<div class="col-md-2 blacked">
+							<span>{{ card.pixie.userInstagramDetailsApi.noOfFollowed | round }}</span>abonnés
+						</div>
+						{% endif %}
+						{% if card.pixie.userInstagramDetailsApi.noOfFollowers is defined and card.pixie.userInstagramDetailsApi.noOfFollowers != '' %}
+						<div class="col-md-4 blacked">
+							<span>{{ card.pixie.userInstagramDetailsApi.noOfFollowers | round }}</span>abonnements
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		{% if  card.cardDetailsApi is not null %}
+		<div class="col-md-12 pix-place">
+			<h4>{{ card.cardDetailsApi.name}}</h4>
+			<div class="row">
+				<div class="col-md-12 mb-3 pix-place-info">
+					<ul>
+						{% if card.CardDetailsApi.address is not null and card.CardDetailsApi.address != ''%}
+							<li data-toggle="tooltip" title="{{ card.CardDetailsApi.address }}"><span><img src="{{ absolute_url(asset('build/images/sidebar-add-pin.svg')) }}" /></span>{{ card.CardDetailsApi.address }}</li>
+						{% endif %}
+						{% if card.CardDetailsApi.website is not null and card.CardDetailsApi.website != ''%}
+						<li data-toggle="tooltip" title="{{ card.CardDetailsApi.website }}"><span><img src="{{ absolute_url(asset('build/images/sidebar-add-site.svg')) }}" /></span><a href="{{ card.CardDetailsApi.website }}" target="_blank">{{ card.CardDetailsApi.website }}</a></li>
+						{% endif %}
+						{% if card.CardDetailsApi.phone is not null and card.CardDetailsApi.phone != ''%}
+						<li><span><img src="{{ absolute_url(asset('build/images/sidebar-add-call.svg')) }}" /></span><a href="tel:{{ card.CardDetailsApi.phone }}">{{ card.CardDetailsApi.phone }}</a></li>
+						{% endif %}
+						{% if details['open_status'] is not null and details['open_status'] != ''%}
+						<li><span><img src="{{ absolute_url(asset('build/images/sidebar-add-event.svg')) }}" /></span>{{ details['open_status'] }}</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+
+			<!-- <div class="row">
+				<div class="col-md-12 pix-place-about">
+					<h5>La Grèce à Paris</h5>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas vitae scel<span id="dots">...</span><span id="more">erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta.</span></p>
+					<a href="javascript:;" onclick="myFunction()" id="moreBtn">Lira la suite</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 my-3 pix-place-amenities">
+					<div class="row">
+						<div class="col-md-3 mb-2"><span><img src="{{ absolute_url(asset('build/images/cat-pets.svg')) }}" /></span>Animaux acceptés</div>
+						<div class="col-md-3 mb-2"><span><img src="{{ absolute_url(asset('build/images/cat-wifi.svg')) }}" /></span>Wifi gratuit</div>
+						<div class="col-md-3 mb-2"><span><img src="{{ absolute_url(asset('build/images/cat-group.svg')) }}" /></span>Groupes</div>
+						<div class="col-md-3 mb-2"><span><img src="{{ absolute_url(asset('build/images/cat-parking.svg')) }}" /></span>Parking</div>
+					</div>
+				</div>
+			</div> -->
+
+		</div>
+		{% endif %}
+	</div>
+	<!-- <div class="row">
+		<div class="col-md-12 pix-place-action">
+			<h4>Réserver une table<span class="badge badge-primary">Annonce</span></h4>
+			<div class="row">
+				<div class="col-md-12 pix-place-dates">
+					<div class="row">
+						<div class="col-md-5">
+							<label>Jour souhaité</label>
+							<input type="text" class="form-control" id="reserveDate" placeholder="dd/mm/yyyy" />
+						</div>
+						<div class="col-md-4">
+							<label>Heure</label>
+							<input type="time" class="form-control" id=reserveTime/>
+						</div>
+						<div class="col-md-3">
+							<label>Couverts</label>
+							<input type="number" class="form-control" min="0" placeholder="2" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 my-5 pix-place-reserve">
+					<div class="row">
+						<div class="col-md-3 pix-place-logo">
+							<img src="{{ absolute_url(asset('build/images/restaurante.png')) }}">
+						</div>
+						<div class="col-md-6 pix-place-details">
+							<p><a href="javascript:;"/>Lafourchette.com</a></p>
+							<p>Réservez et obtenez -20% sur votre addition avec lafourchette.com</p>
+						</div>
+						<div class="col-md-3 reserve">
+							<a href="javascript:;">Réserver <i class="fas fa-chevron-right"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+	<div class="row">
+		<div class="col-md-12 similar-places">
+			<h4>Nos cards liées</h4>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="similar-places-slider">
+
+						{% for cmCard in card.pixie.cards %}
+						{% if cmCard.status == 'validated' and loop.index < 8 %}
+						<div class="similar-card-holder">
+							<div class="card shadow map-marker-popup similar-cards">
+								<div class="row">
+									<div class="col-md-9 mb-2 ellipsis card-head" data-toggle="tooltip" title="{{ cmCard.name }}">{{ cmCard.name }}</div>
+									<div class="col-md-3 mb-2 pr-4 text-right favourite-check">
+										<div class="pretty p-icon p-toggle p-plain p-bigger">
+											<input type="checkbox" class="cta-like-card" data-id="{{ card.id }}" {% if app.user is not null and app.user.hasLike(cmCard) %}checked{% endif %}/>
+											<div class="state p-off">
+												<i class="icon far fa-heart "></i>
+											</div>
+											<div class="state p-on p-pink-o">
+												<i class="icon fas fa-heart"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 mb-2 marker-about">
+										<i class="fas {{ cmCard.categories.first.icon }}"></i> {{ cmCard.categories.first.name }}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 mb-2 map-view-images">
+										<div class="place-image"><img src="{{ cmCard.medias.first.url | imagine_filter('card_gallery_thumb')}}"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<a href="/{{ cmCard.slug~'.html' }}" class="btn btn-pink btn-block" target="_blank">Voir la card</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-center my-2 sidebar-footer">
+			<span>powered by</span>
+			<img src="{{ absolute_url(asset('build/images/footer-logo-gray.svg')) }}" alt="Pix.City">
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	/* Ream more and Less Script */
+	function myFunction() {
+		var dots = document.getElementById("dots");
+		var moreText = document.getElementById("more");
+		var btnText = document.getElementById("moreBtn");
+		if (dots.style.display === "none") {
+			dots.style.display = "inline";
+			btnText.innerHTML = "Lire la suite";
+			moreText.style.display = "none";
+		} else {
+			dots.style.display = "none";
+			btnText.innerHTML = "Lire moins";
+			moreText.style.display = "inline";
+		}
+	}
+	/* Datepicjer initialization */
+// 	$(function () {
+// $('#reserveDate').datetimepicker({
+// format: 'DD-MM-YYYY'
+// });
+// });
+</script>

@@ -1,0 +1,10 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+
+    <p>Bonjour {{ firstname }},</p>
+
+    <p>Ta demande de paiement concernant la facture n° {{ invoice }} a été effectuée ce jour, {{ date }}.</p>
+    <p>Tu peux retrouver le détail de tes paiements dans ton espace personnel.</p>
+
+{% endblock %}

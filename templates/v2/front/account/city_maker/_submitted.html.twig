@@ -1,0 +1,35 @@
+<div class="container main">
+		<div class="col-md-12 text-center">
+				<p style="color:#484848 !important; padding-top:20px; font-size:20px;"><strong>
+						{% if totalCards > 1 %}
+								Mes <span>{{ totalCards }}</span> Cards en attente
+						{% elseif cards | length == 1 %}
+								Ma Card en attente
+						{% else %}
+								Vous n'avez aucune card en attente.
+						{% endif %}
+				</strong></p>
+		</div>
+
+		{% if cards | length > 0 %}
+				<table class="table table-hover pc-table-submitted">
+						<thead class="green">
+						<tr>
+								<th scope="col">Date</th>
+								<th scope="col">Titre de la Card</th>
+								<th scope="col">Statut</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for card in cards %}
+								<tr>
+										<td class="dateCard">{{ card.createdAt | localizeddate('medium', 'short') }}</td>
+										<td class="titreCard">{{ card.name }}</td>
+										<td class="statutCard"><span class="status-{{ card.status }}">{{ card.statusLabel }}</span></td>
+								</tr>
+						{% endfor %}
+						</tbody>
+				</table>
+		{% endif %}
+
+</div>

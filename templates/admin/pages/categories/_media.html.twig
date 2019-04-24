@@ -1,0 +1,14 @@
+<img class="thumb" src="{% if field.vars.value.id is defined %}{{ field.vars.value.getUrl() }}{% endif %}" width="100%">
+<li class="field">{{ form_widget(field.name) }}</li>
+
+<li class="align-center">
+    <div class="upload-zone">
+        <input name="file" type="file" class="file-input" data-type="single" />
+        <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+            <i class="material-icons">add</i>
+        </a>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</li>

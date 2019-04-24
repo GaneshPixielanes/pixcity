@@ -1,0 +1,18 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+    <p>Bonjour {{ firstName }},</p>
+    <p>
+    Ton premier sujet nous convient parfaitement, tu peux désormais voir ta demande de CARD dans ton espace CITY MAKER sur le site, dans MES DEMANDES.
+    </p>
+    <p>
+        <a href="{{ url('front_pixie_account_cards_projects') }}" style="background-color: #30b996; color: #FFF; padding: 10px 20px; display: inline-block; text-decoration: none; border-radius: 4px;">[Aller dans mon espace]</a><br>
+    </p>
+    <p>
+    N'hésite pas à nous contacter par mail si tu as des questions.<br/><br>
+        <a href="mailto:redaction@pix.city">J’ai des questions</a>
+
+    </p>
+    Bonne rédaction !
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'admin/pages/sliders/slides/slides.html.twig' %}
+
+{% block breadcrumb %}
+    <li class="active">{{ 'label.slides'|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    <table class="table table-striped table-middle-aligned active-datatable sortable" data-defaultsortby="0" data-defaultsortdir="asc" data-update-position-route="{{ path('admin_pages_sliders_slides_sort', {slider: slider.id}) }}">
+        <thead>
+        <tr>
+            <th scope="col" class="" data-name="position">{{ 'label.position'|trans }}</th>
+            <th scope="col" class="">#</th>
+            <th scope="col" class=" drag-handle-col"></th>
+            <th scope="col" class="">{{ 'label.name'|trans }}</th>
+            <th scope="col" class="text-center"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in list %}
+            <tr data-id="{{ item.id }}">
+                <td>{{ item.position }}</td>
+                <td>{{ item.id }}</td>
+                <td class="drag-handle"><i class="material-icons"  data-id="{{ item.id }}" data-position=" {{ item.position }}">drag_handle</i></td>
+                <td>{{ item.name }}</td>
+
+                <td class="text-right">
+                    <div class="item-actions">
+
+                        <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_pages_sliders_slides_edit', {slider: slider.id, id: item.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                            <i class="material-icons">edit</i>
+                        </a>
+                        <form action="{{ url('admin_pages_sliders_slides_delete', {slider: slider.id, id: item.id }) }}" method="post" class="delete-form">
+                            <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                            <button type="button" title="{{ 'action.delete'|trans }}" class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                        </form>
+
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10" align="center">{{ 'text.noresults'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,263 @@
+{% block form_row -%}
+
+    <div class="row form-row type-{{ form.vars.block_prefixes.1 }} {{ (form.vars.attr.rowClass is defined)?form.vars.attr.rowClass:'' }} {% if (force_error|default(false)) and not valid %} has-error{% endif %}">
+        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+            {{- form_label(form, null, {'label_attr': {'class': 'form-label'}}) -}}
+
+            {% if form.vars.help is defined %}
+                <span class="field-help">{{ form.vars.help|trans }}</span>
+            {% endif %}
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 form-control-field">
+            <div class="form-group form-group-m-b-0">
+                <div class="form-line {{ (form.vars.disabled)?"form-line-disabled":"" }}">
+                    {{- form_widget(form, {'attr': {'class': 'form-control'}}) -}}
+                </div>
+            </div>
+
+            {{- form_errors(form) -}}
+        </div>
+    </div>
+{%- endblock form_row %}
+
+
+{%- block switch_widget -%}
+    <div class="switch">
+        <label>NON<input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} /><span class="lever"></span>OUI</label>
+    </div>
+{%- endblock switch_widget -%}
+
+
+{%- block typeahead_widget -%}
+    <div class="typeahead">
+        <select class="classic select2" data-route="{{ form.vars.route }}" {{ block('widget_attributes') }}>
+            {% if value.id is defined %}<option value="{{ value.id }}" selected="selected">{{ value }}</option>{% endif %}
+        </select>
+    </div>
+{%- endblock typeahead_widget -%}
+
+
+{%- block cardlist_widget -%}
+    <div class="cardlist" data-route="{{ form.vars.route }}" data-input-name="{{ form.vars.full_name }}[]" data-typeahead-placeholder="{{ 'label.typeahead.card'|trans }}">
+
+        <div class="typeahead">
+            <select class="classic select2">
+            </select>
+        </div>
+
+        <div id="cardlist-item-prototype" style="display: none;">
+            <div class="single-card-preview" style="background-image: url(__THUMB__)">
+                <input type="checkbox" class="" name="__INPUT_NAME__"  value="__ID__" checked>
+                <div class="title">__NAME__</div>
+                <div class="region">__REGION__</div>
+                <button class="delete-item"><i class="material-icons">delete_forever</i></button>
+            </div>
+        </div>
+
+        {% for card in form.vars.value %}
+            <div class="single-card-preview" style="background-image: url({{ card.thumb.getUrl() }} )">
+                <input type="checkbox" class="" name="{{ form.vars.full_name }}[]"  value="{{ card.id }}" checked>
+                <div class="title">{{ card.name }}</div>
+                <div class="region">{{ card.region.name }}</div>
+                <button class="delete-item"><i class="material-icons">delete_forever</i></button>
+            </div>
+        {% endfor %}
+    </div>
+{%- endblock cardlist_widget -%}
+
+
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        {% if form is not rootform %}<span class="error-message">{% else %}<div class="alert alert-danger">{% endif %}
+        <ul class="list-unstyled errors-list">
+        {%- for error in errors -%}
+            <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ error.message }}</li>
+        {%- endfor -%}
+    </ul>
+        {% if form is not rootform %}</span>{% else %}</div>{% endif %}
+    {%- endif %}
+{%- endblock form_errors %}
+
+
+{% block file_widget %}
+    {% spaceless %}
+
+        {% if form.vars.preview is defined and form.vars.preview is not null %}
+            {% if form.vars.download is not defined or form.vars.download != true %}
+                <img class="file-preview" src="{{ asset(form.vars.preview) }}" width="70">
+            {% else %}
+                <a href="{{ asset(form.vars.preview) }}" download="download" class="btn bg-pink waves-effect"><i class="material-icons">file_download</i> <span>{{ 'label.download'|trans }}</span></a>
+            {% endif %}
+        {% endif %}
+
+        {{ block('form_widget') }}
+    {% endspaceless %}
+{% endblock %}
+
+
+
+
+{% block _user_links_entry_widget %}
+
+    <div class="collection-row input-group user-link">
+        {{ form_widget(form.type, {'attr': {'class': 'classic'}}) }}
+        {{ form_widget(form.url) }}
+        <a href="#" class="btn btn-circle bg-grey waves-effect waves-circle waves-float delete-item"><i class="material-icons">delete_forever</i></a>
+    </div>
+
+{% endblock %}
+
+{% block _card_project_infos_entry_widget %}
+
+    <div class="collection-row input-group user-link">
+        {{ form_widget(form.type, {'attr': {'class': 'classic'}}) }}
+        {{ form_widget(form.label) }}
+        <div class="mandatory-col">
+            {{ form_label(form.mandatory) }}
+            {{ form_widget(form.mandatory) }}
+        </div>
+        <a href="#" class="btn btn-circle bg-grey waves-effect waves-circle waves-float delete-item"><i class="material-icons">delete_forever</i></a>
+    </div>
+
+{% endblock %}
+
+{% block _card_infos_entry_widget %}
+
+    <div class="collection-row input-group user-link">
+        {{ form_widget(form.type, {'attr': {'class': 'classic'}}) }}
+        {{ form_widget(form.label) }}
+        {{ form_widget(form.value) }}
+        <a href="#" class="btn btn-circle bg-grey waves-effect waves-circle waves-float delete-item"><i class="material-icons">delete_forever</i></a>
+    </div>
+
+{% endblock %}
+
+{% block _card_project_attachments_entry_widget %}
+
+    {% set url, type = '', '' %}
+
+    {% if form.vars.value.id is defined %}
+        {% set url = form.vars.value.getUrl() %}
+        {% set type = form.vars.value.getType() %}
+    {% endif %}
+
+    <div class="collection-row input-group attachment type-{{ type }}">
+        <div class="thumb" style="{%  if type == 'image' %}background-image: url({{ url }}){% endif %}">
+            {% if type == 'pdf' %}
+                <i class="material-icons">picture_as_pdf</i>
+            {% endif %}
+            {% if type == 'file' %}
+                <i class="material-icons">attach_file</i>
+            {% endif %}
+        </div>
+        <div class="name">{{ form.name.vars.value }}</div>
+        <div class="field">{{ form_widget(form.name) }}</div>
+        <a href="#" class="btn btn-circle bg-grey waves-effect waves-circle waves-float delete-item"><i class="material-icons">delete_forever</i></a>
+    </div>
+
+{% endblock %}
+
+{% block _card_medias_entry_widget %}
+    {% set url, type = '', '' %}
+    {% set hashtags = '' %}
+    {% if form.vars.value.id is defined %}
+        {% set url = form.vars.value.getUrl() %}
+        {% set type = form.vars.value.getType() %}
+        {% set hashtags = form.vars.value.getHashtags() %}
+    {% endif %}
+    <li class="col-sm-12 input-group ">
+
+
+        <div class="col-sm-5">
+            <div class="collection-row input-group attachment type-{{ type }}">
+                <a href="{{ url }}" target="_blank" rel="noopener" class="thumb" style="{%  if type == 'image' %}background-image: url({{ url }}){% endif %}"></a>
+                <div class="name">{{ form.name.vars.value }}</div>
+                <div class="field">{{ form_widget(form.name) }}</div>
+                <a href="#" class="btn btn-circle bg-grey waves-effect waves-circle waves-float delete-item"><i class="material-icons">delete_forever</i></a>
+            </div>
+        </div>
+
+                <div class="col-sm-4">
+                    <ul class="hashtags" data-prototype="{{ form_widget(form.hashtags.vars.prototype) |e('html_attr') }}">
+                        {% for hashtag in form.hashtags %}
+                            <li class="form-group form-line">
+                                <input type="text" class="form-control" name="{{ hashtag.vars.full_name }}[hashtag]" value="{{ hashtag.vars.value.hashtag }}" id="{{ hashtag.vars.id }}" />
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+
+                    <div class="row">
+
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    {{ form_widget(form.description) }}
+
+                </div>
+
+    </li>
+{% endblock %}
+
+
+{% block _menu_items_entry_widget %}
+
+    <li class="collection-row menu-item">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading" role="tab">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" href="#toggle-{{ form.vars.id }}" aria-expanded="false" class="collapsed title">
+                        <i class="material-icons drag-handle">drag_handle</i>
+                        <i class="material-icons">description</i>
+                        <span>
+                            {% if form.page.vars.data is not null %}
+                                {{ form.page.vars.data.name }}
+                            {% else %}
+                                {{ form.name.vars.value }}
+                            {% endif %}
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-circle bg-green waves-effect waves-circle waves-float delete-item"><i class="material-icons">delete_forever</i></a>
+                </h4>
+            </div>
+            <div id="toggle-{{ form.vars.id }}" class="panel-collapse collapse" role="tabpanel" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h4>{{ 'label.select.page'|trans }}</h4>
+                            {{ form_widget(form.page) }}
+                            {{ form_errors(form.page) }}
+                        </div>
+                        <div class="col-md-4">
+                            <h4>{{ 'label.orcreatelink'|trans }}</h4>
+                            <div class="m-b-15">
+                                <div>{{ form_label(form.name) }}</div>
+                                {{ form_widget(form.name) }}
+                                {{ form_errors(form.name) }}
+                            </div>
+                            <div class="m-b-15">
+                                <div>{{ form_label(form.link) }}</div>
+                                {{ form_widget(form.link) }}
+                                {{ form_errors(form.link) }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_label(form.blank) }}
+                            {{ form_widget(form.blank) }}
+
+                            <div class="position">{{ form_widget(form.position) }}</div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </li>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+<!-- Modals Starts-->
+<!-- Folllow the City Maker modal -->
+<div class="modal fade modal-follow" id="followCityMakerModal" tabindex="-1" role="dialog" aria-labelledby="followCityMakerModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i class="fas fa-times"></i>
+          </button>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-12 modal-logo-city-maker">
+                      <img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City" />
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <p>Vous souhaitez suivre les publications des prochaines cards de ce city-maker?</p>
+                      <p>Cliquez et ajoutez-le à vos city-makers favoris dans votre compte voyageur (en créant ou en accédant à votre compte).</p>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 modal-footer-button">
+                <a href="javascript:;" class="btn btn-outline-pink btn-block" data-dismiss="modal">PLUS TARD</a>
+            </div>
+            <div class="col-md-6 modal-footer-button">
+                <a href="javascript:;" class="btn btn-green btn-block" onclick="document.getElementById('addCityMakerFavoriteForm').submit();">ACCEDER A MON COMPTE VOYAGEUR</a>
+            </div>
+            <form action="{{ path('front_login') }}" method="GET" id="addCityMakerFavoriteForm">
+              <input type="hidden" name="addFavoritePixie">
+            </form>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modals Ends-->
+<!-- Card Favorite Modal -->
+<div class="modal fade modal-follow" id="cardFavoriteModal" tabindex="-1" role="dialog" aria-labelledby="cardFavoriteModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i class="fas fa-times"></i>
+          </button>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-12 modal-logo-city-maker">
+                      <img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City" />
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <p>Retrouvez vos cards enregistrées dans votre compte voyageur pour ajouter directement vos adresses dans Google maps et agenda.</p>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 modal-footer-button">
+            </div>
+            <div class="col-md-6 modal-footer-button">
+                <a href="javascript:;" class="btn btn-green btn-block" data-dismiss="modal">OK, MERCI</a>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal ends -->
+
+<!-- Login to register card modal -->
+<div class="modal fade modal-follow" id="cardFavoriteLogoutModal" tabindex="-1" role="dialog" aria-labelledby="cardFavoriteLogoutModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i class="fas fa-times"></i>
+          </button>
+          <div class="modal-body">
+              <div class="row">
+                <form action="{{ path('front_login') }}" method="GET" id="addCardFavoriteForm">
+                  <input type="hidden" name="addFavoriteCard">
+                </form>
+                  <div class="col-md-12 modal-logo-city-maker">
+                      <img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City" />
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                    <p>Vous souhaitez enregistrer cette card? Créez ou connectez-vous à votre compte voyageur afin de planifier votre voyage avec Google maps et Agenda en cliquant ci-dessous:</p>
+
+                  </div>
+              </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 modal-footer-button">
+                <a href="javascript:;" class="btn btn-outline-pink btn-block" data-dismiss="modal">PLUS TARD</a>
+            </div>
+            <div class="col-md-6 modal-footer-button">
+                <a href="javascript:;" class="btn btn-green btn-block" onclick="document.getElementById('addCardFavoriteForm').submit();">ACCEDER A MON COMPTE VOYAGEUR</a>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal ends -->
+
+<!-- Login to register card modal -->
+<div class="modal fade modal-follow" id="cardLikeLogoutModal" tabindex="-1" role="dialog" aria-labelledby="cardLikeLogoutModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i class="fas fa-times"></i>
+          </button>
+          <div class="modal-body">
+              <div class="row">
+                <form action="{{ path('front_login') }}" method="GET" id="addCardLikeForm">
+                  <input type="hidden" name="addLikeCard">
+                </form>
+                  <div class="col-md-12 modal-logo-city-maker">
+                      <img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City" />
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                    <p>Vous souhaitez enregistrer cette card? Créez ou connectez-vous à votre compte voyageur afin de planifier votre voyage avec Google maps et Agenda en cliquant ci-dessous:</p>
+
+                  </div>
+              </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 modal-footer-button">
+                <a href="javascript:;" class="btn btn-outline-pink btn-block" data-dismiss="modal">PLUS TARD</a>
+            </div>
+            <div class="col-md-6 modal-footer-button">
+                <a href="javascript:;" class="btn btn-green btn-block" onclick="document.getElementById('addCardLikeForm').submit();">ACCEDER A MON COMPTE VOYAGEUR</a>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Modal ends -->

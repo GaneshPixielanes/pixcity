@@ -1,0 +1,67 @@
+security:
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\Admin:
+            algorithm: bcrypt
+        App\Entity\User:
+            algorithm: bcrypt
+
+    providers:
+
+        admins:
+            entity:
+                class: App\Entity\Admin
+                property: email
+
+        users:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    role_hierarchy:
+        ROLE_MODERATOR: ROLE_USER
+        ROLE_ADMIN: ROLE_MODERATOR
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        admin_area:
+            anonymous: ~
+            pattern: ^/admin
+            provider: admins
+            form_login:
+                check_path: admin_login
+                login_path: admin_login
+                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path: admin_logout
+                target: admin_login
+                invalidate_session: false
+
+        main:
+            anonymous: true
+            provider: users
+            user_checker: App\Security\UserChecker
+            form_login:
+                check_path: front_login
+                login_path: front_login
+                csrf_token_generator: security.csrf.token_manager
+            guard:
+                authenticators:
+                    - App\Security\GoogleAuthenticator
+                    - App\Security\FacebookAuthenticator
+                entry_point: App\Security\FacebookAuthenticator
+            logout:
+                path: front_logout
+                target: front_homepage_index
+                invalidate_session: false
+
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/admin/, roles: ROLE_MODERATOR }
+        # - { path: ^/profile, roles: ROLE_USER }

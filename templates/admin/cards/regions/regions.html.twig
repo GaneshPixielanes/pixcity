@@ -1,0 +1,28 @@
+{% extends 'admin/page.html.twig' %}
+
+{% block content %}
+
+    <ol class="breadcrumb breadcrumb-col-teal">
+        <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+        {% block breadcrumb %}{% endblock %}
+    </ol>
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        {{ 'label.regions'|trans }}
+                    </h2>
+                    <a href="{{ path('admin_cards_regions_new') }}" class="btn waves-effect pull-right"><i class="material-icons">add</i> <span>{{ 'action.add'|trans }}</span></a>
+                </div>
+                <div class="body">
+
+                    {% block inner %}{% endblock %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'admin/cards/regions/regions.html.twig' %}
+
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{% block breadcrumb %}
+    <li><a href="{{ path('admin_cards_regions_list') }}">{{ 'label.regions'|trans }}</a></li>
+    <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.slug) }}
+        {{ form_row(form.hidden) }}
+
+        <div class="flex-row-space-between">
+            <a href="{{ path('admin_cards_regions_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+        </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -1,0 +1,55 @@
+<!-- Collect the nav links, forms, and other content for toggling -->
+<div class="collapse navbar-collapse search-form-container" id="{{ (searchId is defined)?searchId:"searchNavBar" }}">
+    <form action="{{ path('front_search_index') }}" method="GET" role="search" id="searchForm">
+
+        <input type="hidden" name="type" value="{{ (type is defined)?type:"cards" }}">
+        <input type="hidden" name="orderby" value="{{ filters.orderby }}">
+        <input type="hidden" name="search_pixie" value="{{ filters.pixie }}">
+        <input type="hidden" name="display"  value="true"/>
+
+        <ul class="nav navbar-nav nav-search navbar-left">
+            <li id="freeSearch">
+                <input class="form-control" type="text" name="search" placeholder="Recherche..." value="{{ filters.text }}">
+            </li>
+
+            <li id="regionSearch" class="dropdown">
+                <a href="#" class="dropdown-toggle dnc" role="button" aria-expanded="false">
+                    Régions
+                    <span class="count">{% if filters.regions > 0 %}({{ filters.regions | length }}){% endif %}</span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    {% for region in regions() %}
+                        <li>
+                            <label class="{% if region.slug in filters.regions %}on{% endif %}">
+                                <input type="checkbox" name="regions[]" {% if region.slug in filters.regions %}checked{% endif %} value="{{ region.slug }}">{{ region.name }}
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+
+            <li id="filterSearch" class="dropdown">
+                <a href="#" class="dropdown-toggle dnc" role="button" aria-expanded="false">
+                    Filtres
+                    <span class="count">{% if filters.categories > 0 %}({{ filters.categories | length }}){% endif %}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-form" role="menu">
+                    <p class="catFilter">Catégories</p>
+
+                    {% for category in categories() %}
+                        <div class="plCheck transFx fa {{ category.icon }} {% if category.slug in filters.categories %}clicked{% endif %}">
+                            <span class="form-check-label" data-id="{{ category.id }}" data-slug="{{ category.slug }}"><input class="form-check-input" name="categories[]" {% if category.slug in filters.categories %}checked{% endif %} type="checkbox" value="{{ category.slug }}">{{ category.name }}</span>
+                        </div>
+                    {% endfor %}
+
+
+                    <div id="footerDropdownMenu" class="hom">
+                        <a href="#" class="btn-cancel">Annuler</a> <a href="#" class="btn-apply">Appliquer</a>
+                    </div>
+                </div>
+            </li>
+            <button type="submit" id="submit-button"><i class="fa fa-chevron-right"></i></button>
+        </ul>
+    </form>
+
+</div>

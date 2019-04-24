@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Pix.City</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" href="lib/fontawesome/css/all.min.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap-reboot.min.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/slick-carousel/slick/slick.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/slick-carousel/slick/slick-theme.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/pretty-checkbox/dist/pretty-checkbox.min.css" />
+		<link rel="stylesheet" href="node_modules/simplebar/dist/simplebar.min.css" />
+		<link rel="stylesheet" href="lib/datetime-picker/build/css/bootstrap-datetimepicker.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+	</head>
+	<body style="background: skyblue;">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<h3>Icon popup</h3>
+					<div style="width: 224px; height: 534px;">
+						<!--Icon popup ends-->
+						<div class="card shadow map-marker-popup">
+							<div class="row">
+								<div class="col-md-9 mb-2 card-head">Restaurant Pita à Paris</div>
+								<div class="col-md-3 mb-2 pr-4 text-right favourite-check">
+									<div class="pretty p-icon p-toggle p-plain p-bigger">
+										<input type="checkbox" />
+										<div class="state p-off">
+											<i class="icon far fa-heart "></i>
+										</div>
+										<div class="state p-on p-pink-o">
+											<i class="icon fas fa-heart"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 mb-2 marker-about">
+									<i class="fas fa-utensils"></i> Restaurant
+								</div>
+								<div class="col-md-6 mb-2 marker-about">
+									<i class="fas fa-map-pin"></i> Paris, IDF
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 mb-2 map-view-images">
+									<div class="popup-slider">
+										<div class="popup-slider-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/10/73519de4b703e42dccbbc0367d64dcde.jpeg"></div>
+										<div class="popup-slider-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/11/0c1b32dee3cd970b2b12ee42a41eee75.jpeg"></div>
+										<div class="popup-slider-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/11/ae09ccf13484e7f97b6d55b7fc119566.jpeg"></div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 link-button">
+									<a href="javascript:;" class="btn btn-pink btn-block btn-icon-right">ENREGISTRER LA CARD</a>
+								</div>
+							</div>
+						</div>
+						<!--Icon popup ends-->
+					</div>
+				</div>
+				<div class="col-md-4">
+					<h3>Map Sidebar</h3>
+					<div style="width: 414px; background: white;">
+						<!--Sidebar Maps Starts-->
+						<div class="col-md-12 py-3 map-sidebar" data-simplebar>
+							<div class="row">
+								<div class="col-md-10 mb-2 sidebar-header">Restaurant Pita à Paris</div>
+								<div class="col-md-2 mb-2 pr-4 text-right favourite-check">
+									<div class="pretty p-icon p-toggle p-plain p-bigger">
+										<input type="checkbox" />
+										<div class="state p-off">
+											<i class="icon far fa-heart "></i>
+										</div>
+										<div class="state p-on p-pink-o">
+											<i class="icon fas fa-heart"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 mb-2 marker-about">
+									<i class="fas fa-utensils"></i> Restaurant
+								</div>
+								<div class="col-md-6 mb-2 marker-about">
+									<i class="fas fa-map-pin"></i> Paris, IDF
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 mb-2 sidebar-view-images">
+									<div class="sidebar-slider">
+										<div class="sidebar-slider-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/10/73519de4b703e42dccbbc0367d64dcde.jpeg"></div>
+										<div class="sidebar-slider-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/11/0c1b32dee3cd970b2b12ee42a41eee75.jpeg"></div>
+										<div class="sidebar-slider-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/11/ae09ccf13484e7f97b6d55b7fc119566.jpeg"></div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 mb-3 register-button">
+									<a href="javascript:;" class="btn btn-pink btn-block shadow">DÉCOUVRIR L’EXPÉRIENCE SUR PIX.CITY</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 my-3 sidebar-actions">
+									<div class="row">
+										<div class="col-md-4 action-links like-check">
+											<div class="pretty p-icon p-toggle p-plain p-bigger">
+												<input type="checkbox" checked />
+												<div class="state p-off">
+													<i class="icon far fa-thumbs-up"></i>
+												</div>
+												<div class="state p-on p-primary-o">
+													<i class="icon fas fa-thumbs-up"></i>
+												</div>
+											</div>
+											<p>J’AIME</p>
+										</div>
+										<div class="col-md-4 action-links">
+											<a href="javascript:;">
+												<img src="images/cards-gray.svg">
+												<p>ENREGISTRER LA CARD</p>
+											</a>
+										</div>
+										<div class="col-md-4 action-links">
+											<a href="javascript:;">
+												<i class="far fa-share-square"></i>
+												<p>PARTAGER</p>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<h4 class="col-md-12 pixy-rank">Notre Pixie</h4>
+							</div>
+							<div class="row">
+								<div class="col-md-12 mb-5 pixie-profile-info">
+									<div class="row">
+										<div class="col-md-3 d-flex align-items-center pixie-image">
+											<img src="https://www.pix.city/services/images/95d6eb342f84cc670e694e679996f772.jpeg" class="rounded-circle" alt="Pixie Name">
+										</div>
+										<div class="col-md-8 pixie-info">
+											<div class="row">
+												<div class="col-md-7">
+													<p class="mb-0 insta-name">Lily_Paris</p>
+													<p class="mb-1 insta-loc">ILE-DE-Paris</p>
+												</div>
+												<div class="col-md-5 p-0 subscribe">
+													<a href="javascript:;" class="btn btn-primary btn-fill btn-block btn-icon-right">S’abonner <i class="fab fa-instagram"></i></a>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<p class="about mb-1">Food in Paris 🍰✨ ✉️  Art lover and painter</p>
+													<p class="email"><a href="javascript:;">pariswithlily@gmail.com</a></p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12 pixie-insta-numbers">
+											<div class="row">
+												<div class="col-md-3">
+													<div class="row">
+														<div class="col-md-6 grayed">
+															<span><img src="images/cards-gray.svg"></span>3
+														</div>
+														<div class="col-md-6 grayed">
+															<span><i class="far fa-thumbs-up"></i></span>6
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3 blacked">
+													<span>6251</span>publications
+												</div>
+												<div class="col-md-2 blacked">
+													<span>10000</span>abonnés
+												</div>
+												<div class="col-md-4 blacked">
+													<span>2891</span>abonnements
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 pix-place">
+									<h4>Le Restaurant</h4>
+									<div class="row">
+										<div class="col-md-12 mb-3 pix-place-info">
+											<ul>
+												<li><span><i class="fas fa-map-marker-alt"></i></span>6 Rue Greffulhe, 92300 Levallois-Perret</li>
+												<li><span><i class="fas fa-globe-europe"></i></span><a href="www.pita-restaurant.com" target="_blank">www.pita-restaurant.com</a></li>
+												<li><span><i class="fas fa-phone"></i></span><a href="tel:0156362816">01 56 36 28 16</a></li>
+												<li><span><i class="far fa-calendar-alt"></i></span>Actuellement ouvert</li>
+											</ul>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12 pix-place-about">
+											<h5>La Grèce à Paris</h5>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas vitae scel<span id="dots">...</span><span id="more">erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta.</span></p>
+											<a href="javascript:;" onclick="myFunction()" id="moreBtn">Lira la suite</a>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12 my-3 pix-place-amenities">
+											<div class="row">
+												<div class="col-md-3 mb-2"><span><i class="fas fa-dog"></i></span>Animaux acceptés</div>
+												<div class="col-md-3 mb-2"><span><i class="fas fa-wifi"></i></span>Wifi gratuit</div>
+												<div class="col-md-3 mb-2"><span><i class="fas fa-users"></i></span>Groupes</div>
+												<div class="col-md-3 mb-2"><span><i class="fas fa-parking"></i></span>Parking</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 pix-place-action">
+									<h4>Réserver une table<span class="badge badge-primary">Annonce</span></h4>
+									<div class="row">
+										<div class="col-md-12 pix-place-dates">
+											<div class="row">
+												<div class="col-md-5">
+													<label>Jour souhaité</label>
+													<input type="text" class="form-control" id="reserveDate" placeholder="dd/mm/yyyy" />
+												</div>
+												<div class="col-md-4">
+													<label>Heure</label>
+													<input type="time" class="form-control" id=reserveTime/>
+												</div>
+												<div class="col-md-3">
+													<label>Couverts</label>
+													<input type="number" class="form-control" min="0" placeholder="2" />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12 my-5 pix-place-reserve">
+											<div class="row">
+												<div class="col-md-3 pix-place-logo">
+													<img src="images/restaurante.png">
+												</div>
+												<div class="col-md-6 pix-place-details">
+													<p><a href="javascript:;"/>Lafourchette.com</a></p>
+													<p>Réservez et obtenez -20% sur votre addition avec lafourchette.com</p>
+												</div>
+												<div class="col-md-3 reserve">
+													<a href="javascript:;">Réserver <i class="fas fa-chevron-right"></i></a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 similar-places">
+									<h4>Nos cards liées</h4>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="similar-places-slider">
+												<div class="similar-card-holder">
+													<div class="card shadow map-marker-popup similar-cards">
+														<div class="row">
+															<div class="col-md-9 mb-2 card-head">Restaurant Pita à Paris</div>
+															<div class="col-md-3 mb-2 pr-4 text-right favourite-check">
+																<div class="pretty p-icon p-toggle p-plain p-bigger">
+																	<input type="checkbox" />
+																	<div class="state p-off">
+																		<i class="icon far fa-heart "></i>
+																	</div>
+																	<div class="state p-on p-pink-o">
+																		<i class="icon fas fa-heart"></i>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-6 mb-2 marker-about">
+																<i class="fas fa-utensils"></i> Restaurant
+															</div>
+															<div class="col-md-6 mb-2 marker-about">
+																<i class="fas fa-map-pin"></i> Paris, IDF
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-12 mb-2 map-view-images">
+																<div class="place-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/10/73519de4b703e42dccbbc0367d64dcde.jpeg"></div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-12">
+																<a href="javascript:;" class="btn btn-pink btn-block">Voir la card</a>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="similar-card-holder">
+													<div class="card shadow map-marker-popup similar-cards">
+														<div class="row">
+															<div class="col-md-9 mb-2 card-head">Restaurant Pita à Paris</div>
+															<div class="col-md-3 mb-2 pr-4 text-right favourite-check">
+																<div class="pretty p-icon p-toggle p-plain p-bigger">
+																	<input type="checkbox" />
+																	<div class="state p-off">
+																		<i class="icon far fa-heart "></i>
+																	</div>
+																	<div class="state p-on p-pink-o">
+																		<i class="icon fas fa-heart"></i>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-6 mb-2 marker-about">
+																<i class="fas fa-utensils"></i> Restaurant
+															</div>
+															<div class="col-md-6 mb-2 marker-about">
+																<i class="fas fa-map-pin"></i> Paris, IDF
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-12 mb-2 map-view-images">
+																<div class="place-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/11/0c1b32dee3cd970b2b12ee42a41eee75.jpeg"></div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-12">
+																<a href="javascript:;" class="btn btn-pink btn-block">Voir la card</a>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="similar-card-holder">
+													<div class="card shadow map-marker-popup similar-cards">
+														<div class="row">
+															<div class="col-md-9 mb-2 card-head">Restaurant Pita à Paris</div>
+															<div class="col-md-3 mb-2 pr-4 text-right favourite-check">
+																<div class="pretty p-icon p-toggle p-plain p-bigger">
+																	<input type="checkbox" />
+																	<div class="state p-off">
+																		<i class="icon far fa-heart "></i>
+																	</div>
+																	<div class="state p-on p-pink-o">
+																		<i class="icon fas fa-heart"></i>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-6 mb-2 marker-about">
+																<i class="fas fa-utensils"></i> Restaurant
+															</div>
+															<div class="col-md-6 mb-2 marker-about">
+																<i class="fas fa-map-pin"></i> Paris, IDF
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-12 mb-2 map-view-images">
+																<div class="place-image"><img src="https://www.pix.city/media/cache/bg_card_item/uploads/cards/2018/11/ae09ccf13484e7f97b6d55b7fc119566.jpeg"></div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-12">
+																<a href="javascript:;" class="btn btn-pink btn-block">Voir la card</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 text-center my-3 sidebar-footer">
+									<span class="mb-2">powered by</span>
+									<img src="images/footer-logo-gray.svg" alt="Pix.City">
+								</div>
+							</div>
+						</div>
+						<!--Sidebar Maps ends-->
+					</div>
+				</div>
+			</div>
+			<!-- Scripts -->
+			<script src="js/jquery-3.1.1.min.js" /></script>
+			<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" /></script>
+			<script src="js/popper.min.js"></script>
+			<script src="node_modules/slick-carousel/slick/slick.min.js"></script>
+			<script src="node_modules/simplebar/dist/simplebar.min.js"></script>
+			<script src="node_modules/moment/min/moment.min.js"></script>
+			<script src="lib/datetime-picker/build/js/bootstrap-datetimepicker.min.js"></script>
+			<script src="js/custom.js"></script>
+			<script type="text/javascript">
+				/* Ream more and Less Script */
+				function myFunction() {
+					var dots = document.getElementById("dots");
+					var moreText = document.getElementById("more");
+					var btnText = document.getElementById("moreBtn");
+					if (dots.style.display === "none") {
+						dots.style.display = "inline";
+						btnText.innerHTML = "Lire la suite";
+						moreText.style.display = "none";
+					} else {
+						dots.style.display = "none";
+						btnText.innerHTML = "Lire moins";
+						moreText.style.display = "inline";
+					}
+				}
+				/* Datepicjer initialization */
+				$(function () {
+			$('#reserveDate').datetimepicker({
+			format: 'DD-MM-YYYY'
+			});
+			});
+			</script>
+			</script>
+		</body>
+	</html>

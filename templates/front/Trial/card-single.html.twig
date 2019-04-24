@@ -1,0 +1,50 @@
+<div style="width: 224px;">
+    <!--Icon popup ends-->
+    <div class="card shadow map-marker-popup">
+        <div class="row">
+            <div class="col-md-9 col-9 mb-2 card-head" data-toggle="tooltip" title="{{ card.name }}">{{ card.name | truncate(15) }}</div>
+            <div class="col-md-3 col-3 mb-2 pr-4 text-right favourite-check cta-like-card">
+                <div class="pretty p-icon p-toggle p-plain p-bigger">
+                    <input type="checkbox" class="cta-like-card" data-id="{{ card.id }}" {% if app.user is null %} data-toggle="modal" data-target="followCityMakerModal" {% endif %} data-id="{{ card.id }}" {% if app.user is not null and app.user.hasLike(card) %}checked{% endif %}/>
+                    <div class="state p-off">
+                        <i class="icon far fa-heart "></i>
+                    </div>
+                    <div class="state p-on p-pink-o">
+                        <i class="icon fas fa-heart"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-12 mb-2 marker-about" >
+				       <i class="fas {{ card.categories.first.icon }}"></i>
+              {{ card.categories.first.name }}
+            </div>
+            {# }<div class="col-md-6 col-6 mb-2 marker-about text-right" data-toggle="tooltip" title="{{ card.address.city~', '~card.region.name }}">
+                <i class="fas fa-map-pin"></i>{{ card.address.city | slice(0,5) }}, {{ card.region.name | slice(0,3) | upper }}
+            </div> #}
+        </div>
+        <div class="row">
+            <div class="col-md-12 mb-2 map-view-images">
+                <div class="popup-slider">
+                    {% for media in card.medias %}
+                        {% if loop.index < 4 %}
+                                <div class="popup-slider-image"><img src="{{ media.url | imagine_filter('card_gallery_thumb') }}" /></div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 link-button">
+								{% if(app.user is not null and app.user.hasFavorite(card)) %}
+									<a href="javascript:;" class="btn btn-pink btn-block btn-icon-right cta-favorite-card d-none d-md-block" data-id="{{ card.id }}">RETIRER DE MES FAVORIS</a>
+								{% else %}
+									<a href="javascript:;" class="btn btn-pink btn-block btn-icon-right cta-favorite-card d-none d-md-block"  data-id="{{ card.id }}">ENREGISTRER LA CARD</a>
+								{% endif %}
+								<a href="/{{ card.slug~'.html'}}" class="btn btn-pink btn-block btn-icon-right d-md-none d-sm-block" target="_blank">VOIR LA CARD</a>
+            </div>
+        </div>
+    </div>
+    <!--Icon popup ends-->
+</div>

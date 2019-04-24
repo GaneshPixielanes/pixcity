@@ -1,0 +1,219 @@
+{% extends 'admin/page.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/dashboard.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="block-header">
+        <h2>Dashboard</h2>
+    </div>
+
+    <!-- Widgets -->
+    <div class="row clearfix">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-pink hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">group</i>
+                </div>
+                <div class="content">
+                    <div class="text">Nombre d'utilisateurs</div>
+                    <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{ stats.users }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-cyan hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">account_circle</i>
+                </div>
+                <div class="content">
+                    <div class="text">Nombre de Pixies</div>
+                    <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{{ stats.pixies }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-green hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">view_carousel</i>
+                </div>
+                <div class="content">
+                    <div class="text">Nombre de Cards</div>
+                    <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">{{ stats.cards }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-orange hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">help</i>
+                </div>
+                <div class="content">
+                    <div class="text">-</div>
+                    <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Widgets -->
+
+    <!-- Graph -->
+    <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <div class="row clearfix">
+                        <div class="col-xs-12 col-sm-6">
+                            <h2>Visites</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="body" style="height: 300px;">
+                    <canvas id="main-graph" data-values="{{ analytics.visitsPerDay|json_encode }}"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Graph -->
+
+    <div class="row clearfix">
+        <!-- Stats -->
+        {% if analytics.lastWeek is not null %}
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="card">
+                <div class="body bg-pink">
+                    <div class="m-b--35 font-bold">Statistiques <small>(7 jours)</small></div>
+                    <ul class="dashboard-stat-list">
+                        <li>
+                            Sessions
+                            <span class="pull-right"><b>{{ analytics.lastWeek[0]|round(2, 'ceil') }}</b> <small></small></span>
+                        </li>
+                        <li>
+                            Taux de rebond
+                            <span class="pull-right"><b>{{ analytics.lastWeek[1]|round(2, 'ceil') }}</b>%</span>
+                        </li>
+                        <li>
+                            Temps moyen sur une page
+                            <span class="pull-right"><b>{{ analytics.lastWeek[2]|round(2, 'ceil') }}</b> sec.</span>
+                        </li>
+                        <li>
+                            Nombre de pages vues par sessions
+                            <span class="pull-right"><b>{{ analytics.lastWeek[3]|round(2, 'ceil') }}</b> <small></small></span>
+                        </li>
+                        <li>
+                            Pourcentage de nouvelles visites
+                            <span class="pull-right"><b>{{ analytics.lastWeek[4]|round(2, 'ceil') }}</b>%</span>
+                        </li>
+                        <li>
+                            Pages vues
+                            <span class="pull-right"><b>{{ analytics.lastWeek[5]|round(2, 'ceil') }}</b> <small></small></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- #END# Stats -->
+
+        {% if analytics.pagesMostViewed is defined and analytics.pagesMostViewed is not null %}
+        <!-- Latest Social Trends -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="card">
+                <div class="body bg-cyan">
+                    <div class="m-b--35 font-bold">Pages les plus en vogue <small>(30 jours)</small></div>
+                    <ul class="dashboard-stat-list">
+                        {% for page in analytics.pagesMostViewed|slice(0, 6) %}
+                        <li>
+                            <span class="pull-right"><strong>{{ page[1] }}</strong> <small>VUES</small></span><span class="name">{{ page[0] }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Latest Social Trends -->
+        {% endif %}
+
+
+        {% if analytics.topRegions is defined and analytics.topRegions is not null %}
+        <!-- Answered Tickets -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="card">
+                <div class="body bg-green">
+                    <div class="font-bold m-b--35">Top régions <small>(30 jours)</small></div>
+                    <ul class="dashboard-stat-list">
+                        {% for region in analytics.topRegions|slice(0, 6) %}
+                            <li>
+                                <span class="pull-right"><strong>{{ region[2] }}</strong> <small>VUES</small></span><span class="name">{{ region[0] }} - {{ region[1] }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Answered Tickets -->
+        {% endif %}
+
+    </div>
+
+    <div class="row clearfix">
+        <!-- Task Info -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Cards en attente de modération</h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="{{ path('admin_cards_list') }}">Liste des cards</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                        <table class="table table-hover dashboard-task-infos">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nom</th>
+                                    <th>Pixie</th>
+                                    <th>Statut</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in content.cardsPending %}
+                                    <tr>
+                                        <td>{{ item.id }}</td>
+                                        <td>{{ item.name }}</td>
+                                        <td>
+                                            {% if item.pixie is not null %}
+                                                <a href="{{ path('admin_users_edit', {id: item.pixie.id}) }}" class="icon-link"><i class="material-icons">person_pin</i> <span>{{ item.pixie.firstname ~ ' ' ~ item.pixie.lastname }}</span></a>
+                                            {% endif %}
+                                        </td>
+                                        <td><span class="label bg-status-{{ item.status }}">{{ ('label.cardstatus.' ~ item.status)|trans }}</span></td>
+                                        <td align="right">
+                                            <a href="{{ path('admin_cards_edit', {id: item.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                                                <i class="material-icons">remove_red_eye</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Task Info -->
+    </div>
+
+{% endblock %}

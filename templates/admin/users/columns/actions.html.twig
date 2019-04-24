@@ -1,0 +1,19 @@
+<div class="item-actions">
+
+    <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_users_edit', {id: item.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+        <i class="material-icons">edit</i>
+    </a>
+    <a title="{{ 'action.checkcollections'|trans }}" href="{{ path('admin_cards_collections_list', {userId: item.id}) }}" class="btn btn-circle bg-green waves-effect waves-circle waves-float"><i class="material-icons">dns</i></a>
+    {% if not item.deleted %}
+    <form action="" data-softdelete="{{ url('admin_users_soft_delete', { id: item.id }) }}" data-harddelete="{{ url('admin_users_hard_delete', { id: item.id }) }}" method="post" class="delete-form-users">
+        <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+        <button type="button" title="{{ 'action.delete'|trans }}" class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+    </form>
+    {% else %}
+    <form action="{{ url('admin_users_restore_soft_delete', { id: item.id }) }}"  method="post" class="restore-user">
+        <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+        <button type="submit" title="Restaurer le compte" class="btn btn-circle bg-blue waves-effect waves-circle waves-float"><i class="material-icons">settings_backup_restore</i></button>
+    </form>
+    {% endif %}
+
+</div>

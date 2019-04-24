@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" class="gr__staging_pix_city"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style id="stndz-style"></style>
+
+    <title>Pix.City</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% embed 'campaign/pixie/style.html.twig' %}{% endembed %}
+    {% block stylesheets %}
+        {#<link ref="stylesheet" text="text/css" href="{{ asset('build/front/css/app.css') }}" />#}
+
+        {#<link ref="stylesheet" text="text/css" href="{{ asset('build/front/css/pixie-campaign.css') }}" />#}
+        {#<link ref="stylesheet" text="text/css" href="{{ asset('build/front/css/bootstrap-campaign.css') }}" />#}
+        {#<link ref="stylesheet" text="text/css" href="{{ asset('build/front/css/slick-campaign.css') }}" />#}
+        {#<link ref="stylesheet" text="text/css" href="{{ asset('build/front/css/slick-theme-campaign.css') }}" />#}
+        {#<link ref="stylesheet" text="text/css" href="{{ asset('build/front/css/style-campaign.css') }}" />#}
+
+    {#<link rel="stylesheet" type="text/css" href="/campaign/slick.css">#}
+    {#<link rel="stylesheet" type="text/css" href="/campaign/slick-theme.css">#}
+    {#<link rel="stylesheet" type="text/css" href="/campaign/style.css">#}
+    {% endblock %}
+    {% block javascripts %}
+        {% embed 'campaign/pixie/script.html.twig' %}{% endembed %}
+        {#<script src="{{ absolute_url(asset('build/front/js/pixie-campaign.js')) }}"></script>#}
+        {#<script src="{{ asset('build/front/js/campaigns/popper.js') }}"></script>#}
+
+        {#<script src="{{ asset('build/front/js/campaigns/jquery-campaign.js') }}"></script>#}
+        {#<script src="{{ asset('build/front/js/bootstrap-campaign.js') }}"></script>#}
+
+        {#<script src="{{ asset('build/front/js/campaigns/slick.js') }}"></script>#}
+
+        {#<script src="{{ absolute_url(asset('build/front/js/campaigns/bootstrap.js')) }}"></script>#}
+        {#<script src="{{ absolute_url(asset('build/front/js/campaigns/slick.js')) }}"></script>#}
+        {#<script src="{{ absolute_url(asset('build/front/js/campaigns/custom.js')) }}"></script>#}
+    {% endblock %}
+</head>
+<body>
+
+{% block body %}{% endblock %}
+</body>
+</html>

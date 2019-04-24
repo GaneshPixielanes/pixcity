@@ -1,0 +1,280 @@
+{% extends 'admin/base.html.twig' %}
+
+{% set route = app.request.get('_route') %}
+
+{% block body_class %}
+    {{ parent() }}
+{% endblock %}
+
+{% set pendingCards = findPendingCards() %}
+
+{% block body %}
+
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-green">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>{{ 'text.loading'|trans }}</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="{{ path('admin_dashboard_index') }}"><img class="align logo" width="140" src="{{ asset('build/images/logo-white.svg') }}"> <small>CMS</small></a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ path('front_homepage_index') }}" class="btn bg-green btn-visit-site"><i class="material-icons">open_in_new</i> <span>Aller sur le site</span></a>
+                    </li>
+                    <!-- Notifications -->
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">notifications</i>
+                            {% if pendingCards|length > 0 %}<span class="label-count">{{ pendingCards|length }}</span>{% endif %}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">NOTIFICATIONS</li>
+                            <li class="body">
+                                <ul class="menu">
+                                    {% for item in pendingCards %}
+                                        <li>
+                                            <a href="{{ path('admin_cards_edit', {id: item.id}) }}">
+                                                <div class="icon-circle bg-pink"><i class="material-icons">input</i></div>
+                                                <div class="menu-info">
+                                                    <h4>{{ item.name }}</h4>
+                                                    <p><i class="material-icons">access_time</i> {{ item.createdAt|localizeddate('medium', 'short') }}</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- #END# Notifications -->
+
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle current-user" data-toggle="dropdown" role="button">
+                            <div class="username">
+                                {{ app.user.firstname ~ ' ' ~ app.user.lastname }}
+                                <small>{{ app.user.email }}</small>
+                                <span class="label bg-{{ app.user.getHighestRole()|lower }}">{{ app.user.getHighestRole()|trans }}</span>
+                            </div>
+                            <i class="material-icons">account_circle</i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('admin_admins_edit', {id: app.user.id}) }}"><i class="material-icons">person</i>Mon profil</a></li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li role="seperator" class="divider"></li>
+                                <li><a href="{{ path('admin_admins_list') }}"><i class="material-icons">security</i>Administrateurs</a></li>
+                                <li><a href="{{ path('admin_users_list') }}"><i class="material-icons">group</i>Utilisateurs</a></li>
+                            {% endif %}
+                            <li role="seperator" class="divider"></li>
+                            <li><a href="/admin/logout"><i class="material-icons">input</i>Déconnexion</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+
+    <section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">MENU</li>
+                    <li class="{{ route starts with 'admin_dashboard' ? 'active' }}">
+                        <a href="{{ path('admin_dashboard_index') }}" class="waves-blue-grey">
+                            <i class="material-icons">home</i>
+                            <span>{{ 'label.dashboard'|trans }}</span>
+                        </a>
+                    </li>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="{{ route starts with 'admin_users' ? 'active' }}">
+                        <a href="{{ path('admin_users_list') }}" class="waves-blue-grey">
+                            <i class="material-icons">group</i>
+                            <span>{{ 'label.users'|trans }}</span>
+                        </a>
+                    </li>
+                    <li class="{{ route starts with 'admin_pages' ? 'active' }}">
+                        <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
+                            <i class="material-icons">description</i>
+                            <span>{{ 'label.pages'|trans }}</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{{ path('admin_pages_list') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.pages'|trans }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_pages_categories_list') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.homepageregions'|trans }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_pages_cards_walls_list') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.cardswalls'|trans }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_pages_sliders_list') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.sliders'|trans }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_pages_voyager') }}"  class="waves-blue-grey">
+                                    <span>Voyager pages</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    <li class="{{ route starts with 'admin_cards' ? 'active' }}">
+                        <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
+                            <i class="material-icons">view_carousel</i>
+                            <span>{{ 'label.cards'|trans }}</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{{ path('admin_cards_templates_list') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.cardtemplates'|trans }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_cards_projects_list') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.cardsprojects'|trans }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <hr style="margin: 5px 15px;">
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_cards_list', {cards_filters: {"status": "submitted"}}) }}" class="waves-blue-grey">
+                                    <span>{{ 'label.cards_to_validate'|trans }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_cards_list', {cards_filters: {"status": "validated"}}) }}" class="waves-blue-grey">
+                                    <span>{{ 'label.cards'|trans }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <hr style="margin: 5px 15px;">
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_cards_collections_list') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.collections'|trans }}</span>
+                                </a>
+                            </li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <li>
+                                <hr style="margin: 5px 15px;">
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_cards_regions_list') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.regions'|trans }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('admin_cards_categories_list') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.categories'|trans }}</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="{{ route starts with 'admin_menus' ? 'active' }}">
+                        <a href="{{ path('admin_menus_list') }}" class="waves-blue-grey">
+                            <i class="material-icons">menu</i>
+                            <span>{{ 'label.menus'|trans }}</span>
+                        </a>
+                    </li>
+                    <li class="{{ route starts with 'admin_transactions' ? 'active' }}">
+                        <a href="{{ path('admin_transactions_list') }}" class="waves-blue-grey">
+                            <i class="material-icons">euro_symbol</i>
+                            <span>{{ 'label.transactions'|trans }}</span>
+                        </a>
+                    </li>
+                    <li class="{{ route starts with 'admin_options' ? 'active' }}">
+                        <a href="{{ path('admin_options_list') }}" class="waves-blue-grey">
+                            <i class="material-icons">settings</i>
+                            <span>{{ 'label.options'|trans }}</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="{{ route starts with 'admin_notifications'? 'active' }}">
+                        <a href="{{ path('admin_notification_list') }}" class="waves-blue-grey">
+                            <i class="material-icons">notification_important</i>
+                            <span>{{ 'label.notifications'|trans }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2018 Pix.City
+                </div>
+                <div class="version">
+                    <b>Version: </b> 1.0.0
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+
+            {% for message in app.flashes('success') %}
+                <div class="alert bg-green alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert bg-red alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+
+            {% block content %}{% endblock %}
+
+        </div>
+    </section>
+
+
+{% endblock %}

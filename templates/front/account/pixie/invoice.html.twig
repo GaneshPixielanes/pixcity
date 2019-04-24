@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="invoice-html" style="padding: 0; margin: 0;">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ pathToPublic }}/{{ asset('build/front/css/app.css') }}">
+    {% endblock %}
+
+</head>
+
+{% set tva = 0.2 %}
+
+<body class="invoice-body" style="padding: 0; margin: 0;">
+
+    <table id="invoice" style="padding: 0; margin: 0;">
+        <tr class="header">
+            <td>
+                <table>
+                    <tr>
+                        <td class="address">
+                            <img id="logo" src="{{ pathToPublic }}/{{ asset('build/images/logo.jpg') }}" alt="Pix.City">
+                            Pixielanes
+                            <br>10 Rue des Pervenches
+                            <br>60560 Orry-la-Ville
+                            <br>mail : contact@pix.city
+                            <br>SIRET : 833 698 962 00010
+                            <br>Code APE : 9329Z
+                            <br>N° de TVA intracommunautaire 83369896200010
+                        </td>
+                        <td class="title">
+                            Bon de commande
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td height="10">&nbsp;</td>
+        </tr>
+
+        <tr class="pixie">
+            <td>
+                <table>
+                    <tr>
+                        <td class="invoice" valign="top">
+                            <h3>&nbsp;</h3>
+                            <table>
+                                <tr>
+                                    <td>Bon de commande N°</td>
+                                    <td>{{ transaction.name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date</td>
+                                    <td>{{ transaction.createdAt | localizeddate('short', 'none') }}</td>
+                                </tr>
+                                {% if transaction.user.pixie.billing.tva is not empty %}
+                                <tr>
+                                    <td>N° TVA</td>
+                                    <td>{{ transaction.user.pixie.billing.tva }}</td>
+                                </tr>
+                                {% endif %}
+                            </table>
+                        </td>
+                        <td width="20"></td>
+                        <td class="pixie-address">
+                            <h3>Adressé à :</h3>
+                            <table>
+                                <tr>
+                                    <td class="head">Contributeur</td>
+                                </tr>
+                                <tr>
+                                    <td class="address">
+                                        <strong>
+                                            {% if transaction.user.pixie.billing.companyName %}{{ transaction.user.pixie.billing.companyName }}<br>{% endif %}
+                                            {% if transaction.user.pixie.billing.firstname %}{{ transaction.user.pixie.billing.firstname }} {{ transaction.user.pixie.billing.lastname }}<br>{% endif %}
+                                        </strong>
+                                        {{ transaction.user.pixie.billing.address.address }}<br>
+                                        {{ transaction.user.pixie.billing.address.zipcode }} {{ transaction.user.pixie.billing.address.city }}<br>
+                                        {{ transaction.user.pixie.billing.address.country }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td height="30">&nbsp;</td>
+        </tr>
+
+        <tr class="details">
+            <td>
+                <table>
+                    <tr class="head">
+                        <td>Désignation</td>
+                        <td>Q.T.E</td>
+                        <td>P.U.</td>
+                        <td>Total HT</td>
+                        {% if transaction.user.pixie.billing.tva is not empty %}
+                            <td>Taxe</td>
+                        {% endif %}
+                    </tr>
+                    {% for project in transaction.projects %}
+                        <tr>
+                            <td>{{ project.name }}</td>
+                            <td>1</td>
+                            <td>{{ project.price|number_format(2) }} €</td>
+                            {% if transaction.user.pixie.billing.tva is not empty %}
+                                <td>{{ project.price - project.price * tva|number_format(2) }} €</td>
+                                <td>{{ project.price * tva |number_format(2) }} €</td>
+                            {% else %}
+                                <td>{{ project.price|number_format(2) }} €</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td height="30">&nbsp;</td>
+        </tr>
+
+        <tr class="total">
+            <td>
+                <table>
+                    <tr>
+                        <td class="taxes" valign="top">
+                            {% if transaction.user.pixie.billing.tva is not empty %}
+                            <table>
+                                <tr>
+                                    <td>Base taxe</td>
+                                    <td>Taux</td>
+                                    <td>Libellé taux</td>
+                                    <td>Montant taxe</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ transaction.total|number_format(2) }} €</td>
+                                    <td>{{ tva * 100|number_format(2) }}</td>
+                                    <td>FRA Encaissement {{ tva * 100 }}%</td>
+                                    <td>{{ transaction.total * tva |number_format(2) }} €</td>
+                                </tr>
+                            </table>
+                            {% else %}
+                                TVA non applicable - article 293 B du CGI.
+                            {% endif %}
+                        </td>
+                        <td width="20"></td>
+                        <td class="total-summary">
+                            <table>
+                                <tr>
+                                    <td>Total lignes HT</td>
+                                    <td>{{ transaction.total|number_format(2) }} €</td>
+                                </tr>
+                                {% if transaction.user.pixie.billing.tva is not empty %}
+                                    <tr>
+                                        <td>Montant TVA</td>
+                                        <td>{{ transaction.total * tva |number_format(2) }} €</td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td>Total TTC</td>
+                                    <td>{{ transaction.total|number_format(2) }} €</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td height="30">&nbsp;</td>
+        </tr>
+
+        <tr class="conditions">
+            <td>
+                <table>
+                    <tr>
+                        <td class="head">Conditions de paiement</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Date échéance</td>
+                                    <td>Mode de règlement</td>
+                                    <td>Montant échéance</td>
+                                    <td>Reste à régler</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ transaction.createdAt|date_modify("last day of next month")|date("d/m/Y") }}
+                                    </td>
+                                    <td>30 jours fin de mois</td>
+                                    <td>{{ transaction.total|number_format(2) }} €</td>
+                                    <td>{{ transaction.total|number_format(2) }} €</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td height="30">&nbsp;</td>
+        </tr>
+
+        <tr>
+            <td class="legals">
+                Conditions d'escompte : Néant
+                <br>La TVA doit être acquittée par le destinataire conformément à l'article 262 de la directive du conseil 2006/112/CE.
+                <br>La Loi 92.1442 du 31/12/92 nous fait obligation en cas de retard de paiement d'appliquer un intérêt de 1,5% par mois de retard. Indémnité fofaitaire pour frais de recouvrement de 40€
+            </td>
+        </tr>
+
+        {% if transaction.type == 'banktransfer' %}
+            <tr>
+                <td height="30">&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td class="rib">
+                    <table>
+                        <tr>
+                            <td colspan="2" class="head">Coordonnées bancaires :</td>
+                        </tr>
+                        <tr>
+                            <td>Nom</td>
+                            <td>{{ transaction.user.pixie.billing.billingName }}</td>
+                        </tr>
+                        <tr>
+                            <td>Pays</td>
+                            <td>{{ transaction.user.pixie.billing.billingCountry }}</td>
+                        </tr>
+                        <tr>
+                            <td>IBAN</td>
+                            <td>{{ transaction.user.pixie.billing.billingIban }}</td>
+                        </tr>
+                        <tr>
+                            <td>BIC</td>
+                            <td>{{ transaction.user.pixie.billing.billingBic }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        {% endif %}
+
+    </table>
+
+</body>
+</html>

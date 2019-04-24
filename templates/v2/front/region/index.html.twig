@@ -1,0 +1,170 @@
+{% extends 'v2/base.html.twig' %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+{% import 'front/_shared/macros.html.twig' as macro %}
+
+{% block body %}
+		<div class="region-page">
+			<!-- Banner -->
+			<div class="region-banner-wrap">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 my-4">
+							<h1>Région {{ regionName }}</h1>
+						</div>
+					</div>
+					<div class="row d-flex justify-content-center mb-5">
+						<div class="col-md-2 col-sm-6 col-6 region-cards">
+							<img src="{{ absolute_url(asset('build/images/region-banner-cards.svg')) }}" />
+							<div class="number"> <o id="totalCards">{{ totalCards }}</o> <span>CARDS</span></div>
+						</div>
+						<select class="region-selected d-none" data-live-search="true" multiple title="Toutes les régions" name="regions[]" id="region-picker">
+							<option value="{{ page.region.slug }}" selected>{{ page.region.name}}</option>
+						</select>
+						<div class="col-md-2 col-sm-6 col-6 region-makers">
+							<div class="stack-makers">
+								<div class="row">
+									<div class="col-6 city-maker">
+										<img src="https://www.pix.city/services/images/55b91e9c0b5965ea210f3492756f68e0.jpeg" class="rounded-circle" alt="User Name">
+									</div>
+									<div class="col-6 city-maker">
+										<img src="https://www.pix.city/services/images/bdf3096e0a6ba2316466d746304c0d42.png" class="rounded-circle" alt="User Name">
+									</div>
+									<div class="col-6 city-maker-middle">
+										<img src="https://www.pix.city/services/images/95d6eb342f84cc670e694e679996f772.jpeg" class="rounded-circle" alt="User Name">
+									</div>
+								</div>
+								<div class="number">{{ totalPixies }} <span>CITY MAKERS</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Banner -->
+			<!-- Embedded Google map Wrap Starts -->
+			{% include "v2/_shared/map.html.twig" %}
+			<!-- Embedded Google map Wrap Ends -->
+			<div class="breadcrumb-wrap">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 my-4 breadcrumb-container">
+							<ul>
+								<li><a href="javascript:;">Accueil</a></li>
+								<li><a href="javascript:;">Recherche</a></li>
+								<li><b>Résultat - {{ page.region.name | upper}}</b></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Filter Cards Wrap Starts -->
+			<div class="cards-wrap">
+				<div class="container">
+					<div id="cards" class="row list-of-cards m-t-50 no-autoscroll" data-api-route="/api/cards/list-region/{{ slug }}"  data-page="1" data-region="{{ page.region.id }}">
+						<div class="col-md-12">
+							<h2>Découvrez les Cards de nos City-makers en {{ page.region.name }}</h2>
+							<div class="dropdown">
+								<a class="dropdown-toggle dnc dropdown-moment" href="javascript:;" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+									Catégories <i class="fas fa-chevron-down"></i>
+								</a>
+								<div id="catsDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+									<ul id="filters" class="categories">
+										<li class="btn btn-rollover btn-pink is-checked all"><span class="text">Tout</span><i class="fas fa-th"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="7" data-slug="nature"><span class="text">Nature</span><i class="fas fa-tree"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="8" data-slug="site-touristique"><span class="text">Site touristique</span><i class=" fas fa-university"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="9" data-slug="manger"><span class="text">Manger</span><i class="fas fa-utensils"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="22" data-slug="bars-et-cafes"><span class="text">Bars et Cafés</span><i class="fas fa-coffee"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="12" data-slug="sortir"><span class="text">Sortir</span><i class="fas fa-glass-martini"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="17" data-slug="green"><span class="text">Green</span><i class="fas fa-leaf"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="10" data-slug="mobilite"><span class="text">Mobilité</span><i class="fas fa-wheelchair"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="11" data-slug="sport"><span class="text">Sport</span><i class="fas fa-futbol"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="13" data-slug="art-et-culture"><span class="text">Art et culture</span><i class="fas fa-paint-brush"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="14" data-slug="shopping"><span class="text">Shopping</span><i class="fas fa-shopping-bag"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="15" data-slug="consommer-local"><span class="text">Consommer local</span><i class="fas fa-toolbox"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="16" data-slug="enfants"><span class="text">Enfants</span><i class="fas fa-child"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="18" data-slug="dormir"><span class="text">Dormir</span><i class="fas fa fa-bed"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="19" data-slug="bien-etre-et-sante"><span class="text">Bien-être et santé</span><i class="fas fa-spa"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="20" data-slug="evenement"><span class="text">Événement</span><i class="fas fa-calendar-alt"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="21" data-slug="experiences-solidaires"><span class="text">Éxpériences solidaires</span><i class="fas fa-users"></i></li>
+									</ul>
+								</div>
+							</div>
+							<div class="row cardsMrgn loader-container">
+								<div class="loader"></div>
+								<div id="cardsGrid" class="regionCards cards-grid cards-filter-result">
+									{% for card in newestCards %}
+										{{ macro.cardSingle(card) }}
+									{% endfor %}
+									{% if cards | length >= 9 %}
+									<div class="loadCards"></div>
+									<div class="col-xs-12 text-center" id="loadCards">
+									     <a href="javascript:;" class="btn btn-green btn-rollover" id="showMoreCards"><span class="text">VOIR PLUS DE CARDS</span><i class="fas fa-plus-square"></i></a>
+                  					</div>
+                  				{% endif %}
+								</div>
+
+							</div>
+						</div>
+						<div id="noResult" class="col-md-12 no-results d-none">
+							<p>Aucune Card dans cette catégorie !</p>
+							<div class="noCardIco"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Filter Cards Wrap Ends -->
+			<!-- City maker profile wrap Starts-->
+			<div class="my-5 city-makers-wrap">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<h3>Devenez City-Maker !</h3>
+							<p>Partagez vos bonnes adresses et bons plans, améliorez votre popularité sur Instagram et Facebook, monétisez votre influence et votre expertise.</p>
+						</div>
+					</div>
+					<div class="row d-flex justify-content-around">
+						{% for user in pixies %}
+							{{ macro.cityMakerSingle(user) }}
+						{% endfor %}
+					</div>
+	                <div class="row">
+	                    <div class="col-md-12 mt-3">
+	                        <div class="col-md-5 profile-actions">
+	                            <div class="row">
+	                                <div class="col-md-6 mb-2">
+	                                    <a href="/tous-nos-city-makers-locaux-france" class="btn btn-rollover btn-gray btn-block"><span class="text">TOUS LES CITY-MAKERS</span><i class="fas fa-users"></i></a>
+	                                </div>
+	                                <div class="col-md-6">
+	                                    <a href="/city-maker/inscription/mode" class="btn btn-rollover btn-outline-gray btn-block"><span class="text">DEVENIR CITY-MAKER</span><i class="fas fa-user-plus"></i></a>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+				</div>
+			</div>
+			<!-- City maker profile wrap Ends-->
+		</div>
+    <div id="api-box" data-api-url="/api/maps/all-cards"
+         data-api-search-url="/api/maps/find-region-card/{{ region_id }}/"
+         data-current-location="false"
+    ></div>
+		
+{% endblock %}
+{% block javascripts %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places" defer></script>
+
+    {{ parent() }}
+ <script>
+     var coordinates = {{ page.region.coordinates }};
+     // var coordinates = {};
+
+ </script>
+    <script src="{{ asset('build/js/map.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+{% endblock %}

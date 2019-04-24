@@ -1,0 +1,61 @@
+{% extends 'front/account/user/base.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} allPixies account bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+    <!-- PL Home Top Banner -->
+    <div class="topBanner container">
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+
+                <!--/RECHERCHE-->
+                <h1>
+                    {% if pixies | length > 1 %}
+                        <span>{{ pixies | length }}</span> Pixies en favori
+                    {% elseif pixies | length == 1 %}
+                        <span>{{ pixies | length }}</span> Pixie en favori
+                    {% else %}
+                        Vous n'avez aucun Pixie favori pour le moment.
+                    {% endif %}
+                </h1>
+
+
+            </div>
+            <!--/.col-sm-12-->
+        </div>
+        <!--/.row-->
+    </div>
+    <!--/.topBanner-->
+
+    <div class="container">
+
+        <!--REGION-->
+        <div class="row">
+
+            {% for user in pixies %}
+                {{ macro.pixieItem(user, false, user.cards | length) }}
+            {% endfor %}
+
+
+        </div>
+        <!--/.row-->
+    </div>
+    <!--/.container-->
+
+
+{% endblock %}
+
+{% block footer_class %}simpleFooter{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

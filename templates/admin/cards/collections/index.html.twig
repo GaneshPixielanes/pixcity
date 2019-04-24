@@ -1,0 +1,69 @@
+{% extends 'admin/cards/collections/collections.html.twig' %}
+
+{% block breadcrumb %}
+    <li class="active"><a href="{{ path('admin_cards_collections_list') }}">{{ 'label.collections'|trans }}</a></li>
+{% endblock %}
+
+{% block inner %}
+
+    <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="4">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">{{ 'label.user'|trans }}</th>
+            <th scope="col">{{ 'label.name'|trans }}</th>
+            <th scope="col">{{ 'label.public'|trans }}</th>
+            <th scope="col">{{ 'label.updated_at'|trans }}</th>
+            <th scope="col" class="text-center nosort"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in list %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>
+                    {% if item.user is not null %}
+                        <a title="Voir les collections de cet utilisateur" href="{{ path('admin_cards_collections_list', {userId: item.user.id}) }}">{{ item.user.firstname ~ ' ' ~ item.user.lastname }}</a>
+                    {% endif %}
+                </td>
+                <td>{{ item.name }}</td>
+                <td class="col-visibility public">
+                    {% if item.public == 0 %}
+                        <i class="material-icons off">visibility_off</i>
+                    {% else %}
+                        <i class="material-icons on">visibility</i>
+                    {% endif %}
+                </td>
+                <td>{{ item.updatedAt|localizeddate('medium', 'short') }}</td>
+
+                <td class="text-right">
+                    <div class="item-actions">
+
+                        <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_cards_collections_edit', {id: item.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                            <i class="material-icons">edit</i>
+                        </a>
+                        <form action="{{ url('admin_cards_collections_duplicate', { id: item.id }) }}" method="get" class="duplicate-form">
+                            <input type="hidden" name="token" value="{{ csrf_token('duplicate') }}" />
+                            <button type="submit" title="{{ 'action.duplicate'|trans }}" class="btn btn-circle bg-green waves-effect waves-circle waves-float"><i class="material-icons">content_copy</i></button>
+                        </form>
+                        <form action="{{ url('admin_cards_collections_delete', { id: item.id }) }}" method="post" class="delete-form">
+                            <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                            <button type="button" title="{{ 'action.delete'|trans }}" class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                        </form>
+                        &nbsp;|&nbsp;
+                        <a title="{{ 'action.view_on_website'|trans }}" href="{{ path('front_collection_index', {slug: item.slug}) }}" target="_blank" rel="noopener" class="btn btn-circle bg-green waves-effect waves-circle waves-float">
+                            <i class="material-icons">open_in_new</i>
+                        </a>
+
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10" align="center">{{ 'text.noresults'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

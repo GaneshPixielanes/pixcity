@@ -1,0 +1,233 @@
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{{ form_start(form) }}
+<div id="card-project-form-container">
+
+    <div class="row clearfix">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        {{ 'label.card'|trans }}
+                    </h2>
+                </div>
+                <div class="body">
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.tagLine) }}
+                    {{ form_row(form.meta_title) }}
+                    {{ form_row(form.meta_description) }}
+                    {{ form_row(form.slug) }}
+                    {{ form_row(form.content) }}
+                    {{ form_row(form.categories) }}
+
+                    <h3>Liste des informations :</h3>
+                    <ul class="repeater-container card-template-infos-collection" data-prototype="{{ form_widget(form.infos.vars.prototype)|e('html_attr') }}">
+
+                        {% for info in form.infos %}
+                            {{ form_widget(info) }}
+                        {% endfor %}
+
+                        <li class="align-center"><a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float add-item"><i class="material-icons">add</i></a></li>
+                    </ul>
+
+                    <h3>Galerie photo :</h3>
+                    <ul class="repeater-container card-template-attachments-collection" data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}">
+
+                        {% for attachment in form.medias %}
+                            {{ form_widget(attachment) }}
+                        {% endfor %}
+
+                        <li class="align-center">
+                            <form enctype="multipart/form-data">
+                                <div class="upload-zone">
+                                    <input name="file" type="file" class="file-input" />
+                                    <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                                        <i class="material-icons">add</i>
+                                    </a>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+
+
+                    <div class="flex-row-space-between">
+                        <a href="{{ path('admin_cards_projects_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+                        <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+                    </div>
+
+                    {{ form_row(form._token) }}
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card side-card">
+                <div class="body">
+
+                    <div class="m-b-15">
+                        {{ form_label(form.status) }}
+                        {{ form_widget(form.status) }}
+                        {{ form_errors(form.status) }}
+                    </div>
+                    <div class="m-b-15">
+                        {{ form_label(form.indexed) }}
+                        {{ form_widget(form.indexed) }}
+                        {{ form_errors(form.indexed) }}
+                    </div>
+
+                    {% if item is defined and item.project is not null %}
+                        <a href="{{ path('admin_cards_projects_edit', {id: item.project.id}) }}" class="card-summary">
+                            <h5><i class="material-icons">inbox</i> <span>Demande liée à cette Card :</span></h5>
+                            <div>{{ item.project.name }}</div>
+                            <small class="date">Date : {{ item.project.createdAt|localizeddate('medium', 'short') }}</small>
+                        </a>
+                    {% endif %}
+
+                    <div class="flex-row-space-between">
+                        <a href="{{ path('admin_cards_projects_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+                        <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card side-card">
+                <div class="body">
+
+                    <h3>{{ 'label.thumb'|trans }}</h3>
+
+                    <div class="card-thumb">
+
+                        <ul class="repeater-container card-template-attachments-collection">
+
+                            <img class="thumb" src="{% if form.thumb.vars.value.id is defined %}{{ form.thumb.vars.value.getUrl() }}{% endif %}" width="100%">
+                            <li class="field">{{ form_widget(form.thumb.name) }}</li>
+
+                            <li class="align-center">
+                                <form enctype="multipart/form-data">
+                                    <div class="upload-zone">
+                                        <input name="file" type="file" class="file-input" data-type="thumb" />
+                                        <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                                            <i class="material-icons">add</i>
+                                        </a>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card side-card">
+                <div class="body">
+
+                    <h3>{{ 'label.masterhead'|trans }}</h3>
+
+                    <div class="card-thumb">
+
+                        <ul class="repeater-container card-template-attachments-collection">
+
+                            <img class="thumb" src="{% if form.masterhead.vars.value.id is defined %}{{ form.masterhead.vars.value.getUrl() }}{% endif %}" width="100%">
+                            <li class="field">{{ form_widget(form.masterhead.name) }}</li>
+
+                            <li class="align-center">
+                                <form enctype="multipart/form-data">
+                                    <div class="upload-zone">
+                                        <input name="file" type="file" class="file-input" data-type="masterhead" />
+                                        <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                                            <i class="material-icons">add</i>
+                                        </a>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card side-card">
+                <div class="body">
+
+                    <div class="m-b-15">
+                        <div>{{ form_label(form.region) }}</div>
+                        {{ form_widget(form.region) }}
+                        {{ form_errors(form.region) }}
+                    </div>
+
+                    <div class="m-b-15">
+                        <div>{{ form_label(form.department) }}</div>
+                        {{ form_widget(form.department) }}
+                        {{ form_errors(form.department) }}
+                    </div>
+
+                    <div class="m-b-15">
+                        <div>{{ form_label(form.pixie) }}</div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="material-icons">person</i></span>
+                            <div class="form-field">{{ form_widget(form.pixie) }}</div>
+                        </div>
+                        {{ form_errors(form.pixie) }}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card side-card">
+                <div class="body">
+
+                    <h3>{{ 'label.address'|trans }}</h3>
+                    <div class="m-b-15">
+                        {{ form_widget(form.address.address) }}
+                        {{ form_errors(form.address.address) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ form_widget(form.address.zipcode) }}
+                            {{ form_errors(form.address.zipcode) }}
+                        </div>
+                        <div class="col-md-8">
+                            {{ form_widget(form.address.city) }}
+                            {{ form_errors(form.address.city) }}
+                        </div>
+                    </div>
+                    <div class="m-b-15">
+                        {{ form_label(form.address.country) }}
+                        {{ form_widget(form.address.country) }}
+                        {{ form_errors(form.address.country) }}
+                    </div>
+                    <div id="gm-address-map" class="m-b-15"></div>
+                    <div class="row m-b-15">
+                        <div class="col-md-6">
+                            {{ form_label(form.address.latitude) }}
+                            {{ form_widget(form.address.latitude) }}
+                            {{ form_errors(form.address.latitude) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.address.longitude) }}
+                            {{ form_widget(form.address.longitude) }}
+                            {{ form_errors(form.address.longitude) }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{ form_end(form, {render_rest: false}) }}

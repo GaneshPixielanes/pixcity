@@ -1,0 +1,205 @@
+{% extends 'admin/users/users.html.twig' %}
+
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{% block breadcrumb %}
+    <li><a href="{{ path('admin_users_list') }}">{{ 'label.users'|trans }}</a></li>
+    <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    {{ form_start(form) }}
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="tab-general active">
+                <a href="#user_general" data-toggle="tab" aria-expanded="false">
+                    <i class="material-icons">subtitles</i> {{ 'label.general'|trans }}
+                </a>
+            </li>
+            <li class="tab-profile only-pixie">
+                <a href="#user_profile" data-toggle="tab">
+                    <i class="material-icons">face</i> {{ 'label.pixie_profile'|trans }}
+                </a>
+            </li>
+            <li class="tab-remuneration only-pixie">
+                <a href="#user_remuneration" data-toggle="tab">
+                    <i class="material-icons">credit_card</i> {{ 'label.pixie_remuneration'|trans }}
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="user_general">
+
+                {{ form_row(form.active) }}
+                {{ form_row(form.visible) }}
+                {{ form_row(form.roles) }}
+
+
+                <div class="row form-row form-line">
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                        <label class="form-label required">Avatar</label>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 form-control-field">
+                        <div class="user-avatar">
+
+                            <ul class="repeater-container user-avatar-collection">
+
+                                <img class="thumb" src="{% if form.avatar.vars.value.id is defined %}{{ form.avatar.vars.value.getUrl() }}{% endif %}" width="100%">
+                                <li class="field">{{ form_widget(form.avatar.name) }}</li>
+
+                                <li class="align-left">
+                                    <div class="upload-zone">
+                                        <input name="fileAvatar" type="file" class="file-input" data-type="single" />
+                                        <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                                            <i class="material-icons">add</i>
+                                        </a>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                {{ form_row(form.email) }}
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.lastname) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.birthdate) }}
+                {{ form_row(form.birthLocation) }}
+                {{ form_row(form.currentLocation) }}
+                {{ form_row(form.gender) }}
+                {{ form_row(form.plainPassword.first) }}
+                {{ form_row(form.plainPassword.second) }}
+
+                {{ form_row(form.favoriteCategories) }}
+
+                {{  form_widget(form.userRegistrationCheck) }}
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="user_profile">
+
+                <h3>{{ 'label.socialnetworks'|trans }}</h3>
+
+                <ul class="repeater-container user-links-collection" data-prototype="{{ form_widget(form.links.vars.prototype)|e('html_attr') }}">
+
+                    {% for link in form.links %}
+                        {{ form_widget(link) }}
+                    {% endfor %}
+
+                    <li class="align-center"><a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float add-item"><i class="material-icons">add</i></a></li>
+                </ul>
+
+                <h3>Pixie</h3>
+
+                <div class="row m-t-15">
+                    <div class="col-xs-12 form-line">
+                        <div class="form-group">
+                            {{ form_label(form.pixie.regions) }}
+                            {{ form_widget(form.pixie.regions) }}
+                            {{ form_errors(form.pixie.regions) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6 form-line">
+                        <div class="form-group">
+                            {{ form_label(form.pixie.likeText) }}
+                            {{ form_widget(form.pixie.likeText) }}
+                            {{ form_errors(form.pixie.likeText) }}
+                        </div>
+                    </div>
+                    <div class="col-xs-6 form-line">
+                        <div class="form-group">
+                            {{ form_label(form.pixie.dislikeText) }}
+                            {{ form_widget(form.pixie.dislikeText) }}
+                            {{ form_errors(form.pixie.dislikeText) }}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="user_remuneration">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>{{ 'label.infos'|trans }}</h3>
+                        {{ form_row(form.pixie.billing.status) }}
+                        {{ form_row(form.pixie.billing.companyName) }}
+                        {{ form_row(form.pixie.billing.firstname) }}
+                        {{ form_row(form.pixie.billing.lastname) }}
+                        {{ form_row(form.pixie.billing.phone) }}
+                        {{ form_row(form.pixie.billing.tva) }}
+                    </div>
+                    <div class="col-md-6 side-card">
+                        <h3>{{ 'label.address'|trans }}</h3>
+                        <div class="m-b-15">
+                            {{ form_widget(form.pixie.billing.address.address) }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                {{ form_widget(form.pixie.billing.address.zipcode) }}
+                            </div>
+                            <div class="col-md-8">
+                                {{ form_widget(form.pixie.billing.address.city) }}
+                            </div>
+                        </div>
+                        <div class="m-b-15">
+                            {{ form_widget(form.pixie.billing.address.country) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>{{ 'label.remuneration'|trans }}</h3>
+                        {{ form_row(form.pixie.billing.billingType) }}
+                    </div>
+                    <div class="col-md-6">
+                        <h3>&nbsp;</h3>
+                        {{ form_row(form.pixie.billing.billingName) }}
+                        {{ form_row(form.pixie.billing.billingCountry) }}
+                        {{ form_row(form.pixie.billing.billingIban) }}
+                        {{ form_row(form.pixie.billing.billingBic) }}
+                        {{ form_row(form.pixie.billing.rib) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="flex-row-space-between">
+            <a href="{{ path('admin_users_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+        </div>
+
+
+        {{ form_row(form._token) }}
+
+    {{ form_end(form, {render_rest: false}) }}
+
+
+    <div id="api-routes"
+         data-upload-route="{{ path('admin_users_ajax_upload_avatar') }}"
+    ></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/users.js') }}"></script>
+    <script src="{{ asset('build/admin/js/shared/address.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+{% endblock %}

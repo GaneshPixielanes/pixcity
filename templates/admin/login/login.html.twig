@@ -1,0 +1,51 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body_class %}
+    {{ parent() }}
+    login-page
+{% endblock %}
+
+{% block body %}
+
+    <div class="login-box">
+        <div class="logo align-center">
+            <img class="align" width="200" src="{{ asset('build/images/logo-color.svg') }}">
+        </div>
+        <div class="card">
+            <div class="body">
+                <form action="{{ path('admin_login') }}" id="sign_in" method="POST">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="_username" placeholder="{{ 'label.email'|trans }}" required autofocus value="{{ last_username }}">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="_password" placeholder="{{ 'label.password'|trans }}" required>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="_target_path" value="{{ path('admin_dashboard_index') }}">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    {% if error %}
+                        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-xs-12 align-center">
+                            <button class="btn btn-lg btn-block waves-effect" type="submit">{{ 'action.login'|trans }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

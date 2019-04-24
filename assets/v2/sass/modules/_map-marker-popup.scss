@@ -1,0 +1,383 @@
+.map-marker-popup {
+  padding: 7px 5px;
+
+  .card-head {
+    font-size: 16px;
+    font-weight: 600;
+    color: $dark-gray;
+  }
+
+  .favourite-check {}
+
+  .marker-about {
+    font-size: 12px;
+    color: $normal-gray;
+
+    i {
+      font-size: 15px;
+      margin-right: 2px;
+    }
+  }
+
+  .map-view-images {
+    .popup-slider {
+      height: 180px;
+
+      .popup-slider-image {
+        width: 177px;
+        height: 180px;
+
+        img {
+          max-width: 100%;
+          width: 170px;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 6px;
+        }
+      }
+    }
+
+    .place-image {
+      width: 177px;
+      height: 180px;
+
+      img {
+        max-width: 100%;
+        width: 170px;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+    }
+  }
+
+  .link-button {
+    a {
+      font-size: 12px;
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        right: 8px;
+        background: url('../images/cards-white.svg') no-repeat;
+        width: 24px;
+        height: 24px;
+      }
+
+      &:hover {
+        &:before {
+          background: url('../images/cards-pink.svg') no-repeat;
+        }
+      }
+    }
+  }
+
+  &.similar-cards {
+    width: 224px;
+
+    .marker-about {
+      font-size: 12px;
+
+      i {
+        font-size: 15px;
+        margin-right: 2px;
+      }
+    }
+
+    .place-image {
+      width: auto;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.map-sidebar {
+  height: 100vh;
+
+  h4, .sidebar-header {
+    font-size: 24px;
+    font-weight: 500;
+    color: $dark-gray;
+  }
+
+  h5 {
+    font-size: 18px;
+  }
+
+  .marker-about {
+    font-size: 16px;
+    color: $normal-gray;
+
+    i {
+      font-size: 16px;
+      margin-right: 2px;
+    }
+  }
+
+  .sidebar-view-images {
+    .sidebar-slider {
+      .sidebar-slider-image {
+        width: 320px;
+        height: 320px;
+        margin-right: 15px;
+
+        img {
+          max-width: 100%;
+          width: 320px;
+          height: 320px;
+          object-fit: cover;
+          border-radius: 6px;
+        }
+      }
+    }
+  }
+
+  .register-button {
+    a {
+      font-size: 12px;
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        right: 8px;
+        background: url('../images/cards-white.svg') no-repeat;
+        width: 24px;
+        height: 24px;
+      }
+
+      &:hover {
+        &:before {
+          background: url('../images/cards-pink.svg') no-repeat;
+        }
+      }
+    }
+  }
+
+  .sidebar-actions {
+    .action-links {
+      color: $gray;
+      text-align: center;
+
+      p {
+        font-size: 12px;
+      }
+
+      a {
+        i {
+          color: $gray;
+        }
+
+        p {
+          color: $gray;
+          font-size: 12px;
+          text-decoration: none;
+        }
+
+        &:hover {
+          text-decoration: none;
+
+          p {
+            color: $blue;
+            text-decoration: none;
+          }
+        }
+      }
+
+      &:hover {
+        color: $blue;
+        text-decoration: none;
+
+        p {
+          color: $blue;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .pixie-profile-info {
+    .pixie-image {
+      img {
+        max-width: 100%;
+      }
+    }
+
+    .pixie-info {
+      .insta-name {
+        font-size: 16px;
+        font-weight: 400;
+        color: $dark-gray;
+        word-break: break-all;
+      }
+
+      .insta-loc {
+        font-size: 12px;
+        color: $normal-gray;
+      }
+
+      .subscribe {
+        a {
+          font-size: 12px;
+
+          i {
+            top: 10px;
+            right: 15px;
+          }
+        }
+      }
+
+      .about, .email {
+        font-size: 12px;
+        color: $dark-gray;
+
+        a {
+          font-size: 12px;
+          color: $dark-gray;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .pixie-insta-numbers {
+      .grayed {
+        text-align: center;
+        color: $gray;
+        font-size: 12px;
+
+        span {
+          display: block;
+        }
+      }
+
+      .blacked {
+        text-align: center;
+        font-size: 12px;
+
+        span {
+          display: block;
+          font-size: 14px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  .pix-place {
+    .pix-place-info {
+      ul {
+        padding: 0;
+        margin: 0;
+
+        li {
+          list-style-type: none;
+          margin-bottom: 7px;
+          font-size: 14px;
+          color: $normal-gray;
+
+          span {
+            margin-right: 10px;
+
+            i {
+              font-size: 16px;
+            }
+          }
+
+          a {
+            color: $normal-gray;
+            text-decoration: underline;
+
+            &:hover {
+              text-decoration: none;
+            }
+          }
+        }
+      }
+    }
+
+    .pix-place-about {
+      font-size: 14px;
+      color: $dark-gray;
+    }
+
+    .pix-place-amenities {
+      div {
+        text-align: center;
+        font-size: 12px;
+
+        span {
+          display: block;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .pix-place-action {
+    h4 {
+      span.badge {
+        font-size: 12px;
+        position: relative;
+        margin-left: 2em;
+        top: -2px;
+      }
+    }
+
+    .pix-place-reserve {
+      .pix-place-logo {
+        img {
+          max-width: 100%;
+        }
+      }
+
+      .pix-place-details {
+        p {
+          font-size: 12px;
+          margin-bottom: 0;
+
+          a {
+            font-size: 12px;
+          }
+        }
+      }
+
+      .reserve {
+        a {
+          font-size: 13px;
+          color: $gray;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+
+  .similar-places {
+    .similar-places-slider {
+      .similar-card-holder {
+        margin-right: 30px;
+      }
+    }
+  }
+
+  .sidebar-footer {
+    color: $normal-gray;
+
+    span {
+      display: block;
+    }
+  }
+}

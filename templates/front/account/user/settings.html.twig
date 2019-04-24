@@ -1,0 +1,200 @@
+{% extends 'front/account/user/base.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} account parametres{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% form_theme form 'front/_forms/fields.html.twig' %}
+
+{% block page_content %}
+
+
+
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p style="color:#484848 !important; padding-top:20px; font-size:20px;"><strong>Paramètres</strong></p>
+            </div>
+        </div>
+
+        <div class="col-md-12 plTabs">
+
+            <!-- NAV TABS -->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <ul class="nav nav-tabs">
+                        <li class="tab1 active"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                        <li class="tab2"><a href="#connexion-tab" data-noautscroll="true" data-toggle="tab">Connexion</a></li>
+                        <li class="tab3"><a href="#notifications-tab" data-noautscroll="true" data-toggle="tab">Notifications</a></li>
+                        <li class="tab4"><a href="#security-tab" data-noautscroll="true" data-toggle="tab">Sécurité et confidentialité</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TABS -->
+            {{ form_start(form) }}
+
+            <div class="tab-content" id="pixie-parametres">
+
+                <!-- GENERAL -->
+                <div class="tab-pane active tp1" id="general-tab">
+                    <div class="row">
+
+                        <div class="col-md-3">
+
+                            <div class="form-group col-sm-12 input-container">
+                                <div class="portraitCompte bigPc fas fa-user user-avatar-field upload-zone">
+                                    <input name="file-avatar" type="file" class="file-input" data-type="single" />
+                                    <div class="field">{{ form_widget(form.avatar.name) }}</div>
+                                    <div class="thumb" style="background-image: url({% if form.avatar.vars.value.id is defined %}{{ form.avatar.vars.value.getUrl() }}{% endif %});"></div>
+                                    <span class="label">
+                                        <span class="text">Modifier</span>
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="col-sm-12">
+                                <span class="maj">Informations</span>
+                            </div>
+
+                            {{ form_row(form.firstname, {'icon': 'fa-user'}) }}
+                            {{ form_row(form.lastname, {'icon': 'fa-user'}) }}
+                            {{ form_row(form.phone, {'icon': 'fa-phone'}) }}
+
+                            <div class="col-sm-6 form-group type-birthdate">
+                                {{ form_label(form.birthdate) }}
+                                <div class="input-container input-group">
+                                    {{ form_widget(form.birthdate) }}
+                                </div>
+                            </div>
+
+
+                            {{ form_row(form.currentLocation, {'icon': 'fa-home'}) }}
+                            {{ form_row(form.gender) }}
+
+                            {{ form_row(form.birthLocation) }}
+
+
+                            <div class="col-md-12 maj">
+                                Catégories favorites
+                                <div class="count-categories-status">(<span class="current"></span>/<span class="limit">5</span>)</div>
+                            </div>
+
+                            {{ form_widget(form.favoriteCategories) }}
+
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- CONNEXION -->
+                <div class="tab-pane tp2" id="connexion-tab">
+                    <div class="row">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {{ form_row(form.email, {'icon': 'fa-at'}) }}
+                            </div>
+                        </div>
+
+                        {{ form_row(form.plainPassword.first, {'icon': 'fa-lock', 'label': 'label.new_password'}) }}
+                        {{ form_row(form.plainPassword.second, {'icon': 'fa-lock', 'label': 'label.new_repeatpassword'}) }}
+
+                    </div>
+                </div>
+
+
+                <!-- NOTIFICATIONS -->
+                <div class="tab-pane tp3" id="notifications-tab">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <p>J’aimerais recevoir par email les notifications suivantes :</p>
+
+                            {{ form_row(form.optin.newsletter) }}
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="tab-pane tp4" id="security-tab">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="maj">Protection des données</div>
+                            <p>La société Pixielanes accorde une grande importance au respect de votre vie privée et avons à cœur de construire avec vous des relations fortes et durables. La protection de vos données personnelles est primordiale à nos yeux. C’est pourquoi, nous mettons à votre disposition notre Politique de protection des données afin de vous informer de la façon la plus claire possible des traitements mis en œuvre dans le cadre de l’utilisation des services du site.</p>
+                            <a class="btn green multiline" href="{{ path('front_pages_index', {slug: "politique-de-protection-des-donnees"}) }}"><span>Consulter notre politique de protection des données</span></a>
+                        </div>
+
+                    </div>
+                    <br><br><br>
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="maj">Supprimer votre compte</div>
+                            <p>Si vous souhaitez supprimer votre compte, vous pouvez le faire sur simple demande à notre support technique.</p>
+                            <a class="btn green" href="mailto:{{ options()["email_support"] }}"><span>{{ options()["email_support"] }}</span></a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ENREGISTRER / ANNULER -->
+
+                {% if app.user.password is not null %}
+                <div class="col-xs-12 text-right password-protected-form">
+                    <p>Pour confirmer vos modifications, veuillez saisir votre mot de passe :</p>
+
+                    <div class="row">
+                        {{ form_row(form.oldPassword, {'icon': 'fa-lock'}) }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="col-sm-12 text-right save-container">
+                    <a href="{{ path('front_pixie_account_settings') }}" class="btn cancelModif">Annuler la modification</a>
+
+                    <button type="submit" class="btn transFx green fa fa-save btn-save"><span>Sauvegarder</span></button>
+                </div>
+            </div>
+            {{ form_row(form._token) }}
+            {{ form_end(form, {render_rest: false}) }}
+        </div>
+    </div>
+
+    {% embed "front/_modals/image-crop.html.twig" %}{% endembed %}
+
+    {% for message in app.flashes('account_saved_settings') %}
+
+        {% embed "front/_modals/settings-saved.html.twig" with {'message': message} %}{% endembed %}
+
+    {% endfor %}
+
+    <div id="api-routes"
+         data-upload-route="{{ path('front_user_ajax_upload_avatar') }}"
+    ></div>
+
+{% endblock %}
+
+{% block footer_class %}simpleFooter{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/front/js/pages/pixie-settings.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+{% endblock %}

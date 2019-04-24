@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48.405" height="56" viewBox="0 0 48.405 56">
+  <g id="_Map_Marker_-_Eat_V2_" data-name="📍Map Marker - Eat [V2]" transform="translate(-176 -232)">
+    <g id="_Map_Marker_-_Tourist_V2_" data-name="📍Map Marker - Tourist [V2]" transform="translate(72)">
+      <g id="_Map_Marker_-_Nature_V2_" data-name="📍Map Marker - Nature [V2]" transform="translate(72)">
+        <path id="_V1_HEXAGONE" data-name="[V1]HEXAGONE" d="M-28.8,0-53,14V42l24.2,14,24.2-14V14Z" transform="translate(85 232)" fill="#ed5485"/>
+        <g id="Category_Icon_-_Eat" data-name="Category Icon - Eat" transform="translate(-399 125)">
+          <path id="Category_Icon_-_Eat-2" data-name="Category Icon - Eat" d="M11.994.876a70.539,70.539,0,0,1,.929,7.431,6.083,6.083,0,0,1-3.975,6.035l.744,13.737a1.388,1.388,0,0,1-1.385,1.46H4.615a1.388,1.388,0,0,1-1.385-1.46l.744-13.737A6.081,6.081,0,0,1,0,8.306,70.329,70.329,0,0,1,.929.876C1.113-.3,3.542-.313,3.692.939V9.085c.075.2.871.185.923,0C4.7,7.626,5.071,1.054,5.077.9,5.267-.3,7.656-.3,7.84.9c.012.156.381,6.721.462,8.181.052.185.854.2.923,0V.939C9.375-.307,11.81-.3,11.994.876Zm6.877,16.483-.865,10.679a1.384,1.384,0,0,0,1.379,1.5h3.231A1.381,1.381,0,0,0,24,28.153V1.383A1.385,1.385,0,0,0,22.615,0c-4.76,0-12.773,10.3-3.744,17.36Z" transform="translate(443 120.001)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

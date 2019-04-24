@@ -1,0 +1,18 @@
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% for card in cards %}
+    {{ macro.cardSingle(card) }}
+{% endfor %}
+<div class="loadCards"></div>
+
+<script>
+    $(document).ready(function()
+    {
+       var count = "{{ count }}";
+
+       if(count < 20)
+       {
+           $('#showMoreCards').hide();
+       }
+    });
+</script>

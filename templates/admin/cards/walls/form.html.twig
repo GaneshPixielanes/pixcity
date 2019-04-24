@@ -1,0 +1,62 @@
+{% extends 'admin/cards/walls/walls.html.twig' %}
+
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+
+{% block breadcrumb %}
+    <li><a href="{{ path('admin_pages_cards_walls_list') }}">{{ 'label.cardswalls'|trans }}</a></li>
+    <li class="active">{{ ((item is defined)?'action.edit':'action.add')|trans }}</li>
+{% endblock %}
+
+{% block inner %}
+
+    {{ form_start(form) }}
+
+        <div class="row">
+            <div class="col-md-8 label-align-left">
+
+                {{ form_row(form.name) }}
+                {{ form_row(form.meta_title) }}
+                {{ form_row(form.meta_description) }}
+                {{ form_row(form.slug) }}
+                {{ form_row(form.content) }}
+
+            </div>
+            <div class="col-md-4 label-align-left">
+                <div class="m-b-20">
+                    {{ form_widget(form.region) }}
+                    {{ form_errors(form.region) }}
+                </div>
+
+                <div class="m-b-20">
+                    {{ form_widget(form.department) }}
+                    {{ form_errors(form.department) }}
+                </div>
+
+                <div class="m-b-20">
+                    {{ form_widget(form.categories) }}
+                </div>
+
+                {{ form_row(form.indexed) }}
+            </div>
+        </div>
+
+        <div class="flex-row-space-between">
+            <a href="{{ path('admin_pages_cards_walls_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
+            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+        </div>
+
+    {{ form_end(form) }}
+
+
+
+    <div id="api-routes"
+         data-departments-route="{{ path('api_departments_list') }}"
+    ></div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/walls.js') }}"></script>
+{% endblock %}

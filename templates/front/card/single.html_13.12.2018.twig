@@ -1,0 +1,234 @@
+{% extends 'front/page.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} card-template bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+    <!-- PL Home Top Banner -->
+
+    {% if card.masterhead is not null %}
+    <div class="card-masterhead flexslider topCardSlider" style="background-image: url({{ card.masterhead.getUrl() | imagine_filter('bg_header_slider') }});">
+        <img alt="{{ card.name }}" src="{{ card.masterhead.getUrl() | imagine_filter('bg_header_slider') }}">
+
+        {% if card.medias | length > 0 %}
+            <ul class="flex-direction-nav">
+                <li class="flex-nav-prev"><a class="flex-prev" href="#"></a></li>
+                <li class="flex-nav-next"><a class="flex-next" href="#"></a></li>
+            </ul>
+
+            <button class="btn btn-white btn-open-gallery">Voir les photos ({{ card.medias | length }})</button>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <ul id="card-gallery" style="display: none">
+        {% for media in card.medias %}
+            <li data-thumb="{{ media.url | imagine_filter('card_gallery_thumb') }}" data-image="{{ media.url | imagine_filter('card_gallery_image') }}"></li>
+        {% endfor %}
+    </ul>
+
+
+    <!--/ PL Home Top Banner -->
+    <div class="bcNav container-fluid">
+        <div class="row">
+            <ul class="breadcrumb">
+                <li><a href="{{ path('front_homepage_index') }}">Home</a></li>
+                <li><a href="{{ path('front_wall_index') }}">Régions</a></li>
+                <li><a href="{{ path('front_regions_index', {slug: card.region.slug}) }}">{{ card.region.name }}</a></li>
+                <li>{{ card.name }}</li>
+
+            </ul>
+            <div id="btnCard">
+                <a class="fa fa-thumbs-up cta-like-card {% if app.user is not null and app.user.hasLike(card) %}active{% endif %}" data-id="{{ card.id }}" title="{{ (app.user is not null and app.user.hasLike(card))?"Je n'aime plus":"J'aime" }}" data-toggle="tooltip" data-placement="top" data-container="body"><span>{{ card.likes }}</span></a>
+                <a class="cardsIco cta-favorite-card {% if app.user is not null and app.user.hasFavorite(card) %}active{% endif %}" data-id="{{ card.id }}" title="{{ (app.user is not null and app.user.hasFavorite(card))?"Retirer de mes favoris":"Ajouter à mes favoris" }}" data-toggle="tooltip" data-placement="top" data-container="body"><span>{{ card.favorites }}</span></a>
+
+                <a class="fa fa-share cta-share-popover" title="Partager" data-toggle="popover" data-placement="top" data-container="body" data-html="true"><span>&nbsp;</span></a>
+
+                <div class="hide share-popover">
+                    <button class="fab fa-facebook-f social-share" data-sharer="facebook" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}"></button>
+                    <button class="fab fa-twitter social-share" data-sharer="twitter" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: card.slug})) }}"></button>
+                    <button class="fab fa-linkedin social-share" data-sharer="linkedin" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: card.slug})) }}"></button>
+                    <button class="fab fa-whatsapp social-share" data-sharer="whatsapp" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: card.slug})) }}"></button>
+                    <button class="fa fa-envelope social-share" data-sharer="email" data-title="{{ card.name }}" data-url="{{ absolute_url(path('front_collection_index', {slug: card.slug})) }}"></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- MAIN -->
+        <div class="row noMrgn">
+            <div class="col-sm-8">
+                <div class="cardDesc">
+                    <h1>{{ card.name }}</h1>
+
+                    <div class="card-content fr-view">
+                        {{ card.content | raw }}
+                    </div>
+
+                </div>
+                <!--/.cardDesc-->
+
+                {% if card.address is not null %}
+                <div class="cardMap">
+                    <p class="adresse"><i class="fa fa-map-marker"></i>{{ card.address.getInlineAddress }}</p>
+                    <div id="card-map" data-address="{{ card.address.getInlineAddress }}" data-lat="{{ card.address.latitude }}" data-lng="{{ card.address.longitude }}"></div>
+                </div>
+                {% endif %}
+
+
+                <!-- CONVERSATIONS -->
+                <div class="row conversations">
+                    <div class="col-sm-12">
+
+                        <h2>Commentaires</h2>
+                        <div id="fb-root"></div>
+                        <script>(function(d, s, id) {
+                                var js, fjs = d.getElementsByTagName(s)[0];
+                                if (d.getElementById(id)) return;
+                                js = d.createElement(s); js.id = id;
+                                js.src = 'https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v3.0&appId=189312131770555&autoLogAppEvents=1';
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }(document, 'script', 'facebook-jssdk'));</script>
+
+                        <div class="fb-comments" data-width="100%" data-numposts="10" data-href="{{ app.request.uri }}"></div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+            <!-- RIGHT COLUMN -->
+            <div class="contributeur col-sm-3 col-sm-offset-1 ">
+
+                <span class="maj">PIXIE CONTRIBUTEUR</span>
+
+                {{ macro.pixieItem(card.pixie) }}
+
+
+                {% if card.infos is defined and card.infos | length > 0 %}
+                    <hr>
+
+                    <span class="maj">INFOS PRATIQUES</span>
+
+                    {% for info in card.infos %}
+
+                        {% if info.type == "link" %}
+
+                            <a href="{{ info.value }}" target="_blank" class="min"><i class="fa {{ info.icon }}"></i> {{ info.label }}</a>
+
+                        {% else %}
+
+                            <span class="min">{{ info.label }}</span>
+                            <span class="infoPratique"><i class="fa {{ info.icon }}"></i>{{ info.getFormattedValue() | raw }}</span>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                {% endif %}
+
+                {% if card.categories is defined and card.categories | length > 0 %}
+                    <hr>
+
+                    <span class="maj">Catégories</span>
+                    {% for category in card.categories %}
+                        <form action="{{ path('front_search_index') }}">
+                            <input type="hidden" name="categories[]" value="{{ category.slug }}">
+                            <button type="submit" class="btn transFx btnCat fa {{ category.icon }}"><span>{{ category.name }}</span></button>
+                        </form>
+                    {% endfor %}
+                {% endif %}
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+        <!--/row-->
+
+    </div>
+    <!--/.container-->
+
+    <!-- CAROUSELS CARDS -->
+
+    <div class=" col-md-12 alsoCards">
+        <div class="container">
+            <h2>Ces Cards pourraient aussi vous plaire</h2>
+        </div>
+
+        <div class="row cardsMrgn">
+            <div class="slider carrousel">
+                {% for relatedCard in cards %}
+                    {% if relatedCard.id != card.id %}
+                        {{ macro.cardItem(relatedCard) }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- DEVENEZ UN PIXIE ! -->
+    <div id="becomePixie" class="text-center">
+        <span class="hugeTypo">{{ 'label.pixies'|trans }}</span>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h2>{{ 'title.become_pixie'|trans }}</h2>
+                    <p>{{ 'title.pixies_pitch'|trans }}</p>
+                </div>
+            </div>
+
+            <div id="portraitsPixies" class="row">
+                <h3>{{ 'title.few_pixies'|trans }}</h3>
+
+                {% for user in pixies %}
+                    <div class="col-sm-15">
+                        {{ macro.pixieItem(user) }}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="row">
+                <div id="btnPixies" class="col-sm-12 text-center">
+                    <a href="{{ path('front_pixies_index', {slug: 'france'}) }}" class="btn ghost transFx fa fa-users"><span>{{ 'label.all_pixies'|trans }}</span></a>
+                    {% if not is_granted('ROLE_PIXIE') %}
+                        <a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):path('front_pixie_register_mode') }}" class="btn white transFx fa fa-user-plus"><span>{{ 'action.become_a_pixie'|trans }}</span></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/#becomePixie-->
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/front/js/pages/card.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/combine/npm/lightgallery,npm/lg-thumbnail"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+    <script src="https://cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+{% endblock %}

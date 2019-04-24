@@ -1,0 +1,19 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+    <p>Bonjour {{ firstname }},</p>
+    <p>Une nouvelle demande de card est arrivée dans ton espace personnel.</p>
+
+    <table width="100%">
+        <tr>
+            <td align="center">
+                <a style="background-color: #30b996; color: #FFF; padding: 10px 20px; display: inline-block; text-decoration: none; border-radius: 4px;" href="{{ absolute_url(path('front_pixie_account_cards_projects')) }}">Mon espace City-maker</a>
+            </td>
+        </tr>
+    </table>
+
+    <p>
+        À tout de suite sur Pix.City !
+    </p>
+
+{% endblock %}

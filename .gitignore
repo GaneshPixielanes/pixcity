@@ -1,0 +1,10 @@
+/node_modules
+/node_modules/*
+/var/cache/*
+/var/log/*
+/vendor/*
+/package-lock.json
+/composer.lock
+/public
+/symfony.lock
+/assets/v2/node_modules/*

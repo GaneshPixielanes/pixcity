@@ -1,0 +1,54 @@
+<div class="modal" tabindex="-1" role="dialog" id="notificationModal">
+    <div class="modal-dialog modal-sm pull-right" role="document">
+        <div class="modal-content" style="padding:0px">
+            <div class="modal-header" style="background:cornflowerblue;color:white">
+                <h5 class="modal-title">Notification</h5>
+            </div>
+            <div class="modal-body notification-body"  style="max-height:380px; height:380px; overflow-y: auto;">
+                {% if app.user.pixie is defined and app.user.pixie is null %}
+                <div class="notification-message" >
+                        Etre voyageur permet, chez Pix.city de planifier votre futur voyage en 4 actions simple et de retrouver ensuite ces infos sur votre lieu de vacances!<br/><br/>
+                </div>
+                <div class="notification-message">
+                            Suivez le guide!
+                </div>
+                <div class="notification-message">
+                            1.Enregistrez vos cards en naviguant tout au long de notre site<br/>
+                            2.Créez une collection avec vos cards enregistrées. Ex: Week end en Auvergne<br/>
+                            3.Glissez ces cards votre app Google agenda<br/>
+                            4.Retrouvez toutes vos cards enregistrées sur votre app Google maps<br/><br/>
+                </div>
+                <div class="notification-message">
+                            Vous pourrez donc consulter ces infos tout au long de votre voyage une fois sur place.
+
+                </div>
+                {% endif %}
+
+                {% if notifications is defined %}
+                    {% for notification in notifications %}
+                        <div class="notification-message">
+                            {{ notification.message | raw }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                </div>
+            <div id="notification-bottom"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(window).on('shown.bs.modal',function()
+    {
+        var height = 0;
+        $('.notification-message').each(function(i, value){
+            height += parseInt($(this).height());
+        });
+
+        height += '';
+        console.log(height);
+        $(".notification-body").scrollTop(1000);
+    })
+
+</script>

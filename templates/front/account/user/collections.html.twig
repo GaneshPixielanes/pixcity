@@ -1,0 +1,232 @@
+{% extends 'front/account/user/base.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} account collections{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+
+    <div class="container-fluid main">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="head-title">
+                    {#<div class="has-collection" {% if collections | length == 0 %}style="display: none;"{% endif %}>Vous avez <span class="total-cards">{{ totalCards }}</span> Cards en favori dans <span class="total-collections">{{ collections | length }}</span> collections</div>#}
+                    <div class="has-collection" {% if collections | length == 0 %}style="display: none;"{% endif %}>
+                        {% if attribute.title is defined and attribute.title is not null %}
+                        {{  attribute.title }}
+                        {% endif %}
+                    </div>
+                    <div class="no-collection" {% if collections | length > 0 %}style="display: none;"{% endif %}>Vous n'avez aucune collection pour le moment.</div>
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div id="navCards" class="btnTop">
+                    <a href="{{ path('front_user_account_cards') }}" class="transFx cardPlus"><span>{{ labels[1] }}</span></a>
+                    <a href="{{ path('front_user_account_collections') }}" class="active transFx fa fa-heart"><span> {{ labels[2] }}</span></a>
+
+                    <div class="form-group">
+                        {% if collections | length > 0 %}
+                            <select class="form-control dropdown" id="collections-list">
+                                <option value="">{{ labels[3] }}</option>
+                                {% for collection in collections %}
+                                    <option value="{{ collection.id }}">{{ collection.name }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                        <button class="newColl fa fa-plus transFx open-new-collection" data-toggle="modal"><span>{{ labels[4] }}</span></button>
+                    </div>
+
+                </div>
+                <!--filtres-->
+
+            </div>
+        </div>
+        <!--filtres-->
+
+    </div>
+
+    <div id="collections" class="toggle col-md-12">
+
+        {% for collection in collections %}
+            {% embed "front/_shared/collection.html.twig" with {'collection': collection} %}{% endembed %}
+        {% endfor %}
+
+    </div>
+
+
+    <!-- MODALE DE CREATION DE COLLECTION -->
+    <div class="modalColl modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-span="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-coll-title">
+                        <span class="edit-mode">Modifier une collection</span>
+                        <span class="create-mode">Créer une collection</span>
+                    </h5>
+
+                </div>
+                <form id="collection-form">
+                    <div class="modal-body">
+                        {% if cards | length > 0 %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type=text class="form-control" name="name" placeholder="Nom de la Collection" id="collection-name">
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- CARDS -->
+                        <div class="row cardsMrgn">
+
+                            {% if cards | length > 0 %}
+
+                                <div class="list-of-cards no-autoscroll" data-api-route="{{ path('api_cards_list') }}" data-selectable="true" data-user-favorite="{{ app.user.id }}" data-page="1">
+                                    <div class="col-md-12">
+                                        <div id="filters">
+
+                                            <div class="dropdown btn-group">
+                                                <a href="#" class="dropdown-toggle dnc" role="button" aria-expanded="false">Région <span class="count-filters-regions"></span><i class="fa fa-chevron-down"></i></a>
+                                                <ul class="dropdown-menu filter option-set clearfix regions-list" role="menu">
+                                                    <li class="all is-checked">Toutes</li>
+                                                    {% for region in regions %}
+                                                        {{ macro.regionItem(region) }}
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+
+                                            <div class="dropdown btn-group">
+
+                                                <a href="#" class="dropdown-toggle dnc" role="button" aria-expanded="false">
+                                                    Catégories  <span class="count-filters-categories"></span><i class="fa fa-chevron-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu categories">
+
+                                                    <li class="transFx fa fa-th is-checked all"><span>Tout</span></li>
+                                                    {% for category in categories %}
+                                                        {{ macro.categoryItem(category) }}
+                                                    {% endfor %}
+
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                        <!--filtres-->
+
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-12 toggle">
+
+                                            <!--cards-->
+                                            <div class="row cardsMrgn loader-container">
+                                                <div class="loader"></div>
+                                                <div id="cardsGrid" class="regionCards cards-grid">
+                                                    {% for card in cards %}
+                                                        {{ macro.cardItem(card, 'true') }}
+                                                    {% endfor %}
+                                                </div>
+
+                                            </div>
+                                            <!--/cardsMrgn -->
+
+                                            <!-- NO RESULTS -->
+                                            <div id="noResult" class="row no-results">
+                                                <div class="col-md-12">
+                                                    <p>{{ 'text.nocards'|trans }}</p>
+                                                    <div class="noCardIco"></div>
+                                                </div>
+                                            </div>
+
+                                            {% include 'front/_shared/pagination.html.twig' with {'pagination': pagination} %}
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="align-center">
+                                    Vous ne pouvez pas créer de collections sans avoir ajouté des cards à vos favoris
+                                </div>
+                            {% endif %}
+
+                        </div>
+                        <!--/.row-->
+
+                    </div>
+                    {% if cards | length > 0 %}
+                    <div class="modal-footer">
+                        <button type="button" class="btn green btn-primary submit-collection-form">
+                            <span class="edit-mode">Modifier la collection</span>
+                            <span class="create-mode">Créer une collection avec <strong class="collection-total-cards">-</strong> Cards</span>
+                        </button>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--/MODALE-->
+
+
+    <div class="modal alert-modal modal-confirm-delete" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bgPictos">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title">Attention</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Cette collection sera supprimée définitement.</p>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn light">Annuler</button>
+                    <button type="button" class="btn green btn-primary confirm-delete-collection">Supprimer</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="api-routes"
+         data-create-collection-route="{{ path('api_collections_create') }}"
+         data-update-collection-route="{{ path('api_collections_update') }}"
+         data-delete-collection-route="{{ path('api_collections_delete') }}"
+         data-add-note-route="{{ path('api_collections_note_add') }}"
+         data-remove-note-route="{{ path('api_collections_note_remove') }}"
+    ></div>
+
+{% endblock %}
+
+{% block footer_class %}simpleFooter{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/combine/npm/lightgallery,npm/lg-thumbnail"></script>
+    <script>
+        var mapSettings = {
+            icon: "{{ asset('build/images/marker.png') }}",
+            iconActive: "{{ asset('build/images/marker_active.png') }}",
+        }
+    </script>
+    <script src="{{ asset('build/front/js/pages/search.js') }}"></script>
+    <script src="{{ asset('build/front/js/pages/user-collections.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
+{% endblock %}

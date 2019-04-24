@@ -1,0 +1,203 @@
+{% extends 'front/page.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} WallCards-template bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% set header_has_search = true %}
+
+{% block page_content %}
+
+
+    <div class="topBanner container-fluid">
+        <div class="row">
+            <ul class="breadcrumb">
+                <li><a href="{{ path('front_homepage_index') }}">{{ 'label.homepage'|trans }}</a></li>
+                <li><a>{{ 'label.cardswall'|trans }}</a></li>
+            </ul>
+
+            <div class="col-md-12 text-center">
+                {% if totalCards == 0 %}
+
+                    <h1 class="search-result-title">Aucun résultat pour cette recherche</h1>
+
+                {% elseif totalPixies == 1 %}
+
+                    <h1 class="search-result-title">Les <span>{{ totalCards }}</span> Cards de {{ searchPixies[0].firstname ~ ' ' ~ searchPixies[0].lastname }} !</h1>
+
+                {% else %}
+
+                    <h1 class="search-result-title">Les Pixies vous proposent <span>{{ totalCards }}</span> Cards !</h1>
+
+                    <ul id="portraitsPixies">
+                        {% if totalPixies - 4 > 0 %}<li class="portraitPixie morePixies"><a href="#" class="search-pixies-with-same-params">+{{ totalPixies - 4 }}</a></li>{% endif %}
+                        {% for pixie in searchPixies %}
+                            <li class="portraitPixie" style="background-image: url({{ pixie.getAvatarUrl() | imagine_filter('user_avatar') }})" data-toggle="tooltip" data-placement="top" title="{{ pixie.firstname ~ ' ' ~ pixie.lastname }}">
+                                <a href="{{ path('front_pixies_single', {slug: pixie.slug, id: pixie.id}) }}"></a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                {% endif %}
+
+                {% if page.content is defined and page.content is not empty %}
+                <div id="introWallCards">
+                    {{ page.content | raw }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="wallcards-container container-fluid">
+
+        <!-- TOP 10 CARDS REGION -->
+
+        <div id="cards" class="list-of-cards" data-api-route="{{ path('api_cards_list') }}" data-page="1">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-md-12 filters-container">
+
+                        <!-- dropdown pour v° mobile -->
+                        <div class="dropdown show">
+                            <a class="dropdown-toggle dnc" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                                {{ 'label.categories'|trans }} <i class="fa fa-chevron-down"></i>
+                            </a>
+
+                            <div id="catsDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <ul id="filters" class="categories">
+                                    <li class="transFx fa fa-th {% if (app.request.get('categories') is not defined) or (app.request.get('categories') is empty) %}is-checked{% endif %} all"><span>{{ 'label.all'|trans }}</span></li>
+                                    {% for category in categories %}
+                                        {{ macro.categoryItem(category, filters) }}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <!--filtres-->
+
+                        <div class="row">
+                            <div class="col-md-9">
+
+                            </div>
+
+                            <!-- Btns droite -->
+                            <div class="col-md-3 rightBtns">
+
+                                {% include 'front/_shared/orderby-dropdown.html.twig' %}
+
+                                <!-- BTNS MAP -->
+                                <a href="#" id="toggleMap" class="btn green transFx fa fa-map"><span>{{ 'label.map'|trans }}</span></a>
+                                <a href="#" id="toggleMapMobile" class="btn green transFx fa fa-map"><span>{{ 'label.map'|trans }}</span></a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--/col-md-12-->
+
+
+                </div>
+                <!--/.row-->
+
+            </div>
+
+            <!--/.toogle-->
+
+
+            <div class="row">
+                <div class="col-md-12 toggle">
+
+                    <!--cards-->
+                    <div class="row cardsMrgn loader-container">
+                        <div class="loader"></div>
+                        <div id="cardsGrid" class="regionCards cards-grid">
+                            {% for card in cards %}
+                                {{ macro.cardItem(card) }}
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    <!--/cardsMrgn -->
+
+                    <!-- NO RESULTS -->
+                    <div id="noResult" class="row no-results">
+                        <div class="col-md-12">
+                            <p>{{ 'text.nocards'|trans }}</p>
+                            <div class="noCardIco"></div>
+                        </div>
+                    </div>
+
+
+                    {% include 'front/_shared/pagination.html.twig' with {'pagination': pagination} %}
+
+                </div>
+
+                <!-- MAP -->
+                <div class="map col-md-5">
+                    <button class="mobile-close">X</button>
+                    <div id="map-france"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--/.container-->
+
+
+    <!-- DEVENEZ UN PIXIE ! -->
+    <div id="becomePixie" class="text-center">
+        <span class="hugeTypo">{{ page.name }}</span>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h2>{{ 'title.become_pixie'|trans }}</h2>
+                    <p>{{ 'title.pixies_pitch'|trans }}</p>
+                </div>
+            </div>
+
+            <div id="portraitsPixies" class="row">
+                <h3>{{ 'title.few_pixies'|trans }}</h3>
+
+                {% for user in pixies %}
+                    <div class="col-sm-15">
+                        {{ macro.pixieItem(user) }}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="row">
+                <div id="btnPixies" class="col-sm-12 text-center">
+                    <a href="{{ path('front_pixies_index', {slug: 'france'}) }}" class="btn ghost transFx fa fa-users"><span>{{ 'label.all_pixies'|trans }}</span></a>
+                    {% if not is_granted('ROLE_PIXIE') %}
+                        <a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):path('front_pixie_register_mode') }}" class="btn white transFx fa fa-user-plus"><span>{{ 'action.become_a_pixie'|trans }}</span></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/#becomePixie-->
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var mapSettings = {
+            icon: "{{ asset('build/images/marker.png') }}",
+            iconActive: "{{ asset('build/images/marker_active.png') }}",
+        }
+    </script>
+    <script src="{{ asset('build/front/js/pages/search.js') }}"></script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
+{% endblock %}

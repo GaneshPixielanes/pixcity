@@ -1,0 +1,135 @@
+{% extends 'front/account/pixie/base.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} pixieAccount account{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block page_content %}
+
+    <div class="container main">
+        <div class="row">
+            <div class="text-center col-md-4 col-md-offset-4">
+                <h1>Mes rémunérations</h1>
+            </div>
+
+            <div class="askRoyal col-md-4 text-right">
+
+                {% if totalPayementPending > 0 %}
+
+                    <span class="montantRoyal"><i class="fa fa-euro-sign"></i>{{ totalPayementPending }}</span>
+                    {% if not isWrongData %}
+                    {% if not ongoingRegistration %}
+                        <form action="{{ path('front_pixie_transaction_'~app.user.pixie.billing.billingType~'_payment') }}">
+                            <button type="submit" class="btn green transFx fa fa-euro-sign" {{ (totalPayementPending < 20)?"disabled='disabled'":"" }}>
+                                <span>
+                                    Demander le paiement
+                                    {% if app.user.pixie.billing.billingType == "check" %}par chèque{% endif %}
+                                    {% if app.user.pixie.billing.billingType == "banktransfer" %}par virement{% endif %}
+                                </span>
+                            </button>
+                        </form>
+                    {% else %}
+                        <button type="submit" class="btn green transFx fa fa-euro-sign" disabled='disabled'>
+                            <span>
+                                Demander le paiement
+                                {% if app.user.pixie.billing.billingType == "check" %}par chèque{% endif %}
+                                {% if app.user.pixie.billing.billingType == "banktransfer" %}par virement{% endif %}
+                            </span>
+                        </button>
+                        <div class="col-sm-12">
+                            <p>
+                                Pour pouvoir demander le paiement de vos cards, vous devez compléter les informations de votre société dans les <a href="{{ path('front_pixie_account_settings') }}">paramètres de votre compte</a>.
+                            </p>
+                        </div>
+                    {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if isWrongData %}
+            <div class="alert alert-info">
+                <strong>Please update your IBAN/BIC/Postal address in order to request payment</strong>
+            </div>
+        {% endif %}
+        {% if unpayedProjects | length > 0 %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="dateCard">Date</th>
+                        <th scope="col">Titre de la demande</th>
+                        <th scope="col" class="remuneration"><span class="hom">Rémunération</span> <span class="som">€</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for project in unpayedProjects %}
+                    <tr class="ligne">
+                        <td class="dateCard">{{ project.createdAt | localizeddate('short', 'none') }}</td>
+                        <td class="titreCard">{{ project.name }} / <a href="{{ path('front_card_single', {slug: project.card.slug}) }}">{{ project.card.name }}</a></td>
+                        <td class="remuneration"><i class="fa fa-euro-sign hom"></i>{{ project.price }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            {% include 'front/_shared/pagination.html.twig' with {'pagination': pagination, 'classic': true} %}
+        {% endif %}
+
+        {% if unpayedProjects | length > 0 and transactions | length > 0  %}
+            <h1 class="text-center" style="margin-top: 1em;">Historique des transactions</h1>
+        {% endif %}
+        {% if transactions | length > 0 %}
+
+            <table id="royaltees" class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col" class="text-center">Nombre de cards</th>
+                    <th scope="col"><span class="hom">Rémunération</span><span class="som">€</span></th>
+                    <th scope="col" class="text-center">Statut</th>
+                    <th scope="col" class="text-center">Bon de commande</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                        <tr>
+                            <td class="dateCard">{{ transaction.createdAt | localizeddate('short', 'none') }}</td>
+                            <td class="titreCard">
+                                {{ transaction.name }}
+                            </td>
+                            <td class="source">
+                                {{ transaction.projects | length }}
+                            </td>
+                            <td class="remuneration"><i class="fa fa-euro-sign"></i>{{ transaction.total }}</td>
+                            <td class="statutCard"><span class="transaction-status-{{ transaction.status }}">{{ ('label.transactiontype.'~transaction.status) | trans }}</span></td>
+                            <td class="facture">
+                                <a href="{{ path('front_pixie_transaction_invoice', {id: transaction.id}) }}" class="fa fa-file-pdf"></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'front/_shared/pagination.html.twig' with {'pagination': pagination, 'classic': true} %}
+
+        {% endif %}
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/front/js/pages/pixie-projects-list.js') }}"></script>
+{% endblock %}
+
+{% block footer_class %}simpleFooter{% endblock %}

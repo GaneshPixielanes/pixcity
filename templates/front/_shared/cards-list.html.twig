@@ -1,0 +1,5 @@
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% for card in cards %}
+    {{ macro.cardItem(card) }}
+{% endfor %}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48.405" height="56" viewBox="0 0 48.405 56">
+  <g id="_Map_Marker_-_Childs_V2_" data-name="📍Map Marker - Childs [V2]" transform="translate(-311.797 -304)">
+    <path id="_V1_HEXAGONE" data-name="[V1]HEXAGONE" d="M-28.8,0-53,14V42l24.2,14,24.2-14V14Z" transform="translate(364.797 304)" fill="#ed5485"/>
+    <g id="Category_Icon-_Childs" data-name="Category Icon- Childs" transform="translate(223.693 196)">
+      <path id="Category_Icon-_Childs-2" data-name="Category Icon- Childs" d="M7.5,4.5A4.5,4.5,0,1,1,12,9,4.5,4.5,0,0,1,7.5,4.5Zm15.914.086a2,2,0,0,0-2.828,0L15.172,10H8.829L3.414,4.586A2,2,0,0,0,.586,7.414L6.5,13.328V30a2,2,0,0,0,2,2h1a2,2,0,0,0,2-2V23h1v7a2,2,0,0,0,2,2h1a2,2,0,0,0,2-2V13.328l5.914-5.914A2,2,0,0,0,23.414,4.586Z" transform="translate(100.104 120)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

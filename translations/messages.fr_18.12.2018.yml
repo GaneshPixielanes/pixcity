@@ -1,0 +1,289 @@
+ROLE_SUPER_ADMIN: Super Administrateur
+ROLE_ADMIN: Administrateur
+ROLE_MODERATOR: Modérateur
+ROLE_PIXIE: Pixie
+ROLE_USER: Utilisateur
+
+label:
+    title: Titre
+    email: Email
+    name: Nom
+    firstname: Prénom
+    lastname: Nom
+    role: Rôle
+    administrator: Administrateur
+    administrators: Administrateurs
+    moderator: Modérateur
+    moderators: Modérateurs
+    password: Mot de passe
+    oldpassword: Mot de passe actuel
+    repeatpassword: Confirmation du mot de passe
+    new_password: Nouveau mot de passe
+    new_repeatpassword: Confirmation du nouveau mot de passe
+    created_at: Date de création
+    updated_at: Dernière modification
+    update: Modification
+    creation: Création
+    metatitle: META - Titre
+    metadescription: META - Description
+    content: Contenu
+    indexed: Indexée
+    page: Page
+    pages: Pages
+    slug: URL
+    dashboard: Dashboard
+    options: Paramètres
+    option: Paramètre
+    value: Valeur
+    download: Télécharger
+    backup: Sauvegarde
+    users: Utilisateurs
+    user: Utilisateur
+    pixie: Pixie
+    pixies: Pixies
+    all_pixies: Tous les Pixies
+    birthdate: Date de naissance
+    birthLocation: Lieu de naissance
+    currentLocation: Lieu de résidence actuel (code postal)
+    gender: Genre
+    male: Homme
+    female: Femme
+    phone: Numéro de téléphone
+    avatar: Avatar
+    general: Général
+    profile: Profil
+    pixie_profile: Profil du Pixie
+    pixie_remuneration: Informations de rémunération
+    socialnetworks: Réseaux sociaux
+    notifications: Notifications
+    network:
+        facebook: Facebook
+        twitter: Twitter
+        instagram: Instagram
+        youtube: YouTube
+        blog: Blog
+        other: Autre
+    type: Type
+    url: URL
+    whatilike: Ce que j'aime
+    whatidontlike: Je n'aime pas
+    status: Statut
+    statusname:
+        company: Société
+        individualregistration: En cours d'immatriculation
+        selfemployed: Auto-entrepreneur
+        microentrepreneur: Micro-entreprise
+    company:
+        name: Dénomination sociale
+    tva: N° de TVA
+    address: Adresse
+    city: Ville
+    zipcode: Code postal
+    country: Pays
+    billing:
+        type: Choix de rémunération
+        name: Nom du bénéficiaire
+        iban: IBAN
+        bic: BIC
+        rib: RIB
+    billingmethod:
+        banktransfer: Virement bancaire
+        check: Chèque
+    categories: Catégories
+    position: Position
+    icon: Icône
+    regions: Régions
+    region: Région
+    cardtemplates: Modèles de cards
+    cardinfo:
+        type:
+            text: Texte
+            price: Prix
+            date: Date
+            time: Heure
+            datetime: Date et heure
+            phone: Numéro de téléphone
+            email: Email
+            link: Lien externe
+    label: Libellé
+    departments: Départements
+    department: Département
+    cardsprojects: Projets de cards
+    cardproject: Projet de card
+    cardstatus:
+        created: Créée
+        assigned: Assignée
+        submitted: A valider
+        validated: Validée
+        refused: Refusée
+        pixie_accepted: Pixie a accepté
+        pixie_refused: Pixie a refusé
+        pixie_submitted: A valider
+        saved: Sauvegardée
+        cancelled: Annulée
+    select:
+        region: Choisissez une région
+        department: Choisissez un département
+        pixie: Choisissez un pixie
+        page: Choisissez une page
+        slider: Choisissez un slider
+    typeahead:
+        user: Recherchez un utilisateur
+        card: Recherchez une card
+    description: Description
+    comment: Commentaire
+    minphotos: Nombre de photos min.
+    minvideos: Nombre de vidéos min.
+    minwords: Nombre de mots min.
+    choose: Choisissez
+    deliverydate: Date de livraison
+    assignation: Assignation
+    filters: Filtres
+    late: En retard
+    price: Tarif
+    cards: Cards
+    cards_to_validate: Cards à valider
+    card: Card
+    latitude: Latitude
+    longitude: Longitude
+    infos: Informations
+    remuneration: Rémunération
+    thumb: Miniature
+    hidden: Invisible
+    visibility: Visibilité
+    menus: Menus
+    menu: Menu
+    link: Lien
+    openblank: Ouvrir dans une nouvelle page
+    orcreatelink: Ou créez un lien statique
+    collection: Collection
+    collections: Collections
+    public: Public
+    none: Aucun
+    homepage: Accueil
+    homepageregions: Régions
+    cardswall: Wall de cards
+    cardswalls: Walls de cards
+    sliders: Sliders
+    slider: Slider
+    slides: Slides
+    image: Image
+    backgroundimage: Image de fond
+    payment: Paiement
+    paymentstatus:
+        pending: En attente
+        topay: À régler par chèque
+        payed_by_check: Réglé par chèque
+        payed_by_banktransfer: Réglé par virement
+    pages_categories: Pages de catégories
+    discovertext: Bouton découvrir
+    transactions: Transactions
+    transactiontype:
+        banktransfer: Virement bancaire
+        check: Chèque
+        pixie_asked_banktransfer: Paiement par virement demandé
+        pixie_asked_check: Paiement par chèque demandé
+        banktransfer_error: Erreur lors du paiement par virement
+        banktransfer_success: Paiement par virement effectué
+        check_success: Paiement par chèque effectué
+        check_error: Erreur lors du paiement par chèque
+    all: Tout
+    map: Carte
+    load_more_cards: Voir plus de cards
+    year: Année
+    month: Mois
+    day: Jour
+    birth_place: D'où je viens
+    active: Activé
+    visible: Visible
+    optin_newsletter: Bons plans de la part de Pix.City
+    optin_pixie_card_demand: Demandes de Cards
+    optin_pixie_card_status: Mises à jour du statut d'une de mes cards
+    optin_cards_published: Dernières Cards publiées
+    optin_cards_published_from_favorites_regions: Dernières Cards publiées dans mes régions favorites
+    optin_cards_month: Les Cards les plus populaires du mois
+    optin_my_pixies_activity: L’activité de mes Pixies favoris
+    cardname: Titre de la card
+    mandatory: Obligatoire
+    contract: Contrat
+    masterhead: Bannière
+
+title:
+    our_regions: Nos <span>%count%</span> régions
+    popular_cards: Cards populaires
+    most_popular_cards: Les plus populaires
+    become_pixie: Devenez Pixie !
+    few_pixies: Quelques Pixies...
+    discover_cards_region: Découvrez les Cards de nos Pixies en
+    month_push: Nos coups de cœur
+    pixies_cards: Cards de nos Pixies
+    pixies_pitch: Partagez vos bonnes adresses et bons plans, améliorez votre popularité sur Instagram et Facebook, monétisez votre influence et votre expertise.
+    latest_cards: Les Cards du moment
+help:
+    upload:
+        image: (.jpg, .jpeg)
+        rib: (.pdf, .jpg)
+    birth_place: Merci d’indiquer la région où vous êtes né(e) ou celle où vous avez passé le plus de temps dans votre vie
+
+action:
+    login: Connexion
+    add: Ajouter
+    edit: Modifier
+    delete: Supprimer
+    filter: Filtrer
+    reinit: Réinitialiser
+    save_as_template: Sauvegarder en tant que modèle
+    checkcollections: Voir les collections
+    duplicate: Dupliquer
+    register: Devenir Pixie
+#    register: Inscription
+    register_pixie: Devenir Pixie
+    become_a_pixie: Devenir un Pixie
+    follow_region_facebook: Suivez-nous sur Facebook
+    view_on_website: Ouvrir la page sur le site
+    show_more_cards: VOID PLUS DE CARDS
+
+orderby:
+    popular: Les plus populaires
+    newest: Les plus récentes
+    oldest: Les plus anciennes
+
+error:
+    not_found: Cette page est introuvable.
+    not_authorized: Vous n'êtes pas autorisé à consulter cette page.
+    email:
+        exist: Cet email est déjà utilisé par un autre compte
+    minwords: Nombre de mots insuffisant
+    minphotos: Nombre de photos insuffisant
+
+    transaction:
+        create_counterparty: Could not create a Revolut counterparty
+        no_revolut_id: User Revolut ID not provided
+
+    vat: Numéro de TVA invalide
+    iban: IBAN invalide
+    bic: BIC invalide
+
+flash:
+    add:
+        success: L'élément a été ajouté avec succès
+        error: Une erreur est survenue et la création a échouée
+    update:
+        success: La mise à jour a bien été effectuée
+        error: Une erreur est survenue durant la mise à jour
+    delete:
+        success: L'élément a bien été supprimé
+        error: Une erreur est survenue et la suppression n'a pas été effectuée. Vérifiez qu'aucun contenu n'est lié à cet élément avant de le supprimer.
+    backup:
+        success: L'export été effectué avec succès
+        error: Une erreur est survenue lors de l'export
+
+text:
+    loading: Chargement...
+    noresults: Aucun résultat pour cette recherche
+    nocards: Aucune Card dans cette catégorie !
+    backup:
+        database: Sauvegarder la base de donnée
+
+settings:
+    invoice_pending_error: Something random

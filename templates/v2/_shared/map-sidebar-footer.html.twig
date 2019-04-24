@@ -1,0 +1,48 @@
+<div class="similar-places-slider" id="pixie-cards-slider">
+    {% if pixieCards is defined and pixieCards|length > 0 %}
+        {% for card in pixieCards %}
+        <div class="similar-card-holder">
+            <div class="card shadow map-marker-popup similar-cards">
+                <div class="row">
+                    <div class="col-md-9 mb-2 card-head">{{  card.name }}</div>
+                    <div class="col-md-3 mb-2 pr-4 text-right favourite-check">
+                        <div class="pretty p-icon p-toggle p-plain p-bigger">
+                            <input type="checkbox" />
+                            <div class="state p-off">
+                                <i class="icon far fa-heart "></i>
+                            </div>
+                            <div class="state p-on p-pink-o">
+                                <i class="icon fas fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-2 marker-about">
+                    {% for category in card.categories %}
+                        {% if loop.index == 1 %}
+                        <i class="fas {{ category.icon }}"></i>
+                            {{ category.name }}
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                    <div class="col-md-6 mb-2 marker-about">
+                        <i class="fas fa-map-pin"></i> {{ card.address.address}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mb-2 map-view-images">
+
+                        <div class="place-image"><img src="{{ card.medias.first.url }}" alt="loading..."></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="{{ path('front_card_single', {slug: card.slug}) }}" class="btn btn-pink btn-block">Voir la card</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>

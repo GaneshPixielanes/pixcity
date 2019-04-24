@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Pix.City</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" href="lib/fontawesome/css/all.min.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap-reboot.min.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/slick-carousel/slick/slick.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/slick-carousel/slick/slick-theme.css" />
+		<link rel="stylesheet" type="text/css" href="node_modules/bootstrap-select/dist/css/bootstrap-select.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+	</head>
+	<body>
+		<!-- Header -->
+		<nav class="navbar navbar-expand-lg fixed-top nav-bar-main nav-main-search">
+			<div class="container">
+				<a class="navbar-brand" href="javascript:;"><img src="images/header-logo-main.svg" alt="Pix.City"></a>
+				<button class="navbar-toggler nav-serch-toggle" type="button" data-toggle="collapse" data-target="#navbarTogglerSearch" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+					<i class="fas fa-search"></i>
+				</button>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerMain" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+					<img src="images/menu.svg" />
+				</button>
+				<div class="collapse navbar-collapse navbar-search" id="navbarTogglerSearch">
+					<div class="col-md-10 ml-auto">
+						<div class="input-group">
+							<input type="text" class="form-control btn-light nav-search-input" placeholder="Search" aria-label="" aria-describedby="basic-addon1">
+							<select <select class="selectpicker" data-live-search="true" multiple title="Toutes les régions">
+								<option value="Nord Pas de Calais">Nord Pas de Calais</option>
+								<option value="Upper Normandy">Upper Normandy</option>
+								<option value="Rhône Alpes">Rhône Alpes</option>
+								<option value="Provence Alpes Côte d Azur">Provence Alpes Côte d Azur</option>
+								<option value="Poitou Charentes">Poitou Charentes</option>
+								<option value="Picardie">Picardie</option>
+								<option value="Picardie">Pays de la Loire</option>
+								<option value="Midi Pyrénées">Midi Pyrénées</option>
+								<option value="Lower Normandy">Lower Normandy</option>
+								<option value="Lorraine">Lorraine</option>
+								<option value="Limousin">Limousin</option>
+								<option value="Languedoc Roussillon">Languedoc Roussillon</option>
+								<option value="Franche Comté">Franche Comté</option>
+								<option value="Champagne Ardenne">Champagne Ardenne</option>
+								<option value="Corsica">Corsica</option>
+								<option value="Centre">Centre</option>
+								<option value="Centre">Burgundy</option>
+								<option value="Centre">Brittany</option>
+								<option value="Centre">Auvergne</option>
+								<option value="Centre">Aquitaine</option>
+								<option value="Centre">Alsace</option>
+								<option value="Centre">Île de France</option>
+							</select>
+							<select <select class="selectpicker" data-live-search="true" multiple title="Catégories">
+								<option value="Tout">Tout</option>
+								<option value="Nature">Nature</option>
+								<option value="Site touristique">Site touristique</option>
+								<option value="Manger">Manger</option>
+								<option value="Manger">Bars et Cafés</option>
+								<option value="Sortir">Sortir</option>
+								<option value="Green">Green</option>
+								<option value="Mobilité">Mobilité</option>
+								<option value="Sport">Sport</option>
+								<option value="Art et culture">Art et culture</option>
+								<option value="Shopping">Shopping</option>
+								<option value="Consommer local">Consommer local</option>
+								<option value="Enfants">Enfants</option>
+								<option value="Dormir">Dormir</option>
+								<option value="Bien-être et santé">Bien-être et santé</option>
+								<option value="Bien-être et santé">Événement</option>
+								<option value="Bien-être et santé">Éxpériences solidaires</option>
+							</select>
+							<div class="input-group-append">
+								<button class="btn btn-green nav-search-btn" type="button"><i class="fas fa-chevron-right"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="collapse navbar-collapse" id="navbarTogglerMain">
+					<div class="col-md-12 mt-2 ml-auto mt-lg-0">
+						<div class="row">
+							<div class="col-md-7">
+								<button class="btn btn-rollover btn-outline-gray btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+							</div>
+							<div class="col-md-5">
+								<button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<!-- Header -->
+		<div class="results-page">
+			<!-- Banner -->
+			<div class="results-banner-wrap">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 my-4 breadcrumb-container">
+							<ul>
+								<li><a href="javascript:;">Accueil</a></li>
+								<li><a href="javascript:;">Recherche</a></li>
+								<li><b>Résultat - Sport</b></li>
+							</ul>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 my-4 breadcrumb-container">
+							<h1>Les city-Makers vous proposent <span>24</span> cards</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Banner -->
+			<!-- Embedded Google map Wrap Ends -->
+			<!-- Filter Cards Wrap Starts -->
+			<div class="cards-wrap">
+				<div class="container">
+					<div id="cards" class="row list-of-cards m-t-50 no-autoscroll" data-api-route="https://www.pix.city/api/cards/list">
+						<div class="col-md-12">
+							<div class="dropdown">
+								<a class="dropdown-toggle dnc dropdown-moment" href="javascript:;" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+									Catégories <i class="fas fa-chevron-down"></i>
+								</a>
+								<div id="catsDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+									<ul id="filters" class="categories">
+										<li class="btn btn-rollover btn-pink is-checked all"><span class="text">Tout</span><i class="fas fa-th"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="7" data-slug="nature"><span class="text">Nature</span><i class="fas fa-tree"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="8" data-slug="site-touristique"><span class="text">Site touristique</span><i class=" fas fa-university"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="9" data-slug="manger"><span class="text">Manger</span><i class="fas fa-utensils"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="22" data-slug="bars-et-cafes"><span class="text">Bars et Cafés</span><i class="fas fa-coffee"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="12" data-slug="sortir"><span class="text">Sortir</span><i class="fas fa-glass-martini"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="17" data-slug="green"><span class="text">Green</span><i class="fas fa-leaf"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="10" data-slug="mobilite"><span class="text">Mobilité</span><i class="fas fa-wheelchair"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="11" data-slug="sport"><span class="text">Sport</span><i class="fas fa-futbol"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="13" data-slug="art-et-culture"><span class="text">Art et culture</span><i class="fas fa-paint-brush"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="14" data-slug="shopping"><span class="text">Shopping</span><i class="fas fa-shopping-bag"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="15" data-slug="consommer-local"><span class="text">Consommer local</span><i class="fas fa-landmark"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="16" data-slug="enfants"><span class="text">Enfants</span><i class="fas fa-child"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="18" data-slug="dormir"><span class="text">Dormir</span><i class="fas fa fa-bed"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="19" data-slug="bien-etre-et-sante"><span class="text">Bien-être et santé</span><i class="fas fa-spa"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="20" data-slug="evenement"><span class="text">Événement</span><i class="fas fa-calendar-alt"></i></li>
+										<li class="btn btn-rollover btn-pink" data-id="21" data-slug="experiences-solidaires"><span class="text">Éxpériences solidaires</span><i class="fas fa-users"></i></li>
+									</ul>
+								</div>
+							</div>
+							<div class="row cardsMrgn loader-container">
+								<div class="loader"></div>
+								<div id="cardsGrid" class="regionCards cards-grid">
+									<div class="category-card col-sm-15 01-hotspot cat-9 " data-id="933" data-latitude="43.7015388" data-longitude="7.275870299999951">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/58c6872c0cb75a8497471dfb3d5a4ba0.jpeg)">
+											<a class="innerLink" href="/restaurant-la-popote-d-ondine-nice-alpes-maritimes-provence-alpes-cote-dazur.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="933" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/restaurant-la-popote-d-ondine-nice-alpes-maritimes-provence-alpes-cote-dazur.html">Restaurant La Popote d&#039;Ondine à Nice</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="provence-alpes-cote-dazur">
+													<button type="submit" class="regionName">Provence-Alpes-Côte d&#039;Azur</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="manger">
+														<button type="submit" class="tag fa fa-utensils"><span>Manger</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/nora-laib-lejeune-provence-alpes-cote-d-azur/305">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															Nora Laib-Lejeune
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="category-card col-sm-15 01-hotspot cat-8 " data-id="926" data-latitude="49.2433866" data-longitude="4.049836300000038">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/aa02144c1317f71f2387fb5a55cb52d2.jpeg)">
+											<a class="innerLink" href="/les-caves-pommery-reims-marne-grand-est.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="926" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/les-caves-pommery-reims-marne-grand-est.html">Visite des Caves Pommery à Reims</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="grand-est">
+													<button type="submit" class="regionName">Grand Est</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="site-touristique">
+														<button type="submit" class="tag fa fa-university"><span>Site touristique</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/eloise-muller-grand-est/62">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															Eloïse Muller
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="category-card col-sm-15 01-hotspot cat-12 " data-id="929" data-latitude="48.0901465" data-longitude="-1.632523200000037">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/eacb2466b98ce4da5aeaf56836518124.jpeg)">
+											<a class="innerLink" href="/virtual-room-a-rennes-ille-et-vilaine-bretagne.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="929" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/virtual-room-a-rennes-ille-et-vilaine-bretagne.html">Virtual Room à Rennes</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="bretagne">
+													<button type="submit" class="regionName">Bretagne</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="sortir">
+														<button type="submit" class="tag fa fa-glass-martini"><span>Sortir</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/cassandre-garnier-bretagne/82">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															Cassandre Garnier
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="category-card col-sm-15 01-hotspot cat-9 " data-id="932" data-latitude="48.8582796" data-longitude="2.2758115999999973">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/b1feaef569ca60b20274193f8c42662f.jpeg)">
+											<a class="innerLink" href="/restaurant-caterina-paris-ile-de-france.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="932" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/restaurant-caterina-paris-ile-de-france.html">Restaurant Caterina à Paris</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="ile-de-france">
+													<button type="submit" class="regionName">Ile-de-France</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="manger">
+														<button type="submit" class="tag fa fa-utensils"><span>Manger</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/thefood-parisian-ile-de-france/135">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															TheFood Parisian
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="category-card col-sm-15 01-hotspot cat-7 " data-id="922" data-latitude="44.913477" data-longitude="4.190816000000041">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/529122bb0c38f5f988ad24a7ece78d1e.jpeg)">
+											<a class="innerLink" href="/randonnee-en-raquettes-au-mont-mezenc-boree-haute-loire-auvergne-rhone-alpes.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="922" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/randonnee-en-raquettes-au-mont-mezenc-boree-haute-loire-auvergne-rhone-alpes.html">Randonnée Le Mont Mézenc en raquettes</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="auvergne-rhone-alpes">
+													<button type="submit" class="regionName">Auvergne-Rhône-Alpes</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="nature">
+														<button type="submit" class="tag fa fa-tree"><span>Nature</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/marion-kabac-auvergne-rhone-alpes/191">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															Marion Kabac
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="category-card col-sm-15 01-hotspot cat-7 " data-id="907" data-latitude="44.2184253" data-longitude="1.974619999999959">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/9ee3d2ca8a0de2c0c4e9f270cab77ab6.jpeg)">
+											<a class="innerLink" href="/la-forteresse-royale-de-najac-aveyron-occitanie.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="907" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/la-forteresse-royale-de-najac-aveyron-occitanie.html">La forteresse royale de Najac</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="occitanie">
+													<button type="submit" class="regionName">Occitanie</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="nature">
+														<button type="submit" class="tag fa fa-tree"><span>Nature</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/alexandre-pons-nouvelle-aquitaine/310">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															Alexandre PONS
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="category-card col-sm-15 01-hotspot cat-8 " data-id="900" data-latitude="41.38717399999999" data-longitude="9.159268999999995">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/b59a2fcf675e56f3a3fa623020fd62e5.jpeg)">
+											<a class="innerLink" href="/l-escalier-du-roy-d-aragon-bonifacio-corse-du-sud-corse.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="900" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/l-escalier-du-roy-d-aragon-bonifacio-corse-du-sud-corse.html">L&#039;Escalier du Roy d&#039;Aragon à Bonifacio</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="corse">
+													<button type="submit" class="regionName">Corse</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="site-touristique">
+														<button type="submit" class="tag fa fa-university"><span>Site touristique</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/johan-bataille-finet-corse/299">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															Johan Bataille-Finet
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="category-card col-sm-15 01-hotspot cat-12 " data-id="918" data-latitude="43.6971103" data-longitude="7.273420499999929">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/855aedafc925f1cb0f8cc7b05458f782.jpeg)">
+											<a class="innerLink" href="/cafe-emilie-and-the-cool-kids-nice-alpes-maritimes-provence-alpes-cote-dazur.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="918" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/cafe-emilie-and-the-cool-kids-nice-alpes-maritimes-provence-alpes-cote-dazur.html">Café Emilie &amp; the Cool Kids à Nice</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="provence-alpes-cote-dazur">
+													<button type="submit" class="regionName">Provence-Alpes-Côte d&#039;Azur</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="sortir">
+														<button type="submit" class="tag fa fa-glass-martini"><span>Sortir</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/alicia-le-gouedec-bretagne/286">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															Alicia Le Gouedec
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="category-card col-sm-15 01-hotspot cat-9 " data-id="924" data-latitude="43.70462910000001" data-longitude="7.268825800000059">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/9c3f061a7de344670780420d7903955e.jpeg)">
+											<a class="innerLink" href="/restaurant-chez-les-garcons-nice-alpes-maritimes-provence-alpes-cote-dazur.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="924" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/restaurant-chez-les-garcons-nice-alpes-maritimes-provence-alpes-cote-dazur.html">Restaurant Chez les garçons à Nice</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="provence-alpes-cote-dazur">
+													<button type="submit" class="regionName">Provence-Alpes-Côte d&#039;Azur</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="manger">
+														<button type="submit" class="tag fa fa-utensils"><span>Manger</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/nora-laib-lejeune-provence-alpes-cote-d-azur/305">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															Nora Laib-Lejeune
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="category-card col-sm-15 01-hotspot cat-12 " data-id="920" data-latitude="48.8871327" data-longitude="2.3179198999999926">
+										<div class="inner" style="background-image: url(https://www.pix.city/media/cache/bg_card_item/uploads/cards/2019/02/010f6a5314b81fef441a8448a6f732b2.jpeg)">
+											<a class="innerLink" href="/salon-de-the-dose-dealer-de-cafe-a-paris-ile-de-france.html"></a>
+											<a class="cardsIco cta-favorite-card " data-id="920" title=" Enregistrer la card" data-toggle="tooltip" data-placement="top" data-container="body"></a>
+											<div class="alignBottom">
+												<a class="cardTitle" href="https://www.pix.city/salon-de-the-dose-dealer-de-cafe-a-paris-ile-de-france.html">Salon de thé Dose Dealer de Café à Paris</a>
+												<form action="/recherche/index">
+													<input type="hidden" name="regions[]" value="ile-de-france">
+													<button type="submit" class="regionName">Ile-de-France</button>
+												</form>
+												<div class="hoverInfo">
+													<form action="/recherche/index">
+														<input type="hidden" name="categories[]" value="sortir">
+														<button type="submit" class="tag fa fa-glass-martini"><span>Sortir</span></button>
+													</form>
+													<div class="cardAuth">
+														<a href="/profil-pixie-local/caroline-michel-ile-de-france/234">
+															<span class="portraitAuth" style="background-image: url(https://www.pix.city/media/cache/user_small_avatar/uploads/avatars/default-avatar.png)"></span>
+															Caroline Michel
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="loadCards"></div>
+									<div class="col-xs-12 text-center" id="loadCards">
+										<a href="javascript:;" class="btn btn-green btn-rollover" id="showMoreCards"><span class="text">VOIR PLUS DE CARDS</span><i class="fas fa-plus-square"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="noResult" class="col-md-12 no-results">
+							<p>Aucune Card dans cette catégorie !</p>
+							<div class="noCardIco"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Filter Cards Wrap Ends -->
+			<!-- Embedded Google map Wrap Starts -->
+			<div class="map-wrap">
+				<div class="container">
+					<div class="map-search">
+						<form class="form-inline">
+							<input class="form-control mr-sm-0" type="search" placeholder="Rechercher une card, un lieu" aria-label="Search"><button class="btn btn-pink my-2 my-sm-0" type=""><img src="images/cards-white.svg"></button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Embedded Google map Wrap Ends -->
+			<!-- City maker profile wrap Starts-->
+			<div class="my-5 city-makers-wrap">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<h3>Devenez City-Maker !</h3>
+							<p>Partagez vos bonnes adresses et bons plans, améliorez votre popularité sur Instagram et Facebook, monétisez votre influence et votre expertise.</p>
+						</div>
+					</div>
+					<div class="row d-flex justify-content-around">
+						<div class="col-md-3 city-maker-container">
+							<div class="col-md-12 card shadow">
+								<div class="row">
+									<div class="col-md-12">
+										<a href="javascript:;" class="city-maker-image">
+											<img src="https://www.pix.city/services/images/95d6eb342f84cc670e694e679996f772.jpeg" class="rounded-circle" alt="User Name">
+										</a>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 city-maker-info">
+										Lily Bordeaux <span>Bordeaux</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 d-flex justify-content-between my-2">
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Suivre le City Maker">
+											<i class="far fa-user-circle"></i>
+										</a>
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Consultez le profil Instagram de notre City Maker!">
+											<i class="fab fa-instagram"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 city-maker-container">
+							<div class="col-md-12 card shadow">
+								<div class="row">
+									<div class="col-md-12">
+										<a href="javascript:;" class="city-maker-image">
+											<img src="https://www.pix.city/services/images/95d6eb342f84cc670e694e679996f772.jpeg" class="rounded-circle" alt="User Name">
+										</a>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 city-maker-info">
+										Lily Bordeaux <span>Bordeaux</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 d-flex justify-content-between my-2">
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Suivre le City Maker">
+											<i class="far fa-user-circle"></i>
+										</a>
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Consultez le profil Instagram de notre City Maker!">
+											<i class="fab fa-instagram"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 city-maker-container">
+							<div class="col-md-12 card shadow">
+								<div class="row">
+									<div class="col-md-12">
+										<a href="javascript:;" class="city-maker-image">
+											<img src="https://www.pix.city/services/images/95d6eb342f84cc670e694e679996f772.jpeg" class="rounded-circle" alt="User Name">
+										</a>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 city-maker-info">
+										Lily Bordeaux <span>Bordeaux</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 d-flex justify-content-between my-2">
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Suivre le City Maker">
+											<i class="far fa-user-circle"></i>
+										</a>
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Consultez le profil Instagram de notre City Maker!">
+											<i class="fab fa-instagram"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 city-maker-container">
+							<div class="col-md-12 card shadow">
+								<div class="row">
+									<div class="col-md-12">
+										<a href="javascript:;" class="city-maker-image">
+											<img src="https://www.pix.city/services/images/95d6eb342f84cc670e694e679996f772.jpeg" class="rounded-circle" alt="User Name">
+										</a>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 city-maker-info">
+										Lily Bordeaux <span>Bordeaux</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 d-flex justify-content-between my-2">
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Suivre le City Maker">
+											<i class="far fa-user-circle"></i>
+										</a>
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Consultez le profil Instagram de notre City Maker!">
+											<i class="fab fa-instagram"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 city-maker-container">
+							<div class="col-md-12 card shadow">
+								<div class="row">
+									<div class="col-md-12">
+										<a href="javascript:;" class="city-maker-image">
+											<img src="https://www.pix.city/services/images/95d6eb342f84cc670e694e679996f772.jpeg" class="rounded-circle" alt="User Name">
+										</a>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 city-maker-info">
+										Lily Bordeaux <span>Bordeaux</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 d-flex justify-content-between my-2">
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" title="Suivre le City Maker">
+											<i class="far fa-user-circle"></i>
+										</a>
+										<a href="javascript:;" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" title="Consultez le profil Instagram de notre City Maker!">
+											<i class="fab fa-instagram"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 mt-3">
+							<div class="col-md-5 profile-actions">
+								<div class="row">
+									<div class="col-md-6 mb-2">
+										<a href="javascript:;" class="btn btn-rollover btn-gray btn-block"><span class="text">TOUS LES CITY-MAKERS</span><i class="fas fa-users"></i></a>
+									</div>
+									<div class="col-md-6">
+										<a href="javascript:;" class="btn btn-rollover btn-outline-gray btn-block"><span class="text">DEVENIR CITY MAKER</span><i class="fas fa-user-plus"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- City maker profile wrap Ends-->
+		</div>
+		<div class="social-wrap">
+			<div class="container">
+				<div class="row">
+					<div class="brand-footer">
+						<img src="images/footer-logo-main.svg" />
+					</div>
+					<div class="container-propos">
+						<h4>A Propos De Nous</h4>
+						<ul>
+							<li><a href="^_^">Mentions Legales</a></li>
+							<li><a href="^_^">Conditions générales d’utilisation</a></li>
+							<li><a href="^_^">Politique de protection des données</a></li>
+							<li><a href="^_^">La FAQ du City-Maker</a></li>
+							<li><a href="^_^">L’Équipe</a></li>
+							<li><a href="^_^">Contact</a></li>
+						</ul>
+					</div>
+					<div class="container-social">
+						<h4>Pix.city Sur Les Reseaux Sociaux</h4>
+						<ul>
+							<li><a href="^_^"><i class="fab fa-facebook-square"></i> <span>Facebook</span></a></li>
+							<li><a href="^_^"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a></li>
+							<li><a href="^_^"><i class="fab fa-instagram"></i> <span>Instagram</span></a></li>
+						</ul>
+					</div>
+					<div class="container-insta">
+						<h4><i class="fab fa-instagram"></i> Instagram</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer-wrap">
+		<div class="container">
+			&copy; 2019 Pix City
+		</div>
+	</div>
+	<!-- Scripts -->
+	<script src="js/jquery-3.1.1.min.js" /></script>
+	<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" /></script>
+	<script src="js/popper.min.js"></script>
+	<script src="node_modules/slick-carousel/slick/slick.min.js"></script>
+	<script src="node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<!-- <script src="js/app.js"></script> -->
+	<script src="js/custom.js"></script>
+</body>
+</html>

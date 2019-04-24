@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48.405" height="56" viewBox="0 0 48.405 56">
+  <g id="_Map_Marker_-_Local_V2_" data-name="📍Map Marker - Local [V2]" transform="translate(-255.595 -312)">
+    <path id="_V1_HEXAGONE" data-name="[V1]HEXAGONE" d="M-28.8,0-53,14V42l24.2,14,24.2-14V14Z" transform="translate(308.595 312)" fill="#ed5485"/>
+    <g id="Category_Icon_-_Consommer_local" data-name="Category Icon - Consommer local" transform="translate(-104 267.764)">
+      <path id="Category_Icon_-_Consommer_local-2" data-name="Category Icon - Consommer local" d="M31.33,6.159,27.958.779A1.663,1.663,0,0,0,26.55,0H5.561A1.663,1.663,0,0,0,4.153.779L.781,6.159a4.633,4.633,0,0,0,3.055,7.083,5.4,5.4,0,0,0,.712.047A5.131,5.131,0,0,0,8.382,11.57a5.136,5.136,0,0,0,7.669,0,5.136,5.136,0,0,0,7.668,0,5.148,5.148,0,0,0,3.834,1.719,5.344,5.344,0,0,0,.712-.047A4.628,4.628,0,0,0,31.33,6.159Zm-3.767,8.8a6.6,6.6,0,0,1-1.533-.2v5.183H6.08V14.759a6.886,6.886,0,0,1-1.533.2,7.013,7.013,0,0,1-.935-.062,6.536,6.536,0,0,1-.852-.187v10.22a1.66,1.66,0,0,0,1.663,1.662H27.7a1.66,1.66,0,0,0,1.663-1.662V14.707a5.307,5.307,0,0,1-.852.187,7.229,7.229,0,0,1-.946.062Z" transform="translate(367.943 58.647)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

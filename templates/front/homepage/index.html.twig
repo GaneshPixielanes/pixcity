@@ -1,0 +1,200 @@
+{% extends 'front/page.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} home bgPictos{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{% block page_content %}
+
+    {% if page.slider is not null %}
+        {% include 'front/_shared/hp-slider.twig' with {slider: page.slider} %}
+    {% endif %}
+
+    <a id="homeAnchor"></a>
+    <div class="container main">
+
+        <!-- REGIONS -->
+
+        <div id="regions" class="row homepage-regions-list">
+
+            <div class="col-md-12">
+                <h2>{{ 'title.our_regions'|trans({'%count%': regions|length})|raw }}</h2>
+            </div>
+
+            {% for category in regions %}
+                {{ macro.regionPageItem(category) }}
+            {% endfor %}
+
+        </div>
+        <!--/.row-->
+
+        <!-- CARDS POPULAIRES -->
+
+        <div id="cards" class="row list-of-cards m-t-50 no-autoscroll" data-api-route="{{ path('api_cards_list') }}">
+            <div class="col-md-12">
+                <h2>{{ 'title.latest_cards'|trans }}</h2>
+
+                <div class="dropdown show">
+                    <a class="dropdown-toggle dnc" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+                        {{ 'label.categories'|trans }} <i class="fa fa-chevron-down"></i>
+                    </a>
+
+                    <div id="catsDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <ul id="filters" class="categories">
+                            <li class="transFx fa fa-th is-checked all"><span>{{ 'label.all'|trans }}</span></li>
+                            {% for category in categories %}
+                                {{ macro.categoryItem(category) }}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <!--filtres-->
+
+                <!--cards-->
+                <div class="row cardsMrgn loader-container">
+
+                    <div class="loader"></div>
+
+                    <div id="cardsGrid" class="regionCards cards-grid">
+
+                        {% for card in cards %}
+                            {{ macro.cardItem(card) }}
+                        {% endfor %}
+                        <div class="loadCards"></div>
+                        <div class="col-xs-12 text-center" id="loadCards">
+                            <a href="#" class="btn transFx fa fa-plus-square" id="showMoreCards"><span>{{ 'action.show_more_cards'|trans }}</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NO RESULTS -->
+            <div id="noResult" class="row no-results">
+                <div class="col-md-12">
+                    <p>{{ 'text.nocards'|trans }}</p>
+                    <div class="noCardIco"></div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!--/.container-->
+
+    <!-- DEVENEZ UN PIXIE ! -->
+    <div id="becomePixie" class="text-center">
+        <span class="hugeTypo">{{ 'label.pixies'|trans }}</span>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h2>{{ 'title.become_pixie'|trans }}</h2>
+                    <p>{{ 'title.pixies_pitch'|trans }}</p>
+                </div>
+            </div>
+
+            <div id="portraitsPixies" class="row">
+                <h3>{{ 'title.few_pixies'|trans }}</h3>
+
+                {% for user in pixies %}
+                    <div class="col-sm-15">
+                        {{ macro.pixieItem(user) }}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="row">
+                <div id="btnPixies" class="col-sm-12 text-center">
+                    <a href="{{ path('front_pixies_index', {slug: 'france'}) }}" class="btn ghost transFx fa fa-users"><span>{{ 'label.all_pixies'|trans }}</span></a>
+                    {% if not is_granted('ROLE_PIXIE') %}
+                        <a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):path('front_pixie_register_mode') }}" class="btn white transFx fa fa-user-plus"><span>{{ 'action.become_a_pixie'|trans }}</span></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/#becomePixie-->
+
+
+    <!-- POPOVER CONTENT -->
+
+    <!-- si connecté body class = 'loggedIn' -->
+    <div id="addToColl" class="hide">
+
+        <span class="headerPopover">Ajouter à une ou plusieurs collection(s)</span>
+        <form>
+
+            <label>Ma première collection<span class="collCheck fa"><input class="form-control" type="checkbox" name=""></span></label>
+
+            <label>Ma deuxième collection<span class="collCheck fa"><input class="form-control" type="checkbox" name=""></span></label>
+
+            <label>Ma troisième collection<span class="collCheck fa"><input class="form-control" type="checkbox" name=""></span></label>
+
+            <div class="newCollection"><input class="form-control" type="text" placeholder="Créer une nouvelle collection"> </div>
+            <div class="popFooter">
+                <button class="btn green transFx fa fa-plus"><span>OK !</span></button>
+            </div>
+        </form>
+
+
+    </div>
+
+    <!-- si non connecté body class = 'loggedOut' -->
+
+    <div id="popCreateAccount" class="hide">
+
+        <p>Vous devez avoir un compte pour mettre<br>une Card en favori.</p><button class="btn green transFx fa fa-plus"><span>Créer un compte</span></button>
+
+    </div>
+
+    <!--/POPOVER-->
+
+
+    {% for message in app.flashes('account_validation') %}
+
+        <!-- MODALE DE CONFIRMATION -->
+
+        <div class="modal plConfirm show-on-load" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Bienvenue {{ message }} !</h5>
+                    </div>
+                    <form action="{{ path('api_users_update_optin') }}" class="ajax-submit" data-after="closeModal">
+                        <div class="modal-body">
+                            <p>Félicitations ! Votre compte a été validé avec succès.</p>
+                            <br>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="pl-check-label">
+                                        <input class="pl-check-input" type="checkbox" name="optin"><span class="check">
+                                        J’aimerais recevoir des bons plans de la part de Pix.City</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn green btn-primary ">OK, merci !</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    {% endfor %}
+
+    <!-- MODALE DE CONFIRMATION -->
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/front/js/pages/homepage.js') }}"></script>
+{% endblock %}

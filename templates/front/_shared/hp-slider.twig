@@ -1,0 +1,28 @@
+<!-- PL Home Top Banner -->
+<div class="topBanner hp-topBanner">
+    <div class="flexslider introHome">
+
+        <ul class="slides">
+            {% for slide in slider.slides %}
+                <li class="slide" style="{% if slide.background is not null %}background-image: url({{ slide.background.getUrl() | imagine_filter('bg_header_slider') }}){% endif %}">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div id="txtHome">
+                                    <span class="slideTitle">{{ slide.name }}</span>
+                                    {{ slide.description | raw }}
+                                </div>
+                            </div>
+                            {% if slide.image is not null %}<div id="imgHome" class="col-sm-5 hom" style="background-image: url({{ slide.image.getUrl() }})"></div>{% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="customNav"></div>
+    </div>
+
+    <!--/.row-->
+    <a id="downBtn" class="fas fa-angle-double-down" href="#homeAnchor"></a>
+</div>
+<!--/ PL Home Top Banner -->

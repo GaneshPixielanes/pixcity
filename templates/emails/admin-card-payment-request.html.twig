@@ -1,0 +1,17 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+
+    <p>Bonjour,</p>
+
+    <p>Le City-maker {{ pixie }} vient de faire une nouvelle demande de paiement.</p>
+
+    <table width="100%">
+        <tr>
+            <td align="center">
+                <a style="background-color: #30b996; color: #FFF; padding: 10px 20px; display: inline-block; text-decoration: none; border-radius: 4px;" href="{{ absolute_url(path('admin_transactions_list')) }}">Accéder à l'interface d'administration</a>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

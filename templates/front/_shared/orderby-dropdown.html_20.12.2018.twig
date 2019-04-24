@@ -1,0 +1,17 @@
+<span id="triCards" class="orderby-dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+        {% if app.request.get('orderby') == "popular" or app.request.get('orderby') is null or app.request.get('orderby') is empty %}
+            {{ 'orderby.popular'|trans }}
+        {% elseif app.request.get('orderby') == "newest" %}
+            {{ 'orderby.newest'|trans }}
+        {% elseif app.request.get('orderby') == "oldest" %}
+            {{ 'orderby.oldest'|trans }}
+        {% endif %}
+        <i class="fa fa-chevron-down"></i>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="#" data-value="popular">{{ 'orderby.popular'|trans }}</a></li>
+        <li><a href="#" data-value="newest">{{ 'orderby.newest'|trans }}</a></li>
+        <li><a href="#" data-value="oldest">{{ 'orderby.oldest'|trans }}</a></li>
+    </ul>
+</span>
