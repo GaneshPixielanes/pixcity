@@ -110,7 +110,7 @@ class UserAccountController extends Controller
     /**
      * @Route("/cards", name="cards")
      */
-    public function cards(Request $request, CardRepository $cardRepo, CardCategoryRepository $categoriesRepo, RegionRepository $regionsRepo)
+    public function cards(Request $request, CardRepository $cardRepo, CardCategoryRepository $categoriesRepo, RegionRepository $regionsRepo, CardCollectionRepository $collectionRepo)
     {
         $user = $this->getUser();
         $uri = explode('/',$request->getRequestUri())[3];
@@ -124,8 +124,19 @@ class UserAccountController extends Controller
         $totalCards = $cardRepo->countSearchResult($filters);
         $pagination->setTotalItems($totalCards);
 
-        $categories = $categoriesRepo->findAllActive();
+        $categories = $categoriesRepo->findCategoriesByFavorites($this->getUser()->getId());
         $regions = $regionsRepo->findAllActive();
+
+        //-----------------------------------------------
+        // Get user collections
+
+        $collections = $collectionRepo->findUserCollections($user);
+
+        $totalCollectionCards = 0;
+        foreach($collections as $collection){
+            if($collection instanceof CardCollection)
+                $totalCollectionCards += count($collection->getCards());
+        }
 
         //-----------------------------------------------
         // Create the pager
@@ -140,7 +151,9 @@ class UserAccountController extends Controller
             'totalCards' => $totalCards,
             'categories' => $categories,
             'regions' => $regions,
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'collections' => $collections,
+            'totalCollectionCards' => $totalCollectionCards
         ));
 
     }
@@ -203,6 +216,13 @@ class UserAccountController extends Controller
             'labels' => json_decode($attr->getAttributes(), true)
         ));
 
+    }
+    /**
+     * @Route("/card-collections", name="collections")
+     */
+    public function collection(Request $request, CardCollectionRepository $cardCollectionRepo, CardRepository $cardRepo)
+    {
+        dd($request->get('cards'));
     }
 
 

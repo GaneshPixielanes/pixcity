@@ -101,7 +101,7 @@
 				<div class="col-md-9 pixie-info">
 					<div class="row">
 						<div class="col-md-7">
-							<p class="mb-0 insta-name">{% if(card.pixie.userInstagramDetailsApi != null) %}{{ card.pixie.userInstagramDetailsApi.name }}{% else %}{{ card.pixie.firstname~' '~card.pixie.lastname }}{% endif %}</p>
+							<p class="mb-0 insta-name">{% if(card.pixie.userInstagramDetailsApi != null) %}{{ card.pixie.userInstagramDetailsApi.name | raw | convert_encoding('UTF-8', 'ISO-8859-1') }}{% else %}{{ card.pixie.firstname~' '~card.pixie.lastname }}{% endif %}</p>
 							<p class="mb-1 insta-loc">{{ card.region.name }}</p>
 
 							<p class="mb-1 insta-name"><i class="fa fa-birthday-cake" aria-hidden="true"></i>    {{ card.pixie.age }}</p>

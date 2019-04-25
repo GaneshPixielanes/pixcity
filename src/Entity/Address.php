@@ -173,6 +173,16 @@ class Address
         return $this->getAddress().", ".$this->getZipcode()." ".$this->getCity();
     }
 
+    public function getZipShortcode(): ?string
+    {
+        return $this->zipShortcode;
+    }
 
+    public function setZipShortcode(?string $zipShortcode): self
+    {
+        $this->zipShortcode = $zipShortcode;
+
+        return $this;
+    }
 
 }
