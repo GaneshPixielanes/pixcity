@@ -55,7 +55,10 @@ class Address
      */
     private $longitude = "";
 
-
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $zipShortcode;
 
     /**
      * @return mixed

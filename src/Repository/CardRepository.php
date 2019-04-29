@@ -271,6 +271,7 @@ class CardRepository extends ServiceEntityRepository
             $result = $qb->where('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
                 // ->andWhere('c.pixie = :cityMaker')->setParameter('cityMaker',$card->getPixie())
                 ->andWhere('c.id < :id')->setParameter('id',$card->getId())
+                ->orderBy('c.id','DESC')
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getSingleResult();

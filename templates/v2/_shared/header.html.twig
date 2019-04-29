@@ -45,7 +45,7 @@
 				<div class="row">
 					<div class="col-md-8 logged-profile-menu-hover">
 						<a href="javascript:;" class="logged-profile">
-							<img src="{% if app.user.userMedia.first.url is defined and app.user.userMedia.first.url is not null %}{{ app.user.userMedia.first.url | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="rounded-circle" alt="{{app.user }}">
+							<img src="{% if app.user.getAvatarUrl() is defined and app.user.getAvatarUrl() is not null %}{{ app.user.getAvatarUrl() | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="rounded-circle" alt="{{app.user }}">
 						</a>
 						<div class="logged-dropdown-menu">
 							<div class="card">
@@ -53,20 +53,20 @@
 										{% if app.user.viewMode == "pixie" %}
 
 											<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CITY-MAKER <i class="fas fa-retweet"></i></a>
-											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i> Demandes de cards</a>
-											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i> Cards en attente</a>
-											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_validated') }}"><i class="far fa-check-circle"></i> Cards Validees</a>
-											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i> Mes remuneration</a>
+											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
+											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i>Cards en attente</a>
+											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_validated') }}"><i class="far fa-check-circle"></i>Cards Validees</a>
+											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i>&nbsp;Mes rémunération</a>
 											<a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
-											<a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i> Deconnexion</a>
+											<a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
 										{% else %}
 
 											<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE VOYAGEUR <i class="fas fa-retweet"></i></a>
 											<a class="dropdown-item" href="{{ path('front_user_account_cards') }}"><i class="fas fa-cog"></i>Mes Cards</a>
-											<a class="dropdown-item" href="{{ path('front_user_account_agendas') }}"><i class="far fa-calendar-alt"></i> Mes Agendas</a>
-											<a class="dropdown-item" href="{{ path('front_user_account_pixies') }}"><i class="far fa-user"></i> Mes City-makers Favoris</a>
+											<a class="dropdown-item" href="{{ path('front_user_account_agendas') }}"><i class="far fa-calendar-alt"></i>Mes Agendas</a>
+											<a class="dropdown-item" href="{{ path('front_user_account_pixies') }}"><i class="far fa-user"></i>Mes City-makers Favoris</a>
 											<a class="dropdown-item" href="{{ path('front_user_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
-											<a class="dropdown-item" href="{{ path('front_signout') }}"><i class="fas fa-power-off"></i> Deconnexion</a>
+											<a class="dropdown-item" href="{{ path('front_signout') }}"><i class="fas fa-power-off"></i>Deconnexion</a>
 										{% endif %}
 									</div>
 								</div>

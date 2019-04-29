@@ -451,34 +451,25 @@ $(document).ready(function() {
             });
         }
 
-        console.log($.cookie('pc_user_location_lat_cookie'));
 
-        var lat = $.cookie('pc_user_location_lat_cookie');
-        var lng = $.cookie('pc_user_location_lng_cookie');
+        // var lat = $.cookie('pc_user_location_lat_cookie');
+        // var lng = $.cookie('pc_user_location_lng_cookie');
 
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
         var latlng = new google.maps.LatLng(lat, lng);
-        if ($('#api-box').attr('data-country-code') == 'FR') {
 
-            currentPositionMarker = new google.maps.Marker({
-                map: map,
-                icon: '/../../img/MAP/my_pos.png',
-                position: new google.maps.LatLng(
-                    pos.coords.latitude,
-                    pos.coords.longitude
-                ),
-                title: "Current Position"
-            });
-        } else {
-            currentPositionMarker = new google.maps.Marker({
-                map: map,
-                icon: '/../../img/MAP/my_pos.png',
-                position: new google.maps.LatLng(
-                    48.8588377,
-                    2.2770196
-                ),
-                title: "Default Position"
-            });
-        }
+        currentPositionMarker = new google.maps.Marker({
+            map: map,
+            icon: '/../../img/MAP/my_pos.png',
+            position: new google.maps.LatLng(
+                pos.coords.latitude,
+                pos.coords.longitude
+            ),
+            title: "Current Position"
+        });
+
+        map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
 
     }
 

@@ -24,7 +24,7 @@
     <div class="container">
         <div class="row regionPixies">
             {% for user in pixies %}
-                {{ macro.pixieItem(user, true) }}
+                {{ macro.pixieItemLazyLoad(user, true) }}
             {% endfor %}
         </div>
     </div>
@@ -60,19 +60,18 @@
     <div class="container">
 
         {% for region in regions %}
-
             <!--REGION-->
             <div class="row regionPixies">
                 <div class="col-md-12">
                     <span class="hexagon">{{ region.pixies | length }}</span>
-                    <h2>{{ region.infos.name }}</h2>
+                    <h2><a href="/{{ region['infos'].slug }}" style="color:#103558;text-decoration:none">{{ region.infos.name }}</a></h2>
                 </div>
             </div>
             <!--/row-->
 
             <div class="row">
                 {% for user in region.pixies %}
-                    {{ macro.pixieItem(user, true) }}
+                    {{ macro.pixieItemLazyLoad(user, true) }}
                 {% endfor %}
             </div>
 
@@ -90,4 +89,14 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        // Adding lazy loading for the profile images
+        $(document).ready(function()
+        {
+           $.each($('.portraitPixie'), function(key, image)
+           {
+               $(image).css('background-image','url('+$(image).attr('data-city-maker-image')+')')
+           }) ;
+        });
+    </script>
 {% endblock %}

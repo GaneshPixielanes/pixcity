@@ -316,7 +316,7 @@ a.active {
 
 .btn-icon-right img,
 .btn-icon-right i {
-    position: absolute;
+    /*position: absolute;*/
     top: 8px;
     right: 30px
 }

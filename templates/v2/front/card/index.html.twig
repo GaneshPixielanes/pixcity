@@ -16,6 +16,13 @@
 </style>
     <div class="card-page">
         <!-- Banner -->
+        
+        <!-- Lazy loading images -->
+        <ul id="card-gallery" style="display: none" data-instagram-id="{{ card.pixie.instagram }}">
+            {% for media in card.medias %}
+                <li data-thumb="{{ media.url | imagine_filter('card_gallery_thumb') }}" data-image="{{ media.url | imagine_filter('card_gallery_image') }}" class="slider-images"></li>
+            {% endfor %}
+        </ul>
         <div class="banner-wrap" style="background-image: url({{ card.masterhead.getUrl() | imagine_filter('bg_header_slider') }}) ">
             <div class="speech-bubble-container">
                 <a href="javascript:;" class="close-speech-bubble">
@@ -307,7 +314,7 @@
                                         <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
                                     </div>
                                     <div class="col-9 about">
-                                        {{ card.pixie.age }} ans<br /><span> City-maker depuis {{ card.pixie.createdAt | date('M d') }}</span>
+                                        {{ card.pixie.age }} ans<br /><span> City-maker depuis {{ card.pixie.cards.first.createdAt | date('M y') }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -486,7 +493,7 @@
                                                             <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
                                                         </div>
                                                         <div class="col-9 about">
-                                                            {{ card.pixie.age }} ans<br /><span>City-maker depuis  {{ card.pixie.createdAt | date('M d') }}</span>
+                                                            {{ card.pixie.age }} ans<br /><span>City-maker depuis  {{ card.pixie.cards.first.createdAt | date('M y') }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -600,6 +607,7 @@
                                             <img src="{{ card.pixie.getAvatar() }}" class="rounded-circle" alt="{{ card.pixie }}">«  {{ card.tagLine }} »
                                         </div>
                                         {% endif %}
+
                                         {{ card.content | trim | replace({'<p><br></p>': ''})| raw }}
                                         <div class="row">
                                             <div class="col-md-12 about-content">

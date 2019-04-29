@@ -84,6 +84,29 @@
 
 {% endmacro %}
 
+{% macro pixieItemLazyLoad(user, displayCity = false, totalCards = false) %}
+
+    <div class="pixieBlock">
+
+        <div class="portraitPixie" data-city-maker-image="{{ user.getAvatarUrl() | imagine_filter('user_avatar') }}">
+            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}"></a>
+            <a class="pixieLink fa fa-user-plus cta-follow-pixie {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" href="#" data-toggle="tooltip" data-placement="left" title="{{ (app.user is not null and app.user.hasFavoritePixie(user))?"Ne plus suivre":"Suivre le City Maker" }}" data-id="{{ user.id }}"></a>
+            {% if totalCards %}
+                <form action="{{ path('front_search_index') }}">
+                    <input type="hidden" name="pixie" value="{{ user.id }}">
+                    <button type="submit" class="nbCardsPixieFav" href="#">{{ totalCards }}</button>
+                </form>
+            {% endif %}
+            {% if user.getInstagram() %}<a class="instagramLink fab fa-instagram" href="{{ user.getInstagram() }}" target="_blank" rel="noopener" data-toggle="tooltip" data-placement="right" title="Consultez le profil Instagram de notre City Maker!"></a>{% endif %}
+        </div>
+        <p class="pixieDesc"><span class="pixieName">{{ user }}</span>
+            {% if user.pixie.regions|length > 0 %}<span class="pixieRegion">{{ user.pixie.regions[0] }}</span>{% endif %}
+            {% if displayCity and user.currentLocation %}<span class="pixieCity">{{ user.currentLocation }}</span>{% endif %}
+        </p>
+
+    </div>
+
+{% endmacro %}
 
 {# ------------------------------------------ #}
 {# Region #}

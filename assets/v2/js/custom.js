@@ -603,20 +603,22 @@ $(document).ready(function(){
     });
     /* Banner Slider Images */
     $('.show-slideshow').on('click', function() {
-        $.ajax(
-            {
-                url:'/api/cards/images/'+$(this).attr('data-id'),
-                method:'GET',
-                success: function(images)
-                {
-                    $(this).lightGallery({
-                        download: false,
-                        dynamic: true,
-                        dynamicEl: images
-                    })
-                }
-            }
-        );
+        var images = new Array();
+        $.each($('.slider-images'), function(index, image)
+        {
+            images.push({
+                thumb: $(this).attr("data-thumb"),
+                src: $(this).attr("data-image"),
+                subHtml: '<h4>Crédit Photo: <a href="'+$('#card-gallery').attr('data-instagram-id')+'"  style="color:#fff">@'+$('#card-gallery').attr('data-instagram-id').split('/')[3]+'</a></h4>'
+            });
+            // console.log($(image).attr('data-image'));
+        });
+
+        $(this).lightGallery({
+            download: false,
+            dynamic: true,
+            dynamicEl: images
+        });
     });
 
     /*slider for profile pics*/

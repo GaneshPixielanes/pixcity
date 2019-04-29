@@ -42,7 +42,6 @@ class PixieCardCreationController extends Controller
             "status" => CardProjectStatus::PIXIE_ACCEPTED,
             "pixie" => $this->getUser()->getId()
         ]);
-        dd($project);
         if(!$project){
             return $this->redirectToRoute('front_pixie_account_cards_projects');
         }
@@ -119,7 +118,6 @@ class PixieCardCreationController extends Controller
 
             $card->generateSlug();
             $card->getAddress()->setZipShortCode(substr($card->getAddress()->getZipCode(), 0 , 2));
-            dd($card->getAddress());
             $card->setPixie($this->getUser());
             $project->setCard($card);
 

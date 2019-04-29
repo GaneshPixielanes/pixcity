@@ -1265,4 +1265,21 @@ class User implements UserInterface, EquatableInterface
         return $this;
     }
 
+    public function getUserRegistrationCheck(): ?UserRegistrationCheck
+    {
+        return $this->userRegistrationCheck;
+    }
+
+    public function setUserRegistrationCheck(?UserRegistrationCheck $userRegistrationCheck): self
+    {
+        $this->userRegistrationCheck = $userRegistrationCheck;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $userRegistrationCheck === null ? null : $this;
+        if ($newUser !== $userRegistrationCheck->getUser()) {
+            $userRegistrationCheck->setUser($newUser);
+        }
+
+        return $this;
+    }
 }

@@ -151,8 +151,7 @@ class CitymakerController extends SearchPageController
             ];
 
             $pixies = $usersRepo->searchPixies($filters);
-        }
-
+        }   
         $this->_groupPixiesByRegions($pixies);
 
 

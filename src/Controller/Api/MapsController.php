@@ -8,6 +8,7 @@ use App\Entity\CardDetailsApi;
 use App\Entity\User;
 use App\Entity\UserInstagramDetailsApi;
 use App\Entity\InstagramTrends;
+use App\Repository\InstagramTrendsRepository;
 use App\Repository\CardRepository;
 use App\Repository\RegionRepository;
 use App\Repository\UserRepository;
@@ -263,109 +264,129 @@ class MapsController extends AbstractController
     }
 
     /**
-    *@Route("/instagram-cron/",name="_instagram_info")
+    *@Route("/instagram-cron/{slug}",name="_instagram_info",defaults={"slug":null})
     */
-    public function saveInstagramCron(UserRepository $userRepo)
+    public function saveInstagramCron($slug, UserRepository $userRepo, InstagramTrendsRepository $instagramTrendsRepo)
     {
-        $users = $userRepo->findBy(['igFlag' => 0]);
-        // dd($users);
-        foreach($users as $user)
+        $result = [];
+        switch($slug)
         {
-            $count = 0;
-            if($count < 30 && is_null($user->getUserInstagramDetailsApi()))
-            {
-                $result[] = $this->_saveUserInstagramInfo($user);
-                $count++;
-            }
-        }
-        if(isset($result))
-        {
-            dd($result);
-        }
-        else
-        {
-            echo "No users left"; exit;
-        }
-    }
-    private function _saveUserInstagramInfo($user)
-    {
-//        $user = $userRepo->find($id);
-        $igFlag = false;
-        // Get the Instagram ID of the user
-        if(!is_null($user))
-        {
-            foreach($user->getLinks() as $socialMedia)
-            {
-                if($socialMedia->getType() == "instagram")
-                {
-                    $igFlag = true;
-                    if(isset(explode('/', $socialMedia->getUrl())[3]))
+            case 'log':
+                    #Get the users who have been logged today
+                    $users = $instagramTrendsRepo->findTrendLoggedUserId();
+                    foreach($userRepo->findBy(['active' => 1]) as $user)
                     {
-                        $instagram = explode('/', $socialMedia->getUrl())[3];
-                        $details = $this->_getInstagramInfo($instagram);
-                        $details = stripslashes($details);
-                        $details = str_replace('{data: ["','',$details);
-                        $details = str_replace('"]}','',$details);
-                        $details = json_decode($details,true);
-                        $instagramDetails = $user->getUserInstagramDetailsApi();
-                        if(is_null($instagramDetails))
+                        #Check if the user has been logged already. If not, add the logs
+                        if(!in_array($user->getId(), array_column($users, 'id')))
                         {
-                            $instagramDetails = new UserInstagramDetailsApi();
-                            $instagramLog = new InstagramTrends();
-
-                            $instagramDetails->setNoOfFollowed($details['following']);
-                            $instagramDetails->setNoOfFollowers($details['followers']);
-                            $instagramDetails->setNoOfPosts($details['posts']);
-                            $instagramDetails->setName($details['user']);
-                            $instagramDetails->setResponse(json_encode($details));
-                            $instagramDetails->setUser($user);
-                            $instagramDetails->setCreatedAt(new \DateTime());
-                            $user->setIgFlag(1);
-
-                            $instagramLog->setName($details['user']);
-                            $instagramLog->setNoOfPosts($details['followers']);
-                            $instagramLog->setNoOfFollowers($details['followers']);
-                            $instagramLog->setNoOfFollowed($details['following']);
-                            $instagramLog->setDescription($details['posturl']);
-                            $instagramLog->setUser($user);
-                            $instagramLog->setCreatedAt(new \DateTime());
-                            $instagramLog->setResponse(json_encode($details));
-
-                            $entityManager = $this->getDoctrine()->getManager();
-                            $entityManager->persist($instagramDetails);
-                            $entityManager->persist($instagramLog);
-                            $entityManager->persist($user);
-                            $entityManager->flush();
+                            $result[] = $this->_saveUserInstagramInfo($user, true);
+                        }
+                    }
+                    break;
+            case 'info':
+                    #Get the users who's Instagram information hasn't been extracted yet
+                    $users = $userRepo->findBy(['igFlag' => 0]);
+                    #Extract information of the users
+                    if(!empty($users))
+                    {
+                        foreach($users as $user)
+                        {
+                            $result[] = $this->_saveUserInstagramInfo($user);
                         }
                     }
                     else
                     {
-                        $user->setIgFlag(2);
-                        $entityManager = $this->getDoctrine()->getManager();
-                        $entityManager->persist($user);
-                        $entityManager->flush();
-                        return JsonResponse::fromJsonString(json_encode(['success'=>false,'message' => 'Instagram account not found']));
+                        #All users have got their Instagram information extracted
+                        $result[] = 'No Users left';
                     }
-
-//                    dd($instagramDetails);
-                }
-
-            }
-
-            if($igFlag == false)
-            {
-                $user->setIgFlag(2);
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($user);
-                $entityManager->flush();
-                return JsonResponse::fromJsonString(json_encode(['success'=>false,'message' => 'Instagram account not found']));
-            }
-            return JsonResponse::fromJsonString(json_encode(['success'=>true,'message' => 'Instagram details udpated']));
+                    break;
         }
 
+        return JsonResponse::fromJsonString(json_encode($result));
+    }
 
+    private function _saveUserInstagramInfo($user, $log = false)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $instagramId = $user->getInstagram();
+        if(!is_null($instagramId))
+        {
+            #Get Username from the URL
+            try
+            {
+                $instagram = $this->_extractInstagramUsername($instagramId);
+            }
+            catch(\Exception $e)
+            {
 
-        return JsonResponse::fromJsonString(json_encode(['success' => false, 'message' => 'User does not exist']));
+                $user->setIgFlag(2);
+                $entityManager->persist($user);
+                $entityManager->flush();
+                return ['success' => false, 'message' => 'User '.$user.' ('.$user->getId().') doesn\'t have a proper IG ID ('.$instagramId.')'];
+            }
+            
+
+            #Get the data filtered out from the API
+            $details = $this->_extractInstagramUserDetails($this->_getInstagramInfo($instagram));
+            $instagramDetails = $user->getUserInstagramDetailsApi();
+            if(is_null($instagramDetails)) {
+                #If the user is new create a new instance
+                $instagramDetails = new UserInstagramDetailsApi();
+                $instagramDetails->setUser($user);
+            }
+            if($log == true)
+            {
+                # Backup the logs
+                $instagramLog = new InstagramTrends();
+                $instagramLog->setName($details['user']);
+                $instagramLog->setNoOfPosts($details['posts']);
+                $instagramLog->setNoOfFollowers($details['followers']);
+                $instagramLog->setNoOfFollowed($details['following']);
+                $instagramLog->setUser($user);
+                $instagramLog->setCreatedAt(new \DateTime());
+                $instagramLog->setResponse(json_encode($details));
+
+                $entityManager->persist($instagramLog);
+            }
+            else
+            {
+                #Update the instagram information to be shown to the users
+                $instagramDetails->setNoOfFollowed($details['following']);
+                $instagramDetails->setNoOfFollowers($details['followers']);
+                $instagramDetails->setNoOfPosts($details['posts']);
+                $instagramDetails->setName($details['user']);
+                $instagramDetails->setResponse(json_encode($details));
+                $instagramDetails->setCreatedAt(new \DateTime());
+                $user->setIgFlag(1);
+
+                $entityManager->persist($instagramDetails);
+                $entityManager->persist($user);
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+            return ['success'=>true,'message' => 'Instagram details udpated for user '.$user.' (User ID '.$user->getId().')'];
+        }
+
+        $user->setIgFlag(2);
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return ['success'=>false,'message' => 'Instagram account not found for '.$user];
+    }
+
+    private function _extractInstagramUsername($url)
+    {
+        return explode('/', $url)[3];
+    }
+
+    private function _extractInstagramUserDetails($details)
+    {
+        $details = stripslashes($details);
+        $details = str_replace('{data: ["','',$details);
+        $details = str_replace('"]}','',$details);
+        $details = json_decode($details,true);
+
+        return $details;
     }
 
     private function _getInstagramInfo($instagram)
