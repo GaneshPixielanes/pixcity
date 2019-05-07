@@ -9,3 +9,4 @@
 /symfony.lock
 /assets/v2/node_modules/*
 .env
+webpack.config.js
