@@ -32,7 +32,6 @@ class HomepageController extends Controller
                                      CardCategoryRepository $categoriesRepo,
                                      CardProjectRepository $cardProjectRepository
     ){
-        die('testing git :D');
 //        YEah! commit is here , click it DO you want me to commit it? yes Ok!
         $page = $pagesRepo->findOneBySlug("accueil");
         $regions = $pagesCategoriesRepo->findAllActive();
