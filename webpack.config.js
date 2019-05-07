@@ -74,6 +74,7 @@ Encore
     .addEntry('js/slick', './assets/v2/js/slick.min.js')
     .addEntry('js/collection', './assets/v2/js/collection.js')
     .addEntry('js/bootstrap-select', './assets/v2/js/bootstrap-select.min.js')
+    .addEntry('js/lazy', './assets/v2/js/jquery.lazy.min.js')
 
     // CSS
     .addStyleEntry('front/css/app', './assets/front/scss/app.scss')
@@ -87,6 +88,7 @@ Encore
     .addStyleEntry('css/slick-theme', './assets/v2/node_modules/slick-carousel/slick/slick-theme.css')
     .addStyleEntry('css/lightgallery', './assets/v2/node_modules/lightgallery/src/css/lightgallery.css')
     .addStyleEntry('css/style', './assets/v2/css/style.css')
+    .addStyleEntry('css/main', './assets/v2/css/main.scss')
 
 
 

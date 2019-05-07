@@ -32,6 +32,8 @@ class HomepageController extends Controller
                                      CardCategoryRepository $categoriesRepo,
                                      CardProjectRepository $cardProjectRepository
     ){
+        die('testing git :D');
+//        YEah! commit is here , click it DO you want me to commit it? yes Ok!
         $page = $pagesRepo->findOneBySlug("accueil");
         $regions = $pagesCategoriesRepo->findAllActive();
         $coordinates = [];
@@ -86,7 +88,8 @@ class HomepageController extends Controller
             'isCardFavoritedFirstTime' => $isCardFavoritedFirstTime,
             'coordinates' => str_replace(['\r','\n'],'',str_replace('"',"",json_encode($coordinates))),
             'cardsPerRegion' => $cardPerRegion,
-            'country' => $country['countryCode']
+            'country' => 'FR'
+//            'country' => $country['countryCode']
         ]);
     }
 
