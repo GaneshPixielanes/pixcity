@@ -55,7 +55,8 @@ class SearchController extends SearchPageController
         $limit = $request->get('limit')?$request->get('limit'):10;
         $cards = $cardRepository->search($filters, $start, $limit, 'newest');
 
-        $cardCount = count($cardRepository->search($filters, $start, 999999999999999, 'newest'));
+        $cardCount = $cardRepository->countSearchResult($filters);
+        
         $categories = $categoryRepo->findCategoriesBySearchParam($filters);
         if(!isset($page)) {
             $page = new Page();
