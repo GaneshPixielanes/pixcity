@@ -176,10 +176,10 @@
                                                         Catégorie<span>{{ card.categories.first.name }}</span>
                                                     </div>
                                                     <div class="col-md-4 col-6 card-page-pagination">
-                                                        {% if prevCard.slug is defined %}<a href="/{{ prevCard.slug~'.html' }}">PRÉCÉDENT</a>{% endif %}
+                                                        {% if prevCard.slug is defined %} <a href="/{{ prevCard.slug~'.html' }}">Card <span>Précédente</span></a>{% endif %}
                                                     </div>
                                                     <div class="col-md-4 col-6 card-page-pagination">
-                                                        {% if nextCard.slug is defined %}<a href="/{{ nextCard.slug~'.html' }}">SUIVANT</a>{% endif %}
+                                                        {% if nextCard.slug is defined %}<a href="{{ nextCard.slug~'.html' }}">Card <span>Suivante</span></a>{% endif %}
                                                     </div>
                                                 </div>
                                             </div>
@@ -314,7 +314,7 @@
                                         <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
                                     </div>
                                     <div class="col-9 about">
-                                        {{ card.pixie.age }} ans<br /><span> City-maker depuis {{ card.pixie.cards.first.createdAt | date('M y') }}</span>
+                                        {{ card.pixie.age }} ans<br /><span> City-maker depuis {{ card.pixie.cards.first.createdAt  | localizeddate('medium', 'none',null,null,'d MMM') | upper }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -493,7 +493,7 @@
                                                             <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
                                                         </div>
                                                         <div class="col-9 about">
-                                                            {{ card.pixie.age }} ans<br /><span>City-maker depuis  {{ card.pixie.cards.first.createdAt | date('M y') }}</span>
+                                                            {{ card.pixie.age }} ans<br /><span>City-maker depuis  {{ card.pixie.cards.first.createdAt  | localizeddate('medium', 'none',null,null,'d MMM') | upper }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
