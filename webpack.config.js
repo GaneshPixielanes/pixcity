@@ -74,7 +74,7 @@ Encore
     .addEntry('js/slick', './assets/v2/js/slick.min.js')
     .addEntry('js/collection', './assets/v2/js/collection.js')
     .addEntry('js/bootstrap-select', './assets/v2/js/bootstrap-select.min.js')
-    .addEntry('js/lazy', './assets/v2/js/jquery.lazy.min.js')
+    // .addEntry('js/lazy', './assets/v2/js/jquery.lazy.min.js')
 
     // CSS
     .addStyleEntry('front/css/app', './assets/front/scss/app.scss')
