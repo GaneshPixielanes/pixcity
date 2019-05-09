@@ -55,25 +55,47 @@ class CardType extends AbstractType
             ->add('masterhead', CardMediaType::class, array('label' => 'label.masterhead'))
             ->add('meta_title', TextType::class, array('label' => 'label.metatitle', 'required' => false))
             ->add('meta_description', TextType::class, array('label' => 'label.metadescription', 'required' => false))
-            ->add('slug', TextType::class, array('label' => 'label.slug', 'required' => false))
-            ->add('content', FroalaEditorType::class, array(
-                'required' => true,
-                'saveInterval' => 2000,
-                'saveParam' => 'content',
-                'saveURL' => 'front_pixie_card_creation_draft',
-                'saveMethod' => 'POST',
-                'saveParams' => "{id: 153}",
-                'label' => 'label.content',
-                'attr' => [
-                    'rowClass' => 'type-froala'
-                ],
-                'toolbarStickyOffset' =>  70,
-                'toolbarSticky' => true,
-
-                'imageUploadFolder' => 'uploads/img'.$optionUploadFolder,
-                'imageUploadPath' => 'uploads/img'.$optionUploadFolder
-            ))
-            ->add('indexed', SwitchType::class, array('label' => 'label.indexed', 'required' => false))
+            ->add('slug', TextType::class, array('label' => 'label.slug', 'required' => false));
+            if(isset($options['type']) &&($options['type'] == 'admin' || $options['type'] == 'edit') )
+            {
+                $builder = $builder->add('content', FroalaEditorType::class, array(
+                    'required' => true,
+                    'saveInterval' => 2000,
+                    'saveParam' => 'content',
+                    'saveURL' => 'front_pixie_card_creation_draft',
+                    'saveMethod' => 'POST',
+                    'saveParams' => "{id: 153}",
+                    'label' => 'label.content',
+                    'attr' => [
+                        'rowClass' => 'type-froala'
+                    ],
+                    'toolbarStickyOffset' =>  70,
+                    'toolbarSticky' => true,
+                    'imageUploadFolder' => 'uploads/img'.$optionUploadFolder,
+                    'imageUploadPath' => 'uploads/img'.$optionUploadFolder
+                ));
+            }
+            else
+            {
+                $builder = $builder->add('content', FroalaEditorType::class, array(
+                    'required' => true,
+                    'saveInterval' => 2000,
+                    'saveParam' => 'content',
+                    'saveURL' => 'front_pixie_card_creation_draft',
+                    'saveMethod' => 'POST',
+                    'saveParams' => "{id: 153}",
+                    'label' => 'label.content',
+                    'attr' => [
+                        'rowClass' => 'type-froala'
+                    ],
+                    'toolbarStickyOffset' =>  70,
+                    'toolbarSticky' => true,
+                    'toolbarInline' => true,
+                    'imageUploadFolder' => 'uploads/img'.$optionUploadFolder,
+                    'imageUploadPath' => 'uploads/img'.$optionUploadFolder
+                ));
+            }
+            $builder = $builder->add('indexed', SwitchType::class, array('label' => 'label.indexed', 'required' => false))
             ->add('status', ChoiceType::class, array(
                 'required' => false,
                 'label' => 'label.status',
