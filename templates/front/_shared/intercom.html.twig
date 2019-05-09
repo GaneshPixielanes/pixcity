@@ -90,20 +90,27 @@ if(device == "Desktop")
 </script>
 {% endif %}
 <script>
+    $('form').on('submit', function(e)
+    {
+        // e.preventDefault();
+        try{
+
+            deleteIntercomCookies();
+            Intercom('shutdown');
+        }catch (e) {
+            // Do Nothing
+        }
+    });
 
 
+    $(document).on('click','.btn-logout, .fa-google, .fa-facebook', function()
+    {
+        try{
 
-$('form').on('submit', function(e)
-{
-	// e.preventDefault();
-	deleteIntercomCookies();
-	Intercom('shutdown');
-});
-
-
-	$(document).on('click','.btn-logout, .fa-google, .fa-facebook', function()
-	{
-		deleteIntercomCookies();
-		Intercom('shutdown');
-	});
+            deleteIntercomCookies();
+            Intercom('shutdown');
+        }catch (e) {
+            // Do Nothing
+        }
+    });
 </script>
