@@ -314,7 +314,7 @@
                                         <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
                                     </div>
                                     <div class="col-9 about">
-                                        {{ card.pixie.age }} ans<br /><span> City-maker depuis {{ card.pixie.cards.first.createdAt  | localizeddate('medium', 'none',null,null,'d MMM') | upper }}</span>
+                                        {{ card.pixie.age }} ans<br /><span> City-maker depuis {{ card.pixie.cards.first.createdAt  | localizeddate('medium', 'none',null,null,'MMM yy')  }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -493,7 +493,7 @@
                                                             <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
                                                         </div>
                                                         <div class="col-9 about">
-                                                            {{ card.pixie.age }} ans<br /><span>City-maker depuis  {{ card.pixie.cards.first.createdAt  | localizeddate('medium', 'none',null,null,'d MMM') | upper }}</span>
+                                                            {{ card.pixie.age }} ans<br /><span>City-maker depuis  {{ card.pixie.cards.first.createdAt  | localizeddate('medium', 'none',null,null,'MMM yy')  }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="row">

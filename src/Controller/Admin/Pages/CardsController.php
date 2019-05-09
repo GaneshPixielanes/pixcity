@@ -80,7 +80,7 @@ class CardsController extends Controller
         //     $card->setContent($contentDraftRepo->findOneBy(['draftType' => 0, 'projectID' => NULL])->getContent());
         // }
 
-        $form = $this->createForm(CardType::class, $card);
+        $form = $this->createForm(CardType::class, $card, ['type' => 'admin']);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
