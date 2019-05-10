@@ -129,6 +129,8 @@ class CitymakerController extends SearchPageController
         UserRepository $usersRepo,
         PageCategoryRepository $pagesCategoryRepo
     ){
+        ini_set('memory_limit','1024M');
+
         $searchParams = $this->getSearchParams($request);
 
         $pageCategory = null;

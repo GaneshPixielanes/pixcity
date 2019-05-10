@@ -25,7 +25,6 @@ class SearchController extends SearchPageController
     UserRepository $userRepo,
     CardCategoryRepository $categoryRepo)
     {
-        ini_set('memory_limit','1024M');
         $filters = [
                     'name' => trim($request->get("search")),
                     'text' => trim($request->get("search")),
