@@ -106,7 +106,7 @@ controllers_client_contact:
     type: annotation
 
 controllers_client_index:
-    resource: ../src/Controller/B2B/Clientcontroller.php
+    resource: ../src/Controller/B2B/ClientController.php
     type: annotation
 
 controllers_community_manager_mission:
