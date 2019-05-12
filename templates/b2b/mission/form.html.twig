@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="col-md-12" style="margin:50px;margin-top:100px">
+            <h2>Mission Create/Edit Page</h2>
+            {{ form_start(form) }}
+            {{ form_row(form._token) }}
+            <div class="form-group">
+                    {{ form_row(form.title) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.description) }}
+                </div>
+            <div class="form-group">
+                {{ form_row(form.region) }}
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-6">
+                        {{ form_row(form.bannerImage) }}
+                        <input type="file" id="banner-image-upload" />
+                    </div>
+                    <div class="col-6">
+                        {% if mission is defined %}
+                            <img alt="Banner image" src="{{ mission.getBannerUrl() }}" class="img-thumbnail" style="height:150px;width:150px;" id="banner-image"/>
+                        {% else %}
+                            <img alt="Banner image" src="https://via.placeholder.com/150" id="banner-image" style="height:150px;width:150px;" alt="Image preview"/>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                {% if mission is defined and mission.briefFiles %}
+                <table class="table table-striped">
+                    <tr>
+                        <td>Brief File</td>
+                        <td><a href="{{ path('b2b_mission_download',{'id':mission.id}) }}" class="btn btn-sm btn-primary">Download</a></td>
+                        <td><a href="#" class="btn btn-sm btn-danger">Delete</a></td>
+                    </tr>
+                </table>
+                {% endif %}
+                {{ form_row(form.briefFiles) }}
+                <input type="file" id="brief-file-upload" />
+            </div>
+            <div class="form-group">
+                {{ form_row(form.missionBasePrice) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.dueDate) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.conditionsAgreed) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.axaInsurance) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.generalConditionsBrief) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.missionAgreedClient) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.userMissionPayment) }}
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-md btn-info" value="Create">
+            </div>
+
+            {{ form_end(form, {'render_rest':false}) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function () {
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#banner-image').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+       $('input[type="file"]').on('change', function(e)
+       {
+           var type = 'banner';
+           // Read the image URL and display the image
+           if($(this).attr('id') == 'banner-image-upload')
+           {
+               readURL(this);
+           }
+           else
+           {
+               type = 'brief';
+           }
+           // Add image name on the input parameters
+           var formData = new FormData();
+           formData.append("file", $(this)[0].files[0]);
+           //Upload the image via AJAX
+           uploadFiles(formData, type);
+
+       });
+
+
+        function uploadFiles(formData, type)
+        {
+            $.ajax('/client/mission/upload',
+                {
+                    type: 'POST',
+                    data: formData,
+                    cacheable: false,
+                    processData: false,
+                    contentType: false,
+                }).done(function(result)
+            {
+                if(type == 'banner')
+                {
+                    $('#mission_bannerImage').val(result.fileName);
+                }
+                else
+                {
+                    $('#mission_briefFiles').val(result.fileName);
+                }
+
+            });
+        }
+    });
+</script>
+{% endblock %}

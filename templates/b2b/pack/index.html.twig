@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <table class="table">
+            <thead>
+                <th>Pack</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                {% for pack in packs %}
+                    <tr>
+                        <td>
+                            {{ pack.title }}
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-success" href="{{ url('b2b_mission_create',{'pack':pack.id}) }}">Choose this pack</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

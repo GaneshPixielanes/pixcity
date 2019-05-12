@@ -87,10 +87,33 @@ class Admin implements UserInterface
      */
     private $notifications;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Config", mappedBy="createdBy", cascade={"persist", "remove"})
+     */
+    private $config;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Config", mappedBy="updatedBy", cascade={"persist", "remove"})
+     */
+    private $configUpdatedBy;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Pack", mappedBy="admin", cascade={"persist", "remove"})
+     */
+    private $pack;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Pack", mappedBy="admin")
+     */
+    private $packs;
+
+
+
 
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
+        $this->packs = new ArrayCollection();
     }
 
 
@@ -332,6 +355,92 @@ class Admin implements UserInterface
 
         return $this;
     }
+
+    public function getConfig(): ?Config
+    {
+        return $this->config;
+    }
+
+    public function setConfig(?Config $config): self
+    {
+        $this->config = $config;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newCreatedBy = $config === null ? null : $this;
+        if ($newCreatedBy !== $config->getCreatedBy()) {
+            $config->setCreatedBy($newCreatedBy);
+        }
+
+        return $this;
+    }
+
+    public function getConfigUpdatedBy(): ?Config
+    {
+        return $this->configUpdatedBy;
+    }
+
+    public function setConfigUpdatedBy(?Config $configUpdatedBy): self
+    {
+        $this->configUpdatedBy = $configUpdatedBy;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUpdatedBy = $configUpdatedBy === null ? null : $this;
+        if ($newUpdatedBy !== $configUpdatedBy->getUpdatedBy()) {
+            $configUpdatedBy->setUpdatedBy($newUpdatedBy);
+        }
+
+        return $this;
+    }
+
+    public function getPack(): ?Pack
+    {
+        return $this->pack;
+    }
+
+    public function setPack(Pack $pack): self
+    {
+        $this->pack = $pack;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $pack->getAdmin()) {
+            $pack->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Pack[]
+     */
+    public function getPacks(): Collection
+    {
+        return $this->packs;
+    }
+
+    public function addPack(Pack $pack): self
+    {
+        if (!$this->packs->contains($pack)) {
+            $this->packs[] = $pack;
+            $pack->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    public function removePack(Pack $pack): self
+    {
+        if ($this->packs->contains($pack)) {
+            $this->packs->removeElement($pack);
+            // set the owning side to null (unless already changed)
+            if ($pack->getAdmin() === $this) {
+                $pack->setAdmin(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 
 }
