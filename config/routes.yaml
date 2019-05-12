@@ -93,6 +93,30 @@ controllers_crons:
     resource: ../src/Controller/Api/MailController.php
     type: annotation
 
+controllers_client_registration:
+    resource: ../src/Controller/B2B/ClientRegistrationController.php
+    type: annotation
+
+controllers_client_login:
+    resource: ../src/Controller/B2B/LoginController.php
+    type: annotation
+
+controllers_client_contact:
+    resource: ../src/Controller/B2B/ContactController.php
+    type: annotation
+
+controllers_client_index:
+    resource: ../src/Controller/B2B/Clientcontroller.php
+    type: annotation
+
+controllers_community_manager_mission:
+    resource: ../src/Controller/B2B/MissionController.php
+    type: annotation
+
+controllers_pack:
+    resource: ../src/Controller/B2B/PackController.php
+    type: annotation
+
 controllers_front_regions:
     resource: ../src/Controller/Front/V2/RegionController.php
     type: annotation
