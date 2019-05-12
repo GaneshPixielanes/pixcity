@@ -21,6 +21,7 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
  * @ORM\Entity
  * @ORM\Table(name="pxl_user", indexes={@Index(name="index_email", columns={"email"})})
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\EntityListeners({"App\Entity\Listener\UserRegistrationListener"})
  * @UniqueEntity(
  *     fields={"email"},
  *     message="error.email.exist"
@@ -281,6 +282,16 @@ class User implements UserInterface, EquatableInterface
     private $userInstagramDetailsApi;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserAvatar", mappedBy="user", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $userAvatars;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMedia", mappedBy="user",cascade={"persist"})
+     */
+    private $userMedia;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\OutboundAnalytics", mappedBy="cm", orphanRemoval=true)
      */
     private $outboundAnalytics;
@@ -289,6 +300,48 @@ class User implements UserInterface, EquatableInterface
      * @ORM\OneToMany(targetEntity="App\Entity\OutboundAnalytics", mappedBy="endUser")
      */
     private $outboundAnalyticsUser;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\InstagramTrends", mappedBy="user")
+     */
+    private $instagramTrends;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserPacks", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $userPacks;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $userMission;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\MissionPayment", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $missionPayment;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ClientMissionProposal", mappedBy="user")
+     */
+    private $missionProposalsToCityMaker;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserClientActivity", mappedBy="user")
+     */
+    private $userActivities;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Region")
+     * @ORM\JoinTable(name="pxl_b2b_regions_users")
+     */
+        private $userRegion;
+
+        /**
+         * @ORM\OneToMany(targetEntity="App\Entity\Pack", mappedBy="user")
+         */
+        private $packs;
+
 
     //--------------------------------------------------------------
     // Constructor
@@ -303,6 +356,16 @@ class User implements UserInterface, EquatableInterface
         $this->favorites = new ArrayCollection();
         $this->favoritePixies = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->userAvatars = new ArrayCollection();
+        $this->userMedia = new ArrayCollection();
+        $this->outboundAnalytics = new ArrayCollection();
+        $this->outboundAnalyticsUser = new ArrayCollection();
+        $this->instagramTrends = new ArrayCollection();
+        $this->missionProposalsToCityMaker = new ArrayCollection();
+        $this->userMission = new ArrayCollection();
+        $this->userActivities = new ArrayCollection();
+        $this->userRegion = new ArrayCollection();
+        $this->packs = new ArrayCollection();
     }
 
     public function __toString() {
@@ -541,6 +604,7 @@ class User implements UserInterface, EquatableInterface
     //--------------------------------------------------------------
 
     public function getSlug(){
+        return 'abc';
         $slugify = new Slugify();
         $region = (count($this->getPixie()->getRegions()) > 0)?$this->getPixie()->getRegions()[0]:"";
         return $slugify->slugify($this->firstname." ".$this->lastname." ".$region);
@@ -1154,6 +1218,24 @@ class User implements UserInterface, EquatableInterface
         $this->visible = $visible;
     }
 
+    public function getUserRegistrationCheck(): ?UserRegistrationCheck
+    {
+        return $this->userRegistrationCheck;
+    }
+
+    public function setUserRegistrationCheck(?UserRegistrationCheck $userRegistrationCheck): self
+    {
+        $this->userRegistrationCheck = $userRegistrationCheck;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $userRegistrationCheck === null ? null : $this;
+        if ($newUser !== $userRegistrationCheck->getUser()) {
+            $userRegistrationCheck->setUser($newUser);
+        }
+
+        return $this;
+    }
+
     public function getUserInstagramDetailsApi(): ?UserInstagramDetailsApi
     {
         return $this->userInstagramDetailsApi;
@@ -1202,6 +1284,36 @@ class User implements UserInterface, EquatableInterface
         return $this;
     }
 
+    /**
+     * @return Collection|UserMedia[]
+     */
+    public function getUserMedia(): Collection
+    {
+        return $this->userMedia;
+    }
+
+    public function addUserMedium(UserMedia $userMedium): self
+    {
+        if (!$this->userMedia->contains($userMedium)) {
+            $this->userMedia[] = $userMedium;
+            $userMedium->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserMedium(UserMedia $userMedium): self
+    {
+        if ($this->userMedia->contains($userMedium)) {
+            $this->userMedia->removeElement($userMedium);
+            // set the owning side to null (unless already changed)
+            if ($userMedium->getUser() === $this) {
+                $userMedium->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 
     /**
      * @return Collection|OutboundAnalytics[]
@@ -1265,21 +1377,195 @@ class User implements UserInterface, EquatableInterface
         return $this;
     }
 
-    public function getUserRegistrationCheck(): ?UserRegistrationCheck
+    /**
+     * @return Collection|InstagramTrends[]
+     */
+    public function getInstagramTrends(): Collection
     {
-        return $this->userRegistrationCheck;
+        return $this->instagramTrends;
     }
 
-    public function setUserRegistrationCheck(?UserRegistrationCheck $userRegistrationCheck): self
+    public function addInstagramTrend(InstagramTrends $instagramTrend): self
     {
-        $this->userRegistrationCheck = $userRegistrationCheck;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newUser = $userRegistrationCheck === null ? null : $this;
-        if ($newUser !== $userRegistrationCheck->getUser()) {
-            $userRegistrationCheck->setUser($newUser);
+        if (!$this->instagramTrends->contains($instagramTrend)) {
+            $this->instagramTrends[] = $instagramTrend;
+            $instagramTrend->setUser($this);
         }
 
         return $this;
     }
+
+    public function removeInstagramTrend(InstagramTrends $instagramTrend): self
+    {
+        if ($this->instagramTrends->contains($instagramTrend)) {
+            $this->instagramTrends->removeElement($instagramTrend);
+            // set the owning side to null (unless already changed)
+            if ($instagramTrend->getUser() === $this) {
+                $instagramTrend->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUserPacks(): ?UserPacks
+    {
+        return $this->userPacks;
+    }
+
+    public function setUserPacks(UserPacks $userPacks): self
+    {
+        $this->userPacks = $userPacks;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $userPacks->getUser()) {
+            $userPacks->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getUserMission(): ?Collection
+    {
+        return $this->userMission;
+    }
+
+//    public function setUserMission(?UserMission $userMission): self
+//    {
+//        $this->userMission = $userMission;
+//
+//        // set (or unset) the owning side of the relation if necessary
+//        $newUser = $userMission === null ? null : $this;
+//        if ($newUser !== $userMission->getUser()) {
+//            $userMission->setUser($newUser);
+//        }
+//
+//        return $this;
+//    }
+
+    public function addUserMission(UserMission $userMission): self
+    {
+        if (!$this->userMission->contains($userMission)) {
+            $this->userMission[] = $userMission;
+            $userMission->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserMission(UserMission $userMission): self
+    {
+        if ($this->userMission->contains($userMission)) {
+            $this->userMission->removeElement($userMission);
+            // set the owning side to null (unless already changed)
+            if ($userMission->getUser() === $this) {
+                $userMission->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMissionPayment(): ?MissionPayment
+    {
+        return $this->missionPayment;
+    }
+
+    public function setMissionPayment(?MissionPayment $missionPayment): self
+    {
+        $this->missionPayment = $missionPayment;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $missionPayment === null ? null : $this;
+        if ($newUser !== $missionPayment->getUser()) {
+            $missionPayment->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientMissionProposal[]
+     */
+    public function getMissionProposalsToCityMaker(): Collection
+    {
+        return $this->missionProposalsToCityMaker;
+    }
+
+    public function addMissionProposalsToCityMaker(ClientMissionProposal $missionProposalsToCityMaker): self
+    {
+        if (!$this->missionProposalsToCityMaker->contains($missionProposalsToCityMaker)) {
+            $this->missionProposalsToCityMaker[] = $missionProposalsToCityMaker;
+            $missionProposalsToCityMaker->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMissionProposalsToCityMaker(ClientMissionProposal $missionProposalsToCityMaker): self
+    {
+        if ($this->missionProposalsToCityMaker->contains($missionProposalsToCityMaker)) {
+            $this->missionProposalsToCityMaker->removeElement($missionProposalsToCityMaker);
+            // set the owning side to null (unless already changed)
+            if ($missionProposalsToCityMaker->getUser() === $this) {
+                $missionProposalsToCityMaker->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserClientActivity[]
+     */
+    public function getUserActivities(): Collection
+    {
+        return $this->userActivities;
+    }
+
+    public function addUserActivity(UserClientActivity $userActivity): self
+    {
+        if (!$this->userActivities->contains($userActivity)) {
+            $this->userActivities[] = $userActivity;
+            $userActivity->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserActivity(UserClientActivity $userActivity): self
+    {
+        if ($this->userActivities->contains($userActivity)) {
+            $this->userActivities->removeElement($userActivity);
+            // set the owning side to null (unless already changed)
+            if ($userActivity->getUser() === $this) {
+                $userActivity->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setUserRegion($region)
+    {
+        $this->userRegion = $region;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserRegion()
+    {
+        return $this->userRegion;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addUserRegion($region){
+        $this->userRegion[] = $region;
+    }
+
+
+
 }

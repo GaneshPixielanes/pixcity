@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -82,6 +83,11 @@ class Region
      */
     private $short_name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="region")
+     */
+    private $userMissions;
+
 
     //--------------------------------------------------------------
     // Constructor and collections
@@ -91,6 +97,7 @@ class Region
     public function __construct()
     {
         $this->departments = new ArrayCollection();
+        $this->userMissions = new ArrayCollection();
     }
 
     public function __toString() {
@@ -281,6 +288,37 @@ class Region
     public function setShortName(?string $short_name): self
     {
         $this->short_name = $short_name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserMission[]
+     */
+    public function getUserMissions(): Collection
+    {
+        return $this->userMissions;
+    }
+
+    public function addUserMission(UserMission $userMission): self
+    {
+        if (!$this->userMissions->contains($userMission)) {
+            $this->userMissions[] = $userMission;
+            $userMission->setRegion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserMission(UserMission $userMission): self
+    {
+        if ($this->userMissions->contains($userMission)) {
+            $this->userMissions->removeElement($userMission);
+            // set the owning side to null (unless already changed)
+            if ($userMission->getRegion() === $this) {
+                $userMission->setRegion(null);
+            }
+        }
 
         return $this;
     }

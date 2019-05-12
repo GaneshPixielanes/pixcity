@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container" style="padding:100px">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>Mission List Page</h1>
+                </div>
+                <div class="col-md-6">
+                    <a href="{{ path('b2b_pack_list') }}" class="btn btn-md btn-primary float-right">New Mission</a>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <tbody>
+                    {% for mission in missions %}
+                        <tr>
+                            <td>{{ mission.description }}</td>
+                            <td>{{  '#'~mission.id }}</td>
+                            <td>{{ mission.title }}</td>
+                            <td>{{ mission.status }}</td>
+                            <td>{{ mission.missionBasePrice }}</td>
+                            <td>
+                                <a href="{{ path('b2b_mission_view',{'id': mission.id}) }}" class="btn btn-sm btn-warning">View</a>
+                                <a href="{{ path('b2b_mission_edit',{'id': mission.id}) }}" class="btn btn-sm btn-info">Edit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

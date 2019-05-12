@@ -1,0 +1,57 @@
+{% extends 'v2/base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="col-md-12" style="margin:50px;margin-top:100px">
+            {{ form_start(form) }}
+            <div class="row">
+                    <div class="col-md-5" >
+
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.lastName) }}
+                        {{ form_row(form.company) }}
+                        {{ form_row(form.password) }}
+                        <div class="row">
+                            <input type="submit" value="Save" class="btn btn-success">
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-md-offset-1">
+                        {{ form_row(form.clientInfo.siret) }}
+                        {{ form_row(form.clientInfo.address) }}
+                        {{ form_row(form.clientInfo.postalCode) }}
+                        {{ form_row(form.clientInfo.city) }}
+                        {{ form_row(form.clientInfo.company_creation_date) }}
+                        {{ form_row(form.clientInfo.companyType) }}
+                        {{ form_row(form.clientInfo.business) }}
+                    </div>
+            </div>
+            {{ form_row(form._token) }}
+            {{ form_end(form,{render_rest:false}) }}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function()
+        {
+           $('#client_clientInfo_siret').on('keydown', function () {
+               if($(this).val().trim().length > 0)
+               {
+                   var query = $(this).val().trim();
+                   $.get('https://pixtest.opendatasoft.com/api/v2'+query, function(result) {
+                       console.log(result);
+                   });
+
+               }
+           });
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts_footer %}
+{% endblock %}
