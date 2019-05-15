@@ -188,6 +188,13 @@ class User implements UserInterface, EquatableInterface
      */
     private $likes;
 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Skill")
+     * @ORM\JoinTable(name="pxl_b2b_skills_users")
+     */
+    private $userSkills;
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CardCollection", mappedBy="user", cascade={"persist"}, orphanRemoval=true)
      */
@@ -342,6 +349,12 @@ class User implements UserInterface, EquatableInterface
          */
         private $packs;
 
+        /**
+         * @ORM\OneToMany(targetEntity="App\Entity\CommunityMedia", mappedBy="user",cascade={"persist"})
+         */
+        private $communityMedia;
+
+
 
     //--------------------------------------------------------------
     // Constructor
@@ -366,6 +379,9 @@ class User implements UserInterface, EquatableInterface
         $this->userActivities = new ArrayCollection();
         $this->userRegion = new ArrayCollection();
         $this->packs = new ArrayCollection();
+        $this->userSkills = new ArrayCollection();
+        $this->communityMedia = new ArrayCollection();
+
     }
 
     public function __toString() {
@@ -1564,6 +1580,60 @@ class User implements UserInterface, EquatableInterface
      */
     public function addUserRegion($region){
         $this->userRegion[] = $region;
+    }
+
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getUserSkill()
+    {
+        return $this->userSkills;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addUserSkill($skill){
+        $this->userSkills[] = $skill;
+    }
+
+    public function setUserSkill($skill)
+    {
+        $this->userSkills = $skill;
+    }
+
+    /**
+     * @return Collection|CommunityMedia[]
+     */
+    public function getCommunityMedia(): Collection
+    {
+        return $this->communityMedia;
+    }
+
+    public function addCommunityMedium(CommunityMedia $communityMedium): self
+    {
+        if (!$this->communityMedia->contains($communityMedium)) {
+            $this->communityMedia[] = $communityMedium;
+            $communityMedium->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommunityMedium(CommunityMedia $communityMedium): self
+    {
+        if ($this->communityMedia->contains($communityMedium)) {
+            $this->communityMedia->removeElement($communityMedium);
+            // set the owning side to null (unless already changed)
+            if ($communityMedium->getUser() === $this) {
+                $communityMedium->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
 

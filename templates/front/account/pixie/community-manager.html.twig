@@ -1,0 +1,153 @@
+{% extends 'front/account/pixie/base.html.twig' %}
+{% import "front/_shared/macros.html.twig" as macro %}
+
+{% block body_class %}{{ parent() }} pixieAccount account{% endblock %}
+
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% form_theme form 'front/_forms/fields.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ absolute_url(asset('build/css/dropzone.css')) }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+
+{% endblock %}
+
+
+{% block page_content %}
+
+    <div class="container main" style="margin-top: 100px;">
+        {{ form_start(form) }}
+            <div class="col-md-12">
+
+                <div class="row">
+                    <h3>Skills</h3>
+                    {{ form_widget(form.userSkill) }}
+                </div>
+
+                <div class="row">
+                    <h3>Regions</h3>
+                    {{ form_widget(form.userRegion) }}
+                </div>
+
+
+                <div class="row">
+
+                    <div class="dropzone" style="margin-top: 40px">
+                        <h3>Images</h3>
+                        <div id="dropzone-custom" style="background:#fff8f8;height:350px;width:auto"></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-4 pull-right m-b--10">
+                    <input type="submit" class="btn btn-block btn-primary" value="Add" id="submitform" style="margin-top: 40px;margin-top: 40px;" />
+                </div>
+
+            </div>
+        {{ form_end(form,{render_rest:false}) }}
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/front/js/pages/pixie-settings.js') }}"></script>
+    <script src="{{ asset('build/js/dropzone.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+
+
+    <script>
+
+
+        $(document).ready(function()
+        {
+
+            $("#user_userRegion").select2({
+                maximumSelectionLength: 2,
+            });
+
+
+            var $dropZone  = $('#dropzone-custom').dropzone({
+                url:'{{ path('front_pixie_account_fileuploadhandler') }}',
+                maxFiles: 7,
+                acceptedFiles: 'image/*',
+                maxFilesize: 2,  // in Mb
+                addRemoveLinks: true,
+                // autoProcessQueue:false,
+                parallelUploads: 10,
+                dictRemoveFileConfirmation:'Are you sure you want to save this image?',
+                removedfile: function(file) {
+                    var name = file.name;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('front_pixie_account_delete_image') }}',
+                        data: {name: name,request: 2},
+                        sucess: function(data){
+                            console.log('success: ' + data);
+                        }
+                    });
+
+                    var _ref;
+                    if (file.previewElement) {
+                        if ((_ref = file.previewElement) != null) {
+                            _ref.parentNode.removeChild(file.previewElement);
+                        }
+                    }
+                    return this._updateMaxFilesReachedClass();
+
+                },
+                init: function () {
+
+
+                    this.on("maxfilesexceeded", function(file) {
+                        this.removeFile(file);
+                        alert('please upload maximum 7 files');
+                    });
+                    this.on("sending", function(file, xhr, formData) {
+                        // send additional data with the file as POST data if needed.
+                        // formData.append("key", "value");
+                    });
+                    this.on("success", function(file, response) {
+                        if (response.uploaded)
+                            console.log('File Uploaded: ' + response.fileName);
+                    });
+
+                    thisDropzone = this;
+
+                    $.get('{{ path('front_pixie_account_display_image') }}', function(data) {
+
+                        <!-- 5 -->
+                        $.each(data, function(key,value){
+
+                            var mockFile = { name: value.name, size: value.size };
+
+                            thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+
+                            thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "/uploads/community_media/"+value.name);
+
+                        });
+
+                    });
+                }
+            });
+
+
+            $("#submitform").on('click',function(){
+                $dropZone[0].dropzone.processQueue();
+            });
+
+
+
+        });
+
+
+    </script>
+{% endblock %}
+
+{% block footer_class %}simpleFooter{% endblock %}

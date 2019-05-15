@@ -79,6 +79,12 @@ class UserPacks
      */
     private $pack;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Skill", inversedBy="userPacks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $packSkill;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -224,6 +230,18 @@ class UserPacks
     public function setPack(Pack $pack): self
     {
         $this->pack = $pack;
+
+        return $this;
+    }
+
+    public function getPackSkill(): ?Skill
+    {
+        return $this->packSkill;
+    }
+
+    public function setPackSkill(?Skill $packSkill): self
+    {
+        $this->packSkill = $packSkill;
 
         return $this;
     }

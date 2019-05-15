@@ -55,6 +55,28 @@ class HomepageController extends Controller
         $user = $this->getUser();
         $isCardFavoritedFirstTime = false;
 
+        $card = 0;
+
+        if(!isset($_SESSION['card_count'])){
+
+            if(!is_null($user)){
+
+                $_SESSION['card_count'] = count($cardsRepo->findPixieCards($user->getId())) == 0 ? 0 : count($cardsRepo->findPixieCards($user->getId()));
+
+                $card = $_SESSION['card_count'];
+
+            }else{
+
+                $card = 0;
+            }
+
+
+
+        }else{
+
+            $card = $_SESSION['card_count'];
+        }
+
         if(!is_null($user))
         {
             $filters = ["userFavorite"=>$user->getId()];
@@ -83,6 +105,7 @@ class HomepageController extends Controller
             'categories' => $categories,
             'pixies' => $pixies,
             'cards' => $cards,
+            'card' => $card,
             'popularCards' => $popularCards,
             'isCardFavoritedFirstTime' => $isCardFavoritedFirstTime,
             'coordinates' => str_replace(['\r','\n'],'',str_replace('"',"",json_encode($coordinates))),

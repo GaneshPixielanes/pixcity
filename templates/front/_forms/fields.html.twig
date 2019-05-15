@@ -282,3 +282,65 @@
     </div>
 
 {% endblock %}
+
+
+{% block _user_userSkill_widget %}
+
+{% for choices in form.vars.choices %}
+
+
+    {% set checked = false %}
+    {% for value in form.vars.data %}
+        {% if value.id == choices.value %}
+            {% set checked = true %}
+        {% endif %}
+    {% endfor %}
+    <div class="plCheck transFx fa {% if checked %}clicked{% endif %}">
+        <span class="form-check-label">
+            <input class="form-check-input" type="checkbox"  value="{{ choices.value }}" name="{{ form.vars.full_name  }}[]" {% if checked %} checked="checked"{% endif %}><span>{{ choices.label }}</span>
+        </span>
+    </div>
+{% endfor %}
+{% endblock %}
+
+{% block _user_userRegion_widget %}
+    {#    <div class="form-group type-categories">#}
+    {#        <div class="input-container input-group">#}
+
+    {#            <div {{ block('widget_container_attributes') }}>#}
+    {#                {% for choice in form.vars.choices %}#}
+
+    {#                    {% set checked = false %}#}
+    {#                    {% for value in form.vars.data %}#}
+    {#                        {% if value.id == choice.data.id %}#}
+    {#                            {% set checked = true %}#}
+    {#                        {% endif %}#}
+    {#                    {% endfor %}#}
+
+    {#                    <div class="plCheck {% if checked %}clicked{% endif %}">#}
+    {#                        <span class="form-check-label">#}
+    {#                            <input class="form-check-input" type="checkbox" {% if checked %} checked="checked"{% endif %} value="{{ choice.data.id }}" name="{{ form.vars.full_name }}[]"><span>{{ choice.data.name }}</span>#}
+    {#                        </span>#}
+    {#                    </div>#}
+    {#                {% endfor %}#}
+    {#            </div>#}
+
+    {#        </div>#}
+    {#    </div>#}
+    {% set ids = [] %}
+    {% for region in form.vars.data %}
+        {% set ids = ids | merge([{'id' : region.id}])  %}
+    {% endfor %}
+
+    <select  name="{{ form.vars.full_name }}[]" id="user_userRegion" multiple="multiple" style="width: 75%">
+        <option>Select</option>
+        {% for region in form.vars.choices %}
+            {% if region.value == ids[0]['id'] or region.value == ids[1]['id'] %}
+                <option value="{{ region.value }}" selected>{{ region.label }}</option>
+            {% else %}
+                <option value="{{ region.value }}">{{ region.label }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+{% endblock %}
