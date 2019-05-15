@@ -337,13 +337,15 @@
         {% for region in form.vars.choices %}
 
             {% if ids | length != 0 %}
-            {% if region.value == ids[0]['id'] or region.value == ids[1]['id'] %}
-                <option value="{{ region.value }}" selected>{{ region.label }}</option>
+                {% if region.value == ids[0]['id'] or region.value == ids[1]['id'] %}
+                    <option value="{{ region.value }}" selected>{{ region.label }}</option>
+                {% else %}
+                    <option value="{{ region.value }}">{{ region.label }}</option>
+                {% endif %}
+
             {% else %}
                 <option value="{{ region.value }}">{{ region.label }}</option>
             {% endif %}
-                <option value="{{ region.value }}">{{ region.label }}</option>
-            {% else %}
 
         {% endfor %}
     </select>
