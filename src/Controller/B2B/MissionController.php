@@ -5,9 +5,9 @@ namespace App\Controller\B2B;
 use App\Constant\MissionStatus;
 use App\Entity\UserMission;
 use App\Form\B2B\MissionType;
-use App\Repository\MissionRepository;
 use App\Repository\PackRepository;
 use App\Repository\UserMissionRepository;
+use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -23,10 +23,13 @@ class MissionController extends AbstractController
     /**
      * @Route("list", name="list")
      */
-    public function index()
+    public function index(UserMissionRepository $userMissionRepo)
     {
 
-        $missions = $this->getUser()->getUserMission();
+//        $missions = $this->getUser()->getUserMission();
+        $missions['ongoing'] = $userMissionRepo->findOngoingMissions($this->getUser());
+        $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED]);
+        $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED]);
 
         return $this->render('b2b/mission/index.html.twig', [
             'missions' => $missions,
@@ -36,11 +39,11 @@ class MissionController extends AbstractController
     /**
      * @Route("create/{pack}", name="create")
      */
-    public function create($pack, Request $request, PackRepository $packRepo, FileUploader $fileUploader)
+    public function create($pack, Request $request, UserPacksRepository $packRepo, FileUploader $fileUploader)
     {
         $mission = new UserMission();
         # Get the CM associated with the pack and regions thus associated
-        $regions = $packRepo->find($pack)->getUserPacks()->getUser()->getUserRegion();
+        $regions = $packRepo->find($pack)->getUser()->getUserRegion();
 //        $regions = $packRepo->find($pack)->get
 //        $form = $this->createForm(MissionType::class, $mission,['region' => $this->getUser()->getUserRegion()]);
         $form = $this->createForm(MissionType::class, $mission,['region' => $regions]);
@@ -51,7 +54,8 @@ class MissionController extends AbstractController
         {
 
             $mission->setClient($this->getUser());
-            $mission->setUser($packRepo->find($pack)->getUserPacks()->getUser());
+            $mission->setUser($packRepo->find($pack)->getUser());
+            $mission->setReferencePack($packRepo->find($pack));
 
             $mission->setStatus(MissionStatus::CREATED);
 
@@ -59,6 +63,8 @@ class MissionController extends AbstractController
 
             $em->persist($mission);
             $em->flush();
+
+            return $this->redirectToRoute('b2b_mission_list');
         }
 
         return $this->render('b2b/mission/form.html.twig',
@@ -73,7 +79,7 @@ class MissionController extends AbstractController
     public function edit($id, Request $request,UserMissionRepository $userMissionRepo)
     {
         $mission = $userMissionRepo->find($id);
-        $regions = $mission->getReferencePack()->getUserPacks()->getUser()->getUserRegion();
+        $regions = $mission->getReferencePack()->getUser()->getUserRegion();
         $form = $this->createForm(MissionType::class, $mission,['region' => $regions]);
 
         $form->handleRequest($request);
@@ -83,6 +89,9 @@ class MissionController extends AbstractController
 
             $em->persist($mission);
             $em->flush();
+
+
+            return $this->redirectToRoute('b2b_mission_list');
         }
         return $this->render('b2b/mission/form.html.twig',
             [
