@@ -8,6 +8,7 @@ use App\Constant\CompanyStatus;
 use App\Constant\TransactionStatus;
 use App\Entity\Card;
 use App\Entity\CardProject;
+use App\Entity\CommunityMedia;
 use App\Entity\Page;
 use App\Entity\UserAvatar;
 use App\Entity\UserMedia;
@@ -19,6 +20,7 @@ use App\Entity\Address;
 use App\Repository\CardCategoryRepository;
 use App\Repository\CardProjectRepository;
 use App\Repository\CardRepository;
+use App\Repository\CommunityMediaRepository;
 use App\Repository\RegionRepository;
 use App\Repository\TransactionRepository;
 use App\Service\FileUploader;
@@ -366,6 +368,115 @@ class PixieAccountController extends Controller
             'form' => $form->createView(),
             'projects' => $this->getUser()->getProjects()
         ]);
+    }
+
+    /**
+     * @Route("/community/manager",name="community_manager")
+     */
+    public function community_manager(Request $request){
+
+        $user = $this->getUser();
+
+        // Create the form
+        $form = $this->createForm(UserType::class, $user, ["b2b" => true,"type" => "edit"]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('front_pixie_account_community_manager');
+        }
+
+        // Create the page
+        $page = new Page();
+        $page->setName("Mes Cards en attente");
+        $page->setMetaTitle("Mes Cards en attente");
+        $page->setIndexed(false);
+
+        return $this->render('front/account/pixie/community-manager.html.twig', array(
+            'page' => $page,
+            'form' => $form->createView(),
+            'user' => $user
+        ));
+
+    }
+
+
+    /**
+     * @Route("/fileuploadhandler", name="fileuploadhandler")
+     */
+    public function fileUploadHandler(Request $request) {
+
+        $output = array('uploaded' => false);
+
+        $file = $request->files->get('file');
+
+        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+        $uploadDir = $this->get('kernel')->getRootDir() . '/../public/uploads/community_media';
+
+        $user = $this->getUser();
+
+        if ($file->move($uploadDir, $fileName)) {
+            $em = $this->getDoctrine()->getManager();
+
+            $mediaEntity = new CommunityMedia();
+            $mediaEntity->setName($fileName);
+            $mediaEntity->setUpdatedBy('1');
+            $mediaEntity->setUser($this->getUser());
+//            $this->getUser()->addCommunityMedium($mediaEntity);
+
+            $em->persist($mediaEntity);
+            $em->flush();
+
+            $output['uploaded'] = true;
+            $output['fileName'] = $fileName;
+        }
+        return new JsonResponse($output);
+    }
+
+    /**
+     * @Route("/image-display",name="display_image")
+     */
+    public function showImages(Request $request){
+
+        $user = $this->getUser();
+        $result = [];
+
+        foreach($user->getCommunityMedia() as $media)
+        {
+
+            $obj['name'] = $media->getName();
+            $obj['size'] = '1024 ';
+            $obj['path'] = 'uploads/community_media/'.$media->getName();
+            $result[] = $obj;
+        }
+
+        return new JsonResponse($result);
+
+
+
+    }
+
+    /**
+     * @Route("/image-delete",name="delete_image")
+     */
+    public function deleteImages(Request $request,CommunityMediaRepository $communityMediaRepository){
+
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $media = $communityMediaRepository->findBy(['name' => $request->get('name')]);
+
+        $em->remove($media[0]);
+        $em->flush();
+
+
+        exit;
+
+
     }
 
 }

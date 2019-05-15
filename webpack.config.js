@@ -74,6 +74,11 @@ Encore
     .addEntry('js/slick', './assets/v2/js/slick.min.js')
     .addEntry('js/collection', './assets/v2/js/collection.js')
     .addEntry('js/bootstrap-select', './assets/v2/js/bootstrap-select.min.js')
+<<<<<<< HEAD
+=======
+    // .addEntry('js/lazy', './assets/v2/js/jquery.lazy.min.js')
+    .addEntry('js/dropzone', './assets/v2/js/dropzone.js')
+>>>>>>> fbaa5be5de95ed9f8483835132a455caf508d28a
 
     // CSS
     .addStyleEntry('front/css/app', './assets/front/scss/app.scss')
@@ -88,6 +93,7 @@ Encore
     .addStyleEntry('css/lightgallery', './assets/v2/node_modules/lightgallery/src/css/lightgallery.css')
     .addStyleEntry('css/style', './assets/v2/css/style.css')
     .addStyleEntry('css/main', './assets/v2/css/main.scss')
+    .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
 
 
 

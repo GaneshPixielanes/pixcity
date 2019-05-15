@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
+
 {% block body %}
     <div class="container">
         <table class="table">
@@ -21,5 +22,7 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <a href="{{ path('b2b_pack_create') }}">Create A Pack +</a>
     </div>
 {% endblock %}

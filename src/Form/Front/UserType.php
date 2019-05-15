@@ -4,6 +4,7 @@ namespace App\Form\Front;
 
 use App\Entity\CardCategory;
 use App\Entity\Region;
+use App\Entity\Skill;
 use App\Entity\User;
 use App\Form\Shared\UserAvatarType;
 use App\Form\Shared\UserLinkType;
@@ -149,6 +150,26 @@ class UserType extends AbstractType
 
         }
 
+        if($options["b2b"]){
+
+            $builder
+                ->add('userSkill', EntityType::class, array(
+                    'label' => 'label.skills',
+                    'class' => Skill::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'expanded' => true
+                ))
+                ->add('userRegion', EntityType::class, array(
+                    'label' => 'label.regions',
+                    'class' => Region::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'expanded' => true
+                ))
+            ;
+        }
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -161,7 +182,8 @@ class UserType extends AbstractType
                 'determineValidationGroups',
             ),
             'type' => '',
-            'pixie' => false
+            'pixie' => false,
+            'b2b' => false,
         ));
 
 

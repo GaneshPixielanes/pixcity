@@ -16,10 +16,10 @@ return [
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true, 'staging' => true],
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
     KMS\FroalaEditorBundle\KMSFroalaEditorBundle::class => ['all' => true],
-    //CoreSphere\ConsoleBundle\CoreSphereConsoleBundle::class => ['dev' => true, 'staging' => true],
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
     KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
     Knp\Bundle\SnappyBundle\KnpSnappyBundle::class => ['all' => true],
     Sverraest\RevolutPHPBundle\SverraestRevolutPHPBundle::class => ['all' => true],
     Ddeboer\VatinBundle\DdeboerVatinBundle::class => ['all' => true],
+//    CoreSphere\ConsoleBundle\CoreSphereConsoleBundle::class => ['all' => true],
 ];
