@@ -533,6 +533,9 @@ $(document).ready(function()
 
 
 $(document).ready(function(){
+
+
+
     $('a.banner-floater, a.header-strip-sidebar, .opener').click(function(){
         $('.profile-sidebar-container.desktop-version, .profile-sidebar-header-container').show(400);
         $('a.header-strip-sidebar').css('margin-left', '-500px');
@@ -679,3 +682,6 @@ $(document).ready(function()
         window.open('/devenez-city-maker');
     });
 });
+
+
+
