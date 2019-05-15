@@ -104,7 +104,7 @@ class PackController extends AbstractController
 
         $user = $this->getUser();
         $result = [];
-        foreach($user->getCommunityMedies() as $media)
+        foreach($user->getCommunityMedia() as $media)
         {
             $obj['name'] = $media->getName();
             $obj['size'] = '1024 ';
