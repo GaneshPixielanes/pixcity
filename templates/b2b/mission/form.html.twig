@@ -4,6 +4,8 @@
 
 
 {% block body %}
+    <link rel="stylesheet" href="{{ absolute_url(asset('build/css/dropzone.css')) }}">
+
     <div class="container">
         <div class="col-md-12" style="margin:50px;margin-top:100px">
             <h2>Mission Create/Edit Page</h2>
@@ -16,7 +18,15 @@
                     {{ form_row(form.description) }}
                 </div>
             <div class="form-group">
-                {{ form_row(form.region) }}
+                <select name="{{ form.children.region.vars.full_name }}" class="form-control">
+                    {% for region in form.children.region.vars.data %}
+                        {% if region == form.vars.value.region %}
+                            <option value="{{ region.id }}" selected>{{ region.name }}</option>
+                        {% else %}
+                            <option value="{{ region.id }}">{{ region.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
             </div>
             <div class="form-group">
                 <div class="row">
@@ -34,12 +44,12 @@
                 </div>
             </div>
             <div class="form-group">
-                {% if mission is defined and mission.briefFiles %}
+                {% if mission is defined and mission.briefFiles is not null %}
                 <table class="table table-striped">
                     <tr>
                         <td>Brief File</td>
                         <td><a href="{{ path('b2b_mission_download',{'id':mission.id}) }}" class="btn btn-sm btn-primary">Download</a></td>
-                        <td><a href="#" class="btn btn-sm btn-danger">Delete</a></td>
+                        <td><a href="#" class="btn btn-sm btn-danger d-none">Delete</a></td>
                     </tr>
                 </table>
                 {% endif %}
@@ -68,10 +78,34 @@
                 {{ form_row(form.userMissionPayment) }}
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-md btn-info" value="Create">
+                {#<a href="#" class="btn btn-danger btn-sm float-right" id="add-media">Add Image</a>#}
+                {#<input type="file" class="image-upload-btn" name="mission-medias" multiple style="" accept=".png, .jpeg, .jpg"/>#}
+                <div id="mission-images-display">
+                    {{ form_row(form.missionMedia) }}
+
+                    {% if mission is defined %}
+                    <div class="row">
+                        {% for image in mission.missionMedia %}
+                            <div class="col-md-2 image-row">
+                                <img src="{{ image.url }}" style="height:150px;width:150px" />
+                                <a class="delete-image" data-id="{{ loop.index - 1 }}" href="#">Delete Image</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+            <div>
+                <div id="dropzone" class="image-upload-zone" style="margin:10px;">
+                    <h4 class="text-center" style="vertical-align: middle;">Drop the files here/Click here to upload</h4>
+                </div>
             </div>
 
+            <div class="form-group">
+                <input type="submit" class="btn btn-md btn-info" value="Save">
+            </div>
             {{ form_end(form, {'render_rest':false}) }}
+
         </div>
     </div>
 
@@ -129,13 +163,97 @@
                 {
                     $('#mission_bannerImage').val(result.fileName);
                 }
-                else
+                else if(type == 'brief')
                 {
                     $('#mission_briefFiles').val(result.fileName);
                 }
 
+
             });
         }
+
+
+        $("div.image-upload-zone").dropzone({
+            url: "/client/mission/upload",
+            addRemoveLinks: true,
+            dictDefaultMessage: "Drop files here or<br>click to upload...",
+            success: function (file, response) {
+                var prototype = $('#mission_missionMedia').attr('data-prototype');
+                var index = $('#mission-images-display').find('input').length;
+
+                prototype = prototype.replace(/__name__/g,index);
+                $('#mission-images-display').append(prototype);
+                $('#mission-images-display')
+                    .find('input:last')
+                    .val(response.fileName).attr('data-filename',file.upload.filename);
+            },
+            removedfile: function (file) {
+                $('input[data-filename="'+file.upload.filename+'"]').remove();
+                file.previewElement.remove();
+            }
+        });
+
+        // Media upload
+        // $('#add-media').on('click', function(e)
+        // {
+        //     e.preventDefault();
+        //     $('input[name="mission-medias"]').trigger('click');
+        //
+        // });
+        //
+        // $('.image-upload-btn').change(function () {
+        //     var prototype = $('#mission_missionMedia').attr('data-prototype');
+        //     var index = $('#mission-images-display').find('input').length;
+        //     console.log(index);
+        //     // Add image name on the input parameters
+        //     // $.each($(this)[0].files,funtion(key,value){
+        //     //
+        //     // });
+        //
+        //     $.each($(this)[0].files, function( key, value ) {
+        //         var formData = new FormData();
+        //         formData.append("file", value);
+        //         console.log(key);
+        //         prototype = prototype.replace(/__name__/g,key);
+        //         $('#mission-images-display').append(prototype);
+        //
+        //         // formData.append("file", $(this)[0].files[0]);
+        //         //Upload the image via AJAX
+        //         $.ajax('/client/mission/upload',
+        //             {
+        //                 type: 'POST',
+        //                 data: formData,
+        //                 cacheable: false,
+        //                 processData: false,
+        //                 contentType: false,
+        //                 success: function (result) {
+        //                     $('#mission-images-display')
+        //                         .find('input:last')
+        //                         .val(result.fileName)
+        //                 }
+        //             }).done(function(result)
+        //             {
+        //                 // prototype = prototype.replace(/__name__/g,index);
+        //                 // index = index + 1;
+        //                 // $('#mission-images-display').append(prototype);
+        //                 // $('#mission-images-display')
+        //                 //     .find('input:last')
+        //                 //     .val(result.fileName)
+        //                 //     .after('<a href="#" class="delete-image">Delete Image</a>');
+        //                 // console.log(index);
+        //             });
+        //     });
+        //
+        // });
+
+        $(document).on('click','.delete-image', function(e)
+        {
+            e.preventDefault();
+            $(this).parents('fieldset').html('');
+            $('#mission_missionMedia_'+$(this).attr('data-id')).html('');
+            $(this).parents('.image-row').html('');
+        });
+
     });
 </script>
 {% endblock %}

@@ -32,7 +32,7 @@ class UserMission
     private $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pack", inversedBy="packMission", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserPacks", inversedBy="packMission", cascade={"persist", "remove"})
      */
     private $referencePack;
 
@@ -119,9 +119,15 @@ class UserMission
      */
     private $region;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MissionMedia", mappedBy="mission",cascade={"persist"})
+     */
+    private $missionMedia;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
+        $this->missionMedia = new ArrayCollection();
     }
 
     protected function datePath(){
@@ -170,12 +176,12 @@ class UserMission
         return $this;
     }
 
-    public function getReferencePack(): ?Pack
+    public function getReferencePack(): ?UserPacks
     {
         return $this->referencePack;
     }
 
-    public function setReferencePack(?Pack $referencePack): self
+    public function setReferencePack(?UserPacks $referencePack): self
     {
         $this->referencePack = $referencePack;
 
@@ -395,6 +401,37 @@ class UserMission
     public function setRegion(?Region $region): self
     {
         $this->region = $region;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MissionMedia[]
+     */
+    public function getMissionMedia(): Collection
+    {
+        return $this->missionMedia;
+    }
+
+    public function addMissionMedium(MissionMedia $missionMedia): self
+    {
+        if (!$this->missionMedia->contains($missionMedia)) {
+            $this->missionMedia[] = $missionMedia;
+            $missionMedia->setMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMissionMedium(MissionMedia $missionMedia): self
+    {
+        if ($this->missionMedia->contains($missionMedia)) {
+            $this->missionMedia->removeElement($missionMedia);
+            // set the owning side to null (unless already changed)
+            if ($missionMedia->getMission() === $this) {
+                $missionMedia->setMission(null);
+            }
+        }
 
         return $this;
     }
