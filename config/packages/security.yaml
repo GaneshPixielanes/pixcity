@@ -6,6 +6,8 @@ security:
             algorithm: bcrypt
         App\Entity\User:
             algorithm: bcrypt
+        App\Entity\Client:
+            algorithm: bcrypt
 
     providers:
 
@@ -17,6 +19,11 @@ security:
         users:
             entity:
                 class: App\Entity\User
+                property: email
+
+        clients:
+            entity:
+                class: App\Entity\Client
                 property: email
 
     role_hierarchy:
@@ -36,10 +43,29 @@ security:
                 check_path: admin_login
                 login_path: admin_login
                 csrf_token_generator: security.csrf.token_manager
+                use_referer: true
             logout:
                 path: admin_logout
                 target: admin_login
                 invalidate_session: false
+
+        client_area:
+            anonymous: true
+            pattern: ^/client
+            provider: clients
+            form_login:
+                check_path: b2b_client_login
+                login_path: b2b_client_login
+                csrf_token_generator: security.csrf.token_manager
+                use_referer: true
+            guard:
+                authenticators:
+                    - App\Security\ClientAuthenticator
+            logout:
+                path: admin_logout
+                target: admin_login
+                invalidate_session: false
+
 
         main:
             anonymous: true
@@ -49,11 +75,12 @@ security:
                 check_path: front_login
                 login_path: front_login
                 csrf_token_generator: security.csrf.token_manager
+                use_referer: true
             guard:
                 authenticators:
                     - App\Security\GoogleAuthenticator
                     - App\Security\FacebookAuthenticator
-                entry_point: App\Security\FacebookAuthenticator
+                entry_point: App\Security\GoogleAuthenticator
             logout:
                 path: front_logout
                 target: front_homepage_index

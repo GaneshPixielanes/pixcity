@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Constant\MissionStatus;
 use App\Entity\UserMission;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,11 +16,22 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserMissionRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private $em;
+    public function __construct(RegistryInterface $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, UserMission::class);
+        $this->em = $entityManager;
     }
 
+    public function findOngoingMissions($user)
+    {
+        return $this->createQueryBuilder('m')
+                        ->where('m.status = :created OR m.status = :ongoing')
+                        ->setParameter('created',MissionStatus::CREATED)
+                        ->setParameter('ongoing',MissionStatus::ONGOING)
+                        ->getQuery()
+                        ->getResult();
+    }
     // /**
     //  * @return UserMission[] Returns an array of UserMission objects
     //  */

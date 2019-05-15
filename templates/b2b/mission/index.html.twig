@@ -11,9 +11,10 @@
                     <a href="{{ path('b2b_pack_list') }}" class="btn btn-md btn-primary float-right">New Mission</a>
                 </div>
             </div>
+            <h3>On Going Missions</h3>
             <table class="table table-striped">
                 <tbody>
-                    {% for mission in missions %}
+                    {% for mission in missions['ongoing'] %}
                         <tr>
                             <td>{{ mission.description }}</td>
                             <td>{{  '#'~mission.id }}</td>
@@ -28,6 +29,50 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <h3>Cancelled Missions</h3>
+            {% if missions['cancelled'] is not empty %}
+            <table class="table table-striped">
+                <tbody>
+                {% for mission in missions['cancelled'] %}
+                    <tr>
+                        <td>{{ mission.description }}</td>
+                        <td>{{  '#'~mission.id }}</td>
+                        <td>{{ mission.title }}</td>
+                        <td>{{ mission.status }}</td>
+                        <td>{{ mission.missionBasePrice }}</td>
+                        <td>
+                            <a href="{{ path('b2b_mission_view',{'id': mission.id}) }}" class="btn btn-sm btn-warning">View</a>
+                            <a href="{{ path('b2b_mission_edit',{'id': mission.id}) }}" class="btn btn-sm btn-info">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No missions have been cancelled yet</p>
+            {% endif %}
+            <h3>Terminated Missions</h3>
+            {% if missions['terminated'] is not empty %}
+            <table class="table table-striped">
+                <tbody>
+                {% for mission in missions['terminated'] %}
+                    <tr>
+                        <td>{{ mission.description }}</td>
+                        <td>{{  '#'~mission.id }}</td>
+                        <td>{{ mission.title }}</td>
+                        <td>{{ mission.status }}</td>
+                        <td>{{ mission.missionBasePrice }}</td>
+                        <td>
+                            <a href="{{ path('b2b_mission_view',{'id': mission.id}) }}" class="btn btn-sm btn-warning">View</a>
+                            <a href="{{ path('b2b_mission_edit',{'id': mission.id}) }}" class="btn btn-sm btn-info">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            No missions have been terminated yet
+            {% endif %}
         </div>
     </div>
 {% endblock %}
