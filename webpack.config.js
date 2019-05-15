@@ -90,7 +90,7 @@ Encore
     .addStyleEntry('css/lightgallery', './assets/v2/node_modules/lightgallery/src/css/lightgallery.css')
     .addStyleEntry('css/style', './assets/v2/css/style.css')
     .addStyleEntry('css/main', './assets/v2/css/main.scss')
-    .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
+    .addStyleEntry('css/dropzone', './assets/v2/css/dropzon.css')
 
 
 
