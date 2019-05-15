@@ -185,6 +185,18 @@ jQuery(document).ready(function() {
         });
     });
 
+    $('[name="user[userRegion][]"]').on('change', function (evt) {
+        console.log("changed !", $('[name="user[userRegion][]"]:checked').length);
+        if ($('[name="user[userRegion][]"]:checked').length > 2) {
+            this.checked = false;
+            $(this).parents(".plCheck").removeClass("clicked");
+        }
+
+        $('[name="user[userRegion][]"]:checked').each(function () {
+            console.log($(this).val());
+        });
+    });
+
     //---------------------------------------------
     // Limit the number of selected categories
 

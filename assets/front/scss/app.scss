@@ -38,7 +38,7 @@
 .loader{
   position: absolute; height: 100%; width: 100%;
   background-color: rgba(255,255,255,0.3);
-  background-image: url(../images/loader.gif);
+  // background-image: url(../images/loader.gif);
   background-size: 100px 100px;
   background-repeat: no-repeat;
   background-position: center center;
@@ -720,7 +720,7 @@ span.fr-emoticon {
     position: absolute; height: 100%; width: 100%;
     left: 0; top: 0;
     background-color: rgba(255,255,255,0.3);
-    background-image: url(../images/loader.gif);
+    // background-image: url(../images/loader.gif);
     background-size: 100px 100px;
     background-repeat: no-repeat;
     background-position: center center;
