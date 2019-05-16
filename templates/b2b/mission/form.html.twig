@@ -21,7 +21,16 @@
                     {{ form_row(form.client) }}
                 </div>
                 <div class="form-group">
-                    {{ form_row(form.referencePack) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.referencePack) }}
+                        </div>
+                        <div class="col-md-6" id="show-pack-images">
+                            {% if mission is defined and mission != null %}
+                                {% include 'b2b/shared/pack-images.html.twig' with {'images': mission.referencePack.userPackMedia, 'selectedImages':mission.missionMedia} %}
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             <div class="form-group">
                 <select name="{{ form.children.region.vars.full_name }}" class="form-control">
@@ -260,6 +269,36 @@
             $(this).parents('.image-row').html('');
         });
 
+        $(document).on('click','[name="mission[referencePack]"]', function (e) {
+            $.ajax('/api/pack/import-images/'+$(this).val(),
+            {
+               type: 'GET',
+            }).done(function(result){
+                $('#show-pack-images').html(result);
+            });
+        });
+
+        $('form').on('submit', function(e)
+        {
+            var prototype = $("#mission_missionMedia").attr("data-prototype");
+            $.each($('.pack-images:checked'), function()
+            {
+                var index = $('#mission-images-display').find('input').length;
+                var input = prototype.replace(/__name__/g, index);
+                $('#mission-images-display').append(input).find('input:last').val($(this).val());
+            });
+        });
+
+        $(document).on('click','.pack-images',function (e) {
+            $.ajax('/api/pack/import-image-to-mission',{
+               method: 'POST',
+               data: {'filename':$(this).val()},
+               success: function(result)
+               {
+                    console.log(result);
+               }
+            });
+        })
     });
 </script>
 {% endblock %}
