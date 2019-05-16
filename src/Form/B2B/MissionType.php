@@ -48,7 +48,8 @@ class MissionType extends AbstractType
             ->add('referencePack', EntityType::class,[
                 'class' => UserPacks::class,
                 'multiple' => false,
-                'expanded' => true
+                'expanded' => true,
+                'attr' => ['class' => 'select-user-pack']
             ])
             ->add('bannerImage', HiddenType::class)
             ->add('briefFiles', HiddenType::class)

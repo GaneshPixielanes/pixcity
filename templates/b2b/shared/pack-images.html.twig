@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+        {% for image in images %}
+            {% if selectedImages is defined and selectedImages is not empty%}
+                {% set sel = false %}
+                {% for selectedImage in selectedImages %}
+                    {% if sel == false %}
+                        {% if selectedImage.name == image.name %}
+                            {% set sel = true %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {# TODO: Formulate a better logic for displaying files that are not chosen while editing #}
+                {% if sel == false %}
+                    <div class="col-md-4" style="margin:5px">
+                        <img src="/uploads/packs/216/{{ image.name }}" style="height:150px;width:150px" />
+                        <input type="checkbox" value="{{ image.name }}" class="pack-images"/>
+                    </div>
+                {% endif %}
+             {% else %}
+                 <div class="col-md-4" style="margin:5px">
+                     <img src="/uploads/packs/216/{{ image.name }}" style="height:150px;width:150px" />
+                     <input type="checkbox" value="{{ image.name }}" class="pack-images"/>
+                 </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
