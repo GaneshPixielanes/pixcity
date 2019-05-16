@@ -45,20 +45,23 @@ class PackController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
-            $pack->setTitle($request->get(''));
-
+            dd($form);
         }
 
         // Create the page
         $page = new Page();
         $page->setName("Mes Cards en attente");
         $page->setMetaTitle("Mes Cards en attente");
+
         $page->setIndexed(false);
+
+        $images = $user->getCommunityMedia();
 
         return $this->render('b2b/pack/form.html.twig',[
             'form' => $form->createView(),
             'page' => $page,
-            'user' => $user
+            'user' => $user,
+            'images' => $images
         ]);
     }
 
@@ -104,13 +107,20 @@ class PackController extends AbstractController
 
         $user = $this->getUser();
         $result = [];
-        foreach($user->getCommunityMedia() as $media)
-        {
-            $obj['name'] = $media->getName();
-            $obj['size'] = '1024 ';
-            $obj['path'] = 'uploads/community_media/'.$media->getName();
-            $result[] = $obj;
+
+        if(count($user->getCommunityMedia())){
+
+            foreach($user->getCommunityMedia() as $media)
+            {
+                $obj['name'] = $media->getName();
+                $obj['size'] = filesize('uploads/community_media/'.$user->getId().'/'.$media->getName());
+                $obj['path'] = 'uploads/community_media/'.$user->getId().'/'.$media->getName();
+                $obj['id'] = $user->getId();
+                $result[] = $obj;
+            }
+
         }
+
 
         return new JsonResponse($result);
 
@@ -126,7 +136,7 @@ class PackController extends AbstractController
         $em = $this->getDoctrine()->getEntityManager();
 
         $media = $communityMediaRepository->findBy(['name' => $request->get('name')]);
-        unlink('/uploads/community_media/'.$media->getName());
+        unlink('uploads/community_media/'.$media[0]->getName());
         $em->remove($media[0]);
         $em->flush();
 

@@ -415,15 +415,21 @@ class PixieAccountController extends Controller
      */
     public function fileUploadHandler(Request $request) {
 
+        $user = $this->getUser();
+
         $output = array('uploaded' => false);
 
         $file = $request->files->get('file');
 
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-        $uploadDir = $this->get('kernel')->getRootDir() . '/../public/uploads/community_media';
+        $uploadDir = $this->get('kernel')->getRootDir() . '/../public/uploads/community_media/'.$user->getId();
 
-        $user = $this->getUser();
+        if (!file_exists($uploadDir) && !is_dir($uploadDir)) {
+            mkdir($uploadDir, 0775, true);
+        }
+
+
 
         if ($file->move($uploadDir, $fileName)) {
             $em = $this->getDoctrine()->getManager();
@@ -432,7 +438,6 @@ class PixieAccountController extends Controller
             $mediaEntity->setName($fileName);
             $mediaEntity->setUpdatedBy('1');
             $mediaEntity->setUser($this->getUser());
-//            $this->getUser()->addCommunityMedium($mediaEntity);
 
             $em->persist($mediaEntity);
             $em->flush();
@@ -451,13 +456,17 @@ class PixieAccountController extends Controller
         $user = $this->getUser();
         $result = [];
 
-        foreach($user->getCommunityMedia() as $media)
-        {
+        if(count($user->getCommunityMedia())){
 
-            $obj['name'] = $media->getName();
-            $obj['size'] = '1024 ';
-            $obj['path'] = 'uploads/community_media/'.$media->getName();
-            $result[] = $obj;
+            foreach($user->getCommunityMedia() as $media)
+            {
+                $obj['name'] = $media->getName();
+                $obj['size'] = filesize('uploads/community_media/'.$user->getId().'/'.$media->getName());
+                $obj['path'] = 'uploads/community_media/'.$user->getId().'/'.$media->getName();
+                $obj['id'] = $user->getId();
+                $result[] = $obj;
+            }
+
         }
 
         return new JsonResponse($result);
@@ -475,7 +484,10 @@ class PixieAccountController extends Controller
 
         $media = $communityMediaRepository->findBy(['name' => $request->get('name')]);
 
+        unlink('uploads/community_media/'.$media[0]->getName());
+
         $em->remove($media[0]);
+
         $em->flush();
 
 
