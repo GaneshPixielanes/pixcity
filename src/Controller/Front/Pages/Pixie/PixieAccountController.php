@@ -381,6 +381,12 @@ class PixieAccountController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+
+            $product = $entityManager->getRepository(Product::class)->find($id);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

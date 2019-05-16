@@ -6,6 +6,7 @@ use App\Entity\CardCategory;
 use App\Entity\Region;
 use App\Entity\Skill;
 use App\Entity\User;
+use App\Form\B2B\CommunityMediaType;
 use App\Form\Shared\UserAvatarType;
 use App\Form\Shared\UserLinkType;
 use App\Form\Shared\UserOptinType;
@@ -84,6 +85,23 @@ class UserType extends AbstractType
                 ));
         }
 
+        $builder
+            ->add('userSkill', EntityType::class, array(
+                'label' => 'label.skills',
+                'class' => Skill::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true
+            ))
+            ->add('userRegion', EntityType::class, array(
+                'label' => 'label.regions',
+                'class' => Region::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true
+            ))
+        ;
+
 
         $builder->add('favoriteCategories', EntityType::class, array(
                 'label' => 'label.categories',
@@ -150,25 +168,7 @@ class UserType extends AbstractType
 
         }
 
-        if($options["b2b"]){
 
-            $builder
-                ->add('userSkill', EntityType::class, array(
-                    'label' => 'label.skills',
-                    'class' => Skill::class,
-                    'choice_label' => 'name',
-                    'multiple' => true,
-                    'expanded' => true
-                ))
-                ->add('userRegion', EntityType::class, array(
-                    'label' => 'label.regions',
-                    'class' => Region::class,
-                    'choice_label' => 'name',
-                    'multiple' => true,
-                    'expanded' => true
-                ))
-            ;
-        }
 
     }
 
