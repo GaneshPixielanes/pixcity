@@ -43,10 +43,6 @@ class UserPacks
      */
     private $userBasePrice;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $packPhotos;
 
     /**
      * @ORM\Column(type="datetime")
@@ -73,11 +69,7 @@ class UserPacks
      */
     private $deleted;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Pack", inversedBy="userPacks", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $pack;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Skill", inversedBy="userPacks")

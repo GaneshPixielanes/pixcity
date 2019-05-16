@@ -3,6 +3,15 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
+    <style>
+        .dropzone .dz-preview .dz-image {
+            width: 100px !important;
+            height: 100px !important;
+        }
+        .dropzone .dz-preview .dz-image img{
+            max-width: 100%;
+        }
+    </style>
     <div class="container">
 
         {{ form_start(form) }}
@@ -14,11 +23,19 @@
 
 
 
+                <div class="row">
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                        {% for image in images %}
+                            <img class="img-responsive" src="{{ ('/uploads/community_media/365/'~image.name) }}" />
+                        {% endfor %}
+                    </div>
+                </div>
+
 
                 <div class="form-group">
                     <label>images</label>
                     <div class="dropzone">
-                        <div id="dropzone-custom" style="background:#fff8f8;height:150px;width:auto">
+                        <div id="dropzone-custom" style="background:#fff8f8;height:auto;width:auto">
                             <div class="dz-message needsclick">
                                 <i class="fa fa-picture-o fa-5x" aria-hidden="true"></i>
                             </div>
@@ -53,7 +70,6 @@
 
         $(document).ready(function()
         {
-
 
             var $dropZone  = $('#dropzone-custom').dropzone({
                 url:'{{ path('b2b_pack_fileuploadhandler') }}',
@@ -104,12 +120,17 @@
                     thisDropzone = this;
 
                     $.get('{{ path('b2b_pack_display_image') }}', function(data) {
+                        if(data.length){
+                            $.each(data, function(key,value){
+                                var mockFile = { name: value.name, size: value.size };
+                                console.log(thisDropzone);
+                                thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+                                thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "/uploads/community_media/"+value.id+'/'+value.name);
+                            });
+                        }else{
+                            $("#dropzone-custom").height(250);
+                        }
 
-                        $.each(data, function(key,value){
-                            var mockFile = { name: value.name, size: value.size };
-                            thisDropzone.options.addedfile.call(thisDropzone, mockFile);
-                            thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "/uploads/community_media/"+value.name);
-                        });
 
                     });
                 }
