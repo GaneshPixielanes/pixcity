@@ -92,6 +92,7 @@ Encore
     .addStyleEntry('css/main', './assets/v2/css/main.scss')
     .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
     .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
+    .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
 
 
 

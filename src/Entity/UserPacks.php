@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -84,6 +86,16 @@ class UserPacks
      * @ORM\JoinColumn(nullable=false)
      */
     private $packSkill;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserPackMedia", mappedBy="userPack")
+     */
+    private $userPackMedia;
+
+    public function __construct()
+    {
+        $this->userPackMedia = new ArrayCollection();
+    }
 
     public function __toString() {
         return $this->getTitle();
@@ -246,6 +258,37 @@ class UserPacks
     public function setPackSkill(?Skill $packSkill): self
     {
         $this->packSkill = $packSkill;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserPackMedia[]
+     */
+    public function getUserPackMedia(): Collection
+    {
+        return $this->userPackMedia;
+    }
+
+    public function addUserPackMedium(UserPackMedia $userPackMedium): self
+    {
+        if (!$this->userPackMedia->contains($userPackMedium)) {
+            $this->userPackMedia[] = $userPackMedium;
+            $userPackMedium->setUserPack($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserPackMedium(UserPackMedia $userPackMedium): self
+    {
+        if ($this->userPackMedia->contains($userPackMedium)) {
+            $this->userPackMedia->removeElement($userPackMedium);
+            // set the owning side to null (unless already changed)
+            if ($userPackMedium->getUserPack() === $this) {
+                $userPackMedium->setUserPack(null);
+            }
+        }
 
         return $this;
     }
