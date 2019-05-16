@@ -17,6 +17,12 @@
                 <div class="form-group">
                     {{ form_row(form.description) }}
                 </div>
+                <div class="form-group">
+                    {{ form_row(form.client) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.referencePack) }}
+                </div>
             <div class="form-group">
                 <select name="{{ form.children.region.vars.full_name }}" class="form-control">
                     {% for region in form.children.region.vars.data %}
@@ -150,7 +156,7 @@
 
         function uploadFiles(formData, type)
         {
-            $.ajax('/client/mission/upload',
+            $.ajax('/community-manager/mission/upload',
                 {
                     type: 'POST',
                     data: formData,
@@ -174,7 +180,7 @@
 
 
         $("div.image-upload-zone").dropzone({
-            url: "/client/mission/upload",
+            url: "/community-manager/mission/upload",
             addRemoveLinks: true,
             dictDefaultMessage: "Drop files here or<br>click to upload...",
             success: function (file, response) {
