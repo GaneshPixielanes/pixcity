@@ -376,13 +376,11 @@ class PixieAccountController extends Controller
     public function community_manager(Request $request){
 
         $user = $this->getUser();
-
         // Create the form
         $form = $this->createForm(UserType::class, $user, ["b2b" => true,"type" => "edit"]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
