@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 /**
- * @Route("/client/mission/", name="b2b_mission_")
+ * @Route("/community-manager/mission/", name="b2b_mission_")
  */
 class MissionController extends AbstractController
 {
@@ -37,13 +37,13 @@ class MissionController extends AbstractController
     }
 
     /**
-     * @Route("create/{pack}", name="create")
+     * @Route("create", name="create")
      */
-    public function create($pack, Request $request, UserPacksRepository $packRepo, FileUploader $fileUploader)
+    public function create(Request $request, UserPacksRepository $packRepo, FileUploader $fileUploader)
     {
         $mission = new UserMission();
         # Get the CM associated with the pack and regions thus associated
-        $regions = $packRepo->find($pack)->getUser()->getUserRegion();
+        $regions = $this->getUser()->getUserRegion();
 //        $regions = $packRepo->find($pack)->get
 //        $form = $this->createForm(MissionType::class, $mission,['region' => $this->getUser()->getUserRegion()]);
         $form = $this->createForm(MissionType::class, $mission,['region' => $regions]);
@@ -53,9 +53,7 @@ class MissionController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
 
-            $mission->setClient($this->getUser());
-            $mission->setUser($packRepo->find($pack)->getUser());
-            $mission->setReferencePack($packRepo->find($pack));
+            $mission->setUser($this->getUser());
 
             $mission->setStatus(MissionStatus::CREATED);
 

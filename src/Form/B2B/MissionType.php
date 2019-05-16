@@ -2,8 +2,11 @@
 
 namespace App\Form\B2B;
 
+use App\Entity\Client;
+use App\Entity\Pack;
 use App\Entity\Region;
 use App\Entity\UserMission;
+use App\Entity\UserPacks;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -37,6 +40,16 @@ class MissionType extends AbstractType
         $builder
             ->add('title',TextType::class)
             ->add('description', TextareaType::class)
+            ->add('client',EntityType::class,[
+                'class' => Client::class,
+                'multiple' => false,
+                'expanded' => true
+            ])
+            ->add('referencePack', EntityType::class,[
+                'class' => UserPacks::class,
+                'multiple' => false,
+                'expanded' => true
+            ])
             ->add('bannerImage', HiddenType::class)
             ->add('briefFiles', HiddenType::class)
             ->add('missionBasePrice', TextType::class)
