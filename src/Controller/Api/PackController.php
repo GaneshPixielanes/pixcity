@@ -34,7 +34,7 @@ class PackController extends AbstractController
     public function importToMission(Request $request, Filesystem $filesystem)
     {
         $file = $request->get('filename');
-        $filesystem->copy('uploads/packs/'.$this->getUser()->getId().'/'.$file,'uploads/'.UserMission::uploadFolder().'/'.basename($file));
+        $filesystem->copy('uploads/packs/'.$this->getUser()->getId().'/'.$file,'uploads/'.UserMission::tempFolder().'/'.basename($file));
 
         return JsonResponse::create(['success' => true]);
     }

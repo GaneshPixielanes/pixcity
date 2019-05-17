@@ -13,8 +13,8 @@ class UserMissionPaymentType extends AbstractType
     {
         $builder
             ->add('userBasePrice')
-            ->add('clientPrice')
-            ->add('transactionFee')
+//            ->add('clientPrice')
+//            ->add('transactionFee')
         ;
     }
 

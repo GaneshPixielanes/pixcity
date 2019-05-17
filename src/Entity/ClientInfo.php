@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientInfoRepository")
@@ -23,6 +24,12 @@ class ClientInfo
     private $client;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 14,
+     *      max = 14,
+     *      minMessage = "SIRET must be{{ limit }} characters long"
+     * )
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $siret;

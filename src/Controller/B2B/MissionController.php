@@ -10,6 +10,7 @@ use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +40,7 @@ class MissionController extends AbstractController
     /**
      * @Route("create", name="create")
      */
-    public function create(Request $request, UserPacksRepository $packRepo, FileUploader $fileUploader)
+    public function create(Request $request, Filesystem $filesystem)
     {
         $mission = new UserMission();
         # Get the CM associated with the pack and regions thus associated
@@ -52,15 +53,49 @@ class MissionController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            $price = $mission->getMissionBasePrice();
+            $clientPrice = $price + ($price * 0.20);
+            $tax = 10;
+            $transactionFee = 0;
+            $total =  $clientPrice + ($clientPrice * (1/$tax)) + $transactionFee;
+
 
             $mission->setUser($this->getUser());
-
+            $mission->getUserMissionPayment()->setClientPrice($clientPrice); // Client's price
+            $mission->getUserMissionPayment()->setUserBasePrice($price); // Base price
+            $mission->getUserMissionPayment()->setTaxPercentage($tax); // Tax Percentage
+            $mission->getUserMissionPayment()->setTransactionFee($transactionFee); // Trasnsaction Fee
+            $mission->getUserMissionPayment()->setTaxValue($total - $clientPrice); // Tax charged
+            $mission->getUserMissionPayment()->setTotal($total); // Total
             $mission->setStatus(MissionStatus::CREATED);
 
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($mission);
             $em->flush();
+            #Move banner and brief files
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()))
+            {
+                $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBannerImage(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBannerImage());
+            }
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()))
+            {
+                $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBriefFiles(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBriefFiles());
+            }
+            #Move files to the upload folder from temp folder
+            foreach($mission->getMissionMedia() as $media)
+            {
+                # If files are found in the temp folder, then move the files from temp folder.
+                # Otherwise check the packs folder and move files from there (import images from packs)
+                if($filesystem->exists('uploads/'.UserMission::tempFolder().$media->getName()))
+                {
+                    $filesystem->copy('uploads/'.UserMission::tempFolder().$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
+                }
+                elseif ($filesystem->exists('uploads/packs/'.$mission->getReferencePack()->getId().'/'.$media->getName()))
+                {
+                    $filesystem->copy('uploads/packs/'.$mission->getReferencePack()->getId().'/'.$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
+                }
+            }
 
             return $this->redirectToRoute('b2b_mission_list');
         }
@@ -74,7 +109,7 @@ class MissionController extends AbstractController
     /**
      * @Route("edit/{id}",name="edit")
      */
-    public function edit($id, Request $request,UserMissionRepository $userMissionRepo)
+    public function edit($id, Request $request,UserMissionRepository $userMissionRepo, Filesystem $filesystem)
     {
         $mission = $userMissionRepo->find($id);
         $regions = $mission->getReferencePack()->getUser()->getUserRegion();
@@ -85,9 +120,46 @@ class MissionController extends AbstractController
         {
             $em = $this->getDoctrine()->getManager();
 
+            $price = $mission->getMissionBasePrice();
+            $clientPrice = $price + ($price * 0.20);
+            $tax = 10;
+            $transactionFee = 0;
+            $total =  $clientPrice + ($clientPrice * (1/$tax)) + $transactionFee;
+
+
+            $mission->setUser($this->getUser());
+            $mission->getUserMissionPayment()->setClientPrice($clientPrice); // Client's price
+            $mission->getUserMissionPayment()->setUserBasePrice($price); // Base price
+            $mission->getUserMissionPayment()->setTaxPercentage($tax); // Tax Percentage
+            $mission->getUserMissionPayment()->setTransactionFee($transactionFee); // Trasnsaction Fee
+            $mission->getUserMissionPayment()->setTaxValue($total - $clientPrice); // Tax charged
+            $mission->getUserMissionPayment()->setTotal($total); // Total
             $em->persist($mission);
             $em->flush();
 
+            #Move banner and brief files
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()))
+            {
+                $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBannerImage(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBannerImage());
+            }
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()))
+            {
+                $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBriefFiles(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBriefFiles());
+            }
+            #Move files to the upload folder from temp folder
+            foreach($mission->getMissionMedia() as $media)
+            {
+                # If files are found in the temp folder, then move the files from temp folder.
+                # Otherwise check the packs folder and move files from there (import images from packs)
+                if($filesystem->exists('uploads/'.UserMission::tempFolder().$media->getName()))
+                {
+                    $filesystem->copy('uploads/'.UserMission::tempFolder().$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
+                }
+                elseif ($filesystem->exists('uploads/packs/'.$mission->getReferencePack()->getId().'/'.$media->getName()))
+                {
+                    $filesystem->copy('uploads/packs/'.$mission->getReferencePack()->getId().'/'.$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
+                }
+            }
 
             return $this->redirectToRoute('b2b_mission_list');
         }
@@ -139,7 +211,7 @@ class MissionController extends AbstractController
     {
         $file = $request->files->get('file');
 
-        $fileName = $fileUploader->upload($file, UserMission::uploadFolder(), true);
+        $fileName = $fileUploader->upload($file, UserMission::tempFolder(), true);
 
         return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
     }//End of upload
