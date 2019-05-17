@@ -62,8 +62,8 @@ security:
                 authenticators:
                     - App\Security\ClientAuthenticator
             logout:
-                path: admin_logout
-                target: admin_login
+                path: '/client/logout'
+                target: '/'
                 invalidate_session: false
 
 
