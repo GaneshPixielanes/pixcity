@@ -192,9 +192,9 @@ class MissionController extends AbstractController
 
         switch($request->get('status'))
         {
-            case 'cancel': $mission->setStatus(MissionStatus::CANCELLED);
+            case 'cancel': $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
                               break;
-            case 'terminate': $mission->setStatus('terminated');
+            case 'terminate': $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
                                break;
         }
 
