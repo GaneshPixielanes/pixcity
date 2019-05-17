@@ -20,7 +20,14 @@ controllers_admin:
 #----------------------------------------
 
 controllers_api:
-    resource: ../src/Controller/Api/
+              resource: ../src/Controller/Api/
+              type: annotation
+#----------------------------------------
+# B2B
+#----------------------------------------
+
+controllers_b2b:
+    resource: ../src/Controller/B2B/
     type: annotation
 #----------------------------------------
 # v2.0

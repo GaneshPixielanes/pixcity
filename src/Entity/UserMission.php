@@ -134,17 +134,20 @@ class UserMission
         return (!empty($this->getCreatedAt()))?"/".$this->getCreatedAt()->format("Y/m"):"";
     }
 
+    public static function tempFolder(){
+        return UserMission::UPLOAD_FOLDER."/temp/";
+    }
+
     public static function uploadFolder(){
-        $now = new \DateTime('now');
-        return UserMission::UPLOAD_FOLDER."/".$now->format("Y/m");
+        return UserMission::UPLOAD_FOLDER;
     }
 
     public function getBannerUrl(){
-        return "/uploads/".UserMission::UPLOAD_FOLDER.$this->datePath()."/".$this->getBannerImage();
+        return "/uploads/".UserMission::UPLOAD_FOLDER.'/'.$this->getId()."/".$this->getBannerImage();
     }
 
     public function getBriefUrl(){
-        return "uploads/".UserMission::UPLOAD_FOLDER.$this->datePath()."/".$this->getBriefFiles();
+        return "uploads/".UserMission::UPLOAD_FOLDER.'/'.$this->getId()."/".$this->getBriefFiles();
     }
 
     public function getId(): ?int

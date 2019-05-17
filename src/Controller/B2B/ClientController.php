@@ -14,10 +14,10 @@ class ClientController extends AbstractController
      */
     public function index()
     {
-        dd($this->getUser());
-        return $this->render('b2_b/client/index.html.twig', [
-            'controller_name' => 'ClientController',
-        ]);
+        return $this->render('b2b/client/index.html.twig');
+//        return $this->redirect('/client/search');
     }
+
+
 
 }

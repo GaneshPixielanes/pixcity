@@ -12,37 +12,23 @@
             {{ form_start(form) }}
             {{ form_row(form._token) }}
             <div class="form-group">
+                {{ form_row(form.client) }}
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.referencePack) }}
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="form-group">
                     {{ form_row(form.title) }}
                 </div>
                 <div class="form-group">
                     {{ form_row(form.description) }}
                 </div>
-                <div class="form-group">
-                    {{ form_row(form.client) }}
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                            {{ form_row(form.referencePack) }}
-                        </div>
-                        <div class="col-md-6" id="show-pack-images">
-                            {% if mission is defined and mission != null %}
-                                {% include 'b2b/shared/pack-images.html.twig' with {'images': mission.referencePack.userPackMedia, 'selectedImages':mission.missionMedia} %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            <div class="form-group">
-                <select name="{{ form.children.region.vars.full_name }}" class="form-control">
-                    {% for region in form.children.region.vars.data %}
-                        {% if region == form.vars.value.region %}
-                            <option value="{{ region.id }}" selected>{{ region.name }}</option>
-                        {% else %}
-                            <option value="{{ region.id }}">{{ region.name }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
+
             <div class="form-group">
                 <div class="row">
                     <div class="col-6">
@@ -71,27 +57,7 @@
                 {{ form_row(form.briefFiles) }}
                 <input type="file" id="brief-file-upload" />
             </div>
-            <div class="form-group">
-                {{ form_row(form.missionBasePrice) }}
-            </div>
-            <div class="form-group">
-                {{ form_row(form.dueDate) }}
-            </div>
-            <div class="form-group">
-                {{ form_row(form.conditionsAgreed) }}
-            </div>
-            <div class="form-group">
-                {{ form_row(form.axaInsurance) }}
-            </div>
-            <div class="form-group">
-                {{ form_row(form.generalConditionsBrief) }}
-            </div>
-            <div class="form-group">
-                {{ form_row(form.missionAgreedClient) }}
-            </div>
-            <div class="form-group">
-                {{ form_row(form.userMissionPayment) }}
-            </div>
+
             <div class="form-group">
                 {#<a href="#" class="btn btn-danger btn-sm float-right" id="add-media">Add Image</a>#}
                 {#<input type="file" class="image-upload-btn" name="mission-medias" multiple style="" accept=".png, .jpeg, .jpg"/>#}
@@ -111,11 +77,35 @@
                 </div>
             </div>
             <div>
+
+                <div class="col-md-12" id="show-pack-images">
+                    {% if mission is defined and mission != null %}
+                        {% include 'b2b/shared/pack-images.html.twig' with {'images': mission.referencePack.userPackMedia, 'selectedImages':mission.missionMedia} %}
+                    {% endif %}
+                </div>
                 <div id="dropzone" class="image-upload-zone" style="margin:10px;">
                     <h4 class="text-center" style="vertical-align: middle;">Drop the files here/Click here to upload</h4>
                 </div>
             </div>
 
+            <div class="form-group">
+                <select name="{{ form.children.region.vars.full_name }}" class="form-control">
+                    {% for region in form.children.region.vars.data %}
+                        {% if region == form.vars.value.region %}
+                            <option value="{{ region.id }}" selected>{{ region.name }}</option>
+                        {% else %}
+                            <option value="{{ region.id }}">{{ region.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                {{ form_row(form.missionBasePrice) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.axaInsurance) }}
+            </div>
+            <hr/>
             <div class="form-group">
                 <input type="submit" class="btn btn-md btn-info" value="Save">
             </div>
@@ -289,16 +279,16 @@
             });
         });
 
-        $(document).on('click','.pack-images',function (e) {
-            $.ajax('/api/pack/import-image-to-mission',{
-               method: 'POST',
-               data: {'filename':$(this).val()},
-               success: function(result)
-               {
-                    console.log(result);
-               }
-            });
-        })
+        // $(document).on('click','.pack-images',function (e) {
+        //     $.ajax('/api/pack/import-image-to-mission',{
+        //        method: 'POST',
+        //        data: {'filename':$(this).val()},
+        //        success: function(result)
+        //        {
+        //             console.log(result);
+        //        }
+        //     });
+        // })
     });
 </script>
 {% endblock %}

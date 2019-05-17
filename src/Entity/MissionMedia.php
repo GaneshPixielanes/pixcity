@@ -41,7 +41,7 @@ class MissionMedia
     }
 
     public function getUrl(){
-        return "/uploads/".UserMission::UPLOAD_FOLDER.$this->datePath()."/".$this->getName();
+        return "/uploads/".UserMission::UPLOAD_FOLDER.'/'.$this->getMission()->getId()."/".$this->getName();
     }
 
     public function getId(): ?int

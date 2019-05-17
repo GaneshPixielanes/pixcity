@@ -54,23 +54,23 @@ class MissionType extends AbstractType
             ->add('bannerImage', HiddenType::class)
             ->add('briefFiles', HiddenType::class)
             ->add('missionBasePrice', TextType::class)
-            ->add('dueDate', DateType::class)
-            ->add('conditionsAgreed', ChoiceType::class,[
-                'choices' => ['Yes' => 1, 'No' => 0],
-                'multiple' => false,
-                'expanded' => false
-            ])
+//            ->add('dueDate', DateType::class)
+//            ->add('conditionsAgreed', ChoiceType::class,[
+//                'choices' => ['Yes' => 1, 'No' => 0],
+//                'multiple' => false,
+//                'expanded' => false
+//            ])
             ->add('axaInsurance',ChoiceType::class,[
                 'choices' => ['Add Axa insutance' => TRUE],
                 'multiple' => false,
                 'expanded' => true
             ])
-            ->add('generalConditionsBrief')
-            ->add('missionAgreedClient', ChoiceType::class,[
-                'choices' => ['Client Agreed' => TRUE],
-                'multiple' => false,
-                'expanded' => true
-            ])
+//            ->add('generalConditionsBrief')
+//            ->add('missionAgreedClient', ChoiceType::class,[
+//                'choices' => ['Client Agreed' => TRUE],
+//                'multiple' => false,
+//                'expanded' => true
+//            ])
             ->add('region', EntityType::class,[
                 'class' => Region::class,
                 'data' => $options['region'],
