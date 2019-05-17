@@ -16,8 +16,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Route("/community-manager/mission/", name="b2b_mission_")
+ * @Security("has_role('ROLE_PIXIE')")
  */
 class MissionController extends AbstractController
 {

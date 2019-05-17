@@ -4,8 +4,10 @@ namespace App\Controller\B2B;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Route("/client/", name="b2b_client_main_")
+ * @Security("has_role('ROLE_USER')")
  */
 class ClientController extends AbstractController
 {
