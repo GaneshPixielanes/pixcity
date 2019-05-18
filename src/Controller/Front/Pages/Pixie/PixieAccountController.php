@@ -514,9 +514,9 @@ class PixieAccountController extends Controller
 
         $em = $this->getDoctrine()->getEntityManager();
 
-        $media = $communityMediaRepository->findBy(['name' => $request->get('name')]);
+        $media = $communityMediaRepository->findBy(['name' => trim($request->get('name'))]);
 
-        unlink('uploads/community_media/'.$media[0]->getName());
+        unlink('/uploads/community_media/'.$media[0]->getName());
 
         $em->remove($media[0]);
 

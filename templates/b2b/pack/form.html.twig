@@ -70,6 +70,31 @@
             height: 100% !important;
             object-fit: cover;
         }
+
+        img {
+            width: 157px;
+            height: 120px;
+            margin: 12px;
+            border-radius: 5px;
+            transition: all 1s
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        .img-wrap {
+            position: relative;
+        }
+        .img-wrap .close {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            z-index: 100;
+        ...
+        }
+
+
     </style>
     <div class="container">
 
@@ -91,6 +116,10 @@
             {{ form_row(form.title) }}
             {{ form_row(form.description) }}
             {{ form_row(form.userBasePrice) }}
+
+            {% for image in images %}
+                <img src="/uploads/community_media/{{ user.id }}/{{ image.name }}" alt="1">
+            {% endfor %}
 
             <div class="dropzone" style="margin-top: 40px">
                 <h3>Images</h3>
