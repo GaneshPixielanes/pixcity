@@ -49,7 +49,7 @@ class MissionController extends AbstractController
         $regions = $this->getUser()->getUserRegion();
 //        $regions = $packRepo->find($pack)->get
 //        $form = $this->createForm(MissionType::class, $mission,['region' => $this->getUser()->getUserRegion()]);
-        $form = $this->createForm(MissionType::class, $mission,['region' => $regions]);
+        $form = $this->createForm(MissionType::class, $mission,['region' => $regions, 'user' => $this->getUser()]);
 
         $form->handleRequest($request);
 
@@ -115,7 +115,7 @@ class MissionController extends AbstractController
     {
         $mission = $userMissionRepo->find($id);
         $regions = $mission->getReferencePack()->getUser()->getUserRegion();
-        $form = $this->createForm(MissionType::class, $mission,['region' => $regions]);
+        $form = $this->createForm(MissionType::class, $mission,['region' => $regions, 'user' => $this->getUser()]);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
