@@ -523,6 +523,7 @@ class PixieAccountController extends Controller
         $em->flush();
 
         unlink('uploads/community_media/'.$user->getId().'/'.$media[0]->getName());
+
         exit;
 
 
