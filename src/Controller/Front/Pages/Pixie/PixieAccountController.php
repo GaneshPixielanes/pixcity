@@ -395,16 +395,49 @@ class PixieAccountController extends Controller
         }
 
         // Create the page
-        $page = new Page();
-        $page->setName("Mes Cards en attente");
-        $page->setMetaTitle("Mes Cards en attente");
-        $page->setIndexed(false);
+//        $page = new Page();
+//        $page->setName("Mes Cards en attente");
+//        $page->setMetaTitle("Mes Cards en attente");
+//        $page->setIndexed(false);
 
-        return $this->render('front/account/pixie/community-manager.html.twig', array(
-            'page' => $page,
-            'form' => $form->createView(),
-            'user' => $user
-        ));
+//        return $this->render('front/account/pixie/community-manager.html.twig', array(
+//            'page' => $page,
+//            'form' => $form->createView(),
+//            'user' => $user
+//        ));
+//        $user = $this->getUser();
+//
+//        // Create the form
+//        $form = $this->createForm(UserType::class, $user, ["b2b" => true,"type" => "edit"]);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted()) {
+//
+//            $entityManager = $this->getDoctrine()->getManager();
+//
+//
+//            $product = $entityManager->getRepository(Product::class)->find($id);
+//
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($user);
+//            $em->flush();
+//
+//            return $this->redirectToRoute('front_pixie_account_community_manager');
+//        }
+//
+//        // Create the page
+//        $page = new Page();
+//        $page->setName("Mes Cards en attente");
+//        $page->setMetaTitle("Mes Cards en attente");
+//        $page->setIndexed(false);
+//
+//        return $this->render('front/account/pixie/community-manager.html.twig', array(
+//            'page' => $page,
+//            'form' => $form->createView(),
+//            'user' => $user
+//        ));
+
+        return $this->render('b2b/static/index.html.twig');
 
     }
 

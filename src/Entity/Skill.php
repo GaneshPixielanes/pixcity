@@ -99,51 +99,40 @@ class Skill
     private $skillUser;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserPacks", mappedBy="relation")
+     * @ORM\OneToOne(targetEntity="App\Entity\UserPacks", mappedBy="packSkill", cascade={"persist", "remove"})
      */
     private $userPacks;
+
 
 
     public function __construct()
     {
         $this->skillUser = new ArrayCollection();
-        $this->userPacks = new ArrayCollection();
     }
 
     public function addUserSkill(User $user){
         $this->skillUser[] = new ArrayCollection();
     }
 
-    /**
-     * @return Collection|UserPacks[]
-     */
-    public function getUserPacks(): Collection
+    public function getUserPacks(): ?UserPacks
     {
         return $this->userPacks;
     }
 
-    public function addUserPack(UserPacks $userPack): self
+    public function setUserPacks(?UserPacks $userPacks): self
     {
-        if (!$this->userPacks->contains($userPack)) {
-            $this->userPacks[] = $userPack;
-            $userPack->setRelation($this);
+        $this->userPacks = $userPacks;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newPackSkill = $userPacks === null ? null : $this;
+        if ($newPackSkill !== $userPacks->getPackSkill()) {
+            $userPacks->setPackSkill($newPackSkill);
         }
 
         return $this;
     }
 
-    public function removeUserPack(UserPacks $userPack): self
-    {
-        if ($this->userPacks->contains($userPack)) {
-            $this->userPacks->removeElement($userPack);
-            // set the owning side to null (unless already changed)
-            if ($userPack->getRelation() === $this) {
-                $userPack->setRelation(null);
-            }
-        }
 
-        return $this;
-    }
 
 
 }
