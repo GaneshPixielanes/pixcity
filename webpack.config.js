@@ -93,6 +93,7 @@ Encore
     .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
     .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
     .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
+    .addStyleEntry('css/simple-sidebar', './assets/v2/css/simple-sidebar.css')
 
 
 
