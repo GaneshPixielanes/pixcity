@@ -463,8 +463,8 @@ class PixieAccountController extends Controller
             foreach($user->getCommunityMedia() as $media)
             {
                 $obj['name'] = $media->getName();
-                $obj['size'] = filesize('uploads/community_media/'.$user->getId().'/'.$media->getName());
-                $obj['path'] = 'uploads/community_media/'.$user->getId().'/'.$media->getName();
+                $obj['size'] = '1024';
+                $obj['path'] = '/uploads/community_media/'.$user->getId().'/'.$media->getName();
                 $obj['id'] = $user->getId();
                 $result[] = $obj;
             }
@@ -482,11 +482,13 @@ class PixieAccountController extends Controller
      */
     public function deleteImages(Request $request,CommunityMediaRepository $communityMediaRepository){
 
+        $user = $this->getUser();
+
         $em = $this->getDoctrine()->getEntityManager();
 
         $media = $communityMediaRepository->findBy(['name' => trim($request->get('name'))]);
 
-        unlink('/uploads/community_media/'.$media[0]->getName());
+        unlink('uploads/community_media/'.$user->getId().'/'.$media[0]->getName());
 
         $em->remove($media[0]);
 

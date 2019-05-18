@@ -152,9 +152,9 @@
 
         $("#pack_userBasePrice").on('change',function(){
             var actual_price = $("#pack_userBasePrice").val();
-            var after_price = actual_price * 20 / 100;
+            var after_price = parseInt(actual_price) * 20 / 100;
             console.log(after_price);
-            $("#pack_userBasePrice").val(actual_price + after_price);
+            $("#pack_userBasePrice").val(parseInt(actual_price) + parseInt(after_price));
         });
 
         function readURL(input) {
