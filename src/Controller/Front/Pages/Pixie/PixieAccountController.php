@@ -518,13 +518,11 @@ class PixieAccountController extends Controller
 
         $media = $communityMediaRepository->findBy(['name' => trim($request->get('name'))]);
 
-        unlink('uploads/community_media/'.$user->getId().'/'.$media[0]->getName());
-
         $em->remove($media[0]);
 
         $em->flush();
 
-
+        unlink('uploads/community_media/'.$user->getId().'/'.$media[0]->getName());
         exit;
 
 
