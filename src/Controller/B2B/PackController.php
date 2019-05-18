@@ -32,7 +32,7 @@ class PackController extends Controller
      */
     public function index(UserPacksRepository $packRepo)
     {
-        $packs = $packRepo->findBy([],['id' => 'DESC']);
+        $packs = $packRepo->findBy(['deleted' => null ],['id' => 'DESC']);
 
         return $this->render('b2b/pack/index.html.twig', [
             'packs' => $packs,
@@ -293,6 +293,31 @@ class PackController extends Controller
 
         exit;
 
+
+    }
+
+    /**
+     * @Route("/delete-pack/{id}",name="delete")
+     */
+    public function delete($id,Request $request,UserPacksRepository $userPacksRepository){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $pack = $entityManager->getRepository(UserPacks::class)->find($id);
+
+        if (!$pack) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+
+        $pack->setDeletedAt(new \DateTime('now'));
+        $pack->setActive(0);
+        $pack->setDeleted(0);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('b2b_pack_list', [
+            'id' => $pack->getId()
+        ]);
 
     }
 

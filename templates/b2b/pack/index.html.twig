@@ -36,14 +36,45 @@
                                 <td>
                                     <a href="{{ path('b2b_pack_view',{'id': pack.id}) }}" class="btn btn-sm btn-warning">View</a>
                                     <a href="{{ path('b2b_pack_edit',{'id': pack.id}) }}" class="btn btn-sm btn-info">Edit</a>
+                                    <a href="#myModal_{{ pack.id }}" data-toggle="modal" class="btn">Delete</a>
                                 </td>
                             </tr>
+
+                            <div class="modal fade" id="myModal_{{ pack.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close</span></button>
+
+                                        </div>
+                                        <div class="modal-body">
+
+
+
+                                            <pa>are you want to delete the pack</pa>
+                                            <a href="/b2b/pack/delete-pack/{{ pack.id }}" class="btn-danger">Yes</a>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
                         </tbody>
                     </table>
+
+                    <!-- Modal -->
+
+
                 </div>
 
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
 {% endblock %}
