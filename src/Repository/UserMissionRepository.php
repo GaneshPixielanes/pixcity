@@ -26,9 +26,11 @@ class UserMissionRepository extends ServiceEntityRepository
     public function findOngoingMissions($user)
     {
         return $this->createQueryBuilder('m')
-                        ->where('m.status = :created OR m.status = :ongoing')
+                        ->where('m.status = :created OR m.status = :ongoing OR m.status = :cancel_requested OR m.status = :terimate_requested')
                         ->setParameter('created',MissionStatus::CREATED)
                         ->setParameter('ongoing',MissionStatus::ONGOING)
+                        ->setParameter('cancel_requested',MissionStatus::CANCEL_REQUEST_INITIATED)
+                        ->setParameter('terimate_requested',MissionStatus::TERMINATE_REQUEST_INITIATED)
                         ->getQuery()
                         ->getResult();
     }

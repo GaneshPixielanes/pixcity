@@ -25,7 +25,10 @@ class ClientInfoType extends AbstractType
             ->add('address', TextType::class)
             ->add('postalCode', TextType::class)
             ->add('city', TextType::class)
-            ->add('company_creation_date', DateType::class)
+            ->add('company_creation_date', DateType::class,[
+                'widget' => 'choice',
+                'years' => range(date('Y') - 100, date('Y'))
+            ])
             ->add('companyType', TextType::class)
         ;
     }

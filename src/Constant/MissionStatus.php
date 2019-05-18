@@ -9,6 +9,8 @@ class MissionStatus
     const COMPLETED = "completed";
     const TERMINATED = "terminated";
     const CANCELLED = "cancelled";
+    const CANCEL_REQUEST_INITIATED = "cancel_request_cm";
+    const TERMINATE_REQUEST_INITIATED = "terminate_request_cm";
 
     /**
      * @return array label => value
@@ -19,7 +21,9 @@ class MissionStatus
             //"label.cardstatus.saved" => CardStatus::SAVED,
             "b2b.label.missionstatus.ongoing" => MissionStatus::ONGOING,
             "b2b.label.missionstatus.terminated" => MissionStatus::TERMINATED,
+            "b2b.label.missionstatus.terminated" => MissionStatus::TERMINATE_REQUEST_INITIATED,
             "b2b.label.missionstatus.completed" => MissionStatus::COMPLETED,
+            "b2b.label.missionstatus.cancelled" => MissionStatus::CANCEL_REQUEST_INITIATED,
             "b2b.label.missionstatus.cancelled" => MissionStatus::CANCELLED,
         ];
     }
