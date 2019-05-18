@@ -12,6 +12,7 @@ parameters:
     en_sender: '%env(EMAIL_SENDER)%'
     email_sender_name: '%env(EMAIL_SENDER_NAME)%'
     email_admin: '%env(EMAIL_ADMIN)%'
+    banner_directory: '%kernel.project_dir%/public/uploads/pack/banner'
 
 services:
     # default configuration for services in *this* file

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserPacksRepository")
@@ -45,8 +46,15 @@ class UserPacks
      */
     private $userBasePrice;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $packPhotos;
 
     /**
+     * @var \DateTime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -71,26 +79,14 @@ class UserPacks
      */
     private $deleted;
 
-
-
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Skill", inversedBy="userPacks")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity="App\Entity\Skill", inversedBy="userPacks", cascade={"persist", "remove"})
      */
     private $packSkill;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserPackMedia", mappedBy="userPack")
-     */
-    private $userPackMedia;
 
     public function __construct()
     {
         $this->userPackMedia = new ArrayCollection();
-    }
-
-    public function __toString() {
-        return $this->getTitle();
     }
 
     public function getId(): ?int
@@ -253,6 +249,11 @@ class UserPacks
 
         return $this;
     }
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserPackMedia", mappedBy="userPack",cascade={"persist"}))
+     */
+    private $userPackMedia;
 
     /**
      * @return Collection|UserPackMedia[]

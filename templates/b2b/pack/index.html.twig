@@ -1,28 +1,49 @@
 {% extends 'base.html.twig' %}
 
-
-
 {% block body %}
-    <div class="container">
-        <table class="table">
-            <thead>
-                <th>Pack</th>
-                <th>Action</th>
-            </thead>
-            <tbody>
-                {% for pack in packs %}
-                    <tr>
-                        <td>
-                            {{ pack.title }}
-                        </td>
-                        <td>
-                            <a class="btn btn-sm btn-success" href="{{ url('b2b_mission_create',{'pack':pack.id}) }}">Choose this pack</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="container" style="margin-top:100px">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>Pack List Page</h1>
+                </div>
+                <div class="col-md-6">
+                    <a href="{{ path('b2b_pack_create') }}" class="btn btn-md btn-primary float-right">New Pack</a>
+                </div>
+            </div>
 
-        <a href="{{ path('b2b_pack_create') }}">Create A Pack +</a>
+
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <td>Title</td>
+                                <td>Description</td>
+                                <td>Price</td>
+                                <td>Edit / View</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for pack in packs %}
+                            <tr>
+                                <td>{{ pack.id }}</td>
+                                <td>{{ pack.title }}</td>
+                                <td>{{ pack.description }}</td>
+                                <td>{{ pack.userBasePrice }}</td>
+                                <td>
+                                    <a href="{{ path('b2b_pack_view',{'id': pack.id}) }}" class="btn btn-sm btn-warning">View</a>
+                                    <a href="{{ path('b2b_pack_edit',{'id': pack.id}) }}" class="btn btn-sm btn-info">Edit</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
     </div>
 {% endblock %}

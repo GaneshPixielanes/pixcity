@@ -4,6 +4,7 @@ namespace App\Form\B2B;
 
 use App\Entity\Skill;
 use App\Entity\UserPacks;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -25,8 +26,8 @@ class PackType extends AbstractType
             ))
             ->add('title',TextType::class,['label' => 'Title'])
             ->add('description',TextareaType::class,['label' => 'Description'])
-            ->add('userBasePrice',TextType::class,['label' => 'Price'])
-            ->add('bannerImage',FileType::class,['label' => 'Cover Image'])
+            ->add('userBasePrice',TextType::class,['label' => 'Price €'])
+            ->add('bannerImage',TextType::class,['label' => 'Cover Image'])
         ;
     }
 
