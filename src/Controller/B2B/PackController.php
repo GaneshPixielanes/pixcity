@@ -175,7 +175,7 @@ class PackController extends Controller
 
         $page->setIndexed(false);
 
-        $images = $pack->getUserPackMedia();
+        $images = $user->getCommunityMedia();
 
         return $this->render('b2b/pack/form.html.twig',[
             'form' => $form->createView(),
