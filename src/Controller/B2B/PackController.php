@@ -32,7 +32,9 @@ class PackController extends Controller
      */
     public function index(UserPacksRepository $packRepo)
     {
-        $packs = $packRepo->findBy(['deleted' => null ],['id' => 'DESC']);
+        $user = $this->getUser();
+
+        $packs = $packRepo->findByUser($user);
 
         return $this->render('b2b/pack/index.html.twig', [
             'packs' => $packs,

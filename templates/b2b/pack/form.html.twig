@@ -116,7 +116,7 @@
             {{ form_row(form.title) }}
             {{ form_row(form.description) }}
             {{ form_row(form.userBasePrice) }}
-
+            <span> <p id="actula_value"></p></span>
 {#            {% for image in images %}#}
 {#                <img src="/uploads/community_media/{{ user.id }}/{{ image.name }}" alt="1">#}
 {#            {% endfor %}#}
@@ -154,7 +154,8 @@
             var actual_price = $("#pack_userBasePrice").val();
             var after_price = parseInt(actual_price) * 20 / 100;
             console.log(after_price);
-            $("#pack_userBasePrice").val(parseInt(actual_price) + parseInt(after_price));
+            var total = parseInt(actual_price) + parseInt(after_price);
+            $("#actula_value").text('The Value after 20% added '+total);
         });
 
         function readURL(input) {
