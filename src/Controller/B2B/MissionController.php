@@ -31,8 +31,8 @@ class MissionController extends AbstractController
 
 //        $missions = $this->getUser()->getUserMission();
         $missions['ongoing'] = $userMissionRepo->findOngoingMissions($this->getUser());
-        $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED]);
-        $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED]);
+        $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()]);
+        $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()]);
 
         return $this->render('b2b/mission/index.html.twig', [
             'missions' => $missions,
