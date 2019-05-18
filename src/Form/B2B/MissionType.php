@@ -48,6 +48,7 @@ class MissionType extends AbstractType
             ->add('referencePack', EntityType::class,[
                 'class' => UserPacks::class,
                 'multiple' => false,
+                'choices' => $options['user']->getUserPacks(),
                 'expanded' => true,
                 'attr' => ['class' => 'select-user-pack']
             ])
@@ -100,7 +101,8 @@ class MissionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UserMission::class,
-            'region' => null
+            'region' => null,
+            'user' => null
         ]);
     }
 }

@@ -1,20 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SearchControllerPhpController!{% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/wamp64/www/pixcity-staging/src/Controller/B2B/Client/SearchControllerPhpController.php'|file_link(0) }}">src/Controller/B2B/Client/SearchControllerPhpController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/wamp64/www/pixcity-staging/templates/b2_b/client/search_controller_php/index.html.twig'|file_link(0) }}">templates/b2_b/client/search_controller_php/index.html.twig</a></code></li>
-    </ul>
+<div class="row" style="margin-top:100px;margin-left:10px;">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                {{ form_row(form.search) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.region) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.skill) }}
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                {% for user in users %}
+                    <div class="col-md-4 text-center" style="padding:5px">
+                        <img src="{{ user.getAvatarUrl() }}" style="height:150px;width:150px;" />
+                        <div class="row">
+                            <h4>{{ user }}</h4>
+                            <p class="col-md-12">
+                                {{ user.userRegion.first.name }}
+                            </p>
+                            <p class="col-md-12">
+                                Pack Influencer:
+                            </p>
+                            {% if user.userPacks is defined and user.userPacks is not empty %}
+                                <p class="col-md-12">
+                                    Pack Photo: {{ user.userPacks.first.packPhotos }}
+                                </p>
+                            {% endif %}
+                            <p class="col-md-12">
+                                <a href="#" class="btn btn-primary btn-lg">DECOUVRIR TOUS SES PACKS</a>
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

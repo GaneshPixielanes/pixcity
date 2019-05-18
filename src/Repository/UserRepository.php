@@ -196,6 +196,11 @@ class UserRepository extends ServiceEntityRepository
             if (isset($filters["pixie"])) {
                 $qb = $qb->andWhere("u.id = :pixie")->setParameter("pixie", $filters["pixie"]);
             }
+
+            if(isset($filters['roles']))
+            {
+                $qb = $qb->andWhere("u.roles LIKE :roles")->setParameter("roles", '%'.$filters["roles"].'%');
+            }
         }
 
         return $qb;
