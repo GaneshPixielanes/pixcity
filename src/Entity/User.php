@@ -189,11 +189,7 @@ class User implements UserInterface, EquatableInterface
     private $likes;
 
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Skill")
-     * @ORM\JoinTable(name="pxl_b2b_skills_users")
-     */
-    private $userSkills;
+
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CardCollection", mappedBy="user", cascade={"persist"}, orphanRemoval=true)
@@ -354,7 +350,11 @@ class User implements UserInterface, EquatableInterface
          */
         private $communityMedia;
 
-
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Skill")
+     * @ORM\JoinTable(name="pxl_b2b_skills_users")
+     */
+    private $userSkills;
 
     //--------------------------------------------------------------
     // Constructor
@@ -1424,7 +1424,7 @@ class User implements UserInterface, EquatableInterface
         return $this;
     }
 
-    public function getUserPacks(): ?UserPacks
+    public function getUserPacks(): ?Collection
     {
         return $this->userPacks;
     }

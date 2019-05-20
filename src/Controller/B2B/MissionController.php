@@ -49,7 +49,7 @@ class MissionController extends AbstractController
         $regions = $this->getUser()->getUserRegion();
 //        $regions = $packRepo->find($pack)->get
 //        $form = $this->createForm(MissionType::class, $mission,['region' => $this->getUser()->getUserRegion()]);
-        $form = $this->createForm(MissionType::class, $mission,['region' => $regions]);
+        $form = $this->createForm(MissionType::class, $mission,['region' => $regions, 'user' => $this->getUser()]);
 
         $form->handleRequest($request);
 
@@ -76,11 +76,11 @@ class MissionController extends AbstractController
             $em->persist($mission);
             $em->flush();
             #Move banner and brief files
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()))
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()) && $mission->getBannerImage() != '')
             {
                 $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBannerImage(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBannerImage());
             }
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()))
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()) && $mission->getBriefFiles() != '')
             {
                 $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBriefFiles(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBriefFiles());
             }
@@ -115,7 +115,7 @@ class MissionController extends AbstractController
     {
         $mission = $userMissionRepo->find($id);
         $regions = $mission->getReferencePack()->getUser()->getUserRegion();
-        $form = $this->createForm(MissionType::class, $mission,['region' => $regions]);
+        $form = $this->createForm(MissionType::class, $mission,['region' => $regions, 'user' => $this->getUser()]);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())

@@ -25,10 +25,9 @@ class ClientInfo
 
     /**
      * @Assert\NotBlank()
-     * @Assert\Length(
-     *      min = 14,
-     *      max = 14,
-     *      minMessage = "SIRET must be{{ limit }} characters long"
+     * @Assert\Regex(
+     *     pattern = "/([0-9]){14,14}$/",
+     *     message = "Invalid SIRET provided"
      * )
      * @ORM\Column(type="string", length=255, nullable=true)
      */

@@ -1,11 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
 
 {% block title %}Hello!{% endblock %}
 
 {% block body %}
+{% if app.user is defined %}
 <h1> Hi {{ app.user.firstName }}</h1>
     <p>
         We are working on client pages.
     </p>
+{% else %}
 
+<h1>Thanks for registering</h1>
+{% endif %}
 {% endblock %}
