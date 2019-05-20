@@ -24,8 +24,8 @@ class PackType extends AbstractType
                 'choice_label' => 'name',
                 'expanded' => true
             ))
-            ->add('title',TextType::class,['label' => 'Title'])
-            ->add('description',TextareaType::class,['label' => 'Description'])
+            ->add('title',TextType::class,['label' => 'Title','attr' => ['maxlength' => '64']])
+            ->add('description',TextareaType::class,['label' => 'Description','attr' => ['maxlength' => '1200']])
             ->add('userBasePrice',TextType::class,['label' => 'Price €'])
             ->add('bannerImage',TextType::class,['label' => 'Cover Image'])
         ;

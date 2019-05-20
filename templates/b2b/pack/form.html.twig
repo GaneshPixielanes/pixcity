@@ -116,10 +116,13 @@
             {{ form_row(form.title) }}
             {{ form_row(form.description) }}
             {{ form_row(form.userBasePrice) }}
+
             <span> <p id="actula_value"></p></span>
-{#            {% for image in images %}#}
-{#                <img src="/uploads/community_media/{{ user.id }}/{{ image.name }}" alt="1">#}
-{#            {% endfor %}#}
+            {% for image in images %}
+                <label for=""><img src="/uploads/community_media/{{ user.id }}/{{ image.name }}" class="img-thumbnail img-check">
+                <input type="checkbox" name="cm_images[]" value="/uploads/community_meida/{{ app.user.id }}/{{ image.name }}" class="hidden" checked="checked"></label>
+            {% endfor %}
+
 
             <div class="dropzone" style="margin-top: 40px">
                 <h3>Images</h3>
