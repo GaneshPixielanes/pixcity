@@ -33,6 +33,7 @@
                 <div class="row">
                     <div class="col-6">
                         {{ form_row(form.bannerImage) }}
+                        <label>Banner Image:</label><br/>
                         <input type="file" id="banner-image-upload" />
                     </div>
                     <div class="col-6">
@@ -45,6 +46,7 @@
                 </div>
             </div>
             <div class="form-group">
+                <label>Brief File Upload:</label><br/>
                 {% if mission is defined and mission.briefFiles is not null %}
                 <table class="table table-striped">
                     <tr>
@@ -101,6 +103,7 @@
             </div>
             <div class="form-group">
                 {{ form_row(form.missionBasePrice) }}
+                <div class="client-price {% if mission is not defined %}d-none{% endif %}">Client Price is <span class="price">{% if mission is defined %} {{ mission.userMissionPayment.clientPrice }}  {% endif %}</span></div>
             </div>
             <div class="form-group">
                 {{ form_row(form.axaInsurance) }}
@@ -279,16 +282,19 @@
             });
         });
 
-        // $(document).on('click','.pack-images',function (e) {
-        //     $.ajax('/api/pack/import-image-to-mission',{
-        //        method: 'POST',
-        //        data: {'filename':$(this).val()},
-        //        success: function(result)
-        //        {
-        //             console.log(result);
-        //        }
-        //     });
-        // })
+        $('#mission_missionBasePrice').on('keyup', function()
+        {
+            var price = $('#mission_missionBasePrice').val();
+            if(price == NaN)
+            {
+                alert('Price cannot be calculated');
+            }
+            else
+            {
+                $('.client-price').removeClass('d-none');
+                $('.price').html((parseInt($('#mission_missionBasePrice').val()) + (price* (20/100) )));
+            }
+        })
     });
 </script>
 {% endblock %}

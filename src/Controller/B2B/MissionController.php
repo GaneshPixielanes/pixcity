@@ -76,11 +76,11 @@ class MissionController extends AbstractController
             $em->persist($mission);
             $em->flush();
             #Move banner and brief files
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()))
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()) && $mission->getBannerImage() != '')
             {
                 $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBannerImage(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBannerImage());
             }
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()))
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()) && $mission->getBriefFiles() != '')
             {
                 $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBriefFiles(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBriefFiles());
             }

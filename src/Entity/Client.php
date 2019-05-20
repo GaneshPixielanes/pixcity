@@ -8,10 +8,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
  * @ORM\Table(name="pxl_b2b_client")
+ * * @UniqueEntity(
+ *     fields={"email"},
+ *     message="error.email.exist"
+ * )
  */
 class Client implements UserInterface
 {
@@ -41,21 +46,29 @@ class Client implements UserInterface
     private $plainPassword;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=255)
      */
     private $password;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $firstName;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lastName;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $company;

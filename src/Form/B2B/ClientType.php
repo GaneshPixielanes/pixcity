@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ClientType extends AbstractType
 {
@@ -30,14 +31,16 @@ class ClientType extends AbstractType
             ->add('company', TextType::class,[
                 'label'=>'Company'
             ])
-            ->add('clientInfo', ClientInfoType::class)
+            ->add('clientInfo', ClientInfoType::class,[
+                'constraints' => array(new Valid())
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Client::class,
+            'data_class' => Client::class
         ]);
     }
 }
