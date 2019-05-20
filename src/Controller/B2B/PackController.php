@@ -19,9 +19,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/b2b/pack", name="b2b_pack_")
+ * @Security("has_role('ROLE_PIXIE')")
  */
 class PackController extends Controller
 {
