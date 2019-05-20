@@ -43,14 +43,24 @@
             <div class="navbar">
                 <div class="navbar-inner">
                     <ul class="nav nav-tabs">
-                        <li class="tab1 active"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                        <p></p>
+
+                        {%  if '/city-maker/compte/community/manager' not in app.request.headers.get('referer') %}
+                            <li class="tab1 active"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                        {% else %}
+                            <li class="tab1"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                        {% endif %}
                         <li class="tab2"><a href="#connexion-tab" data-noautscroll="true" data-toggle="tab">Connexion</a></li>
                         <li class="tab3"><a href="#regions-tab" data-noautscroll="true" data-toggle="tab">Régions</a></li>
                         <li class="tab4"><a href="#jaime-jaimepas-tab" data-noautscroll="true" data-toggle="tab" class="disable" disabled="">Catégories favorites</a></li>
                         <li class="tab5"><a href="#remuneration-tab" data-noautscroll="true" data-toggle="tab">Rémunération</a></li>
                         <li class="tab6"><a href="#notifications-tab" data-noautscroll="true" data-toggle="tab">Notifications</a></li>
                         <li class="tab7"><a href="#security-tab" data-noautscroll="true" data-toggle="tab">Sécurité et confidentialité</a></li>
-                        <li class="tab8"><a href="#community-manager-tab" data-noautscroll="true" data-toggle="tab">Espace Services</a></li>
+                        {%  if '/city-maker/compte/community/manager' in app.request.headers.get('referer') %}
+                            <li class="tab8 active"><a href="#community-manager-tab" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
+                        {% else %}
+                            <li class="tab8"><a href="#community-manager-tab" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -61,7 +71,12 @@
             <div class="tab-content" id="pixie-parametres">
 
                 <!-- GENERAL -->
-                <div class="tab-pane active tp1" id="general-tab">
+                    {%  if '/city-maker/compte/community/manager' not in app.request.headers.get('referer') %}
+                        <div class="tab-pane active tp1" id="general-tab">
+                    {% else %}
+                            <div class="tab-pane tp1" id="general-tab">
+                    {% endif %}
+
                     <div class="row">
 
                         <div class="col-md-3">
@@ -320,7 +335,12 @@
                 </div>
 
                 <!-- community Manager -->
-                <div class="tab-pane tp8" id="community-manager-tab">
+                    {%  if '/city-maker/compte/community/manager' in app.request.headers.get('referer') %}
+                        <div class="tab-pane active tp8" id="community-manager-tab">
+                    {% else  %}
+                        <div class="tab-pane tp8" id="community-manager-tab">
+                    {% endif %}
+
                     <div class="row">
                         <div class="col-md-12 maj">Skills</div>
                         {{ form_widget(form.userSkill) }}

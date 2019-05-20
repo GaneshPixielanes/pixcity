@@ -46,6 +46,7 @@ class PackController extends Controller
      */
     public function create(Request $request,UserPacksRepository $packRepo,Filesystem $filesystem)
     {
+
         $user = $this->getUser();
 
         $pack = new UserPacks();
@@ -71,8 +72,6 @@ class PackController extends Controller
 
                 $file = trim($file);
 
-                $em = $this->getDoctrine()->getManager();
-
                 $mediaEntity = new UserPackMedia();
                 $mediaEntity->setName($file);
                 $mediaEntity->setUserPack($pack);
@@ -86,6 +85,26 @@ class PackController extends Controller
 
                 }
 
+
+            }
+
+
+
+            foreach ($request->get('cm_images') as $key => $item){
+                $image = explode('/',$item);
+
+                $mediaEntity = new UserPackMedia();
+                $mediaEntity->setName($image[4]);
+                $mediaEntity->setUserPack($pack);
+
+                $em->persist($mediaEntity);
+                $em->flush();
+
+                if($filesystem->exists('uploads/community_media/'.$user->getId().'/'.$image[4]))
+                {
+                    $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$image[4],'uploads/pack/'.$pack->getId().'/'.$image[4]);
+
+                }
 
             }
 
@@ -162,6 +181,23 @@ class PackController extends Controller
 
                     }
 
+
+                }
+
+            }
+
+            foreach ($request->get('cm_images') as $key => $image){
+
+                $mediaEntity = new UserPackMedia();
+                $mediaEntity->setName($image);
+                $mediaEntity->setUserPack($pack);
+
+                $em->persist($mediaEntity);
+                $em->flush();
+
+                if($filesystem->exists('uploads/community_media/'.$image))
+                {
+                    $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$file,'uploads/pack/'.$pack->getId().'/'.$image);
 
                 }
 
@@ -261,7 +297,7 @@ class PackController extends Controller
             foreach($pack->getUserPackMedia() as $media)
             {
                 $obj['name'] = $media->getName();
-                $obj['size'] = filesize('uploads/pack/'.$pack->getId().'/'.$media->getName());
+                $obj['size'] = '1024';
                 $obj['path'] = '/uploads/pack/'.$pack->getid().'/'.$media->getName();
                 $obj['id'] = $user->getId().'/'.$pack->getid();
                 $result[] = $obj;
