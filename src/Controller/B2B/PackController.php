@@ -186,18 +186,20 @@ class PackController extends Controller
 
             }
 
-            foreach ($request->get('cm_images') as $key => $image){
+            foreach ($request->get('cm_images') as $key => $item){
+
+                $image = explode('/',$item);
 
                 $mediaEntity = new UserPackMedia();
-                $mediaEntity->setName($image);
+                $mediaEntity->setName($image[4]);
                 $mediaEntity->setUserPack($pack);
 
                 $em->persist($mediaEntity);
                 $em->flush();
 
-                if($filesystem->exists('uploads/community_media/'.$image))
+                if($filesystem->exists('uploads/community_media/'.$user->getId().'/'.$image[4]))
                 {
-                    $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$file,'uploads/pack/'.$pack->getId().'/'.$image);
+                    $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$image[4],'uploads/pack/'.$pack->getId().'/'.$image[4]);
 
                 }
 
@@ -322,15 +324,13 @@ class PackController extends Controller
 
         $pack = $media[0]->getUserPack();
 
-        unlink('uploads/pack/'.$pack->getId().'/'.$request->get('name'));
-
         $em->remove($media[0]);
 
         $em->flush();
 
+        unlink('/uploads/pack/'.$pack->getId().'/'.$request->get('name'));
 
         exit;
-
 
     }
 
