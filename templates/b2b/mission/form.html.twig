@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
@@ -34,7 +34,7 @@
                     <div class="col-6">
                         {{ form_row(form.bannerImage) }}
                         <label>Banner Image:</label><br/>
-                        <input type="file" id="banner-image-upload" />
+                        <input type="file" id="banner-image-upload" accept=".jpg, .jpeg, .png" data-upload-type="banner"/>
                     </div>
                     <div class="col-6">
                         {% if mission is defined %}
@@ -57,7 +57,7 @@
                 </table>
                 {% endif %}
                 {{ form_row(form.briefFiles) }}
-                <input type="file" id="brief-file-upload" />
+                <input type="file" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief"/>
             </div>
 
             <div class="form-group">
@@ -85,7 +85,7 @@
                         {% include 'b2b/shared/pack-images.html.twig' with {'images': mission.referencePack.userPackMedia, 'selectedImages':mission.missionMedia} %}
                     {% endif %}
                 </div>
-                <div id="dropzone" class="image-upload-zone" style="margin:10px;">
+                <div id="dropzone" class="image-upload-zone" style="margin:10px;" accepted-files=".jpg, .jpeg, .png">
                     <h4 class="text-center" style="vertical-align: middle;">Drop the files here/Click here to upload</h4>
                 </div>
             </div>
@@ -185,6 +185,7 @@
             url: "/community-manager/mission/upload",
             addRemoveLinks: true,
             dictDefaultMessage: "Drop files here or<br>click to upload...",
+            acceptedFiles: $(this).attr('accepted-files'),
             success: function (file, response) {
                 var prototype = $('#mission_missionMedia').attr('data-prototype');
                 var index = $('#mission-images-display').find('input').length;
