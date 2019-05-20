@@ -13,13 +13,13 @@
                 {# TODO: Formulate a better logic for displaying files that are not chosen while editing #}
                 {% if sel == false %}
                     <div class="col-md-2" style="margin:5px">
-                        <img src="/uploads/packs/{{ image.userPack.id }}/{{ image.name }}" style="height:150px;width:150px" />
+                        <img src="/uploads/pack/{{ image.userPack.id }}/{{ image.name }}" style="height:150px;width:150px" />
                         <input type="checkbox" value="{{ image.name }}" class="pack-images"/>
                     </div>
                 {% endif %}
              {% else %}
                  <div class="col-md-2" style="margin:5px">
-                     <img src="/uploads/packs/{{ image.userPack.id }}/{{ image.name }}" style="height:150px;width:150px" />
+                     <img src="/uploads/pack/{{ image.userPack.id }}/{{ image.name }}" style="height:150px;width:150px" />
                      <input type="checkbox" value="{{ image.name }}" class="pack-images" checked="checked"/>
                  </div>
             {% endif %}
