@@ -186,6 +186,7 @@
             addRemoveLinks: true,
             dictDefaultMessage: "Drop files here or<br>click to upload...",
             acceptedFiles: $(this).attr('accepted-files'),
+            maxFilesize: 5,
             success: function (file, response) {
                 var prototype = $('#mission_missionMedia').attr('data-prototype');
                 var index = $('#mission-images-display').find('input').length;

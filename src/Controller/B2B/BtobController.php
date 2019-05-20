@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/community-manager/", name="b2b_community_manager_")
+ * @Security("has_role('ROLE_PIXIE')")
  */
 class BtobController extends AbstractController{
 
