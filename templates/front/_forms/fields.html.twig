@@ -331,7 +331,7 @@
     {% for region in form.vars.data %}
         {% set ids = ids | merge([{'id' : region.id}])  %}
     {% endfor %}
-
+    {{ dump(form.vars.data) }}
     <select  name="{{ form.vars.full_name }}[]" id="user_userRegion" multiple="multiple" style="width: 75%">
 
         {% for region in form.vars.choices %}
