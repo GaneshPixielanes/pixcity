@@ -3,7 +3,7 @@
 {% block title %}Hello!{% endblock %}
 
 {% block body %}
-{% if app.user is defined %}
+{% if app.user is defined and app.user is not null%}
 <h1> Hi {{ app.user.firstName }}</h1>
     <p>
         We are working on client pages.
