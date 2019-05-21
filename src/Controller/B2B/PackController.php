@@ -19,9 +19,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/b2b/pack", name="b2b_pack_")
+ * @Security("has_role('ROLE_PIXIE')")
  */
 class PackController extends Controller
 {
@@ -89,24 +91,28 @@ class PackController extends Controller
             }
 
 
+            if($request->get('cm_images')){
 
-            foreach ($request->get('cm_images') as $key => $item){
-                $image = explode('/',$item);
+                foreach ($request->get('cm_images') as $key => $item){
+                    $image = explode('/',$item);
 
-                $mediaEntity = new UserPackMedia();
-                $mediaEntity->setName($image[4]);
-                $mediaEntity->setUserPack($pack);
+                    $mediaEntity = new UserPackMedia();
+                    $mediaEntity->setName($image[4]);
+                    $mediaEntity->setUserPack($pack);
 
-                $em->persist($mediaEntity);
-                $em->flush();
+                    $em->persist($mediaEntity);
+                    $em->flush();
 
-                if($filesystem->exists('uploads/community_media/'.$user->getId().'/'.$image[4]))
-                {
-                    $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$image[4],'uploads/pack/'.$pack->getId().'/'.$image[4]);
+                    if($filesystem->exists('uploads/community_media/'.$user->getId().'/'.$image[4]))
+                    {
+                        $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$image[4],'uploads/pack/'.$pack->getId().'/'.$image[4]);
+
+                    }
 
                 }
 
             }
+
 
 
             return $this->redirectToRoute('b2b_pack_list');
@@ -186,24 +192,29 @@ class PackController extends Controller
 
             }
 
-            foreach ($request->get('cm_images') as $key => $item){
+            if($request->get('cm_images')){
 
-                $image = explode('/',$item);
+                foreach ($request->get('cm_images') as $key => $item){
 
-                $mediaEntity = new UserPackMedia();
-                $mediaEntity->setName($image[4]);
-                $mediaEntity->setUserPack($pack);
+                    $image = explode('/',$item);
 
-                $em->persist($mediaEntity);
-                $em->flush();
+                    $mediaEntity = new UserPackMedia();
+                    $mediaEntity->setName($image[4]);
+                    $mediaEntity->setUserPack($pack);
 
-                if($filesystem->exists('uploads/community_media/'.$user->getId().'/'.$image[4]))
-                {
-                    $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$image[4],'uploads/pack/'.$pack->getId().'/'.$image[4]);
+                    $em->persist($mediaEntity);
+                    $em->flush();
+
+                    if($filesystem->exists('uploads/community_media/'.$user->getId().'/'.$image[4]))
+                    {
+                        $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$image[4],'uploads/pack/'.$pack->getId().'/'.$image[4]);
+
+                    }
 
                 }
 
             }
+
 
 
             return $this->redirectToRoute('b2b_pack_list');

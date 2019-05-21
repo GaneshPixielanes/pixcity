@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
@@ -154,11 +154,13 @@
     <script>
 
         $("#pack_userBasePrice").on('change',function(){
+
             var actual_price = $("#pack_userBasePrice").val();
             var after_price = parseInt(actual_price) * 20 / 100;
-            console.log(after_price);
+
             var total = parseInt(actual_price) + parseInt(after_price);
             $("#actula_value").text('The Value after 20% added '+total);
+
         });
 
         function readURL(input) {
