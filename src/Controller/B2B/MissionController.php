@@ -3,8 +3,11 @@
 namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
+use App\Entity\ClientMissionProposal;
+use App\Entity\Option;
 use App\Entity\UserMission;
 use App\Form\B2B\MissionType;
+use App\Repository\ClientMissionProposalRepository;
 use App\Repository\PackRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
@@ -31,8 +34,8 @@ class MissionController extends AbstractController
 
 //        $missions = $this->getUser()->getUserMission();
         $missions['ongoing'] = $userMissionRepo->findOngoingMissions($this->getUser());
-        $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()]);
-        $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()]);
+        $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()],[],['id' => 'DESC']);
+        $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()],[],['id' => 'DESC']);
 
         return $this->render('b2b/mission/index.html.twig', [
             'missions' => $missions,
@@ -42,24 +45,38 @@ class MissionController extends AbstractController
     /**
      * @Route("create", name="create")
      */
-    public function create(Request $request, Filesystem $filesystem)
+    public function create(Request $request, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo)
     {
+
         $mission = new UserMission();
         # Get the CM associated with the pack and regions thus associated
         $regions = $this->getUser()->getUserRegion();
+        $proposals = $clientMissionProposalRepo->findBy(['user' => $this->getUser()]);
+        if(count($proposals) == 0)
+        {
+            return $this->redirect('/community-manager/mission/list');
+        }
+
+        $options = $this->getDoctrine()->getRepository(Option::class);
+        $tax = $options->findBy(['slug' => 'tax']);
+        $margin = $options->findBy(['slug' => 'margin']);
 //        $regions = $packRepo->find($pack)->get
 //        $form = $this->createForm(MissionType::class, $mission,['region' => $this->getUser()->getUserRegion()]);
-        $form = $this->createForm(MissionType::class, $mission,['region' => $regions, 'user' => $this->getUser()]);
+        $form = $this->createForm(MissionType::class, $mission,[
+            'region' => $regions,
+            'user' => $this->getUser(),
+            'proposals' => $proposals
+        ]);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
             $price = $mission->getMissionBasePrice();
-            $clientPrice = $price + ($price * 0.20);
-            $tax = 10;
+            $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
+            $tax = $tax[0]->getValue();
             $transactionFee = 0;
-            $total =  $clientPrice + ($clientPrice * (1/$tax)) + $transactionFee;
+            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
 
             $mission->setUser($this->getUser());
@@ -104,18 +121,30 @@ class MissionController extends AbstractController
 
         return $this->render('b2b/mission/form.html.twig',
             [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'margin' => $margin[0]->getValue()
             ]);
     }
 
     /**
      * @Route("edit/{id}",name="edit")
      */
-    public function edit($id, Request $request,UserMissionRepository $userMissionRepo, Filesystem $filesystem)
+    public function edit($id, Request $request,UserMissionRepository $userMissionRepo, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo)
     {
         $mission = $userMissionRepo->find($id);
+
+        if(is_null($mission))
+        {
+            return $this->redirect('/community-manager/mission/list');
+        }
+        $options = $this->getDoctrine()->getRepository(Option::class);
+        $tax = $options->findBy(['slug' => 'tax']);
+        $margin = $options->findBy(['slug' => 'margin']);
         $regions = $mission->getReferencePack()->getUser()->getUserRegion();
-        $form = $this->createForm(MissionType::class, $mission,['region' => $regions, 'user' => $this->getUser()]);
+        $form = $this->createForm(MissionType::class, $mission,['region' => $regions,
+            'user' => $this->getUser(),
+            'proposals' => $clientMissionProposalRepo->findBy(['user' => $this->getUser()])
+        ]);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
@@ -123,10 +152,10 @@ class MissionController extends AbstractController
             $em = $this->getDoctrine()->getManager();
 
             $price = $mission->getMissionBasePrice();
-            $clientPrice = $price + ($price * 0.20);
-            $tax = 10;
+            $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
+            $tax = $tax[0]->getValue();
             $transactionFee = 0;
-            $total =  $clientPrice + ($clientPrice * (1/$tax)) + $transactionFee;
+            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
 
             $mission->setUser($this->getUser());
@@ -140,11 +169,11 @@ class MissionController extends AbstractController
             $em->flush();
 
             #Move banner and brief files
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()))
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()) && $mission->getBannerImage() != '')
             {
                 $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBannerImage(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBannerImage());
             }
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()))
+            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()) && $mission->getBriefFiles() != '')
             {
                 $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBriefFiles(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBriefFiles());
             }
@@ -168,7 +197,8 @@ class MissionController extends AbstractController
         return $this->render('b2b/mission/form.html.twig',
             [
                 'form' => $form->createView(),
-                'mission' => $mission
+                'mission' => $mission,
+                'margin' => $margin[0]->getValue()
             ]);
     }
 

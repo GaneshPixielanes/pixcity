@@ -57,9 +57,15 @@ class Pack
      */
     private $admin;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ClientMissionProposal", mappedBy="pack")
+     */
+    private $clientMissionProposals;
+
     public function __construct()
     {
         $this->clientMissionProposalsPack = new ArrayCollection();
+        $this->clientMissionProposals = new ArrayCollection();
     }
 
     public function __toString() {
@@ -180,6 +186,37 @@ class Pack
     public function setAdmin(?Admin $admin): self
     {
         $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientMissionProposal[]
+     */
+    public function getClientMissionProposals(): Collection
+    {
+        return $this->clientMissionProposals;
+    }
+
+    public function addClientMissionProposal(ClientMissionProposal $clientMissionProposal): self
+    {
+        if (!$this->clientMissionProposals->contains($clientMissionProposal)) {
+            $this->clientMissionProposals[] = $clientMissionProposal;
+            $clientMissionProposal->setPack($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientMissionProposal(ClientMissionProposal $clientMissionProposal): self
+    {
+        if ($this->clientMissionProposals->contains($clientMissionProposal)) {
+            $this->clientMissionProposals->removeElement($clientMissionProposal);
+            // set the owning side to null (unless already changed)
+            if ($clientMissionProposal->getPack() === $this) {
+                $clientMissionProposal->setPack(null);
+            }
+        }
 
         return $this;
     }

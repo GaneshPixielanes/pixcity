@@ -8,7 +8,13 @@
                     <h1>Mission List Page</h1>
                 </div>
                 <div class="col-md-6">
-                    <a href="{{ path('b2b_mission_create') }}" class="btn btn-md btn-primary float-right">New Mission</a>
+                    {% if app.user.missionProposalsToCityMaker | length > 0%}
+                        <a href="{{ path('b2b_mission_create') }}" class="btn btn-md btn-primary float-right">New Mission</a>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            There are no proposals for you at this moment hence mission cannot be created
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 

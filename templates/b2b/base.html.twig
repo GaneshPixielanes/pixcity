@@ -30,16 +30,22 @@
         left: auto !important;
         right: 0px;
     }
+
+    .error{
+        color: darkred;
+    }
 </style>
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
 
-        <a class="navbar-brand" href="#">Pix City Client</a>
+        <a class="navbar-brand" href="#">Pix City</a>
         <!-- Links -->
+        {% if app.user is defined and app.user is not null %}
         <ul class="nav navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="{{ url('front_logout') }}">Logout</a>
             </li>
         </ul>
+        {% endif %}
 </nav>
 <hr/>
 {% block body %}{% endblock %}
