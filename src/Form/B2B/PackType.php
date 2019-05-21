@@ -6,6 +6,8 @@ use App\Entity\Skill;
 use App\Entity\UserPacks;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -26,7 +28,7 @@ class PackType extends AbstractType
             ))
             ->add('title',TextType::class,['label' => 'Title','attr' => ['maxlength' => '64']])
             ->add('description',TextareaType::class,['label' => 'Description','attr' => ['maxlength' => '1200']])
-            ->add('userBasePrice',TextType::class,['label' => 'Price €'])
+            ->add('userBasePrice',IntegerType::class,['label' => 'Price €'])
             ->add('bannerImage',TextType::class,['label' => 'Cover Image'])
         ;
     }

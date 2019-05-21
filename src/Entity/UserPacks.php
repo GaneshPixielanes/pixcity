@@ -261,6 +261,21 @@ class UserPacks
     private $userPackMedia;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $base_tax;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $margin;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $total_price;
+
+    /**
      * @return Collection|UserPackMedia[]
      */
     public function getUserPackMedia(): Collection
@@ -287,6 +302,42 @@ class UserPacks
                 $userPackMedium->setUserPack(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBaseTax(): ?float
+    {
+        return $this->base_tax;
+    }
+
+    public function setBaseTax(float $base_tax): self
+    {
+        $this->base_tax = $base_tax;
+
+        return $this;
+    }
+
+    public function getMargin(): ?float
+    {
+        return $this->margin;
+    }
+
+    public function setMargin(float $margin): self
+    {
+        $this->margin = $margin;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?float
+    {
+        return $this->total_price;
+    }
+
+    public function setTotalPrice(float $total_price): self
+    {
+        $this->total_price = $total_price;
 
         return $this;
     }

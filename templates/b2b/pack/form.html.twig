@@ -156,10 +156,10 @@
         $("#pack_userBasePrice").on('change',function(){
 
             var actual_price = $("#pack_userBasePrice").val();
-            var after_price = parseInt(actual_price) * 20 / 100;
+            var after_price = parseFloat(actual_price) * 20 / 100;
 
-            var total = parseInt(actual_price) + parseInt(after_price);
-            $("#actula_value").text('The Value after 20% added '+total);
+            var total = parseFloat(actual_price) + parseFloat(after_price);
+            $("#actula_value").text('The Value after {{ tax.value }} % added '+total);
 
         });
 
@@ -192,6 +192,10 @@
             uploadFiles(formData, type);
 
         });
+        var banner_file = "{{ pack.bannerImage }}";
+        if(banner_file){
+            $('#pack_bannerImage').val(banner_file);
+        }
 
 
         function uploadFiles(formData, type)
