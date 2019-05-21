@@ -37,21 +37,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/client_registration.js')) }}"></script>
-    <script>
-        $(document).ready(function()
-        {
-           $('#client_clientInfo_siret').on('keydown', function () {
-               if($(this).val().trim().length > 0)
-               {
-                   var query = $(this).val().trim();
-                   $.get('https://pixtest.opendatasoft.com/api/v2'+query, function(result) {
-                       console.log(result);
-                   });
-
-               }
-           });
-        });
-    </script>
 {% endblock %}
 
 {% block javascripts_footer %}

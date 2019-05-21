@@ -4,6 +4,9 @@ window.jQuery = window.$ = require('jquery');
 require('jquery-validation');
 require('jquery-validation/dist/localization/messages_fr');
 
+//------------------------------------
+// Validators
+//------------------------------------
 
 jQuery.validator.addMethod("password", function(value, element) {
     return this.optional( element ) || /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{8,}$/.test( value );
@@ -32,18 +35,3 @@ jQuery.validator.addMethod("minwords",
     },
     jQuery.validator.format("Minimum {0} mots")
 );
-
-
-function countWordsIn(text){
-    var countWords = 0;
-    if(text){
-        text = text.replace(/'/g," ");
-        text = text.replace(/(^\s*)|(\s*$)/gi,"");//exclude  start and end white-space
-        text = text.replace(/[ ]{2,}/gi," ");//2 or more space to 1
-        text = text.replace(/\n /,"\n"); // exclude newline with a start spacing
-        countWords = text.split(' ').filter(function(str){return str!="";}).length;
-    }
-
-    return countWords;
-}
-
