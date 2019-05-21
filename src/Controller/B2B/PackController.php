@@ -9,6 +9,7 @@ use App\Entity\UserPackMedia;
 use App\Entity\UserPacks;
 use App\Form\B2B\PackType;
 use App\Repository\CommunityMediaRepository;
+use App\Repository\OptionRepository;
 use App\Repository\PackRepository;
 use App\Repository\UserPackMediaRepository;
 use App\Repository\UserPacksRepository;
@@ -46,12 +47,14 @@ class PackController extends Controller
     /**
      * @Route("/create", name="create")
      */
-    public function create(Request $request,UserPacksRepository $packRepo,Filesystem $filesystem)
+    public function create(Request $request,UserPacksRepository $packRepo,Filesystem $filesystem,OptionRepository $optionRepository)
     {
 
         $user = $this->getUser();
 
         $pack = new UserPacks();
+
+        $tax = $optionRepository->findBy(['slug' => 'tax']);
 
         $form = $this->createForm(PackType::class,$pack);
 
@@ -60,9 +63,16 @@ class PackController extends Controller
         if($form->isSubmitted()){
 
             $em = $this->getDoctrine()->getManager();
+            $base_price = $request->get('pack')['userBasePrice'];
+            $tax = $tax[0]->getValue();
+            $margin = $base_price * $tax / 100;
 
+            $total_value = $margin + $base_price;
             $pack->setUser($user);
             $pack->setBannerImage($request->get('banner'));
+            $pack->setBaseTax($tax);
+            $pack->setMargin($margin);
+            $pack->setTotalPrice($total_value);
 
             $em->persist($pack);
 
@@ -133,7 +143,8 @@ class PackController extends Controller
             'page' => $page,
             'user' => $user,
             'images' => $images,
-            'pack' => $pack
+            'pack' => $pack,
+            'tax' => $tax[0]
         ]);
     }
 
@@ -141,12 +152,14 @@ class PackController extends Controller
     /**
      * @Route("/edit/{id}",name="edit")
      */
-    public function edit($id, Request $request,UserPacksRepository $packRepository,Filesystem $filesystem)
+    public function edit($id, Request $request,UserPacksRepository $packRepository,Filesystem $filesystem,OptionRepository $optionRepository)
     {
 
         $user = $this->getUser();
 
         $pack = $packRepository->find($id);
+
+        $tax = $optionRepository->findBy(['slug' => 'tax']);
 
         $form = $this->createForm(PackType::class, $pack);
 
@@ -161,6 +174,16 @@ class PackController extends Controller
                 $pack->setBannerImage($request->get('banner'));
             }
 
+            $base_price = $request->get('pack')['userBasePrice'];
+            $tax = $tax[0]->getValue();
+
+            $margin = $base_price * $tax / 100;
+
+            $total_value = $margin + $base_price;
+            $pack->setBaseTax($tax);
+            $pack->setMargin($margin);
+            $pack->setTotalPrice($total_value);
+
             $em->persist($pack);
             $em->flush();
 
@@ -174,17 +197,20 @@ class PackController extends Controller
 
                     $em = $this->getDoctrine()->getManager();
 
-                    $mediaEntity = new UserPackMedia();
-                    $mediaEntity->setName($file);
-                    $mediaEntity->setUserPack($pack);
-
-                    $em->persist($mediaEntity);
-                    $em->flush();
-
                     if($filesystem->exists('uploads/pack/temp/'.$file))
                     {
-                        $filesystem->copy('uploads/pack/temp/'.$file,'uploads/pack/'.$pack->getId().'/'.$file);
+                        if(!$filesystem->exists('uploads/pack/'.$pack->getId().'/'.$file))
+                        {
+                            $mediaEntity = new UserPackMedia();
+                            $mediaEntity->setName($file);
+                            $mediaEntity->setUserPack($pack);
 
+                            $em->persist($mediaEntity);
+                            $em->flush();
+
+                            $filesystem->copy('uploads/pack/temp/'.$file,'uploads/pack/'.$pack->getId().'/'.$file);
+
+                        }
                     }
 
 
@@ -198,16 +224,23 @@ class PackController extends Controller
 
                     $image = explode('/',$item);
 
-                    $mediaEntity = new UserPackMedia();
-                    $mediaEntity->setName($image[4]);
-                    $mediaEntity->setUserPack($pack);
 
-                    $em->persist($mediaEntity);
-                    $em->flush();
 
                     if($filesystem->exists('uploads/community_media/'.$user->getId().'/'.$image[4]))
                     {
-                        $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$image[4],'uploads/pack/'.$pack->getId().'/'.$image[4]);
+                        if(!$filesystem->exists('uploads/pack/'.$pack->getId().'/'.$image[4])){
+
+                            $mediaEntity = new UserPackMedia();
+                            $mediaEntity->setName($image[4]);
+                            $mediaEntity->setUserPack($pack);
+
+                            $em->persist($mediaEntity);
+                            $em->flush();
+
+                            $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$image[4],'uploads/pack/'.$pack->getId().'/'.$image[4]);
+
+
+                        }
 
                     }
 
@@ -233,7 +266,8 @@ class PackController extends Controller
             'pack' => $pack,
             'page' => $page,
             'user' => $user,
-            'images' => $images
+            'images' => $images,
+            'tax' => $tax[0]
         ]);
     }
 
@@ -339,7 +373,7 @@ class PackController extends Controller
 
         $em->flush();
 
-        unlink('/uploads/pack/'.$pack->getId().'/'.$request->get('name'));
+        unlink('uploads/pack/'.$pack->getId().'/'.$request->get('name'));
 
         exit;
 
