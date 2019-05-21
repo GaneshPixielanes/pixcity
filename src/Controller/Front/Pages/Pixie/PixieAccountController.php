@@ -123,7 +123,7 @@ class PixieAccountController extends Controller
         $bankTransactions = $transactionRepository->search(['status'=>TransactionStatus::PIXIE_ASKED_BANKTRANSFER_PAYMENT, 'pixie'=>$user]);
         $chequeTransactions = $transactionRepository->search(['status'=>TransactionStatus::PIXIE_ASKED_CHECK_PAYMENT, 'pixie' => $user]);
 
-//        dd($bankTransactions);
+
         if(!empty($bankTransactions) || !empty($chequeTransactions))
         {
             if(!empty($bankTransactions))

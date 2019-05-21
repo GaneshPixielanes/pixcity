@@ -101,16 +101,14 @@
         {{ form_start(form,{'attr':{'id' : 'appointment-form'}}) }}
 
 
-            <div class="avatar-upload">
-                <div class="avatar-edit">
-                    <input type='file' id="imageUpload" name="{{ form.bannerImage.vars.full_name }}"/>
-                    <label for="imageUpload" style="background-image:"></label>
-                </div>
-                <div class="avatar-preview">
-                    <div id="imagePreview" style="background-image: url('/uploads/pack/banner/{{ pack.bannerImage }}');">
-                    </div>
-                </div>
-            </div>
+            <input type='file' id="imageUpload" name="{{ form.bannerImage.vars.full_name }}"/>
+            <label for="imageUpload" style="background-image:"></label>
+
+            {% if pack is defined %}
+               <p>Image : {{ pack.getBannerImage() }}</p>
+            {% else %}
+                <p></p>
+            {% endif %}
 
             {{ form_row(form.packSkill) }}
             {{ form_row(form.title) }}
@@ -120,7 +118,11 @@
             <span> <p id="actula_value"></p></span>
             {% for image in images %}
                 <label for=""><img src="/uploads/community_media/{{ user.id }}/{{ image.name }}" class="img-thumbnail img-check">
-                <input type="checkbox" name="cm_images[]" value="/uploads/community_meida/{{ app.user.id }}/{{ image.name }}" class="hidden" checked="checked"></label>
+                {% if pack is defined and pack.id is not null %}
+                    <input type="checkbox" name="cm_images[]" value="/uploads/community_meida/{{ app.user.id }}/{{ image.name }}" class="hidden" ></label>
+                {% else %}
+                    <input type="checkbox" name="cm_images[]" value="/uploads/community_meida/{{ app.user.id }}/{{ image.name }}" class="hidden" checked="checked"></label>
+                {% endif %}
             {% endfor %}
 
 
