@@ -70,7 +70,10 @@ class UserMission
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime",nullable=true)
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
      */
     private $updatedAt;
 

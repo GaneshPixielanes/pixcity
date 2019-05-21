@@ -2,7 +2,11 @@
 {% block body %}
     <div class="container">
         <div class="col-md-12 text-center">
-            <img src="{{ mission.bannerUrl }}" style="height:300px;width:80%"/>
+            {% if mission.bannerUrl is not null or mission.bannerUrl != '' %}
+            <img src="https://via.placeholder.com/300X800?text=Banner Not Available" style="height:300px;width:80%"/>
+            {% else %}
+                <img src="{{ mission.bannerUrl }}" style="height:300px;width:80%"/>
+            {% endif %}
         </div>
         <div class="col-md-12">
             {{ mission.referencePack.title }}
@@ -16,15 +20,18 @@
                     {{ mission.client }}
                 </div>
                 <div class="col-md-2">
-                    Region
+                    <small>Region</small><br/>
+                    {{ mission.region }}
                 </div>
                 <div class="col-md-2">
                     <small>Price</small>
                     {{ mission.missionBasePrice }}
                 </div>
+                {% if mission.briefFiles is not null or mission.briefFiles != '' %}
                 <div class="col-md-2">
                     <a href="{{ url('b2b_mission_download',{'id':mission.id}) }}" class="btn btn-sm btn-info">Download</a>
                 </div>
+                {% endif %}
                 <div class="col-md-2">
                     <a href="{{ url('b2b_mission_edit',{'id':mission.id}) }}" class="btn btn-sm btn-primary">Edit</a>
                 </div>

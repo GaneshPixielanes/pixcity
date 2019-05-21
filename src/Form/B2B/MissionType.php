@@ -3,7 +3,6 @@
 namespace App\Form\B2B;
 
 use App\Entity\Client;
-use App\Entity\Pack;
 use App\Entity\Region;
 use App\Entity\UserMission;
 use App\Entity\UserPacks;
@@ -13,7 +12,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,9 +31,16 @@ class MissionType extends AbstractType
     {
 
         $regions = [];
+        $clients = [];
+
         foreach($options['region'] as $region)
         {
             $regions[] = $region->getId();
+        }
+
+        foreach($options['proposals'] as $client)
+        {
+            $clients[] = $client->getId();
         }
         $builder
             ->add('title',TextType::class)
@@ -43,14 +48,26 @@ class MissionType extends AbstractType
             ->add('client',EntityType::class,[
                 'class' => Client::class,
                 'multiple' => false,
-                'expanded' => true
+                'expanded' => true,
+                'query_builder' => function(EntityRepository $er) use($clients)
+                {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.id IN (:user)')->setParameter('user',$clients);
+                }
+            ])
+            ->add('conditionsAgreed',HiddenType::class,[
+                'attr' => ['value' => 1]
             ])
             ->add('referencePack', EntityType::class,[
                 'class' => UserPacks::class,
                 'multiple' => false,
-                'choices' => $options['user']->getUserPacks(),
+//                'choices' => $options['user']->getUserPacks(),
                 'expanded' => true,
-                'attr' => ['class' => 'select-user-pack']
+                'attr' => ['class' => 'select-user-pack'],
+                'query_builder' => function(EntityRepository $er) use($options)
+                {
+                    return $er->createQueryBuilder('p')->where('p.user = :user AND p.deleted IS NULL')->setParameter('user',$options['user']);
+                }
             ])
             ->add('bannerImage', HiddenType::class)
             ->add('briefFiles', HiddenType::class)
@@ -62,7 +79,7 @@ class MissionType extends AbstractType
 //                'expanded' => false
 //            ])
             ->add('axaInsurance',ChoiceType::class,[
-                'choices' => ['Add Axa insutance' => TRUE],
+                'choices' => ['Add Axa insurance' => TRUE],
                 'multiple' => false,
                 'expanded' => true
             ])
@@ -102,7 +119,8 @@ class MissionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => UserMission::class,
             'region' => null,
-            'user' => null
+            'user' => null,
+            'proposals' => null,
         ]);
     }
 }
