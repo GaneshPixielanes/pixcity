@@ -36,6 +36,7 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/client_registration.js')) }}"></script>
     <script>
         $(document).ready(function()
         {
@@ -54,4 +55,8 @@
 {% endblock %}
 
 {% block javascripts_footer %}
+    <script>
+        {{ parent() }}
+
+    </script>
 {% endblock %}

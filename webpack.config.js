@@ -77,6 +77,10 @@ Encore
     // .addEntry('js/lazy', './assets/v2/js/jquery.lazy.min.js')
     .addEntry('js/dropzone', './assets/v2/js/dropzone.js')
 
+    // B2B
+    .addEntry('b2b/js/app', './assets/b2b/js/app.js')
+    .addEntry('b2b/js/client_registration', './assets/b2b/js/client_registration.js')
+
     // CSS
     .addStyleEntry('front/css/app', './assets/front/scss/app.scss')
 
