@@ -78,27 +78,33 @@ class PackController extends Controller
 
             $em->flush();
 
-            $files = explode(',',$request->get('attached_files'));
+            if ($request->get('attached_files')){
 
-            foreach ($files as $file){
+                $files = explode(',',$request->get('attached_files'));
 
-                $file = trim($file);
+                foreach ($files as $file){
 
-                $mediaEntity = new UserPackMedia();
-                $mediaEntity->setName($file);
-                $mediaEntity->setUserPack($pack);
+                    $file = trim($file);
 
-                $em->persist($mediaEntity);
-                $em->flush();
+                    $mediaEntity = new UserPackMedia();
+                    $mediaEntity->setName($file);
+                    $mediaEntity->setUserPack($pack);
 
-                if($filesystem->exists('uploads/pack/temp/'.$file))
-                {
-                    $filesystem->copy('uploads/pack/temp/'.$file,'uploads/pack/'.$pack->getId().'/'.$file);
+                    $em->persist($mediaEntity);
+                    $em->flush();
+
+                    if($filesystem->exists('uploads/pack/temp/'.$file))
+                    {
+                        $filesystem->copy('uploads/pack/temp/'.$file,'uploads/pack/'.$pack->getId().'/'.$file);
+
+                    }
+
 
                 }
 
-
             }
+
+
 
 
             if($request->get('cm_images')){
