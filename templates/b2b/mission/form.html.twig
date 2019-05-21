@@ -37,7 +37,7 @@
                         <input type="file" id="banner-image-upload" accept=".jpg, .jpeg, .png" data-upload-type="banner"/>
                     </div>
                     <div class="col-6">
-                        {% if mission is defined %}
+                        {% if mission is defined and mission.bannerImage is not null and mission.bannerImage != ''%}
                             <img alt="Banner image" src="{{ mission.getBannerUrl() }}" class="img-thumbnail" style="height:150px;width:150px;" id="banner-image"/>
                         {% else %}
                             <img alt="Banner image" src="https://via.placeholder.com/150" id="banner-image" style="height:150px;width:150px;" alt="Image preview"/>
@@ -116,7 +116,7 @@
 
         </div>
     </div>
-
+    <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/mission.js')) }}"></script>
 {% endblock %}
 
 {% block javascripts %}
@@ -294,7 +294,7 @@
             else
             {
                 $('.client-price').removeClass('d-none');
-                $('.price').html((parseInt($('#mission_missionBasePrice').val()) + (price* (20/100) )));
+                $('.price').html((parseInt($('#mission_missionBasePrice').val()) + (price* ({{ margin }}/100) )));
             }
         })
     });

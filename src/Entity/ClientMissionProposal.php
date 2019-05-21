@@ -30,11 +30,6 @@ class ClientMissionProposal
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pack", inversedBy="clientMissionProposalsPack")
-     */
-    private $pack;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
@@ -49,9 +44,14 @@ class ClientMissionProposal
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pack", inversedBy="clientMissionProposals")
+     */
+    private $pack;
+
     public function __construct()
     {
-        $this->pack = new ArrayCollection();
+//        $this->pack = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,32 +79,6 @@ class ClientMissionProposal
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|pack[]
-     */
-    public function getPack(): Collection
-    {
-        return $this->pack;
-    }
-
-    public function addPack(pack $pack): self
-    {
-        if (!$this->pack->contains($pack)) {
-            $this->pack[] = $pack;
-        }
-
-        return $this;
-    }
-
-    public function removePack(pack $pack): self
-    {
-        if ($this->pack->contains($pack)) {
-            $this->pack->removeElement($pack);
-        }
 
         return $this;
     }
@@ -141,6 +115,18 @@ class ClientMissionProposal
     public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getPack(): ?Pack
+    {
+        return $this->pack;
+    }
+
+    public function setPack(?Pack $pack): self
+    {
+        $this->pack = $pack;
 
         return $this;
     }

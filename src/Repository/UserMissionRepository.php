@@ -32,6 +32,7 @@ class UserMissionRepository extends ServiceEntityRepository
                         ->setParameter('cancel_requested',MissionStatus::CANCEL_REQUEST_INITIATED)
                         ->setParameter('terimate_requested',MissionStatus::TERMINATE_REQUEST_INITIATED)
                         ->andWhere('m.user = :user')->setParameter('user',$user )
+                        ->orderBy('m.id','DESC')
                         ->getQuery()
                         ->getResult();
     }
