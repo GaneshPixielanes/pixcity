@@ -46,20 +46,20 @@
                         <p></p>
 
                         {%  if '/city-maker/compte/community/manager' not in app.request.headers.get('referer') %}
-                            <li class="tab1 active"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                            <li class="tab1 active"><a href="#general-tab" id="flag" data-id="1" data-noautscroll="true" data-toggle="tab">Général</a></li>
                         {% else %}
-                            <li class="tab1"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                            <li class="tab1"><a href="#general-tab" id="flag" data-id="1" data-noautscroll="true" data-toggle="tab">Général</a></li>
                         {% endif %}
-                        <li class="tab2"><a href="#connexion-tab" data-noautscroll="true" data-toggle="tab">Connexion</a></li>
-                        <li class="tab3"><a href="#regions-tab" data-noautscroll="true" data-toggle="tab">Régions</a></li>
-                        <li class="tab4"><a href="#jaime-jaimepas-tab" data-noautscroll="true" data-toggle="tab" class="disable" disabled="">Catégories favorites</a></li>
-                        <li class="tab5"><a href="#remuneration-tab" data-noautscroll="true" data-toggle="tab">Rémunération</a></li>
-                        <li class="tab6"><a href="#notifications-tab" data-noautscroll="true" data-toggle="tab">Notifications</a></li>
-                        <li class="tab7"><a href="#security-tab" data-noautscroll="true" data-toggle="tab">Sécurité et confidentialité</a></li>
+                        <li class="tab2"><a href="#connexion-tab" id="flag" data-id="2" data-noautscroll="true" data-toggle="tab">Connexion</a></li>
+                        <li class="tab3"><a href="#regions-tab" id="flag" data-id="3" data-noautscroll="true" data-toggle="tab">Régions</a></li>
+                        <li class="tab4"><a href="#jaime-jaimepas-tab" id="flag" data-id="4" data-noautscroll="true" data-toggle="tab" class="disable" disabled="">Catégories favorites</a></li>
+                        <li class="tab5"><a href="#remuneration-tab" id="flag" data-id="5" data-noautscroll="true" data-toggle="tab">Rémunération</a></li>
+                        <li class="tab6"><a href="#notifications-tab" id="flag" data-id="6" data-noautscroll="true" data-toggle="tab">Notifications</a></li>
+                        <li class="tab7"><a href="#security-tab" id="flag" data-id="7" data-noautscroll="true" data-toggle="tab">Sécurité et confidentialité</a></li>
                         {%  if '/city-maker/compte/community/manager' in app.request.headers.get('referer') %}
-                            <li class="tab8 active"><a href="#community-manager-tab" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
+                            <li class="tab8 active"><a href="#community-manager-tab" id="flag" data-id="8" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
                         {% else %}
-                            <li class="tab8"><a href="#community-manager-tab" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
+                            <li class="tab8"><a href="#community-manager-tab" id="flag" data-id="8" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -408,6 +408,28 @@
 
     <script>
         $(document).ready(function(){
+
+            $("a#flag").on('click',function(){
+                if($(this).attr('data-id') === '8'){
+                    handleAjax(8,'add');
+                }else{
+                    handleAjax(8,'remove');
+                }
+            });
+
+
+            function handleAjax(value,status){
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('front_pixie_account_set_session') }}',
+                    data: {value: value,status: status},
+                    sucess: function(data){
+                        console.log('success: ' + data);
+                    }
+                });
+
+            }
 
             $("#user_userRegion").select2({
                 maximumSelectionLength: 2,

@@ -263,12 +263,12 @@ class UserPacks
     /**
      * @ORM\Column(type="float")
      */
-    private $base_tax;
+    private $margin_percentage;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $margin;
+    private $margin_value;
 
     /**
      * @ORM\Column(type="float")
@@ -306,26 +306,26 @@ class UserPacks
         return $this;
     }
 
-    public function getBaseTax(): ?float
+    public function getMarginPercentage(): ?float
     {
-        return $this->base_tax;
+        return $this->margin_percentage;
     }
 
-    public function setBaseTax(float $base_tax): self
+    public function setMarginPercentage(float $margin_percentage): self
     {
-        $this->base_tax = $base_tax;
+        $this->margin_percentage = $margin_percentage;
 
         return $this;
     }
 
-    public function getMargin(): ?float
+    public function getMarginValue(): ?float
     {
-        return $this->margin;
+        return $this->margin_value;
     }
 
-    public function setMargin(float $margin): self
+    public function setMarginValue(float $margin_value): self
     {
-        $this->margin = $margin;
+        $this->margin_value = $margin_value;
 
         return $this;
     }
