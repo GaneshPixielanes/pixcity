@@ -405,6 +405,12 @@ class PackController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $pack = $entityManager->getRepository(UserPacks::class)->find($id);
 
+        $pack = $userPacksRepository->findByUserPack($this->getUser(),$id);
+
+        if($pack === null){
+            return new JsonResponse(false);
+        }
+
         if (!$pack) {
             throw $this->createNotFoundException(
                 'No product found for id '.$id
