@@ -213,7 +213,19 @@ class MissionController extends AbstractController
      */
     public function view($id, UserMissionRepository $userMissionRepo)
     {
-        $mission = $userMissionRepo->find($id);
+        $mission = $userMissionRepo->findBy([
+            'id' => $id,
+            'user' => $this->getUser()
+        ]);
+
+        if(empty($mission))
+        {
+            return $this->redirect('/community-manager/mission/list');
+        }
+        else
+        {
+            $mission = $mission[0];
+        }
 
         return $this->render('b2b/mission/view.html.twig',[
             'mission' => $mission
