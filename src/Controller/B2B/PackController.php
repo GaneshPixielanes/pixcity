@@ -163,7 +163,11 @@ class PackController extends Controller
 
         $user = $this->getUser();
 
-        $pack = $packRepository->find($id);
+        $pack = $packRepository->findByUserPack($user,$id);
+
+        if($pack === null){
+            return $this->redirectToRoute('b2b_pack_list', [], 301);
+        }
 
         $tax = $optionRepository->findBy(['slug' => 'tax']);
 
@@ -297,12 +301,20 @@ class PackController extends Controller
      */
     public function view($id, UserPacksRepository $userPacksRepository)
     {
-        $pack = $userPacksRepository->find($id);
+
+        $pack = $packRepository->findByUserPack($this->getUser(),$id);
+
+        if($pack === null){
+            return $this->redirectToRoute('b2b_pack_list', [], 301);
+        }
+
         $images = $pack->getUserPackMedia();
+
         return $this->render('b2b/pack/view.html.twig',[
             'pack' => $pack,
             'images' => $images
         ]);
+
     }
 
 

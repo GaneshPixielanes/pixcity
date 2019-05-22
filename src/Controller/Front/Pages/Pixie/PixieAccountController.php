@@ -28,6 +28,7 @@ use App\Utils\Pagination;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -123,7 +124,7 @@ class PixieAccountController extends Controller
         $bankTransactions = $transactionRepository->search(['status'=>TransactionStatus::PIXIE_ASKED_BANKTRANSFER_PAYMENT, 'pixie'=>$user]);
         $chequeTransactions = $transactionRepository->search(['status'=>TransactionStatus::PIXIE_ASKED_CHECK_PAYMENT, 'pixie' => $user]);
 
-
+//        dd($bankTransactions);
         if(!empty($bankTransactions) || !empty($chequeTransactions))
         {
             if(!empty($bankTransactions))
@@ -142,6 +143,10 @@ class PixieAccountController extends Controller
         $errors = [];
 
         if ($form->isSubmitted()) {
+
+            $session  = new Session();
+
+
 //        if ($form->isSubmitted() && $form->isValid()) {
             if(!$bankDetailsEditable)
             {
@@ -158,6 +163,24 @@ class PixieAccountController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            if($session->has('cm')){
+
+                if(!isset($_SESSION['mypage_view'])){
+
+                    $_SESSION['mypage_view'] = 1;
+
+                    return $this->redirectToRoute('front_pixie_account_manager_thank_you');
+
+                }else{
+
+                    return $this->redirectToRoute('b2b_community_manager_index');
+
+
+                }
+
+
+            }
 
             // Add the flash message
             $this->addFlash('account_saved_settings', '');
@@ -188,6 +211,17 @@ class PixieAccountController extends Controller
 
     }
 
+
+    /**
+     * @Route("/manager/thank-you", name="manager_thank_you")
+     */
+    public function managerDashboard(){
+
+        return $this->render('front/account/pixie/community-manager.html.twig');
+
+    }
+
+
     /**
      * @Route("/cards/demandes", name="cards_projects")
      */
@@ -216,6 +250,30 @@ class PixieAccountController extends Controller
             'totalProjects' => $totalProjects,
             'pagination' => $pagination
         ));
+    }
+
+
+    /**
+     * @Route("/set/session", name="set_session")
+     */
+    public function setSession(Request $request){
+
+        $session  = new Session();
+
+        if($request->get('status') == 'add'){
+            $session->set('cm', 'add');
+        }else{
+            $session->remove('cm');
+        }
+
+        if($session->has('cm')){
+            return new JsonResponse(true);
+        }else{
+            return new JsonResponse(false);
+        }
+
+
+
     }
 
     /**

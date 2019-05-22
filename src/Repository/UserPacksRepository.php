@@ -45,6 +45,15 @@ class UserPacksRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByUserPack($user,$pack){
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.user = :user')->setParameter('user',$user)
+            ->andWhere('u.id = :id')->setParameter('id',$pack)
+            ->andWhere('u.deleted IS NULL')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?UserPacks
     {
