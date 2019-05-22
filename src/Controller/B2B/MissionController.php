@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Route("/community-manager/mission/", name="b2b_mission_")
- * @Security("has_role('ROLE_PIXIE')")
+ *
  */
 class MissionController extends AbstractController
 {
@@ -131,11 +131,18 @@ class MissionController extends AbstractController
      */
     public function edit($id, Request $request,UserMissionRepository $userMissionRepo, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo)
     {
-        $mission = $userMissionRepo->find($id);
+        $mission = $userMissionRepo->findBy([
+            'id' => $id,
+            'user' => $this->getUser()
+        ]);
 
-        if(is_null($mission))
+        if(empty($mission))
         {
             return $this->redirect('/community-manager/mission/list');
+        }
+        else
+        {
+            $mission = $mission[0];
         }
         $options = $this->getDoctrine()->getRepository(Option::class);
         $tax = $options->findBy(['slug' => 'tax']);
@@ -219,7 +226,18 @@ class MissionController extends AbstractController
      */
     public function status(Request $request, UserMissionRepository $userMissionRepo)
     {
-        $mission = $userMissionRepo->find($request->get('id'));
+        $mission = $userMissionRepo->findBy([
+            'id' => $request->get('id'),
+            'user' => $this->getUser()
+        ]);
+        if(empty($mission))
+        {
+            return JsonResponse::create(['success' => false]);
+        }
+        else
+        {
+            $mission = $mission[0];
+        }
         $em = $this->getDoctrine()->getManager();
 
         switch($request->get('status'))
