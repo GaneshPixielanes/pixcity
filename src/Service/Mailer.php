@@ -36,7 +36,7 @@ class Mailer
         $message = (new \Swift_Message($subject));
             if(is_null($from))
             {
-                $message =  $message->setFrom($this->params->get("email_sender"), $this->params->get("email_sender_name"));
+                $message =  $message->setFrom('contactus@pix.city', $this->params->get("email_sender_name"));
             }
             else
             {
