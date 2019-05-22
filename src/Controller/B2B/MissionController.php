@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Route("/community-manager/mission/", name="b2b_mission_")
- *
+ * @Security("has_role('ROLE_PIXIE')")
  */
 class MissionController extends AbstractController
 {
@@ -32,7 +32,6 @@ class MissionController extends AbstractController
     public function index(UserMissionRepository $userMissionRepo)
     {
 
-//        $missions = $this->getUser()->getUserMission();
         $missions['ongoing'] = $userMissionRepo->findOngoingMissions($this->getUser());
         $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()],[],['id' => 'DESC']);
         $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()],[],['id' => 'DESC']);
