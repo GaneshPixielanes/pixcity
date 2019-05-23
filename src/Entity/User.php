@@ -358,6 +358,11 @@ class User implements UserInterface, EquatableInterface
      */
     private $userSkills;
 
+     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $cm_upgrade_b2b_date;
+
     //--------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------
@@ -1634,6 +1639,20 @@ class User implements UserInterface, EquatableInterface
                 $communityMedium->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+
+
+    public function getCmUpgradeB2bDate(): ?\DateTimeInterface
+    {
+        return $this->cm_upgrade_b2b_date;
+    }
+
+    public function setCmUpgradeB2bDate(?\DateTimeInterface $cm_upgrade_b2b_date): self
+    {
+        $this->cm_upgrade_b2b_date = $cm_upgrade_b2b_date;
 
         return $this;
     }
