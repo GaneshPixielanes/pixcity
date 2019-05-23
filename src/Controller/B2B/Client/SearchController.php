@@ -22,7 +22,7 @@ class SearchController extends SearchPageController
     public function index(Request $request, UserRepository $userRepo, RegionRepository $regionRepo, SkillRepository $skillRepo)
     {
         $searchParams = $this->getSearchParams($request);
-        $limit = 1;
+        $limit = 12;
         $page = is_null($request->get('page'))?1:$request->get('page');
         $filters = [
             'regions' => $searchParams['regions'],
