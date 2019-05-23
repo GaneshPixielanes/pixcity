@@ -161,26 +161,32 @@ class PixieAccountController extends Controller
 
             // Save the user
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
 
             if($session->has('cm')){
 
-                if(!isset($_SESSION['mypage_view'])){
+                if($user->getCmUpgradeB2bDate() == null){
 
-                    $_SESSION['mypage_view'] = 1;
+                    $user->setCmUpgradeB2bDate(new \DateTime('now'));
+                    $user->setRoles(["ROLE_USER", "ROLE_PIXIE","ROLE_CM"]);
+
+                    $entityManager->persist($user);
+                    $entityManager->flush();
 
                     return $this->redirectToRoute('front_pixie_account_manager_thank_you');
 
                 }else{
 
-                    return $this->redirectToRoute('b2b_community_manager_index');
+                    $entityManager->persist($user);
+                    $entityManager->flush();
 
+                    return $this->redirectToRoute('b2b_community_manager_index');
 
                 }
 
-
             }
+
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             // Add the flash message
             $this->addFlash('account_saved_settings', '');
@@ -432,38 +438,6 @@ class PixieAccountController extends Controller
      * @Route("/community/manager",name="community_manager")
      */
     public function community_manager(Request $request){
-
-//        $user = $this->getUser();
-//
-//        // Create the form
-//        $form = $this->createForm(UserType::class, $user, ["b2b" => true,"type" => "edit"]);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted()) {
-//
-//            $entityManager = $this->getDoctrine()->getManager();
-//
-//
-//            $product = $entityManager->getRepository(Product::class)->find($id);
-//
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($user);
-//            $em->flush();
-//
-//            return $this->redirectToRoute('front_pixie_account_community_manager');
-//        }
-//
-//        // Create the page
-//        $page = new Page();
-//        $page->setName("Mes Cards en attente");
-//        $page->setMetaTitle("Mes Cards en attente");
-//        $page->setIndexed(false);
-//
-//        return $this->render('front/account/pixie/community-manager.html.twig', array(
-//            'page' => $page,
-//            'form' => $form->createView(),
-//            'user' => $user
-//        ));
 
         return $this->render('b2b/static/index.html.twig');
 
