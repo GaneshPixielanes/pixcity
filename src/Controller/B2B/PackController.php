@@ -302,7 +302,7 @@ class PackController extends Controller
     public function view($id, UserPacksRepository $userPacksRepository)
     {
 
-        $pack = $packRepository->findByUserPack($this->getUser(),$id);
+        $pack = $userPacksRepository->findByUserPack($this->getUser(),$id);
 
         if($pack === null){
             return $this->redirectToRoute('b2b_pack_list', [], 301);
