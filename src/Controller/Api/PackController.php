@@ -38,4 +38,31 @@ class PackController extends AbstractController
 
         return JsonResponse::create(['success' => true]);
     }
+
+    /**
+     * @Route("load-packs/{page}",name="_load_packs")
+     */
+    public function loadPacks($page)
+    {
+        $limit = 2;
+
+//        $packs =
+    }
+
+    /**
+     * @Route("view-pack/{id}",name="view")
+     */
+    public function viewPack($id, UserPacksRepository $userPacksRepo)
+    {
+        $pack = $userPacksRepo->find($id);
+
+        if(is_null($pack))
+        {
+            return JsonResponse::create(['success' => false, 'response' => '<strong>Pack not found </strong>']);
+        }
+
+        return $response = $this->render('b2b/pack/_view.html.twig',[
+            'pack' => $pack
+        ]);
+    }
 }
