@@ -8,6 +8,9 @@
         <div class="bg-light border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">Start Bootstrap </div>
             <div class="list-group list-group-flush">
+                <a href="#">
+                    <img src="{{ app.user.getAvatar() }}" class="img-thumbnail" />
+                </a>
                 <a href="{{ url('b2b_community_manager_index') }}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
                 <a href="{{ url('b2b_pack_list') }}" class="list-group-item list-group-item-action bg-light">Mes Packs</a>
                 <a href="{{ url('b2b_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
@@ -27,8 +30,66 @@
             </nav>
 
             <div class="container-fluid">
-                <h1 class="mt-4">City Maker(Community Manager) Profile</h1>
-                <p>Page Under Construction</p>
+                <h3 class="mt-4">Bienvenue {{ app.user }}</h3>
+                <p>
+                    <strong>{{ app.user.userPacks | length }} packs disponsibles</strong>
+                </p>
+
+                <div class="row">
+                    {% for pack in app.user.userPacks %}
+                        {% if loop.index < 3 %}
+                            <div class="card col-md-11 card-info" style="margin:10px">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <img src="{{ '/uploads/pack/banner/'~pack.bannerImage }}" style="height:75px;width: 75px" class="img-thumbnail"/>
+                                        </div>
+                                        <div class="col-3">
+                                            {{ pack.title }}
+                                        </div>
+                                        <div class="col-3">
+                                            {{ pack.packSkill.name }}
+                                        </div>
+                                        <div class="col-3">
+                                            <a href="{{ url('b2b_pack_edit',{'id':pack.id}) }}" class="btn btn-md btn-info">Editer le pack</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% if app.user.userPacks | length > 2 %}
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <a href="#" class="load-more btn btn-primary" > <strong>+</strong> </a>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if app.user.userMission | length > 0 %}
+                    <h2>listes des missions</h2>
+                    {% for mission in app.user.userMission %}
+                        {% if loop.index < 6 %}
+                        <div class="row" style="padding-bottom:10px">
+                            <div class="col-2">{{ mission.title }}</div>
+                            <div class="col-2">#{{ mission.id }}</div>
+                            <div class="col-2">{{ mission.client }}</div>
+                            <div class="col-2">{{ mission.status }}</div>
+                            <div class="col-2">{{ mission.missionBasePrice }}€</div>
+                            <div class="col-2"><a href="{{ url('b2b_mission_edit',{'id':mission.id}) }}" class="btn btn-success btn-sm">Edit</a></div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if app.user.userMission | length > 2 %}
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <a href="#" class="load-more-packs btn btn-primary" > <strong>+</strong> </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
         <!-- /#page-content-wrapper -->
@@ -44,5 +105,12 @@
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
+
+        $(document).ready(function () {
+            $('.load-more-packs').on('click', function()
+            {
+
+            });
+        })
     </script>
 {% endblock %}

@@ -37,16 +37,23 @@
 </style>
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
 
-        <a class="navbar-brand" href="#">Pix City - {{ app.user }}</a>
+        <a class="navbar-brand" href="#">Pix City {% if app.user is defined %} - {{ app.user }} {% endif %}</a>
         <!-- Links -->
-        {% if app.user is defined and app.user is not null %}
         <ul class="nav navbar-nav">
+            {% if app.user is defined and app.user is not null %}
             <li class="nav-item">
                 {{ app.user.email }}
                 <a class="nav-link" href="{{ url('front_logout') }}">Logout</a>
             </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('b2b_client_login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('b2b_client_auth_register') }}">Register</a>
+                </li>
+            {% endif %}
         </ul>
-        {% endif %}
 </nav>
 <hr/>
 {% block body %}{% endblock %}

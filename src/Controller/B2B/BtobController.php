@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/community-manager/", name="b2b_community_manager_")
- * @Security("has_role('ROLE_PIXIE')")
+ * @Security("has_role('ROLE_USER')")
  */
 class BtobController extends AbstractController{
 
@@ -19,4 +19,5 @@ class BtobController extends AbstractController{
     {
         return $this->render('b2b/index.html.twig');
     }
+
 }

@@ -1,30 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
 <div class="row" style="margin-top:100px;margin-left:10px;">
     <div class="row">
         <div class="col-md-3">
-            {{ form_start(form)  }}
-            <div class="form-group">
-                {{ form_row(form.search) }}
-            </div>
-            <div class="form-group">
-                {{ form_row(form.region) }}
-            </div>
-            <div class="form-group">
-                {{ form_row(form.skill) }}
-            </div>
-            {{ form_end(form) }}
+            <form method="GET" >
+                <div class="form-group">
+                    <legend class="col-form-label">Filter</legend>
+                    <input type="text" name="search" class="form-control" placeholder="Enter search keyword" value="{{ filters['text'] }}"/>
+                </div>
+                <div class="form-group">
+                    <legend class="col-form-label">Région</legend>
+                    {% for region in regions %}
+                    <div class="form-check">
+                        {% if region.slug in filters['regions'] %}
+                        <input type="checkbox" name="regions[]" class="form-check-input" value="{{ region.slug }}" checked="checked">
+                        {% else %}
+                            <input type="checkbox" name="regions[]" class="form-check-input" value="{{ region.slug }}">
+                        {% endif %}
+                        <label class="form-check-label">{{ region.name }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <legend class="col-form-label">Compétence</legend>
+                    {% for skill in skills %}
+                        <div class="form-check">
+                            {% if skill.id in filters['skills'] %}
+                                <input type="checkbox" name="skills[]" class="form-check-input" value="{{ skill.id }}" checked="checked">
+                            {% else %}
+                                <input type="checkbox" name="skills[]" class="form-check-input" value="{{ skill.id }}">
+                            {% endif %}
+                            <label class="form-check-label">{{ skill.name }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="container">
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-primary" value="Search" />
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="col-md-9">
             <div class="row">
+                <div class="row"  style="padding:5px">
+                    <h2>{{ filters['cm_count'] }} community managers are available</h2>
+                </div>
+                <div class="row">
                 {% for user in users %}
-                    <div class="col-md-4 text-center" style="padding:5px">
-                        <img src="{{ user.getAvatarUrl() }}" style="height:150px;width:150px;" />
+                    <div class="col-md-4 text-center card" style="padding:5px">
+                            <img src="{{ user.getAvatarUrl() }}" style="height:150px;width:100%;" />
                         <div class="row">
-                            <h4>{{ user }}</h4>
+                            <p class="col-md-12">
+                                <strong>{{ user }}</strong>
+                            </p>
                             <p class="col-md-12">
                                 {{ user.userRegion.first.name }}
                             </p>
@@ -37,13 +68,31 @@
                                 </p>
                             {% endif %}
                             <p class="col-md-12">
-                                <a href="#" class="btn btn-primary btn-lg">DECOUVRIR TOUS SES PACKS</a>
+                                <a href="{{ url('b2b_front_community_manager_view',{'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-primary btn-lg">DECOUVRIR TOUS SES PACKS</a>
                             </p>
                         </div>
                     </div>
                 {% endfor %}
+                </div>
             </div>
+            {% if filters['total_pages'] != 0 %}
+            <div class="container" style="padding-top:10px">
+                <ul class="pagination">
+                    {% if filters['page'] != 1 %}
+                    <li class="page-item"><a class="page-link" href="/client/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}">Previous</a></li>
+                    {% endif %}
+                    {% for i in 1..filters['total_pages'] %}
+                        <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/client/search?page={{ i }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}">{{ i }}</a></li>
+                    {% endfor %}
+
+                    {% if filters['page'] != filters['total_pages'] %}
+                    <li class="page-item"><a class="page-link" href="/client/search?page={{ filters['page']+1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% endif %}
         </div>
     </div>
+
 </div>
 {% endblock %}
