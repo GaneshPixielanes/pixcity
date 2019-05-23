@@ -97,15 +97,6 @@ class Admin implements UserInterface
      */
     private $configUpdatedBy;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Pack", mappedBy="admin", cascade={"persist", "remove"})
-     */
-    private $pack;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Pack", mappedBy="admin")
-     */
-    private $packs;
 
 
 
@@ -391,56 +382,5 @@ class Admin implements UserInterface
 
         return $this;
     }
-
-    public function getPack(): ?Pack
-    {
-        return $this->pack;
-    }
-
-    public function setPack(Pack $pack): self
-    {
-        $this->pack = $pack;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $pack->getAdmin()) {
-            $pack->setAdmin($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Pack[]
-     */
-    public function getPacks(): Collection
-    {
-        return $this->packs;
-    }
-
-    public function addPack(Pack $pack): self
-    {
-        if (!$this->packs->contains($pack)) {
-            $this->packs[] = $pack;
-            $pack->setAdmin($this);
-        }
-
-        return $this;
-    }
-
-    public function removePack(Pack $pack): self
-    {
-        if ($this->packs->contains($pack)) {
-            $this->packs->removeElement($pack);
-            // set the owning side to null (unless already changed)
-            if ($pack->getAdmin() === $this) {
-                $pack->setAdmin(null);
-            }
-        }
-
-        return $this;
-    }
-
-
-
 
 }
