@@ -43,9 +43,11 @@
         </div>
         <hr/>
         <br/>
+    </div>
         <div class="row">
-            <div class="col-xs-12">
                 <h4>Photos:</h4>
+                <br/>
+                <div  class="col-xs-12"  style="margin-top:50px">
                 {% for media in pack.userPackMedia %}
                     <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" class="thumbnail"
                          style="height:100px; width:100px"/>
@@ -53,15 +55,11 @@
             </div>
         </div>
         <div class="row" style="margin-top:50px">
-            <div class="col-xs-12">
                 <h3>Zone:</h3>
-                <ul>
+                <ul class="col-xs-12" style="margin-top:50px">
                     {% for region in pack.user.userRegion %}
                         <li>{{ region.name }}</li>
                     {% endfor %}
                 </ul>
-            </div>
-
         </div>
-    </div>
 </div>
