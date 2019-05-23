@@ -59,6 +59,8 @@
     {
        $('#terminate-mission').on('click', function(e){
 
+           e.preventDefault();
+
            if(confirm('Are you sure about terminating this mission?'))
            {
                updateStatus($(this).attr('data-id'),'terminate');
@@ -67,6 +69,8 @@
 
        $('#cancel-mission').on('click', function (e)
        {
+           e.preventDefault();
+
            if(confirm('Are you sure about cancelling this mission?'))
            {
                updateStatus($(this).attr('data-id'),'cancel');
@@ -82,9 +86,16 @@
                    'status': status,
                    '_token':"{{ csrf_token(app.user.id) }}"
                },
-               success:function()
+               success:function(result)
                {
-                   alert('Status has been updated');
+                   if(result.success == true)
+                   {
+                       alert('Status has been updated');
+                   }
+                   else
+                   {
+                       alert('Sorry! Status couldn\'t be updated');
+                   }
                }
            })
        }

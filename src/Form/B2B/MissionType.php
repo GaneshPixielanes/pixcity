@@ -44,7 +44,9 @@ class MissionType extends AbstractType
         }
         $builder
             ->add('title',TextType::class)
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class,[
+                'attr' => ['maxlength' => 100]
+            ])
             ->add('client',EntityType::class,[
                 'class' => Client::class,
                 'multiple' => false,
