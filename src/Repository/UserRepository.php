@@ -151,8 +151,8 @@ class UserRepository extends ServiceEntityRepository
 //            ->leftJoin('u.cards', 'cards')
 //            ->leftJoin('u.links', 'c')
 //            ->leftJoin('u.favoriteCategories', 'category')
+            ->innerJoin('u.pixie', 'p')
             ->leftJoin('u.userRegion', 'r')
-            ->leftJoin('p.regions', 'r')
 
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
