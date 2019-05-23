@@ -70,8 +70,8 @@ class PackController extends Controller
             $total_value = $margin + $base_price;
             $pack->setUser($user);
             $pack->setBannerImage($request->get('banner'));
-            $pack->setBaseTax($tax);
-            $pack->setMargin($margin);
+            $pack->setMarginPercentage($tax);
+            $pack->setMarginValue($margin);
             $pack->setTotalPrice($total_value);
 
             $em->persist($pack);
@@ -190,8 +190,8 @@ class PackController extends Controller
             $margin = $base_price * $tax / 100;
 
             $total_value = $margin + $base_price;
-            $pack->setBaseTax($tax);
-            $pack->setMargin($margin);
+            $pack->setMarginPercentage($tax);
+            $pack->setMarginValue($margin);
             $pack->setTotalPrice($total_value);
 
             $em->persist($pack);
