@@ -92,7 +92,7 @@ class UserRepository extends ServiceEntityRepository
 
 
     //---------------------------------------
-    // Pixies
+    // City Makers
     //---------------------------------------
 
     public function searchPixies($filters = [])
@@ -113,6 +113,51 @@ class UserRepository extends ServiceEntityRepository
         $qb = $this->_applyFilters($qb, $filters);
 
         $qb = $qb->getQuery()->getResult();
+
+        return $qb;
+    }
+
+    //---------------------------------------
+    // Client
+    //---------------------------------------
+
+    public function searchClients($filters = [], $limit = 12, $page = 1)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->leftJoin('u.avatar', 'avatar')
+            ->leftJoin('u.userSkills','s')
+//            ->leftJoin('u.cards', 'cards')
+//            ->leftJoin('u.links', 'c')
+//            ->leftJoin('u.favoriteCategories', 'category')
+            ->innerJoin('u.pixie', 'p')
+            ->leftJoin('u.userRegion', 'r')
+            ->groupBy('u.id')
+
+//            ->where('u.deleted IS NULL OR u.deleted = 0')
+        ;
+        $qb = $this->_applyFilters($qb, $filters)->setFirstResult($limit * ($page - 1))->setMaxResults($limit);
+        $qb = $qb->getQuery()->getResult();
+
+        return $qb;
+    }
+
+
+    public function searchCommunityManagerCount($filters = [], $limit, $page)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->leftJoin('u.avatar', 'avatar')
+            ->leftJoin('u.userSkills','s')
+            ->select('COUNT(DISTINCT u.id)')
+//            ->leftJoin('u.cards', 'cards')
+//            ->leftJoin('u.links', 'c')
+//            ->leftJoin('u.favoriteCategories', 'category')
+            ->innerJoin('u.pixie', 'p')
+            ->leftJoin('u.userRegion', 'r')
+
+//            ->where('u.deleted IS NULL OR u.deleted = 0')
+        ;
+        $qb = $this->_applyFilters($qb, $filters);
+        $qb = $qb->getQuery()->getSingleScalarResult();
 
         return $qb;
     }
@@ -182,7 +227,10 @@ class UserRepository extends ServiceEntityRepository
             }
 
             if (isset($filters["regions"])) {
-                $qb = $qb->andWhere("r IN (:regions) OR r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                if(trim($filters["regions"][0]) != '')
+                {
+                    $qb = $qb->andWhere("r.id IN (:regions) OR r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                }
             }
 
             if (isset($filters["categories"])) {
@@ -200,6 +248,13 @@ class UserRepository extends ServiceEntityRepository
             if(isset($filters['roles']))
             {
                 $qb = $qb->andWhere("u.roles LIKE :roles")->setParameter("roles", '%'.$filters["roles"].'%');
+            }
+            if(isset($filters['skills']))
+            {
+                if(trim($filters["skills"][0]) != '')
+                {
+                    $qb = $qb->andWhere('s.id IN (:skills)')->setParameter("skills",$filters['skills']);
+                }
             }
         }
 

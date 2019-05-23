@@ -352,7 +352,9 @@ class User implements UserInterface, EquatableInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Skill")
-     * @ORM\JoinTable(name="pxl_b2b_skills_users")
+     * @ORM\JoinTable(name="pxl_b2b_skills_users",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="skill_id", referencedColumnName="id")})
      */
     private $userSkills;
 

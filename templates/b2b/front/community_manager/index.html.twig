@@ -1,0 +1,99 @@
+{% extends 'b2b/base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <img src="{{ user.getAvatar()  }}" style="height: 150px; width:100%" class="rounded"/>
+            <div class="card-body">
+                <p>
+                    {{ user }}
+                </p>
+                <p>
+                   {%   set instagram = user.instagram|split("/") %}
+                    {% if instagram[3] is defined %}
+                    {{ instagram[3] }}
+                    {% endif %}
+                </p>
+                <p>
+                    {% for region in user.userRegion %}
+                        <small>{{ region.name | upper }}</small> <br/>
+                    {% endfor %}
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+                </p>
+                {% if user.userInstagramDetailsApi is not null %}
+                <div class="row text-center">
+                    <div class="col-xs-4" style="padding-right:10px;">
+                        {{ user.userInstagramDetailsApi.noOfPosts }}<br/>
+                        Posts
+                    </div>
+                    <div class="col-xs-4" style="padding-right:10px;">
+                        {{ user.userInstagramDetailsApi.noOfFollowers }}<br/>
+                        Followers
+                    </div>
+                    <div class="col-xs-4" style="padding-right:10px;">
+                        {{ user.userInstagramDetailsApi.noOfFollowed }}<br/>
+                        Followed
+                    </div>
+                </div>
+                {% else %}
+                <div class="row text-center">
+                    Instagram details not available
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-9">
+        {% if packs | length > 0 %}
+            <div class="row">
+            {% for pack in packs %}
+                <div class="card col-md-3" style="margin:10px">
+                    <div class="card-body">
+                        <a href="javascript;" data-toggle="modal" data-target="#packModal" class="view-pack" data-id="{{ pack.id }}">
+                        <img src="/uploads/pack/banner/{{ pack.bannerImage }}" style="height:150px; width: 100%" />
+                        </a>
+                        <p>
+                            <small>{{ pack.packSkill | upper }}</small>
+                            <br/>
+                            <h4>{{ pack }}</h4>
+                            <br/>
+                            <strong>
+                                {{ pack.totalPrice }}€
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p>
+                User Currently doesn't have any packs
+            </p>
+        {% endif %}
+    </div>
+    </div>
+</div>
+
+    {% include 'b2b/shared/modals.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+    <script>
+        $('.view-pack').on('click', function()
+        {
+            var id = $(this).attr('data-id');
+            $.ajax('/api/pack/view-pack/'+id,{
+                type: 'GET',
+                success: function (result) {
+                    $('#pack-details').html(result);
+                }
+            });
+        });
+    </script>
+{% endblock %}
