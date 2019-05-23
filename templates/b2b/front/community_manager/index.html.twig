@@ -24,6 +24,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
                 </p>
+                {% if user.userInstagramDetailsApi is not null %}
                 <div class="row text-center">
                     <div class="col-xs-4" style="padding-right:10px;">
                         {{ user.userInstagramDetailsApi.noOfPosts }}<br/>
@@ -38,6 +39,11 @@
                         Followed
                     </div>
                 </div>
+                {% else %}
+                <div class="row text-center">
+                    Instagram details not available
+                </div>
+                {% endif %}
             </div>
         </div>
 
