@@ -2,6 +2,8 @@
 
 namespace App\Controller\B2B\Client;
 
+use App\Controller\Front\SearchPageController;
+use App\Form\B2B\CitymakerSearchType;
 use App\Repository\RegionRepository;
 use App\Repository\SkillRepository;
 use App\Repository\UserRepository;
@@ -10,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/client/search/", name="b2b_client_search_")
+ * @Route("/client/search", name="b2b_client_search_")
  */
 class SearchController extends SearchPageController
 {
@@ -38,7 +40,8 @@ class SearchController extends SearchPageController
 
         return $this->render('b2b/client/search/index.html.twig', [
             'users' => $users,
-            'regions' => $regions
-        ]);
+            'regions' => $regions,
+            'skills' => $skills,
+            'filters' => $filters,]);
     }
 }
