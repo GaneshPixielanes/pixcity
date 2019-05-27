@@ -36,6 +36,18 @@ class UserMissionRepository extends ServiceEntityRepository
                         ->getQuery()
                         ->getResult();
     }
+
+    public function findMissionsWithLimit($filters= [], $user = null, $page = 1, $limit = 10)
+    {
+        return $this->createQueryBuilder('m')
+                    ->where('m.user = :user')->setParameter('user', $user)
+                    ->setFirstResult($limit * ($page - 1))
+                    ->setMaxResults($limit)
+                    ->getQuery()
+                    ->getResult();
+//                    ->andWhere()
+    }
+
     // /**
     //  * @return UserMission[] Returns an array of UserMission objects
     //  */

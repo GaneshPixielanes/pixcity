@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="{{ absolute_url(asset('build/b2b/js/app.js')) }}"></script>
+<script src="{{ absolute_url(asset('build/js/dropzone.js')) }}"></script>
+<style>
+    /* Stackoverflow preview fix, please ignore */
+    .navbar-nav {
+        flex-direction: row;
+    }
+
+    .nav-link {
+        padding-right: .5rem !important;
+        padding-left: .5rem !important;
+    }
+
+    /* Fixes dropdown menus placed on the right side */
+    .ml-auto .dropdown-menu {
+        left: auto !important;
+        right: 0px;
+    }
+
+    .error{
+        color: darkred;
+    }
+</style>
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+    <a class="navbar-brand" href="#">Pix City {% if app.user is defined %} - {{ app.user }} {% endif %}</a>
+    <!-- Links -->
+    <ul class="nav navbar-nav">
+        {% if app.user is defined and app.user is not null %}
+            <li class="nav-item">
+                {{ app.user.email }}
+                <a class="nav-link" href="/client/logout">Logout</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('b2b_client_login') }}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('b2b_client_auth_register') }}">Register</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+<hr/>
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>
