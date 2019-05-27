@@ -3,11 +3,15 @@
 namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
+use App\Entity\ClientMissionProposal;
 use App\Entity\Option;
 use App\Entity\UserMission;
 use App\Form\B2B\MissionType;
 use App\Repository\ClientMissionProposalRepository;
+use App\Repository\NotificationsRepository;
+use App\Repository\PackRepository;
 use App\Repository\UserMissionRepository;
+use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -41,7 +45,7 @@ class MissionController extends AbstractController
     /**
      * @Route("create", name="create")
      */
-    public function create(Request $request, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo)
+    public function create(Request $request, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo,NotificationsRepository $notificationsRepository)
     {
 
         $mission = new UserMission();
@@ -111,6 +115,8 @@ class MissionController extends AbstractController
                     $filesystem->copy('uploads/pack/'.$mission->getReferencePack()->getId().'/'.$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
                 }
             }
+
+            $notificationsRepository->insert('null',$mission->getClient(),'create_mission');
 
             return $this->redirectToRoute('b2b_mission_list');
         }
@@ -232,7 +238,7 @@ class MissionController extends AbstractController
     /**
      * @Route("status",name="status")
      */
-    public function status(Request $request, UserMissionRepository $userMissionRepo)
+    public function status(Request $request, UserMissionRepository $userMissionRepo,NotificationsRepository $notificationsRepository)
     {
         $mission = $userMissionRepo->findBy([
             'id' => $request->get('id'),
@@ -251,8 +257,10 @@ class MissionController extends AbstractController
         switch($request->get('status'))
         {
             case 'cancel': $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
+                $notificationsRepository->insert('null',$mission->getClient(),'cancel_mission');
                               break;
             case 'terminate': $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
+                $notificationsRepository->insert('null',$mission->getClient(),'terminate_mission');
                                break;
         }
 

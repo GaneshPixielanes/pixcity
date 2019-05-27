@@ -4,12 +4,77 @@
 
 {% block body %}
 {% if app.user is defined and app.user is not null%}
-<h1> Hi {{ app.user.firstName }}</h1>
-    <p>
-        We are working on client pages.
-    </p>
+
+    <div class="container">
+        <h3> Hi {{ app.user.firstName }}</h3>
+        <p>
+            We are working on client pages.
+        </p>
+        <div class="row">
+            {% for notification in notifications %}
+                {% if notification.unread == 1  %}
+                {% if notification.type == 'create_mission' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Well done!</h4>
+                    <p>Mission Created</p>
+                    <hr>
+                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elseif notification.type == 'cancel_mission' %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <h4 class="alert-heading">City Maker!</h4>
+                        <p>Mission Cancelled</p>
+                        <hr>
+                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                        <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% elseif notification.type == 'terminate_mission' %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <h4 class="alert-heading">City Maker!</h4>
+                        <p>Mission Terminated</p>
+                        <hr>
+                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                        <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+                {% endif %}
+
+            {% endfor %}
+        </div>
+    </div>
+
+
+
 {% else %}
 
 <h1>Thanks for registering</h1>
 {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+
+            $('button.close').on('click',function(){
+                var id = $(this).attr('data-id');
+                alert(id);
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('b2b_notification_unread') }}',
+                    data: {id: id},
+                    sucess: function(data){
+                        console.log('success: ' + data);
+                    }
+                });
+            });
+
+        });
+    </script>
 {% endblock %}

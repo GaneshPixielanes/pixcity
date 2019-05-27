@@ -363,6 +363,11 @@ class User implements UserInterface, EquatableInterface
      */
     private $cm_upgrade_b2b_date;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Notifications", mappedBy="user")
+     */
+    private $notifications;
+
     //--------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------
@@ -388,6 +393,7 @@ class User implements UserInterface, EquatableInterface
         $this->packs = new ArrayCollection();
         $this->userSkills = new ArrayCollection();
         $this->communityMedia = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
 
     }
 
@@ -1653,6 +1659,37 @@ class User implements UserInterface, EquatableInterface
     public function setCmUpgradeB2bDate(?\DateTimeInterface $cm_upgrade_b2b_date): self
     {
         $this->cm_upgrade_b2b_date = $cm_upgrade_b2b_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notifications[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notifications $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notifications $notification): self
+    {
+        if ($this->notifications->contains($notification)) {
+            $this->notifications->removeElement($notification);
+            // set the owning side to null (unless already changed)
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
+            }
+        }
 
         return $this;
     }
