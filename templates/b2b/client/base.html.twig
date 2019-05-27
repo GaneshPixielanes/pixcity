@@ -56,7 +56,30 @@
     </ul>
 </nav>
 <hr/>
+<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/simple-sidebar.css')) }}">
+<div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">Start Bootstrap </div>
+        <div class="list-group list-group-flush">
+            <a href="#">
+                <img src="https://via.placeholder.com/200" class="img-thumbnail" />
+            </a>
+            <a href="{{ url('b2b_client_main_index') }}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+            <a href="{{ url('b2b_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
+        </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+
 {% block body %}{% endblock %}
+
+        </div>
+    </div>
 {% block javascripts %}{% endblock %}
 </body>
 </html>
