@@ -1,0 +1,13 @@
+{% for mission in missions %}
+    {% if loop.index < 6 %}
+        <div class="row" style="padding-bottom:10px">
+            <div class="col-2">{{ mission.title }}</div>
+            <div class="col-2">#{{ mission.id }}</div>
+            <div class="col-2">{{ mission.client }}</div>
+            <div class="col-2">{{ mission.status }}</div>
+            <div class="col-2">{{ mission.missionBasePrice }}€</div>
+            <div class="col-2"><a href="{{ url('b2b_mission_edit',{'id':mission.id}) }}" class="btn btn-success btn-sm">Edit</a>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}

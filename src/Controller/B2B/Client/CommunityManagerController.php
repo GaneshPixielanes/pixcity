@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\B2B\Front;
+namespace App\Controller\B2B\Client;
 
 use App\Repository\PackRepository;
 use App\Repository\UserPacksRepository;
@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/profil-community-manager/", name="b2b_front_community_manager_")
+ * @Route("/client/profil-community-manager/", name="b2b_front_community_manager_")
  */
 class CommunityManagerController extends AbstractController
 {
@@ -31,7 +31,7 @@ class CommunityManagerController extends AbstractController
             'deleted' => null
         ]);
 
-        return $this->render('b2b/front/community_manager/index.html.twig', [
+        return $this->render('b2b/client/community_manager/index.html.twig', [
             'user' => $user,
             'packs' => $packs
         ]);

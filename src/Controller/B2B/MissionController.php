@@ -8,7 +8,6 @@ use App\Entity\Option;
 use App\Entity\UserMission;
 use App\Form\B2B\MissionType;
 use App\Repository\ClientMissionProposalRepository;
-use App\Repository\NotificationsRepository;
 use App\Repository\PackRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
@@ -45,14 +44,13 @@ class MissionController extends AbstractController
     /**
      * @Route("create", name="create")
      */
-    public function create(Request $request, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo,NotificationsRepository $notificationsRepository)
+    public function create(Request $request, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo)
     {
 
         $mission = new UserMission();
         # Get the CM associated with the pack and regions thus associated
         $regions = $this->getUser()->getUserRegion();
         $proposals = $clientMissionProposalRepo->findBy(['user' => $this->getUser()]);
-        $user = $this->getUser();
         if(count($proposals) == 0)
         {
             return $this->redirect('/community-manager/mission/list');
@@ -60,7 +58,7 @@ class MissionController extends AbstractController
 
         $options = $this->getDoctrine()->getRepository(Option::class);
         $tax = $options->findBy(['slug' => 'tax']);
-        $margin = $options->findBy(['slug' => 'tax']);
+        $margin = $options->findBy(['slug' => 'margin']);
 //        $regions = $packRepo->find($pack)->get
 //        $form = $this->createForm(MissionType::class, $mission,['region' => $this->getUser()->getUserRegion()]);
         $form = $this->createForm(MissionType::class, $mission,[
@@ -73,7 +71,6 @@ class MissionController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-
             $price = $mission->getMissionBasePrice();
             $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
             $tax = $tax[0]->getValue();
@@ -118,16 +115,14 @@ class MissionController extends AbstractController
                 }
             }
 
-            $notificationsRepository->insert(null,$mission->getClient(),'create_mission');
-
             return $this->redirectToRoute('b2b_mission_list');
         }
 
         return $this->render('b2b/mission/form.html.twig',
-        [
-            'form' => $form->createView(),
-            'margin' => $margin[0]->getValue()
-        ]);
+            [
+                'form' => $form->createView(),
+                'margin' => $margin[0]->getValue()
+            ]);
     }
 
     /**
@@ -140,8 +135,6 @@ class MissionController extends AbstractController
             'user' => $this->getUser()
         ]);
 
-
-
         if(empty($mission))
         {
             return $this->redirect('/community-manager/mission/list');
@@ -152,7 +145,7 @@ class MissionController extends AbstractController
         }
         $options = $this->getDoctrine()->getRepository(Option::class);
         $tax = $options->findBy(['slug' => 'tax']);
-        $margin = $options->findBy(['slug' => 'tax']);
+        $margin = $options->findBy(['slug' => 'margin']);
         $regions = $mission->getReferencePack()->getUser()->getUserRegion();
         $form = $this->createForm(MissionType::class, $mission,['region' => $regions,
             'user' => $this->getUser(),
@@ -242,13 +235,12 @@ class MissionController extends AbstractController
     /**
      * @Route("status",name="status")
      */
-    public function status(Request $request, UserMissionRepository $userMissionRepo,NotificationsRepository $notificationsRepository)
+    public function status(Request $request, UserMissionRepository $userMissionRepo)
     {
         $mission = $userMissionRepo->findBy([
             'id' => $request->get('id'),
             'user' => $this->getUser()
         ]);
-
         if(empty($mission))
         {
             return JsonResponse::create(['success' => false]);
@@ -262,11 +254,9 @@ class MissionController extends AbstractController
         switch($request->get('status'))
         {
             case 'cancel': $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
-                           $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission');
-                           break;
+                              break;
             case 'terminate': $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
-                            $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission');
-                            break;
+                               break;
         }
 
         $em->persist($mission);

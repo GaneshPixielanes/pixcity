@@ -37,8 +37,7 @@
 
                 <div class="row">
                     {% for pack in app.user.userPacks %}
-                        {% if loop.index < 3 %}
-                            <div class="card col-md-11 card-info" style="margin:10px">
+                            <div class="card col-md-11 card-info pack-card {% if loop.index > 2 %}d-none{% endif %}" style="margin:10px">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-3">
@@ -56,36 +55,27 @@
                                     </div>
                                 </div>
                             </div>
-                        {% endif %}
                     {% endfor %}
                 </div>
                 {% if app.user.userPacks | length > 2 %}
                     <div class="row">
                         <div class="col-12 text-center">
-                            <a href="#" class="load-more btn btn-primary" > <strong>+</strong> </a>
+                            <a href="#" class="load-more-packs btn btn-primary" > <strong>+</strong> </a>
                         </div>
                     </div>
                 {% endif %}
 
                 {% if app.user.userMission | length > 0 %}
                     <h2>listes des missions</h2>
-                    {% for mission in app.user.userMission %}
-                        {% if loop.index < 6 %}
-                        <div class="row" style="padding-bottom:10px">
-                            <div class="col-2">{{ mission.title }}</div>
-                            <div class="col-2">#{{ mission.id }}</div>
-                            <div class="col-2">{{ mission.client }}</div>
-                            <div class="col-2">{{ mission.status }}</div>
-                            <div class="col-2">{{ mission.missionBasePrice }}€</div>
-                            <div class="col-2"><a href="{{ url('b2b_mission_edit',{'id':mission.id}) }}" class="btn btn-success btn-sm">Edit</a></div>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
+                        {% set missions = app.user.userMission %}
+                        {% include 'b2b/mission/_missions.html.twig' with {'missions':missions } %}
+
 
                     {% if app.user.userMission | length > 2 %}
+                        <div class="list-mission"></div>
                         <div class="row">
                             <div class="col-12 text-center">
-                                <a href="#" class="load-more-packs btn btn-primary" > <strong>+</strong> </a>
+                                <a href="#" class="load-more-missions btn btn-primary" data-page="2"> <strong>+</strong> </a>
                             </div>
                         </div>
                     {% endif %}
@@ -107,9 +97,35 @@
         });
 
         $(document).ready(function () {
-            $('.load-more-packs').on('click', function()
+            $('.load-more-packs').on('click', function(e)
             {
+                e.preventDefault();
+                $(this).hide();
+                $('.pack-card').removeClass('d-none');
+            });
 
+            $('.load-more-missions').on('click', function(e)
+            {
+                e.preventDefault();
+                var page = parseInt($(this).attr('data-page'));
+                page = page + 1;
+                $(this).attr('data-page',page);
+
+                $.ajax('/client/api/mission/list?page='+page,{
+                    method:'GET',
+                    success:function (result) {
+                        console.log(result.success);
+                        if(result.success === false)
+                        {
+                            $('.load-more-missions').hide();
+                        }
+                        else
+                        {
+                            $('.list-mission').append(result.html);
+                        }
+
+                    }
+                });
             });
         })
     </script>
