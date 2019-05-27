@@ -40,7 +40,10 @@ class MissionType extends AbstractType
 
         foreach($options['proposals'] as $client)
         {
-            $clients[] = $client->getId();
+            if(!is_null($client->getClient()))
+            {
+                $clients[] = $client->getClient()->getId();
+            }
         }
         $builder
             ->add('title',TextType::class)
