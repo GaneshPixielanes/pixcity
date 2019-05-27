@@ -116,7 +116,7 @@ class MissionController extends AbstractController
                 }
             }
 
-            $notificationsRepository->insert('null',$mission->getClient(),'create_mission');
+            $notificationsRepository->insert(null,$mission->getClient(),'create_mission');
 
             return $this->redirectToRoute('b2b_mission_list');
         }
@@ -257,10 +257,10 @@ class MissionController extends AbstractController
         switch($request->get('status'))
         {
             case 'cancel': $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
-                $notificationsRepository->insert('null',$mission->getClient(),'cancel_mission');
+                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission');
                               break;
             case 'terminate': $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
-                $notificationsRepository->insert('null',$mission->getClient(),'terminate_mission');
+                $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission');
                                break;
         }
 
