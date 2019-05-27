@@ -108,9 +108,15 @@ class Client implements UserInterface
      */
     private $clientMissionProposals;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Notifications", mappedBy="client")
+     */
+    private $notifications;
+
     public function __construct()
     {
         $this->clientMissionProposals = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function __toString() {
@@ -339,6 +345,37 @@ class Client implements UserInterface
             // set the owning side to null (unless already changed)
             if ($clientMissionProposal->getClient() === $this) {
                 $clientMissionProposal->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notifications[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notifications $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notifications $notification): self
+    {
+        if ($this->notifications->contains($notification)) {
+            $this->notifications->removeElement($notification);
+            // set the owning side to null (unless already changed)
+            if ($notification->getClient() === $this) {
+                $notification->setClient(null);
             }
         }
 

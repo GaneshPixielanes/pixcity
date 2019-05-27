@@ -16,7 +16,10 @@ class ClientController extends AbstractController
      */
     public function index()
     {
-        return $this->render('b2b/client/index.html.twig');
+
+        $notifications = $this->getUser()->getNotifications();
+
+        return $this->render('b2b/client/index.html.twig',['notifications' => $notifications]);
 //        return $this->redirect('/client/search');
     }
 

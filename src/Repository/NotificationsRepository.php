@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Notifications;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,21 +15,28 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class NotificationsRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+
+    protected  $em;
+
+    public function __construct(RegistryInterface $registry,EntityManagerInterface $em)
     {
+        $this->em = $em;
         parent::__construct($registry, Notifications::class);
     }
 
-    public function search($userType = "pixie", $user)
-    {
-        if($userType == 'pixie')
-        {
-            return $this->findBy(['sent_to' => [1,2, $user]]);
-        }
-        else
-        {
-            return $this->findBy(['sent_to' => [1,3, $user]]);
-        }
+    public function insert($user,$client,$type){
+
+        $notification = new Notifications();
+        $notification->setUser($user);
+        $notification->setClient($client);
+        $notification->setType($type);
+        $notification->setUnread(1);
+        $notification->setMessage('content will come here');
+        $this->em->persist($notification);
+        $this->em->flush();
+
+        return $notification;
+
     }
 
     // /**

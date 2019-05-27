@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NotificationsRepository")
- * @ORM\Table(name="pxl_notifications")
+ * @ORM\Table(name="pxl_b2b_notifications")
  */
 class Notifications
 {
@@ -20,55 +18,73 @@ class Notifications
     private $id;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="notifications")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $client;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="notifications")
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="text")
      */
     private $message;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $unread;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $sent_to;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
+    private $type;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $updatedAt;
+    private $deleted_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $deletedAt;
+    private $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Admin", inversedBy="notifications")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $sentFrom;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $comments;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Admin", mappedBy="notificationDeletedBy")
-     */
-    private $deletedBy;
-
-    public function __construct()
-    {
-        $this->deletedBy = new ArrayCollection();
-    }
-
+    private $updated_at;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     public function getMessage(): ?string
@@ -76,116 +92,70 @@ class Notifications
         return $this->message;
     }
 
-    public function setMessage(?string $message): self
+    public function setMessage(string $message): self
     {
         $this->message = $message;
 
         return $this;
     }
 
-
-
-    public function getSentTo(): ?string
+    public function getUnread(): ?bool
     {
-        return $this->sent_to;
+        return $this->unread;
     }
 
-    public function setSentTo(string $sent_to): self
+    public function setUnread(bool $unread): self
     {
-        $this->sent_to = $sent_to;
+        $this->unread = $unread;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getType(): ?string
     {
-        return $this->createdAt;
+        return $this->type;
     }
 
-    public function setCreatedAt( $createdAt): self
+    public function setType(string $type): self
     {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
+        $this->type = $type;
 
         return $this;
     }
 
     public function getDeletedAt(): ?\DateTimeInterface
     {
-        return $this->deletedAt;
+        return $this->deleted_at;
     }
 
-    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    public function setDeletedAt(?\DateTimeInterface $deleted_at): self
     {
-        $this->deletedAt = $deletedAt;
+        $this->deleted_at = $deleted_at;
 
         return $this;
     }
 
-    public function getSentFrom(): ?Admin
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->sentFrom;
+        return $this->created_at;
     }
 
-    public function setSentFrom(?Admin $sentFrom): self
+    public function setCreatedAt(?\DateTimeInterface $created_at): self
     {
-        $this->sentFrom = $sentFrom;
+        $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getComments(): ?string
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->comments;
+        return $this->updated_at;
     }
 
-    public function setComments(?string $comments): self
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
     {
-        $this->comments = $comments;
+        $this->updated_at = $updated_at;
 
         return $this;
     }
-
-    /**
-     * @return Collection|Admin[]
-     */
-    public function getDeletedBy(): Collection
-    {
-        return $this->deletedBy;
-    }
-
-    public function addDeletedBy(Admin $deletedBy): self
-    {
-        if (!$this->deletedBy->contains($deletedBy)) {
-            $this->deletedBy[] = $deletedBy;
-            $deletedBy->setNotificationDeletedBy($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDeletedBy(Admin $deletedBy): self
-    {
-        if ($this->deletedBy->contains($deletedBy)) {
-            $this->deletedBy->removeElement($deletedBy);
-            // set the owning side to null (unless already changed)
-            if ($deletedBy->getNotificationDeletedBy() === $this) {
-                $deletedBy->setNotificationDeletedBy(null);
-            }
-        }
-
-        return $this;
-    }
-
 }
