@@ -59,6 +59,7 @@ class MissionController extends AbstractController
         }
         $file = $request->files->get('file');
 
+        $fileName = $fileUploader->upload($file, ClientMissionProposal::UPLOAD_FOLDER.'/'.$this->getUser()->getId().'/', true);
 
         $query = $this->getDoctrine()->getManager();
 
@@ -72,8 +73,6 @@ class MissionController extends AbstractController
 
         $query->persist($proposal);
         $query->flush();
-
-        $fileName = $fileUploader->upload($file, ClientMissionProposal::UPLOAD_FOLDER.'/'.$this->getUser()->getId().'/', true);
 
         return new JsonResponse(['success' => true, 'message' => 'Proposal has been sent!']);
     }
