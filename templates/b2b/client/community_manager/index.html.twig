@@ -1,4 +1,4 @@
-{% extends 'b2b/base.html.twig' %}
+{% extends 'b2b/client/base.html.twig' %}
 
 {% block body %}
 <div class="container">
@@ -95,5 +95,38 @@
                 }
             });
         });
+
+        $(document).on('click','#client-mission-proposal-button', function () {
+            $('#client-mission-proposal-form').removeClass('d-none');
+            $("#client-mission-proposal-button").hide();
+           // var id = $(this).attr('data-id');
+           //
+           // $.ajax('api/missions/send-proposal',{
+           //     method: "POST",
+           //     data: { 'pack': id},
+           //     success: function (result) {
+           //         console.log(result);
+           //     }
+           // });
+        });
+
+        $(document).on('submit','#clientMissionProposalForm', function (e) {
+            e.preventDefault();
+            var formData = new FormData();
+            formData.append('pack',$('[name="pack"]').val());
+            formData.append('description',$('[name="description"]').val());
+            formData.append('file',$('[name="brief"]')[0].files[0]);
+            console.log();
+            $.ajax($(this).attr('action'),{
+                method: "POST",
+                cacheable: false,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+        })
     </script>
 {% endblock %}

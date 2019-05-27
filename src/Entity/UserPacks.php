@@ -84,6 +84,11 @@ class UserPacks
      */
     private $packSkill;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ClientMissionProposal", mappedBy="pack")
+     */
+    private $clientMissionProposalsPack;
+
     public function __construct()
     {
         $this->userPackMedia = new ArrayCollection();
@@ -338,6 +343,34 @@ class UserPacks
     public function setTotalPrice(float $total_price): self
     {
         $this->total_price = $total_price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientMissionProposal[]
+     */
+    public function getClientMissionProposalsPack(): Collection
+    {
+        return $this->clientMissionProposalsPack;
+    }
+
+    public function addClientMissionProposalsPack(ClientMissionProposal $clientMissionProposalsPack): self
+    {
+        if (!$this->clientMissionProposalsPack->contains($clientMissionProposalsPack)) {
+            $this->clientMissionProposalsPack[] = $clientMissionProposalsPack;
+            $clientMissionProposalsPack->addPack($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientMissionProposalsPack(ClientMissionProposal $clientMissionProposalsPack): self
+    {
+        if ($this->clientMissionProposalsPack->contains($clientMissionProposalsPack)) {
+            $this->clientMissionProposalsPack->removeElement($clientMissionProposalsPack);
+            $clientMissionProposalsPack->removePack($this);
+        }
 
         return $this;
     }

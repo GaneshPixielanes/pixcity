@@ -2,7 +2,10 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Client;
+use App\Entity\ClientMissionProposal;
 use App\Entity\UserMission;
+use App\Form\B2B\ClientMissionProposalType;
 use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,6 +58,7 @@ class PackController extends AbstractController
     public function viewPack($id, UserPacksRepository $userPacksRepo)
     {
         $pack = $userPacksRepo->find($id);
+
 
         if(is_null($pack))
         {

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientMissionProposalRepository")
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ClientMissionProposal
 {
+    const UPLOAD_FOLDER = "proposals";
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -40,12 +42,15 @@ class ClientMissionProposal
     private $brief;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime $createdAt
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pack", inversedBy="clientMissionProposals")
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserPacks", inversedBy="clientMissionProposals")
      */
     private $pack;
 
@@ -119,12 +124,12 @@ class ClientMissionProposal
         return $this;
     }
 
-    public function getPack(): ?Pack
+    public function getPack(): ?UserPacks
     {
         return $this->pack;
     }
 
-    public function setPack(?Pack $pack): self
+    public function setPack(?UserPacks $pack): self
     {
         $this->pack = $pack;
 
