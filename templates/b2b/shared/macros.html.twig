@@ -1,0 +1,36 @@
+{% macro notification(notification) %}
+        {% if notification.unread == 1  %}
+            {% if notification.type == 'create_mission' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Well done!</h4>
+                    <p>Mission Created</p>
+                    <hr>
+                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% elseif notification.type == 'cancel_mission' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">City Maker!</h4>
+                    <p>Mission Cancelled</p>
+                    <hr>
+                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% elseif notification.type == 'terminate_mission' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">City Maker!</h4>
+                    <p>Mission Terminated</p>
+                    <hr>
+                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+        {% endif %}
+
+{% endmacro %}

@@ -48,6 +48,15 @@ class UserMissionRepository extends ServiceEntityRepository
 //                    ->andWhere()
     }
 
+    public function findMissionForClient($user, $status, $page =1, $limit = 10)
+    {
+        return $this->createQueryBuilder('m')
+                    ->where('m.user = :user')->setParameter('user', $user)
+                    ->andWhere('m.status = :status')->setParameter('status', $status)
+                    ->setFirstResult($limit * ($page - 1))
+                    ->getQuery()->getResult();
+    }
+
     // /**
     //  * @return UserMission[] Returns an array of UserMission objects
     //  */
