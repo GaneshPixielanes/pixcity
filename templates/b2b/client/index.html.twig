@@ -12,8 +12,8 @@
             We are working on client pages.
         </p>
         <div class="row">
-            {% for notification in notifications %}
-                {{ macros.notification(notification) }}
+            {% for key, notification in notifications %}
+                {{ macros.notification(notification,key) }}
             {% endfor %}
 
         </div>
@@ -42,6 +42,18 @@
                         console.log('success: ' + data);
                     }
                 });
+            });
+
+            $("#notify-more-btn").on('click',function(){
+                $("#notify-more-btn").toggleClass('d-none');
+                $("#notify-card").toggleClass('d-none');
+                $("#notify-less-btn").toggleClass('d-none');
+            })
+
+            $("#notify-less-btn").on('click',function(){
+                $("#notify-more-btn").toggleClass('d-none');
+                $("#notify-card").toggleClass('d-none');
+                $("#notify-less-btn").toggleClass('d-none');
             });
 
         });

@@ -1,36 +1,80 @@
-{% macro notification(notification) %}
-        {% if notification.unread == 1  %}
-            {% if notification.type == 'create_mission' %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <h4 class="alert-heading">Well done!</h4>
-                    <p>Mission Created</p>
-                    <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                    <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% elseif notification.type == 'cancel_mission' %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <h4 class="alert-heading">City Maker!</h4>
-                    <p>Mission Cancelled</p>
-                    <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                    <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% elseif notification.type == 'terminate_mission' %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <h4 class="alert-heading">City Maker!</h4>
-                    <p>Mission Terminated</p>
-                    <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                    <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+{% macro notification(notification,key) %}
+
+        {% if notification.unread == 1 %}
+            {% if key <= 1 %}
+
+                {% if notification.type == 'create_mission' %}
+                    <div class="alert alert-success alert-dismissible fade show" style="width:800%;" role="alert">
+                        <h4 class="alert-heading">Well done!</h4>
+                        <p>Mission Created</p>
+                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                        <button class="btn-primary">Accept</button>
+                        <button class="btn-primary">Deny</button>
+                        <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% elseif notification.type == 'cancel_mission'%}
+                    <div class="alert alert-warning alert-dismissible fade show" style="width:800%;" role="alert">
+                        <h4 class="alert-heading">City Maker!</h4>
+                        <p>Mission Cancelled</p>
+                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                        <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% elseif notification.type == 'terminate_mission'%}
+                    <div class="alert alert-danger alert-dismissible fade show" style="width:800%;" role="alert">
+                        <h4 class="alert-heading">City Maker!</h4>
+                        <p>Mission Terminated</p>
+                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                        <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                {% endif %}
+
+            {% elseif key >= 2 %}
+
+                {% if key == 3 %}
+                    <button class="btn-primary" id="notify-more-btn">show more</button>
+                    <button class="btn-primary d-none" id="notify-less-btn">show less</button>
+                {% endif %}
+
+                {% if notification.type == 'create_mission' %}
+                    <div class="alert alert-success alert-dismissible fade show d-none" id="notify-card" style="width:800%;" role="alert">
+                        <h4 class="alert-heading">Well done!</h4>
+                        <p>Mission Created</p>
+                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                        <button class="btn-primary">Accept</button>
+                        <button class="btn-primary">Deny</button>
+                        <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% elseif notification.type == 'cancel_mission'  %}
+                    <div class="alert alert-warning alert-dismissible fade show d-none" id="notify-card" style="width:800%;" role="alert">
+                        <h4 class="alert-heading">City Maker!</h4>
+                        <p>Mission Cancelled</p>
+                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                        <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% elseif notification.type == 'terminate_mission' %}
+                    <div class="alert alert-danger alert-dismissible fade show d-none" id="notify-card" style="width:800%;" role="alert">
+                        <h4 class="alert-heading">City Maker!</h4>
+                        <p>Mission Terminated</p>
+                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                        <button type="button" class="close" data-id="{{ notification.id }}" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+
             {% endif %}
+
         {% endif %}
 
 {% endmacro %}

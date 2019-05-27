@@ -156,6 +156,7 @@ class MissionController extends AbstractController
         ]);
 
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid())
         {
             $em = $this->getDoctrine()->getManager();
@@ -204,11 +205,11 @@ class MissionController extends AbstractController
             return $this->redirectToRoute('b2b_mission_list');
         }
         return $this->render('b2b/mission/form.html.twig',
-            [
-                'form' => $form->createView(),
-                'mission' => $mission,
-                'margin' => $margin[0]->getValue()
-            ]);
+        [
+            'form' => $form->createView(),
+            'mission' => $mission,
+            'margin' => $margin[0]->getValue()
+        ]);
     }
 
     /**
@@ -257,11 +258,11 @@ class MissionController extends AbstractController
         switch($request->get('status'))
         {
             case 'cancel': $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
-                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission');
-                              break;
+                           $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission');
+                           break;
             case 'terminate': $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
-                $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission');
-                               break;
+                              $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission');
+                              break;
         }
 
         $em->persist($mission);
