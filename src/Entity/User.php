@@ -368,6 +368,11 @@ class User implements UserInterface, EquatableInterface
      */
     private $notifications;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $b2b_cm_approval;
+
     //--------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------
@@ -1690,6 +1695,18 @@ class User implements UserInterface, EquatableInterface
                 $notification->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getB2bCmApproval(): ?int
+    {
+        return $this->b2b_cm_approval;
+    }
+
+    public function setB2bCmApproval(?int $b2b_cm_approval): self
+    {
+        $this->b2b_cm_approval = $b2b_cm_approval;
 
         return $this;
     }

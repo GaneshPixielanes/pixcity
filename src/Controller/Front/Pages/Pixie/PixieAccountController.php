@@ -111,7 +111,7 @@ class PixieAccountController extends Controller
     /**
      * @Route("/parametres", name="settings")
      */
-    public function settings(Request $request, UserPasswordEncoderInterface $passwordEncoder, TransactionRepository $transactionRepository,\Swift_Mailer $mailer)
+    public function settings(Request $request, UserPasswordEncoderInterface $passwordEncoder, TransactionRepository $transactionRepository,\Swift_Mailer $mailer,CardRepository $cardsRepo)
     {
         $user = $this->getUser();
         $message = '';
@@ -123,7 +123,7 @@ class PixieAccountController extends Controller
         $form->handleRequest($request);
         $bankTransactions = $transactionRepository->search(['status'=>TransactionStatus::PIXIE_ASKED_BANKTRANSFER_PAYMENT, 'pixie'=>$user]);
         $chequeTransactions = $transactionRepository->search(['status'=>TransactionStatus::PIXIE_ASKED_CHECK_PAYMENT, 'pixie' => $user]);
-
+        $card = count($cardsRepo->findPixieCards($user->getId()));
 //        dd($bankTransactions);
         if(!empty($bankTransactions) || !empty($chequeTransactions))
         {
@@ -170,7 +170,7 @@ class PixieAccountController extends Controller
 
                     $user->setCmUpgradeB2bDate(new \DateTime('now'));
                     $user->setRoles(["ROLE_USER", "ROLE_PIXIE","ROLE_CM"]);
-
+                    $user->setB2bCmApproval(0);
                     $entityManager->persist($user);
                     $entityManager->flush();
 
@@ -228,7 +228,8 @@ class PixieAccountController extends Controller
             'form' => $form->createView(),
             'errors' => $errors,
             'bandDetailsEditable' => $bankDetailsEditable,
-            'user' => $user
+            'user' => $user,
+            'card' => $card
         ));
 
     }
