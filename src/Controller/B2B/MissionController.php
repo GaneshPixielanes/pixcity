@@ -7,6 +7,7 @@ use App\Entity\ClientMissionProposal;
 use App\Entity\Option;
 use App\Entity\UserMission;
 use App\Form\B2B\MissionType;
+use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\PackRepository;
@@ -116,7 +117,7 @@ class MissionController extends AbstractController
                 }
             }
 
-            $notificationsRepository->insert(null,$mission->getClient(),'create_mission');
+            $notificationsRepository->insert(null,$mission->getClient(),'create_mission', 'A mission has been created by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong>');
 
             return $this->redirectToRoute('b2b_mission_list');
         }
@@ -257,18 +258,71 @@ class MissionController extends AbstractController
 
         switch($request->get('status'))
         {
-            case 'cancel': $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
-                           $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission');
-                           break;
-            case 'terminate': $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
-                              $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission');
-                              break;
+            case 'cancel': if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
+                            {
+                                $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has requested for the cancellation of mission '.$mission->getStatus());
+                                break;
+                            }
+                            elseif($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT)
+                            {
+                                $mission->setStatus(MissionStatus::CANCELLED);
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus());
+                                break;
+                            }
+
+            case 'terminate':
+                if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
+                {
+                    $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle());
+                    break;
+                }
+                elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT)
+                {
+                    $mission->setStatus(MissionStatus::TERMINATED);
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle());
+                    break;
+                }
+
         }
 
         $em->persist($mission);
         $em->flush();
 
         return JsonResponse::create(['success' => true]);
+    }
+
+    /**
+     * @Route("proposals", name="proposals")
+     */
+    public function proposals(ClientMissionProposalRepository $proposalRepo)
+    {
+        // Get the proposals
+        $proposals = $proposalRepo->findBy(['user' => $this->getUser()],['createdAt'=>'DESC']);
+
+        return $this->render('b2b/mission/proposals.html.twig',[
+           'proposals' => $proposals
+        ]);
+
+
+    }
+
+    /**
+     * @Route("view-proposal/{id}",name="view_proposal")
+     */
+    public function viewProposal($id, ClientMissionProposalRepository $clientMissionProposalRepo)
+    {
+        $proposal = $clientMissionProposalRepo->find($id);
+
+        if($this->getUser()->getId() != $proposal->getUser()->getId())
+        {
+            return $this->redirect('/community-manager/mission/proposals');
+        }
+
+        return $this->render('b2b/mission/proposal-details.html.twig',[
+            'proposal' => $proposal
+        ]);
     }
 
     /**
@@ -302,5 +356,49 @@ class MissionController extends AbstractController
 
         return $response;
 
+    }
+
+    /**
+     * @Route("proposal-document-download/{id}",name="proposal_document_download")
+     */
+    public function downloadProposalMedia($id, ClientMissionProposalMediaRepository $proposalMediaRepo)
+    {
+        $media = $proposalMediaRepo->find($id);
+        $date = new \DateTime();
+        $response = new BinaryFileResponse('uploads/proposals/'.$media->getProposal()->getId().'/'.$media->getName());
+        $ext = pathinfo('uploads/proposals/'.$media->getProposal()->getId().'/'.$media->getName(),PATHINFO_EXTENSION);
+
+        $response->headers->set('Content-Type','text/plain');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $media->getName()
+        );
+
+        return $response;
+
+    }
+
+    /**
+     * @Route("load", name="load")
+     */
+    public function loadMissions(UserMissionRepository $missionRepo, Request $request)
+    {
+        $page = is_null($request->get('page'))?1:$request->get('page');
+
+        $limit = 5;
+        if(is_null($this->getUser()))
+        {
+            return new JsonResponse(['success' => false]);
+        }
+        $missions = $missionRepo->findMissionsWithLimit([],$this->getUser(), $page, $limit);
+        if(empty($missions))
+        {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $result =  $this->render('b2b/mission/_missions.html.twig', [
+            'missions' => $missions,
+        ])->getContent();
+        return new JsonResponse(['success' => true, 'html' => $result]);
     }
 }

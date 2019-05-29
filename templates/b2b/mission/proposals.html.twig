@@ -1,15 +1,25 @@
-{% include 'b2b/base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
+
 
 {% block body %}
-<h2>Mission Proposals</h2>
-    <table class="table table-striped">
+    <h2>Mission Proposals</h2>
+<div class="row">
         {% for proposal in proposals %}
-        <tr>
-            <td>{{ proposal.pack.title }}</td>
-            <td>{{ proposal.pack.id }}</td>
-            <td>{{ proposal.client }}</td>
-            <td>{{ proposal.createdAt | date('d M Y H:i') }}</td>
-        </tr>
+            <div class="card col-md-5" style="margin:10px">
+                <div class="card-title">{{ proposal.pack.title }}</div>
+                <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">#{{ proposal.pack.id }}</div>
+                    <div class="col-md-3">{{ proposal.client }}</div>
+                    <div class="col-md-3">{{ proposal.createdAt | date('d M Y H:i') }}</div>
+                    <div class="col-md-3"><a href="{{ url('b2b_mission_view_proposal', {'id':proposal.id}) }}" class="btn btn-sm btn-info">View</a></div>
+                </div>
+                </div>
+            </div>
         {% endfor %}
-    </table>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+
 {% endblock %}

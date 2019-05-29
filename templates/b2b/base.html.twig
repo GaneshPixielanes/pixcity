@@ -56,7 +56,37 @@
         </ul>
 </nav>
 <hr/>
-{% block body %}{% endblock %}
+<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/simple-sidebar.css')) }}">
+<div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="list-group list-group-flush">
+            <a href="#">
+                <img src="{{ app.user.getAvatar() }}" class="img-thumbnail" />
+            </a>
+            <a href="{{ url('b2b_community_manager_index') }}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+            <a href="{{ url('b2b_pack_list') }}" class="list-group-item list-group-item-action bg-light">Mes Packs</a>
+            <a href="{{ url('b2b_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
+            <a href="{{ url('b2b_mission_proposals') }}" class="list-group-item list-group-item-action bg-light">Mission Proposals</a>
+        </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+
+        <div class="container-fluid">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

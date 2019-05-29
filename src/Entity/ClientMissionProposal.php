@@ -55,7 +55,7 @@ class ClientMissionProposal
     private $pack;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ClientMissionProposalMedia", mappedBy="card", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ClientMissionProposalMedia", mappedBy="proposal", cascade={"persist"}, orphanRemoval=true)
      */
     private $medias;
 
