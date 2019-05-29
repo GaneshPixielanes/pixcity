@@ -63,11 +63,18 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
         <div class="sidebar-heading">Start Bootstrap </div>
         <div class="list-group list-group-flush">
+            {% if app.user is not null and app.user.profilePhoto is not null %}
+                <a href="#">
+                    <img src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}" class="img-thumbnail" />
+                </a>
+            {% else %}
             <a href="#">
                 <img src="https://via.placeholder.com/200" class="img-thumbnail" />
             </a>
+            {% endif %}
             <a href="{{ url('b2b_client_main_index') }}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-            <a href="{{ url('b2b_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
+            <a href="{{ url('b2b_client_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
+            <a href="{{ url('b2b_client_mission_missions') }}" class="list-group-item list-group-item-action bg-light">Mission Requests</a>
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -76,7 +83,7 @@
     <div id="page-content-wrapper">
         <div class="container-fluid">
 
-{% block body %}{% endblock %}
+            {% block body %}{% endblock %}
 
         </div>
     </div>

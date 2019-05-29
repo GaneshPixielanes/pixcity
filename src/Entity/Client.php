@@ -46,8 +46,6 @@ class Client implements UserInterface
     private $plainPassword;
 
     /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=50)
      * @ORM\Column(type="string", length=255)
      */
     private $password;
@@ -112,6 +110,16 @@ class Client implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Notifications", mappedBy="client")
      */
     private $notifications;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profilePhoto;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $lastLoggedinAt;
 
     public function __construct()
     {
@@ -378,6 +386,30 @@ class Client implements UserInterface
                 $notification->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProfilePhoto(): ?string
+    {
+        return $this->profilePhoto;
+    }
+
+    public function setProfilePhoto(?string $profilePhoto): self
+    {
+        $this->profilePhoto = $profilePhoto;
+
+        return $this;
+    }
+
+    public function getLastLoggedinAt(): ?\DateTimeInterface
+    {
+        return $this->lastLoggedinAt;
+    }
+
+    public function setLastLoggedinAt(\DateTimeInterface $lastLoggedinAt): self
+    {
+        $this->lastLoggedinAt = $lastLoggedinAt;
 
         return $this;
     }

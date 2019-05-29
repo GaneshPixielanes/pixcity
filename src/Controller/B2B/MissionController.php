@@ -116,7 +116,7 @@ class MissionController extends AbstractController
                 }
             }
 
-            $notificationsRepository->insert(null,$mission->getClient(),'create_mission');
+            $notificationsRepository->insert(null,$mission->getClient(),'create_mission', 'A mission has been created by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong>');
 
             return $this->redirectToRoute('b2b_mission_list');
         }
@@ -156,6 +156,7 @@ class MissionController extends AbstractController
         ]);
 
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid())
         {
             $em = $this->getDoctrine()->getManager();
@@ -204,11 +205,11 @@ class MissionController extends AbstractController
             return $this->redirectToRoute('b2b_mission_list');
         }
         return $this->render('b2b/mission/form.html.twig',
-            [
-                'form' => $form->createView(),
-                'mission' => $mission,
-                'margin' => $margin[0]->getValue()
-            ]);
+        [
+            'form' => $form->createView(),
+            'mission' => $mission,
+            'margin' => $margin[0]->getValue()
+        ]);
     }
 
     /**
@@ -256,18 +257,54 @@ class MissionController extends AbstractController
 
         switch($request->get('status'))
         {
-            case 'cancel': $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
-                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission');
-                              break;
-            case 'terminate': $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
-                $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission');
-                               break;
+            case 'cancel': if($mission->getStatus() == MissionStatus::CREATED)
+                            {
+                                $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has requested for the cancellation of mission '.$mission->getStatus());
+                                break;
+                            }
+                            elseif($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT)
+                            {
+                                $mission->setStatus(MissionStatus::CANCELLED);
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus());
+                                break;
+                            }
+
+            case 'terminate':
+                if($mission->getStatus() == MissionStatus::CREATED)
+                {
+                    $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle());
+                    break;
+                }
+                elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT)
+                {
+                    $mission->setStatus(MissionStatus::TERMINATED);
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle());
+                    break;
+                }
+
         }
 
         $em->persist($mission);
         $em->flush();
 
         return JsonResponse::create(['success' => true]);
+    }
+
+    /**
+     * @Route("proposals", name="proposals")
+     */
+    public function proposals(ClientMissionProposalRepository $proposalRepo)
+    {
+        // Get the proposals
+        $proposals = $proposalRepo->findBy(['user' => $this->getUser()],['createdAt'=>'DESC']);
+
+        return $this->render('b2b/mission/proposals.html.twig',[
+           'proposals' => $proposals
+        ]);
+
+
     }
 
     /**
@@ -301,5 +338,29 @@ class MissionController extends AbstractController
 
         return $response;
 
+    }
+
+    /**
+     * @Route("load", name="load")
+     */
+    public function loadMissions(UserMissionRepository $missionRepo, Request $request)
+    {
+        $page = is_null($request->get('page'))?1:$request->get('page');
+
+        $limit = 5;
+        if(is_null($this->getUser()))
+        {
+            return new JsonResponse(['success' => false]);
+        }
+        $missions = $missionRepo->findMissionsWithLimit([],$this->getUser(), $page, $limit);
+        if(empty($missions))
+        {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $result =  $this->render('b2b/mission/_missions.html.twig', [
+            'missions' => $missions,
+        ])->getContent();
+        return new JsonResponse(['success' => true, 'html' => $result]);
     }
 }

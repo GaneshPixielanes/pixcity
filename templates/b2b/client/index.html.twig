@@ -6,19 +6,31 @@
 {% block body %}
 {% if app.user is defined and app.user is not null%}
 
-    <div class="container">
+    <div class="container" style="overflow-y: auto; max-height:300px;">
         <h3> Hi {{ app.user.firstName }}</h3>
         <p>
             We are working on client pages.
         </p>
         <div class="row">
-            {% for notification in notifications %}
-                {{ macros.notification(notification) }}
+            {% for key, notification in notifications %}
+                {{ macros.notification(notification,key) }}
             {% endfor %}
 
         </div>
     </div>
-
+    <h2>Missions</h2>
+    <div class="row">
+        <table class="table">
+            {% for mission in missions %}
+                <tr>
+                    <td>{{ mission.title }}</td>
+                    <td>{{ mission.description }}</td>
+                    <td>#{{ mission.id }}</td>
+                    <td><a href="#">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
 
 {% else %}
@@ -42,6 +54,18 @@
                         console.log('success: ' + data);
                     }
                 });
+            });
+
+            $("#notify-more-btn").on('click',function(){
+                $("#notify-more-btn").toggleClass('d-none');
+                $("#notify-card").toggleClass('d-none');
+                $("#notify-less-btn").toggleClass('d-none');
+            })
+
+            $("#notify-less-btn").on('click',function(){
+                $("#notify-more-btn").toggleClass('d-none');
+                $("#notify-card").toggleClass('d-none');
+                $("#notify-less-btn").toggleClass('d-none');
             });
 
         });
