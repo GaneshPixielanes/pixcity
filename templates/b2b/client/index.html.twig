@@ -26,7 +26,7 @@
                     <td>{{ mission.title }}</td>
                     <td>{{ mission.description }}</td>
                     <td>#{{ mission.id }}</td>
-                    <td><a href="#">View</a></td>
+                    <td><a href="{{ url('b2b_client_mission_view',{'id':mission.id}) }}" class="btn btn-sm btn-warning">View</a></td>
                 </tr>
             {% endfor %}
         </table>
