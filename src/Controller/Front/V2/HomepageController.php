@@ -11,6 +11,7 @@ use App\Repository\PageCategoryRepository;
 use App\Repository\PageRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -55,27 +56,27 @@ class HomepageController extends Controller
         $user = $this->getUser();
         $isCardFavoritedFirstTime = false;
 
-        $card = 0;
+        $session  = new Session();
 
-        if(!isset($_SESSION['card_count'])){
+        if(!is_null($user)){
 
-            if(!is_null($user)){
+            if(!$session->has('card_count_'.$user->getId())){
 
-                $_SESSION['card_count'] = count($cardsRepo->findPixieCards($user->getId())) == 0 ? 0 : count($cardsRepo->findPixieCards($user->getId()));
+                $card = count($cardsRepo->findPixieCards($user->getId()));
 
-                $card = $_SESSION['card_count'];
+                $session->set('card_count_'.$user->getId(), $card);
 
             }else{
 
-                $card = 0;
+                $card = $session->get('card_count_'.$user->getId());
             }
-
-
 
         }else{
 
-            $card = $_SESSION['card_count'];
+            $card = 0;
+
         }
+
 
         if(!is_null($user))
         {

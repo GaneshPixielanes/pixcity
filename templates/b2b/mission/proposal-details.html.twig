@@ -1,0 +1,27 @@
+{% extends 'b2b/base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="card col-md-12">
+                <h2>Mission Proposal</h2>
+                <div class="card-body">
+                    {{ proposal.description }}
+                </div>
+                <div class="card-body">
+                    <h2>Documents attached</h2>
+                    <div class="row">
+                    {% for media in proposal.medias %}
+                        <div class="card col-md-2">
+                            <span>{{ loop.index }}</span>
+                            <div class="card-body">
+                               <a href="{{ url('b2b_mission_proposal_document_download',{'id':media.id}) }}">{{ media.name }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

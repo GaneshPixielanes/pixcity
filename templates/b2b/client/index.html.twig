@@ -18,7 +18,26 @@
 
         </div>
     </div>
+    <h2>Recent Mission Proposals</h2>
+    <div class="row">
+    {% for proposal in proposals %}
+    <div class="card col-md-2" style="margin:10px">
+        <a href="{{ url('b2b_front_community_manager_view',{'name':proposal.user.firstname~'-'~proposal.user.lastname, 'id':proposal.user.id}) }}">
+            <img src="{{ proposal.user.avatar }}" style="height:100px;width:100%" alt="profile pic"/>
+        </a>
+
+        <div class="card-title">
+            {{ proposal.user }}
+        </div>
+        <div class="card-body">
+            Proposal sent on {{ proposal.createdAt | date('d M Y') }}
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+
     <h2>Missions</h2>
+
     <div class="row">
         <table class="table">
             {% for mission in missions %}

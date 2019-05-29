@@ -1,135 +1,100 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
 
 {% import 'b2b/shared/macros.html.twig' as macros %}
 
 {% block body %}
-<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/simple-sidebar.css')) }}">
-    <div class="d-flex" id="wrapper">
-
-        <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading">Start Bootstrap </div>
-            <div class="list-group list-group-flush">
-                <a href="#">
-                    <img src="{{ app.user.getAvatar() }}" class="img-thumbnail" />
-                </a>
-                <a href="{{ url('b2b_community_manager_index') }}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-                <a href="{{ url('b2b_pack_list') }}" class="list-group-item list-group-item-action bg-light">Mes Packs</a>
-                <a href="{{ url('b2b_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
-                <a href="{{ url('b2b_mission_proposals') }}" class="list-group-item list-group-item-action bg-light">Mission Proposals</a>
-            </div>
-        </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </nav>
-
-            <div class="container-fluid">
-                <div class="row">
-                    {% for key, notification in notifications %}
-                        {{ macros.notification(notification,key) }}
-                    {% endfor %}
-
-                </div>
-                <h3 class="mt-4">Bienvenue {{ app.user }}</h3>
-                <p>
-                    <strong>{{ app.user.userPacks | length }} packs disponsibles</strong>
-                </p>
-
-                <div class="row">
-                    {% for pack in app.user.userPacks %}
-                            <div class="card col-md-11 card-info pack-card {% if loop.index > 2 %}d-none{% endif %}" style="margin:10px">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <img src="{{ '/uploads/pack/banner/'~pack.bannerImage }}" style="height:75px;width: 75px" class="img-thumbnail"/>
-                                        </div>
-                                        <div class="col-3">
-                                            {{ pack.title }}
-                                        </div>
-                                        <div class="col-3">
-                                            {{ pack.packSkill.name }}
-                                        </div>
-                                        <div class="col-3">
-                                            <a href="{{ url('b2b_pack_edit',{'id':pack.id}) }}" class="btn btn-md btn-info">Editer le pack</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    {% endfor %}
-                </div>
-                {% if app.user.userPacks | length > 2 %}
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <a href="#" class="load-more-packs btn btn-primary" > <strong>+</strong> </a>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if app.user.userMission | length > 0 %}
-                    <h2>listes des missions</h2>
-                        {% set missions = app.user.userMission %}
-                        {% include 'b2b/mission/_missions.html.twig' with {'missions':missions } %}
-
-
-                    {% if app.user.userMission | length > 2 %}
-                        <div class="list-mission"></div>
-                        <div class="row">
-                            <div class="col-12 text-center">
-                                <a href="#" class="load-more-missions btn btn-primary" data-page="1"> <strong>+</strong> </a>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endif %}
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
+    <div class="row">
+        {% for key, notification in notifications %}
+            {{ macros.notification(notification,key) }}
+        {% endfor %}
 
     </div>
-    <!-- /#wrapper --
+    <h3 class="mt-4">Bienvenue {{ app.user }}</h3>
+    <p>
+        <strong>{{ app.user.userPacks | length }} packs disponsibles</strong>
+    </p>
+
+    <div class="row">
+        {% for pack in app.user.userPacks %}
+            <div class="card col-md-11 card-info pack-card {% if loop.index > 2 %}d-none{% endif %}"
+                 style="margin:10px">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-3">
+                            <img src="{{ '/uploads/pack/banner/'~pack.bannerImage }}" style="height:75px;width: 75px"
+                                 class="img-thumbnail"/>
+                        </div>
+                        <div class="col-3">
+                            {{ pack.title }}
+                        </div>
+                        <div class="col-3">
+                            {{ pack.packSkill.name }}
+                        </div>
+                        <div class="col-3">
+                            <a href="{{ url('b2b_pack_edit',{'id':pack.id}) }}" class="btn btn-md btn-info">Editer le
+                                pack</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% if app.user.userPacks | length > 2 %}
+        <div class="row">
+            <div class="col-12 text-center">
+                <a href="#" class="load-more-packs btn btn-primary"> <strong>+</strong> </a>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if app.user.userMission | length > 0 %}
+        <h2>listes des missions</h2>
+        {% set missions = app.user.userMission %}
+        {% include 'b2b/mission/_missions.html.twig' with {'missions':missions } %}
+
+
+        {% if app.user.userMission | length > 2 %}
+            <div class="list-mission"></div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <a href="#" class="load-more-missions btn btn-primary" data-page="1"> <strong>+</strong> </a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
     <!-- Menu Toggle Script -->
     <script>
-        $("#menu-toggle").click(function(e) {
+        $("#menu-toggle").click(function (e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
 
         $(document).ready(function () {
-            $('.load-more-packs').on('click', function(e)
-            {
+            $('.load-more-packs').on('click', function (e) {
                 e.preventDefault();
                 $(this).hide();
                 $('.pack-card').removeClass('d-none');
             });
 
-            $('.load-more-missions').on('click', function(e)
-            {
+            $('.load-more-missions').on('click', function (e) {
                 e.preventDefault();
                 var page = parseInt($(this).attr('data-page'));
                 page = page + 1;
-                $(this).attr('data-page',page);
+                $(this).attr('data-page', page);
 
-                $.ajax('/community-manager/mission/load?page='+page,{
-                    method:'GET',
-                    success:function (result) {
+                $.ajax('/community-manager/mission/load?page=' + page, {
+                    method: 'GET',
+                    success: function (result) {
                         console.log(result.success);
-                        if(result.success === false)
-                        {
+                        if (result.success === false) {
                             $('.load-more-missions').hide();
                         }
-                        else
-                        {
+                        else {
                             $('.list-mission').append(result.html);
                         }
 
@@ -138,27 +103,27 @@
             });
         });
 
-        $(document).ready(function(){
+        $(document).ready(function () {
 
-            $('button.close').on('click',function(){
+            $('button.close').on('click', function () {
                 var id = $(this).attr('data-id');
                 $.ajax({
                     type: 'GET',
                     url: '{{ path('b2b_notification_unread') }}',
                     data: {id: id},
-                    sucess: function(data){
+                    sucess: function (data) {
                         console.log('success: ' + data);
                     }
                 });
             });
 
-            $("#notify-more-btn").on('click',function(){
+            $("#notify-more-btn").on('click', function () {
                 $("#notify-more-btn").toggleClass('d-none');
                 $("#notify-card").toggleClass('d-none');
                 $("#notify-less-btn").toggleClass('d-none');
             })
 
-            $("#notify-less-btn").on('click',function(){
+            $("#notify-less-btn").on('click', function () {
                 $("#notify-more-btn").toggleClass('d-none');
                 $("#notify-card").toggleClass('d-none');
                 $("#notify-less-btn").toggleClass('d-none');

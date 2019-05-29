@@ -8,7 +8,7 @@
         <div class="col-md-12" style="margin:50px;margin-top:100px">
             <form name="client" method="post" enctype="multipart/form-data">
             <div class="form-group text-center">
-                <img src="https://www.placehold.it/200" alt="Profile pic" />
+                <img src="https://www.placehold.it/200" alt="Profile pic" id="profile-photo" style="height:200px;width:200px;"/>
                 {{ form_row(form.profilePhoto) }}
                 <div class="row">
                     <input type="file" name="files" id="profile-photo" accept=".jpg, .jpeg, .png"/>
@@ -45,8 +45,32 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/client_registration.js')) }}"></script>
+
+    <script>
+
+        $(document).ready(function()
+        {
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $('#profile-photo').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $('input[type="file"]').on('change', function(e){
+            readURL(this);
+        });
+        });
+    </script>
 {% endblock %}
 
 {% block javascripts_footer %}
     {{ parent() }}
+
 {% endblock %}

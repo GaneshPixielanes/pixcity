@@ -7,6 +7,7 @@ use App\Entity\ClientMissionProposal;
 use App\Entity\Option;
 use App\Entity\UserMission;
 use App\Form\B2B\MissionType;
+use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\PackRepository;
@@ -308,6 +309,23 @@ class MissionController extends AbstractController
     }
 
     /**
+     * @Route("view-proposal/{id}",name="view_proposal")
+     */
+    public function viewProposal($id, ClientMissionProposalRepository $clientMissionProposalRepo)
+    {
+        $proposal = $clientMissionProposalRepo->find($id);
+
+        if($this->getUser()->getId() != $proposal->getUser()->getId())
+        {
+            return $this->redirect('/community-manager/mission/proposals');
+        }
+
+        return $this->render('b2b/mission/proposal-details.html.twig',[
+            'proposal' => $proposal
+        ]);
+    }
+
+    /**
      * @Route("upload", name="_upload")
      */
     public function upload(Request $request, FileUploader $fileUploader)
@@ -334,6 +352,26 @@ class MissionController extends AbstractController
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             $mission->getTitle().'_'.$date->format('Ymd').'.'.$ext
+        );
+
+        return $response;
+
+    }
+
+    /**
+     * @Route("proposal-document-download/{id}",name="proposal_document_download")
+     */
+    public function downloadProposalMedia($id, ClientMissionProposalMediaRepository $proposalMediaRepo)
+    {
+        $media = $proposalMediaRepo->find($id);
+        $date = new \DateTime();
+        $response = new BinaryFileResponse('uploads/proposals/'.$media->getProposal()->getId().'/'.$media->getName());
+        $ext = pathinfo('uploads/proposals/'.$media->getProposal()->getId().'/'.$media->getName(),PATHINFO_EXTENSION);
+
+        $response->headers->set('Content-Type','text/plain');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $media->getName()
         );
 
         return $response;

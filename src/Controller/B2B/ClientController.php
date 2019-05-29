@@ -4,6 +4,7 @@ namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
 use App\Form\B2B\ClientType;
+use App\Repository\ClientMissionProposalRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Service\FileUploader;
@@ -58,16 +59,18 @@ class ClientController extends AbstractController
     /**
      * @Route("index", name="index")
      */
-    public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationRepo)
+    public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationRepo, ClientMissionProposalRepository $proposalRepo)
     {
         // Get client notifications
         $notifications = $notificationRepo->findBy(['client'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);
         //Get missions
         $missions = $missionRepo->findMissionForClient($this->getUser(), MissionStatus::ONGOING);
-
+        //Get proposals
+        $proposals = $proposalRepo->findBy(['client' => $this->getUser()],['id'=>'DESC'],8);
         return $this->render('b2b/client/index.html.twig',[
             'notifications' => $notifications,
-            'missions' => $missions
+            'missions' => $missions,
+            'proposals' => $proposals
             ]);
 //        return $this->redirect('/client/search');
     }
