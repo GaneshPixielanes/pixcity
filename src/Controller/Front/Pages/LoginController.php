@@ -59,9 +59,11 @@ class LoginController extends Controller
             && $referer !== $this->generateUrl("front_login_google_check", [], UrlGeneratorInterface::ABSOLUTE_URL)
         ){
             $session->set(SessionName::LOGIN_REDIRECT, $referer);
-        }
-        else{
+
+        }else{
+
             $referer = $session->get(SessionName::LOGIN_REDIRECT)?$session->get(SessionName::LOGIN_REDIRECT):null;
+
         }
 
         $addFavoritePixie = $request->query->get("addFavoritePixie");

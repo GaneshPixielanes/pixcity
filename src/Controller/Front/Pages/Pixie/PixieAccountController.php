@@ -111,7 +111,7 @@ class PixieAccountController extends Controller
     /**
      * @Route("/parametres", name="settings")
      */
-    public function settings(Request $request, UserPasswordEncoderInterface $passwordEncoder, TransactionRepository $transactionRepository)
+    public function settings(Request $request, UserPasswordEncoderInterface $passwordEncoder, TransactionRepository $transactionRepository,\Swift_Mailer $mailer)
     {
         $user = $this->getUser();
         $message = '';
@@ -162,6 +162,8 @@ class PixieAccountController extends Controller
             // Save the user
             $entityManager = $this->getDoctrine()->getManager();
 
+
+
             if($session->has('cm')){
 
                 if($user->getCmUpgradeB2bDate() == null){
@@ -171,6 +173,20 @@ class PixieAccountController extends Controller
 
                     $entityManager->persist($user);
                     $entityManager->flush();
+
+                    $message = (new \Swift_Message('Hello Email'))
+                        ->setFrom('noreply@pix.city')
+                        ->setTo($user->getEmail())
+                        ->setBody(
+                            $this->renderView(
+                                'b2b/emails/cm_registration.html.twig',
+                                ['user' => $user]
+                            ),
+                            'text/html'
+                        )
+                    ;
+
+                    $mailer->send($message);
 
                     return $this->redirectToRoute('front_pixie_account_manager_thank_you');
 
@@ -438,9 +454,7 @@ class PixieAccountController extends Controller
      * @Route("/community/manager",name="community_manager")
      */
     public function community_manager(Request $request){
-
         return $this->render('b2b/static/index.html.twig');
-
     }
 
 
