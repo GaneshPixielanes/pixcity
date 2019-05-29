@@ -142,7 +142,6 @@
 
             $('button.close').on('click',function(){
                 var id = $(this).attr('data-id');
-                alert(id);
                 $.ajax({
                     type: 'GET',
                     url: '{{ path('b2b_notification_unread') }}',
