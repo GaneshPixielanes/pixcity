@@ -100,7 +100,7 @@ class MissionController extends AbstractController
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has accepted cancellation request of mission '.$mission->getTitle());
                         break;
                     }
-                    elseif ($mission->getStatus() == MissionStatus::CREATED)
+                    elseif ($mission->getStatus() == MissionStatus::CREATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
                         $status = MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT;
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle());
@@ -111,7 +111,7 @@ class MissionController extends AbstractController
                     }
                     break;
             case 'terminate':
-                    if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED)
+                    if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
                         $status = MissionStatus::TERMINATED;
                         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle());
