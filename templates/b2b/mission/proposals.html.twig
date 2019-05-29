@@ -1,0 +1,15 @@
+{% include 'b2b/base.html.twig' %}
+
+{% block body %}
+<h2>Mission Proposals</h2>
+    <table class="table table-striped">
+        {% for proposal in proposals %}
+        <tr>
+            <td>{{ proposal.pack.title }}</td>
+            <td>{{ proposal.pack.id }}</td>
+            <td>{{ proposal.client }}</td>
+            <td>{{ proposal.createdAt | date('d M Y H:i') }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

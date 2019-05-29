@@ -1,0 +1,97 @@
+{% extends 'b2b/client/base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ absolute_url(asset('build/css/dropzon.css')) }}">
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <img src="/uploads/pack/banner/{{ pack.bannerImage }}" style="height:300px;width:100%"/>
+            <div class="card-body">
+                <p>
+                    {{ 'PACK '~pack.packSkill | upper }}
+                </p>
+                <p>
+                    <h3>{{ pack.title }}</h3>
+                </p>
+                <p>
+                    {{ pack.description }}
+                </p>
+                <p><h3>Photos</h3></p>
+                <div class="row">
+                    {% for media in pack.userPackMedia %}
+                    <div class="col-md-3" style="padding-top:10px;">
+                        <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" style="width:100px;height:100px" class="thumbnail" />
+                    </div>
+                    {% endfor %}
+                </div>
+                <p>
+                    <h3>Region</h3>
+                    <div class="alert alert-secondary" role="alert">
+                        {{ pack.user.userRegion.first.name }}
+                    </div>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h3>Premier contact avec {{ pack.user.firstname }}</h3>
+        <div class="alert alert-danger" role="alert">
+            <strong>Attention!</strong> Cu persius mentitum interpretaris his, id qui diam facete suscipit.
+                Mei liber partem et. Vocent iisque praesent ad sed, ei volutpat concludaturque nec.
+                Duo in placerat deterruisset, lucilius conceptam scripserit ei ius.</strong>
+        </div>
+        <h3>Décorez votre projet a {{ pack.user.firstname }}</h3>
+        {{ form_start(form) }}
+        {{ form_row(form._token) }}
+        {{ form_row(form.description) }}
+        <p>
+            Characters remaining: <span id="char-count">1200</span>
+        </p>
+        <div id="mission-images-display">
+            {{ form_row(form.medias) }}
+        </div>
+        <div id="dropzone" class="image-upload-zone" style="margin:10px;" accepted-files=".doc, .docx, .xls, .xlsx, .odt, .csv, .txt">
+            <h4 class="text-center" style="vertical-align: middle;">Drop the files here/Click here to upload</h4>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-info btn-md">Send Proposal</button>
+        </div>
+        {{ form_end(form,{'render_rest':false}) }}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    $('#client_mission_proposal_description').on('keyup', function()
+    {
+        var count = $(this).val().length;
+        $('#char-count').html( 1200 - count);
+    });
+
+    $("div.image-upload-zone").dropzone({
+        url: "/client/pack/proposal/upload",
+        addRemoveLinks: true,
+        dictDefaultMessage: "Drop files here or<br>click to upload...",
+        acceptedFiles: $("div.image-upload-zone").attr('accepted-files'),
+        maxFilesize: 5,
+        success: function (file, response) {
+            var prototype = $('#client_mission_proposal_medias').attr('data-prototype');
+            var index = $('#mission-images-display').find('input').length;
+
+            prototype = prototype.replace(/__name__/g,index);
+            $('#mission-images-display').append(prototype);
+            $('#mission-images-display')
+                .find('input:last')
+                .val(response.fileName).attr('data-filename',file.upload.filename);
+        },
+        removedfile: function (file) {
+            $('input[data-filename="'+file.upload.filename+'"]').remove();
+            file.previewElement.remove();
+        }
+    });
+</script>
+{% endblock %}

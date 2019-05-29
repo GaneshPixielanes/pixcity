@@ -54,9 +54,15 @@ class ClientMissionProposal
      */
     private $pack;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ClientMissionProposalMedia", mappedBy="card", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $medias;
+
     public function __construct()
     {
 //        $this->pack = new ArrayCollection();
+        $this->medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,5 +140,27 @@ class ClientMissionProposal
         $this->pack = $pack;
 
         return $this;
+    }
+
+    public function addMedia(ClientMissionProposalMedia $media)
+    {
+        $media->setProposal($this);
+        $this->medias[] = $media;
+        return $this;
+    }
+
+    public function removeMedia(ClientMissionProposalMedia $media)
+    {
+        $this->medias->removeElement($media);
+    }
+
+    public function getMedias()
+    {
+        return $this->medias;
+    }
+
+    public function setMedias($medias)
+    {
+        $this->medias = $medias;
     }
 }

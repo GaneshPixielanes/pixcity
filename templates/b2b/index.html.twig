@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% import 'b2b/shared/macros.html.twig' as macros %}
+
 {% block body %}
 <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/simple-sidebar.css')) }}">
     <div class="d-flex" id="wrapper">
@@ -14,6 +16,7 @@
                 <a href="{{ url('b2b_community_manager_index') }}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
                 <a href="{{ url('b2b_pack_list') }}" class="list-group-item list-group-item-action bg-light">Mes Packs</a>
                 <a href="{{ url('b2b_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
+                <a href="{{ url('b2b_mission_proposals') }}" class="list-group-item list-group-item-action bg-light">Mission Proposals</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -30,6 +33,12 @@
             </nav>
 
             <div class="container-fluid">
+                <div class="row">
+                    {% for key, notification in notifications %}
+                        {{ macros.notification(notification,key) }}
+                    {% endfor %}
+
+                </div>
                 <h3 class="mt-4">Bienvenue {{ app.user }}</h3>
                 <p>
                     <strong>{{ app.user.userPacks | length }} packs disponsibles</strong>
@@ -75,7 +84,7 @@
                         <div class="list-mission"></div>
                         <div class="row">
                             <div class="col-12 text-center">
-                                <a href="#" class="load-more-missions btn btn-primary" data-page="2"> <strong>+</strong> </a>
+                                <a href="#" class="load-more-missions btn btn-primary" data-page="1"> <strong>+</strong> </a>
                             </div>
                         </div>
                     {% endif %}
@@ -111,7 +120,7 @@
                 page = page + 1;
                 $(this).attr('data-page',page);
 
-                $.ajax('/client/api/mission/list?page='+page,{
+                $.ajax('/community-manager/mission/load?page='+page,{
                     method:'GET',
                     success:function (result) {
                         console.log(result.success);
@@ -127,6 +136,35 @@
                     }
                 });
             });
-        })
+        });
+
+        $(document).ready(function(){
+
+            $('button.close').on('click',function(){
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('b2b_notification_unread') }}',
+                    data: {id: id},
+                    sucess: function(data){
+                        console.log('success: ' + data);
+                    }
+                });
+            });
+
+            $("#notify-more-btn").on('click',function(){
+                $("#notify-more-btn").toggleClass('d-none');
+                $("#notify-card").toggleClass('d-none');
+                $("#notify-less-btn").toggleClass('d-none');
+            })
+
+            $("#notify-less-btn").on('click',function(){
+                $("#notify-more-btn").toggleClass('d-none');
+                $("#notify-card").toggleClass('d-none');
+                $("#notify-less-btn").toggleClass('d-none');
+            });
+
+        });
     </script>
 {% endblock %}
+

@@ -6,7 +6,7 @@
 {% block body %}
 {% if app.user is defined and app.user is not null%}
 
-    <div class="container">
+    <div class="container" style="overflow-y: auto; max-height:300px;">
         <h3> Hi {{ app.user.firstName }}</h3>
         <p>
             We are working on client pages.
@@ -18,7 +18,19 @@
 
         </div>
     </div>
-
+    <h2>Missions</h2>
+    <div class="row">
+        <table class="table">
+            {% for mission in missions %}
+                <tr>
+                    <td>{{ mission.title }}</td>
+                    <td>{{ mission.description }}</td>
+                    <td>#{{ mission.id }}</td>
+                    <td><a href="{{ url('b2b_client_mission_view',{'id':mission.id}) }}" class="btn btn-sm btn-warning">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
 
 {% else %}
@@ -33,7 +45,6 @@
 
             $('button.close').on('click',function(){
                 var id = $(this).attr('data-id');
-                alert(id);
                 $.ajax({
                     type: 'GET',
                     url: '{{ path('b2b_notification_unread') }}',
