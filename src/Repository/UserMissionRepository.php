@@ -23,18 +23,30 @@ class UserMissionRepository extends ServiceEntityRepository
         $this->em = $entityManager;
     }
 
-    public function findOngoingMissions($user)
+    public function findOngoingMissions($user, $type = 'cm')
     {
-        return $this->createQueryBuilder('m')
+        $result = $this->createQueryBuilder('m')
                         ->where('m.status = :created OR m.status = :ongoing OR m.status = :cancel_requested OR m.status = :terimate_requested')
                         ->setParameter('created',MissionStatus::CREATED)
                         ->setParameter('ongoing',MissionStatus::ONGOING)
                         ->setParameter('cancel_requested',MissionStatus::CANCEL_REQUEST_INITIATED)
-                        ->setParameter('terimate_requested',MissionStatus::TERMINATE_REQUEST_INITIATED)
-                        ->andWhere('m.user = :user')->setParameter('user',$user )
-                        ->orderBy('m.id','DESC')
+                        ->setParameter('terimate_requested',MissionStatus::TERMINATE_REQUEST_INITIATED);
+                        if($type == 'client')
+                        {
+                            $result = $result->andWhere('m.client = :user')->setParameter('user',$user )
+                                             ->andWhere('m.missionAgreedClient = 1');
+
+                        }
+                        else
+                        {
+                            $result = $result->andWhere('m.user = :user')->setParameter('user',$user );
+                        }
+
+        $result = $result->orderBy('m.id','DESC')
                         ->getQuery()
                         ->getResult();
+
+        return $result;
     }
 
     public function findMissionsWithLimit($filters= [], $user = null, $page = 1, $limit = 10)
@@ -51,7 +63,7 @@ class UserMissionRepository extends ServiceEntityRepository
     public function findMissionForClient($user, $status, $page =1, $limit = 10)
     {
         return $this->createQueryBuilder('m')
-                    ->where('m.user = :user')->setParameter('user', $user)
+                    ->where('m.client = :user')->setParameter('user', $user)
                     ->andWhere('m.status = :status')->setParameter('status', $status)
                     ->setFirstResult($limit * ($page - 1))
                     ->getQuery()->getResult();

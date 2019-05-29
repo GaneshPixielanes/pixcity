@@ -1,0 +1,36 @@
+{% extends 'b2b/client/base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+
+{% block body %}
+    <div class="col-md-12" style="margin:20px">
+        <form name="client" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null %}
+                <img src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}" style="height:150px;width:150px" />
+            {% endif %}
+            <input type="file" name="files"/>
+            {{ form_row(form.profilePhoto) }}
+        </div>
+        {{ form_row(form._token) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.company) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.plainPassword.first, {'icon': 'fa-lock'}) }}
+        {{ form_row(form.plainPassword.second, {'icon': 'fa-lock'}) }}
+        <hr>
+        {{ form_row(form.clientInfo) }}
+            <div class="form-group">
+                <input type="submit" class="btn btn-success " value="Save">
+            </div>
+            {{ form_end(form,{'render_rest':false}) }}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+ <script type="text/javascript" src="{{ asset('build/b2b/js/client_registration.js') }}"></script>
+{{ parent() }}
+{% endblock %}

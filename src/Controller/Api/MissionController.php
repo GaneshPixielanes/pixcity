@@ -2,7 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
+use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
@@ -16,31 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MissionController extends AbstractController
 {
-    /**
-     * @Route("/list", name="list")
-     */
-    public function index(UserMissionRepository $missionRepo, Request $request)
-    {
-        $page = is_null($request->get('page'))?1:$request->get('page');
 
-        $limit = 5;
-        if(is_null($this->getUser()))
-        {
-            return false;
-        }
-        $missions = $missionRepo->findMissionsWithLimit([],$this->getUser(), $page, $limit);
-
-        if(empty($missions))
-        {
-            return new JsonResponse(['success' => false]);
-        }
-
-        $result =  $this->render('b2b/mission/_missions.html.twig', [
-            'missions' => $missions,
-        ])->getContent();
-
-        return new JsonResponse(['success' => true, 'html' => $result]);
-    }
 
     /**
      * @Route("/send-proposal",name="send_proposal")
@@ -75,5 +53,92 @@ class MissionController extends AbstractController
         $query->flush();
 
         return new JsonResponse(['success' => true, 'message' => 'Proposal has been sent!']);
+    }
+
+    /**
+     * @Route("/status",name="client_status")
+     */
+    public function statusUpdate(UserMissionRepository $missionRepo, Request $request, NotificationsRepository $notificationsRepository)
+    {
+        $mission = $missionRepo->find($request->get('id'));
+        $status = '';
+
+        if(is_null($mission) || $mission->getClient()->getId() != $this->getUser()->getId())
+        {
+            return new JsonResponse(['success' => false, 'message' => 'Please login to the right account']);
+        }
+        switch($request->get('status'))
+        {
+
+            case 'accept':
+                    if($mission->getStatus() == MissionStatus::CREATED)
+                    {
+                        $status = MissionStatus::ONGOING;
+                        $mission->setMissionAgreedClient(1);
+                        $notificationsRepository->insert($mission->getUser(),null,'accept_mission','Mission "'.$mission->getTitle().'" has been accepted by '.$mission->getClient());
+                    }
+                    else
+                    {
+                        return new JsonResponse(['success' => false, 'message' => 'Illegal operation']);
+                    }
+                    break;
+            case 'deny':
+                    if($mission->getStatus() == MissionStatus::CREATED)
+                    {
+                        $status = MissionStatus::CLIENT_DECLINED;
+                        $mission->setMissionAgreedClient(0);
+                        $notificationsRepository->insert($mission->getUser(),null,'deny_mission','Mission "'.$mission->getTitle().'" has been denied by '.$mission->getClient());
+                    }
+                    else{
+                        return new JsonResponse(['success' => false, 'message' => 'Illegal operation']);
+                    }
+                    break;
+            case 'cancel':
+                    if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
+                    {
+                        $status = MissionStatus::CANCELLED;
+                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has accepted cancellation request of mission '.$mission->getTitle());
+                        break;
+                    }
+                    elseif ($mission->getStatus() == MissionStatus::CREATED)
+                    {
+                        $status = MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT;
+                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle());
+                    }
+                    else
+                    {
+                        return new JsonResponse(['success' => false, 'message' => 'Illegal Operation']);
+                    }
+                    break;
+            case 'terminate':
+                    if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED)
+                    {
+                        $status = MissionStatus::TERMINATED;
+                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle());
+
+                        break;
+                    }
+                    elseif ($mission->getStatus() == MissionStatus::CREATED)
+                    {
+                        $status = MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT;
+                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle());
+
+                    }
+                    else
+                    {
+                        return new JsonResponse(['success' => false, 'message' => 'Illegal Operation']);
+                    }
+                    break;
+
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $mission->setStatus($status);
+
+        $entityManager->persist($mission);
+        $entityManager->flush();
+
+        return new JsonResponse(['success' => true, 'message' => 'Status has been updated']);
+
     }
 }

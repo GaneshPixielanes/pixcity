@@ -1,0 +1,63 @@
+{% extends 'b2b/client/base.html.twig' %}
+
+{% block body %}
+<h2>Accept/Deny Missions</h2>
+    {% for mission in missions %}
+    <div class="card col-md-12" style="margin:10px;">
+        <div class="row">
+            <div class="col-md-2">
+                <img src="{{ mission.bannerUrl~'/'~mission.id~'/'~mission.bannerImage }}" style="height:100px;width:100px;" />
+            </div>
+            <div class="col-md-2">
+                {{ mission.title }}
+            </div>
+            <div class="col-md-2">
+                {{ mission.description }}
+            </div>
+            <div class="col-md-2">
+                {{ mission.client }}
+            </div>
+            <div class="col-md-4" style="margin-top:15px">
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <a href="{{ url('b2b_client_mission_view',{'id':mission.id}) }}" class="btn btn-md btn-info">View</a>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <button href="#" class="btn btn-md btn-danger mission-status-btn"  data-id="{{ mission.id }}" data-status="deny">Deny</button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <button href="#" class="btn btn-md btn-success mission-status-btn"   data-id="{{ mission.id }}" data-status="accept">Accept</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    {{ parent() }}
+    $(document).ready(function()
+    {
+        $('.mission-status-btn').on('click', function (e) {
+            e.preventDefault();
+            $.ajax('/client/api/mission/status',{
+               method: 'POST',
+               data: {
+                   'id': $(this).attr('data-id'),
+                   'status': $(this).attr('data-status'),
+                   '_token': "{{ csrf_token('update') }}"
+               },
+                success: function(result)
+                {
+                    alert('Updated');
+                }
+            });
+
+        })
+    });
+</script>
+
+{% endblock %}
