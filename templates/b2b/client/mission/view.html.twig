@@ -4,9 +4,9 @@
     <div class="container">
         <div class="col-md-12 text-center">
             {% if mission.bannerUrl is not null or mission.bannerUrl != '' %}
-                <img src="https://via.placeholder.com/300X800?text=Banner Not Available" style="height:300px;width:80%"/>
-            {% else %}
                 <img src="{{ mission.bannerUrl }}" style="height:300px;width:80%"/>
+            {% else %}
+                <img src="https://via.placeholder.com/300X800?text=Banner Not Available" style="height:300px;width:80%"/>
             {% endif %}
         </div>
         <div class="col-md-12">
