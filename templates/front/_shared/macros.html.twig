@@ -206,34 +206,53 @@
 {#</div>#}
 {% endmacro %}
 
-{% macro cardSingle(card) %}
-<div class="category-card col-sm-15 01-hotspot cat-12" data-id="{{ card.id }}" data-latitude="{{ card.address.latitude }}" data-longitude="{{ card.address.longitude }}">
-    <div class="inner" style="{% if card.thumb %}background-image: url({{ card.thumb.getUrl() | imagine_filter('bg_card_item') }}){% endif %}">
-        <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}"></a>
-        <a class="cardsIco cta-favorite-card {% if app.user is not null and app.user.hasFavorite(card) %} active {% endif %} " data-id="{{ card.id }}" title="" data-toggle="tooltip" data-placement="top" data-container="body" data-original-title=" Enregistrer la card"></a>
-        <div class="alignBottom">
-            <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}">{{ card.name }}</a>
-            <form action="{{ path('front_search_index') }}">
-                <input type="hidden" name="regions[]" value="{{ card.region.slug }}">
-                <button type="submit" class="regionName">{{ card.region }}</button>
-            </form>
-            <div class="hoverInfo">
-                {% if card.categories|length > 0 %}
-                    <form action="{{ path('front_search_index') }}">
-                        <input type="hidden" name="categories[]" value="{{ card.categories[0].slug }}">
-                        <button type="submit" class="tag fa {{ card.categories[0].icon }}"><span>{{ card.categories[0] }}</span></button>
-                    </form>
+{% macro cardSingle(card, editable = false, cm = false) %}
+    {% if cm == true %}
+        <div class="top-card-block mb-4">
+    {% endif %}
+    <div class="category-card col-sm-15 01-hotspot cat-12" data-id="{{ card.id }}" data-latitude="{{ card.address.latitude }}" data-longitude="{{ card.address.longitude }}">
+        <div class="inner" style="{% if card.thumb %}background-image: url({{ card.thumb.getUrl() | imagine_filter('bg_card_item') }}){% endif %}">
+            <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}"></a>
+            {% if editable == true%}
+                <span class="collCheck" data-toggle="tooltip" data-placement="top" title="Ajouter">
+            <div class="pretty p-icon p-round p-smooth p-bigger">
+                <input type="checkbox" name="cards[]" value="{{ card.id }}"/>
+                <div class="state p-success">
+                    <i class="icon fas fa-check"></i>
+                    <label></label>
+                </div>
+            </div>
+        </span>
+            {% endif %}
+            <a class="cardsIco cta-favorite-card {% if app.user is not null and app.user.hasFavorite(card) %} active {% endif %} " data-id="{{ card.id }}" title="" data-toggle="tooltip" data-placement="top" data-container="body" data-original-title=" Enregistrer la card"></a>
+            <div class="alignBottom">
+                {% if editable != true %}
+                    <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}">{{ card.name }}</a>
                 {% endif %}
-                <div class="cardAuth">
-                    <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}">
-                        <span class="portraitAuth" style="background-image: url({{ card.pixie.getAvatarUrl() | imagine_filter('user_small_avatar') }})"></span>
-                        {{ card.pixie }}
-                    </a>
+                <form action="{{ path('front_search_index') }}">
+                    <input type="hidden" name="regions[]" value="{{ card.region.slug }}">
+                    <button type="submit" class="regionName">{{ card.region }}</button>
+                </form>
+                <div class="hoverInfo">
+                    {% if card.categories|length > 0 %}
+                        <form action="{{ path('front_search_index') }}">
+                            <input type="hidden" name="categories[]" value="{{ card.categories[0].slug }}">
+                            <button type="submit" class="tag fa {{ card.categories[0].icon }}"><span>{{ card.categories[0] }}</span></button>
+                        </form>
+                    {% endif %}
+                    <div class="cardAuth">
+                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}">
+                            <span class="portraitAuth" style="background-image: url({{ card.pixie.getAvatarUrl() | imagine_filter('user_small_avatar') }})"></span>
+                            {{ card.pixie }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    {% if cm == true %}
+        </div>
+    {% endif %}
 {% endmacro %}
 
 {% macro cityMakerSingle(user) %}
