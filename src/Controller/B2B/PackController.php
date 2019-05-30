@@ -52,7 +52,7 @@ class PackController extends Controller
 
         $user = $this->getUser();
 
-        if($user->getB2bCmApproval()){
+        if($user->getB2bCmApproval() == 0){
             return $this->redirectToRoute('b2b_pack_list');
         }
 
