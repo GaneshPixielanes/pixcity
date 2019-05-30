@@ -1,105 +1,103 @@
 {% extends 'v2/base.html.twig' %}
-{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
-{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
 
-{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
 {% import 'front/_shared/macros.html.twig' as macros %}
 
 {% block body %}
-<div class="city-maker-page">
-    <!-- Banner -->
-    <div class="city-maker-banner-wrap py-5">
-        <div class="container">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-3 col-12"></div>
-                    <div class="col-md-9">
-                        <div class="row">
-                            <div class="col-md-7 profile-container">
-                                <div class="row">
-                                    <div class="col-md-12 pixie-profile-info">
-                                        <div class="row">
-                                            <div class="col-md-3 pixie-image">
-                                                <img src="{{ user.getAvatarUrl() | imagine_filter('user_avatar_large') }}" class="rounded-circle" alt="City Maker Name">
-                                            </div>
-                                            {%   set instagram = user.instagram|split("/") %}
-                                            <div class="col-md-8 pixie-info">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <p class="mb-1 name">{{ user }}</p>
-                                                        {% if instagram[3] is defined %}
-                                                        <p class="mb-1 insta-name">@{{ instagram[3] }}</p>
-                                                        {% endif %}
-                                                        <p class="mb-1 insta-loc">{{ cardsPerRegion[0].name }}</p>
-                                                                                                                <p class="mb-1 insta-name"><i class="fa fa-birthday-cake" aria-hidden="true"></i>    {{ user.age }}</p>
-                                                                                                                <p class="mb-1 insta-name"><i class="fa fa-address-book" aria-hidden="true"></i>    {% if user.pixie.billing.address.zipcode is defined %}{{ user.pixie.billing.address.zipcode }}{% endif %}</p>
-                                                    </div>
+    <div class="city-maker-page">
+        <!-- Banner -->
+        <div class="city-maker-banner-wrap py-5">
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3 col-12"></div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-7 profile-container">
+                                    <div class="row">
+                                        <div class="col-md-12 pixie-profile-info">
+                                            <div class="row">
+                                                <div class="col-md-3 pixie-image">
+                                                    <img src="{{ user.getAvatarUrl() | imagine_filter('user_avatar_large') }}" class="rounded-circle" alt="City Maker Name">
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-12 pixie-insta-numbers d-sm-block d-xs-block d-md-none d-lg-none">
-                                                        <div class="row">
-                                                            <div class="col-6 mx-auto my-2">
-                                                                <div class="row">
-                                                                    <div class="col-md-6  col-6 grayed">
-                                                                        <span><img src="{{ absolute_url(asset('build/images/cards-gray.svg')) }}"></span>{{ user.followed }}
-                                                                    </div>
-                                                                    <div class="col-md-6 col-6 grayed">
-                                                                        <span><i class="far fa-thumbs-up"></i></span>{{ totalLikes }}
+                                                {%   set instagram = user.instagram|split("/") %}
+                                                <div class="col-md-8 pixie-info">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <p class="mb-1 name">{{ user }}</p>
+                                                            {% if instagram[3] is defined %}
+                                                                <p class="mb-1 insta-name">@{{ instagram[3] }}</p>
+                                                            {% endif %}
+                                                            <p class="mb-1 insta-loc">{{ cardsPerRegion[0].name }}</p>
+                                                            <p class="mb-1 insta-name"><i class="fa fa-birthday-cake" aria-hidden="true"></i>    {{ user.age }}</p>
+                                                            <p class="mb-1 insta-name"><i class="fa fa-address-book" aria-hidden="true"></i>    {% if user.pixie.billing.address.zipcode is defined %}{{ user.pixie.billing.address.zipcode }}{% endif %}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 pixie-insta-numbers d-sm-block d-xs-block d-md-none d-lg-none">
+                                                            <div class="row">
+                                                                <div class="col-6 mx-auto my-2">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6  col-6 grayed">
+                                                                            <span><img src="{{ absolute_url(asset('build/images/cards-gray.svg')) }}"></span>{{ user.followed }}
+                                                                        </div>
+                                                                        <div class="col-md-6 col-6 grayed">
+                                                                            <span><i class="far fa-thumbs-up"></i></span>{{ totalLikes }}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        {#<p class="about mb-1">Food in Bordeaux 🍰✨ ✉️  Art lover and painter</p>#}
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            {#<p class="about mb-1">Food in Bordeaux 🍰✨ ✉️  Art lover and painter</p>#}
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12 pixie-insta-numbers">
-                                                <div class="row">
-                                                    <div class="col-md-3 col-3 d-none d-sm-none d-xs-none d-md-block d-lg-block">
-                                                        <div class="row">
-                                                            <div class="col-md-6 col-6 grayed">
-                                                                <span><img src="{{ absolute_url(asset('build/images/cards-gray.svg')) }}"></span>{{ cards | length }}
-                                                            </div>
-                                                            <div class="col-md-6 col-6 grayed">
-                                                                <span><i class="far fa-thumbs-up"></i></span>{{ totalLikes }}
-                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3 col-4 blacked">
-                                                        <span>{% if user.userInstagramDetailsApi.noOfPosts is defined %}{{ user.userInstagramDetailsApi.noOfPosts }}{% endif %}</span>publications
-                                                    </div>
-                                                    <div class="col-md-3 col-4 blacked">
-                                                        <span>{% if user.userInstagramDetailsApi.noOfFollowed is defined %}{{ user.userInstagramDetailsApi.noOfFollowed| round }} {% endif %}</span>abonnés
-                                                    </div>
-                                                    <div class="col-md-3 col-4 blacked">
-                                                        <span>{% if user.userInstagramDetailsApi.noOfFollowers is defined %}{{ user.userInstagramDetailsApi.noOfFollowers| round }}{% endif %}</span>abonnements
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 pixie-insta-numbers">
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-3 d-none d-sm-none d-xs-none d-md-block d-lg-block">
+                                                            <div class="row">
+                                                                <div class="col-md-6 col-6 grayed">
+                                                                    <span><img src="{{ absolute_url(asset('build/images/cards-gray.svg')) }}"></span>{{ cards | length }}
+                                                                </div>
+                                                                <div class="col-md-6 col-6 grayed">
+                                                                    <span><i class="far fa-thumbs-up"></i></span>{{ totalLikes }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-4 blacked">
+                                                            <span>{% if user.userInstagramDetailsApi.noOfPosts is defined %}{{ user.userInstagramDetailsApi.noOfPosts }}{% endif %}</span>publications
+                                                        </div>
+                                                        <div class="col-md-3 col-4 blacked">
+                                                            <span>{% if user.userInstagramDetailsApi.noOfFollowers is defined %}{{ user.userInstagramDetailsApi.noOfFollowers| round }} {% endif %}</span>abonnés
+                                                        </div>
+                                                        <div class="col-md-3 col-4 blacked">
+                                                            <span>{% if user.userInstagramDetailsApi.noOfFollowed is defined %}{{ user.userInstagramDetailsApi.noOfFollowed| round }}{% endif %}</span>abonnements
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-5 col-9 pixie-profile-cta">
-                                <div class="row">
-                                    <div class="col-md-7 mb-3">
-                                        <a href="javascript:;" class="btn btn-pink btn-block btn-icon-right follow {% if app.user is not null and app.user.hasFavoritePixie(user) %} active {% endif %} cta-follow-city-maker btn-solid" data-id="{{ user.id }}" {% if app.user is  null %} data-toggle="modal" data-target="#followCityMakerModal" {% endif %}>
-                                            {% if app.user is not null and app.user.hasFavoritePixie(user) %} 
-                                                Ne plus suivre 
-                                            {% else %}
-                                                Suivre le City-maker
-                                            {% endif %}
-                                             </a>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <a href="{{ user.instagram }}" class="btn btn-blue btn-block btn-block btn-icon-right sunscribe"  target="_blank">S’abonner <i class="fab fa-instagram"></i></a>
+                                <div class="col-md-5 col-9 pixie-profile-cta">
+                                    <div class="row">
+                                        <div class="col-md-7 mb-3">
+                                            <a href="javascript:;" class="btn btn-pink btn-block btn-icon-right follow {% if app.user is not null and app.user.hasFavoritePixie(user) %} active {% endif %} cta-follow-city-maker btn-solid" data-id="{{ user.id }}" {% if app.user is  null %} data-toggle="modal" data-target="#followCityMakerModal" {% endif %}>
+                                                {% if app.user is not null and app.user.hasFavoritePixie(user) %}
+                                                    Ne plus suivre
+                                                {% else %}
+                                                    Suivre le City-maker
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <a href="{{ user.instagram }}" class="btn btn-blue btn-block btn-block btn-icon-right sunscribe"  target="_blank">S’abonner <i class="fab fa-instagram"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -108,114 +106,111 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Banner -->
-    <!-- City Maker regions and Cards -->
-    <div class="regions-cards-wrap">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 categories-left">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card mb-4 mes-regions">
-                                <h4>Mes régions</h4>
-                                <div class="row">
-                                    {% for region in cardsPerRegion %}
-                                    <div class="col-md-4 col-6 region">
-                                        <div class="region-map">
-                                          <a href="/{{ region.slug }}">
-                                            <img src="{{ absolute_url(asset('build/images/'~region.slug~'.svg')) }}" alt="aquitaine">
-                                          </a>
-                                        </div>
-                                        <div class="region-name">{{ region.name }}</div>
-                                        <div class="region-card">{{ region.count }} cards</div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card mb-4 mes-categories">
-                                <h4>Mes Catégories</h4>
-                                <div class="row">
-                                    {% for category in cardsPerCategory %}
-                                    <div class="col-md-4 col-6 categories">
-                                        <div class="category-icon">
-                                            <img src="{{ absolute_url(asset('build/images/'~category.icon~'.svg')) }}" alt="{{  category.name }}">
-                                        </div>
-                                        <div class="region-name">{{ category.name }}</div>
-                                        <div class="region-card">{{ category.count }} cards</div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8 cards-right">
-                    <h4>Les cards de {{ user }}</h4>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="cards" class="list-of-cards m-t-50 no-autoscroll clearfix" data-api-route="/api/cards/list">
-                                <div id="cardsGrid" class="regionCards cards-grid">
-                                    {% for card in cards %}
-                                    <div class="top-card-block mb-4">
-                                        {{ macros.cardSingle(card) }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                                {% if user.cards | length > 10 %}
-                                <div class="loadCards"></div>
-                                <div class="col-xs-12 text-center" id="loadCards">
-                                    <a href="javascript:;" class="btn btn-green btn-rollover" id="showMoreCards"><span class="text">VOIR PLUS DE CARDS</span><i class="fas fa-plus-square"></i></a>
-                                </div>
-                            {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div id="noResult" class="col-md-12 no-results">
-                        <p>il n'y a pas de carte à partir de maintenant !</p>
-                        <div class="noCardIco"></div>
-                    </div>
-                    <div style="padding-bottom:20px"></div>
-                    {% if user.pixie.likeText|trim != '' %}
-                    <div class="row">
-                        <div class="col-md-12 mb-5 like-dislikes">
+        <!-- Banner -->
+        <!-- City Maker regions and Cards -->
+        <div class="regions-cards-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 categories-left">
+                        <div class="row">
                             <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h4>Ce que <span>j’aime</span></h4>
-                                        {{ user.pixie.likeText | raw}}
+                                <div class="card mb-4 mes-regions">
+                                    <h4>Mes régions</h4>
+                                    <div class="row">
+                                        {% for region in cardsPerRegion %}
+                                            <div class="col-md-4 col-6 region">
+                                                <div class="region-map">
+                                                    <a href="/{{ region.slug }}">
+                                                        <img src="{{ absolute_url(asset('build/images/'~region.slug~'.svg')) }}" alt="aquitaine">
+                                                    </a>
+                                                </div>
+                                                <div class="region-name">{{ region.name }}</div>
+                                                <div class="region-card">{{ region.count }} cards</div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                    <div class="col-md-6">
-                                        <h4>Ce que je n’aime pas</h4>
-                                        {{ user.pixie.dislikeText | raw}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card mb-4 mes-categories">
+                                    <h4>Mes Catégories</h4>
+                                    <div class="row">
+                                        {% for category in cardsPerCategory %}
+                                            <div class="col-md-4 col-6 categories">
+                                                <div class="category-icon">
+                                                    <img src="{{ absolute_url(asset('build/images/'~category.icon~'.svg')) }}" alt="{{  category.name }}">
+                                                </div>
+                                                <div class="region-name">{{ category.name }}</div>
+                                                <div class="region-card">{{ category.count }} cards</div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% endif %}
+                    <div class="col-md-8 cards-right">
+                        <h4>Les cards de {{ user }}</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="cards" class="list-of-cards m-t-50 no-autoscroll clearfix" data-api-route="/api/cards/list">
+                                    <div id="cardsGrid" class="regionCards cards-grid cards-filter-result">
+                                        {% for card in cards %}
+                                            {{ macros.cardSingle(card, false, true) }}
+                                        {% endfor %}
+                                        {% if user.cards | length > 8 %}
+                                            <div class="loadCards"></div>
+                                            <div class="col-xs-12 text-center" id="loadCards">
+                                                <a href="javascript:;" class="btn btn-green btn-rollover" id="showMoreCards"><span class="text">VOIR PLUS DE CARDS</span><i class="fas fa-plus-square"></i></a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="noResult" class="col-md-12 no-results">
+                            <p>il n'y a pas de carte à partir de maintenant !</p>
+                            <div class="noCardIco"></div>
+                        </div>
+                        <div style="padding-bottom:20px"></div>
+                        {% if user.pixie.likeText|trim != '' %}
+                            <div class="row">
+                                <div class="col-md-12 mb-5 like-dislikes">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h4>Ce que <span>j’aime</span></h4>
+                                                {{ user.pixie.likeText | raw}}
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h4>Ce que je n’aime pas</h4>
+                                                {{ user.pixie.dislikeText | raw}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="map-wrap">
-        {% include "v2/_shared/map.html.twig" %}
-    </div>
+        <div class="map-wrap">
+            {% include "v2/_shared/map.html.twig" %}
+        </div>
 
-    <div id="api-box" data-api-url="/api/maps/city-maker-card/{{ user.id }}"
-         data-api-search-url="/api/maps/city-maker-card-search/{{ user.id }}/"
-    data-city-maker-id="{{ user.id }}" ></div>
+        <div id="api-box" data-api-url="/api/maps/city-maker-card/{{ user.id }}"
+             data-api-search-url="/api/maps/city-maker-card-search/{{ user.id }}/"
+             data-city-maker-id="{{ user.id }}" data-city-maker-card="true"></div>
 
-    <div id="api-user-routes"
-         data-follow-pixie="/api/users/follow/pixie"
-         data-like-card="/api/users/like/card"
-         data-favorite-card="/api/users/favorite/card"
-    ></div>
-</div>
+        <div id="api-user-routes"
+             data-follow-pixie="/api/users/follow/pixie"
+             data-like-card="/api/users/like/card"
+             data-favorite-card="/api/users/favorite/card"
+        ></div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places" defer></script>
