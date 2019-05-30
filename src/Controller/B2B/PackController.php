@@ -52,6 +52,10 @@ class PackController extends Controller
 
         $user = $this->getUser();
 
+        if($user->getB2bCmApproval()){
+            return $this->redirectToRoute('b2b_pack_list');
+        }
+
         $pack = new UserPacks();
 
         $tax = $optionRepository->findBy(['slug' => 'tax']);
@@ -165,10 +169,6 @@ class PackController extends Controller
 
         $pack = $packRepository->findByUserPack($user,$id);
 
-        if($pack === null){
-            return $this->redirectToRoute('b2b_pack_list', [], 301);
-        }
-
         $tax = $optionRepository->findBy(['slug' => 'tax']);
 
         $form = $this->createForm(PackType::class, $pack);
@@ -177,6 +177,15 @@ class PackController extends Controller
 
         if($form->isSubmitted())
         {
+
+            if($user->getB2bCmApproval() == 0 or $pack === null){
+
+                $this->addFlash(
+                    'error',
+                    'You cant create or edit the pack!'
+                );
+                return $this->redirectToRoute('b2b_pack_list');
+            }
 
             $em = $this->getDoctrine()->getManager();
 
