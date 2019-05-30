@@ -121,10 +121,16 @@ class Client implements UserInterface
      */
     private $lastLoggedinAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Ticket", mappedBy="client")
+     */
+    private $ticket;
+
     public function __construct()
     {
         $this->clientMissionProposals = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->ticket = new ArrayCollection();
     }
 
     public function __toString() {
@@ -410,6 +416,37 @@ class Client implements UserInterface
     public function setLastLoggedinAt(\DateTimeInterface $lastLoggedinAt): self
     {
         $this->lastLoggedinAt = $lastLoggedinAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ticket[]
+     */
+    public function getTicket(): Collection
+    {
+        return $this->ticket;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->ticket->contains($ticket)) {
+            $this->ticket[] = $ticket;
+            $ticket->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->ticket->contains($ticket)) {
+            $this->ticket->removeElement($ticket);
+            // set the owning side to null (unless already changed)
+            if ($ticket->getClient() === $this) {
+                $ticket->setClient(null);
+            }
+        }
 
         return $this;
     }

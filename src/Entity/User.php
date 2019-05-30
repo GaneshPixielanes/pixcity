@@ -373,6 +373,11 @@ class User implements UserInterface, EquatableInterface
      */
     private $b2b_cm_approval;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Ticket", mappedBy="cm")
+     */
+    private $tickets;
+
     //--------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------
@@ -399,6 +404,7 @@ class User implements UserInterface, EquatableInterface
         $this->userSkills = new ArrayCollection();
         $this->communityMedia = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
 
     }
 
@@ -1707,6 +1713,37 @@ class User implements UserInterface, EquatableInterface
     public function setB2bCmApproval(?int $b2b_cm_approval): self
     {
         $this->b2b_cm_approval = $b2b_cm_approval;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ticket[]
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets[] = $ticket;
+            $ticket->setCm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->tickets->contains($ticket)) {
+            $this->tickets->removeElement($ticket);
+            // set the owning side to null (unless already changed)
+            if ($ticket->getCm() === $this) {
+                $ticket->setCm(null);
+            }
+        }
 
         return $this;
     }
