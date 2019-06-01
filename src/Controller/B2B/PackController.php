@@ -168,6 +168,10 @@ class PackController extends Controller
         $user = $this->getUser();
 
         $pack = $packRepository->findByUserPack($user,$id);
+        
+        if($user->getB2bCmApproval() == 0 || empty($pack)){
+            return $this->redirectToRoute('b2b_pack_list');
+        }
 
         $tax = $optionRepository->findBy(['slug' => 'tax']);
 
