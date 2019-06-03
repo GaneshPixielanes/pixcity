@@ -233,7 +233,7 @@
                     type: 'POST',
                     url: '{{ path('b2b_pack_delete_image') }}',
                     data: {name: name,pack_id:"{{ pack.id }}"},
-                    sucess: function(data){
+                    success: function(data){
                         console.log('success: ' + data);
                     }
                 });

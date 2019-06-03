@@ -173,6 +173,10 @@ class PackController extends Controller
             return $this->redirectToRoute('b2b_pack_list');
         }
 
+        if($user->getB2bCmApproval() == 0 || empty($pack)){
+            return $this->redirectToRoute('b2b_pack_list');
+        }
+
         $tax = $optionRepository->findBy(['slug' => 'tax']);
 
         $form = $this->createForm(PackType::class, $pack);
