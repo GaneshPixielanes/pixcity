@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AutoMailRepository")
- * @ORM\Table(name="pxl_b2b_auto_mail")
+ * @ORM\Table(name="auto_mail")
  */
 class AutoMail
 {
