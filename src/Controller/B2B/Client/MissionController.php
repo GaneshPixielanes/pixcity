@@ -82,7 +82,7 @@ class MissionController extends AbstractController
     {
         $mission = $missionRepo->find($id);
 
-        if($mission->getClient()->getId() != $mission->getUser())
+        if($mission->getClient()->getId() != $this->getUser()->getId())
         {
             return $this->redirect('/client/mission/missions');
         }

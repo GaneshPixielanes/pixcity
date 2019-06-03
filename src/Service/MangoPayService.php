@@ -72,7 +72,7 @@ class MangoPayService
         $payIn->Fees->Amount = 0;
         $payIn->ExecutionType = MangoPay\PayInExecutionType::Web;
         $payIn->ExecutionDetails = new MangoPay\PayInExecutionDetailsWeb();
-        $payIn->ExecutionDetails->ReturnURL = 'http://127.0.0.1:8000/client/mission/mission-accept-process/'.$transaction;
+        $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
         $payIn->ExecutionDetails->Culture = "EN";
 
         $result =  $this->mangoPayApi->PayIns->Create($payIn);
