@@ -400,7 +400,7 @@
 
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-envelope-o"></i> Sent Mail</a>
+                    <a href="#"><i class="fa fa-envelope-o"></i> Sent Mail {{ sendMails | length }}</a>
                 </li>
             </ul>
         </aside>
@@ -424,10 +424,6 @@
                                     </div>
                                 </div>
                             {% endfor %}
-
-
-
-
 
                             <label for="comment" class="required">Reply</label>
                             <textarea name="comment" id="comment" rows="10" tabindex="4"  required="required"></textarea>

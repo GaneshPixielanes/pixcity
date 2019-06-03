@@ -101,9 +101,12 @@ class EmailController extends Controller
 
         $mails = $ticketRepo->findBy(['cm' => $user->getId()]);
 
+        $sendMails = $ticketRepo->findBy(['cm' => $this->getUser(),'initiator' => 'cm']);
+
         return $this->render('b2b/email/cm/index.html.twig', [
             'form' => $form->createView(),
             'mails' => $mails,
+            'sendMails' => $sendMails
         ]);
     }
 
@@ -129,9 +132,12 @@ class EmailController extends Controller
 
         $entityManager->flush();
 
+        $sendMails = $ticketRepository->findBy(['cm' => $this->getUser(),'initiator' => 'cm']);
+
         return $this->render('b2b/email/cm/view.html.twig',[
             'tickit_data' => $tickit_data,
-            'tickits' => $tickits
+            'tickits' => $tickits,
+            'sendMails' =>  $sendMails
         ]);
     }
 
@@ -169,6 +175,19 @@ class EmailController extends Controller
         return JsonResponse::create(['success' => true]);
 
 
+    }
+
+
+    /**
+     * @Route("/send", name="sent")
+     */
+    public function sendEmail(Request $request,TicketRepository $ticketRepository)
+    {
+        $mails = $ticketRepository->findBy(['cm' => $this->getUser(),'initiator' => 'cm']);
+
+        return $this->render('b2b/email/cm/view.html.twig',[
+            'mails' => $mails,
+        ]);
     }
 
 
