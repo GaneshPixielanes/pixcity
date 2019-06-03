@@ -1,7 +1,7 @@
 {% import "front/_shared/macros.html.twig" as macro %}
 
 {% for card in cards %}
-    {{ macro.cardSingle(card) }}
+    {{ macro.cardSingle(card, isEditable, cmFlag) }}
 {% endfor %}
 
 {% if cards | length == 10 %}
