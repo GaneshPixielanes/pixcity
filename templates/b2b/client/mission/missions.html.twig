@@ -26,7 +26,8 @@
                         <button href="#" class="btn btn-md btn-danger mission-status-btn"  data-id="{{ mission.id }}" data-status="deny">Deny</button>
                     </div>
                     <div class="btn-group mr-2" role="group" aria-label="Second group">
-                        <button href="#" class="btn btn-md btn-success mission-status-btn"   data-id="{{ mission.id }}" data-status="accept">Accept</button>
+                        {#<button href="#" class="btn btn-md btn-success mission-status-btn"   data-id="{{ mission.id }}" data-status="accept">Accept</button>#}
+                        <a href="{{ url('b2b_client_mission_mission_accept',{'id':mission.id}) }}" class="btn btn-md btn-primary">Accept</a>
                     </div>
                 </div>
             </div>

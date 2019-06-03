@@ -3,9 +3,23 @@
 namespace App\Controller\B2B\Client;
 
 use App\Constant\MissionStatus;
+use App\Entity\ClientTransaction;
+use App\Repository\ClientRepository;
+use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionRepository;
 use App\Repository\UserMissionRepository;
+use App\Service\MangoPayService;
+use MangoPay\Money;
+use MangoPay\PayIn;
+use MangoPay\PayInExecutionDetailsWeb;
+use MangoPay\PayInExecutionType;
+use MangoPay\PayInPaymentDetails;
+use MangoPay\PayInPaymentDetailsCard;
+use MangoPay\PayInPaymentType;
+use MangoPay\UserNatural;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
@@ -58,5 +72,96 @@ class MissionController extends AbstractController
         return $this->render('b2b/client/mission/missions.html.twig',[
             'missions' => $missions
         ]);
+    }
+
+
+    /**
+     * @Route("/accept-mission/{id}",name="mission_accept")
+     */
+    public function missionAccept($id, UserMissionRepository  $missionRepo)
+    {
+        $mission = $missionRepo->find($id);
+
+        if($mission->getClient()->getId() != $mission->getUser())
+        {
+            return $this->redirect('/client/mission/missions');
+        }
+
+        return $this->render('b2b/client/transaction/mission-accept.html.twig',
+            [
+               'mission' => $mission
+            ]);
+
+    }//End of mission accept
+
+    /**
+     * @param $id
+     * @param MangoPayService $mangoPayService
+     * @param UserMissionRepository $missionRepo@
+     * @Route("/process-mission-request/{id}", name="process_mission_request")
+     */
+    public function missionProcess($id,
+                                   MangoPayService $mangoPayService,
+                                   UserMissionRepository $missionRepo
+    )
+    {
+        $transaction = new ClientTransaction();
+        $mission = $missionRepo->find($id);
+        $amount = $mission->getUserMissionPayment()->getTotal();
+        // Create a mango pay user
+        $mangoUser = new UserNatural();
+
+        $mangoUser->PersonType = "NATURAL";
+        $mangoUser->FirstName = $this->getUser()->getFirstname();
+        $mangoUser->LastName = $this->getUser()->getLastname();
+        $mangoUser->Birthday = 1409735187;
+        $mangoUser->Nationality = "FR";
+        $mangoUser->CountryOfResidence = "FR";
+        $mangoUser->Email = $this->getUser()->getEmail();
+        $mangoUser = $mangoPayService->createUser($mangoUser);
+
+        //Create a wallet
+        $wallet = $mangoPayService->getWallet($mangoUser->Id);
+
+        //Create Transaction
+        $transaction->setUser($mission->getClient());
+        $transaction->setAmount($amount);
+        $transaction->setMangopayUserId($mangoUser->Id);
+        $transaction->setMangopayWalletId($wallet->Id);
+        $transaction->setPaymentStatus(false);
+        $transaction->setMission($mission);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($transaction);
+        $em->flush();
+
+        //Create Payin
+        $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId());
+
+        return $this->redirect($result);
+    }
+
+    /**
+     * @Route("/mission-accept-process/{id}", name="mission_accept_process")
+     */
+    public function missionAcceptProcess($id, ClientTransactionRepository $transactionRepo,
+                                         ClientRepository $clientRepository,
+                                         UserMissionRepository $missionRepo,
+                                         Request $request)
+    {
+        $transaction = $transactionRepo->find($id);
+
+        $transaction->setMangopayTransactionId($request->get('transactionId'));
+        $transaction->setPaymentStatus(true);
+        $transaction->getMission()->setStatus(MissionStatus::ONGOING);
+        $transaction->getMission()->setMissionAgreedClient(1);
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($transaction);
+        $em->flush();
+
+        return $this->redirect('/client/mission/missions');
+
     }
 }

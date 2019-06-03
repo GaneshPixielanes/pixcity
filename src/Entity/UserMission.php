@@ -127,10 +127,15 @@ class UserMission
      */
     private $missionMedia;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ClientTransaction", mappedBy="mission")
+     */
+    private $clientTransactions;
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
         $this->missionMedia = new ArrayCollection();
+        $this->clientTransactions = new ArrayCollection();
     }
 
     protected function datePath(){
@@ -436,6 +441,37 @@ class UserMission
             // set the owning side to null (unless already changed)
             if ($missionMedia->getMission() === $this) {
                 $missionMedia->setMission(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientTransaction[]
+     */
+    public function getClientTransactions(): Collection
+    {
+        return $this->clientTransactions;
+    }
+
+    public function addClientTransaction(ClientTransaction $clientTransaction): self
+    {
+        if (!$this->clientTransactions->contains($clientTransaction)) {
+            $this->clientTransactions[] = $clientTransaction;
+            $clientTransaction->setMissionRequest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientTransaction(ClientTransaction $clientTransaction): self
+    {
+        if ($this->clientTransactions->contains($clientTransaction)) {
+            $this->clientTransactions->removeElement($clientTransaction);
+            // set the owning side to null (unless already changed)
+            if ($clientTransaction->getMissionRequest() === $this) {
+                $clientTransaction->setMissionRequest(null);
             }
         }
 
