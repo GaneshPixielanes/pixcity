@@ -1,0 +1,38 @@
+{% extends 'b2b/client/base.html.twig' %}
+
+{% block body %}
+    <div class="container" style="margin-top:100px">
+        <h2>Mission details</h2>
+        <table class="table-striped table">
+            <tr>
+                <td>Name</td>
+                <td>{{ mission.title }}</td>
+            </tr>
+            <tr>
+                <td>Price Details</td>
+                <td>
+                    <table class="table">
+                        <tr>
+                            <td>Base Price</td>
+                            <td>{{ mission.missionBasePrice }} EUR</td>
+                        </tr>
+                        <tr>
+                            <td>Client Price</td>
+                            <td>{{ mission.userMissionPayment.clientPrice }} EUR</td>
+                        </tr>
+                        <tr>
+                            <td>Tax</td>
+                            <td>{{ mission.userMissionPayment.taxPercentage }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td>{{ mission.userMissionPayment.total }} EUR</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <hr/>
+        <a href="{{ url("b2b_client_mission_process_mission_request", {'id': mission.id}) }}" class="btn btn-primary btn-md">Pay</a>
+    </div>
+{% endblock %}

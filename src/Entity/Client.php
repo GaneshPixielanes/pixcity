@@ -126,11 +126,17 @@ class Client implements UserInterface
      */
     private $ticket;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ClientTransaction", mappedBy="user")
+     */
+    private $clientTransactions;
+
     public function __construct()
     {
         $this->clientMissionProposals = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->ticket = new ArrayCollection();
+        $this->clientTransactions = new ArrayCollection();
     }
 
     public function __toString() {
@@ -445,6 +451,37 @@ class Client implements UserInterface
             // set the owning side to null (unless already changed)
             if ($ticket->getClient() === $this) {
                 $ticket->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientTransaction[]
+     */
+    public function getClientTransactions(): Collection
+    {
+        return $this->clientTransactions;
+    }
+
+    public function addClientTransaction(ClientTransaction $clientTransaction): self
+    {
+        if (!$this->clientTransactions->contains($clientTransaction)) {
+            $this->clientTransactions[] = $clientTransaction;
+            $clientTransaction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientTransaction(ClientTransaction $clientTransaction): self
+    {
+        if ($this->clientTransactions->contains($clientTransaction)) {
+            $this->clientTransactions->removeElement($clientTransaction);
+            // set the owning side to null (unless already changed)
+            if ($clientTransaction->getUser() === $this) {
+                $clientTransaction->setUser(null);
             }
         }
 
