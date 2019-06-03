@@ -105,9 +105,12 @@ class EmailController extends AbstractController
 
         $mails = $ticketRepo->findBy(['client' => $user->getId(),'initiator' => 'client']);
 
+        $sendMails = $ticketRepo->findBy(['cm' => $this->getUser(),'initiator' => 'client_id']);
+
         return $this->render('b2b/email/client/index.html.twig', [
             'form' => $form->createView(),
             'mails' => $mails,
+            'sendMails' => $sendMails
         ]);
     }
 
@@ -134,9 +137,13 @@ class EmailController extends AbstractController
 
         $entityManager->flush();
 
+        $sendMails = $ticketRepository->findBy(['cm' => $this->getUser(),'initiator' => 'client_id']);
+
+
         return $this->render('b2b/email/client/view.html.twig',[
             'tickit_data' => $tickit_data,
-            'tickits' => $tickits
+            'tickits' => $tickits,
+            'sendMails' => $sendMails
         ]);
     }
 
@@ -174,5 +181,17 @@ class EmailController extends AbstractController
         return JsonResponse::create(['success' => true]);
 
 
+    }
+
+    /**
+     * @Route("/send", name="sent")
+     */
+    public function sendEmail(Request $request,TicketRepository $ticketRepository)
+    {
+        $mails = $ticketRepository->findBy(['cm' => $this->getUser(),'initiator' => 'cm']);
+
+        return $this->render('b2b/email/cm/view.html.twig',[
+            'mails' => $mails,
+        ]);
     }
 }
