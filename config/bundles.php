@@ -21,5 +21,5 @@ return [
     Knp\Bundle\SnappyBundle\KnpSnappyBundle::class => ['all' => true],
     Sverraest\RevolutPHPBundle\SverraestRevolutPHPBundle::class => ['all' => true],
     Ddeboer\VatinBundle\DdeboerVatinBundle::class => ['all' => true],
-//    CoreSphere\ConsoleBundle\CoreSphereConsoleBundle::class => ['all' => true],
+    Troopers\AjaxBundle\TroopersAjaxBundle::class => ['all' => true],
 ];
