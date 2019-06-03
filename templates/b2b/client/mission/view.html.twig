@@ -1,59 +1,59 @@
-{% extends 'b2b/client/base.html.twig' %}
+    {% extends 'b2b/client/base.html.twig' %}
 
-{% block body %}
-    <div class="container">
-        <div class="col-md-12 text-center">
-            {% if mission.bannerUrl is not null or mission.bannerUrl != '' %}
-                <img src="{{ mission.bannerUrl }}" style="height:300px;width:80%"/>
-            {% else %}
-                <img src="https://via.placeholder.com/300X800?text=Banner Not Available" style="height:300px;width:80%"/>
-            {% endif %}
-        </div>
-        <div class="col-md-12">
-            {{ mission.referencePack.title }}
-            <h1>{{ mission.title }}</h1>
-            {{ mission.description }}
-        </div>
-        <div class="col-md-12" style="margin-top:30px">
-            <div class="row">
-                <div class="col-md-2">
-                    <small>{{ mission.status }}</small>
-                    {{ mission.client }}
-                </div>
-                <div class="col-md-2">
-                    <small>Region</small><br/>
-                    {{ mission.region }}
-                </div>
-                <div class="col-md-2">
-                    <small>Price</small>
-                    {{ mission.missionBasePrice }}
-                </div>
-                {% if mission.briefFiles is not null or mission.briefFiles != '' %}
-                    <div class="col-md-2">
-                        <a href="{{ url('b2b_mission_download',{'id':mission.id}) }}" class="btn btn-sm btn-info">Download</a>
-                    </div>
+    {% block body %}
+        <div class="container">
+            <div class="col-md-12 text-center">
+                {% if mission.bannerUrl is not null or mission.bannerUrl != '' %}
+                    <img src="{{ mission.bannerUrl }}" style="height:300px;width:80%"/>
+                {% else %}
+                    <img src="https://via.placeholder.com/300X800?text=Banner Not Available" style="height:300px;width:80%"/>
                 {% endif %}
-                <div class="col-md-2">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                            Change Status
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" id="terminate-mission" data-id="{{ mission.id }}">{% if mission.status == 'terminate_request_cm' %}Accept Termination{% else %}Request Termination{% endif %}</a>
-                            <a class="dropdown-item" href="#">Support</a>
-                            <a class="dropdown-item" href="#">Partager</a>
-                            <a class="dropdown-item" href="#" style="color:red" id="cancel-mission" data-id="{{ mission.id }}">{% if mission.status == 'cancel_request_cm' %}Accept Cancellation {% else %}Request Cancellation{% endif %}</a>
+            </div>
+            <div class="col-md-12">
+                {{ mission.referencePack.title }}
+                <h1>{{ mission.title }}</h1>
+                {{ mission.description }}
+            </div>
+            <div class="col-md-12" style="margin-top:30px">
+                <div class="row">
+                    <div class="col-md-2">
+                        <small>{{ mission.status }}</small>
+                        {{ mission.client }}
+                    </div>
+                    <div class="col-md-2">
+                        <small>Region</small><br/>
+                        {{ mission.region }}
+                    </div>
+                    <div class="col-md-2">
+                        <small>Price</small>
+                        {{ mission.userMissionPayment.total }}
+                    </div>
+                    {% if mission.briefFiles is not null or mission.briefFiles != '' %}
+                        <div class="col-md-2">
+                            <a href="{{ url('b2b_mission_download',{'id':mission.id}) }}" class="btn btn-sm btn-info">Download</a>
+                        </div>
+                    {% endif %}
+                    <div class="col-md-2">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                                Change Status
+                            </button>
+                            <div class="dropdown-menu">
+                                {% if mission.status != 'terminated' and mission.status != 'cancelled' %}<a class="dropdown-item" href="#" id="terminate-mission" data-id="{{ mission.id }}">{% if mission.status == 'terminate_request_cm' %}Accept Termination{% else %}Request Termination{% endif %}</a>{% endif %}
+                                <a class="dropdown-item" href="#">Support</a>
+                                <a class="dropdown-item" href="#">Partager</a>
+                                {% if mission.status != 'terminated' and mission.status != 'cancelled' %}<a class="dropdown-item" href="#" style="color:red" id="cancel-mission" data-id="{{ mission.id }}">{% if mission.status == 'cancel_request_cm' %}Accept Cancellation {% else %}Request Cancellation{% endif %}</a>{% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="api-box" data-url="{{ url('api_mission_client_status') }}" data-csrf-token="{{ csrf_token(app.user.id) }}"></div>
-{% endblock %}
-{% block javascripts %}
-<script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/mission.js')) }}"></script>
-{{ parent() }}
+        <div id="api-box" data-url="{{ url('api_mission_client_status') }}" data-csrf-token="{{ csrf_token(app.user.id) }}"></div>
+    {% endblock %}
+    {% block javascripts %}
+    <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/mission.js')) }}"></script>
+    {{ parent() }}
 
-{% endblock %}
+    {% endblock %}

@@ -41,10 +41,10 @@
                             Change Status
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" id="terminate-mission" data-id="{{ mission.id }}">Terminate Mission</a>
+                            {% if mission.status != 'terminated' and mission.status != 'cancelled' %}<a class="dropdown-item" href="#" id="terminate-mission" data-id="{{ mission.id }}">Terminate Mission</a>{% endif %}
                             <a class="dropdown-item" href="#">Support</a>
                             <a class="dropdown-item" href="#">Partager</a>
-                            <a class="dropdown-item" href="#" style="color:red" id="cancel-mission" data-id="{{ mission.id }}">Cancel Mission</a>
+                            {% if mission.status != 'terminated' and mission.status != 'cancelled' %}<a class="dropdown-item" href="#" style="color:red" id="cancel-mission" data-id="{{ mission.id }}">Cancel Mission</a>{% endif %}
                         </div>
                     </div>
                 </div>
