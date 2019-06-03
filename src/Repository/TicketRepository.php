@@ -47,4 +47,49 @@ class TicketRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getAllSenderClient($value)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.client = :id')
+            ->setParameter('id', $value)
+            ->andWhere('t.initiator = :initiator')
+            ->setParameter('initiator', 'client')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getAllReceiverClient($value)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.client = :id')
+            ->setParameter('id', $value)
+            ->andWhere('t.initiator = :initiator')
+            ->setParameter('initiator', 'cm')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getAllSenderCM($value)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.cm = :id')
+            ->setParameter('id', $value)
+            ->andWhere('t.initiator = :initiator')
+            ->setParameter('initiator', 'cm')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getAllReceiverCM($value)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.cm = :id')
+            ->setParameter('id', $value)
+            ->andWhere('t.initiator = :initiator')
+            ->setParameter('initiator', 'client')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

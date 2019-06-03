@@ -425,11 +425,11 @@
             </div>
             <ul class="inbox-nav inbox-divider">
                 <li class="active">
-                    <a href="{{ path('b2b_email_index') }}"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger pull-right">{{ mails | length }}</span></a>
+                    <a href="{{ path('b2b_email_index') }}"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger pull-right">{{ receiverMails | length }}</span></a>
 
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-envelope-o"></i> Sent Mail</a>
+                    <a href="#"><i class="fa fa-envelope-o"></i> Sent Mail {{  sendMails | length }}</a>
                 </li>
 
             </ul>

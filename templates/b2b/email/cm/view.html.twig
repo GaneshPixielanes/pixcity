@@ -400,51 +400,49 @@
 
             <ul class="inbox-nav inbox-divider">
                 <li class="active">
-                    <a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger pull-right">{{ tickits | length }}</span></a>
+                    <a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger pull-right">{{ receiverMails | length }}</span></a>
 
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-envelope-o"></i> Sent Mail</a>
+                    <a href="#"><i class="fa fa-envelope-o"></i> Sent Mail {{ sendMails | length }}</a>
                 </li>
             </ul>
         </aside>
         <aside class="lg-side">
 
-            <div class="container">
+            <div class="inbox-body">
 
-                <div class="card">
-                    <div class="card-body">
-                        {% for data in tickit_data.getMessages %}
-                            <div class="card card-inner">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            {#                                                        <p><strong>{{ data.client.firstName }}</strong></a></p>#}
-                                            <p>{{ data.content }}</p>
+                <div class="container">
+
+                    <div class="card">
+                        <div class="card-body">
+                            {% for data in tickit_data.getMessages %}
+                                <div class="card card-inner">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                {#                                                        <p><strong>{{ data.client.firstName }}</strong></a></p>#}
+                                                <p>{{ data.content }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+
+                            <label for="comment" class="required">Reply</label>
+                            <textarea name="comment" id="comment" rows="10" tabindex="4"  required="required"></textarea>
+
+
+                            <input type="hidden" name="comment_post_ID" value="{{ tickit_data.id }}" id="comment_post_ID" />
+                            <input name="submit" id="subit-comment" type="submit" value="Submit" />
 
 
 
-
-
-                        <label for="comment" class="required">Reply</label>
-                        <textarea name="comment" id="comment" rows="10" tabindex="4"  required="required"></textarea>
-
-
-                        <input type="hidden" name="comment_post_ID" value="{{ tickit_data.id }}" id="comment_post_ID" />
-                        <input name="submit" id="subit-comment" type="submit" value="Submit" />
-
-
+                        </div>
 
                     </div>
-
                 </div>
             </div>
-
         </aside>
     </div>
     </div>

@@ -103,14 +103,17 @@ class EmailController extends AbstractController
 
         }
 
-        $mails = $ticketRepo->findBy(['client' => $user->getId(),'initiator' => 'client']);
+        $mails = $ticketRepo->findBy(['client' => $user->getId()]);
 
-        $sendMails = $ticketRepo->findBy(['cm' => $this->getUser(),'initiator' => 'client_id']);
+        $sendMails = $ticketRepo->getAllSenderClient($user->getId());
+
+        $receiverMails = $ticketRepo->getAllReceiverClient($user->getId());
 
         return $this->render('b2b/email/client/index.html.twig', [
             'form' => $form->createView(),
             'mails' => $mails,
-            'sendMails' => $sendMails
+            'sendMails' => $sendMails,
+            'receiverMails' => $receiverMails
         ]);
     }
 
@@ -126,8 +129,6 @@ class EmailController extends AbstractController
 
         $tickit_data = $ticketRepository->find($id);
 
-        $tickits = $ticketRepository->findBy(['client' => $user->getId()]);
-
         foreach ($tickit_data->getMessages() as $data){
             foreach ($data as $item) {
                 $item->setStatus(0);
@@ -137,13 +138,14 @@ class EmailController extends AbstractController
 
         $entityManager->flush();
 
-        $sendMails = $ticketRepository->findBy(['cm' => $this->getUser(),'initiator' => 'client_id']);
+        $sendMails = $ticketRepository->getAllSenderClient($user->getId());
 
+        $receiverMails = $ticketRepository->getAllReceiverClient($user->getId());
 
         return $this->render('b2b/email/client/view.html.twig',[
             'tickit_data' => $tickit_data,
-            'tickits' => $tickits,
-            'sendMails' => $sendMails
+            'sendMails' => $sendMails,
+            'receiverMails' => $receiverMails
         ]);
     }
 
@@ -153,6 +155,7 @@ class EmailController extends AbstractController
     public function replyEmail(Request $request,TicketRepository $ticketRepository,MessageRepository $messageRepository){
 
         $tickit = $ticketRepository->find($request->get('id'));
+
         $content = $request->get('comment');
 
         $initiator = $tickit->getInitiator();
@@ -188,10 +191,16 @@ class EmailController extends AbstractController
      */
     public function sendEmail(Request $request,TicketRepository $ticketRepository)
     {
-        $mails = $ticketRepository->findBy(['cm' => $this->getUser(),'initiator' => 'cm']);
+        $mails = $ticketRepository->findBy(['cm' => $this->getUser()]);
+
+        $sendMails = $ticketRepo->getAllSenderClient($user->getId());
+
+        $receiverMails = $ticketRepo->getAllReceiverClient($user->getId());
 
         return $this->render('b2b/email/cm/view.html.twig',[
             'mails' => $mails,
+            'sendMails' => $sendMails,
+            'receiverMails' => $receiverMails
         ]);
     }
 }

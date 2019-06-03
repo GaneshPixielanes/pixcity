@@ -101,12 +101,15 @@ class EmailController extends Controller
 
         $mails = $ticketRepo->findBy(['cm' => $user->getId()]);
 
-        $sendMails = $ticketRepo->findBy(['cm' => $this->getUser(),'initiator' => 'cm']);
+        $sendMails = $ticketRepo->getAllSenderCM($user->getId());
+
+        $receiverMails = $ticketRepo->getAllReceiverCM($user->getId());
 
         return $this->render('b2b/email/cm/index.html.twig', [
             'form' => $form->createView(),
             'mails' => $mails,
-            'sendMails' => $sendMails
+            'sendMails' => $sendMails,
+            'receiverMails' => $receiverMails
         ]);
     }
 
@@ -132,12 +135,15 @@ class EmailController extends Controller
 
         $entityManager->flush();
 
-        $sendMails = $ticketRepository->findBy(['cm' => $this->getUser(),'initiator' => 'cm']);
+        $sendMails = $ticketRepository->getAllSenderCM($user->getId());
+
+        $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
 
         return $this->render('b2b/email/cm/view.html.twig',[
             'tickit_data' => $tickit_data,
             'tickits' => $tickits,
-            'sendMails' =>  $sendMails
+            'sendMails' => $sendMails,
+            'receiverMails' => $receiverMails
         ]);
     }
 
@@ -183,10 +189,16 @@ class EmailController extends Controller
      */
     public function sendEmail(Request $request,TicketRepository $ticketRepository)
     {
-        $mails = $ticketRepository->findBy(['cm' => $this->getUser(),'initiator' => 'cm']);
+        $mails = $ticketRepository->findBy(['cm' => $this->getUser()]);
+
+        $sendMails = $ticketRepo->getAllSenderCM($user->getId());
+
+        $receiverMails = $ticketRepo->getAllReceiverCM($user->getId());
 
         return $this->render('b2b/email/cm/view.html.twig',[
             'mails' => $mails,
+            'sendMails' => $sendMails,
+            'receiverMails' => $receiverMails
         ]);
     }
 
