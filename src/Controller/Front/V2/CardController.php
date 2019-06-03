@@ -116,7 +116,9 @@ class CardController extends Controller
       return $this->render('v2/_shared/cards.html.twig', [
             'cards' => $cards,
             'count' => count($cards),
-						'filters' => $filters
+            'filters' => $filters,
+            'isEditable' => $request->get('isEditable'),
+            'cmFlag' => $request->get('cmFlag')
         ]);
     }//End of loadCards
 

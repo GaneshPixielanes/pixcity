@@ -582,22 +582,41 @@ $(document).ready(function() {
     $('body').on('click','#showMoreCards', function()
     {
         $(this).remove();
+        var isCityMaker = $('#api-box').attr('data-city-maker-card');
+        if(isCityMaker !== "true")
+        {
+            isCityMaker = false;
+        }
+        else
+        {
+            isCitymaker = true;
+        }
+
         $(".loadCards:last").html("<p class=\"text-center\"><img src=\"/../../img/loader.gif\"/ alt=\"Loading...\"></p>");
-        page = page + 1;
+        page = page ;
         $.ajax({
-            url:'/load-cards', 
+            url:'/v2/load-cards',
             method: 'POST',
             data: {
-                    categories: JSON.stringify(categoryList),
-                    page: page,
-                    regions: JSON.stringify(regionList),
-                    text: text,
-                    cityMaker: cityMaker
-                  },
+                categories: JSON.stringify(categoryList),
+                page: page,
+                regions: JSON.stringify(regionList),
+                text: text,
+                cityMaker: cityMaker,
+                cmFlag: isCityMaker
+            },
             success: function(result)
             {
-                console.log($(result).find('.category-card').length);
-                $(".loadCards:last").html(result);
+                if(isCityMaker == false)
+                {
+                    $(".loadCards:last").html(result);
+                }
+                else
+                {
+                    $(".loadCards").html(''); // Remove loading symbol
+                    $(".top-card-block:last").after(result);
+                }
+
             }
         });
     });
