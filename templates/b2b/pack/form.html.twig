@@ -104,7 +104,7 @@
             <input type='file' id="imageUpload" name="{{ form.bannerImage.vars.full_name }}"/>
             <label for="imageUpload" style="background-image:"></label>
 
-            {% if pack is defined %}
+            {% if pack is not  defined and pack is not  null %}
                <p>Image : {{ pack.getBannerImage() }}</p>
             {% else %}
                 <p></p>
@@ -118,7 +118,7 @@
             <span> <p id="actula_value"></p></span>
             {% for image in images %}
                 <label for=""><img src="/uploads/community_media/{{ user.id }}/{{ image.name }}" class="img-thumbnail img-check">
-                {% if pack is defined and pack.id is not null %}
+                {% if pack is defined and pack is not null %}
                     <input type="checkbox" name="cm_images[]" value="/uploads/community_meida/{{ app.user.id }}/{{ image.name }}" class="hidden" ></label>
                 {% else %}
                     <input type="checkbox" name="cm_images[]" value="/uploads/community_meida/{{ app.user.id }}/{{ image.name }}" class="hidden" checked="checked"></label>
@@ -233,7 +233,7 @@
                     type: 'POST',
                     url: '{{ path('b2b_pack_delete_image') }}',
                     data: {name: name,pack_id:"{{ pack.id }}"},
-                    sucess: function(data){
+                    success: function(data){
                         console.log('success: ' + data);
                     }
                 });

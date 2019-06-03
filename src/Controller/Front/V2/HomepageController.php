@@ -57,7 +57,7 @@ class HomepageController extends Controller
         $isCardFavoritedFirstTime = false;
 
         $session  = new Session();
-
+        $card = 0;
         if(!is_null($user)){
 
             if(!$session->has('card_count_'.$user->getId())){

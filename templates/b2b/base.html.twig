@@ -12,6 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
 <script src="{{ absolute_url(asset('build/b2b/js/app.js')) }}"></script>
 <script src="{{ absolute_url(asset('build/js/dropzone.js')) }}"></script>
 <style>
@@ -60,7 +61,7 @@
 <div class="d-flex" id="wrapper">
 
     <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="bg-light border-right" id="sidebar-wrapper" style="margin-top:1%;">
         <div class="list-group list-group-flush">
             <a href="#">
                 <img src="{{ app.user.getAvatar() }}" class="img-thumbnail" />
@@ -69,6 +70,7 @@
             <a href="{{ url('b2b_pack_list') }}" class="list-group-item list-group-item-action bg-light">Mes Packs</a>
             <a href="{{ url('b2b_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
             <a href="{{ url('b2b_mission_proposals') }}" class="list-group-item list-group-item-action bg-light">Mission Proposals</a>
+            <a href="{{ url('b2b_email_index') }}" class="list-group-item list-group-item-action bg-light">Email</a>
         </div>
     </div>
     <!-- /#sidebar-wrapper -->

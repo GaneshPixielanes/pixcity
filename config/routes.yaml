@@ -124,6 +124,14 @@ controllers_pack:
     resource: ../src/Controller/B2B/PackController.php
     type: annotation
 
+controllers_email:
+    resource: ../src/Controller/B2B/EmailController.php
+    type: annotation
+
+controllers_client_email:
+    resource: ../src/Controller/B2B/Client/EmailController.php
+    type: annotation
+
 controllers_front_regions:
     resource: ../src/Controller/Front/V2/RegionController.php
     type: annotation
