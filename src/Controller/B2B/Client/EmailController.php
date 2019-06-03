@@ -129,12 +129,15 @@ class EmailController extends AbstractController
 
         $tickit_data = $ticketRepository->find($id);
 
-        foreach ($tickit_data->getMessages() as $data){
-            foreach ($data as $item) {
-                $item->setStatus(0);
-            }
+        if($tickit_data->getMessages == 0 and empty($tickit_data->getMessages)){
+            foreach ($tickit_data->getMessages() as $data){
+                foreach ($data as $item) {
+                    $item->setStatus(0);
+                }
 
+            }
         }
+
 
         $entityManager->flush();
 
