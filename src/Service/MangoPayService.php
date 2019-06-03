@@ -15,7 +15,7 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientId = 'azimforexprod';
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-        $this->mangoPayApi->Config->TemporaryFolder = "D:\mangopay";
+        $this->mangoPayApi->Config->TemporaryFolder = realpath('uploads/mangopay');
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
     }
 

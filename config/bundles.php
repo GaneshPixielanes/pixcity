@@ -22,4 +22,5 @@ return [
     Sverraest\RevolutPHPBundle\SverraestRevolutPHPBundle::class => ['all' => true],
     Ddeboer\VatinBundle\DdeboerVatinBundle::class => ['all' => true],
     Troopers\AjaxBundle\TroopersAjaxBundle::class => ['all' => true],
+    Troopers\MangopayBundle\TroopersMangopayBundle::class => ['all' => true],
 ];
