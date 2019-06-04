@@ -415,9 +415,9 @@
                                             <div class="col-md-10">
                                                 <p>
                                                     {% if data.type == 1 %}
-                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getCm().firstName }}</strong></a>
+                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getClient().firstName }}</strong></a>
                                                     {% else  %}
-                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getClient().firstName }} </strong></a>
+                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getCm().firstName }} </strong></a>
                                                     {% endif %}
 
                                                     <span class="float-right">{{ data.createdAt | date('H:i') }}</span>
