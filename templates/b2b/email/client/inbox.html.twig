@@ -375,7 +375,7 @@
                     <tbody>
                     {% for mail in mails %}
                         <tr onclick="document.location = 'view/{{ mail.id }}';">
-                            <td class="view-message  dont-show">{{ mail.client.firstName }}</td>
+                            <td class="view-message  dont-show">{{ mail.cm.firstName }}</td>
                             <td class="view-message ">{{ mail.Object }}</td>
                             <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                             <td class="view-message  text-right">{{ mail.createdAt | date('h:i A') }}</td>
