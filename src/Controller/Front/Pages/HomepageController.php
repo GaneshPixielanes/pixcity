@@ -34,7 +34,6 @@ class HomepageController extends Controller
     ){
 
 
-        die('(1) TEST UPDATE GIT');
         $page = $pagesRepo->findOneBySlug("accueil");
         $regions = $pagesCategoriesRepo->findAllActive();
 
