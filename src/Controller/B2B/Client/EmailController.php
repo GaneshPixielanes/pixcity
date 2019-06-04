@@ -166,7 +166,7 @@ class EmailController extends Controller
 
             $fileExtension = md5(uniqid()).'.'.$file->guessExtension();
 
-            $uploadDir = '/public/uploads/attachment/'.$request->get('id');
+            $uploadDir = $this->get('kernel')->getRootDir() . '/../public/uploads/attachment/'.$request->get('id');
 
             if (!file_exists($uploadDir) && !is_dir($uploadDir)) {
                 mkdir($uploadDir, 0775, true);
