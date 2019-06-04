@@ -33,6 +33,7 @@ class HomepageController extends Controller
         CardProjectRepository $cardProjectRepository
     ){
 
+
         $page = $pagesRepo->findOneBySlug("accueil");
         $regions = $pagesCategoriesRepo->findAllActive();
 
