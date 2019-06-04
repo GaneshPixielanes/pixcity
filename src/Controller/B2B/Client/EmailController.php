@@ -157,6 +157,29 @@ class EmailController extends AbstractController
      */
     public function replyEmail(Request $request,TicketRepository $ticketRepository,MessageRepository $messageRepository){
 
+        $fileName = [];
+
+        $files = $request->files;
+
+        foreach ($files as $file){
+
+            $fileExtension = md5(uniqid()).'.'.$file->guessExtension();
+
+            $uploadDir = '/public/uploads/attachment/'.$request->get('id');
+
+            if (!file_exists($uploadDir) && !is_dir($uploadDir)) {
+                mkdir($uploadDir, 0775, true);
+            }
+
+
+            if ($file->move($uploadDir, $fileExtension)) {
+                $fileName[] = $fileExtension;
+            }
+
+
+
+        }
+
         $tickit = $ticketRepository->find($request->get('id'));
 
         $content = $request->get('comment');
@@ -177,14 +200,22 @@ class EmailController extends AbstractController
         $message->setType($type);
         $message->setStatus(1);
         $message->setAutoMail('no');
-
+        $message->setAttachment(implode(',',$fileName));
         $message->setCreatedAt(new \DateTime('now'));
         $message->setUpdatedAt(new \DateTime('now'));
 
         $em->persist($message);
         $em->flush();
 
-        return JsonResponse::create(['success' => true]);
+        $files = [];
+
+        foreach (explode(',',$message->getAttachment()) as $file){
+            $files[$file] =  "/uploads/attachments/".$message->getTicket()->getId().'/'.$file;
+        }
+
+        $files = implode(',',$files);
+
+        return JsonResponse::create(['success' => true,'file' => $message->getAttachment()]);
 
 
     }
@@ -194,16 +225,62 @@ class EmailController extends AbstractController
      */
     public function sendEmail(Request $request,TicketRepository $ticketRepository)
     {
+        $user = $this->getUser();
+
         $mails = $ticketRepository->findBy(['cm' => $this->getUser()]);
 
-        $sendMails = $ticketRepo->getAllSenderClient($user->getId());
+        $sendMails = $ticketRepository->getAllSenderClient($user->getId());
 
-        $receiverMails = $ticketRepo->getAllReceiverClient($user->getId());
+        $receiverMails = $ticketRepository->getAllReceiverClient($user->getId());
 
-        return $this->render('b2b/email/cm/view.html.twig',[
+        return $this->render('b2b/email/client/view.html.twig',[
             'mails' => $mails,
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails
         ]);
     }
+
+
+    /**
+     * @Route("/inbox", name="inbox")
+     */
+    public function inboxEmail(Request $request,TicketRepository $ticketRepository)
+    {
+        $user = $this->getUser();
+
+        $mails = $ticketRepository->getAllReceiverClient($user->getId());
+
+        $sendMails = $ticketRepository->findBy(['client' => $user->getId(),'initiator' => 'client']);
+
+        $receiverMails = $ticketRepository->findBy(['client' => $user->getId(),'initiator' => 'cm']);
+
+        return $this->render('b2b/email/client/inbox.html.twig',[
+            'mails' => $mails,
+            'sendMails' => $sendMails,
+            'receiverMails' => $receiverMails
+        ]);
+    }
+
+    /**
+     * @Route("/send/emails", name="send_emails")
+     */
+    public function emailsSend(Request $request,TicketRepository $ticketRepository)
+    {
+        $user = $this->getUser();
+
+        $mails = $ticketRepository->getAllSenderClient($user->getId());
+
+        $sendMails = $ticketRepository->findBy(['client' => $user->getId(),'initiator' => 'client']);
+
+        $receiverMails = $ticketRepository->findBy(['client' => $user->getId(),'initiator' => 'cm']);
+
+        return $this->render('b2b/email/client/inbox.html.twig',[
+            'mails' => $mails,
+            'sendMails' => $sendMails,
+            'receiverMails' => $receiverMails
+        ]);
+    }
+
+
+
 }

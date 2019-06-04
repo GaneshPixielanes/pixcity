@@ -382,6 +382,14 @@
             width: 55px;
             text-align: center;
         }
+        .card-inner{
+            margin-left: 4rem;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+        .card{
+            margin-bottom: 10px;
+        }
     </style>
 
 
@@ -400,11 +408,11 @@
 
             <ul class="inbox-nav inbox-divider">
                 <li class="active">
-                    <a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger pull-right">{{ receiverMails | length }}</span></a>
+                    <a href="{{ path('b2b_email_inbox') }}"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger pull-right">{{ receiverMails | length }}</span></a>
 
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-envelope-o"></i> Sent Mail {{ sendMails | length }}</a>
+                    <a href="{{ path('b2b_email_send_emails') }}"><i class="fa fa-envelope-o"></i> Sent Mail {{ sendMails | length }}</a>
                 </li>
             </ul>
         </aside>
@@ -417,20 +425,72 @@
                     <div class="card">
                         <div class="card-body">
                             {% for data in tickit_data.getMessages %}
-                                <div class="card card-inner">
+                                    {% if data.type == 0 %}
+                                        <div class="card card-inner">
+                                    {% else %}
+                                            <div class="card card">
+                                    {% endif %}
+
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-10">
-                                                {#                                                        <p><strong>{{ data.client.firstName }}</strong></a></p>#}
+                                                <p>
+                                                    {% if data.type == 0 %}
+                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getClient().firstName }}</strong></a>  {{ data.createdAt | date('H:i') }}
+                                                    {% else  %}
+                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getCm().firstName }} </strong></a>  {{ data.createdAt | date('H:i') }}
+                                                    {% endif %}
+
+                                                    <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-10">
                                                 <p>{{ data.content }}</p>
                                             </div>
+                                            {% if data.attachment is not empty %}
+                                                <div class="col-md-10">
+                                                    <label>Attachments</label>
+                                                    {% set files = data.attachment | split(',') %}
+                                                    <ul>
+                                                        {% for file in files %}
+                                                            <li><a href="/uploads/attachment/{{ data.getTicket().getId() }}/{{ file }}" download>{{ file }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+
+
+
+
+
+                                            {% endif %}
+
+
                                         </div>
                                     </div>
                                 </div>
+
+
+
                             {% endfor %}
 
+
+                            <div id="reply"></div>
+                            <div id="file_of"></div>
+
+
+
                             <label for="comment" class="required">Reply</label>
-                            <textarea name="comment" id="comment" rows="10" tabindex="4"  required="required"></textarea>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <textarea name="comment" class="form-control" id="comment" rows="10" tabindex="4"  required="required"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input type="file" name="attachment_file[]" multiple id="attachment_file">
+                                </div>
+                            </div>
 
 
                             <input type="hidden" name="comment_post_ID" value="{{ tickit_data.id }}" id="comment_post_ID" />
@@ -454,14 +514,29 @@
     <script>
         $(document).ready(function () {
             $("#subit-comment").on('click',function () {
+                var data = new FormData();
                 var comment = $("#comment").val();
                 var id = $("#comment_post_ID").val();
 
+                var files = $("#attachment_file").prop('files');
+
+                $.each(files, function( index, value ) {
+                    data.append('file_'+index,value);
+                });
+
+                data.append('comment',comment);
+                data.append('id',id);
+                console.log(data);
                 $.ajax({
                     url:"{{ path('b2b_email_reply') }}",
-                    data:{id:id,comment:comment},
+                    type:"POST",
+                    data:data,
+                    cacheable: false,
+                    processData: false,
+                    contentType: false,
                     success: function(data){
-                        console.log('success: ' + data);
+
+                        location.reload();
                     }
                 });
             });
