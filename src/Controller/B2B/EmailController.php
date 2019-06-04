@@ -255,7 +255,7 @@ class EmailController extends Controller
     }
 
     /**
-     * @Route("/send/emails", name="send_emails")
+     * @Route("/send-emails", name="send_emails")
      */
     public function emailsSend(Request $request,TicketRepository $ticketRepository)
     {
