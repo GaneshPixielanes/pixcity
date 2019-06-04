@@ -80,16 +80,22 @@ class MissionController extends AbstractController
      */
     public function missionAccept($id, UserMissionRepository  $missionRepo)
     {
-        $mission = $missionRepo->find($id);
+        $mission = $missionRepo->findBy(
+            [
+                'id' => $id,
+                'client' => $this->getUser()
+            ]
+        );
 
-        if($mission->getClient()->getId() != $this->getUser()->getId())
+        if(empty($mission))
         {
             return $this->redirect('/client/mission/missions');
         }
 
+
         return $this->render('b2b/client/transaction/mission-accept.html.twig',
             [
-               'mission' => $mission
+               'mission' => $mission[0]
             ]);
 
     }//End of mission accept
