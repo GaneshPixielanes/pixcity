@@ -33,6 +33,8 @@ class HomepageController extends Controller
         CardProjectRepository $cardProjectRepository
     ){
 
+
+        die('(1) TEST UPDATE GIT');
         $page = $pagesRepo->findOneBySlug("accueil");
         $regions = $pagesCategoriesRepo->findAllActive();
 
