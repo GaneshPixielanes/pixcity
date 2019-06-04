@@ -12,6 +12,7 @@ use App\Repository\TicketRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  * @Route("/client/email", name="client_email_")
  * @Security("has_role('ROLE_USER')")
  */
-class EmailController extends AbstractController
+class EmailController extends Controller
 {
     /**
      * @Route("/index", name="index")
