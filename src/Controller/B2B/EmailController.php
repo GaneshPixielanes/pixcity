@@ -118,11 +118,21 @@ class EmailController extends Controller
      */
     public function view($id,TicketRepository $ticketRepository)
     {
+
+
         $user = $this->getUser();
 
         $entityManager = $this->getDoctrine()->getManager();
 
+        $data = $ticketRepository->findBy(['id' => $id,'cm' => $user->getId()]);
+
+        if(empty($data)){
+            return $this->redirectToRoute('b2b_email_index');
+        }
+
         $tickit_data = $ticketRepository->find($id);
+
+
 
         $tickits = $ticketRepository->findBy(['cm' => $user->getId()]);
 
