@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
 
 {% block title %}Email Page{% endblock %}
 
@@ -393,39 +393,18 @@
     </style>
 
 
-    <div class="mail-box">
-        <aside class="sm-side">
-            <div class="user-head">
-                <a class="inbox-avatar" href="javascript:;">
-                    <img src="{{ app.user.getAvatar() }}" class="nav-settings__member-photo"
-                         alt="{{ app.user.firstname }}" height="60" width="60" width="50">
-                </a>
-                <div class="user-name">
-                    <h5><a href="#">{{ app.user.firstname }}</a></h5>
-                    <span><a href="#">{{ app.user.email }}</a></span>
-                </div>
-            </div>
+    <div class="container">
 
-            <ul class="inbox-nav inbox-divider">
-                <li class="active">
-                    <a href="{{ path('b2b_email_inbox') }}"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger pull-right">{{ receiverMails | length }}</span></a>
+        <aside class="">
 
-                </li>
-                <li>
-                    <a href="{{ path('b2b_email_send_emails') }}"><i class="fa fa-envelope-o"></i> Sent Mail {{ sendMails | length }}</a>
-                </li>
-            </ul>
-        </aside>
-        <aside class="lg-side">
+            <div class="">
 
-            <div class="inbox-body">
+                <div class="">
 
-                <div class="container">
-
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="">
+                        <div class="">
                             {% for data in tickit_data.getMessages %}
-                                    {% if data.type == 1 %}
+                                    {% if data.type == 0 %}
                                         <div class="card card-inner">
                                     {% else %}
                                             <div class="card card">
@@ -435,13 +414,13 @@
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <p>
-                                                    {% if data.type == 0 %}
-                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getCm().firstName }}</strong></a>  {{ data.createdAt | date('H:i') }}
+                                                    {% if data.type == 1 %}
+                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getCm().firstName }}</strong></a>
                                                     {% else  %}
-                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getClient().firstName }} </strong></a>  {{ data.createdAt | date('H:i') }}
+                                                        <a class="float-left" href="#"><strong>{{ data.getTicket().getClient().firstName }} </strong></a>
                                                     {% endif %}
 
-                                                    <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                                    <span class="float-right">{{ data.createdAt | date('H:i') }}</span>
                                                 </p>
                                             </div>
                                             <div class="col-md-10">
@@ -457,14 +436,7 @@
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
-
-
-
-
-
                                             {% endif %}
-
-
                                         </div>
                                     </div>
                                 </div>

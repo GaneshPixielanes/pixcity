@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/client/base.html.twig' %}
 
 {% block title %}Email Page{% endblock %}
 
@@ -366,14 +366,10 @@
     </style>
 
 
-    <div class="mail-box">
-        <aside class="sm-side">
-            <div class="user-head">
-                <div class="user-name">
-                    <h5><a href="#">{{ app.user.firstname }}</a></h5>
-                    <span><a href="#">{{ app.user.email }}</a></span>
-                </div>
-            </div>
+    <div class="container">
+
+        <aside class="lg-side">
+
             <div class="inbox-body">
                 <a href="#myModal" data-toggle="modal"  title="Compose"    class="btn btn-compose">
                     Compose
@@ -419,18 +415,6 @@
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
             </div>
-            <ul class="inbox-nav inbox-divider">
-                <li class="active">
-                    <a href="{{ path('client_email_inbox') }}"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger pull-right">{{ receiverMails | length }}</span></a>
-
-                </li>
-                <li>
-                    <a href="{{ path('client_email_send_emails') }}"><i class="fa fa-envelope-o"></i> Sent Mail {{  sendMails | length }}</a>
-                </li>
-
-            </ul>
-        </aside>
-        <aside class="lg-side">
 
             <div class="inbox-body">
                 <table class="table table-inbox table-hover">

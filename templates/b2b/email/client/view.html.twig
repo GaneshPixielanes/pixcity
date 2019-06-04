@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/client/base.html.twig' %}
 
 {% block title %}Email Page{% endblock %}
 
@@ -393,35 +393,18 @@
     </style>
 
 
-    <div class="mail-box">
-        <aside class="sm-side">
-            <div class="user-head">
-                <div class="user-name">
-                    <h5><a href="#">{{ app.user.firstname }}</a></h5>
-                    <span><a href="#">{{ app.user.email }}</a></span>
-                </div>
-            </div>
+    <div class="container">
 
-            <ul class="inbox-nav inbox-divider">
-                <li class="active">
-                    <a href="{{ path('client_email_inbox') }}"><i class="fa fa-inbox"></i> Inbox <span class="label label-danger pull-right">{{ receiverMails | length }}</span></a>
+        <aside class="">
 
-                </li>
-                <li>
-                    <a href="{{ path('client_email_send_emails') }}"><i class="fa fa-envelope-o"></i> Sent Mail {{ sendMails | length }}</a>
-                </li>
-            </ul>
-        </aside>
-        <aside class="lg-side">
+            <div class="">
 
-            <div class="inbox-body">
+                <div class="">
 
-                <div class="container">
-
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="">
+                        <div class="">
                             {% for data in tickit_data.getMessages %}
-                            {% if data.type == 0 %}
+                            {% if data.type == 1 %}
                             <div class="card card-inner">
                                 {% else %}
                                 <div class="card card">
@@ -431,7 +414,7 @@
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <p>
-                                                    {% if data.type == 0 %}
+                                                    {% if data.type == 1 %}
                                                         <a class="float-left" href="#"><strong>{{ data.getTicket().cm().firstName }}</strong></a>  {{ data.createdAt | date('H:i') }}
                                                     {% else  %}
                                                         <a class="float-left" href="#"><strong>{{ data.getTicket().getClient().firstName }} </strong></a>  {{ data.createdAt | date('H:i') }}
@@ -453,20 +436,10 @@
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
-
-
-
-
-
                                             {% endif %}
-
-
                                         </div>
                                     </div>
                                 </div>
-
-
-
                                 {% endfor %}
 
 

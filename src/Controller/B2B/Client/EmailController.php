@@ -128,6 +128,12 @@ class EmailController extends Controller
 
         $entityManager = $this->getDoctrine()->getManager();
 
+        $data = $ticketRepository->findBy(['id' => $id,'client' => $user->getId()]);
+
+        if(empty($data)){
+            return $this->redirectToRoute('client_email_index');
+        }
+
         $tickit_data = $ticketRepository->find($id);
 
         if(!empty($tickit_data->getMessages())){

@@ -77,6 +77,10 @@
             <a href="{{ url('b2b_client_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
             <a href="{{ url('b2b_client_mission_missions') }}" class="list-group-item list-group-item-action bg-light">Mission Requests</a>
             <a href="{{ url('client_email_index') }}" class="list-group-item list-group-item-action bg-light">Email</a>
+            {% if sendMails is defined and receiverMails is defined %}
+                <a href="{{ url('client_email_inbox') }}" class="list-group-item list-group-item-action bg-light">Inbox {{ receiverMails | length }}</a>
+                <a href="{{ url('client_email_send_emails') }}" class="list-group-item list-group-item-action bg-light">Send Mails {{  sendMails | length }}</a>
+            {% endif %}
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
