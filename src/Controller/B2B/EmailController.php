@@ -94,7 +94,7 @@ class EmailController extends Controller
             $em->persist($message);
             $em->flush();
 
-            return $this->redirectToRoute('b2b_email_index');
+            return $this->redirectToRoute('b2b_email_send_emails');
 
 
         }
@@ -119,7 +119,6 @@ class EmailController extends Controller
     public function view($id,TicketRepository $ticketRepository)
     {
 
-
         $user = $this->getUser();
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -132,15 +131,11 @@ class EmailController extends Controller
 
         $tickit_data = $ticketRepository->find($id);
 
-
-
         $tickits = $ticketRepository->findBy(['cm' => $user->getId()]);
 
         foreach ($tickit_data->getMessages() as $data){
-            foreach ($data as $item) {
-                $item->setStatus(0);
-            }
-
+            $data->setStatus(0);
+            $entityManager->persist($data);
         }
 
         $entityManager->flush();
@@ -195,7 +190,7 @@ class EmailController extends Controller
             $type = 1;
         }else{
             $type = 0;
-        }
+    }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -253,9 +248,9 @@ class EmailController extends Controller
 
         $mails = $ticketRepository->getAllReceiverCM($user->getId());
 
-        $sendMails = $ticketRepository->findBy(['cm' => $user->getId(),'initiator' => 'cm']);
+        $sendMails = $ticketRepository->getAllSenderCM($user->getId());
 
-        $receiverMails = $ticketRepository->findBy(['cm' => $user->getId(),'initiator' => 'client']);
+        $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
 
         return $this->render('b2b/email/cm/inbox.html.twig',[
             'mails' => $mails,
@@ -273,9 +268,9 @@ class EmailController extends Controller
 
         $mails = $ticketRepository->getAllSenderCM($user->getId());
 
-        $sendMails = $ticketRepository->findBy(['cm' => $user->getId(),'initiator' => 'cm']);
+        $sendMails = $ticketRepository->getAllSenderCM($user->getId());
 
-        $receiverMails = $ticketRepository->findBy(['cm' => $user->getId(),'initiator' => 'client']);
+        $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
 
         return $this->render('b2b/email/cm/inbox.html.twig',[
             'mails' => $mails,

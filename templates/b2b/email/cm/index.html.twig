@@ -371,66 +371,38 @@
         <aside class="lg-side">
 
 
-            <!-- Modal -->
-            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                        </div>
-                        <div class="modal-body">
-                            {{ form_start(form) }}
-                            <div class="form-group">
-                                <div class="col-lg-10">
-                                    {{ form_row(form.client,{ 'attr': {'class': 'form-control'}}) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-lg-10">
-                                    {{ form_row(form.Object,{ 'attr': {'class': 'form-control'}}) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-lg-10">
-                                    {{ form_row(form.messages.content,{'attr' : {'class' : 'form-control','rows' : '10','cols' : '30'}}) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-lg-offset-2 col-lg-10">
-                                                      <span class="btn green fileinput-button">
-                                                        <i class="fa fa-plus fa fa-white"></i>
-                                                          {{ form_row(form.messages.attachment,{'attr' : {'class' : 'form-control'}}) }}
-                                                      </span>
-                                    <button class="btn btn-send" type="submit">Send</button>
-                                </div>
-                            </div>
-
-                            {{ form_end(form,{render_rest:false}) }}
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-
-
-
-            <div class="inbox-body">
-                <a href="#myModal" data-toggle="modal"  title="Compose"    class="btn btn-compose">
-                    Compose
-                </a>
-                <table class="table table-inbox table-hover">
-                    <tbody>
-                    {% for mail in mails %}
-                        <tr onclick="document.location = 'view/{{ mail.id }}';">
-                            <td class="view-message  dont-show">{{ mail.client.firstName }}</td>
-                            <td class="view-message ">{{ mail.Object }}</td>
-                            <td class="view-message  text-right">{{ mail.createdAt | date('h:i A') }}</td>
-                            <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+            {{ form_start(form) }}
+            <div class="form-group">
+                <div class="col-lg-10">
+                    {{ form_row(form.client,{ 'attr': {'class': 'form-control'}}) }}
+                </div>
             </div>
+            <div class="form-group">
+                <div class="col-lg-10">
+                    {{ form_row(form.Object,{ 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10">
+                    {{ form_row(form.messages.content,{'attr' : {'class' : 'form-control','rows' : '10','cols' : '30'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10">
+                      <span class="btn green fileinput-button">
+                        <i class="fa fa-plus fa fa-white"></i>
+                          {{ form_row(form.messages.attachment,{'attr' : {'class' : 'form-control'}}) }}
+                      </span>
+                    <button class="btn btn-send" type="submit">Send</button>
+                </div>
+            </div>
+
+            {{ form_end(form,{render_rest:false}) }}
+
+
+
+
         </aside>
     </div>
     </div>

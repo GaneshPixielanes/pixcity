@@ -419,8 +419,7 @@
                                                     {% else  %}
                                                         <a class="float-left" href="#"><strong>{{ data.getTicket().getClient().firstName }} </strong></a>
                                                     {% endif %}
-
-                                                    <span class="float-right">{{ data.createdAt | date('H:i') }}</span>
+                                                    <span class="float-right">{{ data.createdAt | date('d-m-y h:i') }}</span>
                                                 </p>
                                             </div>
                                             <div class="col-md-10">
@@ -507,7 +506,6 @@
                     processData: false,
                     contentType: false,
                     success: function(data){
-
                         location.reload();
                     }
                 });

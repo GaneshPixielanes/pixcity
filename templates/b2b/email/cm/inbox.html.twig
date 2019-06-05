@@ -372,14 +372,32 @@
 
             <div class="inbox-body">
                 <table class="table table-inbox table-hover">
+                    <thead>
+                    <tr>
+                        <th>send from</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Attachment</th>
+                    </tr>
+                    </thead>
                     <tbody>
                     {% for mail in mails %}
                         <a href="person1.html">
                             <tr onclick="document.location = 'view/{{ mail.id }}';">
                                 <td class="view-message  dont-show">{{ mail.client.firstName }}</td>
                                 <td class="view-message ">{{ mail.Object }}</td>
-                                <td class="view-message  text-right">{{ mail.createdAt | date('h:i A') }}</td>
-                                <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
+                                <td class="view-message  text-right">{{ mail.createdAt | date('d-m-y h:i A') }}</td>
+                                {% set flag = true %}
+                                {% for message in mail.messages %}
+                                    {% if flag %}
+                                        {% if message.attachment is not empty %}
+                                            {% set flag = false %}
+                                            <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
+                                        {% else %}
+                                            <td class="view-message  inbox-small-cells"></td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
                             </tr>
                         </a>
                     {% endfor %}
