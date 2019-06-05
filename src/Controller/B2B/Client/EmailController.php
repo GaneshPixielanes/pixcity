@@ -99,7 +99,7 @@ class EmailController extends Controller
             $em->persist($message);
             $em->flush();
 
-            return $this->redirectToRoute('client_email_index');
+            return $this->redirectToRoute('client_email_send_emails');
 
 
         }
@@ -138,10 +138,8 @@ class EmailController extends Controller
 
         if(!empty($tickit_data->getMessages())){
             foreach ($tickit_data->getMessages() as $data){
-                foreach ($data as $item) {
-                    $item->setStatus(0);
-                }
-
+                $data->setStatus(0);
+                $entityManager->persist($data);
             }
         }
 
@@ -257,9 +255,9 @@ class EmailController extends Controller
 
         $mails = $ticketRepository->getAllReceiverClient($user->getId());
 
-        $sendMails = $ticketRepository->findBy(['client' => $user->getId(),'initiator' => 'client']);
+        $sendMails = $ticketRepository->getAllSenderClient($user->getId());
 
-        $receiverMails = $ticketRepository->findBy(['client' => $user->getId(),'initiator' => 'cm']);
+        $receiverMails = $ticketRepository->getAllReceiverClient($user->getId());
 
         return $this->render('b2b/email/client/inbox.html.twig',[
             'mails' => $mails,
@@ -277,9 +275,9 @@ class EmailController extends Controller
 
         $mails = $ticketRepository->getAllSenderClient($user->getId());
 
-        $sendMails = $ticketRepository->findBy(['client' => $user->getId(),'initiator' => 'client']);
+        $sendMails = $ticketRepository->getAllSenderClient($user->getId());
 
-        $receiverMails = $ticketRepository->findBy(['client' => $user->getId(),'initiator' => 'cm']);
+        $receiverMails = $ticketRepository->getAllReceiverClient($user->getId());
 
         return $this->render('b2b/email/client/inbox.html.twig',[
             'mails' => $mails,
