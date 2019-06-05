@@ -63,7 +63,7 @@ class CitymakerController extends SearchPageController
 
         $pixies = $usersRepo->findRandomPixies();
 //        $cards = $cardsRepo->search(["pixie"=> $user->getId()], 1, 100);
-        $cards = $cardsRepo->findBy(["pixie" => $user->getId(), "status" => CardStatus::VALIDATED]);
+        $cards = $cardsRepo->findBy(["pixie" => $user->getId(), "status" => CardStatus::VALIDATED],[],12);
 				
         $totalLikes = $cardsRepo->findPixieCardsLikes($user->getId());
         if(empty($totalLikes)) $totalLikes = 0;
