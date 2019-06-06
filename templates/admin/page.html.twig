@@ -210,7 +210,26 @@
                             {% endif %}
                         </ul>
                     </li>
-
+                    <!--Card Extractions start-->
+					<li class="{{ route starts with 'admin_card_extractions' ? 'active' }}">
+                        <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
+                            <i class="material-icons">view_carousel</i>
+                            <span>{{ 'label.dataextractions'|trans }}</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{{ path('admin_card_extractions_search') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.cardextraction'|trans }}</span>
+                                </a>
+                            </li>             
+                            <li>
+                                <a href="{{ path('admin_card_extractions_search_categories') }}" class="waves-blue-grey">
+                                    <span>{{ 'label.categoriesdataextractions'|trans }}</span>
+                                </a>
+                            </li>                            
+                        </ul>
+                    </li>
+					<!--Card Extractions end-->
                     {% if is_granted('ROLE_ADMIN') %}
                     <li class="{{ route starts with 'admin_menus' ? 'active' }}">
                         <a href="{{ path('admin_menus_list') }}" class="waves-blue-grey">
