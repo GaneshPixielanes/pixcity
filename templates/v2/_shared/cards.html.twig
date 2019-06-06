@@ -4,7 +4,7 @@
     {{ macro.cardSingle(card, isEditable, cmFlag) }}
 {% endfor %}
 
-{% if cards | length == 10 %}
+{% if cards | length >= 10 %}
 
 <div class="loadCards"></div>
 <div class="col-xs-12 text-center">
