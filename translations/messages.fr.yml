@@ -57,6 +57,9 @@ label:
     socialnetworks: Réseaux sociaux
     notifications: Notifications
     citymaker_profile: Card rédigée par notre City-maker
+    card_id: CARD ID		
+    card_title: CARD TITLE		
+    card_url: CARD URL
     network:
         facebook: Facebook
         twitter: Twitter
@@ -208,6 +211,11 @@ label:
     mandatory: Obligatoire
     contract: Contrat
     masterhead: Bannière
+    dataextractions: Data Extractions / Statistics
+    cardextraction: Card Extraction
+    startDate: Start Date
+    endDate: End Date
+    categoriesdataextractions: Category based extraction
 
 title:
     our_regions: Nos <span>%count%</span> régions
@@ -243,6 +251,7 @@ action:
     follow_region_facebook: Suivez-nous sur Facebook
     view_on_website: Ouvrir la page sur le site
     show_more_cards: VOIR PLUS DE CARDS
+    submit: Submit
 
 orderby:
     popular: Les plus populaires
