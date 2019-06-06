@@ -593,7 +593,7 @@ $(document).ready(function() {
         }
 
         $(".loadCards:last").html("<p class=\"text-center\"><img src=\"/../../img/loader.gif\"/ alt=\"Loading...\"></p>");
-        page = page ;
+        page = page+1 ;
         $.ajax({
             url:'/v2/load-cards',
             method: 'POST',
