@@ -3,133 +3,298 @@
 {% import 'b2b/shared/macros.html.twig' as macros %}
 
 {% block body %}
-    <div class="row">
-        {% for key, notification in notifications %}
-            {{ macros.notification(notification,key) }}
-        {% endfor %}
 
-    </div>
-    <h3 class="mt-4">Bienvenue {{ app.user }}</h3>
-    <p>
-        <strong>{{ app.user.userPacks | length }} packs disponsibles</strong>
-    </p>
 
-    <div class="row">
-        {% for pack in app.user.userPacks %}
-            <div class="card col-md-11 card-info pack-card {% if loop.index > 2 %}d-none{% endif %}"
-                 style="margin:10px">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-3">
-                            <img src="{{ '/uploads/pack/banner/'~pack.bannerImage }}" style="height:75px;width: 75px"
-                                 class="img-thumbnail"/>
-                        </div>
-                        <div class="col-3">
-                            {{ pack.title }}
-                        </div>
-                        <div class="col-3">
-                            {{ pack.packSkill.name }}
-                        </div>
-                        <div class="col-3">
-                            <a href="{{ url('b2b_pack_edit',{'id':pack.id}) }}" class="btn btn-md btn-info">Editer le
+    <div class="tab-pane active" id="home" role="tabpanel">
+        <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Accueil</div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" onclick="location.href='cm-mission-create.html';">Créer une nouvelle
+                mission</a>
+        </div>
+        <div class="col-md-12 tab-pane-content p-4" data-simplebar>
+            <div class="col-md-12 content-top-header">
+                <h4 class="mb-0">Bienvenue {{ app.user }} ! </h4>
+                <small>Dernière connexion lun 11 mars</small>
+            </div>
+            <div class="col-md-12 alert-notifications">
+                {% for notification in notifications %}
+                <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2" role="alert">
+                    <div class="col-md-1 d-flex justify-content-center">
+                        <i class="fas fa-piggy-bank fz-40"></i>
+                    </div>
+                    <div class="col-md-8">
+                        <h6 class="mb-0">PAIEMENT DISPONIBLE</h6>
+                        <p class="mb-1">Le paiement pour votre mission Gestion de votre compte Instagram chaque mois sans engagement !
+                            est disponible dans votre espace personnel</p>
+                        <small class="text-muted">09 AVRIL 2019 - 12:39</small>
+                    </div>
+                    <div class="col-md-3 d-flex justify-content-end">
+                        <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>
+                    </div>
+                    <button type="button" class="close align-self-start" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+                {% if notifications | length > 0 %}
+                    <div class="w-100 text-center my-4 show-more">
+                        <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Voir tout</a>
+                    </div>
+                    <div class="w-100 text-center my-4 show-less">
+                        <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Reduire</a>
+                    </div>
+                {% endif %}
+
+            </div>
+            <div class="col-md-12 content-top-header d-flex align-items-center">
+                <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> packs disponibles</h4>
+                <div class="filter-packages d-flex">
+                    <label class="text-seagreen m-0 mr-3 d-none active">
+                        <input type="checkbox" name="filterpackage" value="all">
+                        <i class="fas fa-sync-alt fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
+                    <label class="text-seagreen m-0 mr-3">
+                        <input type="checkbox" name="filterpackage" value="influencer">
+                        <i class="fas fa-map-marked-alt fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
+                    <label class="text-seagreen m-0 mr-3">
+                        <input type="checkbox" name="filterpackage" value="photographer">
+                        <i class="fas fa-camera fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
+                    <label class="text-seagreen m-0 mr-3">
+                        <input type="checkbox" name="filterpackage" value="communitymanager">
+                        <i class="far fa-handshake fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
+                    <label class="text-seagreen m-0">
+                        <input type="checkbox" name="filterpackage" value="other">
+                        <i class="far fa-gem fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
+                </div>
+            </div>
+            <ul class="available-packages-list m-0 mt-3 col-md-12">
+                {% for pack in packs %}
+                <li class="package-list-item d-flex align-items-center bg-white text-darkgray shadow-sm {{ pack.packSkill.slug }}">
+                    <img class="col-1 p-0" src="{{ absolute_url('/uploads/pack/banner/'~pack.bannerImage) }}" alt="">
+                    <p class="mb-0 px-3 flex-grow-1">{{ pack.title }} </p>
+                    <p class="mb-0 col-3"><i class="fas {{ pack.packSkill.icon }} mr-1"></i> {{ pack.packSkill }}</p>
+                    <a href="javascript:;" class="btn btn-darkblue col-2 fz-12 edit-the-pack">Éditer le pack</a>
+                    <div class="dropdown">
+                        <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           id="packOptions"></i>
+                        <div class="dropdown-menu" aria-labelledby="packOptions">
+                            <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i class="far fa-paper-plane mr-2"></i>
+                                Partager</a>
+                            <a class="dropdown-item text-pink fz-12" href="javascript:;" data-toggle="modal" data-target="#removePackConfirmation"><i class="far fa-times-circle mr-2"></i>
+                                Supprimer le
                                 pack</a>
                         </div>
                     </div>
-                </div>
+                </li>
+                {% endfor %}
+                <li class="add-package-to-list d-flex align-items-center justify-content-center my-4">
+                    <a href="javascript:;" class="btn btn-darkblue btn-circle-40 add-package d-flex align-items-center justify-content-center"><i class="fas fa-plus"></i></a>
+                </li>
+            </ul>
+            <div class="col-md-12 content-top-header d-flex align-items-center">
+                <h4 class="mb-0">listes des missions</h4>
             </div>
-        {% endfor %}
-    </div>
-    {% if app.user.userPacks | length > 2 %}
-        <div class="row">
-            <div class="col-12 text-center">
-                <a href="#" class="load-more-packs btn btn-primary"> <strong>+</strong> </a>
-            </div>
+            <ul class="available-missions-list m-0 mt-3 col-md-12">
+                {% for mission in app.user.userMission %}
+                    <li class="mission-list-item d-flex align-items-center text-darkgray">
+                        <i class="fas {{ mission.referencePack.packSkill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
+                        <p class="mb-0 px-3 w-40">{{ mission.title }}
+                        </p>
+                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
+                        <p class="w-15 mb-0">{{ mission.client }}</p>
+                        <p class="w-15 mb-0 text-inprogress">{{ mission.status }}</p>
+                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientPrice }}€</p>
+                        <i class="fas fa-edit preview-edit-mission"></i>
+                    </li>
+                {% endfor %}
+            </ul>
+
         </div>
-    {% endif %}
-
-    {% if app.user.userMission | length > 0 %}
-        <h2>listes des missions</h2>
-        {% set missions = app.user.userMission %}
-        {% include 'b2b/mission/_missions.html.twig' with {'missions':missions } %}
-
-
-        {% if app.user.userMission | length > 2 %}
-            <div class="list-mission"></div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <a href="#" class="load-more-missions btn btn-primary" data-page="1"> <strong>+</strong> </a>
+    </div>
+    <div class="tab-pane" id="myPacks" role="tabpanel">
+        <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-dungeon fz-30 mr-2"></i> Mes packs
+            </div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
+                mission</a>
+        </div>
+        <div class="col-md-12 tab-pane-content p-4" data-simplebar>
+            <div class="col-md-12 content-top-header d-flex align-items-center">
+                <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> packs disponibles</h4>
+                <div class="filter-packages d-flex">
+                    <label class="text-seagreen m-0 mr-3 d-none active">
+                        <input type="checkbox" name="filterpackage" value="all">
+                        <i class="fas fa-sync-alt fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
+                    <label class="text-seagreen m-0 mr-3">
+                        <input type="checkbox" name="filterpackage" value="influencer">
+                        <i class="fas fa-map-marked-alt fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
+                    <label class="text-seagreen m-0 mr-3">
+                        <input type="checkbox" name="filterpackage" value="photographer">
+                        <i class="fas fa-camera fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
+                    <label class="text-seagreen m-0 mr-3">
+                        <input type="checkbox" name="filterpackage" value="communitymanager">
+                        <i class="far fa-handshake fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
+                    <label class="text-seagreen m-0">
+                        <input type="checkbox" name="filterpackage" value="other">
+                        <i class="far fa-gem fz-22 d-flex align-items-center justify-content-center"></i>
+                    </label>
                 </div>
             </div>
-        {% endif %}
-    {% endif %}
+            <ul class="available-packages-list m-0 mt-3 col-md-12">
+                {% for pack in packs %}
+                <li class="package-list-item d-flex align-items-center bg-white text-darkgray shadow-sm {{ pack.packSkill.slug }}">
+                    <img class="col-1 p-0" src="{{ absolute_url('/uploads/pack/banner/'~pack.bannerImage) }}" alt="">
+                    <p class="mb-0 px-3 flex-grow-1">{{ pack.title }}</p>
+                    <p class="mb-0 col-3"><i class="fas fa-map-marked-alt mr-1"></i> {{ pack.packSkill }}</p>
+                    <a href="javascript:;" class="btn btn-darkblue col-2 fz-12 edit-the-pack">Éditer le pack</a>
+                    <div class="dropdown">
+                        <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           id="packOptions"></i>
+                        <div class="dropdown-menu" aria-labelledby="packOptions">
+                            <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i class="far fa-paper-plane mr-2"></i>
+                                Partager</a>
+                            <a class="dropdown-item text-pink fz-12" href="javascript:;" data-toggle="modal" data-target="#removePackConfirmation"><i class="far fa-times-circle mr-2"></i>
+                                Supprimer le
+                                pack</a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+                <li class="add-package-to-list d-flex align-items-center justify-content-center my-4">
+                    <a href="javascript:;" class="btn btn-darkblue btn-circle-40 add-package d-flex align-items-center justify-content-center"><i class="fas fa-plus"></i></a>
+                </li>
+            </ul>
+        </div>
     </div>
+    <div class="tab-pane" id="myMissions" role="tabpanel">
+        <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-briefcase fz-30 mr-2"></i>Mes missions
+            </div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
+                mission</a>
+        </div>
+        <div class="col-md-12 tab-pane-content p-4" data-simplebar>
+            <nav class="internal-nav">
+                <ul class="nav nav-tabs border-0 line-tabs line-tabs-pink" id="dashboardMyMissions" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link text-normalgray active" data-toggle="tab" href="#inProgress" role="tab" aria-controls="inProgress">En cours</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-normalgray" data-toggle="tab" href="#completed" role="tab" aria-controls="completed">Terminées</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-normalgray" data-toggle="tab" href="#canceled" role="tab" aria-controls="canceled">Annulées</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="tab-content">
+                <div class="tab-pane active" id="inProgress" role="tabpanel">
+                    <ul class="available-missions-list m-0 mt-3 col-md-12">
+                        {% for mission in missions['ongoing'] %}
+                        <li class="mission-list-item d-flex align-items-center text-darkgray">
+                            <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
+                            <p class="mb-0 px-3 w-40">{{ mission.title }}
+                            </p>
+                            <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
+                            <p class="w-15 mb-0">{{ mission.client }}</p>
+                            <p class="w-15 mb-0 text-inprogress">En cours</p>
+                            <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientPrice }}€</p>
+                            <i class="fas fa-edit preview-edit-mission"></i>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="tab-pane" id="completed" role="tabpanel">
+                    <ul class="available-missions-list m-0 mt-3 col-md-12">
+                        {% for mission in missions['terminated'] %}
+                            <li class="mission-list-item d-flex align-items-center text-darkgray">
+                                <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
+                                <p class="mb-0 px-3 w-40">{{ mission.title }}
+                                </p>
+                                <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
+                                <p class="w-15 mb-0">{{ mission.client }}</p>
+                                <p class="w-15 mb-0 text-inprogress">Terminée</p>
+                                <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientPrice }}€</p>
+                                <i class="fas fa-edit preview-edit-mission"></i>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="tab-pane" id="canceled" role="tabpanel">
+                    <ul class="available-missions-list m-0 mt-3 col-md-12">
+                        {% for mission in missions['cancelled'] %}
+                            <li class="mission-list-item d-flex align-items-center text-darkgray">
+                                <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
+                                <p class="mb-0 px-3 w-40">{{ mission.title }}
+                                </p>
+                                <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
+                                <p class="w-15 mb-0">{{ mission.client }}</p>
+                                <p class="w-15 mb-0 text-inprogress">Annulée</p>
+                                <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientPrice }}€</p>
+                                <i class="fas fa-edit preview-edit-mission"></i>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
 
+        </div>
+    </div>
+    <div class="tab-pane" id="billing" role="tabpanel">
+        <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i
+                        class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation</div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
+                mission</a>
+        </div>
+        <div class="col-md-12 tab-pane-content p-4" data-simplebar>
+            <table class="table table-sm table-borderless my-billings-list-table">
+                <thead>
+                <tr class="text-normalgray fz-12">
+                    <th class="font-weight-normal w-5"><span class="sr-only">Mission filetype</span></th>
+                    <th class="font-weight-normal w-30">Nom du fichier </th>
+                    <th class="font-weight-normal w-15">Date d’émission</th>
+                    <th class="font-weight-normal w-15">Dernière modification</th>
+                    <th class="font-weight-normal w-15">Montant</th>
+                    <th class="font-weight-normal w-15">Statut du paiement</th>
+                    <th class="font-weight-normal w-5"><span class="sr-only">Mission actions</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for mission in missions['terminated'] %}
+                <tr class="text-darkgray fz-14">
+                    <td valign="middle" class="text-center">
+                        <i class="far fa-file-alt fz-25"></i>
+                    </td>
+                    <td valign="middle">Facture PX-13032109-00752</td>
+                    <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
+                    <td valign="middle">{{ mission.updatedAt | date('d/m/Y') }}</td>
+                    <td valign="middle">{{ mission.userMissionPayment.total }}€</td>
+                    <td valign="middle"><span class="text-inprogress">En cours</span></td>
+                    <td valign="middle">
+                        <div class="d-flex align-items-center">
+                            <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-eye fz-16"></i></a>
+                            <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
-    <!-- Menu Toggle Script -->
-    <script>
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
+    {{ parent() }}
 
-        $(document).ready(function () {
-            $('.load-more-packs').on('click', function (e) {
-                e.preventDefault();
-                $(this).hide();
-                $('.pack-card').removeClass('d-none');
-            });
-
-            $('.load-more-missions').on('click', function (e) {
-                e.preventDefault();
-                var page = parseInt($(this).attr('data-page'));
-                page = page + 1;
-                $(this).attr('data-page', page);
-
-                $.ajax('/community-manager/mission/load?page=' + page, {
-                    method: 'GET',
-                    success: function (result) {
-                        console.log(result.success);
-                        if (result.success === false) {
-                            $('.load-more-missions').hide();
-                        }
-                        else {
-                            $('.list-mission').append(result.html);
-                        }
-
-                    }
-                });
-            });
-        });
-
-        $(document).ready(function () {
-
-            $('button.close').on('click', function () {
-                var id = $(this).attr('data-id');
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ path('b2b_notification_unread') }}',
-                    data: {id: id},
-                    sucess: function (data) {
-                        console.log('success: ' + data);
-                    }
-                });
-            });
-
-            $("#notify-more-btn").on('click', function () {
-                $("#notify-more-btn").toggleClass('d-none');
-                $("#notify-card").toggleClass('d-none');
-                $("#notify-less-btn").toggleClass('d-none');
-            })
-
-            $("#notify-less-btn").on('click', function () {
-                $("#notify-more-btn").toggleClass('d-none');
-                $("#notify-card").toggleClass('d-none');
-                $("#notify-less-btn").toggleClass('d-none');
-            });
-
-        });
-    </script>
 {% endblock %}
 
