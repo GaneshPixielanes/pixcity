@@ -2,6 +2,7 @@
 
 namespace App\Controller\B2B;
 
+use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
 use App\Entity\Option;
@@ -75,7 +76,7 @@ class MissionController extends AbstractController
         {
             $price = $mission->getMissionBasePrice();
             $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
-            $tax = ($this->getUser()->getPixie()->getBilling()->getStatus() == 'microentreprenuer')?$tax[0]->getValue():0;
+            $tax = ($this->getUser()->getPixie()->getBilling()->getStatus() == CompanyStatus::COMPANY)?$tax[0]->getValue():0;
             $transactionFee = 0;
             $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 

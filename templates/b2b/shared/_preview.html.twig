@@ -1,64 +1,64 @@
 <table class="table table-striped">
-    {% if mission.user.pixie.billing.status == 'microentrepreneur' %}
-    <tbody>
-    <tr>
-        <td>
-            <h3>{{ mission.client }}</h3>
-            <br/>
-            {{ mission.client.clientInfo.address~' - '~mission.client.clientInfo.postalCode~' '~mission.client.clientInfo.city~' - PAYS' }}
-        </td>
-        <td>
-            <h3>City-Maker</h3>
-            <br/>
-            {{ mission.user.pixie.billing.address.address }}<br>
-            {{ mission.user.pixie.billing.address.zipcode~' '~mission.user.pixie.billing.address.city }}<br/>
-        </td>
-    </tr>
-    <tr>
-        <td><strong>Numéro de facture PCS</strong></td><td> Automatique</td><td></td><td></td>
-    </tr>
-    <tr>
-        <td>Numéro de facture du contributeur ou client</td><td> Facultatif</td>
-    </tr>
-    <tr>
-        <td>Date de facture</td><td>{{ mission.updatedAt | date('d-M-Y') }} </td>
-    </tr>
-    <tr>
-        <th>Description</th>
-        <th>QUANTITE</th>
-        <th>MONTANT</th>
-    </tr>
-    <tr>
-        <td>Pack 1 / Instagram Pro Gestion</td>
-        <td>1</td>
-        <td>{{ mission.missionBasePrice }} €</td>
-    </tr>
-    <tr>
-        <td>Comments (automatically adding from the pack)</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>SOUS-TOTAL</td>
-        <td></td>
-        <td>{{ mission.missionBasePrice }} €</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>SOUS TOTAL</td>
-        <td></td>
-        <td>{{ mission.missionBasePrice }} €</td>
-    </tr>
-    <tr>
-        <td>TOTAL</td>
-        <td></td>
-        <td>{{ mission.userMissionPayment.total }} €</td>
-    </tr>
-    </tbody>
+    {% if mission.userMissionPayment.tax == 0 %}
+        <tbody>
+        <tr>
+            <td>
+                <h3>{{ mission.client }}</h3>
+                <br/>
+                {{ mission.client.clientInfo.address~' - '~mission.client.clientInfo.postalCode~' '~mission.client.clientInfo.city~' - PAYS' }}
+            </td>
+            <td>
+                <h3>City-Maker</h3>
+                <br/>
+                {{ mission.user.pixie.billing.address.address }}<br>
+                {{ mission.user.pixie.billing.address.zipcode~' '~mission.user.pixie.billing.address.city }}<br/>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Numéro de facture PCS</strong></td><td> Automatique</td><td></td><td></td>
+        </tr>
+        <tr>
+            <td>Numéro de facture du contributeur ou client</td><td> Facultatif</td>
+        </tr>
+        <tr>
+            <td>Date de facture</td><td>{{ mission.updatedAt | date('d-M-Y') }} </td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <th>QUANTITE</th>
+            <th>MONTANT</th>
+        </tr>
+        <tr>
+            <td>Pack 1 / Instagram Pro Gestion</td>
+            <td>1</td>
+            <td>{{ mission.userMissionPayment.clientPrice }} €</td>
+        </tr>
+        <tr>
+            <td>Comments (automatically adding from the pack)</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>SOUS-TOTAL</td>
+            <td></td>
+            <td>{{ mission.userMissionPayment.clientPrice }} €</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>SOUS TOTAL</td>
+            <td></td>
+            <td>{{ mission.missionBasePrice }} €</td>
+        </tr>
+        <tr>
+            <td>TOTAL</td>
+            <td></td>
+            <td>{{ mission.userMissionPayment.total }} €</td>
+        </tr>
+        </tbody>
     {% else %}
         <tbody>
         <tr>
@@ -101,7 +101,7 @@
         <tr>
             <td>SOUS-TOTAL</td>
             <td></td>
-            <td>{{ mission.userMissionPayment.userBasePrice }} €</td>
+            <td>{{ mission.userMissionPayment.clientPrice }} €</td>
         </tr>
         <tr>
             <td>TVA {{ mission.userMissionPayment.taxPercentage }}%</td>
@@ -109,9 +109,9 @@
             <td>{{ mission.userMissionPayment.taxValue }} €</td>
         </tr>
         <tr>
-        <td>SOUS TOTAL Post Com°</td>
-        <td></td>
-        <td>{{ mission.userMissionPayment.total }} €</td>
+            <td>SOUS TOTAL Post Com°</td>
+            <td></td>
+            <td>{{ mission.userMissionPayment.total }} €</td>
         </tr>
         <tr>
             <td></td>
