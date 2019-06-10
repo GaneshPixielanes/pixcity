@@ -51,10 +51,13 @@ class TicketRepository extends ServiceEntityRepository
     public function getAllSenderClient($value)
     {
         return $this->createQueryBuilder('t')
+            ->innerJoin('t.messages','m')
             ->andWhere('t.client = :id')
             ->setParameter('id', $value)
-            ->andWhere('t.initiator = :initiator')
+            ->andWhere('t.initiator = :initiator OR (t.initiator = :receipent and m.type = 1)')
             ->setParameter('initiator', 'client')
+            ->setParameter('receipent', 'cm')
+            ->groupBy('t.id')
             ->getQuery()
             ->getResult();
     }
@@ -76,10 +79,13 @@ class TicketRepository extends ServiceEntityRepository
     public function getAllSenderCM($value)
     {
         return $this->createQueryBuilder('t')
+            ->innerJoin('t.messages','m')
             ->andWhere('t.cm = :id')
             ->setParameter('id', $value)
-            ->andWhere('t.initiator = :initiator')
+            ->andWhere('t.initiator = :initiator OR (t.initiator = :receipent and m.type = 1)')
             ->setParameter('initiator', 'cm')
+            ->setParameter('receipent', 'client')
+            ->groupBy('t.id')
             ->getQuery()
             ->getResult();
     }

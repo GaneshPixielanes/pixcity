@@ -3,6 +3,7 @@
 {% block title %}Email Page{% endblock %}
 
 {% block body %}
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 
     <style>
         .mail-box aside {
@@ -423,7 +424,7 @@
                                                 </p>
                                             </div>
                                             <div class="col-md-10">
-                                                <p>{{ data.content }}</p>
+                                                {{ data.content | raw }}
                                             </div>
                                             {% if data.attachment is not empty %}
                                                 <div class="col-md-10">
@@ -481,6 +482,8 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -511,5 +514,8 @@
                 });
             });
         });
+    </script>
+    <script>
+        var editor = new FroalaEditor('#comment')
     </script>
 {% endblock %}

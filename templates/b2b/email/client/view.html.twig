@@ -424,7 +424,7 @@
                                                 </p>
                                             </div>
                                             <div class="col-md-10">
-                                                <p>{{ data.content }}</p>
+                                                {{ data.content | raw }}
                                             </div>
                                             {% if data.attachment is not empty %}
                                                 <div class="col-md-10">
