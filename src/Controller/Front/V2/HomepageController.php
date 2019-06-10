@@ -100,6 +100,7 @@ class HomepageController extends Controller
         $cardPerRegion = array_combine(array_column($result,'slug'),array_column($result,'card_count'));
         $country = @unserialize(file_get_contents('http://ip-api.com/php/'.$_SERVER['REMOTE_ADDR']));
         
+        
         return $this->render('v2/front/homepage/new.html.twig', [
             'page' => $page,
             'regions' => $regions,

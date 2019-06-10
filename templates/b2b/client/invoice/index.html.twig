@@ -1,0 +1,65 @@
+{% extends 'b2b/client/base.html.twig' %}
+
+{% block title %}Hello InvoiceController!{% endblock %}
+
+{% block body %}
+            <table class="table table-striped">
+                <thead>
+                <th>ID</th>
+                <th>Mission</th>
+                <th>Amount</th>
+                <th></th>
+                </thead>
+                <tbody>
+                {% for mission in missions %}
+                    <tr>
+                        <td>#{{ mission.id }}</td>
+                        <td>{{ mission.title }}</td>
+                        <td>{{ mission.userMissionPayment.total }}</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-info" id="invoice-preview-btn" data-id="{{ mission.id }}"  data-toggle="modal" data-target="#invoicePreviewModal">Preview</a>
+                            <a href="#" class="btn btn-sm btn-success" id="invoice-generate-btn">Generate</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <!-- The Modal -->
+            <div class="modal" id="invoicePreviewModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Invoice Preview</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body" id="invoice-preview-body">
+                            Loading preview
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+        $(document).ready(function () {
+            $('#invoice-preview-btn').on('click', function () {
+                var id =$(this).attr('data-id');
+                var url = '/client/invoice/preview/'+id;
+                $('#invoice-preview-body').load(url);
+            });
+        });
+    </script>
+{% endblock %}

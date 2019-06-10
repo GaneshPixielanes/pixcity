@@ -24,7 +24,7 @@ class PageCategoryRepository extends ServiceEntityRepository
     public function findAllActive($regions = [])
     {
         $qb = $this->createQueryBuilder("p")
-            ->select(["p", "r", "t", "bg", "COUNT(cards.id) as totalCards"])
+            ->select(["p", "r",  "t", "bg", "COUNT(cards.id) as totalCards"]) 
                 ->join("p.region", "r")
                 ->join("p.thumb", "t")
                 ->join("p.background", "bg")
@@ -34,6 +34,7 @@ class PageCategoryRepository extends ServiceEntityRepository
             ->where("p.hidden = false")
 
             ->groupBy('p.id');
+            //dump($qb->getQuery());exit;
 
             if(count($regions) > 0){
                 $ids = [];
@@ -44,6 +45,7 @@ class PageCategoryRepository extends ServiceEntityRepository
             }
 
             return $qb->getQuery()
+            ->useResultCache(true, 360, "findAllActive")
             ->getResult()
             ;
     }

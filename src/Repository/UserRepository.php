@@ -215,7 +215,7 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('rand')
             ->setMaxResults(5)
             ->getQuery()
-            ->useResultCache(true, 0, "findRandomPixies")
+            ->useResultCache(true, 360, "findRandomPixies")
             ->getResult()
             ;
     }
