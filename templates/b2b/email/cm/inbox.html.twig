@@ -383,7 +383,7 @@
                     <tbody>
                     {% for mail in mails %}
                         <a href="person1.html">
-                            <tr onclick="document.location = 'view/{{ mail.id }}';">
+                            <tr onclick="document.location = 'view/{{ mail.id }}';" class="{% if mail.messages.last.status == 1 %}unread{% endif %}">
                                 <td class="view-message  dont-show">{{ mail.client.firstName }}</td>
                                 <td class="view-message ">{{ mail.Object }}</td>
                                 <td class="view-message  text-right">{{ mail.createdAt | date('d-m-y h:i A') }}</td>
@@ -392,9 +392,9 @@
                                     {% if flag %}
                                         {% if message.attachment is not empty %}
                                             {% set flag = false %}
-                                            <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
+                                            <td class="view-message unread inbox-small-cells"><i class="fa fa-paperclip"></i></td>
                                         {% else %}
-                                            <td class="view-message  inbox-small-cells"></td>
+                                            <td class="view-message unread inbox-small-cells"></td>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
