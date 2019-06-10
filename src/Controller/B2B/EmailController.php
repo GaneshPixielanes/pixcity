@@ -56,6 +56,7 @@ class EmailController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $client = $clientRepository->find($request->get('ticket')['client']);
+
             $template = $this->getDoctrine() ->getRepository(AutoMail::class)->find(1);
 
             $ticket->setClient($client);

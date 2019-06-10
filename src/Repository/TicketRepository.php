@@ -58,6 +58,7 @@ class TicketRepository extends ServiceEntityRepository
             ->setParameter('initiator', 'client')
             ->setParameter('receipent', 'cm')
             ->groupBy('t.id')
+            ->orderBy('t.id','DESC')
             ->getQuery()
             ->getResult();
     }
@@ -72,6 +73,7 @@ class TicketRepository extends ServiceEntityRepository
             ->setParameter('initiator', 'cm')
             ->setParameter('receipent', 'client')
             ->groupBy('t.id')
+            ->orderBy('t.id','DESC')
             ->getQuery()
             ->getResult();
     }
@@ -86,6 +88,7 @@ class TicketRepository extends ServiceEntityRepository
             ->setParameter('initiator', 'cm')
             ->setParameter('receipent', 'client')
             ->groupBy('t.id')
+            ->orderBy('t.id','DESC')
             ->getQuery()
             ->getResult();
     }
@@ -100,6 +103,7 @@ class TicketRepository extends ServiceEntityRepository
             ->setParameter('initiator', 'client')
             ->setParameter('receipent', 'cm')
             ->groupBy('t.id')
+            ->orderBy('t.id','DESC')
             ->getQuery()
             ->getResult();
     }
