@@ -75,7 +75,7 @@ class MissionController extends AbstractController
         {
             $price = $mission->getMissionBasePrice();
             $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
-            $tax = $tax[0]->getValue();
+            $tax = ($this->getUser()->getPixie()->getBilling()->getStatus() == 'microentreprenuer')?$tax[0]->getValue():0;
             $transactionFee = 0;
             $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
@@ -164,7 +164,7 @@ class MissionController extends AbstractController
 
             $price = $mission->getMissionBasePrice();
             $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
-            $tax = $tax[0]->getValue();
+            $tax = ($this->getUser()->getPixie()->getBilling()->getStatus() == 'microentrepreneur')?$tax[0]->getValue():0;
             $transactionFee = 0;
             $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
