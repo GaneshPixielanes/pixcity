@@ -413,17 +413,19 @@
 {{ parent() }}
     <script>
 
-        var $form = $("form[name='ticket']");
+        $(document).ready(function () {
+            var $form = $("form[name='ticket']")
 
-        $form.validate({
-            rules: {
-                "ticket[Object]": { required: true, maxlength: 100, minlength: 5},
-            }
+            $form.validate({
+                rules: {
+                    "ticket[Object]": { required: true, maxlength: 100, minlength: 5},
+                }
+            });
+
         });
 
-        $("#ticket_messages_attachment").on('change',function () {
-            readURL(this);
-        });
+
+
 
 
         function readURL(input) {
