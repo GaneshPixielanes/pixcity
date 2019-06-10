@@ -37,14 +37,14 @@
                                 </div> 
 
 
-                                <div class="flex-row-space-between">
-                                    <a href="{{ path('admin_card_extractions_search_categories') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">{{ 'action.reinit'|trans }}</a>
+                                <div class="flex-row-space-between">                                    
                                     <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">{{ 'action.submit'|trans }}</button>
+									<a href="{{path('admin_card_extractions_exportbycategory',{'startDate': date_from, 'endDate':date_to})}}" class="btn btn-lg bg-red m-t-15 waves-effect"> Export Card Extraction </a>
                                 </div>
                             {{ form_end(filterForm, {render_rest: false}) }}
                         </div>
                     </div>
-                    <a href="{{path('admin_card_extractions_exportbycategory',{'startDate': date_from, 'endDate':date_to})}}" class="btn btn-lg bg-red m-t-15 waves-effect"> Export Card Extraction </a>
+                    </br>
                     <table class="table table-striped table-middle-aligned active-datatable bulkable" data-defaultsortby="3" data-defaultsortdir="desc">
                         <thead>
                         <tr>
@@ -82,8 +82,8 @@
 	<script> 
 	
 		$(function () {
-                $('.startDate-datepicker').bootstrapMaterialDatePicker({ format : 'YYYY-MM-DD HH:mm', lang : 'fr', weekStart : 1, cancelText : 'ANNULER' });
-				$('.endDate-datepicker').bootstrapMaterialDatePicker({ format : 'YYYY-MM-DD HH:mm', lang : 'fr', weekStart : 1, cancelText : 'ANNULER' });
+                 $('.startDate-datepicker').bootstrapMaterialDatePicker({ format : 'YYYY-MM-DD', lang : 'fr', weekStart : 1, cancelText : 'ANNULER', time: false });
+				$('.endDate-datepicker').bootstrapMaterialDatePicker({ format : 'YYYY-MM-DD', lang : 'fr', weekStart : 1, cancelText : 'ANNULER', time: false });
             });
     </script>
 {% endblock %}
