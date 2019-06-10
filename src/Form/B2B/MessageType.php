@@ -14,13 +14,13 @@ class MessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content',TextareaType::class,['mapped' => false,])
+            ->add('content',TextareaType::class,['label' => 'Message','mapped' => false,])
             ->add('type')
             ->add('status')
             ->add('attachment',FileType::class,[
                 'multiple' => true,
                 'required' => false,
-                'mapped' => true,
+                'mapped' => false,
             ])
             ->add('auto_mail')
             ->add('created_at')
