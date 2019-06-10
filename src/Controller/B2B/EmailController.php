@@ -3,6 +3,7 @@
 namespace App\Controller\B2B;
 
 use App\Entity\AutoMail;
+use App\Entity\ClientMissionProposal;
 use App\Entity\Message;
 use App\Entity\Ticket;
 use App\Form\B2B\TicketType;
@@ -29,11 +30,24 @@ class EmailController extends Controller
      */
     public function index(Request $request,ClientRepository $clientRepository,FileUploader $fileUploader,TicketRepository $ticketRepo)
     {
+
+
         $user = $this->getUser();
 
+        $proposals = $this->getDoctrine()
+            ->getRepository(ClientMissionProposal::class)
+            ->findBy(['user' => $user->getId()]);
+
+        $emails = [];
+
+        foreach ($proposals as $proposal){
+            if(!in_array($proposal->getUser()->getId(),$emails)){
+                $emails[] = $proposal->getClient()->getId();
+            }
+        }
         $ticket = new Ticket();
 
-        $form = $this->createForm(TicketType::class,$ticket);
+        $form = $this->createForm(TicketType::class,$ticket,['emails' => $emails]);
 
         $form->handleRequest($request);
 

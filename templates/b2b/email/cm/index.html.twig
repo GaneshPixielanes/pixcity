@@ -3,6 +3,7 @@
 {% block title %}Email Page{% endblock %}
 
 {% block body %}
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 
     <style>
         .mail-box aside {
@@ -389,14 +390,13 @@
             </div>
 
             <div class="form-group">
-                <div class="col-lg-offset-2 col-lg-10">
-                      <span class="btn green fileinput-button">
-                        <i class="fa fa-plus fa fa-white"></i>
-                          {{ form_row(form.messages.attachment,{'attr' : {'class' : 'form-control'}}) }}
-                      </span>
-                    <button class="btn btn-send" type="submit">Send</button>
+                <div class="col-md-12">
+                {{ form_row(form.messages.attachment) }}
+                    <div id="fileList"></div>
                 </div>
             </div>
+
+            <button class="btn btn-send" type="submit">Send</button>
 
             {{ form_end(form,{render_rest:false}) }}
 
@@ -407,4 +407,44 @@
     </div>
     </div>
 
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+{{ parent() }}
+    <script>
+
+        var $form = $("form[name='ticket']");
+
+        $form.validate({
+            rules: {
+                "ticket[Object]": { required: true, maxlength: 100, minlength: 5},
+            }
+        });
+
+        $("#ticket_messages_attachment").on('change',function () {
+            readURL(this);
+        });
+
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+
+                var output = document.getElementById('fileList');
+
+                output.innerHTML = '<ul>';
+                for (var i = 0; i < input.files.length; ++i) {
+                    if(input.files.length != 1){
+                        output.innerHTML += '<li>' + input.files.item(i).name + '</li>';
+                    }
+
+                }
+                output.innerHTML += '</ul>';
+            }
+        }
+
+
+
+
+        var editor = new FroalaEditor('#ticket_messages_content');
+    </script>
 {% endblock %}

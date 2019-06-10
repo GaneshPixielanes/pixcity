@@ -18,24 +18,37 @@ class TicketType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $emails = $options['emails'];
+
         $builder
             ->add('initiator',TextType::class)
             ->add('Object',TextType::class,['label' => 'subject'])
             ->add('client',EntityType::class,[
-                'label' => 'client',
                 'class' => Client::class,
-                'choice_label' => 'email',
-                'expanded' => false,
                 'multiple' => false,
+                'expanded' => false,
+                'label' => 'label.email',
+                'choice_label' => 'email',
+                'query_builder' => function(EntityRepository $er) use($emails)
+                {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.id IN (:user)')->setParameter('user',$emails);
+                }
             ])
-            ->add('cm',EntityType::class,[
-                'label' => 'City Maker',
-                'class' => User::class,
-                'choice_label' => 'email',
-                'expanded' => false,
-                'multiple' => false,
 
+            ->add('cm',EntityType::class,[
+                'class' => User::class,
+                'multiple' => false,
+                'expanded' => false,
+                'label' => 'label.email',
+                'choice_label' => 'email',
+                'query_builder' => function(EntityRepository $er) use($emails)
+                {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.id IN (:user)')->setParameter('user',$emails);
+                }
             ])
+
             ->add('template_type',TextType::class)
             ->add('messages', MessageType::class,[
                 'constraints' => array(new Valid())
@@ -46,7 +59,9 @@ class TicketType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'allow_extra_fields' => true,
             'data_class' => Ticket::class,
+            'emails' => []
         ]);
     }
 }

@@ -3,6 +3,9 @@
 {% block title %}Email Page{% endblock %}
 
 {% block body %}
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 
     <style>
         .mail-box aside {
@@ -406,4 +409,11 @@
     </div>
     </div>
 
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+    {{ parent() }}
+    <script>
+        var editor = new FroalaEditor('#ticket_messages_content')
+    </script>
 {% endblock %}
