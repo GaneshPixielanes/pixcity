@@ -385,7 +385,7 @@
                     </thead>
                     <tbody>
                     {% for mail in mails %}
-                        <tr onclick="document.location = 'view/{{ mail.id }}';">
+                        <tr onclick="document.location = 'view/{{ mail.id }}';" class="{% if mail.messages.last.status == 1 %}unread{% endif %}">
                             <td class="view-message  dont-show">{{ mail.client.firstName }}</td>
                             <td class="view-message ">{{ mail.Object }}</td>
                             <td class="view-message  text-right">{{ mail.createdAt | date('d-m-y h:i A') }}</td>
