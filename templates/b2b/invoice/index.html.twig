@@ -17,8 +17,8 @@
                         <td>{{ mission.title }}</td>
                         <td>{{ mission.userMissionPayment.total }}</td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-info" id="invoice-preview-btn" data-id="{{ mission.id }}"  data-toggle="modal" data-target="#invoicePreviewModal">Preview</a>
-                            <a href="#" class="btn btn-sm btn-success" id="invoice-generate-btn">Generate</a>
+                            <a href="#" class="btn btn-sm btn-info invoice-preview-btn" id="" data-id="{{ mission.id }}"  data-toggle="modal" data-target="#invoicePreviewModal">Preview</a>
+                            <a href="#" class="btn btn-sm btn-success invoice-generate-btn" id="">Generate</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -57,7 +57,7 @@
 <script>
 
     $(document).ready(function () {
-       $('#invoice-preview-btn').on('click', function () {
+       $('.invoice-preview-btn').on('click', function () {
             var id =$(this).attr('data-id');
             var url = '/community-manager/invoice/preview/'+id;
            $('#invoice-preview-body').load(url);
