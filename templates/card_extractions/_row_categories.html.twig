@@ -1,0 +1,10 @@
+{% set cate = [] %}
+{% for category in item.categories %}
+    {% set cate = cate|merge([category.name]) %}
+{% endfor %}
+<tr data-id="{{ item.id }}">
+    <td>{{ item.id }}</td>
+    <td>{{ item.name }}</td>
+    <td>{{ "https://www.pix.city/"~item.slug~".html" }}</td>
+    <td>{{cate|join(', ')}}</td>
+</tr>

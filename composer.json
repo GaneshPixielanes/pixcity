@@ -48,7 +48,8 @@
         "symfony/webpack-encore-pack": "^1.0",
         "symfony/yaml": "^4.0",
         "troopers/mangopay-bundle": "^3.0",
-        "twig/extensions": "^1.5"
+        "twig/extensions": "^1.5",
+        "phpoffice/phpspreadsheet": "^1.7"
     },
     "require-dev": {
         "symfony/browser-kit": "^4.0",

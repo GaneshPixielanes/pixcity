@@ -1,0 +1,9 @@
+<tr data-id="{{ item.id }}">
+    <td>{{ item.name }}</td>
+    <td>{{ "https://www.pix.city/"~item.slug~".html" }}</td>
+    <td>{{ item.region.name }}</td>
+    <td>{{ item.department.name }}</td>
+    <td>{{ item.address.city }}</td>
+    <td></td>
+    <td>{{ item.createdAt|date('Y-m-d') }}</td> 
+</tr>
