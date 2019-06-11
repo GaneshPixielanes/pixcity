@@ -1,12 +1,10 @@
 <tr data-id="{{ item.id }}">
+	<td><a href="{{ path('admin_cards_edit', {id: item.id}) }}" >{{ item.id }}</a></td> 
     <td>{{ item ? item.name : ''}}</td>
-    <td>{{ "https://www.pix.city/"~item.slug~".html" }}</td>
+    <td><a href="{{ "https://www.pix.city/"~item.slug~".html" }}" target="blank">{{ "https://www.pix.city/"~item.slug~".html" }}</a></td>
     <td>{{ item.region ? item.region.name : '' }}</td>
     <td>{{ item.department ? item.department.name : '' }}</td>
     <td>{{ item.address ? item.address.city : ''}}</td>
     <td></td>
     <td>{{ item.createdAt|date('Y-m-d') }}</td> 
-	<td><a title="{{ 'action.edit'|trans }}" href="{{ path('admin_cards_edit', {id: item.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
-                <i class="material-icons">edit</i>
-            </a></td> 
 </tr>

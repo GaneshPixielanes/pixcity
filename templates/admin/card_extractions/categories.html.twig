@@ -39,7 +39,9 @@
 
                                 <div class="flex-row-space-between">                                    
                                     <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">{{ 'action.submit'|trans }}</button>
-									<a href="{{path('admin_card_extractions_exportbycategory',{'startDate': date_from, 'endDate':date_to})}}" class="btn btn-lg bg-red m-t-15 waves-effect"> Export Card Extraction </a>
+									{% if date_from != '' and date_to != ''%}
+                                        <a href="{{path('admin_card_extractions_exportbycategory',{'startDate': date_from, 'endDate':date_to})}}" class="btn btn-lg bg-red m-t-15 waves-effect"> Export Card Extraction </a>
+                                    {% endif %}
                                 </div>
                             {{ form_end(filterForm, {render_rest: false}) }}
                         </div>

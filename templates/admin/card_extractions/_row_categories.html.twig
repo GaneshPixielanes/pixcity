@@ -3,8 +3,8 @@
     {% set cate = cate|merge([category.name]) %}
 {% endfor %}
 <tr data-id="{{ item.id }}">
-    <td>{{ item.id }}</td>
+    <td><a href="{{ path('admin_cards_edit', {id: item.id}) }}" >{{ item.id }}</a></td> 
     <td>{{ item.name }}</td>
-    <td>{{ "https://www.pix.city/"~item.slug~".html" }}</td>
+    <td><a href="{{ "https://www.pix.city/"~item.slug~".html" }}" target="blank">{{ "https://www.pix.city/"~item.slug~".html" }}</a></td>
     <td>{{cate|join(', ')}}</td>
 </tr>
