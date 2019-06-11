@@ -105,7 +105,8 @@ class CitymakerController extends SearchPageController
         $metaTitle .= ". Retrouvez ses photos et avis. Pix.City - guide de voyage local";
 
         $page->setMetaTitle($metaTitle);
-        $page->setMetaDescription(strip_tags($user->getPixie()->getLikeText()));
+        $page->setMetaDescription("Découvrez le profil de ".$user->getFirstname()." ".$user->getLastname().", city-maker sur Pix.city. ");
+
         $page->setIndexed(true);
         $categories = $categoryRepo->findCategoriesByCityMaker($request->attributes->get("id"));
         return $this->render('v2/front/citymaker/index.html.twig', [
