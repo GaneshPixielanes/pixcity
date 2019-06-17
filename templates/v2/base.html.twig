@@ -14,8 +14,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>{% block meta_title %}Pix.City{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}Vous vous êtes forcément déjà posé cette question. Et si un local, un vrai, vous le disait ? Venez échanger avec nos Pixies et partager des bons plans de leur région.{% endblock %}">
+    <title>{% block meta_title %}{% if page.metaTitle is defined %}{{ page.metaTitle }}{% else %}Pix City{% endif %}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% if page.metaDescription is defined %}{{ page.metaDescription }}{% endif %}{% endblock %}">
     <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
     {% if card.masterhead.getUrl() is defined and card.masterhead.getUrl()|imagine_filter('bg_header_slider') is not empty %}
     <meta property="og:type" content="article" />
