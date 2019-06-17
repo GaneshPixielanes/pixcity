@@ -33,6 +33,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 /**
@@ -42,6 +43,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class PixieAccountController extends Controller
 {
+
+
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
 
 
     /**
@@ -113,6 +120,7 @@ class PixieAccountController extends Controller
      */
     public function settings(Request $request, UserPasswordEncoderInterface $passwordEncoder, TransactionRepository $transactionRepository,\Swift_Mailer $mailer,CardRepository $cardsRepo)
     {
+
         $user = $this->getUser();
         $message = '';
         $bankDetailsEditable = true;
@@ -144,8 +152,6 @@ class PixieAccountController extends Controller
 
         if ($form->isSubmitted()) {
 
-            $session  = new Session();
-
 
 //        if ($form->isSubmitted() && $form->isValid()) {
             if(!$bankDetailsEditable)
@@ -163,8 +169,7 @@ class PixieAccountController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
 
 
-
-            if($session->has('cm')){
+            if($this->session->has('cm')){
 
                 if($user->getCmUpgradeB2bDate() == null){
 
@@ -284,12 +289,12 @@ class PixieAccountController extends Controller
         $session  = new Session();
 
         if($request->get('status') == 'add'){
-            $session->set('cm', 'add');
+            $this->session->set('cm', 'add');
         }else{
-            $session->remove('cm');
+            $this->session->remove('cm');
         }
 
-        if($session->has('cm')){
+        if($this->session->has('cm')){
             return new JsonResponse(true);
         }else{
             return new JsonResponse(false);

@@ -1,97 +1,253 @@
 {% extends 'b2b/client/base.html.twig' %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
-
 {% block body %}
-<link rel="stylesheet" href="{{ absolute_url(asset('build/css/dropzon.css')) }}">
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <img src="/uploads/pack/banner/{{ pack.bannerImage }}" style="height:300px;width:100%"/>
-            <div class="card-body">
-                <p>
-                    {{ 'PACK '~pack.packSkill | upper }}
-                </p>
-                <p>
-                    <h3>{{ pack.title }}</h3>
-                </p>
-                <p>
-                    {{ pack.description }}
-                </p>
-                <p><h3>Photos</h3></p>
-                <div class="row">
-                    {% for media in pack.userPackMedia %}
-                    <div class="col-md-3" style="padding-top:10px;">
-                        <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" style="width:100px;height:100px" class="thumbnail" />
+
+
+    <div class="felicitation-wrap cm-welcome">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 felicitation-content offer-subscription-content d-flex align-items-center p-0">
+                    <div class="d-flex w-100">
+                        <div class="col-md-6 p-0">
+                            <!-- Pack creation/edition contents -->
+                            <div class="pack-offer-container col-sm-12 p-0">
+                                <div class="pack-offer-content bg-white p-0">
+                                    <div
+                                            class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
+                                        <img src="/uploads/pack/banner/{{ pack.bannerImage }}" class="cover-image w-100 h-100" alt="Pack Cover Image">
+                                    </div>
+                                    <div class="pack-details p-3">
+                                        <div class="pack-overview-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
+                                            <p class="text-textgray text-12 mb-0">{{ 'PACK '~pack.packSkill | upper }}</p>
+                                            <h5 class="text-darkgray mb-3">{{ pack.title }}</h5>
+                                            <p class="fz-12">
+                                                {{ pack.description }}
+                                            </p>
+                                        </div>
+                                        <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
+                                            <h5 class="text-darkgray mb-0">Photos</h5>
+                                            <div class="pack-photos">
+                                                <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
+                                                    {% for media in pack.userPackMedia %}
+                                                    <li class="pack-photos-list-item d-inline-flex">
+                                                        <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" alt="Pack photo 1" height="100" width="100">
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">
+                                            <h5 class="text-darkgray mb-3">Zone géographique</h5>
+                                            {{ pack.user.userRegion.first.name }}
+{#                                            <ul class="nav nav-pills mb-3 pack-regions nav-justified" id="pack-regions" role="tablist">#}
+{#                                                <li class="nav-item pack-region-item mr-3">#}
+{#                                                    <a class="nav-link active bg-lightwhite text-darkgray py-3 text-left" id="region-01"#}
+{#                                                       data-toggle="pill" href="#region01" role="tab" aria-controls="region01"#}
+{#                                                       aria-selected="true"><span class="font-weight-bold">Région 1</span> <span class="ml-3">Île#}
+{#                                                            de#}
+{#                                                            France</span></a>#}
+{#                                                </li>#}
+{#                                                <li class="nav-item pack-region-item">#}
+{#                                                    <a class="nav-link bg-lightwhite text-darkgray py-3 text-left" id="region-02" data-toggle="pill"#}
+{#                                                       href="#region02" role="tab" aria-controls="region02" aria-selected="false"><span#}
+{#                                                                class="font-weight-bold">Région 2</span> <span class="ml-3">Bretagne</span></a>#}
+{#                                                </li>#}
+{#                                            </ul>#}
+{#                                            <div class="tab-content" id="pills-tabContent">#}
+{#                                                <div class="tab-pane fade show active" id="region01" role="tabpanel" aria-labelledby="region-01">#}
+{#                                                    <img src="../images/zone-map.jpg" class="img-fluid" alt="Île de France">#}
+{#                                                </div>#}
+{#                                                <div class="tab-pane fade" id="region02" role="tabpanel" aria-labelledby="region-02">#}
+{#                                                    <img src="../images/zone-map.jpg" class="img-fluid" alt="Bretagne">#}
+{#                                                </div>#}
+{#                                            </div>#}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pack creation/edition contents ends -->
+                        </div>
+                        <div class="col-md-6 p-0">
+                            <div class="p-5 subscription-info sticky-top">
+                                <h5 class="font-weight-bold">Premier contact avec {{ pack.user.firstname }}</h5>
+                                <div class="alert bg-error text-white mb-3 d-flex align-items-center fz-12">
+                                    <i class="far fa-exclamation-circle fz-20 mr-3"></i> Attention ! Vous ne pourrez pas
+                                    lancer de nouvelles
+                                    conversations avec d'autres city-makers tant que celui-ci n'aura
+                                    pas donné suite à cette conversation soit en allant jusqu'à
+                                    établir un devis avec vous , soit en stoppant la discussion
+                                </div>
+                                <h6 class="edit fz-16">Décrivez votre projet à {{ pack.user.firstname }}</h6>
+                                {{ form_start(form,{'attr':{'id':'proposal-form'}}) }}
+                                {{ form_row(form._token) }}
+                                {{ form_row(form.description,{'attr':{'class' : 'form-control bg-lightwhite edit fz-14 pack-description'}}) }}
+                                <p id="char-count-p">
+                                    Caractères restants: <span id="char-count">1200</span>
+                                </p>
+                                <div id="mission-images-display">
+                                    {{ form_row(form.medias) }}
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 upload-area">
+                                        <div class="area-label text-center p-4">
+                                            <div class="dropzone" id="drp-class"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="fz-16 d-none preview">
+                                    <p>Votre message a bien été envoyé au city-maker ! Il reviendra vers vous dès que possible!</p>
+                                    <p>Merci d’avoir choisi Pix.City Services</p>
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-end position-relative">
+                                    <button type="button"
+                                            class="btn btn-white-cancel text-normalgray mr-4">ANNULER</button>
+                                    <button type="button" id="submitform" class="btn btn-pink to-send">ENVOYER</button>
+                                    <a href="/client/search" class="btn btn-pink back-to-profile position-absolute d-none" onclick="location.href='cm-profile.html';">Retour au profil</a>
+                                </div>
+
+                                {{ form_end(form,{'render_rest':false}) }}
+
+
+                            </div>
+                        </div>
                     </div>
-                    {% endfor %}
                 </div>
-                <p>
-                    <h3>Region</h3>
-                    <div class="alert alert-secondary" role="alert">
-                        {{ pack.user.userRegion.first.name }}
-                    </div>
-                </p>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <h3>Premier contact avec {{ pack.user.firstname }}</h3>
-        <div class="alert alert-danger" role="alert">
-            <strong>Attention!</strong> Cu persius mentitum interpretaris his, id qui diam facete suscipit.
-                Mei liber partem et. Vocent iisque praesent ad sed, ei volutpat concludaturque nec.
-                Duo in placerat deterruisset, lucilius conceptam scripserit ei ius.</strong>
+
+
+    <!-- Modals Starts-->
+    <!-- Folllow the City Maker modal -->
+    <div class="modal fade modal-follow" id="followCityMakerModal" tabindex="-1" role="dialog" aria-labelledby="followCityMakerModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 modal-logo-city-maker">
+                            <img src="../images/header-logo-main.svg" alt="Pix.City" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Vous souhaitez suivre les publications des prochaines cards de ce city-maker?</p>
+                            <p>Cliquez et ajoutez-le à vos city-makers favoris dans votre compte voyageur (en créant ou en accédant à votre compte).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 modal-footer-button">
+                        <a href="javascript:;" class="btn btn-outline-pink btn-block" data-dismiss="modal">PLUS TARD</a>
+                    </div>
+                    <div class="col-md-6 modal-footer-button">
+                        <a href="javascript:;" class="btn btn-green btn-block">ACCEDER A MON COMPTE VOYAGEUR</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h3>Décorez votre projet a {{ pack.user.firstname }}</h3>
-        {{ form_start(form) }}
-        {{ form_row(form._token) }}
-        {{ form_row(form.description) }}
-        <p>
-            Characters remaining: <span id="char-count">1200</span>
-        </p>
-        <div id="mission-images-display">
-            {{ form_row(form.medias) }}
-        </div>
-        <div id="dropzone" class="image-upload-zone" style="margin:10px;" accepted-files=".doc, .docx, .xls, .xlsx, .odt, .csv, .txt">
-            <h4 class="text-center" style="vertical-align: middle;">Drop the files here/Click here to upload</h4>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-info btn-md">Send Proposal</button>
-        </div>
-        {{ form_end(form,{'render_rest':false}) }}
     </div>
-</div>
+
+    <!-- Folllow the City Maker modal ends -->
+    <!-- Modals Ends-->
+
 {% endblock %}
 
 {% block javascripts %}
 {{ parent() }}
 <script>
+
+
+
+
     $('#client_mission_proposal_description').on('keyup', function()
     {
         var count = $(this).val().length;
         $('#char-count').html( 1200 - count);
     });
 
-    $("div.image-upload-zone").dropzone({
+    Dropzone.autoDiscover = false;
+
+    var $dropZone = $(".dropzone").dropzone({
         url: "/client/pack/proposal/upload",
         addRemoveLinks: true,
         dictDefaultMessage: "Drop files here or<br>click to upload...",
         acceptedFiles: $("div.image-upload-zone").attr('accepted-files'),
         maxFilesize: 5,
+        // autoProcessQueue:false,
         success: function (file, response) {
             var prototype = $('#client_mission_proposal_medias').attr('data-prototype');
             var index = $('#mission-images-display').find('input').length;
-
+            console.log(prototype);
             prototype = prototype.replace(/__name__/g,index);
             $('#mission-images-display').append(prototype);
-            $('#mission-images-display')
-                .find('input:last')
-                .val(response.fileName).attr('data-filename',file.upload.filename);
+            $('#mission-images-display').find('input:last').val(response.fileName).attr('data-filename',file.upload.filename);
         },
         removedfile: function (file) {
             $('input[data-filename="'+file.upload.filename+'"]').remove();
             file.previewElement.remove();
         }
     });
+
+    $.fn.serializeObject = function()
+    {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+    $(document).on("click", ".to-send", function(e){
+
+        e.preventDefault();
+        var form = $("#proposal-form");
+
+        if(!form[0].checkValidity()){
+            alert('not validated');
+            return false;
+        }
+
+        var form_data = form.serializeObject();
+
+        $dropZone[0].dropzone.processQueue();
+        $.ajax({
+            url: '/client/pack/'+"{{ pack.id }}",
+            type: 'POST',
+            dataType: 'json',
+            data: form_data,
+            success:function(data){
+                console.log(data);
+                $(this).parents('.subscription-info').find('.edit, .btn-white-cancel, .to-send').hide();
+                $(this).siblings('.back-to-profile').add($(this).parents('.subscription-info').find('.preview')).removeClass('d-none').fadeIn();
+            }
+        });
+        $(this).parents('.subscription-info').find('.edit, .btn-white-cancel, .to-send').hide();
+        $(this).siblings('.back-to-profile').add($(this).parents('.subscription-info').find('.preview')).removeClass('d-none').fadeIn();
+        $("#drp-class").addClass('d-none');
+        $("#char-count-p").addClass('d-none');
+        return false;
+
+    });
+
+
+
+
 </script>
+
+
 {% endblock %}

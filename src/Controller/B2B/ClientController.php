@@ -5,10 +5,12 @@ namespace App\Controller\B2B;
 use App\Constant\MissionStatus;
 use App\Form\B2B\ClientType;
 use App\Repository\ClientMissionProposalRepository;
+use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -18,7 +20,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * @Route("/client/", name="b2b_client_main_")
  * @Security("has_role('ROLE_USER')")
  */
-class ClientController extends AbstractController
+class ClientController extends Controller
 {
     /**
      * @Route("profile",name="profile")
@@ -56,6 +58,8 @@ class ClientController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+
     /**
      * @Route("index", name="index")
      */
@@ -67,12 +71,33 @@ class ClientController extends AbstractController
         $missions = $missionRepo->findMissionForClient($this->getUser(), MissionStatus::ONGOING);
         //Get proposals
         $proposals = $proposalRepo->findBy(['client' => $this->getUser()],['id'=>'DESC'],8);
+
+        $mymissions['ongoing'] = $missionRepo->findOngoingMissions($this->getUser(),'client');
+        $mymissions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
+        $mymissions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
+
         return $this->render('b2b/client/index.html.twig',[
             'notifications' => $notifications,
             'missions' => $missions,
-            'proposals' => $proposals
-            ]);
-//        return $this->redirect('/client/search');
+            'proposals' => $proposals,
+            'mymissions' => $mymissions
+        ]);
+
+    }
+
+
+    /**
+     * @Route("preview-mission", name="preview_mission")
+     */
+    public function previewMission(Request $request,UserMissionRepository $missionRepository){
+
+
+        $mission = $missionRepository->find($request->get('id'));
+
+        return $this->render('b2b/client/mission/load-mission-preview.html.twig',[
+            'mission' => $mission
+        ]);
+
     }
 
 

@@ -60,7 +60,8 @@ class PackController extends AbstractController
             }
             #Send notification
             $notificationsRepository->insert($pack->getUser(),null,'mission_request', $this->getUser().' has sent a mission request');
-            return $this->redirect('/client/profil-community-manager/'.$pack->getUser()->getFirstname().'-'.$pack->getUser()->getLastname().'/'.$pack->getUser()->getId());
+//            return $this->redirect('/client/profil-community-manager/'.$pack->getUser()->getFirstname().'-'.$pack->getUser()->getLastname().'/'.$pack->getUser()->getId());
+            return JsonResponse::create(['success' => true]);
         }
 
         return $this->render('b2b/client/pack/index.html.twig', [

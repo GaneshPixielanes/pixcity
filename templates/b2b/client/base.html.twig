@@ -1,99 +1,436 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
+
+    <meta charset="utf-8" />
+    <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Fonts -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/fonts/fontawesome/css/all.min.css') }}" />
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
+    <!-- Site CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
+
     {% block stylesheets %}{% endblock %}
+
+    {% set route = app.request.get('_route') %}
 </head>
 <body>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <div class="container-fluid bg-dashboard  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
+        <div class="row">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="{{ absolute_url(asset('build/b2b/js/app.js')) }}"></script>
-<script src="{{ absolute_url(asset('build/js/dropzone.js')) }}"></script>
-<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
-<style>
-    /* Stackoverflow preview fix, please ignore */
-    .navbar-nav {
-        flex-direction: row;
-    }
+            {% if route != 'b2b_client_main_index' %}
+            <!-- Header -->
+            <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
+                <div class="container">
+                    <a class="navbar-brand" href="{{ path('b2b_client_main_index') }}"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
+                    <div class="col-3 ml-auto social-mobile">
+                        <div class="row">
+                            <div class="col-6 social-mobile-btn">
+                                <a href="javascript:;" title="Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </div>
+                            <div class="col-6 social-mobile-btn">
+                                <a href="javascript:;" title="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                        <!-- <span class="navbar-toggler-icon"></span> -->
+                        <img src="{{ absolute_url(asset('build/images/menu.svg')) }}" />
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <div class="col-md-5 ml-auto mt-2 mt-lg-0">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
+                                    </div>
+                                    <div class="col-md-1 col-6 social-btn">
+                                        <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-1 col-6 social-btn">
+                                        <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
 
-    .nav-link {
-        padding-right: .5rem !important;
-        padding-left: .5rem !important;
-    }
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="{{ 'client/logout' }}" class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker">
+                                        <span class="text">Logout</span>
+                                        <i class="fas fa-user-plus"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-1 col-6 social-btn">
+                                    <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-1 col-6 social-btn">
+                                    <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </div>
+                            </div>
 
-    /* Fixes dropdown menus placed on the right side */
-    .ml-auto .dropdown-menu {
-        left: auto !important;
-        right: 0px;
-    }
-
-    .error{
-        color: darkred;
-    }
-</style>
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-
-    <a class="navbar-brand" href="#">Pix City {% if app.user is defined %} - {{ app.user }} {% endif %}</a>
-    <!-- Links -->
-    <ul class="nav navbar-nav">
-        {% if app.user is defined and app.user is not null %}
-            <li class="nav-item">
-                {{ app.user.email }}
-                <a class="nav-link" href="/client/logout">Logout</a>
-            </li>
-        {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('b2b_client_login') }}">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('b2b_client_auth_register') }}">Register</a>
-            </li>
-        {% endif %}
-    </ul>
-</nav>
-<hr/>
-<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/simple-sidebar.css')) }}">
-<div class="d-flex" id="wrapper">
-
-    <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-        <div class="sidebar-heading">Start Bootstrap </div>
-        <div class="list-group list-group-flush">
-            {% if app.user is not null and app.user.profilePhoto is not null %}
-                <a href="#">
-                    <img src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}" class="img-thumbnail" />
-                </a>
-            {% else %}
-            <a href="#">
-                <img src="https://via.placeholder.com/200" class="img-thumbnail" />
-            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+            <!-- Header -->
             {% endif %}
-            <a href="{{ url('b2b_client_main_index') }}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-            <a href="{{ url('b2b_client_search_index') }}" class="list-group-item list-group-item-action bg-light">Search</a>
-            <a href="{{ url('b2b_client_mission_list') }}" class="list-group-item list-group-item-action bg-light">Mes Mission</a>
-            <a href="{{ url('b2b_client_mission_missions') }}" class="list-group-item list-group-item-action bg-light">Mission Requests</a>
-            <a href="{{ url('client_email_index') }}" class="list-group-item list-group-item-action bg-light">Compose</a>
-            {% if sendMails is defined and receiverMails is defined %}
-                <a href="{{ url('client_email_inbox') }}" class="list-group-item list-group-item-action bg-light">Inbox {{ receiverMails | length }}</a>
-                <a href="{{ url('client_email_send_emails') }}" class="list-group-item list-group-item-action bg-light">Send Mails {{  sendMails | length }}</a>
-            {% endif %}
-        </div>
-    </div>
-    <!-- /#sidebar-wrapper -->
-
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-        <div class="container-fluid">
 
             {% block body %}{% endblock %}
-
         </div>
     </div>
-{% block javascripts %}{% endblock %}
+
+    <!-- Scripts -->
+    <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
+    <!-- <script src="js/app.js"></script> -->
+    <script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
+
+    <script>
+        /* custom per page scripts */
+
+        $(document).ready(function () {
+            /* Skills Pack Buttons */
+            $('a.skills-pack').click(function () {
+                // e.preventDefault();
+                $(this).parent('li').siblings().find('a').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            /* Restrict maxlengths for input and textarea fields */
+            $('textarea.pack-description, input.pack-title').on("input", function () {
+                var maxlength = $(this).attr("maxlength");
+                var currentLength = $(this).val().length;
+
+                $(this).next().find('.inputlength').text(currentLength)
+                if (currentLength >= maxlength) {
+                    //         console.log("You have reached the maximum number of characters.");
+                    $(this).next('.text-textgray').append(
+                        `<span class="text-error ml-2">You have reached the maximum number of characters allowed.</span>`
+                    );
+                } else if (currentLength < maxlength) {
+                    //         console.log(maxlength - currentLength + " chars left");
+                    $(this).next('.text-textgray').find('.text-error').fadeOut('fast');
+                }
+            });
+
+            /* Filter packages script */
+            /* $(document).on('click', '.filter-packages  input[type="checkbox"]', function () {
+                $(this).parents('.content-top-header').next().find('.package-list-item')
+                    .removeClass('d-flex').fadeOut('fast');
+
+                var $packlist = $(this).parents('.content-top-header').next().find(
+                    '.package-list-item'),
+                    filter = [];
+                $(this).parents('.filter-packages').find('input[type="checkbox"]:checked')
+                    .each(function () {
+                        var packtype = $(this).val();
+                        filter.push('.' + packtype);
+                    })
+                if (filter.length == 0) {
+                    $packlist.addClass('d-flex').fadeIn();
+                    $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.length);
+                } else {
+                    $packlist.filter(filter.join(',')).addClass('d-flex').fadeIn();
+                    $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.filter(filter.join(',')).length);
+                }
+            }) */
+            function filterPackages(thisObj) {
+                $(thisObj).parents('.content-top-header').next().find('.package-list-item')
+                    .removeClass('d-flex').fadeOut('fast');
+
+                var $packlist = $(thisObj).parents('.content-top-header').next().find(
+                    '.package-list-item'),
+                    filter = [];
+                $(thisObj).parents('.filter-packages').find('input[type="checkbox"]:checked')
+                    .each(function () {
+                        var packtype = $(this).val();
+                        filter.push('.' + packtype);
+                    })
+                console.log(filter);
+                if (filter.length == 0) {
+                    $packlist.addClass('d-flex').fadeIn();
+                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                        .length);
+                } else {
+                    $(thisObj).parents('.content-top-header').next().find(
+                        '.package-list-item').filter(filter.join(',')).addClass('d-flex').fadeIn();
+                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                        .filter(filter.join(',')).length);
+                }
+            }
+
+            $('.filter-packages input[type="checkbox"]').click(function () {
+                filterPackages($(this))
+            });
+            /* Filter packages script ends */
+
+            /* Images drop zone */
+            /* $('.dropzone .dz-default').html(`<div class="row"><div class="col-md-12 mb-4 upload-area"><div class="area-label text-center p-4"><i class="fas fa-cloud-upload-alt"></i><p>Déposez vos images ici</p><a href="javascript:;">Depuis votre navigateur</a></div></div></div>`); */
+            $('.dropzone .dz-default').html(`
+                <div class="upload-area mb-4">
+                    <div class="area-label text-center p-4">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p class="mb-0">Déposez vos images ici</p>
+                        <a href="javascript:;">Depuis votre navigateur</a>
+                    </div>
+                </div>
+            `);
+
+            /* Show only two notifications on load */
+            $('.alert-notifications .alert').not(':lt(2)').removeClass('d-flex').hide();
+            if ($('.alert-notifications .alert').length > 2) {
+                $('.alert-notifications .show-less').hide();
+                $('.alert-notifications .show-more').show();
+            }
+            /* Show only two notifications on load ends */
+            /* Show all/less notifications on click */
+            $(document).on('click', '.show-more a, .show-less a', function () {
+                if ($(this).is('.show-less a')) {
+                    $(this).parent('.show-less').hide()
+                    $(this).parent('.show-less').siblings('.show-more').fadeIn()
+                    $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').removeClass(
+                        'd-flex').slideUp();
+                } else if ($(this).is('.show-more a')) {
+                    $(this).parent('.show-more').hide()
+                    $(this).parent('.show-more').siblings('.show-less').fadeIn()
+                    $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').addClass(
+                        'd-flex').slideDown();
+                }
+            })
+            /* Show all/less notifications on click ends */
+
+            /* pack/mission creation/preview/edit invoke */
+            $(document).on('click', '.add-package, .preview-edit-mission, .edit-the-pack, .preview-my-mission',
+                function (e) {
+
+                    if ($(this).is('.add-package, .edit-the-pack')) {
+                        $('.dash-right').fadeOut();
+                        $('.pack-creation-edition-container').fadeIn()
+                    } else if ($(this).is('.preview-edit-mission')) {
+                        $('.dash-right').fadeOut();
+                        $('.mission-edition-container').fadeIn()
+                    } else if ($(this).is('.preview-my-mission')) {
+
+                        $('.dash-left, .dash-right').fadeOut();
+                        $('.mission-preview-container').fadeIn();
+                        var id = $(this).attr('data-id');
+                        console.log($(this).attr('data-id'));
+                        $.ajax({
+                            url:"{{ path('b2b_client_main_preview_mission') }}",
+                            type:'GET',
+                            data: {id: id},
+                            dataType:'html',
+                            success: function(data){
+                                $("#preview-mission").html(data);
+                                e.stopImmediatePropagation();
+                                return false;
+                            }
+                        });
+                    }
+
+
+                });
+            $(document).on('click', '.close-preview-edit',
+                function () {
+                    $(this).parents('[class*="edition-container"]').fadeOut()
+                    $(this).parents('[class*="edition-container"]').siblings('.dash-right').fadeIn()
+                });
+            $(document).on('click',
+                '.preview-pack, .save-changes, .close-pack-preview, .close-mission-preview, .edit-the-mission, .preview-mission',
+                function (e) {
+                    if ($(this).hasClass('preview-pack')) {
+                        $(this).addClass('d-none');
+                        $(this).next().add($(this).parent('.preview-cta').prev()).removeClass('d-none')
+                        $('.pack-creation-content .edit').hide();
+                        $('.pack-creation-content .preview').show();
+                        $('.preview-pack-toast').toast('show').css({
+                            'z-index': '1050'
+                        });
+                    } else if ($(this).is('.preview-mission')) {
+                        $('.mission-edition-content .edit').fadeOut();
+                        $('.mission-edition-content .preview').fadeIn();
+                        $(this).parent('.preview-cta')
+                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
+                                .find('.cancel-edition, .edit-image'))
+                            .addClass('d-none')
+                        $(this).parent('.preview-cta').siblings('.client-infos, .mission-cta')
+                            .addClass('d-flex')
+                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
+                                .find('.close-preview-edit'))
+                            .fadeIn();
+                    } else if ($(this).is('.edit-the-mission')) {
+                        $('.mission-edition-content .preview').fadeOut();
+                        $('.mission-edition-content .edit').fadeIn();
+                        $(this).parent('.mission-cta')
+                            .add($(this).parent('.mission-cta').siblings('.client-infos'))
+                            .removeClass('d-flex')
+                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
+                                .find('.close-preview-edit'))
+                            .fadeOut();
+                        $(this).parent('.mission-cta').siblings('.preview-cta')
+                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
+                                .find('.cancel-edition, .edit-image'))
+                            .removeClass('d-none')
+                    } else if ($(this).hasClass('save-changes')) {
+                        $('.save-changes-toast').toast('show').css({
+                            'z-index': '1050'
+                        });
+                        setTimeout(function () {
+                            window.location = 'client-dashboard-tab-mypacks-felicitations.html';
+                        }, 5000);
+                        // window.location.replace('')
+                    } else if ($(this).hasClass('close-pack-preview')) {
+                        $(this).
+                        add($(this).parent('.d-flex').prev()).addClass('d-none')
+                        $(this).prev().removeClass('d-none');
+                        $('.pack-creation-content .preview').hide();
+                        $('.pack-creation-content .edit').show();
+                    } else if ($(this).is('.close-mission-preview')) {
+                        $('.mission-preview-container').fadeOut()
+                        $('.dash-left, .dash-right').fadeIn()
+                    }
+                });
+            $(document).on('input change focus',
+                '.pack-creation-content input, .pack-creation-content textarea, .mission-edition-content input, .mission-edition-content textarea',
+                function () {
+                    $(this).parents('.pack-creation-content, .mission-edition-content').find(
+                        '.save-changes').removeClass('disabled')
+                });
+            /* pack/mission creation/preview/edit invoke ends */
+            /* Pay online invoke */
+            $(document).on('click',
+                '.pay-online, .confirm-payment, .retry-payment, .return-to-dashboard, .cancel-payment-confirmation',
+                function (e) {
+                    if ($(this).is('.pay-online')) {
+                        $('.dash-left, .dash-right').fadeOut()
+                        $('.mission-payment-content').fadeIn();
+                    } else if ($(this).is('.confirm-payment')) {
+                        $('.mission-payment-content').fadeOut();
+                        $('.dash-left, .mission-pyament-acknowledgement-container').fadeIn()
+                    } else if ($(this).is('.retry-payment')) {
+                        $('.dash-left, .mission-pyament-acknowledgement-container').fadeOut()
+                        $('.mission-payment-content').fadeIn();
+                    } else if ($(this).is('.return-to-dashboard')) {
+                        $('.mission-pyament-acknowledgement-container').fadeOut()
+                        $('.dash-left, .dash-right').fadeIn();
+                    } else if ($(this).is('.cancel-payment-confirmation')) {
+                        // e.preventDefault()
+                        $('.mission-payment-content').fadeOut();
+                        $('.dash-left, .dash-right').fadeIn();
+                    }
+                });
+            /* Pay online invoke ends */
+            /* Preview Invoice Starts */
+            $(document).on('click',
+                'a.close-invoice-preview, a.preview-invoice, a.validate-quote, a.validate-the-quote, a.check-the-quote',
+                function () {
+                    if ($(this).is('a.preview-invoice')) {
+                        $('.validate-the-quote, .dash-right').fadeOut()
+                        $('.facturation-show-container, .validate-quote').fadeIn();
+                    } else if ($(this).is('a.close-invoice-preview')) {
+                        $('.facturation-show-container').fadeOut();
+                        $('.validate-the-quote, .dash-right').fadeIn()
+                    } else if ($(this).is('a.validate-quote')) {
+                        $('.validate-quote-toast').toast('show').css({
+                            'z-index': '1050'
+                        });
+                    } else if ($(this).is('a.validate-the-quote')) {
+                        $('.facturation-show-container').fadeOut()
+                        $('.dash-right, .validate-quote').fadeIn('fast', function(){
+                            $('.invoice-signed-toast').toast('show').css({
+                                'z-index': '1050'
+                            });
+                        })
+                    } else if ($(this).is('a.check-the-quote')) {
+                        $('.dash-right, .validate-quote').fadeOut()
+                        $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function(){
+                            $('.to-validate-quote-toast').toast('show').css({
+                                'z-index': '1050'
+                            });
+                        });
+                    }
+                })
+            /* Preview Invoice Ends */
+            /* Cancel mission Starts */
+            $(document).on('click', 'a.close-cancel-mission, a.cancel-mission-activate', function () {
+                if ($(this).is('a.cancel-mission-activate')) {
+                    $('.cancel-mission-container').fadeIn();
+                } else if ($(this).is('a.close-cancel-mission')) {
+                    $('.cancel-mission-container').fadeOut();
+                }
+            })
+            /* Cancel mission Ends */
+            /* toasts initialization */
+            $('.toast').toast();
+            $(document).on('hidden.bs.toast', function () {
+                $('.toast').css({
+                    'z-index': ''
+                })
+            });
+            /* toasts ends */
+            /* Slick slider starts */
+            $('.slick-profiles-slider').slick({
+                dots: false,
+                infinite: false,
+                speed: 400,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+                ]
+            });
+            /* Slick slider starts ends */
+        });
+    </script>
+
+    {% block javascripts %}{% endblock %}
+
+
+
 </body>
 </html>

@@ -3,6 +3,7 @@
 namespace App\Controller\B2B\Client;
 
 use App\Repository\PackRepository;
+use App\Repository\SkillRepository;
 use App\Repository\UserPacksRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,7 @@ class CommunityManagerController extends AbstractController
     /**
      * @Route("{name}/{id}", name="view")
      */
-    public function index($id, UserRepository $userRepo, UserPacksRepository $packRepo)
+    public function index($id, UserRepository $userRepo, UserPacksRepository $packRepo,SkillRepository $skillRepository)
     {
         $user = $userRepo->find($id);
         // Check if the user exists
@@ -31,9 +32,12 @@ class CommunityManagerController extends AbstractController
             'deleted' => null
         ]);
 
+        $skills = $skillRepository->findAll();
+
         return $this->render('b2b/client/community_manager/index.html.twig', [
             'user' => $user,
-            'packs' => $packs
+            'packs' => $packs,
+            'skills' => $skills
         ]);
     }
 }
