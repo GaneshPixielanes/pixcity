@@ -14,38 +14,38 @@
             <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
                 {% for media in mission.missionMedia %}
                     <li class="pack-photos-list-item d-inline-flex">
-                        <img src="{{ media.url }}" alt="Pack photo 1" width="150" height="100">
+                        <img src="{{ media.url }}" alt="Pack photo 1">
                     </li>
                 {% endfor %}
 
             </ul>
         </div>
     </div>
-    <div class="pack-region-container col-sm-12 mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-3">Zone géographique</h5>
-        <ul class="nav nav-pills mb-3 pack-regions nav-justified" id="pack-regions" role="tablist">
-            <li class="nav-item pack-region-item mr-3">
-                <a class="nav-link active bg-lightwhite text-darkgray py-3 text-left" id="my-mission-region-01"
-                   data-toggle="pill" href="#mymissionRegion01" role="tab" aria-controls="mymissionRegion01"
-                   aria-selected="true"><span class="font-weight-bold">Région 1</span> <span class="ml-3">Île
-                                            de
-                                            France</span></a>
-            </li>
-            <li class="nav-item pack-region-item">
-                <a class="nav-link bg-lightwhite text-darkgray py-3 text-left" id="my-mission-region-02" data-toggle="pill"
-                   href="#mymissionRegion02" role="tab" aria-controls="mymissionRegion02" aria-selected="false"><span
-                            class="font-weight-bold">Région 2</span> <span class="ml-3">Bretagne</span></a>
-            </li>
-        </ul>
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="mymissionRegion01" role="tabpanel" aria-labelledby="my-mission-region-01">
-                <img src="../images/zone-map.jpg" class="img-fluid" alt="Île de France">
-            </div>
-            <div class="tab-pane fade" id="mymissionRegion02" role="tabpanel" aria-labelledby="my-mission-region-02">
-                <img src="../images/zone-map.jpg" class="img-fluid" alt="Bretagne">
-            </div>
-        </div>
-    </div>
+{#    <div class="pack-region-container col-sm-12 mt-2 mb-4 pb-4">#}
+{#        <h5 class="text-darkgray mb-3">Zone géographique</h5>#}
+{#        <ul class="nav nav-pills mb-3 pack-regions nav-justified" id="pack-regions" role="tablist">#}
+{#            <li class="nav-item pack-region-item mr-3">#}
+{#                <a class="nav-link active bg-lightwhite text-darkgray py-3 text-left" id="my-mission-region-01"#}
+{#                   data-toggle="pill" href="#mymissionRegion01" role="tab" aria-controls="mymissionRegion01"#}
+{#                   aria-selected="true"><span class="font-weight-bold">Région 1</span> <span class="ml-3">Île#}
+{#                                            de#}
+{#                                            France</span></a>#}
+{#            </li>#}
+{#            <li class="nav-item pack-region-item">#}
+{#                <a class="nav-link bg-lightwhite text-darkgray py-3 text-left" id="my-mission-region-02" data-toggle="pill"#}
+{#                   href="#mymissionRegion02" role="tab" aria-controls="mymissionRegion02" aria-selected="false"><span#}
+{#                            class="font-weight-bold">Région 2</span> <span class="ml-3">Bretagne</span></a>#}
+{#            </li>#}
+{#        </ul>#}
+{#        <div class="tab-content" id="pills-tabContent">#}
+{#            <div class="tab-pane fade show active" id="mymissionRegion01" role="tabpanel" aria-labelledby="my-mission-region-01">#}
+{#                <img src="../images/zone-map.jpg" class="img-fluid" alt="Île de France">#}
+{#            </div>#}
+{#            <div class="tab-pane fade" id="mymissionRegion02" role="tabpanel" aria-labelledby="my-mission-region-02">#}
+{#                <img src="../images/zone-map.jpg" class="img-fluid" alt="Bretagne">#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 </div>
 
 <nav class="col-sm-12 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">

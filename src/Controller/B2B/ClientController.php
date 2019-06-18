@@ -7,6 +7,7 @@ use App\Form\B2B\ClientType;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
+use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -88,7 +89,7 @@ class ClientController extends Controller
             'missions' => $missions,
             'proposals' => $proposals,
             'mymissions' => $mymissions,
-            'missions_notification' => $missions_notification
+            'missions_notification' => $missions_notification,
         ]);
 
     }
@@ -111,13 +112,14 @@ class ClientController extends Controller
     /**
      * @Route("preview-payment", name="preview_payment")
      */
-    public function previewPayment(Request $request,UserMissionRepository $missionRepository){
+    public function previewPayment(Request $request,UserMissionRepository $missionRepository,OptionRepository $optionRepository){
 
 //        $mission = $missionRepository->find($request->get('id'));
         $mission = $missionRepository->findBy(['missionAgreedClient' => null, 'id' => $request->get('id')]);
-
+        $tax = $optionRepository->findBy(['slug' => 'tax']);
         return $this->render('b2b/client/mission/load-payment-preview.html.twig',[
-            'mission' => $mission[0]
+            'mission' => $mission[0],
+            'tax' => $tax[0]->getValue()
         ]);
 
     }
