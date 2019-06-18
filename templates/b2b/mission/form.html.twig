@@ -149,7 +149,7 @@
                         </a>
                         <a class="close-mission-preview text-darkgray d-flex flex-column align-items-center mr-3 fz-12 text-decoration-none d-none"
                            href="javascript:;">
-                            <img src="../images/icons/preview-off-icon.svg" alt="Preview off" data-dismiss="toast"
+                            <img src="{{ absolute_url('/assets/images/icons/preview-off-icon.svg') }}" alt="Preview off" data-dismiss="toast"
                                  aria-label="Close"> Retour à l'édition
                         </a>
                         <a href="javascript:;"
@@ -236,9 +236,10 @@
             $('input[type="file"]').on('change', function (e) {
                 var type = 'banner';
                 // Read the image URL and display the image
+                console.log($(this).attr('id'));
                 if ($(this).attr('id') == 'banner-image-upload') {
                     readURL(this);
-                } else {
+                } else if($(this).attr('id') == 'brief-file-upload') {
                     type = 'brief';
                 }
                 $.each($(this)[0].files, function (key, value) {
