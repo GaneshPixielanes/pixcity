@@ -1,0 +1,31 @@
+
+<div class="col-md-2 p-sm-0 dash-left vh-100">
+    <div class="user-avatar w-100">
+        <figure class="position-relative m-0 w-100">
+            <img class="img-fluid" src="{{ app.user.getAvatar() }}" alt="">
+            <figcaption class="position-absolute d-flex align-items-center"><i class="fas fa-user-circle mr-2"></i>
+                <span>Prévisualiser mon profil</span></figcaption>
+        </figure>
+    </div>
+    <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home"><i
+                        class="fas fa-home"></i>Accueil</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#myPacks" role="tab" aria-controls="myPacks"><i
+                        class="fas fa-dungeon"></i>Mes packs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#myMissions" role="tab" aria-controls="myMissions"><i
+                        class="fas fa-briefcase"></i>Mes missions</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#billing" role="tab" aria-controls="billing"><i
+                        class="fas fa-file-invoice-dollar"></i>Facturation</a>
+        </li>
+    </ul>
+    <footer class="text-center p-2 text-danger">
+        <i class="fas fa-cog"></i>Retourner sur Pix.city Services
+    </footer>
+</div>

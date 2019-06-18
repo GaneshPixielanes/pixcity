@@ -61,7 +61,7 @@ class ClientInfo
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $company_creation_date;
+    private $companyCreationDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -157,12 +157,12 @@ class ClientInfo
 
     public function getCompanyCreationDate(): ?\DateTimeInterface
     {
-        return $this->company_creation_date;
+        return $this->companyCreationDate;
     }
 
-    public function setCompanyCreationDate(?\DateTimeInterface $company_creation_date): self
+    public function setCompanyCreationDate(?\DateTimeInterface $companyCreationDate): self
     {
-        $this->company_creation_date = $company_creation_date;
+        $this->companyCreationDate = $companyCreationDate;
 
         return $this;
     }

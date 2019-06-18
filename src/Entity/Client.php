@@ -46,7 +46,7 @@ class Client implements UserInterface
     private $plainPassword;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $password;
 
@@ -82,7 +82,7 @@ class Client implements UserInterface
      * @var \DateTime $createdAt
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
 
@@ -97,7 +97,7 @@ class Client implements UserInterface
     private $clientInfo;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="client", cascade={"persist", "remove"})
      */
     private $userMission;
 
@@ -117,7 +117,7 @@ class Client implements UserInterface
     private $profilePhoto;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastLoggedinAt;
 

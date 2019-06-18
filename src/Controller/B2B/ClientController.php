@@ -44,8 +44,12 @@ class ClientController extends Controller
                 $fileName = $fileUploader->upload($file, 'clients'.'/'.$user->getId().'/', true);
                 $user->setProfilePhoto($fileName);
             }
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
+            if(trim($user->getPlainPassword()) != '')
+            {
+                $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+                $user->setPassword($password);
+            }
+
 
             $entityManager->persist($user);
             $entityManager->flush();

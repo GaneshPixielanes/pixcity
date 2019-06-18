@@ -62,7 +62,7 @@
             <div class="tab-pane active" id="home" role="tabpanel">
                 <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
                     <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Mon profil</div>
-                    <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">{{ missions | length }} mission en cours</a>
+                    <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">{{ app.user.userMission | length }} mission en cours</a>
                 </div>
                 <div class="col-md-12 tab-pane-content p-4" data-simplebar>
                     <div class="col-md-12 content-top-header">

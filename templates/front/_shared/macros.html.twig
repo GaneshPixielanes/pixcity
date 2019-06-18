@@ -261,7 +261,7 @@
         <div class="row">
             <div class="col-md-12">
                 <a href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" class="city-maker-image" target="_blank">
-                    <img src="{{ user.getAvatarUrl() | imagine_filter('user_avatar') }}" class="rounded-circle" alt="User Name">
+                    <img src="{{ user.getAvatarUrl() | imagine_filter('user_avatar') }}" class="rounded-circle" alt="{{ user.firstName }}  - Community manager et influenceur local {{ user.pixie ? user.pixie.regions[0] : '' }} ">
                 </a>
             </div>
         </div>
