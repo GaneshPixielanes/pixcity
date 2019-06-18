@@ -269,6 +269,16 @@
                 })
             });
             /* toasts ends */
+
+            window.onhashchange = function () {
+                var url = document.location.toString();
+                if (!url.match('#')) {
+                    // $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+                    window.location = url;
+                } else {
+                    console.log('nothing to doo...')
+                }
+            }
         });
     </script>
 </head>

@@ -74,7 +74,7 @@ class PackController extends Controller
 
             $total_value = $margin + $base_price;
             $pack->setUser($user);
-            $pack->setBannerImage($request->get('banner'));
+//            $pack->setBannerImage($request->get('banner'));
             $pack->setMarginPercentage($tax);
             $pack->setMarginValue($margin);
             $pack->setTotalPrice($total_value);

@@ -157,4 +157,29 @@ class PackController extends AbstractController
                 'form' => $form->createView()
             ]);
     }
+
+    /**
+     * @Route("details/{id}",name="details")
+     */
+    public function details($id, UserPacksRepository $packRepo)
+    {
+        $pack = $packRepo->find($id);
+        $images = [];
+        if(!is_null($pack))
+        {
+            foreach($pack->getUserPackMedia() as $media)
+            {
+                $images[] = [
+                    'name' => $media->getName(),
+                    'id' => $media->getId()
+                ];
+            }
+            return new JsonResponse(['success' => true, 'data' => ['id' => $pack->getId(),
+                'price' => $pack->getUserBasePrice(),
+                'images' => $images,
+                'skill' => strtoupper($pack->getPackSkill()->getName()),
+                'title' => $pack->getTitle(),
+                'description' => $pack->getDescription()]]);
+        }
+    }
 }
