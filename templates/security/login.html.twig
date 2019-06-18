@@ -1,40 +1,55 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
 
 
 {% block body %}
     <div class="container">
         <form method="post">
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <div class="form-group col-md-4">
-    <label for="inputEmail" class="sr-only">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-    </div>
-    <div class="form-group col-md-4">
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-    </div>
+
+            <div class="unregistered-log">
+                <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.City Service !</h4>
+                <p class="text-center">Apprenons à mieux nous connaître 😉</p>
+                <div class="row">
+                    <div class="col-md-8 m-auto">
+                        <form action="" method="" accept-charset="utf-8">
+                            <div class="row">
+                                <div class="col-md-12 card shadow-sm mb-3 p-3">
+                                    <p class="font-weight-light text-center">À propos de vous</p>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label>VOTRE EMAIL</label>
+                                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control bg-lightgray" placeholder="email@domain.com">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>VOTRE MOT DE PASSE</label>
+                                            <input type="password" name="password" id="inputPassword" id="password-field" class="form-control bg-lightgray pr-5" placeholder="8 caractères, 1 majuscule">
+                                            <span toggle="#password-field" class="fas fa-eye password-show-icon toggle-password"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-4 text-center">
+                                    <button class="btn btn-pink btn-pill mx-auto lh2" type="submit">Créer mon compte</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
 </form>
     </div>
 
