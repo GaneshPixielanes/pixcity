@@ -37,7 +37,7 @@ class UserMission
     private $referencePack;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=65000, nullable=true)
      */
     private $description;
 
