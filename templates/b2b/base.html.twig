@@ -32,6 +32,8 @@
                 // e.preventDefault();
                 $(this).parent('li').siblings().find('a').removeClass('active');
                 $(this).addClass('active');
+                $(this).parent('li').find('input[type="radio"]').prop('checked',true);
+                $(this).parent('li').find('input[type="radio"]').attr('checked','checked');
             });
 
             /* Restrict maxlengths for input and textarea fields */
