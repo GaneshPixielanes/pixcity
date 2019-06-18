@@ -12,6 +12,7 @@ use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\MissionDocumentRepository;
 use App\Repository\NotificationsRepository;
+use App\Repository\OptionRepository;
 use App\Repository\PackRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
@@ -33,7 +34,7 @@ class MissionController extends AbstractController
     /**
      * @Route("list", name="list")
      */
-    public function index(UserMissionRepository $userMissionRepo)
+    public function index(UserMissionRepository $userMissionRepo, OptionRepository $optionsRepo)
     {
 
         $missions['ongoing'] = $userMissionRepo->findOngoingMissions($this->getUser());
@@ -42,6 +43,7 @@ class MissionController extends AbstractController
 
         return $this->render('b2b/mission/index.html.twig', [
             'missions' => $missions,
+            'tax' => $optionsRepo->findOneBy(['slug' => 'tax'])
         ]);
     }
 

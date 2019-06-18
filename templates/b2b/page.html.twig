@@ -161,7 +161,7 @@
             <div class="col-md-2 p-sm-0 dash-left vh-100">
                 <div class="user-avatar w-100">
                     <figure class="position-relative m-0 w-100">
-                        <img class="img-fluid" src="{{ app.user.getAvatar() }}" alt="{{ app.user }}">
+                        <img class="img-fluid" src="{{ app.user.getAvatar() | imagine_filter('b2b_avatar_medium')}}" alt="{{ app.user }}">
                         <figcaption class="position-absolute d-flex align-items-center"><i class="fas fa-user-circle mr-2"></i>
                             <span>Prévisualiser mon profil</span></figcaption>
                     </figure>
@@ -395,16 +395,6 @@
     {{ parent() }}
     <script>
         $(document).ready(function () {
-            $("#pack_userBasePrice").on('change', function () {
-
-                var actual_price = $("#pack_userBasePrice").val();
-                var after_price = parseFloat(actual_price) * 20 / 100;
-
-                var total = parseFloat(actual_price) + parseFloat(after_price);
-                $('.user-price').text(total + '€');
-                {#$("#actula_value").text('The Value after {{ tax.value }} % added ' + total);#}
-
-            });
 
             $(document).on('click', '.delete-document',function () {
 
@@ -504,7 +494,7 @@
 
                 var actual_price = $("#pack_userBasePrice").val();
                 console.log(actual_price);
-                var after_price = parseFloat(actual_price) * 20 / 100;
+                var after_price = parseFloat(actual_price) * {{ tax.value }} / 100;
 
                 var total = parseFloat(actual_price) + parseFloat(after_price);
                 $(".total-pack-price").val(total);
@@ -514,7 +504,6 @@
 
             // Edit the pack
             $('body').on('click', '.edit-the-pack, .add-package-to-list > a', function () {
-
 
                 var pack_id = $(this).attr('data-id');
                 console.log(pack_id);
@@ -528,6 +517,11 @@
                     success: function (result) {
                         $('#pack-form').html(result);
                         $('.selectpicker').selectpicker('refresh');
+                        $.each($('.disabled > .selectpicker'), function (key, value) {
+                            var region = $(value).val();
+                            console.log(region);
+                            $('[data-original-title="'+region+'"]').addClass('active');
+                        });
                         var $dropZone = $('.dropzone-custom').dropzone({
                             url: '{{ path('b2b_pack_fileuploadhandler') }}',
                             maxFiles: 7,
@@ -658,7 +652,7 @@
         $(document).ready(function () {
             // Adding a new pack
             $('.add-package-to-list > a').on('click', function () {
-                $('#pack-form').load('/api/pack/create');
+                // $('#pack-form').load('/api/pack/create');
             });
 
             // Deleting a pack
