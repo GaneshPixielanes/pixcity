@@ -1,31 +1,153 @@
-{% extends 'b2b/client/base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form 'b2b/shared/field.html.twig' %}
+
 
 
 {% block body %}
-    <div class="col-md-12" style="margin:20px">
-        <form name="client" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null %}
-                <img src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}" style="height:150px;width:150px" />
-            {% endif %}
-            <input type="file" name="files"/>
-            {{ form_row(form.profilePhoto) }}
-        </div>
-        {{ form_row(form._token) }}
-        {{ form_row(form.firstName) }}
-        {{ form_row(form.lastName) }}
-        {{ form_row(form.company) }}
-        {{ form_row(form.email) }}
-        {{ form_row(form.plainPassword.first, {'icon': 'fa-lock'}) }}
-        {{ form_row(form.plainPassword.second, {'icon': 'fa-lock'}) }}
-        <hr>
-        {{ form_row(form.clientInfo) }}
-            <div class="form-group">
-                <input type="submit" class="btn btn-success " value="Save">
+
+
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
+        <div class="container">
+            <a class="navbar-brand" href="javascript:;"><img src="../images/header-logo-main.svg" alt="Pix.City"></a>
+            <div class="col-3 ml-auto social-mobile">
+                <div class="row">
+                    <div class="col-6 social-mobile-btn">
+                        <a href="javascript:;" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                    <div class="col-6 social-mobile-btn">
+                        <a href="javascript:;" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <!-- <span class="navbar-toggler-icon"></span> -->
+                <img src="../images/menu.svg" />
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <div class="col-md-5 ml-auto mt-2 mt-lg-0">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
+                        </div>
+                        <div class="col-md-1 col-6 social-btn">
+                            <a href="javascript:;" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-1 col-6 social-btn">
+                            <a href="javascript:;" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    {{ form_start(form) }}
+    {{ form_row(form._token) }}
+    <div class="login-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 login-content d-flex align-items-center">
+                    <div class="row w-100">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <div class="unregistered-log">
+                                <h4 class="fz-28 font-weight-bold text-center">{{ app.user }} Profile!</h4>
+                                <div class="row">
+                                    <div class="col-md-8 m-auto">
+                                        <form action="" method="" accept-charset="utf-8">
+                                            <div class="row">
+                                                <div class="col-md-12 card shadow-sm mb-3 p-3">
+                                                    <p class="font-weight-light text-center">Votre entreprise</p>
+
+                                                    {{ form_widget(form.clientInfo.siret) }}
+                                                    {{ form_errors(form.clientInfo.siret) }}
+
+                                                    {{ form_widget(form.company) }}
+                                                    {{ form_errors(form.company) }}
+
+                                                    {{ form_widget(form.clientInfo.address) }}
+                                                    {{ form_errors(form.clientInfo.address) }}
+                                                    <div class="row">
+                                                        {{ form_widget(form.clientInfo.postalCode) }}
+                                                        {{ form_errors(form.clientInfo.postalCode) }}
+
+                                                        {{ form_widget(form.clientInfo.city) }}
+                                                        {{ form_errors(form.clientInfo.city) }}
+                                                    </div>
+                                                    <div class="row">
+                                                        {{ form_widget(form.clientInfo.companyCreationDate) }}
+                                                        {{ form_errors(form.clientInfo.companyCreationDate) }}
+                                                    </div>
+                                                    <div class="row">
+                                                        {{ form_widget(form.clientInfo.business) }}
+                                                        {{ form_errors(form.clientInfo.business) }}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 card shadow-sm mb-3 p-3">
+                                                    <p class="font-weight-light text-center">À propos de vous</p>
+                                                    <div class="row">
+                                                        {{ form_widget(form.firstName) }}
+                                                        {{ form_errors(form.firstName) }}
+
+                                                        {{ form_widget(form.lastName) }}
+                                                        {{ form_errors(form.lastName) }}
+                                                    </div>
+                                                    {{ form_widget(form.email) }}
+                                                    {{ form_errors(form.email) }}
+
+                                                    {{ form_widget(form.plainPassword) }}
+                                                    {{ form_errors(form.plainPassword) }}
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 mb-4 text-center">
+                                                    <button class="btn btn-pink btn-pill mx-auto lh2" type="submit">Save</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="welcome-log d-none">
+                                <img src="../images/login-welcome-mail.png" width="64" height="70" class="m-auto d-block mb-3">
+                                <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.City !</h4>
+                                <p class="text-center">Tout est bon ! Regardez votre boîte mail. </p>
+                                <p class="my-5 text-center">Vous êtes désormais inscrit en tant que Client sur Pix.City Services. Vous allez pouvoir trouver le city-maker qui vous convient ! Bonne navigation ! </p>
+                                <div class="row">
+                                    <div class="col-md-12 mb-4 text-center">
+                                        <a href="javascript:;" class="btn btn-pink btn-pill mx-auto lh2">Je cherche mon city-maker</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <a href="javascript:;" class="mx-auto mb-5">Je n’ai pas reçu le mail de confirmation</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
             {{ form_end(form,{'render_rest':false}) }}
+    </div>
+    </div>
+    </div>
+    </div>
     </div>
 
 {% endblock %}
