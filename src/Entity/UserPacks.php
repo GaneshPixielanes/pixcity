@@ -84,10 +84,7 @@ class UserPacks
      */
     private $packSkill;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ClientMissionProposal", mappedBy="pack")
-     */
-    private $clientMissionProposalsPack;
+
 
     public function __construct()
     {
@@ -236,17 +233,6 @@ class UserPacks
         return $this;
     }
 
-    public function getPack(): ?Pack
-    {
-        return $this->pack;
-    }
-
-    public function setPack(Pack $pack): self
-    {
-        $this->pack = $pack;
-
-        return $this;
-    }
 
     public function getPackSkill(): ?Skill
     {
@@ -268,17 +254,17 @@ class UserPacks
     /**
      * @ORM\Column(type="float")
      */
-    private $margin_percentage;
+    private $marginPercentage;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $margin_value;
+    private $marginValue;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $total_price;
+    private $totalPrice;
 
     /**
      * @return Collection|UserPackMedia[]
@@ -313,65 +299,38 @@ class UserPacks
 
     public function getMarginPercentage(): ?float
     {
-        return $this->margin_percentage;
+        return $this->$marginPercentage;
     }
 
-    public function setMarginPercentage(float $margin_percentage): self
+    public function setMarginPercentage(float $marginPercentage): self
     {
-        $this->margin_percentage = $margin_percentage;
+        $this->marginPercentage = $marginPercentage;
 
         return $this;
     }
 
     public function getMarginValue(): ?float
     {
-        return $this->margin_value;
+        return $this->marginValue;
     }
 
-    public function setMarginValue(float $margin_value): self
+    public function setMarginValue(float $marginValue): self
     {
-        $this->margin_value = $margin_value;
+        $this->marginValue = $marginValue;
 
         return $this;
     }
 
     public function getTotalPrice(): ?float
     {
-        return $this->total_price;
+        return $this->totalPrice;
     }
 
-    public function setTotalPrice(float $total_price): self
+    public function setTotalPrice(float $totalPrice): self
     {
-        $this->total_price = $total_price;
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }
 
-    /**
-     * @return Collection|ClientMissionProposal[]
-     */
-    public function getClientMissionProposalsPack(): Collection
-    {
-        return $this->clientMissionProposalsPack;
-    }
-
-    public function addClientMissionProposalsPack(ClientMissionProposal $clientMissionProposalsPack): self
-    {
-        if (!$this->clientMissionProposalsPack->contains($clientMissionProposalsPack)) {
-            $this->clientMissionProposalsPack[] = $clientMissionProposalsPack;
-            $clientMissionProposalsPack->addPack($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClientMissionProposalsPack(ClientMissionProposal $clientMissionProposalsPack): self
-    {
-        if ($this->clientMissionProposalsPack->contains($clientMissionProposalsPack)) {
-            $this->clientMissionProposalsPack->removeElement($clientMissionProposalsPack);
-            $clientMissionProposalsPack->removePack($this);
-        }
-
-        return $this;
-    }
 }

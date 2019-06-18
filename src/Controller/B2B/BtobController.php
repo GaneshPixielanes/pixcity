@@ -4,6 +4,7 @@ namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
 use App\Repository\NotificationsRepository;
+use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,10 @@ class BtobController extends AbstractController{
     /**
      * @Route("profile", name="index")
      */
-    public function index(NotificationsRepository $notificationsRepository, UserPacksRepository $packRepo, UserMissionRepository $missionRepo)
+    public function index(NotificationsRepository $notificationsRepository,
+                          UserPacksRepository $packRepo,
+                          UserMissionRepository $missionRepo,
+                          OptionRepository $optionRepo)
     {
 
         #Logged in User
@@ -39,7 +43,8 @@ class BtobController extends AbstractController{
         return $this->render('b2b/index.html.twig',[
             'notifications' => $notifications,
             'packs' => $packs,
-            'missions' => $missions
+            'missions' => $missions,
+            'tax' =>  $optionRepo->findBy(['slug' => 'tax'])[0]
         ]);
     }
 

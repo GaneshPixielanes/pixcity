@@ -1,0 +1,33 @@
+{% extends 'b2b/base.html.twig' %}
+
+
+{% block body %}
+<div class="container-fluid bg-dashboard vh-100">
+    <div class="row">
+        <!-- Fixed top nav -->
+        <nav class="navbar navbar-expand-lg fixed-top shadow-sm bg-white internal-nav">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="javascript:;"><img src="../images/header-logo-main.svg"
+                                                                 alt="Pix.City"></a>
+            </div>
+        </nav>
+        <!-- Fixed top nav ends -->
+        <!-- Felicitations content -->
+        <div class="col-sm-12 p-4 d-flex align-items-center justify-content-end felicitations-container">
+            <div class="content w-50">
+                <h2 class="font-weight-bold text-darkblue fz-40 mb-3">Félicitations ! 🎉 </h2>
+                <h4 class="font-weight-bold text-darkblue fz-20 mb-3">Votre inscription est cours d'analyse</h4>
+                <p>Votre pack va rapidement être visible sur le site Pix.City Services. N’oubliez pas que vous
+                    pourrez éditer un pack lors d’une discussion avec un futur client pour le mettre à jour ou le
+                    personnaliser.</p>
+
+                <p>À ce titre, vous pouvez à tout instant discuter avec vos futurs clients via un espace de chat sur
+                    le site Pix.City Services ou en direct par téléphone ou autre type de messagerie.</p>
+                <p>N’hésitez pas à consulter <a href="javascript:;">nos pages de FAQ</a> en cas de questions.</p>
+                <a href="{{ url('b2b_community_manager_index') }}" class="btn btn-darkblue btn-pill lh2">Retourner sur mon dashboard</a>
+            </div>
+        </div>
+    </div>
+    <!-- Felicitations content ends -->
+</div>
+{% endblock %}

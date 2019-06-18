@@ -6,6 +6,7 @@ use App\Entity\Skill;
 use App\Entity\UserPacks;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,10 +27,27 @@ class PackType extends AbstractType
                 'choice_label' => 'name',
                 'expanded' => true
             ))
-            ->add('title',TextType::class,['label' => 'Title','attr' => ['maxlength' => '64']])
-            ->add('description',TextareaType::class,['label' => 'Description','attr' => ['maxlength' => '1200']])
-            ->add('userBasePrice',IntegerType::class,['label' => 'Price €'])
-            ->add('bannerImage',TextType::class,['label' => 'Cover Image'])
+            ->add('title',TextType::class,['label' => false,'attr' => [
+                'maxlength' => '64',
+                'class' => 'form-control bg-lightwhite pack-title',
+                'placeholder' => 'Je m’occupe de vos réseaux sociaux '
+            ]])
+            ->add('description',TextareaType::class,['label' => 'Description','attr' => [
+                'maxlength' => '1200',
+                'class' => 'form-control bg-lightwhite fz-14 pack-description',
+                'placeholder' => 'Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client',
+                'cols' => '30',
+                'rows' => '10'
+            ]])
+            ->add('userBasePrice',IntegerType::class,[
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control fz-16 font-weight-bold bg-lightwhite',
+                    'aria-label' => 'Pack price',
+                    'aria-describedby' => "pack-price"
+                ]
+            ])
+            ->add('bannerImage',HiddenType::class,['label' => false])
         ;
     }
 
