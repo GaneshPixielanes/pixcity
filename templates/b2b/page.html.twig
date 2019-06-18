@@ -1,0 +1,347 @@
+{% extends 'b2b/base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid bg-dashboard">
+        <div class="row">
+
+            <!-- Pack creation/edition contents -->
+            <div class="pack-creation-edition-container col-sm-12 p-0 vh-100">
+                <div class="overlay-dashboard"></div>
+                <nav class="navbar navbar-expand-lg fixed-top shadow-sm bg-white internal-nav">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="javascript:;"><img src="{{ absolute_url('/assets/images/header-logo-main.svg') }}" alt="Pix.City"></a>
+                        <button type="button" class="close" data-dismiss="" aria-label="Close"
+                                data-toggle="modal" data-target="#cancelPackEditionConfirmation">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                </nav>
+                <div id="pack-form"></div>
+            </div>
+            <!-- Pack creation/edition contents ends -->
+
+            <!-- My missions edition contents -->
+            <div class="mission-edition-container col-sm-12 p-0 vh-100">
+                <div class="overlay-dashboard"></div>
+                <div class="col-sm-10 offset-sm-2 mission-edition-content bg-white p-0" data-simplebar>
+                    <div id="mission-edit-container"></div>
+                </div>
+            </div>
+            <!-- My missions edition contents ends -->
+
+            <!-- My facturation contents -->
+            <div class="facturation-show-container col-sm-12 p-0 vh-100">
+                <div class="overlay-dashboard"></div>
+                <div class="col-sm-10 offset-sm-2 facturation-show-content bg-white p-0">
+                    <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-invoice-preview">
+                        <i class="fal fa-times fz-20 opacity-50"></i>
+                    </a>
+                    <embed src="https://slicedinvoices.com/pdf/wordpress-pdf-invoice-plugin-sample.pdf" width="100%" height="100%" />
+                </div>
+                <nav class="col-sm-10 offset-sm-2 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
+                    <div class="container-fluid align-items-center justify-content-end">
+                        <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
+                            <div class="client-image btn-circle-50 p-0 mr-3">
+                                <img src="../images/USER-AVATAR.jpg" class="img-fluid rounded-circle" alt="client Logo">
+                            </div>
+                            <div class="client-name-mission-status mr-4">
+                                <p class="mb-0 fz-11 text-inprogress mission-status">Mission en cours</p>
+                                <p class="mb-0 text-darkgray client-name">@Lily_Bordeaux</p>
+                            </div>
+                            <div class="mr-4">
+                                <p class="mb-0 fz-12 text-normalgray">Région</p>
+                                <p class="mb-0 text-darkgray client-region">PARIS</p>
+                            </div>
+                            <div class="mr-4">
+                                <p class="mb-0 fz-12 text-normalgray">Prix</p>
+                                <p class="mb-0 text-darkgray user-price">160€</p>
+                            </div>
+                            <div class="mission-invoice d-flex align-items-center">
+                                <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-35 mr-2"></i></p>
+                                <p class="mb-0 text-darkgray">
+                                    Devis PX-13032109-00752
+                                    <a href="javascript:;" class="d-block fz-12 text-inprogress">Version 1: 03/04/2019</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- My facturation contents ends -->
+
+            <!-- Cancel missions contents -->
+            <div class="cancel-mission-container col-sm-12 p-0 vh-100">
+                <div class="overlay-dashboard"></div>
+                <div class="col-sm-10 offset-sm-2 cancel-mission-show-content bg-white p-0">
+                    <div class="row">
+                        <div class="col-md-10 mx-auto my-5">
+                            <p class="fz-20 text-error">Annuler la mission</p>
+                            <h2 class="fz-28 font-weight-bold">Shooting soirée d’ouverture du O’Tacos Levallois-Perret</h2>
+                            <p class="fz-15 font-weight-light">Vous souhaitez annuler la mission, merci de remplir les champs ci-dessous. </p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form action="" method="get" accept-charset="utf-8">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label>Qui souhaite annuler la mission ?</label>
+                                                <select class="selectpicker" data-width="100%" data-live-search="true">
+                                                    <option value="Nord Pas de Calais">Je souhaite annuler la mission</option>
+                                                    <option value="Upper Normandy">Le client souhaite annuler la mission</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <textarea class="form-control form-control bg-lightwhite fz-14 pack-description" cols="30" rows="10">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a href="javascript:;" class="close-cancel-mission btn btn-white-cancel btn-block btn-pill lh2">Annuler</a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <a href="javascript:;" class="btn btn-error btn-block btn-pill lh2">Mettre fin à la mission</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cancel-mission-commentary-container d-flex align-items-center justify-content-center vh-100">
+                        <div class="cancel-mission-commentary">
+                            <div class="client-request-cancellation text-center">
+                                <p class="fz-20 mb-3">Votre demande d’annulation à bien été envoyée à votre client</p>
+                                <p class="fz-16 font-weight-light">Dès la confirmation d'annulation de la mission côté client, la mission apparaitra comme "annulée" dans votre espace city-maker.</p>
+                                <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
+                            </div>
+                            <div class="customer-request-cancellation text-center">
+                                <p class="fz-20 mb-3">A la demande du client, vous avez accepté d’annuler la mission</p>
+                                <p class="fz-16 font-weight-light">Votre mission apparaitra comme annulée dans votre dashboard une fois que votre client l’aura confirmé. </p>
+                                <p class="fz-16 font-weight-light">Si vous avez des  questions, consultez notre <a href="javascript:;">FAQ</a></p>
+                                <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cancel missions contents ends-->
+            <!-- Dashboard contents -->
+            <div class="col-md-2 p-sm-0 dash-left vh-100">
+                <div class="user-avatar w-100">
+                    <figure class="position-relative m-0 w-100">
+                        <img class="img-fluid" src="{{ app.user.getAvatar() }}" alt="">
+                        <figcaption class="position-absolute d-flex align-items-center"><i class="fas fa-user-circle mr-2"></i>
+                            <span>Prévisualiser mon profil</span></figcaption>
+                    </figure>
+                </div>
+                <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home"><i
+                                    class="fas fa-home"></i>Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#myPacks" role="tab" aria-controls="myPacks"><i
+                                    class="fas fa-dungeon"></i>Mes packs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#myMissions" role="tab" aria-controls="myMissions"><i
+                                    class="fas fa-briefcase"></i>Mes missions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#billing" role="tab" aria-controls="billing"><i
+                                    class="fas fa-file-invoice-dollar"></i>Facturation</a>
+                    </li>
+                </ul>
+                <footer class="text-center p-2 text-danger">
+                    <i class="fas fa-cog"></i>Retourner sur Pix.city Services
+                </footer>
+            </div>
+            <div class="col-md-10 offset-md-2 dash-right vh-100 p-0">
+                <div class="tab-content">
+
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+            <!-- Dashboard contents ends -->
+        </div>
+    </div>
+
+
+    <div class="modal fade modal-follow" id="followCityMakerModal" tabindex="-1" role="dialog" aria-labelledby="followCityMakerModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 modal-logo-city-maker">
+                            <img src="{{ absolute_url('assets/images/header-logo-main.svg') }}" alt="Pix.City" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Vous souhaitez suivre les publications des prochaines cards de ce city-maker?</p>
+                            <p>Cliquez et ajoutez-le à vos city-makers favoris dans votre compte voyageur (en créant ou en accédant à votre compte).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 modal-footer-button">
+                        <a href="javascript:;" class="btn btn-outline-pink btn-block" data-dismiss="modal">PLUS TARD</a>
+                    </div>
+                    <div class="col-md-6 modal-footer-button">
+                        <a href="javascript:;" class="btn btn-green btn-block">ACCEDER A MON COMPTE VOYAGEUR</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Folllow the City Maker modal ends -->
+    <!-- Remove pack confirmation modal -->
+    <div class="modal fade alert-modal remove-pack-confirmation-modal" id="removePackConfirmation" tabindex="-1" role="dialog" aria-labelledby="removePackConfirmation" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fz-16">Supprimer le Pack</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sur de vouloir supprimer votre pack?
+                        Cette action est irréversible, vous ne pourrez plus accéder au pack supprimé.</p>
+                    <p>Si vous avez des questions sur le fonctionnement de Pix.City services, n’hésitez pas à
+                        à consulter nos pages d’<a href="javascript:;">aide</a> dédiées.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
+                    <button type="button" class="btn btn-pink" id="confirmPackDelete" data-id="">SUPPRIMER PACK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Remove pack confirmation modal ends -->
+    <!-- Cancel pack edition confirmation modal -->
+    <div class="modal fade alert-modal cancel-pack-edition-confirmation-modal" id="cancelPackEditionConfirmation" tabindex="-1" role="dialog" aria-labelledby="cancelPackEditionConfirmation" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fz-16">Vous souhaitez annuler l'édition du pack ? </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr(e) de vouloir annuler l'édition de votre pack ? Toutes les modifications apportées ne seront pas sauvegardées.</p>
+                    <p>Si vous avez des questions sur cette annulation, n'hésitez pas à consulter notre page d'aide.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
+                    <button type="button" class="btn btn-pink">ANNULER L'ÉDITION</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cancel pack edition confirmation modal ends -->
+    <!-- Cancel mission edition confirmation modal -->
+    <div class="modal fade alert-modal cancel-mission-edition-confirmation-modal" id="cancelMissionEditionConfirmation" tabindex="-1" role="dialog" aria-labelledby="cancelMissionEditionConfirmation" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fz-16">Annuler l'édition de mission</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sur de vouloir annuler l'édition de votre mission?
+                        Toutes les modifications apporter en cours de route ne seront pas sauvegarder.</p>
+                    <p>Si vous avez des questions sur le fonctionnementde Pix.City services, n’hésitez pas à
+                        à consulter nos pages d’aide dédiées</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
+                    <button type="button" class="btn btn-pink">ANNULER LA CREATION</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cancel mission edition confirmation modal ends -->
+    <!-- Mission edition confirmation modal -->
+    <div class="modal fade alert-modal mission-edition-confirmation-modal" id="missionEditionConfirmation" tabindex="-1" role="dialog" aria-labelledby="missionEditionConfirmation" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fz-16">Editer la mission</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Attention, les informations que vous avez modifiés vont générer un nouveau devis
+                        à votre client.</p>
+                    <p>Voulez-vous continuer ?
+                        <a href="javascript:;" class="d-block">Voir le nouveau devis.</a></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                    <button type="button" class="btn btn-pink">ENVOYER DEVIS</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mission edition confirmation modal ends -->
+    <!-- End mission confirmation modal -->
+    <div class="modal fade alert-modal end-mission-confirmation-modal" id="endMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="endMissionConfirmation" aria-hidden="true" style="">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fz-16">Vous souhaitez terminer la mission ?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>En cliquant sur « terminer la mission », une notification de fin de mission sera envoyée au client.</p>
+                    <p>Dès sa validation, le paiement de votre mission pourra avoir lieu sous 48h.</p>
+                    <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="javascript:;">FAQ</a> ».</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                    <button type="button" class="btn btn-pink">TERMINER LA MISSION</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End mission confirmation modal ends -->
+    <!-- Modals Ends-->
+    <!-- Toasts starts -->
+    <!-- Preview pack toast -->
+    <div class="toast preview-pack-toast fade w-100 m-0 bg-darkgray text-white border-0 rounded-0 fixed-top align-items-center d-flex opacity-90"
+         role="alert" data-delay="5000" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body text-center align-items-center justify-content-center d-flex position-relative w-100 fz-16">
+            Votre pack tel qu'il est vu par votre client
+            <button type="button" class="close position-absolute d-flex align-items-center" data-dismiss="toast"
+                    aria-label="Close">
+                <i class="fas fa-times-circle text-white fz-14"></i>
+            </button>
+        </div>
+    </div>
+    <!-- Preview pack toast ends -->
+    <!-- Saved changes toast -->
+    <div class="toast save-changes-toast fade w-100 m-0 bg-green text-white border-0 rounded-0 fixed-top align-items-center d-flex"
+         role="alert" data-delay="5000" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body text-center align-items-center justify-content-center d-flex position-relative w-100 fz-16">
+            <i class="fas fa-check-circle text-white mr-2 fz-20"></i> Vos changement ont bien été sauvegardés
+            <button type="button" class="close position-absolute d-flex align-items-center" data-dismiss="toast"
+                    aria-label="Close">
+                <i class="fas fa-times-circle text-white fz-14"></i>
+            </button>
+        </div>
+    </div>
+    <!-- Saved changes toast ends -->
+    <!-- Toasts ends -->
+{% endblock %}

@@ -23,26 +23,26 @@ class ClientType extends AbstractType
             $requiredOnCreation = false;
         }
 
-
         $builder
             ->add('profilePhoto',HiddenType::class,['label'=>false])
             ->add('email',EmailType::class,[
                 'label'=> 'Email'
             ])
-            ->add('plainPassword', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'first_options'  => array('label' => 'label.password'),
-                'second_options' => array('label' => 'label.repeatpassword'),
-                'required' => $requiredOnCreation
+            ->add('plainPassword', PasswordType::class, array(
+                'required' => $requiredOnCreation,
+                'label'=>false
             ))
             ->add('firstName', TextType::class,[
-                'label'=>'First Name'
+                'label'=>'First Name',
+                'label'=>false
             ])
             ->add('lastName', TextType::class,[
-                'label'=>'Last Name'
+                'label'=>'Last Name',
+                'label'=>false
             ])
             ->add('company', TextType::class,[
-                'label'=>'Company'
+                'label'=>'Company',
+                'label'=>false
             ])
             ->add('clientInfo', ClientInfoType::class,[
                 'constraints' => array(new Valid())

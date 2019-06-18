@@ -1,16 +1,39 @@
-{% extends 'b2b/base.html.twig' %}
+{% extends 'b2b/page.html.twig' %}
 
 {% import 'b2b/shared/macros.html.twig' as macros %}
 
-{% block body %}
+{% block content %}
 
 
     <div class="tab-pane active" id="home" role="tabpanel">
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Accueil</div>
-            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" onclick="location.href='cm-mission-create.html';">Créer une nouvelle
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Accueil
+            </div>
+            <a href="{{ url('b2b_mission_create') }}"" class="btn btn-outline-darkblue btn-pill"
+               onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle
                 mission</a>
         </div>
+        {% if packs | length == 0 and missions['ongoing'] | length == 0 %}
+            <div
+                    class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                <div
+                        class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                    <div class="w-60">
+                        <img class="img-fluid" src="../images/dash-home-empty.png" alt="Dashboard Home">
+                    </div>
+                    <h4 class="mt-4 text-darkblue">Bien débuter sur Pix.city services </h4>
+                    <p> Bienvenue sur votre espace city maker Services !
+                        Retrouvez ici toutes les informations concernant vos packs, vos missions en
+                        cours et votre facturation.
+                    </p>
+                    <p> La prochaine étape est de détailler vos compétences en créant vos packs (un pack
+                        est une compétence détaillée avec un tarif).</p>
+                    <div class="d-block text-center mt-4">
+                        <a href="javascript:;" class="btn btn-darkblue btn-pill">Créer un pack</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
         <div class="col-md-12 tab-pane-content p-4" data-simplebar>
             <div class="col-md-12 content-top-header">
                 <h4 class="mb-0">Bienvenue {{ app.user }} ! </h4>
@@ -18,23 +41,25 @@
             </div>
             <div class="col-md-12 alert-notifications">
                 {% for notification in notifications %}
-                <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2" role="alert">
-                    <div class="col-md-1 d-flex justify-content-center">
-                        <i class="fas fa-piggy-bank fz-40"></i>
+                    <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2"
+                         role="alert" >
+                        <div class="col-md-1 d-flex justify-content-center">
+                            <i class="fas fa-piggy-bank fz-40"></i>
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="mb-0">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
+                            <p class="mb-1">{{ notification.message }}</p>
+                            <small class="text-muted">{{ notification.createdAt | date('d M Y - H:i') }}</small>
+                        </div>
+                        <div class="col-md-3 d-flex justify-content-end">
+                            {% if notification.type == 'terminated' %}
+                            <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>
+                            {% endif %}
+                        </div>
+                        <button type="button" class="close align-self-start mark-notification-read" data-dismiss="alert" aria-label="Close"  data-id="{{ notification.id }}"s>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="col-md-8">
-                        <h6 class="mb-0">PAIEMENT DISPONIBLE</h6>
-                        <p class="mb-1">Le paiement pour votre mission Gestion de votre compte Instagram chaque mois sans engagement !
-                            est disponible dans votre espace personnel</p>
-                        <small class="text-muted">09 AVRIL 2019 - 12:39</small>
-                    </div>
-                    <div class="col-md-3 d-flex justify-content-end">
-                        <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>
-                    </div>
-                    <button type="button" class="close align-self-start" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 {% endfor %}
                 {% if notifications | length > 0 %}
                     <div class="w-100 text-center my-4 show-more">
@@ -73,26 +98,34 @@
             </div>
             <ul class="available-packages-list m-0 mt-3 col-md-12">
                 {% for pack in packs %}
-                <li class="package-list-item d-flex align-items-center bg-white text-darkgray shadow-sm {{ pack.packSkill.slug }}">
-                    <img class="col-1 p-0" src="{{ absolute_url('/uploads/pack/banner/'~pack.bannerImage) }}" alt="">
-                    <p class="mb-0 px-3 flex-grow-1">{{ pack.title }} </p>
-                    <p class="mb-0 col-3"><i class="fas {{ pack.packSkill.icon }} mr-1"></i> {{ pack.packSkill }}</p>
-                    <a href="javascript:;" class="btn btn-darkblue col-2 fz-12 edit-the-pack">Éditer le pack</a>
-                    <div class="dropdown">
-                        <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                           id="packOptions"></i>
-                        <div class="dropdown-menu" aria-labelledby="packOptions">
-                            <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i class="far fa-paper-plane mr-2"></i>
-                                Partager</a>
-                            <a class="dropdown-item text-pink fz-12" href="javascript:;" data-toggle="modal" data-target="#removePackConfirmation"><i class="far fa-times-circle mr-2"></i>
-                                Supprimer le
-                                pack</a>
+                    <li class="package-list-item package-item d-flex align-items-center bg-white text-darkgray shadow-sm {{ pack.packSkill.slug }}" data-id="{{ pack.id }}">
+                        <img class="col-1 p-0" src="{{ absolute_url('/uploads/pack/banner/'~pack.bannerImage) }}"
+                             alt="">
+                        <p class="mb-0 px-3 flex-grow-1 pack-title" data-id="{{ pack.id }}">{{ pack.title }} </p>
+                        <p class="mb-0 col-3"><i class="fas {{ pack.packSkill.icon }} mr-1"></i> {{ pack.packSkill }}
+                        </p>
+                        <a href="javascript:;" class="btn btn-darkblue col-2 fz-12 edit-the-pack"
+                           data-id="{{ pack.id }}">Éditer le pack</a>
+                        <div class="dropdown">
+                            <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false"
+                               id="packOptions"></i>
+                            <div class="dropdown-menu" aria-labelledby="packOptions">
+                                <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i
+                                            class="far fa-paper-plane mr-2"></i>
+                                    Partager</a>
+                                <a class="dropdown-item text-pink fz-12 delete-pack" href="javascript:;" data-toggle="modal"
+                                   data-target="#removePackConfirmation" data-id="{{ pack.id }}"><i class="far fa-times-circle mr-2"></i>
+                                    Supprimer le
+                                    pack</a>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 {% endfor %}
                 <li class="add-package-to-list d-flex align-items-center justify-content-center my-4">
-                    <a href="javascript:;" class="btn btn-darkblue btn-circle-40 add-package d-flex align-items-center justify-content-center"><i class="fas fa-plus"></i></a>
+                    <a href="javascript:;"
+                       class="btn btn-darkblue btn-circle-40 add-package d-flex align-items-center justify-content-center"><i
+                                class="fas fa-plus"></i></a>
                 </li>
             </ul>
             <div class="col-md-12 content-top-header d-flex align-items-center">
@@ -106,20 +139,23 @@
                         </p>
                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                         <p class="w-15 mb-0">{{ mission.client }}</p>
-                        <p class="w-15 mb-0 text-inprogress">{{ mission.status }}</p>
+                        <p class="w-15 mb-0 {% if mission.status == 'cancelled' %}text-canceled{% elseif mission.status == 'terminated' %}text-completed{% else %} text-inprogress {% endif %}">{{ ('b2b.label.' ~ mission.status)|trans }}</p>
                         <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientPrice }}€</p>
-                        <i class="fas fa-edit preview-edit-mission"></i>
+                        <i class="fas fa-edit preview-edit-mission" data-id="{{ mission.id }}"></i>
                     </li>
                 {% endfor %}
             </ul>
 
         </div>
+        {% endif %}
     </div>
     <div class="tab-pane" id="myPacks" role="tabpanel">
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-dungeon fz-30 mr-2"></i> Mes packs
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-dungeon fz-30 mr-2"></i> Mes
+                packs
             </div>
-            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal"
+               data-target="#createMissionModal">Créer une nouvelle
                 mission</a>
         </div>
         <div class="col-md-12 tab-pane-content p-4" data-simplebar>
@@ -150,48 +186,59 @@
             </div>
             <ul class="available-packages-list m-0 mt-3 col-md-12">
                 {% for pack in packs %}
-                <li class="package-list-item d-flex align-items-center bg-white text-darkgray shadow-sm {{ pack.packSkill.slug }}">
-                    <img class="col-1 p-0" src="{{ absolute_url('/uploads/pack/banner/'~pack.bannerImage) }}" alt="">
-                    <p class="mb-0 px-3 flex-grow-1">{{ pack.title }}</p>
-                    <p class="mb-0 col-3"><i class="fas fa-map-marked-alt mr-1"></i> {{ pack.packSkill }}</p>
-                    <a href="javascript:;" class="btn btn-darkblue col-2 fz-12 edit-the-pack">Éditer le pack</a>
-                    <div class="dropdown">
-                        <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                           id="packOptions"></i>
-                        <div class="dropdown-menu" aria-labelledby="packOptions">
-                            <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i class="far fa-paper-plane mr-2"></i>
-                                Partager</a>
-                            <a class="dropdown-item text-pink fz-12" href="javascript:;" data-toggle="modal" data-target="#removePackConfirmation"><i class="far fa-times-circle mr-2"></i>
-                                Supprimer le
-                                pack</a>
+                    <li class="package-list-item d-flex align-items-center bg-white text-darkgray shadow-sm {{ pack.packSkill.slug }}">
+                        <img class="col-1 p-0" src="{{ absolute_url('/uploads/pack/banner/'~pack.bannerImage) }}"
+                             alt="">
+                        <p class="mb-0 px-3 flex-grow-1">{{ pack.title }}</p>
+                        <p class="mb-0 col-3"><i class="fas fa-map-marked-alt mr-1"></i> {{ pack.packSkill }}</p>
+                        <a href="javascript:;" class="btn btn-darkblue col-2 fz-12 edit-the-pack">Éditer le pack</a>
+                        <div class="dropdown">
+                            <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false"
+                               id="packOptions"></i>
+                            <div class="dropdown-menu" aria-labelledby="packOptions">
+                                <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i
+                                            class="far fa-paper-plane mr-2"></i>
+                                    Partager</a>
+                                <a class="dropdown-item text-pink fz-12" href="javascript:;" data-toggle="modal"
+                                   data-target="#removePackConfirmation"><i class="far fa-times-circle mr-2"></i>
+                                    Supprimer le
+                                    pack</a>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 {% endfor %}
                 <li class="add-package-to-list d-flex align-items-center justify-content-center my-4">
-                    <a href="javascript:;" class="btn btn-darkblue btn-circle-40 add-package d-flex align-items-center justify-content-center"><i class="fas fa-plus"></i></a>
+                    <a href="javascript:;"
+                       class="btn btn-darkblue btn-circle-40 add-package d-flex align-items-center justify-content-center"><i
+                                class="fas fa-plus"></i></a>
                 </li>
             </ul>
         </div>
     </div>
     <div class="tab-pane" id="myMissions" role="tabpanel">
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-briefcase fz-30 mr-2"></i>Mes missions
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-briefcase fz-30 mr-2"></i>Mes
+                missions
             </div>
-            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal"
+               data-target="#createMissionModal">Créer une nouvelle
                 mission</a>
         </div>
         <div class="col-md-12 tab-pane-content p-4" data-simplebar>
             <nav class="internal-nav">
                 <ul class="nav nav-tabs border-0 line-tabs line-tabs-pink" id="dashboardMyMissions" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link text-normalgray active" data-toggle="tab" href="#inProgress" role="tab" aria-controls="inProgress">En cours</a>
+                        <a class="nav-link text-normalgray active" data-toggle="tab" href="#inProgress" role="tab"
+                           aria-controls="inProgress">En cours</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-normalgray" data-toggle="tab" href="#completed" role="tab" aria-controls="completed">Terminées</a>
+                        <a class="nav-link text-normalgray" data-toggle="tab" href="#completed" role="tab"
+                           aria-controls="completed">Terminées</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-normalgray" data-toggle="tab" href="#canceled" role="tab" aria-controls="canceled">Annulées</a>
+                        <a class="nav-link text-normalgray" data-toggle="tab" href="#canceled" role="tab"
+                           aria-controls="canceled">Annulées</a>
                     </li>
                 </ul>
             </nav>
@@ -199,16 +246,16 @@
                 <div class="tab-pane active" id="inProgress" role="tabpanel">
                     <ul class="available-missions-list m-0 mt-3 col-md-12">
                         {% for mission in missions['ongoing'] %}
-                        <li class="mission-list-item d-flex align-items-center text-darkgray">
-                            <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                            <p class="mb-0 px-3 w-40">{{ mission.title }}
-                            </p>
-                            <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
-                            <p class="w-15 mb-0">{{ mission.client }}</p>
-                            <p class="w-15 mb-0 text-inprogress">En cours</p>
-                            <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientPrice }}€</p>
-                            <i class="fas fa-edit preview-edit-mission"></i>
-                        </li>
+                            <li class="mission-list-item d-flex align-items-center text-darkgray">
+                                <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
+                                <p class="mb-0 px-3 w-40">{{ mission.title }}
+                                </p>
+                                <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
+                                <p class="w-15 mb-0">{{ mission.client }}</p>
+                                <p class="w-15 mb-0 text-inprogress">En cours</p>
+                                <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientPrice }}€</p>
+                                <i class="fas fa-edit preview-edit-mission"></i>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -251,8 +298,10 @@
     <div class="tab-pane" id="billing" role="tabpanel">
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
             <div class="d-flex align-items-center fz-20 text-darkblue"><i
-                        class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation</div>
-            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
+                        class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation
+            </div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal"
+               data-target="#createMissionModal">Créer une nouvelle
                 mission</a>
         </div>
         <div class="col-md-12 tab-pane-content p-4" data-simplebar>
@@ -260,7 +309,7 @@
                 <thead>
                 <tr class="text-normalgray fz-12">
                     <th class="font-weight-normal w-5"><span class="sr-only">Mission filetype</span></th>
-                    <th class="font-weight-normal w-30">Nom du fichier </th>
+                    <th class="font-weight-normal w-30">Nom du fichier</th>
                     <th class="font-weight-normal w-15">Date d’émission</th>
                     <th class="font-weight-normal w-15">Dernière modification</th>
                     <th class="font-weight-normal w-15">Montant</th>
@@ -270,22 +319,26 @@
                 </thead>
                 <tbody>
                 {% for mission in missions['terminated'] %}
-                <tr class="text-darkgray fz-14">
-                    <td valign="middle" class="text-center">
-                        <i class="far fa-file-alt fz-25"></i>
-                    </td>
-                    <td valign="middle">Facture PX-13032109-00752</td>
-                    <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
-                    <td valign="middle">{{ mission.updatedAt | date('d/m/Y') }}</td>
-                    <td valign="middle">{{ mission.userMissionPayment.total }}€</td>
-                    <td valign="middle"><span class="text-inprogress">En cours</span></td>
-                    <td valign="middle">
-                        <div class="d-flex align-items-center">
-                            <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-eye fz-16"></i></a>
-                            <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
-                        </div>
-                    </td>
-                </tr>
+                    <tr class="text-darkgray fz-14">
+                        <td valign="middle" class="text-center">
+                            <i class="far fa-file-alt fz-25"></i>
+                        </td>
+                        <td valign="middle">Facture PX-13032109-00752</td>
+                        <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
+                        <td valign="middle">{{ mission.updatedAt | date('d/m/Y') }}</td>
+                        <td valign="middle">{{ mission.userMissionPayment.total }}€</td>
+                        <td valign="middle"><span class="text-inprogress">En cours</span></td>
+                        <td valign="middle">
+                            <div class="d-flex align-items-center">
+                                <a href="javascript:;"
+                                   class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i
+                                            class="fas fa-eye fz-16"></i></a>
+                                <a href="javascript:;"
+                                   class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i
+                                            class="fas fa-download fz-16"></i></a>
+                            </div>
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
@@ -295,6 +348,336 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $("#pack_userBasePrice").on('change', function () {
 
+                var actual_price = $("#pack_userBasePrice").val();
+                var after_price = parseFloat(actual_price) * 20 / 100;
+
+                var total = parseFloat(actual_price) + parseFloat(after_price);
+                $('.user-price').text(total + '€');
+                {#$("#actula_value").text('The Value after {{ tax.value }} % added ' + total);#}
+
+            });
+
+            $(document).on('click', '.delete-document',function () {
+
+                var element = $(this).attr('data-target');
+                console.log(element);
+                $('#'+element).remove();
+                $('.'+element).remove();
+            });
+
+            $(document).on('click','.add-a-document', function () {
+               $('#mission-document-upload').click();
+            });
+
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#banner-image').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $('body').on('change', 'input[type="file"]', function (e) {
+                var type = 'banner';
+                // Read the image URL and display the image
+                if ($(this).attr('id') == 'imageUpload') {
+                    readURL(this);
+                } else {
+                    type = 'brief';
+                }
+                // Add image name on the input parameters
+                $.each($(this)[0].files, function (key, value) {
+
+                    var formData = new FormData();
+                    formData.append("file", value);
+                    //Upload the image via AJAX
+                    uploadFiles(formData, type);
+                });
+            });
+
+
+            function uploadFiles(formData, type) {
+                console.log(type);
+                $.ajax('/b2b/pack/upload',
+                    {
+                        type: 'POST',
+                        data: formData,
+                        cacheable: false,
+                        processData: false,
+                        contentType: false,
+                    }).done(function (result) {
+                    if (type == 'banner') {
+                        $('#pack_bannerImage').val(result.fileName);
+                    } else if (type == 'brief') {
+                        var date = new Date();
+                        var prototype = $('#mission-documents-list').attr('data-prototype');
+                        var index = $('#mission-documents-list').find('input').length;
+
+                        prototype = prototype.replace(/__name__/g, index);
+                        $('#mission-documents-list').append(prototype);
+                        $('#mission-documents-list')
+                            .find('input:last')
+                            .val(result.fileName);
+                        $('#mission-documents-list').append(`<tr class="text-darkgray fz-14 mission_documents_`+index+`">
+                <td valign="middle" class="text-center">
+                    <i class="far fa-file-image fz-25"></i>
+                </td>
+                <td valign="middle">`+result.fileName+`</td>
+                <td valign="middle">`+date+`</td>
+                <td valign="middle">
+                    <div class="d-flex align-items-center">
+                                                <span class="btn-circle-28 mr-3">
+                                                    <img src="{{ app.user.getAvatar() }}" class="img-fluid rounded-circle" alt="">
+                                                </span>
+                        {{ app.user.firstName }}
+                    </div>
+                </td>
+                <td valign="middle">Document</td>
+                <td valign="middle"><span class="text-completed">Uploadé</span></td>
+                <td valign="middle">
+                    <div class="d-flex align-items-center">
+                        <a href="javascript:;" class="delete-document text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" data-target="mission_documents_`+index+`"><i class="fas fa-trash fz-16"></i></a>
+                    </div>
+                </td>
+            </tr>`);
+                    }
+
+
+                });
+            }
+
+            $("body").on('change', '#pack_userBasePrice', function () {
+
+                var actual_price = $("#pack_userBasePrice").val();
+                console.log(actual_price);
+                var after_price = parseFloat(actual_price) * 20 / 100;
+
+                var total = parseFloat(actual_price) + parseFloat(after_price);
+                $(".total-pack-price").val(total);
+                $(".total-pack-price").text(total + '€');
+
+            });
+
+            // Edit the pack
+            $('body').on('click', '.edit-the-pack, .add-package-to-list > a', function () {
+
+
+                var pack_id = $(this).attr('data-id');
+                console.log(pack_id);
+                if ($(this).hasClass('edit-the-pack')) {
+                    url = '/b2b/pack/edit-pack/' + pack_id;
+                } else {
+                    url = '/api/pack/create';
+                }
+                $.ajax(url, {
+                    type: 'GET',
+                    success: function (result) {
+                        $('#pack-form').html(result);
+                        $('.selectpicker').selectpicker('refresh');
+                        var $dropZone = $('.dropzone-custom').dropzone({
+                            url: '{{ path('b2b_pack_fileuploadhandler') }}',
+                            maxFiles: 7,
+                            acceptedFiles: 'image/*',
+                            maxFilesize: 2,  // in Mb
+                            addRemoveLinks: true,
+                            // autoProcessQueue:false,
+                            parallelUploads: 10,
+                            dictRemoveFileConfirmation: 'Are you sure you want to save this image?',
+                            removedfile: function (file) {
+                                var name = file.name;
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '{{ path('b2b_pack_delete_image') }}',
+                                    data: {name: name, pack_id: "2"},
+                                    success: function (data) {
+                                        console.log('success: ' + data);
+                                    }
+                                });
+
+                                var _ref;
+                                if (file.previewElement) {
+                                    if ((_ref = file.previewElement) != null) {
+                                        _ref.parentNode.removeChild(file.previewElement);
+                                    }
+                                }
+                                return this._updateMaxFilesReachedClass();
+
+                            },
+                            init: function () {
+
+
+                                this.on("maxfilesexceeded", function (file) {
+                                    this.removeFile(file);
+                                    alert('please upload maximum 7 files');
+                                });
+                                this.on("sending", function (file, xhr, formData) {
+                                    // send additional data with the file as POST data if needed.
+                                    // formData.append("key", "value");
+                                });
+                                this.on("success", function (file, response) {
+
+                                    if (response.uploaded) {
+                                        var currentValue = $("#pack-form input[name='attached_files'").val();
+                                        if (currentValue == '') {
+                                            $("#pack-form input[name='attached_files'").val(response.fileName);
+                                        } else {
+                                            $("#pack-form input[name='attached_files'").val(currentValue + ", " + response.fileName);
+                                        }
+                                    }
+
+                                    if(response.uploaded)
+                                    {
+                                        $('.pack-photos-list').html('');
+                                        $.each($('.dz-image > img'), function(val, element){
+
+                                            $('.pack-photos-list').append('<li class="pack-photos-list-item d-inline-flex"><img src="'+$(element).attr('src')+'" /></li>')
+
+                                        });
+
+                                    }
+
+                                    if (response.uploaded)
+                                        console.log('File Uploaded: ' + response.fileName);
+                                });
+
+                                thisDropzone = this;
+
+
+                                if (pack_id != '') {
+                                    $.get('/b2b/pack/image-display/' + pack_id, function (data) {
+
+                                        <!-- 5 -->
+                                        $.each(data, function (key, value) {
+                                            var mockFile = {name: value.name, size: value.size};
+
+                                            thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+
+                                            thisDropzone.options.thumbnail.call(thisDropzone, mockFile, value.path);
+
+                                        });
+
+                                    });
+                                }
+                            }
+                        });
+
+                        $('.dropzone-custom').html(`
+                            <div class="upload-area mb-4">
+                                <div class="area-label text-center p-4">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p class="mb-0">Déposez vos images ici</p>
+                                    <a href="javascript:;">Depuis votre navigateur</a>
+                                </div>
+                            </div>
+                        `);
+
+                        $("#submitform").on('click', function () {
+                            $dropZone[0].dropzone.processQueue();
+                        });
+                    }
+                })
+            });
+
+            $('body').on('click', '.save-changes', function () {
+                var data = $(this).parents('form').serialize();
+                var url = '';
+
+                if ($(this).attr('data-mode') == 'edit') {
+                    url = '/b2b/pack/edit-pack/' + $(this).attr('data-id')
+                } else {
+                    url = '/api/pack/create';
+                }
+                $.ajax($(this).attr('data-url'), {
+                    type: 'POST',
+                    data: data,
+                    success: function (result) {
+                        location.href = '/b2b/pack/success';
+                    }
+                });
+            });
+
+        });
+
+        
+
+        $(document).ready(function () {
+            // Adding a new pack
+            $('.add-package-to-list > a').on('click', function () {
+                $('#pack-form').load('/api/pack/create');
+            });
+            
+            // Deleting a pack
+            $('.delete-pack').on('click', function () {
+                $('#confirmPackDelete').attr('data-id',$(this).attr('data-id'));
+               // $.ajax('/b2b/pack/delete-pack/'+$(this).attr('data-id'),{
+               //     success: function (result) {
+               //         console.log('asdas');
+               //     }
+               // });
+            });
+
+            $('body').on('click', "#confirmPackDelete",function () {
+
+                var id = $(this).attr('data-id');
+                $.ajax('/b2b/pack/delete-pack/'+id,{
+                    success: function (result) {
+                        $('.package-list-item[data-id="'+id+'"]').remove();
+                        $('.total-packs-available').html($('.package-item').length);
+                        $('#removePackConfirmation').find('.close').trigger('click');
+
+                    }
+                });
+            });
+
+            $('.mark-notification-read').on('click', function () {
+                // Mark notification unread
+                $.ajax('/notification/unread',{
+                    type: 'POST',
+                    data: {'id':$(this).attr('data-id')},
+                    success:function(result)
+                    {
+                        console.log(result);
+                    }
+                });
+            });
+
+            // Synchronize pack edit and pack list
+            $('body').on('keyup','[name="pack[title]"]', function () {
+                $('.pack-title-preview').html($('[name="pack[title]"]').val());
+            });
+
+            $('body').on('keyup','[name="pack[description]"]', function () {
+                $('.pack-description-preview').html($('[name="pack[description]"]').val());
+            });
+
+            $('body').on('submit','#pack-form', function()
+            {
+                var id = $('[name="pack[title]"]').attr('data-id');
+                $('.pack-title[data-id="'+id+'"]').html($('[name="pack[title]"]').val());
+            });
+
+            $('body').on('click','.preview-pack', function () {
+               $('.user-price').html($('.total-pack-price:last').text());
+
+               // $images = $('.dz-image');
+               // console.log($images);
+               // $.each($images, function(key, value)
+               // {
+               //     $('.pack-photos-list-item > li:last').after('<li class="pack-photos-list-item dz-item">' +
+               //         '<img src="'+$(this).find('img').attr('src')+'" /></li>');
+               // })
+            });
+        });
+    </script>
 {% endblock %}
 
