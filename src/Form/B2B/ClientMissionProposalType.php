@@ -17,7 +17,7 @@ class ClientMissionProposalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description',TextareaType::class,[
+            ->add('description',TextareaType::class,['label' => false,
                 'attr' => ['placeholder' => 'Write your proposal here', 'rows' => '15', 'maxlength' => 1200]
             ])
             ->add('medias', CollectionType::class,[

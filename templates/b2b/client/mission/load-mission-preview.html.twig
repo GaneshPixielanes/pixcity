@@ -1,0 +1,85 @@
+<div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
+    <img src="{{ mission.getBannerUrl() }}" class="cover-image w-100 h-100" alt="Mission Cover Image">
+</div>
+
+<div class="pack-details p-3">
+    <div class="pack-overview-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
+        <p class="text-textgray fz-12 mb-0">{{ mission.referencePack.packskill.name }}</p>
+        <h5 class="text-darkgray mb-3">{{ mission.title }} </h5>
+        {{ mission.description }}
+    </div>
+    <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
+        <h5 class="text-darkgray mb-0">Photos</h5>
+        <div class="pack-photos">
+            <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
+                {% for media in mission.missionMedia %}
+                    <li class="pack-photos-list-item d-inline-flex">
+                        <img src="{{ media.url }}" alt="Pack photo 1" width="150" height="100">
+                    </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+    <div class="pack-region-container col-sm-12 mt-2 mb-4 pb-4">
+        <h5 class="text-darkgray mb-3">Zone géographique</h5>
+        <ul class="nav nav-pills mb-3 pack-regions nav-justified" id="pack-regions" role="tablist">
+            <li class="nav-item pack-region-item mr-3">
+                <a class="nav-link active bg-lightwhite text-darkgray py-3 text-left" id="my-mission-region-01"
+                   data-toggle="pill" href="#mymissionRegion01" role="tab" aria-controls="mymissionRegion01"
+                   aria-selected="true"><span class="font-weight-bold">Région 1</span> <span class="ml-3">Île
+                                            de
+                                            France</span></a>
+            </li>
+            <li class="nav-item pack-region-item">
+                <a class="nav-link bg-lightwhite text-darkgray py-3 text-left" id="my-mission-region-02" data-toggle="pill"
+                   href="#mymissionRegion02" role="tab" aria-controls="mymissionRegion02" aria-selected="false"><span
+                            class="font-weight-bold">Région 2</span> <span class="ml-3">Bretagne</span></a>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="mymissionRegion01" role="tabpanel" aria-labelledby="my-mission-region-01">
+                <img src="../images/zone-map.jpg" class="img-fluid" alt="Île de France">
+            </div>
+            <div class="tab-pane fade" id="mymissionRegion02" role="tabpanel" aria-labelledby="my-mission-region-02">
+                <img src="../images/zone-map.jpg" class="img-fluid" alt="Bretagne">
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="col-sm-12 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
+    <div class="container-fluid align-items-center justify-content-end">
+        <div class="d-flex user-infos flex-grow-1 justify-content-start align-items-center">
+            <div class="user-image btn-circle-64 badge badge--bottom badge--right p-0 mr-4">
+                <img src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}" class="img-fluid rounded-circle" alt="User-Avatar">
+                <img src="../images/icons/cm-level-badge-01.svg" class="badge-icon" alt="User-Badge">
+            </div>
+            <div class="user-name-level mr-4">
+                <p class="mb-0 fz-12 text-inprogress experte-level">Experte Pix.City</p>
+                <p class="mb-0 text-darkgray user-name">@{{ mission.user.firstname }}</p>
+            </div>
+            <div class="mr-4">
+                <p class="mb-0 fz-12 text-normalgray">Région</p>
+                <p class="mb-0 text-darkgray user-region">{{ mission.region.name }}</p>
+            </div>
+            <div class="mr-4">
+                <p class="mb-0 fz-12 text-normalgray">Prix</p>
+                <p class="mb-0 text-darkgray user-price">{{ mission.userMissionPayment.total }}€</p>
+            </div>
+            <div class="mission-invoice d-flex align-items-center">
+                <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i></p>
+                <p class="mb-0 text-darkgray">
+                    {{ mission.briefFiles }}
+                    <a href="{{ path('b2b_mission_download',{'id':mission.id}) }}" class="d-block fz-12 text-inprogress">Voir le devis</a>
+                </p>
+            </div>
+        </div>
+        <div class="preview-cta d-flex align-items-center">
+            <a class="close-mission-preview text-darkgray d-flex flex-column align-items-center fz-12 text-decoration-none"
+               href="javascript:;">
+                <img src="../images/icons/preview-off-icon.svg" alt="Preview off">Retourner aux missions
+            </a>
+        </div>
+    </div>
+</nav>

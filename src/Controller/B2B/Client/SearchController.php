@@ -32,13 +32,14 @@ class SearchController extends SearchPageController
             'page' => $page
         ];
         $users = $userRepo->searchClients($filters, $limit, $page);
+
         $filters['cm_count'] = $userRepo->searchCommunityManagerCount($filters, $limit, $page);
         $filters['total_pages'] = ceil($filters['cm_count']/$limit);
 
         $regions = $regionRepo->findAll();
         $skills = $skillRepo->findAll();
 
-        return $this->render('b2b/client/search/index.html.twig', [
+        return $this->render('b2b/client/search/new_search.html.twig', [
             'users' => $users,
             'regions' => $regions,
             'skills' => $skills,

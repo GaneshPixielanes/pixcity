@@ -1,89 +1,130 @@
 {% extends 'b2b/client/base.html.twig' %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-    <div class="col-md-3">
-        <div class="card">
-            <img src="{{ user.getAvatar()  }}" style="height: 150px; width:100%" class="rounded"/>
-            <div class="card-body">
-                <p>
-                    {{ user }}
-                </p>
-                <p>
-                   {%   set instagram = user.instagram|split("/") %}
-                    {% if instagram[3] is defined %}
-                    {{ instagram[3] }}
-                    {% endif %}
-                </p>
-                <p>
-                    {% for region in user.userRegion %}
-                        <small>{{ region.name | upper }}</small> <br/>
-                    {% endfor %}
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-                </p>
-                {% if user.userInstagramDetailsApi is not null %}
-                <div class="row text-center">
-                    <div class="col-xs-4" style="padding-right:10px;">
-                        {{ user.userInstagramDetailsApi.noOfPosts }}<br/>
-                        Posts
-                    </div>
-                    <div class="col-xs-4" style="padding-right:10px;">
-                        {{ user.userInstagramDetailsApi.noOfFollowers }}<br/>
-                        Followers
-                    </div>
-                    <div class="col-xs-4" style="padding-right:10px;">
-                        {{ user.userInstagramDetailsApi.noOfFollowed }}<br/>
-                        Followed
+
+
+    <div class="cm-profile-page pt-3 pb-5 bg-dashboard">
+
+        <!-- Pack creation/edition contents -->
+        <div class="pack-preview-container col-sm-12 p-0 vh-100">
+            <div class="overlay-dashboard"></div>
+            <div id="preview-details"></div>
+        </div>
+        <!-- Pack creation/edition contents ends -->
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="profile-info-container card p-3 text-center">
+                        <img class="cm-image mx-auto mb-3" src="{{ user.getAvatar() }}" alt="CM Name">
+                        <h4 class="fz-24 font-weight-bold">{{ user }}</h4>
+                        <p class="fz-16">@{{ user }}</p>
+                        <p>
+                            {% for region in user.userRegion %}
+                                <span class="d-block fz-12 text-seagreen">{{ region.name | upper }}</span>
+                            {% endfor %}
+
+                        <p class="fz-15 font-weight-light">Bienvenue sur le profil de @{{ user }}. Vous trouverez ses
+                            compétences listées sous forme de packs. N'hésitez pas à sélectionner un pack et/ou rentrer
+                            en contact avec notre city-maker via notre espace de discussion (en bas à droite de cette
+                            page) pour pour lui poser vos questions ! Attention vous ne pouvez parler qu'à un city-maker
+                            Services à la fois !</p>
+                        <div class="row">
+                            {% if user.userInstagramDetailsApi is not null %}
+                            <div class="col-md-4 p-0 fz-16 font-weight-bold text-center">
+                                {{ user.userInstagramDetailsApi.noOfPosts }} <span class="d-block fz-12 font-weight-light">publications</span>
+                            </div>
+                            <div class="col-md-4 p-0 fz-16 font-weight-bold text-center">
+                                {{ user.userInstagramDetailsApi.noOfFollowers }} <span class="d-block fz-12 font-weight-light">abonnés</span>
+                            </div>
+                            <div class="col-md-4 p-0 fz-16 font-weight-bold text-center">
+                                {{ user.userInstagramDetailsApi.noOfFollowed }} <span class="d-block fz-12 font-weight-light">abonnements</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 mt-3">
+                                {% for link in user.links %}
+                                    {% if link.type == 'instagram' %}
+                                <a href="{{ link.url }}" class="btn btn-blue btn-block">S’abonner sur Instagram <i
+                                            class="fab fa-instagram"></i></a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                {% else %}
-                <div class="row text-center">
-                    Instagram details not available
+                <div class="col-md-9">
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3 breadcrumbs">
+                            <a href="{{ path('b2b_client_main_index') }}">Accueil</a> / <a href="{{  path('b2b_client_search_index') }}">Rechercher un City Maker</a> /
+                            {{ user }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 content-top-header d-flex align-items-center mb-3">
+                            <h4 class="mb-0 font-weight-light"><span
+                                        class="total-packs-available font-weight-bold">{{ packs | length }}</span> packs disponibles</h4>
+                            <div class="filter-packages d-flex">
+                                <label class="text-seagreen m-0 mr-3 d-none active">
+                                    <input type="checkbox" name="filterpackage" value="all">
+                                    <i class="fas fa-sync-alt fz-22 d-flex align-items-center justify-content-center"></i>
+                                </label>
+                                {% for skill in skills %}
+                                <label class="text-seagreen m-0 mr-3">
+                                    <input type="checkbox" name="filterpackage" value="{{ skill.slug }}">
+                                    <i class="fas {{ skill.icon }} fz-22 d-flex align-items-center justify-content-center"></i>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="pack-selection-container w-100">
+                            <div class="col-md-12 pack-selection-cards">
+                                <div class="row">
+                                    <ul class="d-flex w-100">
+                                        {% for pack in packs %}
+                                            <li class="col-md-4 mb-4 pack-item {{  pack.packSkill.slug }}" >
+                                                <a href="javascript:;" class="card" data-id="{{ pack.id }}">
+                                                    <input class="select" type="checkbox">
+                                                    <div class="pack-icon">
+                                                        <i class="fas {{ pack.packSkill.icon }}"></i>
+                                                    </div>
+                                                    <img class="card-img-top" src="/uploads/pack/banner/{{ pack.bannerImage }}" alt="">
+                                                    <div class="card-body">
+                                                        <p class="card-text fz-12 text-normalgray mb-1">{{ pack.packSkill | upper }}</p>
+                                                        <h5 class="card-title fz-16 text-darkblue font-weight-bold mb-1">
+                                                            {{ pack }}</h5>
+                                                        <p class="pack-cost fz-16 font-weight-bold text-normalgray">{{ pack.totalPrice }}€
+                                                            <span class="fz-12 font-weight-light">À partir de</span></p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {% endif %}
             </div>
         </div>
+    </div>
 
-    </div>
-    <div class="col-md-9">
-        {% if packs | length > 0 %}
-            <div class="row">
-            {% for pack in packs %}
-                <div class="card col-md-3" style="margin:10px">
-                    <div class="card-body">
-                        <a href="javascript;" data-toggle="modal" data-target="#packModal" class="view-pack" data-id="{{ pack.id }}">
-                        <img src="/uploads/pack/banner/{{ pack.bannerImage }}" style="height:150px; width: 100%" />
-                        </a>
-                        <p>
-                            <small>{{ pack.packSkill | upper }}</small>
-                            <br/>
-                            <h4>{{ pack }}</h4>
-                            <br/>
-                            <strong>
-                                {{ pack.totalPrice }}€
-                            </strong>
-                        </p>
-                    </div>
-                </div>
-            {% endfor %}
-            </div>
-        {% else %}
-            <p>
-                User Currently doesn't have any packs
-            </p>
-        {% endif %}
-    </div>
-    </div>
-</div>
 
-    {% include 'b2b/shared/modals.html.twig' %}
+
+{#    {% include 'b2b/shared/modals.html.twig' %}#}
+
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
+
+    {{ parent() }}
+
     <script>
         $('.view-pack').on('click', function()
         {
@@ -91,7 +132,7 @@
             $.ajax('/api/pack/view-pack/'+id,{
                 type: 'GET',
                 success: function (result) {
-                    $('#pack-details').html(result);
+                    $('#preview-details').html(result);
                 }
             });
         });
@@ -135,5 +176,61 @@
                 }
             });
         })
+    </script>
+
+    <script>
+
+        /* custom per page scripts */
+        $(document).ready(function () {
+
+            function filterPackages(thisObj) {
+
+                $(thisObj).parents('.content-top-header').next().find('.pack-item').removeClass('d-flex').fadeOut('fast');
+
+                var $packlist = $(thisObj).parents('.content-top-header').next().find('.pack-item'),filter = [];
+
+                $(thisObj).parents('.filter-packages').find('input[type="checkbox"]:checked').each(function () {
+                    var packtype = $(this).val();
+                    filter.push('.' + packtype);
+                });
+
+                if (filter.length == 0) {
+                    $packlist.addClass('d-flex').fadeIn();
+                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                        .length);
+                } else {
+                    $(thisObj).parents('.content-top-header').next().find(
+                        '.pack-item').filter(filter.join(',')).addClass('d-flex').fadeIn();
+                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                        .filter(filter.join(',')).length);
+                }
+            }
+
+            $('.filter-packages input[type="checkbox"]').click(function () {
+                filterPackages($(this))
+            });
+
+            /* pack preview/edit invoke */
+            $(document).on('click', '.pack-item a', function (e) {
+                e.preventDefault();
+
+                var id = $(this).attr('data-id');
+                $.ajax('/api/pack/view-pack/'+id,{
+                    type: 'GET',
+                    success: function (result) {
+                        $('#preview-details').html(result);
+                        $('.pack-preview-container').fadeIn();
+                        $('body').addClass('overflow-hidden');
+                    }
+                });
+
+            });
+            $(document).on('click', '.close-preview-edit', function (e) {
+                e.preventDefault();
+                $('.pack-preview-container').fadeOut();
+                $('body').removeClass('overflow-hidden');
+            });
+            /* pack preview/edit invoke ends */
+        });
     </script>
 {% endblock %}

@@ -1,70 +1,78 @@
-
-
-<div class="container">
-    <img src="/uploads/pack/banner/{{ pack.bannerImage }}" style="height:300px; width:100%"/>
-    <div class="row">
-        <br/>
-        <p class="col-12">{{ pack.packSkill | upper }}</p>
-        <p class="col-12">
-        <h4> {{ pack }} </h4>
-        </p>
-        <p class="col-12">
-            Bonjour,
-
-            <br/><br/>
+<div class="col-sm-9 offset-sm-3 pack-preview-content bg-white p-0" data-simplebar>
+    <div
+            class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
+        <img src="/uploads/pack/banner/{{ pack.bannerImage }}" class="cover-image w-100 h-100" alt="Pack Cover Image">
+        <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-preview-edit"><i
+                    class="fal fa-times fz-20"></i></a>
+    </div>
+    <div class="pack-details p-3">
+        <div class="pack-overview-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
+            <p class="text-textgray text-12 mb-0">{{ pack.packSkill | upper }}</p>
+            <h5 class="text-darkgray mb-3">{{ pack.title }}</h5>
             {{ pack.description }}
-        </p>
-        <hr/>
-        <div class="col-12">
-            <div class="row">
-                <div class="col-xs-4" style="margin:30px">
-                    <img src="{{ pack.user.getAvatar() }}" class="rounded" style="height:75px;width:75px"/>
-                </div>
-                <div class="col-xs-4" style="margin:30px">
-                    <small>Expertice Pix.City</small>
-                    <br/>
-                    {% set instagram = pack.user.instagram|split("/") %}
-                    {% if instagram[3] is defined %}
-                        {{ instagram[3] }}
-                    {% endif %}
-                </div>
-                <div class="col-xs-4" style="margin:30px">
-                    <small>Region</small>
-                    <br/>
-                    {{ pack.user.userRegion.first.name | upper }}
-                </div>
-                <div class="col-xs-4" style="margin:30px">
-                    <small>Prix</small>
-                    <br/>
-                    {{ pack.totalPrice }}€
-                </div>
-                <div class="col-xs-2 float-right" style="margin:30px">
-                    <a href="{{ url('b2b_client_pack_select',{'id':pack.id}) }}" class="btn btn-md btn-info">Choose this Pack</a>
-                </div>
+        </div>
+        <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
+            <h5 class="text-darkgray mb-0">Photos</h5>
+            <div class="pack-photos">
+                <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
+                    {% for media in pack.userPackMedia %}
+                    <li class="pack-photos-list-item d-inline-flex">
+                        <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" alt="Pack photo 1">
+                    </li>
+                    {% endfor %}
+
+                </ul>
             </div>
         </div>
+{#        <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">#}
+{#            <h5 class="text-darkgray mb-3">Zone géographique</h5>#}
+{#            <ul class="nav nav-pills mb-3 pack-regions nav-justified" id="pack-regions" role="tablist">#}
+{#                <li class="nav-item pack-region-item mr-3">#}
+{#                    <a class="nav-link active bg-lightwhite text-darkgray py-3 text-left" id="region-01"#}
+{#                       data-toggle="pill" href="#region01" role="tab" aria-controls="region01"#}
+{#                       aria-selected="true"><span class="font-weight-bold">Région 1</span> <span class="ml-3">Île#}
+{#                                        de#}
+{#                                        France</span></a>#}
+{#                </li>#}
+{#                <li class="nav-item pack-region-item">#}
+{#                    <a class="nav-link bg-lightwhite text-darkgray py-3 text-left" id="region-02" data-toggle="pill"#}
+{#                       href="#region02" role="tab" aria-controls="region02" aria-selected="false"><span#}
+{#                                class="font-weight-bold">Région 2</span> <span class="ml-3">Bretagne</span></a>#}
+{#                </li>#}
+{#            </ul>#}
+{#            <div class="tab-content" id="pills-tabContent">#}
+{#                <div class="tab-pane fade show active" id="region01" role="tabpanel" aria-labelledby="region-01">#}
+{#                    <img src="../images/zone-map.jpg" class="img-fluid" alt="Île de France">#}
+{#                </div>#}
+{#                <div class="tab-pane fade" id="region02" role="tabpanel" aria-labelledby="region-02">#}
+{#                    <img src="../images/zone-map.jpg" class="img-fluid" alt="Bretagne">#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+
     </div>
-        <div class="row d-none" id="client-mission-proposal-form">
-            <div class="col-12">
-                <form class="form-horizontal" action="{{ url('api_mission_send_proposal') }}" id="clientMissionProposalForm" method="POST" enctype='multipart/form-data'>
-                <div class="form-group">
-                    <input type="hidden" name="pack" class="form-control" value="{{ pack.id }}" />
+
+    <nav class="col-sm-9 offset-sm-3 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
+        <div class="container-fluid align-items-center justify-content-end">
+            <div class="d-flex user-infos flex-grow-1 justify-content-start align-items-center">
+                <div class="user-image btn-circle-64 badge badge--bottom badge--right p-0 mr-3">
+                    <img src="/images/USER-AVATAR.jpg" class="img-fluid rounded-circle" alt="User-Avatar">
+                    <img src="/images/icons/cm-level-badge-01.svg" class="badge-icon" alt="User-Badge">
                 </div>
-                <div class="form-group">
-                    <label for="description">Message/Proposal</label>
-                    <textarea class="form-control" name="description" maxlength="500"></textarea>
-                    <small>In less than 500 characters</small>
+                <div class="user-name-level mr-3">
+                    <p class="mb-0 fz-12 text-darkblue experte-level">Experte Pix.City</p>
+                    <p class="mb-0 text-darkgray user-name">@{{ pack.user.firstname }}</p>
                 </div>
-                <div class="form-group">
-                    <label for="brief">Add a brief file</label>
-                    <br>
-                    <input type="file" name="brief" accept=".docx, .doc, .xls, .xlsx, .txt, .csv"/>
+                <div class=" mr-3">
+                    <p class="mb-0 fz-12 text-normalgray">Région</p>
+                    <p class="mb-0 text-darkgray user-region">{{ pack.user.userRegion.first.name | upper }}</p>
                 </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-md btn-primary" value="Send Proposal" />
+                <div class="">
+                    <p class="mb-0 fz-12 text-normalgray">Prix</p>
+                    <p class="mb-0 text-darkgray user-price">{{ pack.totalPrice }}€</p>
                 </div>
-                </form>
             </div>
+<<<<<<< HEAD
         </div>
         <hr/>
         <br/>
@@ -88,3 +96,12 @@
                 </ul>
         </div>
 </div>
+=======
+            <div class="preview-cta d-flex align-items-center">
+                <a href="{{ url('b2b_client_pack_select',{'id':pack.id}) }}"
+                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
+            </div>
+        </div>
+    </nav>
+</div>
+>>>>>>> d51934e354df56c8f18061ce2d65a487d7a0887f
