@@ -38,7 +38,7 @@
                                                                 <div class="col-6 mx-auto my-2">
                                                                     <div class="row">
                                                                         <div class="col-md-6  col-6 grayed">
-                                                                            <span><img src="{{ absolute_url(asset('build/images/cards-gray.svg')) }}"></span>{{ user.followed }}
+                                                                            <span><img src="{{ absolute_url(asset('build/images/cards-gray.svg')) }}" alt="cards-gray"></span>{{ user.followed }}
                                                                         </div>
                                                                         <div class="col-md-6 col-6 grayed">
                                                                             <span><i class="far fa-thumbs-up"></i></span>{{ totalLikes }}
@@ -62,7 +62,7 @@
                                                         <div class="col-md-3 col-3 d-none d-sm-none d-xs-none d-md-block d-lg-block">
                                                             <div class="row">
                                                                 <div class="col-md-6 col-6 grayed">
-                                                                    <span><img src="{{ absolute_url(asset('build/images/cards-gray.svg')) }}"></span>{{ cards | length }}
+                                                                    <span><img src="{{ absolute_url(asset('build/images/cards-gray.svg')) }}" alt="cards-gray"></span>{{ cards | length }}
                                                                 </div>
                                                                 <div class="col-md-6 col-6 grayed">
                                                                     <span><i class="far fa-thumbs-up"></i></span>{{ totalLikes }}
@@ -120,7 +120,7 @@
                                         {% for region in cardsPerRegion %}
                                             <div class="col-md-4 col-6 region">
                                                 <div class="region-map">
-                                                    <a href="/{{ region.slug }}">
+                                                    <a href="/{{ region.slug }}" title="aquitaine">
                                                         <img src="{{ absolute_url(asset('build/images/'~region.slug~'.svg')) }}" alt="aquitaine">
                                                     </a>
                                                 </div>

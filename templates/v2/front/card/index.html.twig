@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="floater-chevron">
-                    <img src="{{  absolute_url(asset('build/images/cards-page-profile-chevron.svg')) }}">
+                    <img src="{{  absolute_url(asset('build/images/cards-page-profile-chevron.svg')) }}" alt="cards-page-profile-chevron">
                 </div>
             </a>
             <div class="container">
@@ -122,7 +122,7 @@
             </div>
             <a href="javascript:;" class="header-strip-sidebar">
                 <img src="{{ card.pixie.getAvatar() }}" class="rounded-circle city-maker" alt="{{ card.pixie }}">
-                <img src="{{ absolute_url(asset('build/images/cards-page-profile-chevron.svg')) }}">
+                <img src="{{ absolute_url(asset('build/images/cards-page-profile-chevron.svg')) }}" alt="cards-page-profile-chevron">
             </a>
             <div class="sticky-header-strip">
                 <div class="container-fluid">
@@ -140,7 +140,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2 social-link">
-                                                    <a href="{{ card.pixie.instagram }}" target="_blank" onclick="captureOutboundLink('{{ card.pixie.instagram }}');">
+                                                    <a href="{{ card.pixie.instagram }}" title="{{ card.pixie.instagram }}" target="_blank" onclick="captureOutboundLink('{{ card.pixie.instagram }}');">
                                                         <i class="fab fa-instagram"></i>
                                                     </a>
                                                 </div>
@@ -176,10 +176,10 @@
                                                         Catégorie<span>{{ card.categories.first.name }}</span>
                                                     </div>
                                                     <div class="col-md-4 col-6 card-page-pagination">
-                                                        {% if prevCard.slug is defined %} <a href="/{{ prevCard.slug~'.html' }}">Card <span>Précédente</span></a>{% endif %}
+                                                        {% if prevCard.slug is defined %} <a href="/{{ prevCard.slug~'.html' }}" title="Précédente">Card <span>Précédente</span></a>{% endif %}
                                                     </div>
                                                     <div class="col-md-4 col-6 card-page-pagination">
-                                                        {% if nextCard.slug is defined %}<a href="{{ nextCard.slug~'.html' }}">Card <span>Suivante</span></a>{% endif %}
+                                                        {% if nextCard.slug is defined %}<a href="{{ nextCard.slug~'.html' }}" title="Suivante">Card <span>Suivante</span></a>{% endif %}
                                                     </div>
                                                 </div>
                                             </div>
@@ -242,7 +242,7 @@
                     </a>
                     <div class="row">
                         <div class="col-12 insta-icon">
-                            <a href="{{ card.pixie.instagram }}" target="_blank" onclick="captureOutboundLink('{{ card.pixie.instagram }}'); return false;">
+                            <a href="{{ card.pixie.instagram }}" title="{{ card.pixie.instagram }}" target="_blank" onclick="captureOutboundLink('{{ card.pixie.instagram }}'); return false;">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>
@@ -304,14 +304,14 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 profile-sidebar-button">
-                                <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" class="btn btn-green btn-block btn-rollover"><span class="text">VOIR SES CARDS ({{ card.pixie.cards | length }})</span><img src="{{ absolute_url(asset('build/images/cards-green.svg')) }}"></a>
+                                <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" class="btn btn-green btn-block btn-rollover" title="{{ card.pixie.slug }}"><span class="text">VOIR SES CARDS ({{ card.pixie.cards | length }})</span><img src="{{ absolute_url(asset('build/images/cards-green.svg')) }}" alt="cards-green"></a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 achivements">
                                 <div class="row">
                                     <div class="col-3 image">
-                                        <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
+                                        <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}" alt="cards-page-profile-cake>
                                     </div>
                                     <div class="col-9 about">
                                         {{ card.pixie.age }} ans<br /><span> City-maker depuis {{ card.pixie.cards.first.createdAt  | localizeddate('medium', 'none',null,null,'MMM yy')  }}</span>
@@ -319,7 +319,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-3 image">
-                                        <img src="{{ absolute_url(asset('build/images/cards-page-strip-cards.svg')) }}">
+                                        <img src="{{ absolute_url(asset('build/images/cards-page-strip-cards.svg')) }}" alt="cards-page-strip-cards">
                                     </div>
                                     <div class="col-9 about">
                                         {{ card.pixie.cards | length }} cards<br />{{ totalLikes }} abonnés
@@ -358,11 +358,11 @@
                             <div class="col-md-12">
                                 <div class="col-md-12 landing-ad">
                                     <div class="col-md-9 m-auto">
-                                        <h4>C’EST LA SAISON DES <img src="{{ absolute_url(asset('build/images/card-page-hash.svg')) }}"> DANS VOTRE RÉGION ?</h4>
-                                        <p class="tags">Vos adresses & posts nous intéressent, devenez City-Maker Local* <img src="{{ absolute_url(asset('build/images/card-page-logo.svg')) }}"></p>
+                                        <h4>C’EST LA SAISON DES <img src="{{ absolute_url(asset('build/images/card-page-hash.svg')) }}" alt="card-page-hash"> DANS VOTRE RÉGION ?</h4>
+                                        <p class="tags">Vos adresses & posts nous intéressent, devenez City-Maker Local* <img src="{{ absolute_url(asset('build/images/card-page-logo.svg')) }}" alt="card-page-logo"></p>
                                         <p class="asterisk">* COMMUNITY MANAGER LOCAL</p>
                                         <div class="tag-image">
-                                            <img src="{{ absolute_url(asset('build/images/card-page-profile-illustration.svg')) }}">
+                                            <img src="{{ absolute_url(asset('build/images/card-page-profile-illustration.svg')) }}" alt="card-page-profile-illustration">
                                         </div>
                                     </div>
                                 </div>
@@ -380,7 +380,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-8 col-10 m-auto">
-                                                    <a href="/services" class="btn btn-white btn-block find-btn" target="_blank">TROUVER MON CITY-MAKER</a>
+                                                    <a href="/services" title="services" class="btn btn-white btn-block find-btn" target="_blank">TROUVER MON CITY-MAKER</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -419,7 +419,7 @@
                                         </a>
                                         <div class="row">
                                             <div class="col-12 insta-icon">
-                                                <a href="{{ card.pixie.instagram }}" target="_blank">
+                                                <a href="{{ card.pixie.instagram }}" title="{{ card.pixie.instagram }}" target="_blank">
                                                     <i class="fab fa-instagram"></i>
                                                 </a>
                                             </div>
@@ -483,14 +483,14 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 profile-sidebar-button">
-                                                    <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" class="btn btn-green btn-block btn-rollover"><span class="text">VOIR SES CARDS ({{ card.pixie.cards | length }})</span><img src="{{ absolute_url(asset('build/images/cards-green.svg')) }}"></a>
+                                                    <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" title="{{ card.pixie.slug }}" class="btn btn-green btn-block btn-rollover"><span class="text">VOIR SES CARDS ({{ card.pixie.cards | length }})</span><img src="{{ absolute_url(asset('build/images/cards-green.svg')) }}" alt="cards-green"></a>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 achivements">
                                                     <div class="row">
                                                         <div class="col-3 image">
-                                                            <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}">
+                                                            <img src="{{ absolute_url(asset('build/images/cards-page-profile-cake.svg')) }}" alt="cards-page-profile-cake">
                                                         </div>
                                                         <div class="col-9 about">
                                                             {{ card.pixie.age }} ans<br /><span>City-maker depuis  {{ card.pixie.cards.first.createdAt  | localizeddate('medium', 'none',null,null,'MMM yy')  }}</span>
@@ -498,7 +498,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-3 image">
-                                                            <img src="{{ absolute_url(asset('build/images/cards-page-strip-cards.svg')) }}">
+                                                            <img src="{{ absolute_url(asset('build/images/cards-page-strip-cards.svg')) }}" alt="cards-page-strip-cards">
                                                         </div>
                                                         <div class="col-9 about">
                                                             {{ card.pixie.cards | length }} cards<br />{{ totalLikes }} abonnés
@@ -521,7 +521,7 @@
                                                         {% for category in card.pixie.favoriteCategories %}
                                                             {% if categoryList[category.slug] is defined %}
                                                             <li>
-                                                                <a href="/recherche/index?categories={{ category.slug }}&start=1&limit=10&search=" class="btn btn-rollover btn-outline-pink"><span class="text">{{ category.name }} ({{ categoryList[category.slug] }})</span><i class="fas {{ category.icon }}"></i></a>
+                                                                <a href="/recherche/index?categories={{ category.slug }}&start=1&limit=10&search=" title="search" class="btn btn-rollover btn-outline-pink"><span class="text">{{ category.name }} ({{ categoryList[category.slug] }})</span><i class="fas {{ category.icon }}"></i></a>
                                                             </li>
                                                             {% endif %}
                                                         {% endfor %}
@@ -543,11 +543,11 @@
                                                 <div class="col-md-12">
                                                     <div class="col-md-12 landing-ad">
                                                         <div class="col-md-9 m-auto">
-                                                            <h4>C’EST LA SAISON DES <img src="{{ absolute_url(asset('build/images/card-page-hash.svg')) }}"> DANS VOTRE RÉGION ?</h4>
-                                                            <p class="tags">Vos adresses & posts nous intéressent, devenez City-Maker Local* <img src="{{ absolute_url(asset('build/images/card-page-logo.svg')) }}"></p>
+                                                            <h4>C’EST LA SAISON DES <img src="{{ absolute_url(asset('build/images/card-page-hash.svg')) }}" alt="card-page-hash"> DANS VOTRE RÉGION ?</h4>
+                                                            <p class="tags">Vos adresses & posts nous intéressent, devenez City-Maker Local* <img src="{{ absolute_url(asset('build/images/card-page-logo.svg')) }}" alt="card-page-logo"></p>
                                                             <p class="asterisk">* COMMUNITY MANAGER LOCAL</p>
                                                             <div class="tag-image">
-                                                                <img src="{{ absolute_url(asset('build/images/card-page-profile-illustration.svg')) }}">
+                                                                <img src="{{ absolute_url(asset('build/images/card-page-profile-illustration.svg')) }}" alt="card-page-profile-illustration">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -616,7 +616,7 @@
                                                 <ul class="infos">
                                                     {% for info in card.infos %}
                                                         {% if info.type == "link" %}
-                                                            <li><a href="{{ info.value }}" target="_blank" class="min"> {{ info.label }}</a></li>
+                                                            <li><a href="{{ info.value }}" target="_blank" class="min" title="{{ info.label }}"> {{ info.label }}</a></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 </ul>
@@ -643,7 +643,7 @@
                                                 <ul class="category-links">
                                                     {% for category in card.categories %}
                                                     <li>
-                                                        <a href="/recherche/index?categories={{ category.slug }}&start=1&limit=10&search=" class="btn btn-rollover btn-outline-pink"><span class="text">{{ category.name }}</span><i class="fas {{ category.icon }}"></i></a>
+                                                        <a href="/recherche/index?categories={{ category.slug }}&start=1&limit=10&search=" class="btn btn-rollover btn-outline-pink" title="search"><span class="text">{{ category.name }}</span><i class="fas {{ category.icon }}"></i></a>
                                                     </li>
                                                     {% endfor %}
                                                 </ul>

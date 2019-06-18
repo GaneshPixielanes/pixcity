@@ -11,7 +11,7 @@
                     <label class="fa"></label>
                 </span>
             {% else %}
-                <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}"></a>
+                <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}" title="{{ card.slug }}"></a>
             {% endif %}
 
             {#<a class="fa fa-question-circle cta-like-card" data-id="{{ card.id }}" title="{{ card.pixie.firstname~' '~card.pixie.lastname }}" data-toggle="tooltip" data-placement="top" data-container="body"></a>#}
@@ -22,7 +22,7 @@
             <a href="#" class="fa fa-thumbs-up load-card-details" data-card-id="{{ card.id }}" onclick="loadCardDetails()"<i class=""></i></a>
 
             <div class="alignBottom">
-                <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}">{{ card.name }}</a>
+                <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}" title="{{ card.name }}">{{ card.name }}</a>
                 <form action="{{ path('front_search_index') }}">
                     <input type="hidden" name="regions[]" value="{{ card.region.slug }}">
                     <button type="submit" class="regionName">{{ card.region }}</button>
@@ -36,7 +36,7 @@
                     {% endif %}
 
                     <div class="cardAuth">
-                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}">
+                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" title="{{ card.pixie.slug }}">
                             <span class="portraitAuth" style="background-image: url({{ card.pixie.getAvatarUrl() | imagine_filter('user_small_avatar') }})"></span>
                             {{ card.pixie }}
                         </a>
@@ -65,7 +65,7 @@
     <div class="pixieBlock">
 
         <div class="portraitPixie" style="background-image: url({{ user.getAvatarUrl() | imagine_filter('user_avatar') }})">
-            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}"></a>
+            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" title="{{ user.slug }}"></a>
             <a class="pixieLink fa fa-user-plus cta-follow-pixie {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" href="#" data-toggle="tooltip" data-placement="left" title="{{ (app.user is not null and app.user.hasFavoritePixie(user))?"Ne plus suivre":"Suivre le City Maker" }}" data-id="{{ user.id }}"></a>
             {% if totalCards %}
                 <form action="{{ path('front_search_index') }}">
@@ -89,7 +89,7 @@
     <div class="pixieBlock">
 
         <div class="portraitPixie" data-city-maker-image="{{ user.getAvatarUrl() | imagine_filter('user_avatar') }}">
-            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}"></a>
+            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" title="{{ user.slug }}"></a>
             <a class="pixieLink fa fa-user-plus cta-follow-pixie {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" href="#" data-toggle="tooltip" data-placement="left" title="{{ (app.user is not null and app.user.hasFavoritePixie(user))?"Ne plus suivre":"Suivre le City Maker" }}" data-id="{{ user.id }}"></a>
             {% if totalCards %}
                 <form action="{{ path('front_search_index') }}">
@@ -124,7 +124,7 @@
                 <span href="#" class="discover">{{ category[0].discover }}</span>
                 {% if category[0].facebook %}<a class="fab fa-facebook-f" href="{{ category[0].facebook }}" target="_blank" rel="noopener"></a>{% endif %}
             </div>
-            <a class="regionLink" href="{{ path('front_regions_index', {slug: category[0].slug}) }}"></a>
+            <a class="regionLink" href="{{ path('front_regions_index', {slug: category[0].slug}) }}" title="{{ category[0].slug }}"></a>
         </div>
     </div>
 
@@ -167,7 +167,7 @@
                         {% for media in card.medias %}
                             {% if loop.index < 4 %}
                                 <div class="popup-slider-image">
-                                    <img src="{{ media.url | imagine_filter('card_gallery_thumb') }}" />
+                                    <img src="{{ media.url | imagine_filter('card_gallery_thumb') }}" alt="card_gallery_thumb"/>
                                 </div>
                             {% endif %}
                         {% endfor %}
@@ -176,7 +176,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12 link-button">
-                    <a href="{{ path('front_card_single', {slug: card.slug}) }}" class="btn btn-pink btn-block btn-icon-right">ENREGISTRER LA CARD</a>
+                    <a href="{{ path('front_card_single', {slug: card.slug}) }}" title="{{ card.slug }}" class="btn btn-pink btn-block btn-icon-right">ENREGISTRER LA CARD</a>
                 </div>
             </div>
         </div>
@@ -212,7 +212,7 @@
     {% endif %}
     <div class="category-card col-sm-15 01-hotspot cat-12" data-id="{{ card.id }}" data-latitude="{{ card.address.latitude }}" data-longitude="{{ card.address.longitude }}">
         <div class="inner" style="{% if card.thumb %}background-image: url({{ card.thumb.getUrl() | imagine_filter('bg_card_item') }}){% endif %}">
-            <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}"></a>
+            <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}" title="{{ card.slug }}"></a>
             {% if editable == true%}
                 <span class="collCheck" data-toggle="tooltip" data-placement="top" title="Ajouter">
             <div class="pretty p-icon p-round p-smooth p-bigger">
@@ -227,7 +227,7 @@
             <a class="cardsIco cta-favorite-card {% if app.user is not null and app.user.hasFavorite(card) %} active {% endif %} " data-id="{{ card.id }}" title="" data-toggle="tooltip" data-placement="top" data-container="body" data-original-title=" Enregistrer la card"></a>
             <div class="alignBottom">
                 {% if editable != true %}
-                    <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}">{{ card.name }}</a>
+                    <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}" title="{{ card.name }}">{{ card.name }}</a>
                 {% endif %}
                 <form action="{{ path('front_search_index') }}">
                     <input type="hidden" name="regions[]" value="{{ card.region.slug }}">
@@ -241,7 +241,7 @@
                         </form>
                     {% endif %}
                     <div class="cardAuth">
-                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}">
+                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" title="{{ card.pixie.slug }}">
                             <span class="portraitAuth" style="background-image: url({{ card.pixie.getAvatarUrl() | imagine_filter('user_small_avatar') }})"></span>
                             {{ card.pixie }}
                         </a>
@@ -260,7 +260,7 @@
     <div class="col-md-12 card shadow">
         <div class="row">
             <div class="col-md-12">
-                <a href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" class="city-maker-image" target="_blank">
+                <a href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" class="city-maker-image" target="_blank" title="{{ user.slug }}">
                     <img src="{{ user.getAvatarUrl() | imagine_filter('user_avatar') }}" class="rounded-circle" alt="{{ user.firstName }}  - Community manager et influenceur local {{ user.pixie ? user.pixie.regions[0] : '' }} ">
                 </a>
             </div>
