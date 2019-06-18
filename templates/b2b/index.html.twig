@@ -13,7 +13,7 @@
                onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle
                 mission</a>
         </div>
-        {% if packs | length != 0 and missions['ongoing'] | length != 0 %}
+        {% if packs | length == 0 and missions['ongoing'] | length == 0 %}
             <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
                 <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
                     <div class="w-60">
