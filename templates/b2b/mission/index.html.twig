@@ -1,102 +1,102 @@
 {% extends 'b2b/page.html.twig' %}
 
 {% block content %}
-<div class="tab-pane active" id="myMissions" role="tabpanel">
-<div class="row">
-    <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-        <div class="d-flex align-items-center fz-20 text-darkblue">Mes missions</div>
-        <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill">{{ missions['ongoing'] | length }} missions en cours</a>
+    <div class="tab-pane active" id="myMissions" role="tabpanel">
+        <div class="row">
+            <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+                <div class="d-flex align-items-center fz-20 text-darkblue">Mes missions</div>
+                <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill">{{ missions['ongoing'] | length }} missions en cours</a>
+            </div>
+            {% if missions['ongoing'] | length == 0 %}
+
+                <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                    <div
+                            class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                        <div class="w-35">
+                            <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
+                                 alt="My Missions">
+                        </div>
+                        <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
+                        <p> Ça y est votre profil et vos packs sont à jour !
+                            Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
+                            une bonne négociation !
+                        </p>
+                        <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
+                                lien).</a> </p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-12 tab-pane-content p-4" data-simplebar>
+                    <nav class="internal-nav">
+                        <ul class="nav nav-tabs nav-tabs-sticky border-0 line-tabs line-tabs-pink" id="dashboardMyMissions" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link text-normalgray nested" data-toggle="tab" data-tab-history="myMissionsSecondaryNav" data-tab-history-changer="push" data-tab-history-update-url="true" href="#inProgress" role="tab"
+                                   aria-controls="inProgress">En cours</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-normalgray nested" data-toggle="tab" data-tab-history="myMissionsSecondaryNav" data-tab-history-changer="push" data-tab-history-update-url="true" href="#completed" role="tab"
+                                   aria-controls="completed">Terminées</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-normalgray nested" data-toggle="tab" data-tab-history="myMissionsSecondaryNav" data-tab-history-changer="push" data-tab-history-update-url="true" href="#canceled" role="tab"
+                                   aria-controls="canceled">Annulées</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="tab-content">
+                        <div class="tab-pane" id="inProgress" role="tabpanel">
+                            <ul class="available-missions-list m-0 mt-3 col-md-12">
+                                {% for mission in missions['ongoing'] %}
+                                    <li class="mission-list-item d-flex align-items-center text-darkgray">
+                                        <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
+                                        <p class="mb-0 px-3 w-40">{{ mission.title | raw }}
+                                        </p>
+                                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}/p>
+                                        <p class="w-15 mb-0">{{ mission.client }}</p>
+                                        <p class="w-15 mb-0 text-inprogress">En cours</p>
+                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
+                                        <i class="fas fa-eye preview-my-mission"></i>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="tab-pane" id="completed" role="tabpanel">
+                            <ul class="available-missions-list m-0 mt-3 col-md-12">
+                                {% for mission in missions['terminated'] %}
+                                    <li class="mission-list-item d-flex align-items-center text-darkgray">
+                                        <i class="fas fa-camera fz-16 btn-circle-32 bg-darkblue text-white"></i>
+                                        <p class="mb-0 px-3 w-40">{{ mission.title | raw }}</p>
+                                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
+                                        <p class="w-15 mb-0">{{ mission.client }}</p>
+                                        <p class="w-15 mb-0 text-completed">Terminée</p>
+                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
+                                        <i class="fas fa-edit preview-edit-mission"></i>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="tab-pane" id="canceled" role="tabpanel">
+                            <ul class="available-missions-list m-0 mt-3 col-md-12">
+                                {% for mission in misisons['cancelled'] %}
+                                    <li class="mission-list-item d-flex align-items-center text-darkgray">
+                                        <i class="fas fa-handshake fz-16 btn-circle-32 bg-darkblue text-white"></i>
+                                        <p class="mb-0 px-3 w-40">{{ mission.title | raw }}</p>
+                                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}/p>
+                                        <p class="w-15 mb-0">{{ mission.client }}</p>
+                                        <p class="w-15 mb-0 text-canceled">Annulée</p>
+                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
+                                        <i class="fas fa-edit preview-edit-mission"></i>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            {% endif %}
+
+        </div>
     </div>
-    {% if missions['ongoing'] | length == 0 %}
-
-        <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
-            <div
-                    class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
-                <div class="w-35">
-                    <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
-                         alt="My Missions">
-                </div>
-                <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
-                <p> Ça y est votre profil et vos packs sont à jour !
-                    Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
-                    une bonne négociation !
-                </p>
-                <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
-                        lien).</a> </p>
-            </div>
-        </div>
-    {% else %}
-        <div class="col-md-12 tab-pane-content p-4" data-simplebar>
-            <nav class="internal-nav">
-                <ul class="nav nav-tabs nav-tabs-sticky border-0 line-tabs line-tabs-pink" id="dashboardMyMissions" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link text-normalgray nested" data-toggle="tab" data-tab-history="myMissionsSecondaryNav" data-tab-history-changer="push" data-tab-history-update-url="true" href="#inProgress" role="tab"
-                           aria-controls="inProgress">En cours</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-normalgray nested" data-toggle="tab" data-tab-history="myMissionsSecondaryNav" data-tab-history-changer="push" data-tab-history-update-url="true" href="#completed" role="tab"
-                           aria-controls="completed">Terminées</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-normalgray nested" data-toggle="tab" data-tab-history="myMissionsSecondaryNav" data-tab-history-changer="push" data-tab-history-update-url="true" href="#canceled" role="tab"
-                           aria-controls="canceled">Annulées</a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="tab-content">
-                <div class="tab-pane" id="inProgress" role="tabpanel">
-                    <ul class="available-missions-list m-0 mt-3 col-md-12">
-                        {% for mission in missions['ongoing'] %}
-                        <li class="mission-list-item d-flex align-items-center text-darkgray">
-                            <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                            <p class="mb-0 px-3 w-40">{{ mission.title | raw }}
-                            </p>
-                            <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}/p>
-                            <p class="w-15 mb-0">{{ mission.client }}</p>
-                            <p class="w-15 mb-0 text-inprogress">En cours</p>
-                            <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
-                            <i class="fas fa-eye preview-my-mission"></i>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="tab-pane" id="completed" role="tabpanel">
-                    <ul class="available-missions-list m-0 mt-3 col-md-12">
-                        {% for mission in missions['terminated'] %}
-                        <li class="mission-list-item d-flex align-items-center text-darkgray">
-                            <i class="fas fa-camera fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                            <p class="mb-0 px-3 w-40">{{ mission.title | raw }}</p>
-                            <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
-                            <p class="w-15 mb-0">{{ mission.client }}</p>
-                            <p class="w-15 mb-0 text-completed">Terminée</p>
-                            <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
-                            <i class="fas fa-edit preview-edit-mission"></i>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="tab-pane" id="canceled" role="tabpanel">
-                    <ul class="available-missions-list m-0 mt-3 col-md-12">
-                        {% for mission in misisons['cancelled'] %}
-                        <li class="mission-list-item d-flex align-items-center text-darkgray">
-                            <i class="fas fa-handshake fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                            <p class="mb-0 px-3 w-40">{{ mission.title | raw }}</p>
-                            <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}/p>
-                            <p class="w-15 mb-0">{{ mission.client }}</p>
-                            <p class="w-15 mb-0 text-canceled">Annulée</p>
-                            <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
-                            <i class="fas fa-edit preview-edit-mission"></i>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    {% endif %}
-
-</div>
-</div>
 {% endblock %}
 
 {% block javascripts %}

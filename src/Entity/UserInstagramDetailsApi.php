@@ -63,12 +63,12 @@ class UserInstagramDetailsApi
         return $this->id;
     }
 
-    public function getNoOfPosts(): ?int
+    public function getNoOfPosts(): ?string
     {
         return $this->NoOfPosts;
     }
 
-    public function setNoOfPosts(?int $NoOfPosts): self
+    public function setNoOfPosts(?string $NoOfPosts): self
     {
         $this->NoOfPosts = $NoOfPosts;
 
