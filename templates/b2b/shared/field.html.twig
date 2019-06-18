@@ -106,7 +106,7 @@
             votre prestation</p>
         <input class="form-control bg-lightwhite pack-title" maxlength="64" type="text"
                placeholder="Je m’occupe de vos réseaux sociaux " name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
-        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">0</span>/<span
+        <p class="mb-0 fz-12 text-textgray mt-2" data-bind="mission-title"><span class="inputlength">0</span>/<span
                     class="input-maxlength">64</span></p>
     </div>
 {% endblock %}
@@ -121,8 +121,7 @@
             pas à lire
             notre <a href="javascript:;">FAQ</a></p>
         <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200"
-                  placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client"
-                  name="" id="" cols="30" rows="10" name="{{ form.vars.full_name }}">{{ form.vars.value }}</textarea>
+                  placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" id="" cols="30" rows="10" name="{{ form.vars.full_name }}">{{ form.vars.value }}</textarea>
         <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">0</span>/<span
                     class="input-maxlength">1200</span></p>
     </div>
@@ -148,7 +147,7 @@
             <p class="mx-3 inline-block mb-0 text-textgray fz-12"> Ce qui sera affiché sur
                 la plateforme
                 <i class="fas fa-arrow-right fz-16 mx-3"></i> <span
-                        class="text-pink fz-16">144€</span>
+                        class="text-pink fz-16 mission-price">144€</span>
             </p>
         </div>
     </div>
