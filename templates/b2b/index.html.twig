@@ -13,23 +13,21 @@
                onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle
                 mission</a>
         </div>
-        {% if packs | length == 0 and missions['ongoing'] | length == 0 %}
-            <div
-                    class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
-                <div
-                        class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+        {% if packs | length != 0 and missions['ongoing'] | length != 0 %}
+            <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
                     <div class="w-60">
-                        <img class="img-fluid" src="../images/dash-home-empty.png" alt="Dashboard Home">
+                        <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-home-empty.png') }}" alt="Dashboard Home">
                     </div>
-                    <h4 class="mt-4 text-darkblue">Bien débuter sur Pix.city services </h4>
+                    <h4 class="mt-4 text-darkblue font-weight-bold">Bien débuter sur Pix.city services </h4>
                     <p> Bienvenue sur votre espace city maker Services !
                         Retrouvez ici toutes les informations concernant vos packs, vos missions en
                         cours et votre facturation.
                     </p>
                     <p> La prochaine étape est de détailler vos compétences en créant vos packs (un pack
                         est une compétence détaillée avec un tarif).</p>
-                    <div class="d-block text-center mt-4">
-                        <a href="javascript:;" class="btn btn-darkblue btn-pill">Créer un pack</a>
+                    <div class="d-block text-center mt-4 add-package-to-list">
+                        <a href="javascript:;" class="btn btn-darkblue btn-pill lh2 add-package">Créer un pack</a>
                     </div>
                 </div>
             </div>

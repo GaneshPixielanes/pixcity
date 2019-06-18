@@ -23,6 +23,10 @@
         /* custom per page scripts */
 
         $(document).ready(function () {
+            $(document).on('click','.close-preview', function () {
+                $('.close').trigger('click');
+                $('.close-preview-edit').trigger('click');
+            });
             /* Skills Pack Buttons */
             $('body').on('click','a.skills-pack',function(){
                 // e.preventDefault();
