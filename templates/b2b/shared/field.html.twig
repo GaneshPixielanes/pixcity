@@ -1,0 +1,404 @@
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        {% if form is not rootform %}<span class="error-message">{% else %}<div class="alert alert-danger">{% endif %}
+        <ul class="list-unstyled errors-list">
+        {%- for error in errors -%}
+            <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ error.message }}</li>
+        {%- endfor -%}
+    </ul>
+        {% if form is not rootform %}</span>{% else %}</div>{% endif %}
+    {%- endif %}
+{%- endblock form_errors %}
+
+{% block _mission_client_widget %}
+    <div class="row">
+        <div class="col-md-12 client-selection-container mb-5">
+            <h4 class="fz-24 font-weight-light">Sélectionnez votre client</h4>
+            <div class="row">
+                <div class="col-md-12 client-selection-cards">
+                    <div class="row">
+                        <ul class="d-flex w-100">
+                            {% set data = form.vars.data %}
+                            {% for client in form.vars.choices %}
+                                <li class="col-md-4 mb-4">
+                                    <a href="javascript:;" class="card p-3">
+                                        {% if data.id is defined and data.id == client.data.id %}
+                                        <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ client.data.id }}" checked>
+                                        {% else %}
+                                        <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ client.data.id }}">
+                                            {% endif %}
+                                        <div class="row">
+                                            <div class="card-content d-flex justify-content-center align-items-center">
+                                                <div class="col-md-4 text-center">
+                                                    <img  class="rounded-circle" src="/uploads/clients/{{ client.data.id }}/{{ client.data.profilePhoto }}">
+                                                </div>
+                                                <div class="col-md-8 fz-14 text-darkblue">
+                                                    {{ client.data.company }} <span class="d-block fz-12 text-seagreen">{{ client.data.firstName~' '~client.data.lastName}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block _mission_referencePack_widget %}
+    <div class="row">
+        <div class="col-md-12 pack-selection-container mb-5 pb-5 w-100">
+            <h4 class="fz-24 font-weight-light">Sélectionnez le pack</h4>
+            <div class="row">
+                <div class="col-md-12 pack-selection-cards">
+                    <div class="row">
+                        <ul class="d-flex w-100">
+                            {% set data = form.vars.data %}
+                            {% for choice in form.vars.choices %}
+                            <li class="col-md-4 mb-4">
+                                <a href="javascript:;" class="card">
+                                    {% if data.id is defined and choice.data.id == data.id %}
+                                    <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ choice.data.id }}" checked>
+                                    {% else %}
+                                    <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ choice.data.id }}">
+                                        {% endif %}
+                                    <div class="pack-icon">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                    <img class="card-img-top" src="/uploads/pack/{{ choice.data.id }}/{{ choice.data.bannerImage }}" alt="{{ choice.data.title }}"/>
+                                    <div class="card-body">
+                                        <p class="card-text fz-12 text-normalgray mb-1">{{ choice.data.packSkill | upper }}</p>
+                                        <h5 class="card-title fz-16 text-darkblue font-weight-bold mb-1">{{ choice.data.title  }}</h5>
+                                        <p class="pack-cost fz-16 font-weight-bold text-normalgray">{{ choice.data.totalPrice }}€ <span class="fz-12 font-weight-light">À partir de </span></p>
+                                    </div>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block _mission_bannerImage_widget %}
+    <div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
+        <img src="{% if form.vars.value == '' %}/assets/images/mission-cover-pic.jpg{% else %}{% endif %}" class="cover-image w-100 h-100" alt="Mission Cover Image">
+        <div class="edit-image">
+            <input type="file" name="myFile" data-toggle="tooltip" title="" data-original-title="Edit Cover image" id="banner-image-upload">
+            <input type="hidden" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}"/>
+            <a href="javascript:;" class="btn btn-lightgray btn-pill">Modifier</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block _mission_title_widget %}
+    <div class="pack-title-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
+        <h5 class="text-darkgray mb-0">Le titre de votre mission</h5>
+        <p class="text-textgray">Le titre doit permettre à votre client de comprendre
+            instantanément
+            votre prestation</p>
+        <input class="form-control bg-lightwhite pack-title" maxlength="64" type="text"
+               placeholder="Je m’occupe de vos réseaux sociaux " name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
+        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">0</span>/<span
+                    class="input-maxlength">64</span></p>
+    </div>
+{% endblock %}
+
+{% block _mission_description_widget %}
+    <div class="pack-description-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
+        <h5 class="text-darkgray mb-0">Décrivez votre mission</h5>
+        <p class="text-textgray">N’hésitez pas à être le plus précis possible dans la
+            description de
+            votre prestation !
+            Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez
+            pas à lire
+            notre <a href="javascript:;">FAQ</a></p>
+        <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200"
+                  placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client"
+                  name="" id="" cols="30" rows="10" name="{{ form.vars.full_name }}">{{ form.vars.value }}</textarea>
+        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">0</span>/<span
+                    class="input-maxlength">1200</span></p>
+    </div>
+
+{% endblock %}
+
+{% block _mission_missionBasePrice_widget %}
+    <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
+        <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
+        <p class="text-textgray">Besoin de conseils. <a href="javascript:;">Consultez notre
+                FAQ
+                City-Maker Services.</a></p>
+        <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
+        <div class="d-flex align-items-center">
+            <div class="input-group w-10">
+                <input name="{{ form.vars.full_name }}" type="text" class="form-control fz-16 font-weight-bold bg-lightwhite"
+                       placeholder="120" aria-label="Pack price" aria-describedby="pack-price" value="{{ form.vars.value }}">
+                <div class="input-group-append">
+                                                        <span class="input-group-text bg-textgray border-textgray text-white"
+                                                              id="pack-price">€</span>
+                </div>
+            </div>
+            <p class="mx-3 inline-block mb-0 text-textgray fz-12"> Ce qui sera affiché sur
+                la plateforme
+                <i class="fas fa-arrow-right fz-16 mx-3"></i> <span
+                        class="text-pink fz-16">144€</span>
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block _mission_region_widget %}
+
+    <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">
+        <h5 class="text-darkgray mb-3">Zone géographique</h5>
+        <ul class="nav nav-pills mb-3 pack-regions nav-justified" id="pack-regions"
+            role="tablist">
+            {% for choice in form.vars.choices %}
+            <li class="nav-item pack-region-item mr-3">
+                <a class="nav-link {% if loop.index == 1 %}active{% endif %} bg-lightwhite text-darkgray py-3 text-left"
+                   id="region-01" data-toggle="pill" href="#region_{{ loop.index }}" role="tab"
+                   aria-controls="region01" aria-selected="true"><span
+                            class="font-weight-bold">Région {{ loop.index }}</span> <span class="ml-3">{{ choice.data.name }}</span></a>
+                <input type="radio" name="{{ form.vars.full_name }}" value="{{ choice.data.id }}" checked="checked"/>
+
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            {% for choice in form.vars.choices %}
+                <div class="tab-pane fade show {% if loop.index == 1 %}active{% endif %}" id="region_{{ loop.index }}" role="tabpanel"
+                     aria-labelledby="region-01">
+                    <img src="{{ absolute_url('/assets/images/zone-map.jpg') }}" class="img-fluid" alt="{{ choice.data.name }}">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block _mission_missionMedia_widget %}
+    <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr')  }}" id="{{ form.vars.id  }}">
+        <h5 class="text-darkgray mb-0">Photos</h5>
+        <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre
+            bibliothèque
+            ou en
+            téléchargez des nouvelles pour illustrer votre pack.</p>
+        <small class="text-textgray">Format : JPEG, PNG. Taille : 2Mo max</small>
+        <div class="form-group dropzone-custom clearfix mt-3 dz-clickable"
+             id="photos-dropzone">
+            <!-- <div class="row">
+                                    <div class="col-md-12 upload-area">
+                                        <div class="area-label text-center p-4">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <p>Déposez vos images ici</p>
+                                            <a href="javascript:;">Depuis votre navigateur</a>
+                                        </div>
+                                    </div>
+                                </div> -->
+            <div class="dz-default dz-message">
+                <div class="upload-area mb-4">
+                    <div class="area-label text-center p-4">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p class="mb-0">Déposez vos images ici</p>
+                        <a href="javascript:;">Depuis votre navigateur</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block _mission_axaInsurance_widget %}
+    <div class="row">
+        <div class="col-d-12 card p-5 mb-4">
+            <h4 class="fz-24">Assurance Axa</h4>
+            <p class="fz-16 font-weight-light">Pix.City Services s'associe avec AXA pour vous proposer
+                une
+                responsabilité civile professionnelle pour toute mission qui commence sur notre
+                plateforme
+                (et contractualisée par son intermédiaire). Cette assurance est gratuite pour les
+                city-makers. N'hésitez pas à consulter notre page FAQ en cas de questions !</p>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customControlInline" name="{{ form.vars.full_name }}" value="1">
+                <label class="custom-control-label fz-16 text-textgray mr-4"
+                       for="customControlInline">Souscrire à l'assurance Axa</label><img
+                        src="{{ absolute_url('/assets/images/axa-logo.png') }}">
+            </div>
+            <div class="row">
+                <div class="col-md-6 fz-14 font-weight-light mt-3">
+                    <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Garantie
+                                            de paiement</span> même si votre client arrête la mission avant son terme
+                </div>
+                <div class="col-md-6 fz-14 font-weight-light mt-3">
+                    <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Protection
+                                            juridique en cas d’accidents</span> ou de dégâts provoqués lors de la
+                    Prestation
+                    (Franchise 150€)
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block _mission_briefFiles_widget %}
+    <div class="row" id="mission-documents-upload">
+        <div class="col-d-12 card p-5 mb-4">
+            <h4 class="fz-24">Mes conditions générales de ventes</h4>
+            <p class="fz-16 font-weight-light">Vous pouvez uploader ici vos propres conditions générales
+                de
+                vente si vous souhaitez que chaque client les accepte en plus de celles de Pix.City
+                Services. Cela reste une option si vous n'en avez pas !</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="javascript:;" class="btn btn-pink mr-4" id="uploadTermFile"><i
+                                class="fas fa-upload"></i> Upload</a> <span class="fz-14">Télécharger mes GCV
+                                            (format .pdf 5mo max)</span>
+                    <input type="file" class="d-none" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief"/>
+                    <input type="hidden" id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" value="" />
+                </div>
+                <div class="col-md-12">
+                    <div class="d-inline-block bg-lightgray text-darkblue fz-16 font-weight-light p-2">
+                        <i class="far fa-file-alt fz-25"></i> Conditions générales de vente Lily
+                        Photo
+                    </div>
+                    <a href="javascript:;" class="text-darkblue ml-1">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block _mission_documents_widget %}
+    <div class="row" id="mission-documents-upload" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr') }} ">
+        <div class="col-d-12 card p-5 mb-4">
+            <h4 class="fz-24">Mes conditions générales de ventes</h4>
+            <p class="fz-16 font-weight-light">Vous pouvez uploader ici vos propres conditions générales
+                de
+                vente si vous souhaitez que chaque client les accepte en plus de celles de Pix.City
+                Services. Cela reste une option si vous n'en avez pas !</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="javascript:;" class="btn btn-pink mr-4" id="uploadTermFile"><i
+                                class="fas fa-upload"></i> Upload</a> <span class="fz-14">Télécharger mes GCV
+                                            (format .pdf 5mo max)</span>
+                    <input type="file" class="d-none" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief" multiple="multiple"/>
+                </div>
+                <div class="col-md-12" id="mission-documents-list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block _client_clientInfo_siret_widget %}
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <label>N° SIRET</label>
+            <input type="text" class="form-control bg-lightgray" placeholder="000 000 000 00000" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
+        </div>
+    </div>
+{% endblock %}
+
+{% block _client_company_widget %}
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <label>IDENTIFIANT APE</label>
+            <input type="text" class="form-control bg-lightgray" placeholder="Programmation informatique" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
+        </div>
+    </div>
+{% endblock %}
+
+{% block _client_clientInfo_address_widget %}
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <label>ADRESSE</label>
+            <input type="text" class="form-control bg-lightgray" placeholder="80 rue de lourmel" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
+        </div>
+    </div>
+{% endblock %}
+
+{% block _client_clientInfo_postalCode_widget %}
+        <div class="col-md-6 mb-3">
+            <label>CODE POSTAL</label>
+            <input type="text" class="form-control bg-lightgray" placeholder="75015" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
+        </div>
+{% endblock %}
+
+{% block _client_clientInfo_city_widget %}
+
+    <div class="col-md-6 mb-3">
+        <label>VILLE</label>
+        <input type="text" class="form-control bg-lightgray" placeholder="Paris" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
+    </div>
+{% endblock %}
+
+{% block _client_clientInfo_companyCreationDate_widget %}
+    <div class="col-md-12 mb-3">
+        <label>DATE DE DÉBUT D'ACTIVITÉ</label>
+        <input type="date" class="form-control bg-lightgray" placeholder="Date" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
+    </div>
+
+{% endblock %}
+
+{% block _client_clientInfo_business_widget %}
+    <div class="col-md-12">
+        <label>FORME JURIDIQUE</label>
+        <div class="row">
+            {% for choice in form.vars.choices %}
+            <div class="col-md-3">
+                <div class="btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-darkblue btn-pill btn-sm btn-block">
+                        <input type="checkbox" autocomplete="off"  name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ choice.data }}">{{ choice.data | trim }}
+                    </label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block _client_firstName_widget %}
+    <div class="col-md-6 mb-3">
+        <label>VOTRE PRÉNOM</label>
+        <input type="text" class="form-control bg-lightgray" placeholder="Paul" name="{{ form.vars.full_name }}"  value="{{ form.vars.value }}">
+    </div>
+{% endblock %}
+
+{% block _client_lastName_widget %}
+    <div class="col-md-6 mb-3">
+        <label>VOTRE NOM</label>
+        <input type="text" class="form-control bg-lightgray" placeholder="Dupont" name="{{ form.vars.full_name }}"  value="{{ form.vars.value }}">
+    </div>
+{% endblock %}
+
+{% block _client_email_widget %}
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <label>VOTRE EMAIL</label>
+            <input type="email" class="form-control bg-lightgray" placeholder="email@domain.com" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
+        </div>
+    </div>
+{% endblock %}
+
+{% block _client_plainPassword_widget %}
+<div class="row">
+    <div class="col-md-12">
+        <label>VOTRE MOT DE PASSE</label>
+        <input name="{{ form.vars.full_name }}" type="password" id="password-field" class="form-control bg-lightgray pr-5" placeholder="8 caractères, 1 majuscule">
+        <span toggle="#password-field" class="fas fa-eye password-show-icon toggle-password"></span>
+    </div>
+</div>
+{% endblock %}

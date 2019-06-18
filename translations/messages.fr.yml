@@ -297,3 +297,19 @@ text:
 
 settings:
     invoice_pending_error: Something random
+
+b2b:
+    label:
+        created: En cours
+        terminate_request_cm: En cours
+        cancel_request_cm: En cours
+        terminate_request_client: En cours
+        cancel_request_client: En cours
+        ongoing: En cours
+        terminated: Terminée
+        cancelled: Annulée
+        client_declined: Client Declined
+        terminate_mission: Mission Has Been Terminated
+        cancel_mission: Mission Has Been Cancelled
+        create_mission: Mission Has Been Created
+

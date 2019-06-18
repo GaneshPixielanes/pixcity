@@ -16,20 +16,22 @@ class ClientInfoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('siret', TextType::class)
+            ->add('siret', TextType::class,['label'=>false])
             ->add('business', ChoiceType::class,[
-                'expanded' => false,
+                'expanded' => true,
                 'multiple' => false,
-                'choices' => BusinessType::getList()
+                'choices' => BusinessType::getList(),
+                'label'=>false
             ])
-            ->add('address', TextType::class)
-            ->add('postalCode', TextType::class)
-            ->add('city', TextType::class)
-            ->add('company_creation_date', DateType::class,[
+            ->add('address', TextType::class,['label'=>false])
+            ->add('postalCode', TextType::class,['label'=>false])
+            ->add('city', TextType::class,['label'=>false])
+            ->add('companyCreationDate', DateType::class,[
                 'widget' => 'choice',
-                'years' => range(date('Y') - 100, date('Y'))
+                'label'=>false,
+                'widget' => 'single_text'
             ])
-            ->add('companyType', TextType::class)
+            ->add('companyType', TextType::class,['label'=>false])
         ;
     }
 
