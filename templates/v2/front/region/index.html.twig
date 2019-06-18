@@ -18,7 +18,7 @@
 					</div>
 					<div class="row d-flex justify-content-center mb-5">
 						<div class="col-md-2 col-sm-6 col-6 region-cards">
-							<img src="{{ absolute_url(asset('build/images/region-banner-cards.svg')) }}" />
+							<img src="{{ absolute_url(asset('build/images/region-banner-cards.svg')) }}" alt="region-banner-cards"/>
 							<div class="number"> <o id="totalCards">{{ totalCards }}</o> <span>CARDS</span></div>
 						</div>
 						<select class="region-selected d-none" data-live-search="true" multiple title="Toutes les régions" name="regions[]" id="region-picker">
@@ -26,6 +26,7 @@
 						</select>
 						<div class="col-md-2 col-sm-6 col-6 region-makers">
 							<div class="stack-makers">
+								<!--googleoff: all-->
 								<div class="row">
 									<div class="col-6 city-maker">
 										<img src="https://www.pix.city/services/images/55b91e9c0b5965ea210f3492756f68e0.jpeg" class="rounded-circle" alt="User Name">
@@ -37,6 +38,7 @@
 										<img src="https://www.pix.city/services/images/95d6eb342f84cc670e694e679996f772.jpeg" class="rounded-circle" alt="User Name">
 									</div>
 								</div>
+								<!--googleon: all-->
 								<div class="number">{{ totalPixies }} <span>CITY MAKERS</span></div>
 							</div>
 						</div>
@@ -135,10 +137,10 @@
 	                        <div class="col-md-5 profile-actions">
 	                            <div class="row">
 	                                <div class="col-md-6 mb-2">
-	                                    <a href="/tous-nos-city-makers-locaux-france" class="btn btn-rollover btn-gray btn-block"><span class="text">TOUS LES CITY-MAKERS</span><i class="fas fa-users"></i></a>
+	                                    <a href="/tous-nos-city-makers-locaux-france" title="ous-nos-city-makers-locaux-france" class="btn btn-rollover btn-gray btn-block"><span class="text">TOUS LES CITY-MAKERS</span><i class="fas fa-users"></i></a>
 	                                </div>
 	                                <div class="col-md-6">
-	                                    <a href="/city-maker/inscription/mode" class="btn btn-rollover btn-outline-gray btn-block"><span class="text">DEVENIR CITY-MAKER</span><i class="fas fa-user-plus"></i></a>
+	                                    <a href="/city-maker/inscription/mode" title="city-maker" class="btn btn-rollover btn-outline-gray btn-block"><span class="text">DEVENIR CITY-MAKER</span><i class="fas fa-user-plus"></i></a>
 	                                </div>
 	                            </div>
 	                        </div>
