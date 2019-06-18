@@ -356,11 +356,16 @@
     <div class="col-md-12">
         <label>FORME JURIDIQUE</label>
         <div class="row">
+            {% set data = form.vars.data %}
             {% for choice in form.vars.choices %}
             <div class="col-md-3">
                 <div class="btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-darkblue btn-pill btn-sm btn-block">
+                        {% if data.id is defined and choice.data.id == data.id %}
+                        <input type="checkbox" autocomplete="off"  name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ choice.data }}" checked="checked">{{ choice.data | trim }}
+                        {% else %}
                         <input type="checkbox" autocomplete="off"  name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ choice.data }}">{{ choice.data | trim }}
+                        {% endif %}
                     </label>
                 </div>
             </div>
