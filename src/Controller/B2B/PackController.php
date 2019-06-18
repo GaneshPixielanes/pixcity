@@ -450,7 +450,7 @@ class PackController extends Controller
             'id' => $id,
             'user' => $this->getUser()
         ]);
-        $tax = $optionRepository->findBy(['slug' => 'tax']);
+        $tax = $optionRepository->findBy(['slug' => 'margin']);
 
         $user = $this->getUser();
 
