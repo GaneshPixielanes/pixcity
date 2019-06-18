@@ -340,10 +340,7 @@ class User implements UserInterface, EquatableInterface
      */
         private $userRegion;
 
-        /**
-         * @ORM\OneToMany(targetEntity="App\Entity\Pack", mappedBy="user")
-         */
-        private $packs;
+
 
         /**
          * @ORM\OneToMany(targetEntity="App\Entity\CommunityMedia", mappedBy="user",cascade={"persist"})
@@ -400,7 +397,6 @@ class User implements UserInterface, EquatableInterface
         $this->userMission = new ArrayCollection();
         $this->userActivities = new ArrayCollection();
         $this->userRegion = new ArrayCollection();
-        $this->packs = new ArrayCollection();
         $this->userSkills = new ArrayCollection();
         $this->communityMedia = new ArrayCollection();
         $this->notifications = new ArrayCollection();
