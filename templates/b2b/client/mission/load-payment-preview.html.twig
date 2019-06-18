@@ -1,0 +1,197 @@
+<div class="d-flex w-100">
+    <div class="col-sm-6 p-0">
+        <!-- Client Mission prview contents -->
+        <div class="pack-offer-container col-sm-12 p-0">
+            <div class="pack-offer-content bg-white p-0">
+                <div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
+                    {% if mission.bannerUrl is not null or mission.bannerUrl != '' %}
+                        <img src="{{ mission.bannerUrl }}" class="cover-image w-100 h-100" alt="Pack Cover Image">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300X800?text=Banner Not Available" class="cover-image w-100 h-100" alt="Pack Cover Image"/>
+                    {% endif %}
+                </div>
+                <div class="pack-details p-3">
+                    <div class="pack-overview-container preview col-sm-12 mt-2 mb-4 pb-4">
+                        <p class="text-textgray text-12 mb-0">{{ mission.referencePack.packskill.name }}</p>
+                        <h5 class="text-darkgray mb-3 font-weight-bold">{{ mission.title }}</h5>
+                        <p class="fz-12">
+                            {{ mission.description }}
+                        </p>
+                    </div>
+                    {% if mission.briefFiles is not null or mission.briefFiles != '' %}
+                        <div class="work-documents-container preview col-sm-12 mt-2 mb-4 pb-4">
+                            <h5 class="text-darkblue mb-3">Documents de travail</h5>
+                            <ul class="work-documents-list m-0 p-0">
+                                <li class="work-documents-list-item p-3 d-flex align-items-center justify-content-between bg-lightwhite">
+                                    <p class="mb-0 fz-14"><i class="far fa-file-alt fz-16 mr-2"></i> Brief mission {{ mission.user.firstname }}</p>
+                                    <a href="{{ url('b2b_mission_download',{'id':mission.id}) }}"><i class="fas fa-download fz-16"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                    <div class="financial-infos-container preview col-sm-12 mt-2 mb-4 pb-4">
+                        <h5 class="text-darkblue mb-0">Informations financières</h5>
+                        <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ mission.userMissionPayment.total }}€ TTC</strong> par Lily Bordeaux</p>
+                        <div class="btn-group" role="group" aria-label="">
+                            <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>
+                            <button type="button" class="btn btn-darkblue"><i class="fas fa-download fz-16"></i></button>
+                        </div>
+                    </div>
+{#                    <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">#}
+{#                        <h5 class="text-darkblue mb-3">Zone géographique</h5>#}
+{#                        <ul class="nav nav-pills mb-3 pack-regions nav-justified" id="pack-regions" role="tablist">#}
+{#                            <li class="nav-item pack-region-item mr-3">#}
+{#                                <a class="nav-link active bg-lightwhite text-darkgray py-3 text-left" id="region-01"#}
+{#                                   data-toggle="pill" href="#region01" role="tab" aria-controls="region01"#}
+{#                                   aria-selected="true"><span class="font-weight-bold">Région 1</span> <span class="ml-3">Île#}
+{#                                                        de#}
+{#                                                        France</span></a>#}
+{#                            </li>#}
+{#                            <!-- <li class="nav-item pack-region-item">#}
+{#                                <a class="nav-link bg-lightwhite text-darkgray py-3 text-left" id="region-02" data-toggle="pill"#}
+{#                                    href="#region02" role="tab" aria-controls="region02" aria-selected="false"><span#}
+{#                                        class="font-weight-bold">Région 2</span> <span class="ml-3">Bretagne</span></a>#}
+{#                            </li> -->#}
+{#                        </ul>#}
+{#                        <div class="tab-content" id="pills-tabContent">#}
+{#                            <div class="tab-pane fade show active" id="region01" role="tabpanel" aria-labelledby="region-01">#}
+{#                                <img src="../images/zone-map.jpg" class="img-fluid" alt="Île de France">#}
+{#                            </div>#}
+{#                            <!-- <div class="tab-pane fade" id="region02" role="tabpanel" aria-labelledby="region-02">#}
+{#                                <img src="../images/zone-map.jpg" class="img-fluid" alt="Bretagne">#}
+{#                            </div> -->#}
+{#                        </div>#}
+{#                    </div>#}
+                    <div class="city-maker-container preview col-sm-12 mt-2 mb-4 pb-4">
+                        <h5 class="text-darkblue mb-3">Votre City Maker</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="city-maker-pic rounded-circle mr-4">
+                                <img src="../images/user-avatar.jpg" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="city-maker-info">
+                                <h4 class="mb-0 font-weight-bold">{{ {{ mission.user.firstname }} }}</h4>
+                                <p class="mb-0">@{{ mission.user.firstname }}</p>
+                                <small class="text-normalgray">AQUITAINE - ILE DE FRANCE</small>
+                                <div class="d-flex align-items-center mt-3">
+                                    <div class="cm-publications font-weight-bold fz-16 text-center mr-3">
+                                        6251
+                                        <span class="fz-12 d-block font-weight-normal">
+                                                            publications
+                                                        </span>
+                                    </div>
+                                    <div class="cm-subscribers font-weight-bold fz-16 text-center mr-3">
+                                        10k
+                                        <span class="fz-12 d-block font-weight-normal">
+                                                            abonnés
+                                                        </span>
+                                    </div>
+                                    <div class="cm-subscriptions font-weight-bold fz-16 text-center">
+                                        2891
+                                        <span class="fz-12 d-block font-weight-normal">
+                                                            abonnements
+                                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Client Mission prview contents ends -->
+    </div>
+    <div class="col-sm-6 pl-4 pr-0">
+        <!-- Client mission payment content -->
+        <div class="payment-info sticky-top">
+            <div
+                    class="col-sm-12 payment-heading d-flex align-items-center border-bottom justify-content-between pt-4">
+                <h5 class="font-weight-bold">Payer en ligne</h5>
+                <button type="button" class="close align-self-start" aria-label="Close"
+                        data-toggle="modal" data-target="#cancelMissionPayment">
+                    <i class="far fa-times fz-20"></i>
+                </button>
+            </div>
+            <div class="col-sm-12 border-bottom py-3">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <p class="mb-0">Création de votre compte Google My Business</p>
+                        <small class="fz-10">Je créerai votre compte google My business dans un
+                            délai d’une semaine à compter du paiement</small>
+                    </div>
+                    <div class="col-sm-2 text-right">120.20€</div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-sm-4">
+                        <div class="row mb-2">
+                            <div class="col-sm-6 fz-14">
+                                TVA 20%
+                            </div>
+                            <div class="col-sm-6 text-right">29.80€</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 fz-14">
+                                TOTAL TTC
+                            </div>
+                            <div class="col-sm-6 text-right">312.00€</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <form action="" class="form py-3">
+                    <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <label for="cardholder">Titulaire de la carte</label>
+                            <input name="cardholder" id="cardholder"
+                                   class="form-control bg-lightwhite card-holder-name fz-16" maxlength=""
+                                   type="text" placeholder="John Doe">
+                        </div>
+                        <div class="col-sm-12 mb-3">
+                            <label for="cardnumber">Numéro de carte</label>
+                            <input name="cardnumber" id="cardnumber"
+                                   class="form-control bg-lightwhite card-number fz-16" maxlength="19"
+                                   type="text" placeholder="7625 3658 7361 0009">
+                        </div>
+                        <div class="col-sm-12 mb-3">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label for="expiredate">Expire</label>
+                                    <input name="expiredate" id="expiredate"
+                                           class="form-control bg-lightwhite expire-date fz-16" maxlength=""
+                                           type="text" placeholder="01/2019">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="cvvnumber">CVV</label>
+                                    <input name="cvvnumber" id="cvvnumber"
+                                           class="form-control bg-lightwhite cvv-number fz-16" maxlength=""
+                                           type="text" placeholder="000">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mb-3">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"
+                                       id="customCheckEntre">
+                                <label class="custom-control-label fz-12 text-darkgray"
+                                       for="customCheckEntre">J’ai lu et j’accepte les conditions
+                                    générales de ventes de Pix.city services</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div
+                                    class="d-flex align-items-center justify-content-end position-relative">
+                                <button type="button"
+                                        class="btn btn-white-cancel text-normalgray mr-4"
+                                        data-toggle="modal" data-target="#cancelMissionPayment">Annuler</button>
+                                <button type="button" class="btn btn-darkblue disabled confirm-payment">Payer 149.00€</button>
+                                <button type="button" class="btn btn-darkblue confirm-payment">Payer 149.00€</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- Client mission payment content ends -->
+    </div>
+</div>

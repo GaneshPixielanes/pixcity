@@ -67,6 +67,7 @@ class ClientController extends Controller
     {
         // Get client notifications
         $notifications = $notificationRepo->findBy(['client'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);
+
         //Get missions
         $missions = $missionRepo->findMissionForClient($this->getUser(), MissionStatus::ONGOING);
         //Get proposals
@@ -76,11 +77,14 @@ class ClientController extends Controller
         $mymissions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
         $mymissions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
 
+        $missions_notification = $missionRepo->findBy(['missionAgreedClient' => null, 'client' => $this->getUser()]);
+
         return $this->render('b2b/client/index.html.twig',[
             'notifications' => $notifications,
             'missions' => $missions,
             'proposals' => $proposals,
-            'mymissions' => $mymissions
+            'mymissions' => $mymissions,
+            'missions_notification' => $missions_notification
         ]);
 
     }
@@ -96,6 +100,20 @@ class ClientController extends Controller
 
         return $this->render('b2b/client/mission/load-mission-preview.html.twig',[
             'mission' => $mission
+        ]);
+
+    }
+
+    /**
+     * @Route("preview-payment", name="preview_payment")
+     */
+    public function previewPayment(Request $request,UserMissionRepository $missionRepository){
+
+//        $mission = $missionRepository->find($request->get('id'));
+        $mission = $missionRepository->findBy(['missionAgreedClient' => null, 'id' => $request->get('id')]);
+
+        return $this->render('b2b/client/mission/load-payment-preview.html.twig',[
+            'mission' => $mission[0]
         ]);
 
     }

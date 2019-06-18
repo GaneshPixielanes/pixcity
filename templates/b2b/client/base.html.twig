@@ -323,7 +323,21 @@
                 '.pay-online, .confirm-payment, .retry-payment, .return-to-dashboard, .cancel-payment-confirmation',
                 function (e) {
                     if ($(this).is('.pay-online')) {
-                        $('.dash-left, .dash-right').fadeOut()
+
+                        var id = $(this).attr('data-id');
+                        console.log(id);
+                        $.ajax({
+                            url:"{{ path('b2b_client_main_preview_payment') }}",
+                            type:'GET',
+                            data: {id: id},
+                            dataType:'html',
+                            success: function(data){
+                                $("#preview-payment").html(data);
+                                e.stopImmediatePropagation();
+                                return false;
+                            }
+                        });
+                        $('.dash-left, .dash-right').fadeOut();
                         $('.mission-payment-content').fadeIn();
                     } else if ($(this).is('.confirm-payment')) {
                         $('.mission-payment-content').fadeOut();

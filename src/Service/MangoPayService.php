@@ -15,7 +15,7 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientId = 'azimforexprod';
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-        $this->mangoPayApi->Config->TemporaryFolder = "D:\mangopay";
+        $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
     }
 
@@ -24,7 +24,7 @@ class MangoPayService
         return $this->mangoPayApi->Users->Create($userNatural);
     }
 
-    /**
+    /*
      * Create Mangopay User
      * @return MangopPayUser $mangoUser
      */
@@ -66,7 +66,7 @@ class MangoPayService
         $payIn->PaymentDetails->CardType = "CB_VISA_MASTERCARD";
         $payIn->DebitedFunds = new MangoPay\Money();
         $payIn->DebitedFunds->Currency = "EUR";
-        $payIn->DebitedFunds->Amount = $amount * 100;
+        $payIn->DebitedFunds->Amount = 30 * 100;
         $payIn->Fees = new MangoPay\Money();
         $payIn->Fees->Currency = "EUR";
         $payIn->Fees->Amount = 0;

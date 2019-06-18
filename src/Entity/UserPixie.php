@@ -22,8 +22,7 @@ class UserPixie
     /**
      * @ORM\Column(type="text", length=65535, nullable=true)
      */
-    private $likeText;
-    
+    private $likeText = "";
 
     /**
      * @ORM\Column(type="text", length=65535, nullable=true)
