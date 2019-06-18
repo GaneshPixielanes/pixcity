@@ -57,7 +57,7 @@
                     <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Mon profil</div>
                     <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">{{ app.user.userMission | length }} mission en cours</a>
                 </div>
-                {% if proposals | length > 0 and missions | length > 0  %}
+
                 <div class="col-md-12 tab-pane-content p-4" data-simplebar>
 {#                    <div class="col-md-12 content-top-header">#}
 {#                        <h4 class="mb-0 font-weight-bold">Bienvenue {{ app.user.firstName }}</h4>#}
@@ -191,27 +191,7 @@
 
                     <!-- mission ongoing accepted and ongoing section ends  -->
                 </div>
-                {% else %}
 
-                    <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
-                        <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
-                            <div class="w-60">
-                                <img class="img-fluid" src="/images/dash-home-empty.png" alt="Dashboard Home">
-                            </div>
-                            <h4 class="mt-4 text-darkblue">Bien débuter sur Pix.city services </h4>
-                            <p> Bienvenue sur votre espace city maker Services !
-                                Retrouvez ici toutes les informations concernant vos packs, vos missions en
-                                cours et votre facturation.
-                            </p>
-                            <p> La prochaine étape est de détailler vos compétences en créant vos packs (un pack
-                                est une compétence détaillée avec un tarif).</p>
-                            <div class="col-sm-12 d-flex align-items-center justify-content-center my-4">
-                                <a href="{{ path('b2b_client_search_index') }}" class="btn btn-darkblue fz-14"><i class="fas fa-search fz-20 mr-2"></i>Trouver un City-Maker</a>
-                            </div>
-                        </div>
-                    </div>
-
-                {% endif %}
             </div>
 
             <!-- my mission -->

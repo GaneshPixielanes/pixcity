@@ -91,7 +91,7 @@ class ClientController extends Controller
         $mymissions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
         $mymissions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
 
-        $missions_notification = $missionRepo->findBy(['missionAgreedClient' => null, 'client' => $this->getUser()]);
+        $missions_notification = $missionRepo->findBy(['client' => $this->getUser()]);
 
         return $this->render('b2b/client/index.html.twig',[
             'notifications' => $notifications,
