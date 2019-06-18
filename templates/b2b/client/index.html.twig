@@ -100,13 +100,14 @@
 
 
                         {% endfor %}
-
+                        {% if notifications | length > 2 %}
                         <div class="w-100 text-center my-4 show-more">
                             <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Voir tout</a>
                         </div>
                         <div class="w-100 text-center my-4 show-less">
                             <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Reduire</a>
                         </div>
+                        {% endif %}
 
                     </div>
                     <!-- all notification end here -->

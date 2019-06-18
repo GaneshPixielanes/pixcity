@@ -67,8 +67,7 @@ class MangoPayService
         $payIn->PaymentDetails->CardType = "CB_VISA_MASTERCARD";
         $payIn->DebitedFunds = new MangoPay\Money();
         $payIn->DebitedFunds->Currency = "EUR";
-        $payIn->DebitedFunds->Amount = (integer)$amount;
-        $payIn->DebitedFunds->Amount = 30 * 100;
+        $payIn->DebitedFunds->Amount = $amount;
         $payIn->Fees = new MangoPay\Money();
         $payIn->Fees->Currency = "EUR";
         $payIn->Fees->Amount = 0;

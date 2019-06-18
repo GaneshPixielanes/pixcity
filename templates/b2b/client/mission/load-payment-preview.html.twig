@@ -31,11 +31,11 @@
                     {% endif %}
                     <div class="financial-infos-container preview col-sm-12 mt-2 mb-4 pb-4">
                         <h5 class="text-darkblue mb-0">Informations financières</h5>
-                        <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ mission.userMissionPayment.total }}€ TTC</strong> par Lily Bordeaux</p>
-                        <div class="btn-group" role="group" aria-label="">
-                            <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>
-                            <button type="button" class="btn btn-darkblue"><i class="fas fa-download fz-16"></i></button>
-                        </div>
+                        <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ mission.userMissionPayment.total }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
+{#                        <div class="btn-group" role="group" aria-label="">#}
+{#                            <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>#}
+{#                            <button type="button" class="btn btn-darkblue"><i class="fas fa-download fz-16"></i></button>#}
+{#                        </div>#}
                     </div>
 {#                    <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">#}
 {#                        <h5 class="text-darkblue mb-3">Zone géographique</h5>#}
@@ -66,32 +66,34 @@
                         <h5 class="text-darkblue mb-3">Votre City Maker</h5>
                         <div class="d-flex align-items-center">
                             <div class="city-maker-pic rounded-circle mr-4">
-                                <img src="../images/user-avatar.jpg" class="img-fluid rounded-circle" alt="">
+                                <img src="{{ mission.user.getAvatarUrl }}" class="img-fluid rounded-circle" alt="">
                             </div>
                             <div class="city-maker-info">
-                                <h4 class="mb-0 font-weight-bold">{{ {{ mission.user.firstname }} }}</h4>
+                                <h4 class="mb-0 font-weight-bold">{{ mission.user.firstname }}</h4>
                                 <p class="mb-0">@{{ mission.user.firstname }}</p>
                                 <small class="text-normalgray">AQUITAINE - ILE DE FRANCE</small>
+                                {% if mission.user.userInstagramDetailsApi is not null %}
                                 <div class="d-flex align-items-center mt-3">
                                     <div class="cm-publications font-weight-bold fz-16 text-center mr-3">
-                                        6251
+                                        {{ mission.user.userInstagramDetailsApi.noOfPosts }}
                                         <span class="fz-12 d-block font-weight-normal">
                                                             publications
                                                         </span>
                                     </div>
                                     <div class="cm-subscribers font-weight-bold fz-16 text-center mr-3">
-                                        10k
+                                        {{ mission.user.userInstagramDetailsApi.noOfFollowers }}
                                         <span class="fz-12 d-block font-weight-normal">
                                                             abonnés
                                                         </span>
                                     </div>
                                     <div class="cm-subscriptions font-weight-bold fz-16 text-center">
-                                        2891
+                                        {{ mission.user.userInstagramDetailsApi.noOfFollowed }}
                                         <span class="fz-12 d-block font-weight-normal">
                                                             abonnements
                                                         </span>
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -114,81 +116,84 @@
             <div class="col-sm-12 border-bottom py-3">
                 <div class="row">
                     <div class="col-sm-10">
-                        <p class="mb-0">Création de votre compte Google My Business</p>
-                        <small class="fz-10">Je créerai votre compte google My business dans un
-                            délai d’une semaine à compter du paiement</small>
+                        <p class="mb-0">{{ mission.title }}</p>
+                        <small class="fz-10">{{ mission.description }}</small>
                     </div>
-                    <div class="col-sm-2 text-right">120.20€</div>
+                    <div class="col-sm-2 text-right">{{ mission.userMissionPayment.userBasePrice }}€</div>
                 </div>
                 <div class="row justify-content-end">
                     <div class="col-sm-4">
                         <div class="row mb-2">
                             <div class="col-sm-6 fz-14">
-                                TVA 20%
+                                TVA {{  mission.userMissionPayment.taxPercentage }}%
                             </div>
-                            <div class="col-sm-6 text-right">29.80€</div>
+                            <div class="col-sm-6 text-right">{{ mission.userMissionPayment.taxValue }} €</div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6 fz-14">
+                                Transaction fees
+                            </div>
+                            <div class="col-sm-6 text-right">{{ mission.userMissionPayment.transactionFee }} €</div>
+                        </div><div class="row">
+                            <div class="col-sm-6 fz-14">
                                 TOTAL TTC
                             </div>
-                            <div class="col-sm-6 text-right">312.00€</div>
+                            <div class="col-sm-6 text-right">{{ mission.userMissionPayment.total }} €</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12">
-                <form action="" class="form py-3">
+                <div class="form py-3">
                     <div class="row">
-                        <div class="col-sm-12 mb-3">
-                            <label for="cardholder">Titulaire de la carte</label>
-                            <input name="cardholder" id="cardholder"
-                                   class="form-control bg-lightwhite card-holder-name fz-16" maxlength=""
-                                   type="text" placeholder="John Doe">
-                        </div>
-                        <div class="col-sm-12 mb-3">
-                            <label for="cardnumber">Numéro de carte</label>
-                            <input name="cardnumber" id="cardnumber"
-                                   class="form-control bg-lightwhite card-number fz-16" maxlength="19"
-                                   type="text" placeholder="7625 3658 7361 0009">
-                        </div>
-                        <div class="col-sm-12 mb-3">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <label for="expiredate">Expire</label>
-                                    <input name="expiredate" id="expiredate"
-                                           class="form-control bg-lightwhite expire-date fz-16" maxlength=""
-                                           type="text" placeholder="01/2019">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label for="cvvnumber">CVV</label>
-                                    <input name="cvvnumber" id="cvvnumber"
-                                           class="form-control bg-lightwhite cvv-number fz-16" maxlength=""
-                                           type="text" placeholder="000">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 mb-3">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"
-                                       id="customCheckEntre">
-                                <label class="custom-control-label fz-12 text-darkgray"
-                                       for="customCheckEntre">J’ai lu et j’accepte les conditions
-                                    générales de ventes de Pix.city services</label>
-                            </div>
-                        </div>
+{#                        <div class="col-sm-12 mb-3">#}
+{#                            <label for="cardholder">Titulaire de la carte</label>#}
+{#                            <input name="cardholder" id="cardholder"#}
+{#                                   class="form-control bg-lightwhite card-holder-name fz-16" maxlength=""#}
+{#                                   type="text" placeholder="John Doe">#}
+{#                        </div>#}
+{#                        <div class="col-sm-12 mb-3">#}
+{#                            <label for="cardnumber">Numéro de carte</label>#}
+{#                            <input name="cardnumber" id="cardnumber"#}
+{#                                   class="form-control bg-lightwhite card-number fz-16" maxlength="19"#}
+{#                                   type="text" placeholder="7625 3658 7361 0009">#}
+{#                        </div>#}
+{#                        <div class="col-sm-12 mb-3">#}
+{#                            <div class="row">#}
+{#                                <div class="col-sm-6">#}
+{#                                    <label for="expiredate">Expire</label>#}
+{#                                    <input name="expiredate" id="expiredate"#}
+{#                                           class="form-control bg-lightwhite expire-date fz-16" maxlength=""#}
+{#                                           type="text" placeholder="01/2019">#}
+{#                                </div>#}
+{#                                <div class="col-sm-6">#}
+{#                                    <label for="cvvnumber">CVV</label>#}
+{#                                    <input name="cvvnumber" id="cvvnumber"#}
+{#                                           class="form-control bg-lightwhite cvv-number fz-16" maxlength=""#}
+{#                                           type="text" placeholder="000">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="col-sm-12 mb-3">#}
+{#                            <div class="custom-control custom-checkbox">#}
+{#                                <input type="checkbox" class="custom-control-input"#}
+{#                                       id="customCheckEntre">#}
+{#                                <label class="custom-control-label fz-12 text-darkgray"#}
+{#                                       for="customCheckEntre">J’ai lu et j’accepte les conditions#}
+{#                                    générales de ventes de Pix.city services</label>#}
+{#                            </div>#}
+{#                        </div>#}
                         <div class="col-sm-12">
-                            <div
-                                    class="d-flex align-items-center justify-content-end position-relative">
+                            <div class="d-flex align-items-center justify-content-end position-relative">
                                 <button type="button"
                                         class="btn btn-white-cancel text-normalgray mr-4"
                                         data-toggle="modal" data-target="#cancelMissionPayment">Annuler</button>
-                                <button type="button" class="btn btn-darkblue disabled confirm-payment">Payer 149.00€</button>
-                                <button type="button" class="btn btn-darkblue confirm-payment">Payer 149.00€</button>
+{#                                <button type="button" class="btn btn-darkblue disabled confirm-payment">Payer 149.00€</button>#}
+                                <a href="{{ url("b2b_client_mission_process_mission_request", {'id': mission.id}) }}" class="btn btn-darkblue">Payer {{ mission.userMissionPayment.total }} €</a>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
 
         </div>
