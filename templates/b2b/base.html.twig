@@ -23,11 +23,17 @@
         /* custom per page scripts */
 
         $(document).ready(function () {
+            $(document).on('click','.close-preview', function () {
+                $('.close').trigger('click');
+                $('.close-preview-edit').trigger('click');
+            });
             /* Skills Pack Buttons */
             $('body').on('click','a.skills-pack',function(){
                 // e.preventDefault();
                 $(this).parent('li').siblings().find('a').removeClass('active');
                 $(this).addClass('active');
+                $(this).parent('li').find('input[type="radio"]').prop('checked',true);
+                $(this).parent('li').find('input[type="radio"]').attr('checked','checked');
             });
 
             /* Restrict maxlengths for input and textarea fields */

@@ -3,6 +3,7 @@
 namespace App\Controller\B2B;
 
 use App\Entity\CommunityMeida;
+use App\Entity\Option;
 use App\Entity\Page;
 use App\Entity\UserMission;
 use App\Entity\UserPackMedia;
@@ -181,7 +182,6 @@ class PackController extends Controller
 
         if($form->isSubmitted())
         {
-
             if($user->getB2bCmApproval() == 0 or $pack === null){
 
                 $this->addFlash(
@@ -284,7 +284,7 @@ class PackController extends Controller
 
         $images = $user->getCommunityMedia();
 
-        return $this->render('b2b/pack/form.html.twig',[
+        return $this->render('b2b/pack/form_backup.html.twig',[
             'form' => $form->createView(),
             'pack' => $pack,
             'page' => $page,
@@ -441,6 +441,128 @@ class PackController extends Controller
 
     }
 
+    /**
+     * @Route("/edit-pack/{id}",name="edit_pack")
+     */
+    public function editPack($id = null, UserPacksRepository $packRepo, Request $request, OptionRepository $optionRepository ,Filesystem $filesystem)
+    {
+        $pack = $packRepo->findOneBy([
+            'id' => $id,
+            'user' => $this->getUser()
+        ]);
+        $tax = $optionRepository->findBy(['slug' => 'tax']);
 
+        $user = $this->getUser();
+
+        if(is_null($pack))
+        {
+            return JsonResponse::create(['You are not authorized for this action']);
+        }
+        $form = $this->createForm(PackType::class, $pack);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()) {
+            if ($user->getB2bCmApproval() == 0 or $pack === null) {
+
+                $this->addFlash(
+                    'error',
+                    'You cant create or edit the pack!'
+                );
+                return $this->redirectToRoute('b2b_pack_list');
+            }
+
+            $em = $this->getDoctrine()->getManager();
+
+//            if ($request->get('banner')) {
+//                $pack->setBannerImage($request->get('banner'));
+//            }
+            $base_price = $request->get('pack')['userBasePrice'];
+            $tax = $tax[0]->getValue();
+
+            $margin = $base_price * $tax / 100;
+
+            $total_value = $margin + $base_price;
+            $pack->setMarginPercentage($tax);
+            $pack->setMarginValue($margin);
+            $pack->setTotalPrice($total_value);
+
+            $em->persist($pack);
+            $em->flush();
+
+            $files = explode(',', $request->get('attached_files'));
+
+            if ($files[0] != '') {
+
+                foreach ($files as $file) {
+                    $file = trim($file);
+
+                    $em = $this->getDoctrine()->getManager();
+
+                    if ($filesystem->exists('uploads/pack/temp/' . $file)) {
+                        if (!$filesystem->exists('uploads/pack/' . $pack->getId() . '/' . $file)) {
+                            $mediaEntity = new UserPackMedia();
+                            $mediaEntity->setName($file);
+                            $mediaEntity->setUserPack($pack);
+
+                            $em->persist($mediaEntity);
+                            $em->flush();
+
+                            $filesystem->copy('uploads/pack/temp/' . $file, 'uploads/pack/' . $pack->getId() . '/' . $file);
+
+                        }
+                    }
+
+
+                }
+
+            }
+
+            if ($request->get('cm_images')) {
+
+                foreach ($request->get('cm_images') as $key => $item) {
+
+                    $image = explode('/', $item);
+
+
+                    if ($filesystem->exists('uploads/community_media/' . $user->getId() . '/' . $image[4])) {
+                        if (!$filesystem->exists('uploads/pack/' . $pack->getId() . '/' . $image[4])) {
+
+                            $mediaEntity = new UserPackMedia();
+                            $mediaEntity->setName($image[4]);
+                            $mediaEntity->setUserPack($pack);
+
+                            $em->persist($mediaEntity);
+                            $em->flush();
+
+                            $filesystem->copy('uploads/community_media/' . $user->getId() . '/' . $image[4], 'uploads/pack/' . $pack->getId() . '/' . $image[4]);
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            return new JsonResponse(['success' => true]);
+        }
+
+        return $this->render('b2b/pack/form.html.twig',
+            [
+               'form' => $form->createView(),
+               'pack' => $pack
+            ]);
+    }
+
+
+    /**
+     * @Route("/success", name="success")
+     */
+    public function success()
+    {
+        return $this->render('b2b/pack/success.html.twig');
+    }
 
 }

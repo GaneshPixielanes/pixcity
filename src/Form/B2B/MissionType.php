@@ -46,9 +46,10 @@ class MissionType extends AbstractType
             }
         }
         $builder
-            ->add('title',TextType::class)
+            ->add('title',TextType::class,['label' => false])
             ->add('description', TextareaType::class,[
-                'attr' => ['maxlength' => 100]
+                'attr' => ['maxlength' => 100],
+                'label' => false
             ])
             ->add('client',EntityType::class,[
                 'class' => Client::class,
@@ -76,6 +77,16 @@ class MissionType extends AbstractType
             ])
             ->add('bannerImage', HiddenType::class)
             ->add('briefFiles', HiddenType::class)
+            ->add('documents',CollectionType::class,
+                [
+                    'required' => true,
+                    'entry_type' => MissionDocumentType::class,
+                    'entry_options' => ['label' => false],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'error_bubbling' => false,
+                    'by_reference' => false
+                ])
             ->add('missionBasePrice', TextType::class)
 //            ->add('dueDate', DateType::class)
 //            ->add('conditionsAgreed', ChoiceType::class,[

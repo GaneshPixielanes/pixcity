@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+
+    <meta charset="utf-8" />
+    <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Fonts -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/fonts/fontawesome/css/all.min.css') }}" />
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
+    <!-- Site CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
+
+    {% block stylesheets %}{% endblock %}
+    <!-- Scripts -->
+    <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
+    <!-- <script src="js/app.js"></script> -->
+    <script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
+    <script src="{{ absolute_url('/assets/js/jquery-validation/dist/jquery.validate.js') }}"></script>
+</head>
+<body>
+{% block body %}{% endblock %}
+
+{% block javascripts %}{% endblock %}
+<script>
+    /* Restrict maxlengths for input and textarea fields */
+    $('body').on("input",'textarea.pack-description, input.pack-title', function () {
+        var maxlength = $(this).attr("maxlength");
+        var currentLength = $(this).val().length;
+
+        $(this).next().find('.inputlength').text(currentLength)
+        if (currentLength >= maxlength) {
+            //         console.log("You have reached the maximum number of characters.");
+            $(this).next('.text-textgray').append(
+                `<span class="text-error ml-2">You have reached the maximum number of characters allowed.</span>`
+            );
+        } else if (currentLength < maxlength) {
+            //         console.log(maxlength - currentLength + " chars left");
+            $(this).next('.text-textgray').find('.text-error').fadeOut('fast');
+        }
+    });
+    /* custom per page scripts */
+    /* Step Animations for the mission creation */
+    $(document).on('click', '#toStep2, #toStep3, #toStep4', function(e){
+        if ($(this).is('#toStep2')) {
+            $('.step-1').animate({
+                    left: '-150%'},
+                400, function() {
+                    $('.step-2').css({
+                        left: '0'
+                    });
+                    $('.step-1').hide();
+                })
+            window.scrollTo(0, 0);
+            $('.step-2').fadeIn(600);
+        }
+        else if ($(this).is('#toStep3')) {
+            $('.step-2').animate({
+                    left: '-150%'},
+                400, function() {
+                    $('.step-3').css({
+                        left: '0'
+                    });
+                    $('.step-2').hide();
+                });
+            window.scrollTo(0, 0);
+            $('.step-3').fadeIn(600);
+        }
+        else if ($(this).is('#toStep4')) {
+            $.ajax($('#api-box').attr('data-api-route'),
+            {
+                type: 'POST',
+                data: $('[name="mission"]').serialize(),
+                success: function (result) {
+                    if(result.success == true)
+                    {
+
+                        $('.step-3').animate({
+                                left: '-150%'},
+                            400, function() {
+                                $('.step-4').css({
+                                    left: '0'
+                                });
+                                $('.step-3').hide();
+                            });
+                        window.scrollTo(0, 0);
+                        $('.step-4').fadeIn(600);
+                    }
+                    else
+                    {
+                        alert(result);
+                    }
+
+                }
+            });
+
+        }
+    });
+    /* Select Client and packs in the step one */
+
+    /* pack/mission creation/preview/edit invoke */
+    $(document).on('click',
+        '.close-mission-preview, .edit-the-mission, .preview-mission, .save-changes',
+        function (e) {
+            if ($(this).is('.preview-mission')) {
+                $('.create-mission-page .edit').fadeOut();
+                $('.create-mission-page .preview').fadeIn();
+                $(this).add($(this).parents('.bottom-info-status').find('.client-infos, .create-the-mission')).addClass('d-none');
+                $(this).parents('.bottom-info-status').find('.close-mission-preview, .next-step, .user-infos')
+                    .removeClass('d-none')
+                $('.preview-mission-toast').toast('show').css({
+                    'z-index': '1031'
+                });
+            } else if ($(this).is('.close-mission-preview')) {
+                $('.preview-mission-toast').toast('hide');
+                $('.create-mission-page .preview').fadeOut();
+                $('.create-mission-page .edit').fadeIn();
+                $(this).parents('.bottom-info-status').find('.close-mission-preview, .next-step, .user-infos')
+                    .addClass('d-none')
+                $(this).parents('.bottom-info-status').find('.client-infos, .preview-mission, .create-the-mission')
+                    .removeClass('d-none');
+            } else if ($(this).is('.close-mission-preview')) {
+
+            }
+        });
+    $(document).on('input change focus',
+        '.pack-creation-content input, .pack-creation-content textarea, .create-mission-page input, .create-mission-page textarea, .mission-edition-content input, .mission-edition-content textarea',
+        function () {
+            $(this).parents(
+                '.pack-creation-content, .mission-edition-content, .create-mission-page').find(
+                '.save-changes').removeClass('disabled')
+        });
+    /* pack/mission creation/preview/edit invoke ends */
+    /* toasts initialization */
+    $('.toast').toast();
+    $(document).on('hidden.bs.toast', function () {
+        $('.toast').css({
+            'z-index': ''
+        })
+    });
+    /* toasts ends */
+</script>
+</body>
+</html>

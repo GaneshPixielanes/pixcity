@@ -27,7 +27,7 @@ class UserMission
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="userMission")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="userMission", cascade={"persist"})
      */
     private $client;
 
@@ -131,11 +131,18 @@ class UserMission
      * @ORM\OneToMany(targetEntity="App\Entity\ClientTransaction", mappedBy="mission")
      */
     private $clientTransactions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MissionDocument", mappedBy="mission",cascade={"persist"})
+     */
+    private $documents;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
         $this->missionMedia = new ArrayCollection();
         $this->clientTransactions = new ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
     protected function datePath(){
@@ -155,7 +162,7 @@ class UserMission
     }
 
     public function getBriefUrl(){
-        return "uploads/".UserMission::UPLOAD_FOLDER.'/'.$this->getId()."/".$this->getBriefFiles();
+        return "uploads/".UserMission::UPLOAD_FOLDER.'/'.$this->getId()."/";
     }
 
     public function getId(): ?int
@@ -472,6 +479,37 @@ class UserMission
             // set the owning side to null (unless already changed)
             if ($clientTransaction->getMissionRequest() === $this) {
                 $clientTransaction->setMissionRequest(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MissionDocument[]
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(MissionDocument $document): self
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents[] = $document;
+            $document->setMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(MissionDocument $document): self
+    {
+        if ($this->documents->contains($document)) {
+            $this->documents->removeElement($document);
+            // set the owning side to null (unless already changed)
+            if ($document->getMission() === $this) {
+                $document->setMission(null);
             }
         }
 
