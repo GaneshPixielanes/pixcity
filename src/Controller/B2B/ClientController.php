@@ -77,7 +77,7 @@ class ClientController extends Controller
         $missions = $missionRepo->findMissionForClient($this->getUser(), MissionStatus::ONGOING);
         //Get proposals
         $proposals = $proposalRepo->findBy(['client' => $this->getUser()],['id'=>'DESC'],8);
-
+//        dd($proposals);
         $mymissions['ongoing'] = $missionRepo->findOngoingMissions($this->getUser(),'client');
         $mymissions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
         $mymissions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
