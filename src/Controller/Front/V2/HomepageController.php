@@ -33,7 +33,6 @@ class HomepageController extends Controller
                                      CardCategoryRepository $categoriesRepo,
                                      CardProjectRepository $cardProjectRepository
     ){
-//        YEah! commit is here , click it DO you want me to commit it? yes Ok!
         $page = $pagesRepo->findOneBySlug("accueil");
         $regions = $pagesCategoriesRepo->findAllActive();
         $coordinates = [];
