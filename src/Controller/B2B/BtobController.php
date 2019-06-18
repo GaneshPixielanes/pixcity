@@ -36,15 +36,13 @@ class BtobController extends AbstractController{
         $packs = $packRepo->findByUser($user);
 
         #Missions listed by the user
-        $missions['ongoing'] = $missionRepo->findOngoingMissions($this->getUser());
-        $missions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()],[],['id' => 'DESC']);
-        $missions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()],[],['id' => 'DESC']);
+        $missions = $missionRepo->findBy(['user' => $this->getUser()]);
 
         return $this->render('b2b/index.html.twig',[
             'notifications' => $notifications,
             'packs' => $packs,
             'missions' => $missions,
-            'tax' =>  $optionRepo->findBy(['slug' => 'tax'])[0]
+            'tax' =>  $optionRepo->findBy(['slug' => 'margin'])[0]
         ]);
     }
 

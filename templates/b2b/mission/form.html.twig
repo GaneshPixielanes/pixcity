@@ -91,7 +91,7 @@
                                     {{ form_row(form.missionBasePrice) }}
 
 
-                                    <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
+                                    <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4" style="display:none">
                                         <h5 class="text-darkgray mb-0">Photos</h5>
                                         <div class="pack-photos">
                                             <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
@@ -563,6 +563,13 @@
                 $('#mission-images-display')
                     .find('input:last')
                     .val(response.fileName).attr('data-filename', file.upload.filename);
+
+                $('.pack-photos-list').html('');
+                $.each($('.dz-image > img'), function(val, element){
+
+                    $('.pack-photos-list').append('<li class="pack-photos-list-item d-inline-flex"><img src="'+$(element).attr('src')+'" /></li>')
+
+                });
             },
             removedfile: function (file) {
                 $('input[data-filename="' + file.upload.filename + '"]').remove();
@@ -582,6 +589,12 @@
             e.preventDefault();
             $('#brief-file-upload').trigger('click');
 
+        });
+
+        $(document).on('change','.selectpicker', function () {
+            console.log();
+            $('a[data-original-title]').removeClass('active');
+            $('a[data-original-title="'+$('.selectpicker option:selected').text()+'"]').addClass('active');
         });
     </script>
 {% endblock %}

@@ -84,3 +84,29 @@
         {% endif %}
 
 {% endmacro %}
+
+{% macro listPacks(pack) %}
+    <li class="package-list-item package-item d-flex align-items-center bg-white text-darkgray shadow-sm {{ pack.packSkill.slug }}" data-id="{{ pack.id }}">
+        <img class="col-1 p-0" src="{{ asset('/uploads/pack/banner/'~pack.bannerImage) | imagine_filter('pack_thumb_small')}}"
+             alt="" style="height:100px;width: 100px;">
+        <p class="mb-0 px-3 flex-grow-1 pack-title" data-id="{{ pack.id }}">{{ pack.title }} </p>
+        <p class="mb-0 col-3"><i class="fas {{ pack.packSkill.icon }} mr-1"></i> {{ pack.packSkill }}
+        </p>
+        <a href="javascript:;" class="btn btn-darkblue col-2 fz-12 edit-the-pack"
+           data-id="{{ pack.id }}">Éditer le pack</a>
+        <div class="dropdown">
+            <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false"
+               id="packOptions"></i>
+            <div class="dropdown-menu" aria-labelledby="packOptions">
+                <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i
+                            class="far fa-paper-plane mr-2"></i>
+                    Partager</a>
+                <a class="dropdown-item text-pink fz-12 delete-pack" href="javascript:;" data-toggle="modal"
+                   data-target="#removePackConfirmation" data-id="{{ pack.id }}"><i class="far fa-times-circle mr-2"></i>
+                    Supprimer le
+                    pack</a>
+            </div>
+        </div>
+    </li>
+{% endmacro %}
