@@ -14,7 +14,7 @@
     <div class="card col-sm-15 01-hotspot">
         <div class="inner" style="{% if card.thumb %}background-image: url({{ card.thumb.getUrl() }}){% endif %}">
             <div class="alignBottom">
-                <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}">{{ card.name }}</a>
+                <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}" title="{{ card.name }}">{{ card.name }}</a>
                 <form action="{{ path('front_search_index') }}">
                     <input type="hidden" name="regions[]" value="{{ card.region.slug }}">
                     <button type="submit" class="regionName">{{ card.region }}</button>
