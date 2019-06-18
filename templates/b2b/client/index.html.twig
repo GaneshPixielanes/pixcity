@@ -57,7 +57,7 @@
                     <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Mon profil</div>
                     <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">{{ app.user.userMission | length }} mission en cours</a>
                 </div>
-                {% if proposals | length > 1 and missions | length > 1  %}
+                {% if proposals | length > 0 and missions | length > 0  %}
                 <div class="col-md-12 tab-pane-content p-4" data-simplebar>
 {#                    <div class="col-md-12 content-top-header">#}
 {#                        <h4 class="mb-0 font-weight-bold">Bienvenue {{ app.user.firstName }}</h4>#}
@@ -107,7 +107,7 @@
                     <!-- all notification end here -->
 
 
-                    {% if proposals | length > 1   %}
+                    {% if proposals | length > 0   %}
                     <!-- Last profiles consulted slider section -->
                         <div class="col-md-12 content-top-header">
                             <h4 class="mb-3">Les derniers profils consultés</h4>
