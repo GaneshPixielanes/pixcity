@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+
+    <meta charset="utf-8" />
+    <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Fonts -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/fonts/fontawesome/css/all.min.css') }}" />
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
+    <!-- Site CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
+
+    {% block stylesheets %}{% endblock %}
+    <!-- Scripts -->
+    <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
+    <!-- <script src="js/app.js"></script> -->
+    <script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
+    <script>
+        /* custom per page scripts */
+
+        $(document).ready(function () {
+            /* Skills Pack Buttons */
+            $('body').on('click','a.skills-pack',function(){
+                // e.preventDefault();
+                $(this).parent('li').siblings().find('a').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            /* Restrict maxlengths for input and textarea fields */
+            $('body').on("input",'textarea.pack-description, input.pack-title', function () {
+                var maxlength = $(this).attr("maxlength");
+                var currentLength = $(this).val().length;
+
+                $(this).next().find('.inputlength').text(currentLength)
+                if (currentLength >= maxlength) {
+                    //         console.log("You have reached the maximum number of characters.");
+                    $(this).next('.text-textgray').append(
+                        `<span class="text-error ml-2">You have reached the maximum number of characters allowed.</span>`
+                    );
+                } else if (currentLength < maxlength) {
+                    //         console.log(maxlength - currentLength + " chars left");
+                    $(this).next('.text-textgray').find('.text-error').fadeOut('fast');
+                }
+            });
+
+            /* Filter packages script */
+            /* $(document).on('click', '.filter-packages  input[type="checkbox"]', function () {
+                $(this).parents('.content-top-header').next().find('.package-list-item')
+                    .removeClass('d-flex').fadeOut('fast');
+
+                var $packlist = $(this).parents('.content-top-header').next().find(
+                    '.package-list-item'),
+                    filter = [];
+                $(this).parents('.filter-packages').find('input[type="checkbox"]:checked')
+                    .each(function () {
+                        var packtype = $(this).val();
+                        filter.push('.' + packtype);
+                    })
+                if (filter.length == 0) {
+                    $packlist.addClass('d-flex').fadeIn();
+                    $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.length);
+                } else {
+                    $packlist.filter(filter.join(',')).addClass('d-flex').fadeIn();
+                    $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.filter(filter.join(',')).length);
+                }
+            }) */
+            function filterPackages(thisObj) {
+                $(thisObj).parents('.content-top-header').next().find('.package-list-item')
+                    .removeClass('d-flex').fadeOut('fast');
+
+                var $packlist = $(thisObj).parents('.content-top-header').next().find(
+                    '.package-list-item'),
+                    filter = [];
+                $(thisObj).parents('.filter-packages').find('input[type="checkbox"]:checked')
+                    .each(function () {
+                        var packtype = $(this).val();
+                        filter.push('.' + packtype);
+                    })
+                console.log(filter);
+                if (filter.length == 0) {
+                    $packlist.addClass('d-flex').fadeIn();
+                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                        .length);
+                } else {
+                    $(thisObj).parents('.content-top-header').next().find(
+                        '.package-list-item').filter(filter.join(',')).addClass('d-flex').fadeIn();
+                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                        .filter(filter.join(',')).length);
+                }
+            }
+
+            $('.filter-packages input[type="checkbox"]').click(function () {
+                filterPackages($(this))
+            });
+            /* $('.filter-packages label input[type="radio"]').click(function () {
+                // fetch the class of the clicked item
+                var activeFilter = $(this).attr('value'),
+                    availablePacksList = $(this).parents('.tab-pane-content').find(
+                        '.available-packages-list'),
+                    availablePacks = availablePacksList.children('li.' + activeFilter).length;
+                // reset the active class on all the buttons
+                $('.filter-packages label').removeClass('active');
+                // update the active state on our clicked button
+                $(this).parent().addClass('active');
+                // $('.add-package-to-list').addClass(activeFilter);
+                if (activeFilter == 'all') {
+                    // show all our items
+                    availablePacksList.children('li.package-list-item').addClass('d-flex').show();
+                } else {
+                    // hide all elements that don't share activeFilter
+                    availablePacksList.children('li:not(.' + activeFilter + ')').removeClass('d-flex')
+                        .hide();
+                    // show all elements that do share activeFilter
+                    availablePacksList.children('li.add-package-to-list, li.' + activeFilter).addClass(
+                        'd-flex').show();
+                    $(this).parents('.tab-pane-content').find('.total-packs-available').text(
+                        availablePacks);
+                }
+                return false;
+            }); */
+            /* Filter packages script ends */
+
+            /* Images drop zone */
+            /* $('.dropzone .dz-default').html(`<div class="row"><div class="col-md-12 mb-4 upload-area"><div class="area-label text-center p-4"><i class="fas fa-cloud-upload-alt"></i><p>Déposez vos images ici</p><a href="javascript:;">Depuis votre navigateur</a></div></div></div>`); */
+            $('.dropzone .dz-default').html(`
+                <div class="upload-area mb-4">
+                    <div class="area-label text-center p-4">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p class="mb-0">Déposez vos images ici</p>
+                        <a href="javascript:;">Depuis votre navigateur</a>
+                    </div>
+                </div>
+            `);
+
+            /* Show only two notifications on load */
+            $('.alert-notifications .alert').not(':lt(2)').removeClass('d-flex').hide();
+            if($('.alert-notifications .alert').length > 2 ){
+                $('.alert-notifications .show-less').hide();
+                $('.alert-notifications .show-more').show();
+            }
+            /* Show only two notifications on load ends */
+            /* Show all/less notifications on click */
+            $(document).on('click', '.show-more a, .show-less a', function(){
+                if($(this).is('.show-less a')) {
+                    $(this).parent('.show-less').hide()
+                    $(this).parent('.show-less').siblings('.show-more').fadeIn()
+                    $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').removeClass('d-flex').slideUp();
+                } else if ($(this).is('.show-more a')) {
+                    $(this).parent('.show-more').hide()
+                    $(this).parent('.show-more').siblings('.show-less').fadeIn()
+                    $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').addClass('d-flex').slideDown();
+                }
+            })
+            /* Show all/less notifications on click ends */
+
+            /* pack/mission creation/preview/edit invoke */
+            $(document).on('click', '.add-package, .preview-edit-mission, .edit-the-pack', function () {
+                if ($(this).is('.add-package, .edit-the-pack')) {
+                    $('.dash-right').fadeOut()
+                    $('.pack-creation-edition-container').fadeIn()
+                } else if ($(this).is('.preview-edit-mission')) {
+                    $('.dash-right').fadeOut()
+                    $.ajax('/community-manager/mission/edit/'+$(this).attr('data-id'),
+                        {
+                            type: 'GET',
+                            success:function(result)
+                            {
+                                $('#mission-edit-container').html(result);
+                                $('.mission-edition-container').fadeIn();
+
+                            }
+                        });
+
+
+                }
+            });
+            $(document).on('click', '.close-preview-edit',
+                function () {
+                    $(this).parents('[class*="edition-container"]').fadeOut()
+                    $(this).parents('[class*="edition-container"]').siblings('.dash-right').fadeIn()
+                });
+            $(document).on('click',
+                '.preview-pack, .save-changes, .close-pack-preview, .close-mission-preview, .edit-the-mission, .preview-mission',
+                function (e) {
+                    if ($(this).hasClass('preview-pack')) {
+                        $(this).addClass('d-none');
+                        $(this).next().add($(this).parent('.preview-cta').prev()).removeClass('d-none')
+                        $('.pack-creation-content .edit').hide();
+                        $('.pack-creation-content .preview').show();
+                        $('.preview-pack-toast').toast('show').css({
+                            'z-index': '1050'
+                        });
+                    } else if ($(this).is('.preview-mission')) {
+                        $('.mission-edition-content .edit').fadeOut();
+                        $('.mission-edition-content .preview').fadeIn();
+                        $(this).parent('.preview-cta')
+                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.cancel-edition, .edit-image'))
+                            .addClass('d-none')
+                        $(this).parent('.preview-cta').siblings('.client-infos, .mission-cta')
+                            .addClass('d-flex')
+                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.close-preview-edit'))
+                            .fadeIn();
+                    } else if ($(this).is('.edit-the-mission')) {
+                        $('.mission-edition-content .preview').fadeOut();
+                        $('.mission-edition-content .edit').fadeIn();
+                        $(this).parent('.mission-cta')
+                            .add($(this).parent('.mission-cta').siblings('.client-infos'))
+                            .removeClass('d-flex')
+                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.close-preview-edit'))
+                            .fadeOut();
+                        $(this).parent('.mission-cta').siblings('.preview-cta')
+                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.cancel-edition, .edit-image'))
+                            .removeClass('d-none')
+                    } else if ($(this).hasClass('save-changes')) {
+                        $('.save-changes-toast').toast('show').css({
+                            'z-index': '1050'
+                        });
+                        // setTimeout(function () {
+                        //     window.location = 'cm-dashboard-tab-mypacks-felicitations.html';
+                        // }, 5000);
+                        // window.location.replace('')
+                    } else if ($(this).hasClass('close-pack-preview')) {
+                        $(this).
+                        add($(this).parent('.d-flex').prev())
+
+                            .addClass('d-none')
+                        $(this).prev().removeClass('d-none');
+                        $('.pack-creation-content .preview').hide();
+                        $('.pack-creation-content .edit').show();
+                    }
+                });
+            $(document).on('input change focus', '.pack-creation-content input, .pack-creation-content textarea, .mission-edition-content input, .mission-edition-content textarea', function(){
+                $(this).parents('.pack-creation-content, .mission-edition-content').find('.save-changes').removeClass('disabled')
+            });
+            /* pack/mission creation/preview/edit invoke ends */
+            /* Preview Invoice Starts */
+            $(document).on('click', 'a.close-invoice-preview, a.preview-invoice', function(){
+                if ($(this).is('a.preview-invoice')) {
+                    $('.facturation-show-container').fadeIn();
+                } else if ($(this).is('a.close-invoice-preview')) {
+                    $('.facturation-show-container').fadeOut();
+                }
+            })
+            /* Preview Invoice Ends */
+            /* Cancel mission Starts */
+            $(document).on('click', 'a.close-cancel-mission, a.cancel-mission-activate', function(){
+                if ($(this).is('a.cancel-mission-activate')) {
+                    $('.cancel-mission-container').fadeIn();
+                } else if ($(this).is('a.close-cancel-mission')) {
+                    $('.cancel-mission-container').fadeOut();
+                }
+            })
+            /* Cancel mission Ends */
+            /* toasts initialization */
+            $('.toast').toast();
+            $(document).on('hidden.bs.toast', function () {
+                $('.toast').css({
+                    'z-index': ''
+                })
+            });
+            /* toasts ends */
+        });
+    </script>
+</head>
+
+<body>
+{% block body %}{% endblock %}
+
+{% block javascripts %}{% endblock %}
+
+</body>
+</html>

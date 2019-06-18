@@ -1,0 +1,117 @@
+{% extends 'b2b/base.html.twig' %}
+
+
+{% block body %}
+<div class="tab-pane active" id="home" role="tabpanel">
+    <div class="row">
+        <div
+                class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i
+                        class="fas fa-home fz-30 mr-2"></i> Accueil</div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">Créer une nouvelle
+                mission</a>
+        </div>
+        <div
+                class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+            <div
+                    class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                <div class="w-60">
+                    <img class="img-fluid" src="../images/dash-home-empty.png" alt="Dashboard Home">
+                </div>
+                <h4 class="mt-4 text-darkblue">Bien débuter sur Pix.city services </h4>
+                <p> Bienvenue sur votre espace city maker Services !
+                    Retrouvez ici toutes les informations concernant vos packs, vos missions en
+                    cours et votre facturation.
+                </p>
+                <p> La prochaine étape est de détailler vos compétences en créant vos packs (un pack
+                    est une compétence détaillée avec un tarif).</p>
+                <div class="d-block text-center mt-4">
+                    <a href="javascript:;" class="btn btn-darkblue btn-pill">Créer un pack</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-pane" id="myPacks" role="tabpanel">
+    <div class="row">
+        <div
+                class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue">Mes packs</div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">Créer une nouvelle
+                mission</a>
+        </div>
+        <div
+                class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+            <div
+                    class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                <div class="w-60">
+                    <img class="img-fluid" src="../images/dash-mypack-empty.png" alt="My Packs">
+                </div>
+                <h4 class="mt-4 text-darkblue">Vous n’avez pas encore crée de pack</h4>
+                <p> Afin de proposer vos services aux clients de la plateforme, vous devez au
+                    préalable créer des packs mettant en valeur vos compétences.
+                </p>
+                <p> Un pack est une compétence détaillée avec un tarif et des photos l’illustrant.
+                </p>
+                <div class="d-block text-center mt-4">
+                    <a href="javascript:;" class="btn btn-darkblue btn-pill">Créer un pack</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-pane" id="myMissions" role="tabpanel">
+    <div class="row">
+        <div
+                class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue">Mes missions</div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">Créer une nouvelle
+                mission</a>
+        </div>
+        <div
+                class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+            <div
+                    class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                <div class="w-35">
+                    <img class="img-fluid" src="../images/dash-mymissions-empty.png"
+                         alt="My Missions">
+                </div>
+                <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
+                <p> Ça y est votre profil et vos packs sont à jour !
+                    Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
+                    une bonne négociation !
+                </p>
+                <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
+                        lien).</a> </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-pane" id="billing" role="tabpanel">
+    <div class="row">
+        <div
+                class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue">Facturation</div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">Créer une nouvelle
+                mission</a>
+        </div>
+        <div
+                class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+            <div
+                    class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                <div class="w-60">
+                    <img class="img-fluid" src="../images/dash-invoice-empty.png"
+                         alt="My Facturation">
+                </div>
+                <h4 class="mt-4 text-darkblue">Pour facturer, faut bosser !</h4>
+                <p> Ici vous trouverez le récapitulatif de vos factures. <a
+                            href="javascript:;">Consultez la FAQ</a> si vous avez des questions.
+                </p>
+                <div class="d-block text-center mt-4">
+                    <a href="javascript:;" class="btn btn-darkblue btn-pill">Créer un pack</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
