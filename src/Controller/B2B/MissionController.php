@@ -260,13 +260,13 @@ class MissionController extends AbstractController
             case 'cancel': if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
                             {
                                 $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
-                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has requested for the cancellation of mission '.$mission->getStatus());
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has requested for the cancellation of mission '.$mission->getStatus(),null);
                                 break;
                             }
                             elseif($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT)
                             {
                                 $mission->setStatus(MissionStatus::CANCELLED);
-                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus());
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus(),null);
                                 break;
                             }
 
@@ -274,13 +274,13 @@ class MissionController extends AbstractController
                 if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
                 {
                     $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
-                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle());
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle(),null);
                     break;
                 }
                 elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT)
                 {
                     $mission->setStatus(MissionStatus::TERMINATED);
-                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle());
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),null);
                     break;
                 }
 
