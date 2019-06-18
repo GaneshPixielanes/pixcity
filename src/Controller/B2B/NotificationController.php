@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class NotificationController extends AbstractController
 {
     /**
-     * @Route("/unred", name="unread")
+     * @Route("/unread", name="unread")
      */
     public function unread(Request $request,NotificationsRepository $notificationsRepository)
     {

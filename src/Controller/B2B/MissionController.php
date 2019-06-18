@@ -10,6 +10,7 @@ use App\Entity\UserMission;
 use App\Form\B2B\MissionType;
 use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
+use App\Repository\MissionDocumentRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\PackRepository;
 use App\Repository\UserMissionRepository;
@@ -71,8 +72,7 @@ class MissionController extends AbstractController
         ]);
 
         $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
             $price = $mission->getMissionBasePrice();
             $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
@@ -89,6 +89,7 @@ class MissionController extends AbstractController
             $mission->getUserMissionPayment()->setTaxValue($total - $clientPrice); // Tax charged
             $mission->getUserMissionPayment()->setTotal($total); // Total
             $mission->setStatus(MissionStatus::CREATED);
+//            $mission->setCreatedAt(new \DateTime('Y-m-d H:i:s'));
 
             $em = $this->getDoctrine()->getManager();
 
@@ -119,7 +120,7 @@ class MissionController extends AbstractController
             }
 
             $notificationsRepository->insert(null,$mission->getClient(),'create_mission', 'A mission has been created by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong>');
-
+            exit;
             return $this->redirectToRoute('b2b_mission_list');
         }
 
@@ -158,8 +159,7 @@ class MissionController extends AbstractController
         ]);
 
         $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
             $em = $this->getDoctrine()->getManager();
 
@@ -198,15 +198,15 @@ class MissionController extends AbstractController
                 {
                     $filesystem->copy('uploads/'.UserMission::tempFolder().$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
                 }
-                elseif ($filesystem->exists('uploads/pack/'.$mission->getReferencePack()->getId().'/'.$media->getName()))
+                elseif ($filesystem->exists('uploads/mission/'.$mission->getReferencePack()->getId().'/'.$media->getName()))
                 {
-                    $filesystem->copy('uploads/pack/'.$mission->getReferencePack()->getId().'/'.$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
+                    $filesystem->copy('uploads/mission/'.$mission->getReferencePack()->getId().'/'.$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
                 }
             }
 
             return $this->redirectToRoute('b2b_mission_list');
         }
-        return $this->render('b2b/mission/form.html.twig',
+        return $this->render('b2b/mission/edit-form.html.twig',
         [
             'form' => $form->createView(),
             'mission' => $mission,
@@ -332,7 +332,6 @@ class MissionController extends AbstractController
     public function upload(Request $request, FileUploader $fileUploader)
     {
         $file = $request->files->get('file');
-
         $fileName = $fileUploader->upload($file, UserMission::tempFolder(), true);
 
         return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
@@ -342,12 +341,13 @@ class MissionController extends AbstractController
     /**
      * @Route("download/{id}",name="download")
      */
-    public function download($id, UserMissionRepository $userMissionRepo)
+    public function download($id, MissionDocumentRepository $documentRepo)
     {
-        $mission = $userMissionRepo->find($id);
+        $document = $documentRepo->find($id);
+        $mission = $document->getMission();
         $date = new \DateTime();
-        $response = new BinaryFileResponse($mission->getBriefUrl());
-        $ext = pathinfo($mission->getBriefUrl(),PATHINFO_EXTENSION);
+        $response = new BinaryFileResponse($mission->getBriefUrl().$document->getName());
+        $ext = pathinfo($mission->getBriefUrl().$document->getName(),PATHINFO_EXTENSION);
 
         $response->headers->set('Content-Type','text/plain');
         $response->setContentDisposition(

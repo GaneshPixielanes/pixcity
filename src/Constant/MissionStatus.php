@@ -22,15 +22,15 @@ class MissionStatus
         return [
             "b2b.label.missionstatus.created" => MissionStatus::CREATED,
             //"label.cardstatus.saved" => CardStatus::SAVED,
-            "b2b.label.missionstatus.ongoing" => MissionStatus::ONGOING,
-            "b2b.label.missionstatus.terminated" => MissionStatus::TERMINATED,
-            "b2b.label.missionstatus.terminated" => MissionStatus::TERMINATE_REQUEST_INITIATED,
-            "b2b.label.missionstatus.terminated" => MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT,
-            "b2b.label.missionstatus.completed" => MissionStatus::COMPLETED,
-            "b2b.label.missionstatus.cancelled" => MissionStatus::CANCEL_REQUEST_INITIATED,
-            "b2b.label.missionstatus.cancelled" => MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT,
-            "b2b.label.missionstatus.cancelled" => MissionStatus::CANCELLED,
-            "b2b.label.missionstatus.client_declined" => MissionStatus::CLIENT_DECLINED,
+            "b2b.label.ongoing" => MissionStatus::ONGOING,
+            "b2b.label.terminated" => MissionStatus::TERMINATED,
+            "b2b.label.terminated" => MissionStatus::TERMINATE_REQUEST_INITIATED,
+            "b2b.label.terminated" => MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT,
+            "b2b.label.completed" => MissionStatus::COMPLETED,
+            "b2b.label.cancelled" => MissionStatus::CANCEL_REQUEST_INITIATED,
+            "b2b.label.cancelled" => MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT,
+            "b2b.label.cancelled" => MissionStatus::CANCELLED,
+            "b2b.label.client_declined" => MissionStatus::CLIENT_DECLINED,
         ];
     }
 }
