@@ -27,7 +27,7 @@
                 {% endif %}
 
                 <figcaption class="position-absolute d-flex align-items-center"><i class="fas fa-user-circle mr-2"></i>
-                    <span>Prévisualiser mon profil</span></figcaption>
+                    <span><a class="nav-link active" href="/client/profile">Prévisualiser mon profil</a></span></figcaption>
             </figure>
 
         </div>
@@ -149,6 +149,11 @@
                                                             <div class="work-amount fz-10">{{ pack.userBasePrice }}€</div>
                                                         </div>
                                                     {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <a href="{{ url('b2b_front_community_manager_view',{'name':proposal.user | lower |replace({' ':'-'}), 'id': proposal.user.id}) }}" class="btn btn-block btn-pink">DÉCOUVRIR TOUS SES PACKS</a>
                                                 </div>
                                             </div>
                                         </div>
