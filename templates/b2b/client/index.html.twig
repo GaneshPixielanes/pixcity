@@ -123,42 +123,45 @@
                     <div class="col-md-12 client-wall-members profiles-slider">
                         <div class="slick-profiles-slider px-5">
                             {% for proposal in proposals %}
-                            <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
-                                <div class="cm-card-container">
-                                    <div class="row">
-                                        <div class="col-md-12 mt-n5 cm-image">
-                                            <img class="img-fluid shadow-lg" src="{{ proposal.user.avatar }}" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12 mt-n3 mb-2">
-                                            <ul class="d-flex justify-content-center align-items-center cm-packages">
-                                                {% for skill in proposal.user.userskill %}
-                                                    <li><i class="fas {{ skill.icon }} fz-16 btn-circle-32 bg-white text-darkblue"></i></li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h4 class="title text-center fz-16 font-weight-bold mb-0">{{ proposal.user.firstname~' '~proposal.user.lastname }}</h4>
-                                            {% for region in proposal.user.userRegion %}
-                                                <p class="region text-center fz-14">{{ region.name }}</p>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            {% for pack in proposal.user.userPacks|slice(0, 3) %}
-                                                <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
-                                                    <div class="work-title fz-10">Pack {{ pack.packSkill.name }}</div>
-                                                    <div class="work-amount fz-10">{{ pack.userBasePrice }}€</div>
+                                {% if proposal_unique[proposal.id] is defined %}
+                                    <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
+                                        <div class="cm-card-container">
+                                            <div class="row">
+                                                <div class="col-md-12 mt-n5 cm-image">
+                                                    <img class="img-fluid shadow-lg" src="{{ proposal.user.avatar }}" alt="">
                                                 </div>
-                                            {% endfor %}
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 mt-n3 mb-2">
+                                                    <ul class="d-flex justify-content-center align-items-center cm-packages">
+                                                        {% for skill in proposal.user.userskill %}
+                                                            <li><i class="fas {{ skill.icon }} fz-16 btn-circle-32 bg-white text-darkblue"></i></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h4 class="title text-center fz-16 font-weight-bold mb-0">{{ proposal.user.firstname~' '~proposal.user.lastname }}</h4>
+                                                    {% for region in proposal.user.userRegion %}
+                                                        <p class="region text-center fz-14">{{ region.name }}</p>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    {% for pack in proposal.user.userPacks|slice(0, 3) %}
+                                                        <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
+                                                            <div class="work-title fz-10">Pack {{ pack.packSkill.name }}</div>
+                                                            <div class="work-amount fz-10">{{ pack.userBasePrice }}€</div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                {% endif %}
                             {% endfor %}
 
                         </div>

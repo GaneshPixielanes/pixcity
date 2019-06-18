@@ -76,8 +76,17 @@ class ClientController extends Controller
         //Get missions
         $missions = $missionRepo->findMissionForClient($this->getUser(), MissionStatus::ONGOING);
         //Get proposals
+        $proposal_unique = [];
         $proposals = $proposalRepo->findBy(['client' => $this->getUser()],['id'=>'DESC'],8);
-//        dd($proposals);
+
+        foreach ($proposals as $proposal) {
+            if(!in_array($proposal->getUser()->getId(),$proposal_unique)){
+                $proposal_unique [$proposal->getId()] = $proposal->getUser()->getId();
+            }
+        }
+
+//        dd($proposal_unique);
+
         $mymissions['ongoing'] = $missionRepo->findOngoingMissions($this->getUser(),'client');
         $mymissions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
         $mymissions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
@@ -90,6 +99,7 @@ class ClientController extends Controller
             'proposals' => $proposals,
             'mymissions' => $mymissions,
             'missions_notification' => $missions_notification,
+            'proposal_unique' => $proposal_unique
         ]);
 
     }
