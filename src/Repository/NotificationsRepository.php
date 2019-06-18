@@ -24,7 +24,7 @@ class NotificationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Notifications::class);
     }
 
-    public function insert($user,$client,$type, $message = 'content will come here'){
+    public function insert($user,$client,$type, $message = 'content will come here',$notifyBy = null){
 
         $notification = new Notifications();
         $notification->setUser($user);
@@ -32,6 +32,7 @@ class NotificationsRepository extends ServiceEntityRepository
         $notification->setType($type);
         $notification->setUnread(1);
         $notification->setMessage($message);
+        $notification->setNotifyBy($notifyBy);
         $this->em->persist($notification);
         $this->em->flush();
 

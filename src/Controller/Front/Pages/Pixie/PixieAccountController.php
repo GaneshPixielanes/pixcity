@@ -33,7 +33,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 /**
@@ -43,12 +42,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class PixieAccountController extends Controller
 {
-
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
 
 
     /**
@@ -120,7 +113,6 @@ class PixieAccountController extends Controller
      */
     public function settings(Request $request, UserPasswordEncoderInterface $passwordEncoder, TransactionRepository $transactionRepository,\Swift_Mailer $mailer,CardRepository $cardsRepo)
     {
-
         $user = $this->getUser();
         $message = '';
         $bankDetailsEditable = true;
@@ -152,6 +144,8 @@ class PixieAccountController extends Controller
 
         if ($form->isSubmitted()) {
 
+            $session  = new Session();
+
 
 //        if ($form->isSubmitted() && $form->isValid()) {
             if(!$bankDetailsEditable)
@@ -169,7 +163,8 @@ class PixieAccountController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
 
 
-            if($this->session->has('cm')){
+
+            if($session->has('cm')){
 
                 if($user->getCmUpgradeB2bDate() == null){
 
@@ -206,8 +201,7 @@ class PixieAccountController extends Controller
 
             }
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+
 
             // Add the flash message
             $this->addFlash('account_saved_settings', '');
@@ -289,12 +283,12 @@ class PixieAccountController extends Controller
         $session  = new Session();
 
         if($request->get('status') == 'add'){
-            $this->session->set('cm', 'add');
+            $session->set('cm', 'add');
         }else{
-            $this->session->remove('cm');
+            $session->remove('cm');
         }
 
-        if($this->session->has('cm')){
+        if($session->has('cm')){
             return new JsonResponse(true);
         }else{
             return new JsonResponse(false);

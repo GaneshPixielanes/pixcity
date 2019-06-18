@@ -34,6 +34,11 @@ class Notifications
     private $message;
 
     /**
+     * @ORM\Column(type="integer",nullable=true)
+     */
+    private $notify_by;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $unread;
@@ -95,6 +100,18 @@ class Notifications
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getNotifyBy(): ?int
+    {
+        return $this->notify_by;
+    }
+
+    public function setNotifyBy(int $notify_by): self
+    {
+        $this->notify_by = $notify_by;
 
         return $this;
     }
