@@ -72,31 +72,6 @@
                     <p class="mb-0 text-darkgray user-price">{{ pack.totalPrice }}€</p>
                 </div>
             </div>
-<<<<<<< HEAD
-        </div>
-        <hr/>
-        <br/>
-    </div>
-        <div class="row">
-                <h4>Photos:</h4>
-                <br/>
-                <div  class="col-xs-12"  style="margin-top:50px">
-                {% for media in pack.userPackMedia %}
-                    <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" class="thumbnail"
-                         style="height:100px; width:100px"/>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="row" style="margin-top:50px">
-                <h3>Zone:</h3>
-                <ul class="col-xs-12" style="margin-top:50px">
-                    {% for region in pack.user.userRegion %}
-                        <li>{{ region.name }}</li>
-                    {% endfor %}
-                </ul>
-        </div>
-</div>
-=======
             <div class="preview-cta d-flex align-items-center">
                 <a href="{{ url('b2b_client_pack_select',{'id':pack.id}) }}"
                    class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
@@ -104,4 +79,3 @@
         </div>
     </nav>
 </div>
->>>>>>> d51934e354df56c8f18061ce2d65a487d7a0887f
