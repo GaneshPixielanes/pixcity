@@ -19,7 +19,6 @@
     </div>
 
     <input name="attached_files" value="" type="hidden"/>
-    <input name="banner" id="pack_bannerImage" value="" type="hidden"/>
     <div class="pack-details p-3">
         <div class="selected-pack-container edit col-md-12 border-bottom mt-2 mb-4 pb-4">
             <p class="text-textgray mb-0">{{ pack.packSkill | upper }}</p>
@@ -139,15 +138,13 @@
                 téléchargez des nouvelles pour illustrer votre pack.</p>
             <small class="text-textgray">Format : JPEG, PNG. Taille : 2Mo max</small>
             <div class="form-group dropzone-custom clearfix mt-3" id="photos-dropzone">
-                <!-- <div class="row">
-                                        <div class="col-md-12 upload-area">
-                                            <div class="area-label text-center p-4">
-                                                <i class="fas fa-cloud-upload-alt"></i>
-                                                <p>Déposez vos images ici</p>
-                                                <a href="javascript:;">Depuis votre navigateur</a>
-                                            </div>
-                                        </div>
-                                    </div> -->
+                <div class="upload-area mb-4 dz-clickable">
+                    <div class="area-label text-center p-4">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p class="mb-0">Déposez vos images ici</p>
+                        <a href="javascript:;">Depuis votre navigateur</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4 d-none">

@@ -1,94 +1,441 @@
-{% extends 'b2b/base.html.twig' %}
+{% extends 'b2b/page.html.twig' %}
 
-{% block body %}
+{% import 'b2b/shared/macros.html.twig' as macros %}
 
-    <!-- Add fancyBox -->
+{% block content %}
 
+            <div class="tab-pane active" id="myPacks" role="tabpanel">
+                <div class="row">
+                    <div
+                            class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+                        <div class="d-flex align-items-center fz-20 text-darkblue">Mes packs</div>
+                        <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill">Créer une nouvelle
+                            mission</a>
+                    </div>
+                    {% if packs | length == 0 %}
+                    <div
+                            class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                        <div
+                                class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                            <div class="w-60">
+                                <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mypack-empty.png') }}" alt="My Packs">
+                            </div>
+                            <h4 class="mt-4 text-darkblue">Vous n’avez pas encore crée de pack</h4>
+                            <p> Afin de proposer vos services aux clients de la plateforme, vous devez au
+                                préalable créer des packs mettant en valeur vos compétences.
+                            </p>
+                            <p> Un pack est une compétence détaillée avec un tarif et des photos l’illustrant.
+                            </p>
+                            <div class="d-block text-center mt-4">
+                                <a href="javascript:;" class="btn btn-darkblue btn-pill">Créer un pack</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
 
-    <div class="container" style="margin-top:100px">
-        {% for message in app.flashes('error') %}
-            <div class="flash-notice">
-                {{ message }}
-            </div>
-        {% endfor %}
-        <div class="col-md-12">
-            <div class="row">
-
-                <div class="col-md-6">
-                    <h1>Pack List Page</h1>
-                </div>
-                {% if app.user.getB2bCmApproval() %}
-                <div class="col-md-6">
-                    <a href="{{ path('b2b_pack_create') }}" class="btn btn-md btn-primary float-right">New Pack</a>
-                </div>
-                {% endif %}
-            </div>
-
-
-            <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td>ID</td>
-                                <td>Title</td>
-                                <td>Pack Type</td>
-                                <td>Description</td>
-                                <td>Price</td>
-                                <td>Edit / View</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for pack in packs %}
-                            <tr>
-                                <td>{{ pack.id }}</td>
-                                <td>{{ pack.title }}</td>
-                                <td>{{ pack.packSkill.name }}</td>
-                                <td>{{ pack.description }}</td>
-                                <td>{{ pack.userBasePrice  }}</td>
-                                <td>
-                                    <a href="{{ path('b2b_pack_view',{'id': pack.id}) }}" class="btn btn-sm btn-warning">View</a>
-                                    <a href="{{ path('b2b_pack_edit',{'id': pack.id}) }}" class="btn btn-sm btn-info">Edit</a>
-                                    <a href="#myModal_{{ pack.id }}" data-toggle="modal" class="btn">Delete</a>
-                                </td>
-                            </tr>
-
-                            <div class="modal fade" id="myModal_{{ pack.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close</span></button>
-
-                                        </div>
-                                        <div class="modal-body">
-
-
-
-                                            <pa>are you want to delete the pack</pa>
-                                            <a href="/b2b/pack/delete-pack/{{ pack.id }}" class="btn-danger">Yes</a>
-
-
-                                        </div>
-
+                        <div class="col-md-12 tab-pane-content p-4">
+                            <div class="col-md-12 content-top-header d-flex align-items-center">
+                                <div class="col-md-12 content-top-header d-flex align-items-center">
+                                    <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> packs disponibles</h4>
+                                    <div class="filter-packages d-flex">
+                                        <label class="text-seagreen m-0 mr-3 d-none active">
+                                            <input type="checkbox" name="filterpackage" value="all">
+                                            <i class="fas fa-sync-alt fz-22 d-flex align-items-center justify-content-center"></i>
+                                        </label>
+                                        <label class="text-seagreen m-0 mr-3">
+                                            <input type="checkbox" name="filterpackage" value="influencer">
+                                            <i class="fas fa-map-marked-alt fz-22 d-flex align-items-center justify-content-center"></i>
+                                        </label>
+                                        <label class="text-seagreen m-0 mr-3">
+                                            <input type="checkbox" name="filterpackage" value="photographer">
+                                            <i class="fas fa-camera fz-22 d-flex align-items-center justify-content-center"></i>
+                                        </label>
+                                        <label class="text-seagreen m-0 mr-3">
+                                            <input type="checkbox" name="filterpackage" value="communitymanager">
+                                            <i class="far fa-handshake fz-22 d-flex align-items-center justify-content-center"></i>
+                                        </label>
+                                        <label class="text-seagreen m-0">
+                                            <input type="checkbox" name="filterpackage" value="other">
+                                            <i class="far fa-gem fz-22 d-flex align-items-center justify-content-center"></i>
+                                        </label>
                                     </div>
                                 </div>
+                                <!-- <ul class="filter-packages">
+                                <li><a href="javascript:;"><i class="fas fa-map-marked-alt"></i></a></li>
+                                <li></li>
+                                <li></li>
+                            </ul> -->
                             </div>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-
-                    <!-- Modal -->
-
-
+                            <ul class="available-packages-list m-0 mt-3 col-md-12">
+                                {% for pack in packs %}
+                                    <li class="package-list-item package-item d-flex align-items-center bg-white text-darkgray shadow-sm {{ pack.packSkill.slug }}" data-id="{{ pack.id }}">
+                                        <img class="col-1 p-0" src="{{ absolute_url('/uploads/pack/banner/'~pack.bannerImage) }}"
+                                             alt="">
+                                        <p class="mb-0 px-3 flex-grow-1 pack-title" data-id="{{ pack.id }}">{{ pack.title }} </p>
+                                        <p class="mb-0 col-3"><i class="fas {{ pack.packSkill.icon }} mr-1"></i> {{ pack.packSkill }}
+                                        </p>
+                                        <a href="javascript:;" class="btn btn-darkblue col-2 fz-12 edit-the-pack"
+                                           data-id="{{ pack.id }}">Éditer le pack</a>
+                                        <div class="dropdown">
+                                            <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"
+                                               id="packOptions"></i>
+                                            <div class="dropdown-menu" aria-labelledby="packOptions">
+                                                <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i
+                                                            class="far fa-paper-plane mr-2"></i>
+                                                    Partager</a>
+                                                <a class="dropdown-item text-pink fz-12 delete-pack" href="javascript:;" data-toggle="modal"
+                                                   data-target="#removePackConfirmation" data-id="{{ pack.id }}"><i class="far fa-times-circle mr-2"></i>
+                                                    Supprimer le
+                                                    pack</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                                <li class="add-package-to-list d-flex align-items-center justify-content-center my-4">
+                                    <a href="javascript:;"
+                                       class="btn btn-darkblue btn-circle-40 add-package d-flex align-items-center justify-content-center"><i
+                                                class="fas fa-plus"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
-
             </div>
-        </div>
-    </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
 
+    <script>
+        $(document).ready(function () {
+            $("#pack_userBasePrice").on('change', function () {
+
+                var actual_price = $("#pack_userBasePrice").val();
+                var after_price = parseFloat(actual_price) * 20 / 100;
+
+                var total = parseFloat(actual_price) + parseFloat(after_price);
+                $('.user-price').text(total + '€');
+                {#$("#actula_value").text('The Value after {{ tax.value }} % added ' + total);#}
+
+            });
+
+            $(document).on('click', '.delete-document',function () {
+
+                var element = $(this).attr('data-target');
+                console.log(element);
+                $('#'+element).remove();
+                $('.'+element).remove();
+            });
+
+            $(document).on('click','.add-a-document', function () {
+                $('#mission-document-upload').click();
+            });
+
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#banner-image').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $('body').on('change', 'input[type="file"]', function (e) {
+                var type = 'banner';
+                // Read the image URL and display the image
+                if ($(this).attr('id') == 'banner-image' || $(this).attr('id') == 'imageUpload') {
+                    readURL(this);
+                } else {
+                    type = 'brief';
+                }
+                // Add image name on the input parameters
+                $.each($(this)[0].files, function (key, value) {
+
+                    var formData = new FormData();
+                    formData.append("file", value);
+                    //Upload the image via AJAX
+                    uploadFiles(formData, type);
+                });
+            });
+
+
+            function uploadFiles(formData, type) {
+                $.ajax('/b2b/pack/upload',
+                    {
+                        type: 'POST',
+                        data: formData,
+                        cacheable: false,
+                        processData: false,
+                        contentType: false,
+                    }).done(function (result) {
+                    if (type == 'banner') {
+                        console.log(result.fileName);
+                        $('#pack_bannerImage').val(result.fileName);
+                    } else if (type == 'brief') {
+                        var date = new Date();
+                        var prototype = $('#mission-documents-list').attr('data-prototype');
+                        var index = $('#mission-documents-list').find('input').length;
+
+                        prototype = prototype.replace(/__name__/g, index);
+                        $('#mission-documents-list').append(prototype);
+                        $('#mission-documents-list')
+                            .find('input:last')
+                            .val(result.fileName);
+                        $('#mission-documents-list').append(`<tr class="text-darkgray fz-14 mission_documents_`+index+`">
+                <td valign="middle" class="text-center">
+                    <i class="far fa-file-image fz-25"></i>
+                </td>
+                <td valign="middle">`+result.fileName+`</td>
+                <td valign="middle">`+date+`</td>
+                <td valign="middle">
+                    <div class="d-flex align-items-center">
+                                                <span class="btn-circle-28 mr-3">
+                                                    <img src="{{ app.user.getAvatar() }}" class="img-fluid rounded-circle" alt="">
+                                                </span>
+                        {{ app.user.firstName }}
+                    </div>
+                </td>
+                <td valign="middle">Document</td>
+                <td valign="middle"><span class="text-completed">Uploadé</span></td>
+                <td valign="middle">
+                    <div class="d-flex align-items-center">
+                        <a href="javascript:;" class="delete-document text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" data-target="mission_documents_`+index+`"><i class="fas fa-trash fz-16"></i></a>
+                    </div>
+                </td>
+            </tr>`);
+                    }
+
+
+                });
+            }
+
+            $("body").on('change', '#pack_userBasePrice', function () {
+
+                var actual_price = $("#pack_userBasePrice").val();
+                console.log(actual_price);
+                var after_price = parseFloat(actual_price) * 20 / 100;
+
+                var total = parseFloat(actual_price) + parseFloat(after_price);
+                $(".total-pack-price").val(total);
+                $(".total-pack-price").text(total + '€');
+
+            });
+
+            // Edit the pack
+            $('body').on('click', '.edit-the-pack, .add-package-to-list > a', function () {
+
+
+                var pack_id = $(this).attr('data-id');
+                console.log(pack_id);
+                if ($(this).hasClass('edit-the-pack')) {
+                    url = '/b2b/pack/edit-pack/' + pack_id;
+                } else {
+                    url = '/api/pack/create';
+                }
+                $.ajax(url, {
+                    type: 'GET',
+                    success: function (result) {
+                        $('#pack-form').html(result);
+                        $('.selectpicker').selectpicker('refresh');
+                        var $dropZone = $('.dropzone-custom').dropzone({
+                            url: '{{ path('b2b_pack_fileuploadhandler') }}',
+                            maxFiles: 7,
+                            acceptedFiles: 'image/*',
+                            maxFilesize: 2,  // in Mb
+                            addRemoveLinks: true,
+                            // autoProcessQueue:false,
+                            parallelUploads: 10,
+                            dictRemoveFileConfirmation: 'Are you sure you want to save this image?',
+                            removedfile: function (file) {
+                                var name = file.name;
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '{{ path('b2b_pack_delete_image') }}',
+                                    data: {name: name, pack_id: "2"},
+                                    success: function (data) {
+                                        console.log('success: ' + data);
+                                    }
+                                });
+
+                                var _ref;
+                                if (file.previewElement) {
+                                    if ((_ref = file.previewElement) != null) {
+                                        _ref.parentNode.removeChild(file.previewElement);
+                                    }
+                                }
+                                return this._updateMaxFilesReachedClass();
+
+                            },
+                            init: function () {
+
+
+                                this.on("maxfilesexceeded", function (file) {
+                                    this.removeFile(file);
+                                    alert('please upload maximum 7 files');
+                                });
+                                this.on("sending", function (file, xhr, formData) {
+                                    // send additional data with the file as POST data if needed.
+                                    // formData.append("key", "value");
+                                });
+                                this.on("success", function (file, response) {
+
+                                    if (response.uploaded) {
+                                        var currentValue = $("#pack-form input[name='attached_files'").val();
+                                        if (currentValue == '') {
+                                            $("#pack-form input[name='attached_files'").val(response.fileName);
+                                        } else {
+                                            $("#pack-form input[name='attached_files'").val(currentValue + ", " + response.fileName);
+                                        }
+                                    }
+
+                                    if(response.uploaded)
+                                    {
+                                        $('.pack-photos-list').html('');
+                                        $.each($('.dz-image > img'), function(val, element){
+
+                                            $('.pack-photos-list').append('<li class="pack-photos-list-item d-inline-flex"><img src="'+$(element).attr('src')+'" /></li>')
+
+                                        });
+
+                                    }
+
+                                    if (response.uploaded)
+                                        console.log('File Uploaded: ' + response.fileName);
+                                });
+
+                                thisDropzone = this;
+
+
+                                if (pack_id != '') {
+                                    $.get('/b2b/pack/image-display/' + pack_id, function (data) {
+
+                                        <!-- 5 -->
+                                        $.each(data, function (key, value) {
+                                            var mockFile = {name: value.name, size: value.size};
+
+                                            thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+
+                                            thisDropzone.options.thumbnail.call(thisDropzone, mockFile, value.path);
+
+                                        });
+
+                                    });
+                                }
+                            }
+                        });
+
+                        // $('.dropzone-custom').html(`
+                        //     <div class="upload-area mb-4 dz-clickable">
+                        //         <div class="area-label text-center p-4">
+                        //             <i class="fas fa-cloud-upload-alt"></i>
+                        //             <p class="mb-0">Déposez vos images ici</p>
+                        //             <a href="javascript:;">Depuis votre navigateur</a>
+                        //         </div>
+                        //     </div>
+                        // `);
+
+                        $("#submitform").on('click', function () {
+                            $dropZone[0].dropzone.processQueue();
+                        });
+                    }
+                })
+            });
+
+            $('body').on('click', '.save-changes', function () {
+                var data = $(this).parents('form').serialize();
+                var url = '';
+
+                if ($(this).attr('data-mode') == 'edit') {
+                    url = '/b2b/pack/edit-pack/' + $(this).attr('data-id')
+                } else {
+                    url = '/api/pack/create';
+                }
+                $.ajax($(this).attr('data-url'), {
+                    type: 'POST',
+                    data: data,
+                    success: function (result) {
+                        location.href = '/b2b/pack/success';
+                    }
+                });
+            });
+
+        });
+
+
+
+        $(document).ready(function () {
+            // Adding a new pack
+            $('.add-package-to-list > a').on('click', function () {
+                $('#pack-form').load('/api/pack/create');
+            });
+
+            // Deleting a pack
+            $('.delete-pack').on('click', function () {
+                $('#confirmPackDelete').attr('data-id',$(this).attr('data-id'));
+                // $.ajax('/b2b/pack/delete-pack/'+$(this).attr('data-id'),{
+                //     success: function (result) {
+                //         console.log('asdas');
+                //     }
+                // });
+            });
+
+            $('body').on('click', "#confirmPackDelete",function () {
+
+                var id = $(this).attr('data-id');
+                $.ajax('/b2b/pack/delete-pack/'+id,{
+                    success: function (result) {
+                        $('.package-list-item[data-id="'+id+'"]').remove();
+                        $('.total-packs-available').html($('.package-item').length);
+                        $('#removePackConfirmation').find('.close').trigger('click');
+
+                    }
+                });
+            });
+
+            $('.mark-notification-read').on('click', function () {
+                // Mark notification unread
+                $.ajax('/notification/unread',{
+                    type: 'POST',
+                    data: {'id':$(this).attr('data-id')},
+                    success:function(result)
+                    {
+                        console.log(result);
+                    }
+                });
+            });
+
+            // Synchronize pack edit and pack list
+            $('body').on('keyup','[name="pack[title]"]', function () {
+                $('.pack-title-preview').html($('[name="pack[title]"]').val());
+            });
+
+            $('body').on('keyup','[name="pack[description]"]', function () {
+                $('.pack-description-preview').html($('[name="pack[description]"]').val());
+            });
+
+            $('body').on('submit','#pack-form', function()
+            {
+                var id = $('[name="pack[title]"]').attr('data-id');
+                $('.pack-title[data-id="'+id+'"]').html($('[name="pack[title]"]').val());
+            });
+
+            $('body').on('click','.preview-pack', function () {
+                $('.user-price').html($('.total-pack-price:last').text());
+
+                // $images = $('.dz-image');
+                // console.log($images);
+                // $.each($images, function(key, value)
+                // {
+                //     $('.pack-photos-list-item > li:last').after('<li class="pack-photos-list-item dz-item">' +
+                //         '<img src="'+$(this).find('img').attr('src')+'" /></li>');
+                // })
+            });
+        });
+    </script>
 {% endblock %}

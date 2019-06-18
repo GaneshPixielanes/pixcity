@@ -64,8 +64,27 @@
                             <div class="col-md-12">
                                 <div class="pack-details p-3">
                                     <div class="selected-pack-container edit col-md-12 border-bottom mt-2 mb-4 pb-4">
-                                        <p class="text-textgray mb-0">PACK PHOTOGRAPHE</p>
+                                        <p class="text-textgray mb-0" id="selected-pack-skill">PACK PHOTOGRAPHE</p>
                                         <small>Cette information ne peut pas être modifiée</small>
+                                    </div>
+                                    <div class="pack-overview-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4" style="display: none;">
+                                        <p class="text-textgray text-12 mb-0">PACK PHOTOGRAPHE</p>
+                                        <h5 class="text-darkgray mb-3 mission-title">Shooting photo de votre établissement (plats et
+                                            locaux) </h5>
+                                        <p class="fz-12">
+                                            Bonjour,<br><br>
+
+                                            Ce tarif inclut :<br>
+                                            - Un shooting photo de 2 heures dans votre établissement (en journée) en haute
+                                            résolution<br>
+                                            - Photos de plats, d’équipes, des lieux<br>
+                                            - La retouche (selon le brief validé ensemble)<br>
+                                            - La livraison d’une quarantaine de photos sous 48h après le shooting<br>
+                                            - Je me déplace dans tout Paris<br><br>
+
+                                            Pour respecter ce tarif les équipes, plats (..) devront être mis en place à mon
+                                            arrivé.
+                                        </p>
                                     </div>
                                     {{ form_row(form.title) }}
                                     {{ form_row(form.description) }}
@@ -153,7 +172,7 @@
                                  aria-label="Close"> Retour à l'édition
                         </a>
                         <a href="javascript:;"
-                           class="btn btn-pink btn-pill fz-12 d-flex align-items-center create-the-mission disabled"
+                           class="btn btn-pink btn-pill fz-12 d-flex align-items-center create-the-mission"
                            id="toStep3">Créer la mission</a>
                         <a href="javascript:;"
                            class="btn btn-pink btn-pill fz-12 d-flex align-items-center next-step d-none"
@@ -395,13 +414,12 @@
                 });
             });
 
-            $('#mission_missionBasePrice').on('keyup', function () {
-                var price = $('#mission_missionBasePrice').val();
+            $('input[name="mission[missionBasePrice]"]').on('change', function () {
+                var price = $('input[name="mission[missionBasePrice]"]').val();
                 if (price == NaN) {
-                    alert('Price cannot be calculated');
+                    // alert('Price cannot be calculated');
                 } else {
-                    $('.client-price').removeClass('d-none');
-                    $('.price').html((parseInt($('#mission_missionBasePrice').val()) + (price * ({{ margin }}/100) )));
+                        $('.mission-price').html((parseInt($('input[name="mission[missionBasePrice]"]').val()) + (price * ({{ margin }}/100) )));
                 }
             });
 
@@ -458,8 +476,32 @@
             $(this).addClass('active').removeClass('inactive');
             $(this).parents('li').find('input[type="radio"]').prop('checked', true);
             $(this).parents('li').find('input[type="radio"]').attr('checked');
+            /* Get the corresponding pack details*/
+            $.ajax('/api/pack/details/'+$(this).parent('li').find('input[type="radio"]').val(),{
+                type: 'GET',
+                success: function(result)
+                {
+                    if(result.success == true)
+                    {
+                        $('input[name="mission[missionBasePrice]"').val(result.data.price);
+                        var price = $('input[name="mission[missionBasePrice]"]').val();
+                        $('[name="mission[description]"]').text(result.data.description);
+                        $('[name="mission[title]"]').val(result.data.title);
+                        $('.mission-price').html((parseInt($('input[name="mission[missionBasePrice]"]').val()) + (price * ({{ margin }}/100) )));
+                        $('#selected-pack-skill').html(result.data.skill);
+                        $.each(result.data.images, function(key, value)
+                        {
+                           $('.pack-photos-list').append('<li class="pack-photos-list-item d-inline-flex"><img src="/uploads/pack/'+result.data.id+'/'+value.name+'" /></li>');
+                        });
+                    }
+                }
+            });
         });
 
+        /* Update margin */
+        $(document).on('change','input[name="mission[missionBasePrice]"]', function () {
+
+        })
         $(document).on('click', 'li.pack-region-item', function () {
 
             $(this).find('input[type="radio"]').prop('checked', true);
