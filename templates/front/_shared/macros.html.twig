@@ -36,7 +36,7 @@
                     {% endif %}
 
                     <div class="cardAuth">
-                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" title="{{ card.pixie.slug }}">
+                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" title="{{ card.name }}">
                             <span class="portraitAuth" style="background-image: url({{ card.pixie.getAvatarUrl() | imagine_filter('user_small_avatar') }})"></span>
                             {{ card.pixie }}
                         </a>
@@ -65,7 +65,7 @@
     <div class="pixieBlock">
 
         <div class="portraitPixie" style="background-image: url({{ user.getAvatarUrl() | imagine_filter('user_avatar') }})">
-            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" title="{{ user.slug }}"></a>
+            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" title="{{ user.firstname }}"></a>
             <a class="pixieLink fa fa-user-plus cta-follow-pixie {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" href="#" data-toggle="tooltip" data-placement="left" title="{{ (app.user is not null and app.user.hasFavoritePixie(user))?"Ne plus suivre":"Suivre le City Maker" }}" data-id="{{ user.id }}"></a>
             {% if totalCards %}
                 <form action="{{ path('front_search_index') }}">
@@ -89,7 +89,7 @@
     <div class="pixieBlock">
 
         <div class="portraitPixie" data-city-maker-image="{{ user.getAvatarUrl() | imagine_filter('user_avatar') }}">
-            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" title="{{ user.slug }}"></a>
+            <a class="innerLink" href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" title="{{ user.firstname }}"></a>
             <a class="pixieLink fa fa-user-plus cta-follow-pixie {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" href="#" data-toggle="tooltip" data-placement="left" title="{{ (app.user is not null and app.user.hasFavoritePixie(user))?"Ne plus suivre":"Suivre le City Maker" }}" data-id="{{ user.id }}"></a>
             {% if totalCards %}
                 <form action="{{ path('front_search_index') }}">
@@ -176,7 +176,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12 link-button">
-                    <a href="{{ path('front_card_single', {slug: card.slug}) }}" title="{{ card.slug }}" class="btn btn-pink btn-block btn-icon-right">ENREGISTRER LA CARD</a>
+                    <a href="{{ path('front_card_single', {slug: card.slug}) }}" title="{{ card.name }}" class="btn btn-pink btn-block btn-icon-right">ENREGISTRER LA CARD</a>
                 </div>
             </div>
         </div>
@@ -212,7 +212,7 @@
     {% endif %}
     <div class="category-card col-sm-15 01-hotspot cat-12" data-id="{{ card.id }}" data-latitude="{{ card.address.latitude }}" data-longitude="{{ card.address.longitude }}">
         <div class="inner" style="{% if card.thumb %}background-image: url({{ card.thumb.getUrl() | imagine_filter('bg_card_item') }}){% endif %}">
-            <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}" title="{{ card.slug }}"></a>
+            <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}" title="{{ card.name }}"></a>
             {% if editable == true%}
                 <span class="collCheck" data-toggle="tooltip" data-placement="top" title="Ajouter">
             <div class="pretty p-icon p-round p-smooth p-bigger">
@@ -241,7 +241,7 @@
                         </form>
                     {% endif %}
                     <div class="cardAuth">
-                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" title="{{ card.pixie.slug }}">
+                        <a href="{{ path('front_pixies_single', {slug: card.pixie.slug, id: card.pixie.id}) }}" title="{{ card.name }}">
                             <span class="portraitAuth" style="background-image: url({{ card.pixie.getAvatarUrl() | imagine_filter('user_small_avatar') }})"></span>
                             {{ card.pixie }}
                         </a>
