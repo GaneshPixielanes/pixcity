@@ -61,10 +61,12 @@
                 <p class="mb-0 fz-12 text-inprogress experte-level">Experte Pix.City</p>
                 <p class="mb-0 text-darkgray user-name">@{{ mission.user.firstname }}</p>
             </div>
+            {% if mission.region | length > 0 %}
             <div class="mr-4">
                 <p class="mb-0 fz-12 text-normalgray">Région</p>
                 <p class="mb-0 text-darkgray user-region">{{ mission.region.name }}</p>
             </div>
+            {% endif %}
             <div class="mr-4">
                 <p class="mb-0 fz-12 text-normalgray">Prix</p>
                 <p class="mb-0 text-darkgray user-price">{{ mission.userMissionPayment.total }} €</p>
