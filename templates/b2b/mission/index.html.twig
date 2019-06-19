@@ -59,7 +59,7 @@
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-inprogress">En cours</p>
                                         <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
-                                        <i class="fas fa-eye preview-my-mission"></i>
+                                        <i class="fas fa-eye preview-edit-mission" data-id="{{ mission.id }}"></i>
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -144,297 +144,76 @@
                 }
             }
 
-            $('body').on('change', 'input[type="file"]', function (e) {
-                var type = 'banner';
-                // Read the image URL and display the image
-                if ($(this).attr('id') == 'banner-image' || $(this).attr('id') == 'imageUpload') {
-                    readURL(this);
-                } else {
-                    type = 'brief';
-                }
-                // Add image name on the input parameters
-                $.each($(this)[0].files, function (key, value) {
-
-                    var formData = new FormData();
-                    formData.append("file", value);
-                    //Upload the image via AJAX
-                    uploadFiles(formData, type);
-                });
-            });
-
-
-            function uploadFiles(formData, type) {
-                $.ajax('/b2b/pack/upload',
-                    {
-                        type: 'POST',
-                        data: formData,
-                        cacheable: false,
-                        processData: false,
-                        contentType: false,
-                    }).done(function (result) {
-                    if (type == 'banner') {
-                        console.log(result.fileName);
-                        $('#pack_bannerImage').val(result.fileName);
-                    } else if (type == 'brief') {
-                        var date = new Date();
-                        var prototype = $('#mission-documents-list').attr('data-prototype');
-                        var index = $('#mission-documents-list').find('input').length;
-
-                        prototype = prototype.replace(/__name__/g, index);
-                        $('#mission-documents-list').append(prototype);
-                        $('#mission-documents-list')
-                            .find('input:last')
-                            .val(result.fileName);
-                        $('#mission-documents-list').append(`<tr class="text-darkgray fz-14 mission_documents_`+index+`">
-                <td valign="middle" class="text-center">
-                    <i class="far fa-file-image fz-25"></i>
-                </td>
-                <td valign="middle">`+result.fileName+`</td>
-                <td valign="middle">`+date+`</td>
-                <td valign="middle">
-                    <div class="d-flex align-items-center">
-                                                <span class="btn-circle-28 mr-3">
-                                                    <img src="{{ app.user.getAvatar() }}" class="img-fluid rounded-circle" alt="">
-                                                </span>
-                        {{ app.user.firstName }}
-                    </div>
-                </td>
-                <td valign="middle">Document</td>
-                <td valign="middle"><span class="text-completed">Uploadé</span></td>
-                <td valign="middle">
-                    <div class="d-flex align-items-center">
-                        <a href="javascript:;" class="delete-document text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" data-target="mission_documents_`+index+`"><i class="fas fa-trash fz-16"></i></a>
-                    </div>
-                </td>
-            </tr>`);
-                    }
+            // $('body').on('change', 'input[type="file"]', function (e) {
+            //     var type = 'banner';
+            //     // Read the image URL and display the image
+            //     if ($(this).attr('id') == 'banner-image' || $(this).attr('id') == 'imageUpload') {
+            //         readURL(this);
+            //     } else {
+            //         type = 'brief';
+            //     }
+            //     // Add image name on the input parameters
+            //     $.each($(this)[0].files, function (key, value) {
+            //
+            //         var formData = new FormData();
+            //         formData.append("file", value);
+            //         //Upload the image via AJAX
+            //         uploadFiles(formData, type);
+            //     });
+            // });
 
 
-                });
-            }
+            {#function uploadFiles(formData, type) {#}
+            {#    $.ajax('/b2b/pack/upload',#}
+            {#        {#}
+            {#            type: 'POST',#}
+            {#            data: formData,#}
+            {#            cacheable: false,#}
+            {#            processData: false,#}
+            {#            contentType: false,#}
+            {#        }).done(function (result) {#}
+            {#        if (type == 'banner') {#}
+            {#            console.log(result.fileName);#}
+            {#            $('#pack_bannerImage').val(result.fileName);#}
+            {#        } else if (type == 'brief') {#}
+            {#            var date = new Date();#}
+            {#            var prototype = $('#mission-documents-list').attr('data-prototype');#}
+            {#            var index = $('#mission-documents-list').find('input').length;#}
 
-            $("body").on('change', '#pack_userBasePrice', function () {
-
-                var actual_price = $("#pack_userBasePrice").val();
-                console.log(actual_price);
-                var after_price = parseFloat(actual_price) * 20 / 100;
-
-                var total = parseFloat(actual_price) + parseFloat(after_price);
-                $(".total-pack-price").val(total);
-                $(".total-pack-price").text(total + '€');
-
-            });
-
-            // Edit the pack
-            $('body').on('click', '.edit-the-pack, .add-package-to-list > a', function () {
-
-
-                var pack_id = $(this).attr('data-id');
-                console.log(pack_id);
-                if ($(this).hasClass('edit-the-pack')) {
-                    url = '/b2b/pack/edit-pack/' + pack_id;
-                } else {
-                    url = '/api/pack/create';
-                }
-                $.ajax(url, {
-                    type: 'GET',
-                    success: function (result) {
-                        $('#pack-form').html(result);
-                        $('.selectpicker').selectpicker('refresh');
-                        var $dropZone = $('.dropzone-custom').dropzone({
-                            url: '{{ path('b2b_pack_fileuploadhandler') }}',
-                            maxFiles: 7,
-                            acceptedFiles: 'image/*',
-                            maxFilesize: 2,  // in Mb
-                            addRemoveLinks: true,
-                            // autoProcessQueue:false,
-                            parallelUploads: 10,
-                            dictRemoveFileConfirmation: 'Are you sure you want to save this image?',
-                            removedfile: function (file) {
-                                var name = file.name;
-
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '{{ path('b2b_pack_delete_image') }}',
-                                    data: {name: name, pack_id: "2"},
-                                    success: function (data) {
-                                        console.log('success: ' + data);
-                                    }
-                                });
-
-                                var _ref;
-                                if (file.previewElement) {
-                                    if ((_ref = file.previewElement) != null) {
-                                        _ref.parentNode.removeChild(file.previewElement);
-                                    }
-                                }
-                                return this._updateMaxFilesReachedClass();
-
-                            },
-                            init: function () {
+            {#            prototype = prototype.replace(/__name__/g, index);#}
+            {#            $('#mission-documents-list').append(prototype);#}
+            {#            $('#mission-documents-list')#}
+            {#                .find('input:last')#}
+            {#                .val(result.fileName);#}
+            {#            $('#mission-documents-list').append(`<tr class="text-darkgray fz-14 mission_documents_`+index+`">#}
+            {#    <td valign="middle" class="text-center">#}
+            {#        <i class="far fa-file-image fz-25"></i>#}
+            {#    </td>#}
+            {#    <td valign="middle">`+result.fileName+`</td>#}
+            {#    <td valign="middle">`+date+`</td>#}
+            {#    <td valign="middle">#}
+            {#        <div class="d-flex align-items-center">#}
+            {#                                    <span class="btn-circle-28 mr-3">#}
+            {#                                        <img src="{{ app.user.getAvatar() }}" class="img-fluid rounded-circle" alt="">#}
+            {#                                    </span>#}
+            {#            {{ app.user.firstName }}#}
+            {#        </div>#}
+            {#    </td>#}
+            {#    <td valign="middle">Document</td>#}
+            {#    <td valign="middle"><span class="text-completed">Uploadé</span></td>#}
+            {#    <td valign="middle">#}
+            {#        <div class="d-flex align-items-center">#}
+            {#            <a href="javascript:;" class="delete-document text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" data-target="mission_documents_`+index+`"><i class="fas fa-trash fz-16"></i></a>#}
+            {#        </div>#}
+            {#    </td>#}
+            {#</tr>`);#}
+            {#        }#}
 
 
-                                this.on("maxfilesexceeded", function (file) {
-                                    this.removeFile(file);
-                                    alert('please upload maximum 7 files');
-                                });
-                                this.on("sending", function (file, xhr, formData) {
-                                    // send additional data with the file as POST data if needed.
-                                    // formData.append("key", "value");
-                                });
-                                this.on("success", function (file, response) {
-
-                                    if (response.uploaded) {
-                                        var currentValue = $("#pack-form input[name='attached_files'").val();
-                                        if (currentValue == '') {
-                                            $("#pack-form input[name='attached_files'").val(response.fileName);
-                                        } else {
-                                            $("#pack-form input[name='attached_files'").val(currentValue + ", " + response.fileName);
-                                        }
-                                    }
-
-                                    if(response.uploaded)
-                                    {
-                                        $('.pack-photos-list').html('');
-                                        $.each($('.dz-image > img'), function(val, element){
-
-                                            $('.pack-photos-list').append('<li class="pack-photos-list-item d-inline-flex"><img src="'+$(element).attr('src')+'" /></li>')
-
-                                        });
-
-                                    }
-
-                                    if (response.uploaded)
-                                        console.log('File Uploaded: ' + response.fileName);
-                                });
-
-                                thisDropzone = this;
+            {#    });#}
+            {#}#}
 
 
-                                if (pack_id != '') {
-                                    $.get('/b2b/pack/image-display/' + pack_id, function (data) {
-
-                                        <!-- 5 -->
-                                        $.each(data, function (key, value) {
-                                            var mockFile = {name: value.name, size: value.size};
-
-                                            thisDropzone.options.addedfile.call(thisDropzone, mockFile);
-
-                                            thisDropzone.options.thumbnail.call(thisDropzone, mockFile, value.path);
-
-                                        });
-
-                                    });
-                                }
-                            }
-                        });
-
-                        // $('.dropzone-custom').html(`
-                        //     <div class="upload-area mb-4 dz-clickable">
-                        //         <div class="area-label text-center p-4">
-                        //             <i class="fas fa-cloud-upload-alt"></i>
-                        //             <p class="mb-0">Déposez vos images ici</p>
-                        //             <a href="javascript:;">Depuis votre navigateur</a>
-                        //         </div>
-                        //     </div>
-                        // `);
-
-                        $("#submitform").on('click', function () {
-                            $dropZone[0].dropzone.processQueue();
-                        });
-                    }
-                })
-            });
-
-            $('body').on('click', '.save-changes', function () {
-                var data = $(this).parents('form').serialize();
-                var url = '';
-
-                if ($(this).attr('data-mode') == 'edit') {
-                    url = '/b2b/pack/edit-pack/' + $(this).attr('data-id')
-                } else {
-                    url = '/api/pack/create';
-                }
-                $.ajax($(this).attr('data-url'), {
-                    type: 'POST',
-                    data: data,
-                    success: function (result) {
-                        location.href = '/b2b/pack/success';
-                    }
-                });
-            });
-
-        });
-
-
-
-        $(document).ready(function () {
-            // Adding a new pack
-            $('.add-package-to-list > a').on('click', function () {
-                $('#pack-form').load('/api/pack/create');
-            });
-
-            // Deleting a pack
-            $('.delete-pack').on('click', function () {
-                $('#confirmPackDelete').attr('data-id',$(this).attr('data-id'));
-                // $.ajax('/b2b/pack/delete-pack/'+$(this).attr('data-id'),{
-                //     success: function (result) {
-                //         console.log('asdas');
-                //     }
-                // });
-            });
-
-            $('body').on('click', "#confirmPackDelete",function () {
-
-                var id = $(this).attr('data-id');
-                $.ajax('/b2b/pack/delete-pack/'+id,{
-                    success: function (result) {
-                        $('.package-list-item[data-id="'+id+'"]').remove();
-                        $('.total-packs-available').html($('.package-item').length);
-                        $('#removePackConfirmation').find('.close').trigger('click');
-
-                    }
-                });
-            });
-
-            $('.mark-notification-read').on('click', function () {
-                // Mark notification unread
-                $.ajax('/notification/unread',{
-                    type: 'POST',
-                    data: {'id':$(this).attr('data-id')},
-                    success:function(result)
-                    {
-                        console.log(result);
-                    }
-                });
-            });
-
-            // Synchronize pack edit and pack list
-            $('body').on('keyup','[name="pack[title]"]', function () {
-                $('.pack-title-preview').html($('[name="pack[title]"]').val());
-            });
-
-            $('body').on('keyup','[name="pack[description]"]', function () {
-                $('.pack-description-preview').html($('[name="pack[description]"]').val());
-            });
-
-            $('body').on('submit','#pack-form', function()
-            {
-                var id = $('[name="pack[title]"]').attr('data-id');
-                $('.pack-title[data-id="'+id+'"]').html($('[name="pack[title]"]').val());
-            });
-
-            $('body').on('click','.preview-pack', function () {
-                $('.user-price').html($('.total-pack-price:last').text());
-
-                // $images = $('.dz-image');
-                // console.log($images);
-                // $.each($images, function(key, value)
-                // {
-                //     $('.pack-photos-list-item > li:last').after('<li class="pack-photos-list-item dz-item">' +
-                //         '<img src="'+$(this).find('img').attr('src')+'" /></li>');
-                // })
-            });
         });
     </script>
 {% endblock %}

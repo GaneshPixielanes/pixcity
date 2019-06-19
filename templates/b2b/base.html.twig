@@ -176,7 +176,9 @@
                         success:function(result)
                         {
                             $('#mission-edit-container').html(result);
+                            $('.selectpicker').selectpicker('refresh');
                             $('.mission-edition-container').fadeIn();
+                            $('a[data-original-title="'+$('.selectpicker option:selected').text()+'"]').addClass('active');
 
                         }
                     });

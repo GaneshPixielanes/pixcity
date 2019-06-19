@@ -356,7 +356,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
-                    <button type="button" class="btn btn-pink">TERMINER LA MISSION</button>
+                    <button type="button" class="btn btn-pink" id="terminate-mission" terminate-data-id="">TERMINER LA MISSION</button>
                 </div>
             </div>
         </div>
@@ -745,6 +745,53 @@
                     });
                 }
             })
+        });
+    </script>
+
+    <script>
+        $(document).ready(function()
+        {
+            $(document).on('click','.terminate-mission-activate',function () {
+               $('#terminate-mission').attr('terminate-data-id',$(this).attr('data-id'));
+            });
+
+            $('#terminate-mission').on('click', function(e){
+
+                e.preventDefault();
+
+                updateStatus($(this).attr('terminate-data-id'),'terminate');
+            });
+
+            $('#cancel-mission').on('click', function (e)
+            {
+                e.preventDefault();
+
+                updateStatus($(this).attr('cancel-data-id'),'cancel');
+            });
+
+            function updateStatus(id, status)
+            {
+                $.ajax('/community-manager/mission/status',{
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'status': status,
+                        '_token':"{{ csrf_token(app.user.id) }}"
+                    },
+                    success:function(result)
+                    {
+                        if(result.success == true)
+                        {
+                            $('.close-preview-edit').trigger('click');
+                            $('.btn-white-cancel').trigger('click');
+                        }
+                        else
+                        {
+                            alert('Sorry! Status couldn\'t be updated');
+                        }
+                    }
+                })
+            }
         });
     </script>
 {% endblock %}

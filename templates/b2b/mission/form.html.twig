@@ -91,7 +91,7 @@
                                     {{ form_row(form.missionBasePrice) }}
 
 
-                                    <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4" style="display:none">
+                                    <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
                                         <h5 class="text-darkgray mb-0">Photos</h5>
                                         <div class="pack-photos">
                                             <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
@@ -477,25 +477,33 @@
             $(this).parents('li').find('input[type="radio"]').prop('checked', true);
             $(this).parents('li').find('input[type="radio"]').attr('checked');
             /* Get the corresponding pack details*/
-            $.ajax('/api/pack/details/'+$(this).parent('li').find('input[type="radio"]').val(),{
-                type: 'GET',
-                success: function(result)
-                {
-                    if(result.success == true)
+            if($(this).parents('.pack-selection-cards').length == 1)
+            {
+                $.ajax('/api/pack/details/'+$(this).parent('li').find('input[type="radio"]').val(),{
+                    type: 'GET',
+                    success: function(result)
                     {
-                        $('input[name="mission[missionBasePrice]"').val(result.data.price);
-                        var price = $('input[name="mission[missionBasePrice]"]').val();
-                        $('[name="mission[description]"]').text(result.data.description);
-                        $('[name="mission[title]"]').val(result.data.title);
-                        $('.mission-price').html((parseInt($('input[name="mission[missionBasePrice]"]').val()) + (price * ({{ margin }}/100) )));
-                        $('#selected-pack-skill').html(result.data.skill);
-                        $.each(result.data.images, function(key, value)
+                        if(result.success == true)
                         {
-                           $('.pack-photos-list').append('<li class="pack-photos-list-item d-inline-flex"><img src="/uploads/pack/'+result.data.id+'/'+value.name+'" /></li>');
-                        });
+                            $('input[name="mission[missionBasePrice]"').val(result.data.price);
+                            var price = $('input[name="mission[missionBasePrice]"]').val();
+                            $('[name="mission[description]"]').text(result.data.description);
+                            $('[name="mission[title]"]').val(result.data.title);
+                            $('.mission-price').html((parseInt($('input[name="mission[missionBasePrice]"]').val()) + (price * ({{ margin }}/100) )));
+                            $('#selected-pack-skill').html(result.data.skill);
+                            $('#mission-images-display').html('');
+                            $.each(result.data.images, function(key, value)
+                            {
+                                $('.pack-photos-list').append(`<li class="pack-photos-list-item d-inline-flex">
+                                                                <img src="/uploads/pack/`+result.data.id+`/`+value.name+`" />
+                                                                </li>`);
+                                $('#mission-images-display').append('<input type="hidden" name="mission[missionMedia]['+key+'][name]" value="'+value.name+'"/>');
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
+
         });
 
         /* Update margin */
