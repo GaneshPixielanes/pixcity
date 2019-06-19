@@ -106,7 +106,7 @@
                                         affiché sur la platefome sera votre prix auquel s'ajoute la commission payée par le
                                         client.</span></p>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center d-none">
                 <div class="input-group w-10">
                     <input type="text" class="form-control fz-16 font-weight-bold bg-lightwhite total-pack-price" placeholder=""
                            aria-label="Pack price" aria-describedby="pack-price" value="{{ pack.totalPrice }}" readonly>
@@ -189,6 +189,7 @@
                                 </select>
                             </div>
                         </div>
+                        {% if  app.user.userRegion | length > 1 %}
                         <div class="row">
                             <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
                                 <select class="selectpicker" data-width="100%" data-live-search="true"
@@ -197,6 +198,7 @@
                                 </select>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-md-6 choose-region-map d-flex align-items-center justify-content-center ">
