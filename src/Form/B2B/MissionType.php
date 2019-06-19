@@ -107,7 +107,6 @@ class MissionType extends AbstractType
 //            ])
             ->add('region', EntityType::class,[
                 'class' => Region::class,
-                'data' => $options['region'],
                 'multiple' => false,
                 'expanded' => false,
                 'choice_label' => 'name',

@@ -172,7 +172,7 @@
                             <select class="selectpicker" data-width="100%" data-live-search="true"
                                     title="Choose a region from the list" readonly="readonly" name="{{ form.vars.full_name }}">
                                 {% for choice in form.vars.choices %}
-                                    {% if data.id is defined and data.id == choice.data.id %}
+                                    {% if data.id is defined and data.id == choice.value %}
                                         <option value="{{ choice.data.id }}" selected>{{ choice.data.name }}</option>
                                     {% else %}
                                         <option value="{{ choice.data.id }}">{{ choice.data.name }}</option>
@@ -288,6 +288,7 @@
                 </div>
             </div>
         </div>
+        <div id="mission-images-display"></div>
     </div>
 
 {% endblock %}
@@ -339,7 +340,7 @@
                                 class="fas fa-upload"></i> Upload</a> <span class="fz-14">Télécharger mes GCV
                                             (format .pdf 5mo max)</span>
                     <input type="file" class="d-none" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief"/>
-                    <input type="hidden" id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" value="" />
+                    <input type="hidden" id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" />
                 </div>
                 <div class="col-md-12">
                     <div class="d-inline-block bg-lightgray text-darkblue fz-16 font-weight-light p-2">
