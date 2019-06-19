@@ -55,7 +55,11 @@
             <div class="tab-pane active" id="home" role="tabpanel">
                 <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
                     <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Mon profil</div>
-                    <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">{{ app.user.userMission | length }} mission en cours</a>
+                    {% if app.user.userMission is defined %}
+                        <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">{{ app.user.userMission | length }} mission en cours</a>
+                    {% else %}
+                        <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">0 mission en cours</a>
+                    {% endif %}
                 </div>
 
                 <div class="col-md-12 tab-pane-content p-4" data-simplebar>
@@ -228,7 +232,10 @@
                         <nav class="internal-nav">
                             <ul class="nav nav-tabs border-0 line-tabs line-tabs-pink" id="dashboardMyMissions" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link text-normalgray active" data-toggle="tab" href="#inProgress" role="tab" aria-controls="inProgress">En cours</a>
+                                    <a class="nav-link text-normalgray active" data-toggle="tab" href="#inDraft" role="tab" aria-controls="inDraft">En Draft</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-normalgray" data-toggle="tab" href="#inProgress" role="tab" aria-controls="inProgress">En cours</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-normalgray" data-toggle="tab" href="#completed" role="tab" aria-controls="completed">Terminées</a>
@@ -239,7 +246,41 @@
                             </ul>
                         </nav>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="inProgress" role="tabpanel">
+                            <div class="tab-pane active" id="inDraft" role="tabpanel">
+                                <ul class="available-missions-list m-0 mt-3 col-md-12">
+                                    {% if mymissions['created'] is not empty %}
+                                        {% for mission in mymissions['created'] %}
+                                        <li class="mission-list-item d-flex align-items-center text-darkgray">
+                                            <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
+                                            <p class="mb-0 px-3 w-40">{{ mission.description | truncate(150) }}
+                                            </p>
+                                            <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
+                                            <p class="w-15 mb-0">{{ mission.title }}</p>
+                                            <p class="w-15 mb-0 text-inprogress">En cours</p>
+                                            <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
+                                            <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
+                                        </li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                                            <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                                                <div class="w-35">
+                                                    <img class="img-fluid" src="/images/dash-mymissions-empty.png"
+                                                         alt="My Missions">
+                                                </div>
+                                                <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
+                                                <p> Ça y est votre profil et vos packs sont à jour !
+                                                    Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
+                                                    une bonne négociation !
+                                                </p>
+                                                <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
+                                                        lien).</a> </p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <div class="tab-pane" id="inProgress" role="tabpanel">
                                 <ul class="available-missions-list m-0 mt-3 col-md-12">
                                     {% if mymissions['ongoing'] is not empty %}
                                         {% for mission in mymissions['ongoing'] %}
