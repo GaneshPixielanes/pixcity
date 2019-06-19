@@ -11,6 +11,7 @@
             <h5 class="text-darkgray mb-3">{{ pack.title }}</h5>
             {{ pack.description }}
         </div>
+        {% if pack.userPackMedia | length %}
         <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Photos</h5>
             <div class="pack-photos">
@@ -24,6 +25,7 @@
                 </ul>
             </div>
         </div>
+        {% endif %}
 {#        <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">#}
 {#            <h5 class="text-darkgray mb-3">Zone géographique</h5>#}
 {#            <ul class="nav nav-pills mb-3 pack-regions nav-justified" id="pack-regions" role="tablist">#}
