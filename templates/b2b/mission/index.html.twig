@@ -2,11 +2,15 @@
 
 {% block content %}
     <div class="tab-pane active" id="myMissions" role="tabpanel">
-        <div class="row">
-            <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-                <div class="d-flex align-items-center fz-20 text-darkblue">Mes missions</div>
-                <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill">{{ missions['ongoing'] | length }} missions en cours</a>
+        <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-briefcase fz-30 mr-2"></i> Mes Missions
             </div>
+            {% if app.user.missionProposalsToCityMaker | length > 0 %}
+                <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"
+                   onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle
+                    mission</a>
+            {% endif %}
+        </div>s
             {% if missions['ongoing'] | length == 0 %}
 
                 <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
@@ -28,7 +32,7 @@
             {% else %}
                 <div class="col-md-12 tab-pane-content p-4" data-simplebar>
                     <nav class="internal-nav">
-                        <ul class="nav nav-tabs nav-tabs-sticky border-0 line-tabs line-tabs-pink" id="dashboardMyMissions" role="tablist">
+                        <ul class="nav nav-tabs nav-tabs-sticky border-0 line-tabs line-tabs-pink active" id="dashboardMyMissions" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link text-normalgray nested" data-toggle="tab" data-tab-history="myMissionsSecondaryNav" data-tab-history-changer="push" data-tab-history-update-url="true" href="#inProgress" role="tab"
                                    aria-controls="inProgress">En cours</a>
@@ -44,14 +48,14 @@
                         </ul>
                     </nav>
                     <div class="tab-content">
-                        <div class="tab-pane" id="inProgress" role="tabpanel">
+                        <div class="tab-pane active" id="inProgress" role="tabpanel">
                             <ul class="available-missions-list m-0 mt-3 col-md-12">
                                 {% for mission in missions['ongoing'] %}
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
                                         <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
                                         <p class="mb-0 px-3 w-40">{{ mission.title | raw }}
                                         </p>
-                                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}/p>
+                                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-inprogress">En cours</p>
                                         <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>

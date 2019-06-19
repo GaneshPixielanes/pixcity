@@ -34,7 +34,7 @@ class PackController extends Controller
     /**
      * @Route("/list", name="list")
      */
-    public function index(UserPacksRepository $packRepo)
+    public function index(UserPacksRepository $packRepo,OptionRepository $optionRepo)
     {
         $user = $this->getUser();
 
@@ -42,6 +42,7 @@ class PackController extends Controller
 
         return $this->render('b2b/pack/index.html.twig', [
             'packs' => $packs,
+            'tax' =>  $optionRepo->findBy(['slug' => 'margin'])[0]
         ]);
     }
 
