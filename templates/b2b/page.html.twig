@@ -163,7 +163,7 @@
                     <figure class="position-relative m-0 w-100">
                         <img class="img-fluid" src="{{ app.user.getAvatar() | imagine_filter('b2b_avatar_medium')}}" alt="{{ app.user }}">
                         <figcaption class="position-absolute d-flex align-items-center"><i class="fas fa-user-circle mr-2"></i>
-                            <span>Prévisualiser mon profil</span></figcaption>
+                            <a href="/city-maker/compte/parametres" style="text-decoration:none;color:white;">Prévisualiser mon profil</a></figcaption>
                     </figure>
                 </div>
                 <ul class="nav nav-tabs nav-tabs-sticky flex-column pt-3 flex-grow-1 border-0 dashboard-menu" id="cmDashboardMainNav" role="tablist">
@@ -387,6 +387,7 @@
             </button>
         </div>
     </div>
+    <div id="api-box" data-date="{{ "now"|date("d/m/Y") }}"></div>
     <!-- Saved changes toast ends -->
     <!-- Toasts ends -->
 {% endblock %}
@@ -415,6 +416,7 @@
 
                     reader.onload = function (e) {
                         $('#banner-image').attr('src', e.target.result);
+                        $('.cover-image').attr('src', e.target.result);
                     }
 
                     reader.readAsDataURL(input.files[0]);
@@ -423,25 +425,37 @@
 
             $('body').on('change', 'input[type="file"]', function (e) {
                 var type = 'banner';
+                var module = $(this).parents('form').attr('name');
                 // Read the image URL and display the image
+
                 if ($(this).attr('id') == 'banner-image' || $(this).attr('id') == 'imageUpload') {
                     readURL(this);
                 } else {
                     type = 'brief';
                 }
+                console.log();
                 // Add image name on the input parameters
                 $.each($(this)[0].files, function (key, value) {
 
                     var formData = new FormData();
                     formData.append("file", value);
                     //Upload the image via AJAX
-                    uploadFiles(formData, type);
+                    uploadFiles(formData, type, module);
                 });
             });
 
 
-            function uploadFiles(formData, type) {
-                $.ajax('/b2b/pack/upload',
+            function uploadFiles(formData, type, module) {
+                console.log(module);
+                if(module == 'mission')
+                {
+                    url = '/community-manager/mission/upload';
+                }
+                else
+                {
+                    url = '/b2b/pack/upload';
+                }
+                $.ajax(url,
                     {
                         type: 'POST',
                         data: formData,
@@ -450,10 +464,10 @@
                         contentType: false,
                     }).done(function (result) {
                     if (type == 'banner') {
-                        console.log(result.fileName);
                         $('#pack_bannerImage').val(result.fileName);
+                        $('#mission_bannerImage').val(result.fileName);
                     } else if (type == 'brief') {
-                        var date = new Date();
+                        var date = $('#api-box').attr('data-date');
                         var prototype = $('#mission-documents-list').attr('data-prototype');
                         var index = $('#mission-documents-list').find('input').length;
 
@@ -583,10 +597,10 @@
 
                                         });
 
+                                        $('.save-changes').removeClass('disabled');
+
                                     }
 
-                                    if (response.uploaded)
-                                        console.log('File Uploaded: ' + response.fileName);
                                 });
 
                                 thisDropzone = this;
@@ -716,6 +730,19 @@
                 //         '<img src="'+$(this).find('img').attr('src')+'" /></li>');
                 // })
             });
+
+            $(document).on('click','.delete-document', function () {
+                if(confirm('Are you sure about deleting this document?'))
+                {
+                    var id =$(this).attr('data-id');
+                    $.ajax('/community-manager/mission/document-delete/'+id,{
+                        success:function () {
+                            $('a[data-id="'+id+'"]').parent('.document_'+id).remove();
+                            $('.document_'+id).remove();
+                        }
+                    });
+                }
+            })
         });
     </script>
 {% endblock %}
