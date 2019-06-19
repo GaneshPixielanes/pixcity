@@ -126,7 +126,7 @@
 													</a>
 													<div class="dropdown-menu shadow mb-3" id="regDropdown" aria-labelledby="dropdownMenuRegion">
 														{% for region in regions() %}
-															<a class="dropdown-item" href="/{{ region.slug }}" target="_blank">{{ region.name }}</a>
+															<a class="dropdown-item" href="/{{ region.slug }}" target="_blank" title="{{ region.name }}">{{ region.name }}</a>
 														{% endfor %}
 													</div>
 												</div>
