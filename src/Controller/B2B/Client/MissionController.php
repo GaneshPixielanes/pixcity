@@ -7,6 +7,7 @@ use App\Entity\ClientTransaction;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionRepository;
+use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Service\MangoPayService;
 use MangoPay\Money;
@@ -154,7 +155,7 @@ class MissionController extends AbstractController
     public function missionAcceptProcess($id, ClientTransactionRepository $transactionRepo,
                                          ClientRepository $clientRepository,
                                          UserMissionRepository $missionRepo,
-                                         Request $request,MangoPayService $mangoPayService)
+                                         Request $request,MangoPayService $mangoPayService,NotificationsRepository $notificationsRepository)
     {
 
         $response = $mangoPayService->getResponse($request->get('transactionId'));
@@ -163,6 +164,7 @@ class MissionController extends AbstractController
         if($response->Status != 'FAILED'){
 
             $transaction = $transactionRepo->find($id);
+            $mission_id = $transaction->getMission();
 
             $transaction->setMangopayTransactionId($request->get('transactionId'));
             $transaction->setPaymentStatus(true);
@@ -172,6 +174,19 @@ class MissionController extends AbstractController
 
             $em->persist($transaction);
             $em->flush();
+
+            $notification = $notificationsRepository->findBy(['notify_by' => $mission_id]);
+
+            if(!empty($notification)){
+
+                if($notification[0]->getType() == 'create_mission'){
+
+                    $notification[0]->setUnread(0);
+                    $em->persist($notification[0]);
+                    $em->flush();
+                }
+
+            }
 
             return $this->render('b2b/client/transaction/success.html.twig');
 
