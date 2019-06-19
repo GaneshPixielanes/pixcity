@@ -172,6 +172,7 @@ class MissionController extends AbstractController
 
 
             $mission->setUser($this->getUser());
+            $mission->setReferencePack($mission->getReferencePack());
             $mission->getUserMissionPayment()->setClientPrice($clientPrice); // Client's price
             $mission->getUserMissionPayment()->setUserBasePrice($price); // Base price
             $mission->getUserMissionPayment()->setTaxPercentage($tax); // Tax Percentage
@@ -263,13 +264,13 @@ class MissionController extends AbstractController
             case 'cancel': if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
                             {
                                 $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
-                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has requested for the cancellation of mission '.$mission->getStatus(),null);
+//                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has requested for the cancellation of mission '.$mission->getStatus(),null);
                                 break;
                             }
                             elseif($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT)
                             {
                                 $mission->setStatus(MissionStatus::CANCELLED);
-                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus(),null);
+//                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus(),null);
                                 break;
                             }
 
@@ -277,13 +278,13 @@ class MissionController extends AbstractController
                 if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
                 {
                     $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
-                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle(),null);
+//                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle(),null);
                     break;
                 }
                 elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT)
                 {
                     $mission->setStatus(MissionStatus::TERMINATED);
-                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),null);
+//                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),null);
                     break;
                 }
 
@@ -347,8 +348,8 @@ class MissionController extends AbstractController
         $document = $documentRepo->find($id);
         $mission = $document->getMission();
         $date = new \DateTime();
-        $response = new BinaryFileResponse($mission->getBriefUrl().$document->getName());
-        $ext = pathinfo($mission->getBriefUrl().$document->getName(),PATHINFO_EXTENSION);
+        $response = new BinaryFileResponse('uploads/missions/temp/'.$document->getName());
+        $ext = pathinfo('uploads/missions/temp/'.$document->getName(),PATHINFO_EXTENSION);
 
         $response->headers->set('Content-Type','text/plain');
         $response->setContentDisposition(
@@ -402,5 +403,21 @@ class MissionController extends AbstractController
             'missions' => $missions,
         ])->getContent();
         return new JsonResponse(['success' => true, 'html' => $result]);
+    }
+
+    /**
+     * @Route("document-delete/{id}",name="delete_document")
+     */
+    public function deleteDocument($id, MissionDocumentRepository $documentRepo)
+    {
+        $document = $documentRepo->find($id);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->remove($document);
+        $entityManager->flush();
+
+        return new JsonResponse(['success' => true]);
+
     }
 }
