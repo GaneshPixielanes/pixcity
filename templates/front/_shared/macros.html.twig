@@ -11,7 +11,7 @@
                     <label class="fa"></label>
                 </span>
             {% else %}
-                <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}" title="{{ card.slug }}"></a>
+                <a class="innerLink" href="{{ path('front_card_single', {slug: card.slug}) }}" title="{{ card.name }}"></a>
             {% endif %}
 
             {#<a class="fa fa-question-circle cta-like-card" data-id="{{ card.id }}" title="{{ card.pixie.firstname~' '~card.pixie.lastname }}" data-toggle="tooltip" data-placement="top" data-container="body"></a>#}
@@ -260,7 +260,7 @@
     <div class="col-md-12 card shadow">
         <div class="row">
             <div class="col-md-12">
-                <a href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" class="city-maker-image" target="_blank" title="{{ user.slug }}">
+                <a href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" class="city-maker-image" target="_blank" title="{{ user.firstName }}">
                     <img src="{{ user.getAvatarUrl() | imagine_filter('user_avatar') }}" class="rounded-circle" alt="{{ user.firstName }}  - Community manager et influenceur local {{ user.pixie ? user.pixie.regions[0] : '' }} ">
                 </a>
             </div>
