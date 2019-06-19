@@ -2,9 +2,13 @@
 
 namespace App\Controller\B2B;
 
+use App\Constant\MissionStatus;
 use App\Entity\Client;
 use App\Form\B2B\ClientType;
+use App\Repository\ClientMissionProposalRepository;
 use App\Repository\ClientRepository;
+use App\Repository\NotificationsRepository;
+use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +25,7 @@ class ClientRegistrationController extends AbstractController
     /**
      * @Route("register", name="register")
      */
-    public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader)
+    public function index(Request $request,ClientMissionProposalRepository $proposalRepo,UserMissionRepository $missionRepo,NotificationsRepository $notificationRepo,UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader)
     {
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
@@ -53,7 +57,37 @@ class ClientRegistrationController extends AbstractController
             $em->persist($client);
             $em->flush();
 
-            return $this->render('b2b/client/index.html.twig');
+            // Get client notifications
+            $notifications = $notificationRepo->findBy(['client'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);
+
+            //Get missions
+            $missions = $missionRepo->findMissionForClient($this->getUser(), MissionStatus::ONGOING);
+
+            //Get proposals
+            $proposal_unique = [];
+
+            $proposals = $proposalRepo->findBy(['client' => $this->getUser()],['id'=>'DESC'],8);
+
+            foreach ($proposals as $proposal) {
+                if(!in_array($proposal->getUser()->getId(),$proposal_unique)){
+                    $proposal_unique [$proposal->getId()] = $proposal->getUser()->getId();
+                }
+            }
+
+            $mymissions['ongoing'] = $missionRepo->findOngoingMissions($this->getUser(),'client');
+            $mymissions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
+            $mymissions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
+
+            $missions_notification = $missionRepo->findBy(['client' => $this->getUser()]);
+
+            return $this->render('b2b/client/index.html.twig',[
+                'notifications' => $notifications,
+                'missions' => $missions,
+                'proposals' => $proposals,
+                'mymissions' => $mymissions,
+                'missions_notification' => $missions_notification,
+                'proposal_unique' => $proposal_unique
+            ]);
         }
         return $this->render('b2b/client_registration/index.html.twig', [
             'controller_name' => 'ClientRegistrationController',

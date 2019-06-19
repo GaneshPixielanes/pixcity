@@ -206,13 +206,13 @@
             /* Show all/less notifications on click */
             $(document).on('click', '.show-more a, .show-less a', function () {
                 if ($(this).is('.show-less a')) {
-                    $(this).parent('.show-less').hide()
-                    $(this).parent('.show-less').siblings('.show-more').fadeIn()
+                    $(this).parent('.show-less').hide();
+                    $(this).parent('.show-less').siblings('.show-more').fadeIn();
                     $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').removeClass(
                         'd-flex').slideUp();
                 } else if ($(this).is('.show-more a')) {
-                    $(this).parent('.show-more').hide()
-                    $(this).parent('.show-more').siblings('.show-less').fadeIn()
+                    $(this).parent('.show-more').hide();
+                    $(this).parent('.show-more').siblings('.show-less').fadeIn();
                     $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').addClass(
                         'd-flex').slideDown();
                 }
