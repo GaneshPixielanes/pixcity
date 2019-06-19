@@ -84,10 +84,10 @@
 {#                            {% endif %}#}
                             {% if notification.type == 'create_mission' %}
                             <div class="col-md-3 d-flex justify-content-end">
-                                <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-id="{{ notification.notifyby }}">PAYER EN LIGNE</a>
+                                <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">PAYER EN LIGNE</a>
                             </div>
                             {% endif %}
-                            <button type="button" class="close align-self-start mark-notification-read" data-dismiss="alert" aria-label="Close"  data-id="{{ notification.id }}"s>
+                            <button type="button" class="close align-self-start mark-notification-read" data-dismiss="alert" aria-label="Close"  data-id="{{ notification.id }}">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -553,7 +553,10 @@
     <script>
         $(document).ready(function(){
 
-            $('button.close').on('click',function(){
+
+
+            $('button.close','a.pay-online').on('click',function(){
+
                 var id = $(this).attr('data-id');
                 $.ajax({
                     type: 'GET',

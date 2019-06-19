@@ -81,4 +81,14 @@ class MangoPayService
         return $result->ExecutionDetails->RedirectURL;
     }
 
+
+    public function  getResponse($payincardweb){
+
+        $response = $this->mangoPayApi->PayIns->Get($payincardweb);
+
+        return $response;
+
+
+    }
+
 }

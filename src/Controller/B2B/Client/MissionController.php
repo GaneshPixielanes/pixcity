@@ -154,20 +154,36 @@ class MissionController extends AbstractController
     public function missionAcceptProcess($id, ClientTransactionRepository $transactionRepo,
                                          ClientRepository $clientRepository,
                                          UserMissionRepository $missionRepo,
-                                         Request $request)
+                                         Request $request,MangoPayService $mangoPayService)
     {
-        $transaction = $transactionRepo->find($id);
 
-        $transaction->setMangopayTransactionId($request->get('transactionId'));
-        $transaction->setPaymentStatus(true);
-        $transaction->getMission()->setStatus(MissionStatus::ONGOING);
-        $transaction->getMission()->setMissionAgreedClient(1);
-        $em = $this->getDoctrine()->getManager();
+        $response = $mangoPayService->getResponse($request->get('transactionId'));
 
-        $em->persist($transaction);
-        $em->flush();
 
-        return $this->redirect('/client/mission/missions');
+        if($response->Status != 'FAILED'){
+
+            $transaction = $transactionRepo->find($id);
+
+            $transaction->setMangopayTransactionId($request->get('transactionId'));
+            $transaction->setPaymentStatus(true);
+            $transaction->getMission()->setStatus(MissionStatus::ONGOING);
+            $transaction->getMission()->setMissionAgreedClient(1);
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($transaction);
+            $em->flush();
+
+            return $this->render('b2b/client/transaction/success.html.twig');
+
+        }else{
+
+            return $this->render('b2b/client/transaction/failed.html.twig');
+
+        }
+
+
 
     }
+
+
 }

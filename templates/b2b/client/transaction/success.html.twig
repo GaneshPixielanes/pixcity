@@ -1,0 +1,25 @@
+{% extends 'b2b/client/base.html.twig' %}
+
+{% import 'b2b/shared/macros.html.twig' as macros %}
+{% block title %}Client | Home {% endblock %}
+
+{% block body %}
+
+
+    <!-- Mission payment acknowledment contents -->
+    <div class="col-sm-10 offset-sm-2 mission-payment-acknowledgement-content bg-white p-0 d-flex align-items-center justify-content-center position-relative"
+         data-simplebar>
+        <div class="d-flex align-items-center justify-content-center vh-100 col-sm-10 p-0">
+            <div class="text-darkgray d-flex align-items-center flex-column justify-content-center">
+                <i class="fas fa-check fz-30 my-3 btn-circle-60 bg-green text-white"></i>
+                <h5 class="font-weight-bold text-center">Votre paiement est validé !</h5>
+                <p class="text-center">Votre city maker a été notifié ! La mission peut commencer !</p>
+                <p class="my-3">
+                    <a href="/client/index" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Mission payment acknowledment contents ends -->
+
+{% endblock %}
