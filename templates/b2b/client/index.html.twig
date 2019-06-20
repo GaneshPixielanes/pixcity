@@ -5,118 +5,78 @@
 
 {% block body %}
 
-    <!-- My missions preview contents -->
-    <div class="mission-preview-container col-sm-12 p-0 vh-100">
-        <!-- <div class="overlay-dashboard"></div> -->
-        <div class="col-sm-12 mission-preview-content bg-white p-0" data-simplebar>
-            <div id="preview-mission"></div>
-        </div>
-    </div>
-    <!-- My missions preview contents ends -->
+
 
 
 
     <!-- Dashboard contents -->
-    <div class="col-md-2 p-sm-0 dash-left vh-100">
-        <div class="user-avatar w-100">
-            <figure class="position-relative m-0 w-100">
-                {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
-                    <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
-                {% else %}
-                    <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
-                {% endif %}
 
-                <figcaption class="position-absolute d-flex align-items-center"><i class="fas fa-user-circle mr-2"></i>
-                    <span><a class="nav-link active" href="/client/profile">Prévisualiser mon profil</a></span></figcaption>
-            </figure>
-
+    <!-- welcome section -->
+    <div class="tab-pane active">
+        <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Mon profil</div>
+            {% if app.user.userMission is defined %}
+                <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">{{ app.user.userMission | length }} mission en cours</a>
+            {% else %}
+                <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">0 mission en cours</a>
+            {% endif %}
         </div>
-        <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">
-                    <i class="fas fa-home"></i>Accueil</a>
-            </li>
 
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#myMissions" role="tab" aria-controls="myMissions">
-                    <i class="fas fa-briefcase"></i>Mes missions</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">
-                    <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
-            </li>
-        </ul>
-        <footer class="text-center p-2 text-pink fz-12">
-            <i class="fas fa-cog"></i>Retourner sur Pix.city
-        </footer>
-    </div>
-    <div class="col-md-10 offset-md-2 dash-right vh-100 p-0">
-        <div class="tab-content">
-            <div class="tab-pane active" id="home" role="tabpanel">
-                <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-                    <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Mon profil</div>
-                    {% if app.user.userMission is defined %}
-                        <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">{{ app.user.userMission | length }} mission en cours</a>
-                    {% else %}
-                        <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">0 mission en cours</a>
-                    {% endif %}
-                </div>
+        <div class="col-md-12 tab-pane-content p-4" data-simplebar>
+            <div class="col-md-12 content-top-header">
+                <h4 class="mb-0 font-weight-bold">Bienvenue {{ app.user.firstName }}</h4>
+                {#                        <small>Dernière connexion Lundi 13 avril 2019</small>#}
+            </div>
 
-                <div class="col-md-12 tab-pane-content p-4" data-simplebar>
-{#                    <div class="col-md-12 content-top-header">#}
-{#                        <h4 class="mb-0 font-weight-bold">Bienvenue {{ app.user.firstName }}</h4>#}
-{#                        <small>Dernière connexion Lundi 13 avril 2019</small>#}
-{#                    </div>#}
-
-                    <!-- all notification -->
-                    <div class="col-md-12 alert-notifications">
-                        {% for key, notification in notifications %}
-                        <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2"
-                             role="alert" >
-                            <div class="col-md-1 d-flex justify-content-center">
-                                <i class="fas fa-piggy-bank fz-40"></i>
-                            </div>
-                            <div class="col-md-8">
-                                <h6 class="mb-0">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
-                                <p class="mb-1">{{ notification.message }}</p>
-                                <small class="text-muted">{{ notification.createdAt | date('d M Y - H:i') }}</small>
-                            </div>
-{#                            {% if notification.type == 'terminated' %}#}
-{#                            <div class="col-md-3 d-flex justify-content-end">#}
-{#                                <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>#}
-{#                            </div>#}
-{#                            {% endif %}#}
-                            {% if notification.type == 'create_mission' %}
+            <!-- all notification -->
+            <div class="col-md-12 alert-notifications">
+                {% for key, notification in notifications %}
+                    <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2"
+                         role="alert" >
+                        <div class="col-md-1 d-flex justify-content-center">
+                            <i class="fas fa-piggy-bank fz-40"></i>
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="mb-0">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
+                            <p class="mb-1">{{ notification.message }}</p>
+                            <small class="text-muted">{{ notification.createdAt | date('d M Y - H:i') }}</small>
+                        </div>
+                        {#                            {% if notification.type == 'terminated' %}#}
+                        {#                            <div class="col-md-3 d-flex justify-content-end">#}
+                        {#                                <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>#}
+                        {#                            </div>#}
+                        {#                            {% endif %}#}
+                        {% if notification.type == 'create_mission' %}
                             <div class="col-md-3 d-flex justify-content-end">
                                 <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">PAYER EN LIGNE</a>
                             </div>
-                            {% endif %}
-                            <button type="button" class="close align-self-start mark-notification-read" data-dismiss="alert" aria-label="Close"  data-id="{{ notification.id }}">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-
-                        {% endfor %}
-                        {% if notifications | length > 2 %}
-                        <div class="w-100 text-center my-4 show-more">
-                            <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Voir tout</a>
-                        </div>
-                        <div class="w-100 text-center my-4 show-less">
-                            <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Reduire</a>
-                        </div>
                         {% endif %}
-
+                        <button type="button" class="close align-self-start mark-notification-read" data-dismiss="alert" aria-label="Close"  data-id="{{ notification.id }}">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <!-- all notification end here -->
 
-                    {% if missions | length != 0 or proposals | length != 0 %}
-                    {% if proposals | length > 0   %}
+
+                {% endfor %}
+                {% if notifications | length > 2 %}
+                    <div class="w-100 text-center my-4 show-more">
+                        <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Voir tout</a>
+                    </div>
+                    <div class="w-100 text-center my-4 show-less">
+                        <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Reduire</a>
+                    </div>
+                {% endif %}
+
+            </div>
+            <!-- all notification end here -->
+
+            {% if missions | length != 0 or proposals | length != 0 %}
+                {% if proposals | length > 0   %}
                     <!-- Last profiles consulted slider section -->
-                        <div class="col-md-12 content-top-header">
-                            <h4 class="mb-3">Les derniers profils consultés</h4>
-                        </div>
-                        <div class="col-md-12 client-wall-members profiles-slider">
+                    <div class="col-md-12 content-top-header">
+                        <h4 class="mb-3">Les derniers profils consultés</h4>
+                    </div>
+                    <div class="col-md-12 client-wall-members profiles-slider">
                         <div class="slick-profiles-slider px-5">
                             {% for proposal in proposals %}
                                 {% if proposal_unique[proposal.id] is defined %}
@@ -168,12 +128,12 @@
                         </div>
                     </div>
                     <!-- Last profiles consulted slider section ends -->
-                    {% endif %}
+                {% endif %}
 
-                    <div class="col-sm-12 d-flex align-items-center justify-content-center my-4">
-                        <a href="{{ path('b2b_client_search_index') }}" class="btn btn-darkblue fz-14"><i class="fas fa-search fz-20 mr-2"></i>Trouver un City-Maker</a>
-                    </div>
-                    {% if missions | length != 0 %}
+                <div class="col-sm-12 d-flex align-items-center justify-content-center my-4">
+                    <a href="{{ path('b2b_client_search_index') }}" class="btn btn-darkblue fz-14"><i class="fas fa-search fz-20 mr-2"></i>Trouver un City-Maker</a>
+                </div>
+                {% if missions | length != 0 %}
                     <!-- mission ongoing accepted and ongoing section -->
                     <div class="col-md-12 content-top-header d-flex align-items-center">
                         <h4 class="mb-0">Vos missions en cours</h4>
@@ -193,419 +153,39 @@
                         {% endfor %}
                     </ul>
 
-                    {% endif %}
-                    <!-- mission ongoing accepted and ongoing section ends  -->
-                    {% else %}
-                        <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
-                            <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
-                                <div class="w-35">
-                                    <img class="img-fluid" src="/images/dash-mymissions-empty.png"
-                                         alt="My Missions">
-                                </div>
-                                <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
-                                <p> Ça y est votre profil et vos packs sont à jour !
-                                    Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
-                                    une bonne négociation !
-                                </p>
-                                <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
-                                        lien).</a> </p>
-
-                                <div class="col-sm-12 d-flex align-items-center justify-content-center my-4">
-                                    <a href="{{ path('b2b_client_search_index') }}" class="btn btn-darkblue fz-14"><i class="fas fa-search fz-20 mr-2"></i>Trouver un City-Maker</a>
-                                </div>
-                            </div>
+                {% endif %}
+                <!-- mission ongoing accepted and ongoing section ends  -->
+            {% else %}
+                <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                    <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                        <div class="w-35">
+                            <img class="img-fluid" src="/images/dash-mymissions-empty.png"
+                                 alt="My Missions">
                         </div>
-                    {% endif %}
-                </div>
+                        <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
+                        <p> Ça y est votre profil et vos packs sont à jour !
+                            Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
+                            une bonne négociation !
+                        </p>
+                        <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
+                                lien).</a> </p>
 
-            </div>
-
-            <!-- my mission -->
-            <div class="tab-pane" id="myMissions" role="tabpanel">
-
-                    <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-                        <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-briefcase fz-30 mr-2"></i>Mes missions
+                        <div class="col-sm-12 d-flex align-items-center justify-content-center my-4">
+                            <a href="{{ path('b2b_client_search_index') }}" class="btn btn-darkblue fz-14"><i class="fas fa-search fz-20 mr-2"></i>Trouver un City-Maker</a>
                         </div>
-                        <a href="javascript:;" class="btn btn-outline-darkgray btn-pill" data-toggle="modal" data-target="#createMissionModal">{{ mymissions['ongoing'] | length }} missions en cours</a>
                     </div>
-                    <div class="col-md-12 tab-pane-content p-4" data-simplebar>
-                        <nav class="internal-nav">
-                            <ul class="nav nav-tabs border-0 line-tabs line-tabs-pink" id="dashboardMyMissions" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link text-normalgray active" data-toggle="tab" href="#inDraft" role="tab" aria-controls="inDraft">En Draft</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-normalgray" data-toggle="tab" href="#inProgress" role="tab" aria-controls="inProgress">En cours</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-normalgray" data-toggle="tab" href="#completed" role="tab" aria-controls="completed">Terminées</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-normalgray" data-toggle="tab" href="#canceled" role="tab" aria-controls="canceled">Annulées</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="inDraft" role="tabpanel">
-                                <ul class="available-missions-list m-0 mt-3 col-md-12">
-                                    {% if mymissions['created'] is not empty %}
-                                        {% for mission in mymissions['created'] %}
-                                        <li class="mission-list-item d-flex align-items-center text-darkgray">
-                                            <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                            <p class="mb-0 px-3 w-40">{{ mission.description | truncate(150) }}
-                                            </p>
-                                            <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
-                                            <p class="w-15 mb-0">{{ mission.title }}</p>
-                                            <p class="w-15 mb-0 text-inprogress">En cours</p>
-                                            <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
-                                            <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
-                                        </li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
-                                            <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
-                                                <div class="w-35">
-                                                    <img class="img-fluid" src="/images/dash-mymissions-empty.png"
-                                                         alt="My Missions">
-                                                </div>
-                                                <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
-                                                <p> Ça y est votre profil et vos packs sont à jour !
-                                                    Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
-                                                    une bonne négociation !
-                                                </p>
-                                                <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
-                                                        lien).</a> </p>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                            <div class="tab-pane" id="inProgress" role="tabpanel">
-                                <ul class="available-missions-list m-0 mt-3 col-md-12">
-                                    {% if mymissions['ongoing'] is not empty %}
-                                        {% for mission in mymissions['ongoing'] %}
-                                        <li class="mission-list-item d-flex align-items-center text-darkgray">
-                                            <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                            <p class="mb-0 px-3 w-40">{{ mission.description | truncate(150) }}
-                                            </p>
-                                            <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
-                                            <p class="w-15 mb-0">{{ mission.title }}</p>
-                                            <p class="w-15 mb-0 text-inprogress">En cours</p>
-                                            <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
-                                            <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
-                                        </li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
-                                            <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
-                                                <div class="w-35">
-                                                    <img class="img-fluid" src="/images/dash-mymissions-empty.png"
-                                                         alt="My Missions">
-                                                </div>
-                                                <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
-                                                <p> Ça y est votre profil et vos packs sont à jour !
-                                                    Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
-                                                    une bonne négociation !
-                                                </p>
-                                                <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
-                                                        lien).</a> </p>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                            <div class="tab-pane" id="completed" role="tabpanel">
-                                <ul class="available-missions-list m-0 mt-3 col-md-12">
-                                    {% if mymissions['terminated'] is not empty %}
-                                        {% for mission in mymissions['terminated'] %}
-                                            <li class="mission-list-item d-flex align-items-center text-darkgray">
-                                                <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                                <p class="mb-0 px-3 w-40">{{ mission.description | truncate(150) }}
-                                                </p>
-                                                <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
-                                                <p class="w-15 mb-0">{{ mission.title }}</p>
-                                                <p class="w-15 mb-0 text-inprogress">Annulée</p>
-                                                <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
-                                                <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
-                                            </li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
-                                            <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
-                                                <div class="w-35">
-                                                    <img class="img-fluid" src="/images/dash-mymissions-empty.png"
-                                                         alt="My Missions">
-                                                </div>
-                                                <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
-                                                <p> Ça y est votre profil et vos packs sont à jour !
-                                                    Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
-                                                    une bonne négociation !
-                                                </p>
-                                                <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
-                                                        lien).</a> </p>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                            <div class="tab-pane" id="canceled" role="tabpanel">
-                                <ul class="available-missions-list m-0 mt-3 col-md-12">
-                                    {% if mymissions['cancelled'] is not empty %}
-                                        {% for mission in mymissions['cancelled'] %}
-                                            <li class="mission-list-item d-flex align-items-center text-darkgray">
-                                                <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                                <p class="mb-0 px-3 w-40">{{ mission.description | truncate(150) }}
-                                                </p>
-                                                <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
-                                                <p class="w-15 mb-0">{{ mission.title }}</p>
-                                                <p class="w-15 mb-0 text-inprogress">Terminée</p>
-                                                <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
-                                                <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
-                                            </li>
-                                        {% endfor %}
-                                    {% else %}
-                                        <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
-                                            <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
-                                                <div class="w-35">
-                                                    <img class="img-fluid" src="/images/dash-mymissions-empty.png"
-                                                         alt="My Missions">
-                                                </div>
-                                                <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
-                                                <p> Ça y est votre profil et vos packs sont à jour !
-                                                    Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
-                                                    une bonne négociation !
-                                                </p>
-                                                <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
-                                                        lien).</a> </p>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-            </div>
-            <!-- my mission end here -->
-
-            <!-- my billing -->
-            <div class="tab-pane" id="billing" role="tabpanel">
-                <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-                    <div class="d-flex align-items-center fz-20 text-darkblue"><i
-                                class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation</div>
-                    <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
-                        mission</a>
                 </div>
-                <div class="col-md-12 tab-pane-content p-4" data-simplebar>
-                    <table class="table table-sm table-borderless my-billings-list-table">
-                        <thead>
-                        <tr class="text-normalgray fz-12">
-                            <th class="font-weight-normal w-5"><span class="sr-only">Mission filetype</span></th>
-                            <th class="font-weight-normal w-30">Nom du fichier </th>
-                            <th class="font-weight-normal w-15">Date d’émission</th>
-                            <th class="font-weight-normal w-15">Dernière modification</th>
-                            <th class="font-weight-normal w-15">Montant</th>
-                            <th class="font-weight-normal w-15">Statut du paiement</th>
-                            <th class="font-weight-normal w-5"><span class="sr-only">Mission actions</span></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="text-darkgray fz-14">
-                            <td valign="middle" class="text-center">
-                                <i class="far fa-file-alt fz-25"></i>
-                            </td>
-                            <td valign="middle">Facture PX-13032109-00752</td>
-                            <td valign="middle">16/03/2019</td>
-                            <td valign="middle">19/03/2019</td>
-                            <td valign="middle">240€</td>
-                            <td valign="middle"><span class="text-inprogress">En cours</span></td>
-                            <td valign="middle">
-                                <div class="d-flex align-items-center">
-                                    <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-eye fz-16"></i></a>
-                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="text-darkgray fz-14">
-                            <td valign="middle" class="text-center">
-                                <i class="far fa-file-alt fz-25"></i>
-                            </td>
-                            <td valign="middle">Facture PX-13032109-00752</td>
-                            <td valign="middle">16/03/2019</td>
-                            <td valign="middle">19/03/2019</td>
-                            <td valign="middle">240€</td>
-                            <td valign="middle"><span class="text-completed">Payée</span></td>
-                            <td valign="middle">
-                                <div class="d-flex align-items-center">
-                                    <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-eye fz-16"></i></a>
-                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="text-darkgray fz-14">
-                            <td valign="middle" class="text-center">
-                                <i class="far fa-file-alt fz-25"></i>
-                            </td>
-                            <td valign="middle">Facture PX-13032109-00752</td>
-                            <td valign="middle">16/03/2019</td>
-                            <td valign="middle">19/03/2019</td>
-                            <td valign="middle">240€</td>
-                            <td valign="middle"><span class="text-inprogress">En cours</span></td>
-                            <td valign="middle">
-                                <div class="d-flex align-items-center">
-                                    <a href="javascript:;"
-                                       class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i
-                                                class="fas fa-eye fz-16"></i></a>
-                                    <a href="javascript:;"
-                                       class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i
-                                                class="fas fa-download fz-16"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="text-darkgray fz-14">
-                            <td valign="middle" class="text-center">
-                                <i class="far fa-file-alt fz-25"></i>
-                            </td>
-                            <td valign="middle">Facture PX-13032109-00752</td>
-                            <td valign="middle">16/03/2019</td>
-                            <td valign="middle">19/03/2019</td>
-                            <td valign="middle">240€</td>
-                            <td valign="middle"><span class="text-completed">Payée</span></td>
-                            <td valign="middle">
-                                <div class="d-flex align-items-center">
-                                    <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-eye fz-16"></i></a>
-                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <!-- my billing end here -->
-
+            {% endif %}
         </div>
+
     </div>
+    <!-- welcome section end here -->
+
     <!-- Dashboard contents ends -->
 
 
 
-    <!-- Mission payment contents -->
-    <div class="col-md-12 mission-payment-content p-0 bg-white">
-        <div id="preview-payment"></div>
-    </div>
-    <!-- Mission payment contents ends -->
 
-    <!-- Mission payment acknowledment contents -->
-    <div class="mission-pyament-acknowledgement-container col-sm-12 p-0 vh-100">
-        <div class="overlay-dashboard"></div>
-        <div class="col-sm-10 offset-sm-2 mission-payment-acknowledgement-content bg-white p-0 d-flex align-items-center justify-content-center position-relative"
-             data-simplebar>
-            <div class="d-flex align-items-center justify-content-center vh-100 col-sm-10 p-0">
-                <div class="text-darkgray w-50 d-flex align-items-center flex-column justify-content-center">
-                    <i class="fas fa-check fz-30 my-3 btn-circle-60 bg-green text-white"></i>
-                    <h5 class="font-weight-bold text-center">Votre paiement est validé !</h5>
-                    <p class="text-center">Votre city maker a été notifié ! La mission peut commencer !</p>
-                    <p class="my-3">
-                        <a href="javascript:;" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
-                    </p>
-                    <i class="fas fa-times fz-30 my-3 btn-circle-60 bg-error text-white"></i>
-                    <h5 class="font-weight-bold text-center">Votre paiement a été refusé :-(</h5>
-                    <p class="text-center">Malheureusement votre paiement n'a pas abouti. Veuillez rééssayer ou nous contacter si le refus n'est pas lié à votre banque.</p>
-                    <p class="my-3 d-flex flex-column align-items-center">
-                        <a href="javascript:;" class="btn btn-darkblue btn-pill mb-2 retry-payment">RÉÉSSAYER</a>
-                        <a href="javascript:;" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Mission payment acknowledment contents ends -->
-
-    <!-- Cancel mission payment modal -->
-    <div class="modal fade cancel-created-mission-modal" id="cancelMissionPayment" tabindex="-1" role="dialog" aria-labelledby="cancelMissionPayment" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold">Vous souhaitez annuler le paiement?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Êtes-vous sur de vouloir annuler le paiement de la mission ?
-                        Celle-ci ne pourra débuter tant que les fonds n’auront pas été reçus.</p>
-                    <p>Si vous avez des questions sur l’annulation du paiement, n’hésitez pas à consulter
-                        notre <a href="javascript:;">page d’aide.</a> </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
-                    <button type="button" class="btn btn-pink cancel-payment-confirmation" data-dismiss="modal">ANNULER LE PAIEMENT</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Cancel mission payment modal ends -->
-
-    <!-- Cancel missions contents -->
-    <div class="cancel-mission-container col-sm-12 p-0 vh-100">
-        <div class="overlay-dashboard"></div>
-        <div class="col-sm-10 offset-sm-2 cancel-mission-show-content bg-white p-0">
-            <div class="row">
-                <div class="col-md-10 mx-auto my-5">
-                    <p class="fz-20 text-error">Annuler la mission</p>
-                    <h2 class="fz-28 font-weight-bold">Shooting soirée d’ouverture du O’Tacos Levallois-Perret</h2>
-                    <p class="fz-15 font-weight-light">Vous souhaitez annuler la mission, merci de remplir les champs ci-dessous. </p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <form action="" method="get" accept-charset="utf-8">
-                                <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <label>Qui souhaite annuler la mission ?</label>
-                                        <select class="selectpicker" data-width="100%" data-live-search="true">
-                                            <option value="Nord Pas de Calais">Je souhaite annuler la mission</option>
-                                            <option value="Upper Normandy">Le client souhaite annuler la mission</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <textarea class="form-control form-control bg-lightwhite fz-14 pack-description" cols="30" rows="10">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</textarea>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <a href="javascript:;" class="close-cancel-mission btn btn-white-cancel btn-block btn-pill lh2">Annuler</a>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a href="javascript:;" class="btn btn-error btn-block btn-pill lh2">Mettre fin à la mission</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cancel-mission-commentary-container d-flex align-items-center justify-content-center vh-100">
-                <div class="cancel-mission-commentary">
-                    <div class="client-request-cancellation text-center">
-                        <p class="fz-20 mb-3">Votre demande d’annulation à bien été envoyée à votre client</p>
-                        <p class="fz-16 font-weight-light">Dès la confirmation d'annulation de la mission côté client, la mission apparaitra comme "annulée" dans votre espace city-maker.</p>
-                        <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
-                    </div>
-                    <div class="customer-request-cancellation text-center">
-                        <p class="fz-20 mb-3">A la demande du client, vous avez accepté d’annuler la mission</p>
-                        <p class="fz-16 font-weight-light">Votre mission apparaitra comme annulée dans votre dashboard une fois que votre client l’aura confirmé. </p>
-                        <p class="fz-16 font-weight-light">Si vous avez des  questions, consultez notre <a href="javascript:;">FAQ</a></p>
-                        <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Cancel missions contents ends-->
 
 
 
@@ -616,9 +196,7 @@
     <script>
         $(document).ready(function(){
 
-
-
-            $('button.close','a.pay-online').on('click',function(){
+            $('button.close').on('click',function(){
 
                 var id = $(this).attr('data-id');
                 $.ajax({
