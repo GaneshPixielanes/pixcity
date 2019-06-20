@@ -137,6 +137,16 @@ class UserMission
      */
     private $documents;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cancelReason;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $cancelledBy;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
@@ -512,6 +522,30 @@ class UserMission
                 $document->setMission(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCancelReason(): ?string
+    {
+        return $this->cancelReason;
+    }
+
+    public function setCancelReason(?string $cancelReason): self
+    {
+        $this->cancelReason = $cancelReason;
+
+        return $this;
+    }
+
+    public function getCancelledBy(): ?int
+    {
+        return $this->cancelledBy;
+    }
+
+    public function setCancelledBy(?int $cancelledBy): self
+    {
+        $this->cancelledBy = $cancelledBy;
 
         return $this;
     }

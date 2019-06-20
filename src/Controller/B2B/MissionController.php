@@ -63,8 +63,8 @@ class MissionController extends AbstractController
         }
 
         $options = $this->getDoctrine()->getRepository(Option::class);
-        $tax = $options->findBy(['slug' => 'tax']);
-        $margin = $options->findBy(['slug' => 'margin']);
+        $tax = $options->findOneBy(['slug' => 'tax']);
+        $margin = $options->findOneBy(['slug' => 'margin']);
 //        $regions = $packRepo->find($pack)->get
 //        $form = $this->createForm(MissionType::class, $mission,['region' => $this->getUser()->getUserRegion()]);
         $form = $this->createForm(MissionType::class, $mission,[
@@ -76,21 +76,73 @@ class MissionController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted())
         {
-
+            $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
             $price = $mission->getMissionBasePrice();
-            $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
-            $tax = $tax[0]->getValue();
-            $transactionFee = 0;
-            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
+
+            $margin = $margin->getValue();
+            $tax = $tax->getValue();
+            if($cityMakerType == 'company')
+            {
+                #Calculate client price; cp = (margin * baseprice)/100
+
+
+                /* Get client price details*/
+                $clientPrice = (100 * $price)/(100 - $margin);
+                $clientTax = 0;
+                $clientTotal = $clientPrice;
+
+                /* Get CM price details */
+                $basePrice = $price;
+                $cmTax = 0;
+                $cmTotal = $price;
+
+                /* Get Pix City Services details */
+
+                $pcsPrice = $clientPrice - $price;
+                $pcsTax = $pcsPrice * ($margin/100);
+                $pcsTotal = $pcsPrice - $pcsTax;
+
+            }
+            else
+            {
+
+                /* Get client price details*/
+                $clientTotal = (100 * $price)/(100 - $margin);
+                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
+                $clientTax = $clientTotal - $clientPrice;
+
+                /* Get CM price details */
+                $cmTotal = $price;
+                $basePrice = $price - ($price * ($tax/100));
+                $cmTax = $cmTotal - $basePrice;
+
+                /* Get Pix City Services details */
+                $pcsPrice = $clientTotal - ($clientTotal * ((100 - $margin)/100));
+                $pcsTax = $pcsPrice * ($tax/100);
+                $pcsTotal = $pcsPrice - $pcsTax;
+
+            }
+
+//            $transactionFee = 0;
+//            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
 
             $mission->setUser($this->getUser());
             $mission->getUserMissionPayment()->setClientPrice($clientPrice); // Client's price
-            $mission->getUserMissionPayment()->setUserBasePrice($price); // Base price
-            $mission->getUserMissionPayment()->setTaxPercentage($tax); // Tax Percentage
-            $mission->getUserMissionPayment()->setTransactionFee($transactionFee); // Trasnsaction Fee
-            $mission->getUserMissionPayment()->setTaxValue($total - $clientPrice); // Tax charged
-            $mission->getUserMissionPayment()->setTotal($total); // Total
+            $mission->getUserMissionPayment()->setClientTax($clientTax);
+            $mission->getUserMissionPayment()->setClientTotal($clientTotal);
+
+            $mission->getUserMissionPayment()->setUserBasePrice($basePrice); // Base price
+            $mission->getUserMissionPayment()->setCmTax($cmTax);
+            $mission->getUserMissionPayment()->setCmTotal($cmTotal);
+
+            $mission->getUserMissionPayment()->setPcsPrice($pcsPrice); //PCS price
+            $mission->getUserMissionPayment()->setPcsTax($pcsPrice);
+            $mission->getUserMissionPayment()->setPcsTotal($tax);
+
+//            $mission->getUserMissionPayment()->setTransactionFee($transactionFee); // Trasnsaction Fee
+//            $mission->getUserMissionPayment()->setTaxValue($total - $clientPrice); // Tax charged
+//            $mission->getUserMissionPayment()->setTotal($total); // Total
             $mission->setStatus(MissionStatus::CREATED);
 //            $mission->setCreatedAt(new \DateTime('Y-m-d H:i:s'));
 
@@ -152,8 +204,8 @@ class MissionController extends AbstractController
             $mission = $mission[0];
         }
         $options = $this->getDoctrine()->getRepository(Option::class);
-        $tax = $options->findBy(['slug' => 'tax']);
-        $margin = $options->findBy(['slug' => 'margin']);
+        $tax = $options->findOneBy(['slug' => 'tax']);
+        $margin = $options->findOneBy(['slug' => 'margin']);
         $regions = $mission->getReferencePack()->getUser()->getUserRegion();
         $form = $this->createForm(MissionType::class, $mission,['region' => $regions,
             'user' => $this->getUser(),
@@ -165,21 +217,69 @@ class MissionController extends AbstractController
         {
             $em = $this->getDoctrine()->getManager();
 
+            $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
             $price = $mission->getMissionBasePrice();
-            $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
-            $tax = $tax[0]->getValue();
-            $transactionFee = 0;
-            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
+
+            $margin = $margin->getValue();
+            $tax = $tax->getValue();
+            if($cityMakerType == 'company')
+            {
+                #Calculate client price; cp = (margin * baseprice)/100
+
+
+                /* Get client price details*/
+                $clientPrice = (100 * $price)/(100 - $margin);
+                $clientTax = 0;
+                $clientTotal = $clientPrice;
+
+                /* Get CM price details */
+                $basePrice = $price;
+                $cmTax = 0;
+                $cmTotal = $price;
+
+                /* Get Pix City Services details */
+
+                $pcsPrice = $clientPrice - $price;
+                $pcsTax = $pcsPrice * ($margin/100);
+                $pcsTotal = $pcsPrice - $pcsTax;
+
+            }
+            else
+            {
+
+                /* Get client price details*/
+                $clientTotal = (100 * $price)/(100 - $margin);
+                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
+                $clientTax = $clientTotal - $clientPrice;
+
+                /* Get CM price details */
+                $cmTotal = $price;
+                $basePrice = $price - ($price * ($tax/100));
+                $cmTax = $cmTotal - $basePrice;
+
+                /* Get Pix City Services details */
+                $pcsPrice = $clientTotal - ($clientTotal * ((100 - $margin)/100));
+                $pcsTax = $pcsPrice * ($tax/100);
+                $pcsTotal = $pcsPrice - $pcsTax;
+
+            }
 
 
             $mission->setUser($this->getUser());
             $mission->setReferencePack($mission->getReferencePack());
+
             $mission->getUserMissionPayment()->setClientPrice($clientPrice); // Client's price
-            $mission->getUserMissionPayment()->setUserBasePrice($price); // Base price
-            $mission->getUserMissionPayment()->setTaxPercentage($tax); // Tax Percentage
-            $mission->getUserMissionPayment()->setTransactionFee($transactionFee); // Trasnsaction Fee
-            $mission->getUserMissionPayment()->setTaxValue($total - $clientPrice); // Tax charged
-            $mission->getUserMissionPayment()->setTotal($total); // Total
+            $mission->getUserMissionPayment()->setClientTax($clientTax);
+            $mission->getUserMissionPayment()->setClientTotal($clientTotal);
+
+            $mission->getUserMissionPayment()->setUserBasePrice($basePrice); // Base price
+            $mission->getUserMissionPayment()->setCmTax($cmTax);
+            $mission->getUserMissionPayment()->setCmTotal($cmTotal);
+
+            $mission->getUserMissionPayment()->setPcsPrice($pcsPrice); //PCS price
+            $mission->getUserMissionPayment()->setPcsTax($pcsPrice);
+            $mission->getUserMissionPayment()->setPcsTotal($tax);
+
             $em->persist($mission);
             $em->flush();
 
@@ -213,7 +313,7 @@ class MissionController extends AbstractController
         [
             'form' => $form->createView(),
             'mission' => $mission,
-            'margin' => $margin[0]->getValue()
+            'margin' => $margin
         ]);
     }
 
@@ -265,6 +365,8 @@ class MissionController extends AbstractController
             case 'cancel': if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
                             {
                                 $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
+                                $mission->setCancelledBy($request->get('cancelledBy'));
+                                $mission->setCancelReason($request->get('reason'));
 //                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has requested for the cancellation of mission '.$mission->getStatus(),null);
                                 break;
                             }
