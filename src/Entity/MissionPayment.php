@@ -91,6 +91,41 @@ class MissionPayment
      */
     private $adjustment;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $clientTax;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $clientTotal;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $cmTax;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $cmTotal;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $pcsPrice;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $pcsTotal;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $pcsTax;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -260,6 +295,90 @@ class MissionPayment
     public function setAdjustment(?float $adjustment): self
     {
         $this->adjustment = $adjustment;
+
+        return $this;
+    }
+
+    public function getClientTax(): ?float
+    {
+        return $this->clientTax;
+    }
+
+    public function setClientTax(?float $clientTax): self
+    {
+        $this->clientTax = $clientTax;
+
+        return $this;
+    }
+
+    public function getClientTotal(): ?float
+    {
+        return $this->clientTotal;
+    }
+
+    public function setClientTotal(?float $clientTotal): self
+    {
+        $this->clientTotal = $clientTotal;
+
+        return $this;
+    }
+
+    public function getCmTax(): ?float
+    {
+        return $this->cmTax;
+    }
+
+    public function setCmTax(?float $cmTax): self
+    {
+        $this->cmTax = $cmTax;
+
+        return $this;
+    }
+
+    public function getCmTotal(): ?float
+    {
+        return $this->cmTotal;
+    }
+
+    public function setCmTotal(?float $cmTotal): self
+    {
+        $this->cmTotal = $cmTotal;
+
+        return $this;
+    }
+
+    public function getPcsPrice(): ?float
+    {
+        return $this->pcsPrice;
+    }
+
+    public function setPcsPrice(float $pcsPrice): self
+    {
+        $this->pcsPrice = $pcsPrice;
+
+        return $this;
+    }
+
+    public function getPcsTotal(): ?float
+    {
+        return $this->pcsTotal;
+    }
+
+    public function setPcsTotal(?float $pcsTotal): self
+    {
+        $this->pcsTotal = $pcsTotal;
+
+        return $this;
+    }
+
+    public function getPcsTax(): ?float
+    {
+        return $this->pcsTax;
+    }
+
+    public function setPcsTax(?float $pcsTax): self
+    {
+        $this->pcsTax = $pcsTax;
 
         return $this;
     }

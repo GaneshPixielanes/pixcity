@@ -22,15 +22,15 @@
                             <div class="row">
                                 <div class="col-md-12 mb-3">
                                     <label>Qui souhaite annuler la mission ?</label>
-                                    <select class="selectpicker" data-width="100%" data-live-search="true">
-                                        <option value="Nord Pas de Calais">Je souhaite annuler la mission</option>
-                                        <option value="Upper Normandy">Le client souhaite annuler la mission</option>
+                                    <select class="selectpicker select-canceller" data-width="100%" data-live-search="true">
+                                        <option value=0 selected>Je souhaite annuler la mission</option>
+                                        <option value=1>Le client souhaite annuler la mission</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <textarea class="form-control form-control bg-lightwhite fz-14 pack-description" cols="30" rows="10">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</textarea>
+                                    <textarea class="form-control form-control bg-lightwhite fz-14 pack-description cancel-reason" cols="30" rows="10" maxlength="255"></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -38,7 +38,7 @@
                                     <a href="javascript:;" class="close-cancel-mission btn btn-white-cancel btn-block btn-pill lh2">Annuler</a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="javascript:;" class="btn btn-error btn-block btn-pill lh2">Mettre fin à la mission</a>
+                                    <a href="javascript:;" id="cancel-mission-btn" class="btn btn-error btn-block btn-pill lh2" data-id="">Mettre fin à la mission</a>
                                 </div>
                             </div>
                         </form>
