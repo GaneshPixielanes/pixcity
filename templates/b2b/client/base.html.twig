@@ -24,7 +24,7 @@
     <div class="container-fluid bg-dashboard  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
         <div class="row">
 
-            {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' %}
+            {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' %}
             <!-- Header -->
             <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
                 <div class="container">
@@ -96,7 +96,7 @@
             <!-- Header -->
             {% endif %}
 
-            {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' %}
+            {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' or route == 'client_transaction_index' %}
             <div class="col-md-2 p-sm-0 dash-left vh-100">
                 <div class="user-avatar w-100">
                     <figure class="position-relative m-0 w-100">
@@ -122,7 +122,7 @@
                             <i class="fas fa-briefcase"></i>Mes missions</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">
+                        <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="/client/transaction" role="tab" aria-controls="billing">
                             <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
                     </li>
                 </ul>

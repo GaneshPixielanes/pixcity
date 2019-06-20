@@ -14,8 +14,6 @@ class TransactionController extends AbstractController
      */
     public function index()
     {
-        return $this->render('b2b/transaction/index.html.twig', [
-            'controller_name' => 'TransactionController',
-        ]);
+        return $this->render('b2b/client/transaction/index.html.twig');
     }
 }
