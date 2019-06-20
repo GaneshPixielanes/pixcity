@@ -8,7 +8,7 @@
                 <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
                     <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-dungeon fz-30 mr-2"></i> Mes Packs
                     </div>
-                    {% if app.user.missionProposalsToCityMaker | length > 0 %}
+                    {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
                         <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"
                            onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle
                             mission</a>
