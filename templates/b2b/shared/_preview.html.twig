@@ -1,161 +1,99 @@
 <table class="table table-striped">
-    {% if mission.user.pixie.billing.status == 'company' %}
-    <tbody>
-    <tr>
-        <td>
-            <h3>{{ mission.client }}</h3>
-            <br/>
-            {{ mission.client.clientInfo.address~' - '~mission.client.clientInfo.postalCode~' '~mission.client.clientInfo.city~' - PAYS' }}
-        </td>
-        <td>
-            <h3>City-Maker</h3>
-            <br/>
-            {{ mission.user.pixie.billing.address.address }}<br>
-            {{ mission.user.pixie.billing.address.zipcode~' '~mission.user.pixie.billing.address.city }}<br/>
-        </td>
-    </tr>
-    <tr>
-        <td><strong>Numéro de facture PCS</strong></td><td> Automatique</td><td></td><td></td>
-    </tr>
-    <tr>
-        <td>Numéro de facture du contributeur ou client</td><td> Facultatif</td>
-    </tr>
-    <tr>
-        <td>Date de facture</td><td>{{ mission.updatedAt | date('d-M-Y') }} </td>
-    </tr>
+<tr>
+    <th>
+        <h1>Client:{{ mission.client }}</h1>
+        <p>{{ mission.client.clientInfo.address }}</p>
+    </th>
+    <th>
+        <h1>City Maker: {{ mission.user }}</h1>
+    </th>
+
+</tr>
+<tr>
+    <td>Numéro de facture PCS </td>
+    <td>Automatique</td>
+</tr>
+<tr>
+    <td>Date de facture</td>
+    <td>Facultatif</td>
+</tr>
+<tr>
+    <td>Date de facture</td>
+    <td>{{ mission.createdAt | date('dd/mm/Y') }}</td>
+</tr>
+</table>
+<table class="table table-striped">
     <tr>
         <th>Description</th>
-        <th>QUANTITE</th>
-        <th>MONTANT</th>
+        <th>Quantitie</th>
+        <th>Montat</th>
     </tr>
     <tr>
-        <td>Pack 1 / Instagram Pro Gestion</td>
+        <td>{{ mission.referencePack }}/{{ mission.title }}</td>
         <td>1</td>
-        <td>{{ mission.userMissionPayment.clientPrice }} €</td>
+        <td>{{ mission.userMissionPayment.userBasePrice }}€</td>
     </tr>
     <tr>
-        <td>Comments (automatically adding from the pack)</td>
+        <td>Total</td>
         <td></td>
-        <td></td>
+        <td>{{ mission.userMissionPayment.cmTotal }}€</td>
     </tr>
+    {% if mission.userMissionPayment.cmTax  > 0 %}
     <tr>
-        <td>SOUS-TOTAL</td>
+        <td>Tax/VAT</td>
         <td></td>
-        <td>{{ mission.userMissionPayment.clientPrice }} €</td>
+        <td>{{ mission.userMissionPayment.cmTax }}€</td>
     </tr>
+    {% endif %}
+    {% if mission.userMissionPayment.pcsPrice > 0%}
     <tr>
+        <td>Pix City Services</td>
         <td></td>
-        <td></td>
-        <td></td>
+        <td>{{ mission.userMissionPayment.pcsPrice }}€</td>
     </tr>
+    {% endif %}
+    {% if mission.userMissionPayment.pcsTax > 0 %}
     <tr>
-        <td>SOUS TOTAL</td>
+        <td>Pix City Services Tax</td>
         <td></td>
-        <td>{{ mission.missionBasePrice }} €</td>
+        <td>{{mission.userMissionPayment.pcsTax  }}€</td>
     </tr>
-    <tr>
-        <td>TOTAL</td>
-        <td></td>
-        <td>{{ mission.userMissionPayment.total }} €</td>
-    </tr>
-    </tbody>
-    {% else %}
-        <tbody>
+    {% endif %}
+
+    {% if mission.userMissionPayment.pcsTotal > 0 %}
         <tr>
-            <td>
-                <h3>{{ mission.client }}</h3>
-                <br/>
-                {{ mission.client.clientInfo.address~' - '~mission.client.clientInfo.postalCode~' '~mission.client.clientInfo.city~' - PAYS' }}
-            </td>
-            <td>
-                <h3>City-Maker</h3>
-                <br/>
-                {{ mission.user.pixie.billing.address.address }}<br>
-                {{ mission.user.pixie.billing.address.zipcode~' '~mission.user.pixie.billing.address.city }}<br/>
-            </td>
-        </tr>
-        <tr>
-            <td><strong>Numéro de facture PCS</strong></td><td> Automatique</td><td></td><td></td>
-        </tr>
-        <tr>
-            <td>Numéro de facture du contributeur ou client</td><td> Facultatif</td>
-        </tr>
-        <tr>
-            <td>Date de facture</td><td>{{ mission.updatedAt | date('d-M-Y') }} </td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <th>QUANTITE</th>
-            <th>MONTANT</th>
-        </tr>
-        <tr>
-            <td>{{ mission.referencePack }}/{{ mission.title }}</td>
-            <td>1</td>
-            <td>{{ mission.userMissionPayment.userBasePrice }} €</td>
-        </tr>
-        <tr>
-            <td>Comments (automatically adding from the pack)   </td>
+            <td>Pix City Services Total</td>
             <td></td>
-            <td></td>
+            <td>{{mission.userMissionPayment.pcsTotal  }}€</td>
         </tr>
-        <tr>
-            <td>SOUS-TOTAL</td>
-            <td></td>
-            <td>{{ mission.userMissionPayment.clientPrice }} €</td>
-        </tr>
-        <tr>
-            <td>TVA {{ mission.userMissionPayment.taxPercentage }}%</td>
-            <td></td>
-            <td>{{ mission.userMissionPayment.taxValue }} €</td>
-        </tr>
-        <tr>
-        <td>SOUS TOTAL Post Com°</td>
-        <td></td>
-        <td>{{ mission.userMissionPayment.total }} €</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>TOTAL TTC</td>
-            <td></td>
-            <td>{{ mission.userMissionPayment.total }} €</td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                Conditions d'escompte Néant / La prestation est réalisée et payée selon les conditions générales d'utilisation du City Maker, ainsi que selon les stipulations pour autrui nées de l'acceptation par les parties des conditions générales Pix.city Services que les parties reconnaissent avoir lues et acceptées et qui sont disponibles à l'adresse [URL]XXXX.
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3"></td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                En cas de retard de paiement s'applique une pénalité égale au taux d'intérêt appliqué par la Banque Centrale Européenne (BCE) à son opération de refinancement la plus récente majorée de 10 points.
-            </td>
-        </tr>
-        <tr>
-            <th>NOM</th>
-            <td></td>
-            <td>{{ mission.user }}</td>
-        </tr>
-        <tr>
-            <th>PAYS</th>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>IBAN</th>
-            <td></td>
-            <td>{{ mission.user.pixie.billing.billingIban }}</td>
-        </tr>
-        <tr>
-            <th>BIC</th>
-            <td></td>
-            <td>{{ mission.user.pixie.billing.billingBic }}</td>
-        </tr>
-        </tbody>
     {% endif %}
 </table>
+{% if mission.userMissionPayment.cmTax == 0 %}
+Conditions d'escompte Néant / La prestation est réalisée et payée selon les conditions générales d'utilisation du City Maker, ainsi que selon les stipulations pour autrui nées de l'acceptation par les parties des conditions générales Pix.city Services que les parties reconnaissent avoir lues et acceptées et qui sont disponibles à l'adresse [URL]XXXX.
+    <br/>
+    TVA non applicable, art. 293 B du CGI 
+    <br/>
+    En cas de retard de paiement s'applique une pénalité égale au taux d'intérêt appliqué par la Banque Centrale Européenne (BCE) à son opération de refinancement la plus récente majoré de 10 points.
+    <br/>
+    Indemnité forfaitaire pour frais de recouvrement de 40 euros
+    <br/>
+    Coordonnées bancaires du CONTRIBUTEUR
+    <table class="table table-striped">
+    <tr>
+        <th>NOM</th><td></td>
+    </tr>
+    <tr>
+        <th>PAYS</th><td></td>
+    </tr>
+    <tr>
+        <th>IBAN</th><td></td>
+    </tr>
+    <tr>
+        <th>BIC</th><td></td>
+    </tr>
+    </table>
+    <br/>
+    Facture établie par Pix.City Services pour le compte du City Maker
+    <br/>
+    La commission de Pix.city Services est de 25% sur le prix TTC.
+{% endif %}

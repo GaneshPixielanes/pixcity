@@ -1,0 +1,113 @@
+{% extends 'b2b/page.html.twig' %}
+
+{% block content %}
+    <div class="tab-pane active" id="billing" role="tabpanel">
+        <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation</div>
+            {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
+            <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
+                mission</a>
+            {% endif %}
+        </div>
+        <div class="modal" id="invoicePreviewModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Invoice Preview</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body" id="invoice-preview-body">
+                        Loading preview
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 tab-pane-content p-4" data-simplebar="init"><div class="simplebar-wrapper" style="margin: -24px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content" style="padding: 24px; height: 100%; overflow: hidden;">
+                            <table class="table table-sm table-borderless my-billings-list-table">
+                                <thead>
+                                <tr class="text-normalgray fz-12">
+                                    <th class="font-weight-normal w-5"><span class="sr-only">Mission filetype</span></th>
+                                    <th class="font-weight-normal w-30">Nom du fichier </th>
+                                    <th class="font-weight-normal w-15">Date d’émission</th>
+                                    <th class="font-weight-normal w-15">Dernière modification</th>
+                                    <th class="font-weight-normal w-15">Montant</th>
+                                    <th class="font-weight-normal w-15">Statut du paiement</th>
+                                    <th class="font-weight-normal w-5"><span class="sr-only">Mission actions</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for mission in missions %}
+                                <tr class="text-darkgray fz-14">
+                                    <td valign="middle" class="text-center">
+                                        <i class="far fa-file-alt fz-25"></i>
+                                    </td>
+                                    <td valign="middle">{{ mission.title }}</td>
+                                    <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
+                                    <td valign="middle">{{ mission.updatedAt | date('d/m/Y') }}</td>
+                                    <td valign="middle">{{ mission.userMissionPayment.cmTotal }}€</td>
+                                    <td valign="middle"><span class="text-inprogress">En cours</span></td>
+                                    <td valign="middle">
+                                        <div class="d-flex align-items-center">
+                                            <a href="javascript:;" class="invoice-preview-btn preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" data-id="{{ mission.id }}" data-target="#invoicePreviewModal" data-toggle="modal"><i class="fas fa-eye fz-16"></i></a>
+                                            <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div></div></div><div class="simplebar-placeholder" style="width: 1280px; height: 384px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="transform: translate3d(0px, 0px, 0px); visibility: hidden;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="transform: translate3d(0px, 0px, 0px); visibility: hidden;"></div></div></div>
+    </div>
+
+
+{#    <div class="col-md-10 offset-md-2 dash-right vh-100 ">#}
+{#        <div class="container">#}
+{#            <table class="table table-striped">#}
+{#                <thead>#}
+{#                    <th>ID</th>#}
+{#                    <th>Mission</th>#}
+{#                    <th>Amount</th>#}
+{#                    <th></th>#}
+{#                </thead>#}
+{#                <tbody>#}
+{#                {% for mission in missions %}#}
+{#                    <tr>#}
+{#                        <td>#{{ mission.id }}</td>#}
+{#                        <td>{{ mission.title }}</td>#}
+{#                        <td>{{ mission.userMissionPayment.total }}</td>#}
+{#                        <td>#}
+{#                            <a href="#" class="btn btn-sm btn-info invoice-preview-btn" id="" data-id="{{ mission.id }}"  data-toggle="modal" data-target="#invoicePreviewModal">Preview</a>#}
+{#                            <a href="#" class="btn btn-sm btn-success invoice-generate-btn" id="">Generate</a>#}
+{#                        </td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#                </tbody>#}
+{#            </table>#}
+{#            <!-- The Modal -->#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+
+    $(document).ready(function () {
+       $('.invoice-preview-btn').on('click', function () {
+            var id =$(this).attr('data-id');
+            var url = '/community-manager/invoice/preview/'+id;
+           $('#invoice-preview-body').load(url);
+       });
+    });
+</script>
+{% endblock %}

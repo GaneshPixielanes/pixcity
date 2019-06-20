@@ -133,6 +133,7 @@ class CardRepository extends ServiceEntityRepository
 
         return $qb
             ->setFirstResult($pageSize * ($page-1))
+            ->addSelect('c')
             ->setMaxResults($pageSize)
             ->getQuery()
             // ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
