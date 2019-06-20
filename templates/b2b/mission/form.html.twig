@@ -583,12 +583,12 @@
             // acceptedFiles: $(this).attr('accepted-files'),
             maxFilesize: 5,
             success: function (file, response) {
-                var prototype = $('#mission_missionMedia').attr('data-prototype');
-                var index = $('#mission-images-display').find('input').length;
+                var prototype = $('#media-block').attr('data-prototype');
+                var index = $('#media-block').find('input').length;
 
                 prototype = prototype.replace(/__name__/g, index);
-                $('#mission-images-display').append(prototype);
-                $('#mission-images-display')
+                $('#media-block').append(prototype);
+                $('#media-block')
                     .find('input:last')
                     .val(response.fileName).attr('data-filename', file.upload.filename);
 
