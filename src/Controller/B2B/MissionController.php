@@ -10,6 +10,7 @@ use App\Form\B2B\MissionType;
 use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\MissionDocumentRepository;
+use App\Repository\MissionMediaRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\PackRepository;
@@ -35,10 +36,10 @@ class MissionController extends AbstractController
      */
     public function index(UserMissionRepository $userMissionRepo, OptionRepository $optionsRepo)
     {
-
         $missions['ongoing'] = $userMissionRepo->findOngoingMissions($this->getUser());
         $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()],[],['id' => 'DESC']);
         $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()],[],['id' => 'DESC']);
+        $missions['drafts'] = $userMissionRepo->findBy(['status' => MissionStatus::CREATED, 'user' => $this->getUser()],[],['id' => 'DESC']);
 
         return $this->render('b2b/mission/index.html.twig', [
             'missions' => $missions,
@@ -75,6 +76,7 @@ class MissionController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted())
         {
+
             $price = $mission->getMissionBasePrice();
             $clientPrice = $price + ($price * ($margin[0]->getValue()/100));
             $tax = $tax[0]->getValue();
@@ -417,6 +419,55 @@ class MissionController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(['success' => true]);
+
+    }
+
+    /**
+     * @Route("/image-delete",name="delete_image")
+     */
+    public function deleteImages(Request $request, MissionMediaRepository $mediaRepo){
+
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $media = $mediaRepo->findOneBy(['name' => $request->get('name')]);
+
+        $em->remove($media);
+
+        $em->flush();
+
+//        unlink('uploads/mission/'.$mission->getId().'/'.$request->get('name'));
+
+        exit;
+
+    }
+
+    /**
+     * @Route("/image-display/{id}",name="display_image")
+     */
+    public function showImages($id,Request $request,UserMissionRepository $userMissionRepository){
+
+        $user = $this->getUser();
+
+        $mission = $userMissionRepository->find($id);
+
+        $result = [];
+
+        if(count($mission->getMissionMedia())){
+
+            foreach($mission->getMissionMedia() as $media)
+            {
+                $obj['name'] = $media->getName();
+                $obj['size'] = '1024';
+                $obj['path'] = '/uploads/missions/'.$mission->getid().'/'.$media->getName();
+                $obj['id'] = $user->getId().'/'.$mission->getid();
+                $result[] = $obj;
+            }
+
+        }
+
+        return new JsonResponse($result);
+
+
 
     }
 }

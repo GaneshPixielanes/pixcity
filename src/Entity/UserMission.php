@@ -27,17 +27,17 @@ class UserMission
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="userMission", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="userMission", cascade={"persist"},fetch="EAGER")
      */
     private $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UserPacks", inversedBy="packMission", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserPacks", cascade={"persist", "remove"},fetch="EAGER")
      */
     private $referencePack;
 
     /**
-     * @ORM\Column(type="string", length=65000, nullable=true)
+     * @ORM\Column(type="text", length=650000, nullable=true)
      */
     private $description;
 

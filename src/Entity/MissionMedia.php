@@ -24,7 +24,7 @@ class MissionMedia
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UserMission", inversedBy="missionPhotos")
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserMission", inversedBy="missionMedia")
      */
     private $mission;
 

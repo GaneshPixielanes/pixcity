@@ -263,4 +263,17 @@ class UserRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    public function cityMakerInfo($id)
+    {
+        $qb = $this->createQueryBuilder('u')
+                    ->addSelect('u, n, p, m')
+                    ->leftJoin('u.notifications','n')
+                    ->leftJoin('u.userPacks','p')
+                    ->leftJoin('u.userMission','m')
+                    ->andWhere('u.id = :user')->setParameter('user',$id)
+                    ->getQuery()
+                    ->getResult();
+
+        return $qb;
+    }
 }

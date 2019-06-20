@@ -48,6 +48,15 @@ class PackType extends AbstractType
                 ]
             ])
             ->add('bannerImage',HiddenType::class,['label' => false])
+            ->add('userPackMedia',CollectionType::class,[
+                'required' => true,
+                'entry_type' => UserPackMediaType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'error_bubbling' => false,
+                'by_reference' => false
+            ])
         ;
     }
 
