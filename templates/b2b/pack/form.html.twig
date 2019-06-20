@@ -120,24 +120,28 @@
                 </p>
             </div>
         </div>
-        <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
+        {% if pack.userPackMedia | length > 0 %}
+        <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Photos</h5>
             <div class="pack-photos">
                 <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
                     {% for image in pack.userPackMedia %}
                     <li class="pack-photos-list-item d-inline-flex">
-                        <img src="/uploads/pack/{{ pack.id }}/{{ image.name }}" alt="Pack photo 1">
+                        <img src="/uploads/pack/{{ pack.id }}/{{ image.name }}" alt="{{ pack.title }}" />
                     </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
-        <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
+        {% endif %}
+        <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" id="media-block" data-prototype="{{ form_widget(form.userPackMedia.vars.prototype) |e('html_attr') }}">
+
+            {{ form_widget(form.userPackMedia) }}
             <h5 class="text-darkgray mb-0">Photos</h5>
             <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre bibliothèque ou en
                 téléchargez des nouvelles pour illustrer votre pack.</p>
             <small class="text-textgray">Format : JPEG, PNG. Taille : 2Mo max</small>
-            <div class="form-group dropzone-custom clearfix mt-3" id="photos-dropzone">
+            <div class="form-group dropzone clearfix mt-3 dz-clickable" id="photos-dropzone">
                 <div class="upload-area mb-4 dz-clickable">
                     <div class="area-label text-center p-4">
                         <i class="fas fa-cloud-upload-alt"></i>
@@ -284,11 +288,19 @@
                     <img src="{{ absolute_url('/assets/images/icons/preview-off-icon.svg') }}" alt="Preview off"> Retour à l'édition
                 </a>
                 <a href="javascript:;"
-                   class="btn btn-pink btn-pill disabled fz-12 d-flex align-items-center save-changes" data-id="{{ pack.id }}" data-url="{% if pack.id is null %}{{ url('b2b_pack_create') }} {% else %}{{ url('b2b_pack_edit',{'id':pack.id}) }}{% endif %}">SAUVEGARDER</a>
+                   class="btn btn-pink btn-pill disabled fz-12 d-flex align-items-center save-changes pack-save-changes" data-id="{{ pack.id }}" data-url="{% if pack.id is null %}{{ url('b2b_pack_create') }} {% else %}{{ url('b2b_pack_edit',{'id':pack.id}) }}{% endif %}">SAUVEGARDER</a>
                 <a href="javascript:;"
-                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center save-changes d-none" data-id="{{ pack.id }}" data-url="{% if pack.id is null %}{{ url('b2b_pack_create') }} {% else %}{{ url('b2b_pack_edit',{'id':pack.id}) }}{% endif %}">SAUVEGARDER</a>
+                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center save-changes d-none pack-save-changes" data-id="{{ pack.id }}" data-url="{% if pack.id is null %}{{ url('b2b_pack_create') }} {% else %}{{ url('b2b_pack_edit',{'id':pack.id}) }}{% endif %}">SAUVEGARDER</a>
             </div>
         </div>
     </nav>
 </div>
+
+<div id="dropzone-routes"
+     data-upload-route="{{ path('b2b_pack_fileuploadhandler') }}"
+     data-load-images-route="{{ path('b2b_pack_delete_image') }}"
+     data-id="{{ pack.id }}"
+     data-delete-route="{{ url('b2b_pack_delete_image') }}"
+     data-display-route="/b2b/pack/image-display/{{ pack.id }}"
+></div>
 {{ form_end(form,{render_rest:false}) }}

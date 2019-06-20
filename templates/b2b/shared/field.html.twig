@@ -20,13 +20,13 @@
                         <ul class="d-flex w-100">
                             {% set data = form.vars.data %}
                             {% for client in form.vars.choices %}
-                                <li class="col-md-4 mb-4">
+                                <li class="col-md-4 mb-4 client-info" data-id="{{ client.data.id }}" data-name="{{ client.data.company }}" data-image="{{ client.data.profilePhoto }}">
                                     <a href="javascript:;" class="card p-3">
                                         {% if data.id is defined and data.id == client.data.id %}
                                         <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ client.data.id }}" checked>
                                         {% else %}
                                         <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ client.data.id }}">
-                                            {% endif %}
+                                        {% endif %}
                                         <div class="row">
                                             <div class="card-content d-flex justify-content-center align-items-center">
                                                 <div class="col-md-4 text-center">
@@ -59,7 +59,7 @@
                         <ul class="d-flex w-100">
                             {% set data = form.vars.data %}
                             {% for choice in form.vars.choices %}
-                            <li class="col-md-4 mb-4">
+                            <li class="col-md-4 mb-4 pack-info" data-id="{{ choice.data.id }}" data-price="{{ choice.data.totalPrice }}">
                                 <a href="javascript:;" class="card">
                                     {% if data.id is defined and choice.data.id == data.id %}
                                     <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ choice.data.id }}" checked>
@@ -260,15 +260,14 @@
 {% endblock %}
 
 {% block _mission_missionMedia_widget %}
-    <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr')  }}" id="{{ form.vars.id  }}">
+    <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr')  }}" id="media-block">
         <h5 class="text-darkgray mb-0">Photos</h5>
         <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre
             bibliothèque
             ou en
             téléchargez des nouvelles pour illustrer votre pack.</p>
         <small class="text-textgray">Format : JPEG, PNG. Taille : 2Mo max</small>
-        <div class="form-group dropzone-custom clearfix mt-3 dz-clickable"
-             id="photos-dropzone">
+        <div class="form-group dropzone clearfix mt-3 dz-clickable" id="photos-dropzone">
             <!-- <div class="row">
                                     <div class="col-md-12 upload-area">
                                         <div class="area-label text-center p-4">
@@ -288,7 +287,12 @@
                 </div>
             </div>
         </div>
-        <div id="mission-images-display"></div>
+        <div id="mission-images-display">
+            {% for data in form.vars.data %}
+
+                <input type="hidden" name="{{ form.vars.full_name }}[{{ loop.index }}-1][name]" value="{{ data.name }}" />
+            {% endfor %}
+        </div>
     </div>
 
 {% endblock %}
@@ -357,26 +361,53 @@
 {% endblock %}
 
 {% block _mission_documents_widget %}
-    <div class="row" id="mission-documents-upload" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr') }} ">
-        <div class="col-d-12 card p-5 mb-4">
-            <h4 class="fz-24">Mes conditions générales de ventes</h4>
-            <p class="fz-16 font-weight-light">Vous pouvez uploader ici vos propres conditions générales
-                de
-                vente si vous souhaitez que chaque client les accepte en plus de celles de Pix.City
-                Services. Cela reste une option si vous n'en avez pas !</p>
-            <div class="row">
-                <div class="col-md-12">
-                    <a href="javascript:;" class="btn btn-pink mr-4" id="uploadTermFile"><i
-                                class="fas fa-upload"></i> Upload</a> <span class="fz-14">Télécharger mes GCV
-                                            (format .pdf 5mo max)</span>
-                    <input type="file" class="d-none" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief" multiple="multiple"/>
-                </div>
-                <div class="col-md-12" id="mission-documents-list">
-
-                </div>
-            </div>
-        </div>
+    <div class="work-documents-container col-sm-12 border-bottom mt-2 mb-4 pb-4"  id="mission-documents-upload" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr') }} ">
+        <h5 class="text-darkgray mb-3">Documents de travail</h5>
+        <table class="table table-sm table-borderless table-striped work-documents-list-table">
+            <thead>
+            <tr class="text-normalgray fz-12">
+                <th class="font-weight-normal w-5"><span class="sr-only">Document filetype</span></th>
+                <th class="font-weight-normal w-30">Nom du fichier </th>
+                <th class="font-weight-normal w-15">Date</th>
+                <th class="font-weight-normal w-25">Propriétaire</th>
+                <th class="font-weight-normal w-10">Type</th>
+                <th class="font-weight-normal w-10">Statut</th>
+                <th class="font-weight-normal w-5"><span class="sr-only">Mission actions</span></th>
+            </tr>
+            </thead>
+            <tbody  id="mission-documents-list">
+            </tbody>
+            <tfoot>
+            <tr class="">
+                <td colspan="7" class="pt-4 text-center">
+                    <input type="file" class="d-none" id="document-file-upload" multiple/>
+                    <a href="javascript:;" class="btn btn-outline-darkblue btn-pill add-a-document">Ajouter
+                        un document</a>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
     </div>
+{#    <div class="row" id="mission-documents-upload" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr') }} ">#}
+{#        <div class="col-d-12 card p-5 mb-4">#}
+{#            <h4 class="fz-24">Mes conditions générales de ventes</h4>#}
+{#            <p class="fz-16 font-weight-light">Vous pouvez uploader ici vos propres conditions générales#}
+{#                de#}
+{#                vente si vous souhaitez que chaque client les accepte en plus de celles de Pix.City#}
+{#                Services. Cela reste une option si vous n'en avez pas !</p>#}
+{#            <div class="row">#}
+{#                <div class="col-md-12">#}
+{#                    <a href="javascript:;" class="btn btn-pink mr-4" id="uploadTermFile"><i#}
+{#                                class="fas fa-upload"></i> Upload</a> <span class="fz-14">Télécharger mes GCV#}
+{#                                            (format .pdf 5mo max)</span>#}
+{#                    <input type="file" class="d-none" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief" multiple="multiple"/>#}
+{#                </div>#}
+{#                <div class="col-md-12" id="mission-documents-list">#}
+
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 {% endblock %}
 
 

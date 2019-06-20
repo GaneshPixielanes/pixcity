@@ -7,6 +7,7 @@ use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -23,11 +24,14 @@ class BtobController extends AbstractController{
     public function index(NotificationsRepository $notificationsRepository,
                           UserPacksRepository $packRepo,
                           UserMissionRepository $missionRepo,
-                          OptionRepository $optionRepo)
+                          OptionRepository $optionRepo,
+                            UserRepository $userRepo)
     {
 
         #Logged in User
         $user = $this->getUser();
+
+
 
         #Unread Notifications of the user
         $notifications = $notificationsRepository->findBy(['user'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);

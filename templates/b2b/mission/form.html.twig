@@ -105,8 +105,9 @@
                                             </ul>
                                         </div>
                                     </div>
+                                    {{ form_widget(form.documents) }}
 
-                                    {{ form_row(form.missionMedia) }}
+                                    {{ form_widget(form.missionMedia) }}
                                     {{ form_widget(form.region) }}
 
                                 </div>
@@ -146,20 +147,20 @@
                         </div>
                         <div class="mr-4">
                             <p class="mb-0 fz-12 text-normalgray">Région</p>
-                            <p class="mb-0 text-darkgray client-region">PARIS</p>
+                            <p class="mb-0 text-darkgray client-region"></p>
                         </div>
                         <div class="mr-4">
                             <p class="mb-0 fz-12 text-normalgray">Prix</p>
                             <p class="mb-0 text-darkgray user-price">120€</p>
                         </div>
-                        <div class="mission-invoice d-flex align-items-center opacity-40">
-                            <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i>
-                            </p>
-                            <p class="mb-0 text-darkgray">
-                                Devis 00837-PX
-                                <a href="javascript:;" class="d-block fz-12 text-inprogress">Voir le devis</a>
-                            </p>
-                        </div>
+{#                        <div class="mission-invoice d-flex align-items-center opacity-40">#}
+{#                            <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i>#}
+{#                            </p>#}
+{#                            <p class="mb-0 text-darkgray">#}
+{#                                Devis 00837-PX#}
+{#                                <a href="javascript:;" class="d-block fz-12 text-inprogress">Voir le devis</a>#}
+{#                            </p>#}
+{#                        </div>#}
                     </div>
                     <div class="preview-cta d-flex align-items-center">
                         <a class="preview-mission text-darkgray d-flex flex-column align-items-center mr-3 fz-12 text-decoration-none"
@@ -188,7 +189,7 @@
             <div class="container">
                 <h2 class="fz-32 my-4 text-center">C’est presque fini !</h2>
                 {{ form_widget(form.axaInsurance) }}
-                {{ form_widget(form.documents) }}
+{#                {{ form_widget(form.documents) }}#}
 
                 <div class="row">
                     <div class="col-md-12 text-center mb-4">
@@ -230,12 +231,14 @@
         </section>
     </div>
 
-    <div id="api-box" data-api-route="{{ url('b2b_mission_create') }}"></div>
+    <div id="api-box" data-api-route="{{ url('b2b_mission_create') }}"
+         data-document-upload="{{ url('b2b_mission__upload') }}"
+    data-date="{{ "now" | date('d/m/Y') }}"
+    data-profile-image="{{ app.user.avatar }}" data-first-name="{{ app.user.firstName }}"></div>
     {{ form_end(form,{'render_rest':false}) }}
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ absolute_url('/assets/js/mission.js') }}"></script>
     <script src="{{ absolute_url('/assets/js/bind.js') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
@@ -258,7 +261,7 @@
                 console.log($(this).attr('id'));
                 if ($(this).attr('id') == 'banner-image-upload') {
                     readURL(this);
-                } else if($(this).attr('id') == 'brief-file-upload') {
+                } else if($(this).attr('id') == 'document-file-upload') {
                     type = 'brief';
                 }
                 $.each($(this)[0].files, function (key, value) {
@@ -273,7 +276,7 @@
 
 
             function uploadFiles(formData, type) {
-                $.ajax('/community-manager/mission/upload',
+                $.ajax($('#api-box').attr('data-document-upload'),
                     {
                         type: 'POST',
                         data: formData,
@@ -292,13 +295,29 @@
                         $('#mission-documents-list')
                             .find('input:last')
                             .val(result.fileName);
-                       $('#mission-documents-list').append(`
-                    <div class="d-inline-block bg-lightgray text-darkblue fz-16 font-weight-light p-2  mission_documents_`+index+`">
-                        <i class="far fa-file-alt fz-25"></i> `+result.fileName+`
-                    </div>
-                    <a href="javascript:;" class="text-darkblue ml-1 delete-document mission_documents_`+index+`"  data-target="mission_documents_`+index+`">
-                        <i class="fas fa-times"></i>
-                    </a>`);
+                       $('#mission-documents-list').append(`<tr class="text-darkgray fz-14">
+                            <td valign="middle" class="text-center">
+                                <i class="far fa-file-image fz-25"></i>
+                            </td>
+                            <td valign="middle">`+result.fileName+`</td>
+                            <td valign="middle">`+$('#api-box').attr('data-date')+`</td>
+                            <td valign="middle">
+                                <div class="d-flex align-items-center">
+                                                            <span class="btn-circle-28 mr-3">
+                                                                <img src="`+$('#api-box').attr('data-profile-image')+`" class="img-fluid rounded-circle" alt="">
+                                                            </span>
+                                    `+$('#api-box').attr('data-first-name')+`
+                                </div>
+                            </td>
+                            <td valign="middle">Document</td>
+                            <td valign="middle"><span class="text-completed">Uploadé</span></td>
+                            <td valign="middle">
+                                <div class="d-flex align-items-center">
+                                    <a href="javascript:;" class="remove_document text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" data-target="mission_documents_`+index+`"><i class="fas fa-trash fz-16"></i></a>
+                                </div>
+                            </td>
+                        </tr>`);
+                        validateStep2();
                     }
 
 
@@ -314,27 +333,27 @@
             }
 
 
-            $("div.image-upload-zone").dropzone({
-                url: "/community-manager/mission/upload",
-                addRemoveLinks: true,
-                dictDefaultMessage: "Drop files here or<br>click to upload...",
-                acceptedFiles: $(this).attr('accepted-files'),
-                maxFilesize: 5,
-                success: function (file, response) {
-                    var prototype = $('#mission_missionMedia').attr('data-prototype');
-                    var index = $('#mission-images-display').find('input').length;
-
-                    prototype = prototype.replace(/__name__/g, index);
-                    $('#mission-images-display').append(prototype);
-                    $('#mission-images-display')
-                        .find('input:last')
-                        .val(response.fileName).attr('data-filename', file.upload.filename);
-                },
-                removedfile: function (file) {
-                    $('input[data-filename="' + file.upload.filename + '"]').remove();
-                    file.previewElement.remove();
-                }
-            });
+            // $("div.image-upload-zone").dropzone({
+            //     url: "/community-manager/mission/upload",
+            //     addRemoveLinks: true,
+            //     dictDefaultMessage: "Drop files here or<br>click to upload...",
+            //     acceptedFiles: $(this).attr('accepted-files'),
+            //     maxFilesize: 5,
+            //     success: function (file, response) {
+            //         var prototype = $('#mission_missionMedia').attr('data-prototype');
+            //         var index = $('#mission-images-display').find('input').length;
+            //
+            //         prototype = prototype.replace(/__name__/g, index);
+            //         $('#mission-images-display').append(prototype);
+            //         $('#mission-images-display')
+            //             .find('input:last')
+            //             .val(response.fileName).attr('data-filename', file.upload.filename);
+            //     },
+            //     removedfile: function (file) {
+            //         $('input[data-filename="' + file.upload.filename + '"]').remove();
+            //         file.previewElement.remove();
+            //     }
+            // });
 
             // Media upload
             // $('#add-media').on('click', function(e)
@@ -556,7 +575,7 @@
             })
         });
         /* toasts ends */
-        $("div.dropzone-custom").dropzone({
+        $("div.dropzone").dropzone({
             url: "/community-manager/mission/upload",
             addRemoveLinks: true,
             dictDefaultMessage: "Drop files here or<br>click to upload...",
@@ -578,10 +597,12 @@
                     $('.pack-photos-list').append('<li class="pack-photos-list-item d-inline-flex"><img src="'+$(element).attr('src')+'" /></li>')
 
                 });
+                validateStep2();
             },
             removedfile: function (file) {
                 $('input[data-filename="' + file.upload.filename + '"]').remove();
                 file.previewElement.remove();
+                validateStep2();
             }
         });
 
@@ -593,16 +614,12 @@
             $(this).parents('.image-row').html('');
         });
 
-        $(document).on('click','#uploadTermFile', function (e) {
+        $(document).on('click','.add-a-document', function (e) {
             e.preventDefault();
-            $('#brief-file-upload').trigger('click');
+            $('#document-file-upload').trigger('click');
 
         });
 
-        $(document).on('change','.selectpicker', function () {
-            console.log();
-            $('a[data-original-title]').removeClass('active');
-            $('a[data-original-title="'+$('.selectpicker option:selected').text()+'"]').addClass('active');
-        });
+
     </script>
 {% endblock %}

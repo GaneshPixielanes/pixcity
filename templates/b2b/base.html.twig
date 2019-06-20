@@ -132,15 +132,7 @@
 
             /* Images drop zone */
             /* $('.dropzone .dz-default').html(`<div class="row"><div class="col-md-12 mb-4 upload-area"><div class="area-label text-center p-4"><i class="fas fa-cloud-upload-alt"></i><p>Déposez vos images ici</p><a href="javascript:;">Depuis votre navigateur</a></div></div></div>`); */
-            $('.dropzone .dz-default').html(`
-                <div class="upload-area mb-4">
-                    <div class="area-label text-center p-4">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p class="mb-0">Déposez vos images ici</p>
-                        <a href="javascript:;">Depuis votre navigateur</a>
-                    </div>
-                </div>
-            `);
+
 
             /* Show only two notifications on load */
             $('.alert-notifications .alert').not(':lt(2)').removeClass('d-flex').hide();
@@ -165,6 +157,7 @@
 
             /* pack/mission creation/preview/edit invoke */
             $(document).on('click', '.add-package, .preview-edit-mission, .edit-the-pack', function () {
+                var missionPreview = $(this).is('.preview-edit-mission');
                 if ($(this).is('.add-package, .edit-the-pack')) {
                     $('.dash-right').fadeOut()
                     $('.pack-creation-edition-container').fadeIn()
@@ -178,8 +171,20 @@
                             $('#mission-edit-container').html(result);
                             $('.selectpicker').selectpicker('refresh');
                             $('.mission-edition-container').fadeIn();
-                            $('a[data-original-title="'+$('.selectpicker option:selected').text()+'"]').addClass('active');
+                            if(missionPreview)
+                            {
+                                $('a[data-original-title="'+$('select[name="mission[region]"] option:selected').text()+'"]').addClass('active');
+                                imageDropzone();
+                                if(validateMissionForm())
+                                {
+                                    $('.save-changes').removeClass('disabled');
+                                }
 
+                            }
+                            else
+                            {
+                                $('a[data-original-title="'+$('.selectpicker option:selected').text()+'"]').addClass('active');
+                            }
                         }
                     });
 
@@ -242,7 +247,7 @@
                     }
                 });
             $(document).on('input change focus', '.pack-creation-content input, .pack-creation-content textarea, .mission-edition-content input, .mission-edition-content textarea', function(){
-                $(this).parents('.pack-creation-content, .mission-edition-content').find('.save-changes').removeClass('disabled')
+                $(this).parents('.pack-creation-content, .mission-edition-content').find('.save-changes')
             });
             /* pack/mission creation/preview/edit invoke ends */
             /* Preview Invoice Starts */

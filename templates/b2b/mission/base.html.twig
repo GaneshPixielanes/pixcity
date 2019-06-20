@@ -25,6 +25,8 @@
 {% block body %}{% endblock %}
 
 {% block javascripts %}{% endblock %}
+
+<script src="{{ absolute_url('/assets/js/mission.js') }}"></script>
 <script>
     /* Restrict maxlengths for input and textarea fields */
     $('body').on("input",'textarea.pack-description, input.pack-title', function () {

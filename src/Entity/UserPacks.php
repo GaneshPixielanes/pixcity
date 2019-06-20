@@ -21,7 +21,7 @@ class UserPacks
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="userPacks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="userPacks",fetch="EAGER"  )
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -80,7 +80,7 @@ class UserPacks
     private $deleted;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Skill", inversedBy="userPacks", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Skill", inversedBy="userPacks", cascade={"persist", "remove"},fetch="EAGER")
      */
     private $packSkill;
 

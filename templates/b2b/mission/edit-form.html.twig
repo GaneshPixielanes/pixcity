@@ -100,47 +100,55 @@
         {{ form_widget(form.referencePack) }}
         {{ form_widget(form.client) }}
     </div>
-    <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Photos</h5>
-        <div class="pack-photos">
-            <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
-                {% for image in mission.missionMedia %}
-                <li class="pack-photos-list-item d-inline-flex">
-                    <img src="{{ image.url }}" alt="Pack photo 1">
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.missionMedia.vars.prototype) |e('html_attr')  }}" id="{{ form.vars.id  }}">
-        <h5 class="text-darkgray mb-0">Photos</h5>
-        <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre
-            bibliothèque
-            ou en
-            téléchargez des nouvelles pour illustrer votre pack.</p>
-        <small class="text-textgray">Format : JPEG, PNG. Taille : 2Mo max</small>
-        <div class="form-group dropzone-custom clearfix mt-3 dz-clickable"
-             id="photos-dropzone">
-            <!-- <div class="row">
-                                    <div class="col-md-12 upload-area">
-                                        <div class="area-label text-center p-4">
-                                            <i class="fas fa-cloud-upload-alt"></i>
-                                            <p>Déposez vos images ici</p>
-                                            <a href="javascript:;">Depuis votre navigateur</a>
-                                        </div>
-                                    </div>
-                                </div> -->
-            <div class="dz-default dz-message">
-                <div class="upload-area mb-4">
-                    <div class="area-label text-center p-4">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p class="mb-0">Déposez vos images ici</p>
-                        <a href="javascript:;">Depuis votre navigateur</a>
-                    </div>
-                </div>
+    {% if mission.missionMedia | length > 0 %}
+        <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
+            <h5 class="text-darkgray mb-0">Photos</h5>
+            <div class="pack-photos">
+                <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
+                    {% for image in mission.missionMedia %}
+                        <li class="pack-photos-list-item d-inline-flex">
+                            <img src="/uploads/missions/{{ mission.id }}/{{ image.name }}" alt="{{ mission.title }}">
+                            <br/>
+{#                            <a href="javascript;" data-filename="{{ image.name }}" class="remove-image">X</a>#}
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
-    </div>
+    {% endif %}
+    {{ form_widget(form.missionMedia) }}
+
+{#    <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.missionMedia.vars.prototype) |e('html_attr')  }}" id="media-block">#}
+{#        #}
+{#        <h5 class="text-darkgray mb-0">Photos</h5>#}
+{#        <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre#}
+{#            bibliothèque#}
+{#            ou en#}
+{#            téléchargez des nouvelles pour illustrer votre pack.</p>#}
+{#        <small class="text-textgray">Format : JPEG, PNG. Taille : 2Mo max</small>#}
+{#        <div class="form-group dropzone clearfix mt-3 dz-clickable"#}
+{#             id="photos-dropzone">#}
+{#            <!-- <div class="row">#}
+{#                                    <div class="col-md-12 upload-area">#}
+{#                                        <div class="area-label text-center p-4">#}
+{#                                            <i class="fas fa-cloud-upload-alt"></i>#}
+{#                                            <p>Déposez vos images ici</p>#}
+{#                                            <a href="javascript:;">Depuis votre navigateur</a>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div> -->#}
+{#            <div class="dz-default dz-message">#}
+{#                <div class="upload-area mb-4">#}
+{#                    <div class="area-label text-center p-4">#}
+{#                        <i class="fas fa-cloud-upload-alt"></i>#}
+{#                        <p class="mb-0">Déposez vos images ici</p>#}
+{#                        <a href="javascript:;">Depuis votre navigateur</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
     {{ form_widget(form.region) }}
 {#    <div class="pack-region-container edit col-sm-12 mt-2 mb-4 pb-4 d-noneN">#}
 {#        <h5 class="text-darkgray mb-0">Zone géographique</h5>#}
@@ -421,20 +429,21 @@
     <div class="container-fluid align-items-center justify-content-end">
         <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
             <div class="client-image btn-circle-50 p-0 mr-3">
-                <img src="../images/client-logo.png" class="img-fluid rounded-circle" alt="client Logo">
+                <img src="/uploads/client/{{ mission.client.id }}/{{ mission.client.profilePhoto }}" class="img-fluid rounded-circle" alt="{{ mission.client }}">
             </div>
             <div class="client-name-mission-status mr-4">
-                <p class="mb-0 fz-11 text-inprogress mission-status">Mission en cours</p>
-                <p class="mb-0 text-darkgray client-name">O’TACOS LEVALLOIS</p>
+                <p class="mb-0 fz-11 text-inprogress mission-status">Mission {{ ('b2b.label.' ~ mission.status)|trans }}</p>
+                <p class="mb-0 text-darkgray client-name">{{ mission.client | upper }}</p>
             </div>
             <div class="mr-4">
                 <p class="mb-0 fz-12 text-normalgray">Région</p>
-                <p class="mb-0 text-darkgray client-region">PARIS</p>
+                <p class="mb-0 text-darkgray client-region">{{ mission.region }}</p>
             </div>
             <div class="mr-4">
                 <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                <p class="mb-0 text-darkgray user-price">120€</p>
+                <p class="mb-0 text-darkgray user-price">{{ mission.userMissionPayment.clientPrice }}€</p>
             </div>
+            {% if mission.status == 'terminated' %}
             <div class="mission-invoice d-flex align-items-center">
                 <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i></p>
                 <p class="mb-0 text-darkgray">
@@ -442,6 +451,7 @@
                     <a href="javascript:;" class="d-block fz-12 text-inprogress">Voir le devis</a>
                 </p>
             </div>
+            {% endif %}
         </div>
 
         <div class="mission-cta d-flex align-items-center">
@@ -476,10 +486,18 @@
                 <img src="../images/icons/preview-off-icon.svg" alt="Preview off"> Prévisualiser
             </a>
             <a href="javascript:;"
-               class="btn btn-pink btn-pill disabled fz-12 d-flex align-items-center save-changes" data-url="{{ url('b2b_mission_edit',{'id':mission.id}) }}">SAUVEGARDER</a>
+               class="btn btn-pink btn-pill disabled fz-12 d-flex align-items-center save-changes mission-save-changes" data-url="{{ url('b2b_mission_edit',{'id':mission.id}) }}">SAUVEGARDER</a>
             <a href="javascript:;" data-toggle="modal" data-target="#missionEditionConfirmation"
-               class="btn btn-pink btn-pill fz-12 d-flex align-items-center save-changes d-none">SAUVEGARDER</a>
+               class="btn btn-pink btn-pill fz-12 d-flex align-items-center save-changes mission-save-changes d-none">SAUVEGARDER</a>
         </div>
     </div>
 </nav>
+
+
+<div id="dropzone-routes"
+     data-upload-route="{{ url('b2b_mission__upload') }}"
+     data-delete-route="{{ path('b2b_mission_delete_image') }}"
+     data-id="{{ mission.id }}"
+     data-display-route="{{ url('b2b_mission_display_image',{'id':mission.id}) }}"
+></div>
 {{ form_end(form,{'render_rest':false}) }}

@@ -50,7 +50,7 @@ class ClientMissionProposal
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UserPacks", inversedBy="clientMissionProposals")
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserPacks")
      */
     private $pack;
 
