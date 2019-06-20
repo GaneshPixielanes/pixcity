@@ -24,7 +24,7 @@ class ClientType extends AbstractType
         }
 
         $builder
-            ->add('profilePhoto',HiddenType::class,['label'=>false])
+            ->add('profilePhoto',TextType::class,['label'=>false])
             ->add('email',EmailType::class,[
                 'label'=> 'Email'
             ])

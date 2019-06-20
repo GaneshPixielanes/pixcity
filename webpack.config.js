@@ -61,6 +61,7 @@ Encore
     .addEntry('front/js/pages/card', './assets/front/js/pages/card.js')
     .addEntry('front/js/pages/user-register', './assets/front/js/pages/user-register.js')
     .addEntry('front/js/pages/pixie-register', './assets/front/js/pages/pixie-register.js')
+    .addEntry('front/js/pages/client-register', './assets/front/js/pages/client-register.js')
     .addEntry('front/js/pages/pixie-settings', './assets/front/js/pages/pixie-settings.js')
     .addEntry('front/js/pages/pixie-projects-list', './assets/front/js/pages/pixie-projects-list.js')
     .addEntry('front/js/pages/pixie-card-creation', './assets/front/js/pages/pixie-card-creation.js')

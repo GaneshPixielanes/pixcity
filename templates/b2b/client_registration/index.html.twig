@@ -4,6 +4,60 @@
 
 
 {% block body %}
+    <style>
+        .user-avatar-field {
+            position: relative;
+        }
+        .portraitCompte {
+            display: block;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: solid 2px #038090;
+            overflow: hidden;
+            position: relative;
+            text-align: center;
+            margin: 20px auto;
+            background-size: cover;
+            cursor: pointer;
+        }
+
+        .user-avatar-field .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 3;
+            cursor: pointer;
+        }
+
+        .user-avatar-field .field {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .user-avatar-field {
+            position: relative;
+        }
+
+        .portraitCompte .label {
+            color: #fff;
+            background-color: #038090;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 10px;
+            -webkit-transition: all ease 0.3s;
+            transition: all ease 0.3s;
+        }
+
+    </style>
     <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
         <div class="container">
             <a class="navbar-brand" href="javascript:;"><img src="../images/header-logo-main.svg" alt="Pix.City"></a>
@@ -49,7 +103,7 @@
             </div>
         </div>
     </nav>
-    {{ form_start(form) }}
+    {{ form_start(form,{'attr':{'enctype':'multipart/form-data','novalidate':'novalidate'}}) }}
     {{ form_row(form._token) }}
     <div class="login-wrap">
         <div class="container">
@@ -63,11 +117,21 @@
                                 <p class="text-center">Apprenons à mieux nous connaître 😉</p>
                                 <div class="row">
                                     <div class="col-md-8 m-auto">
-                                        <form action="" method="" accept-charset="utf-8">
+
                                             <div class="row">
                                                 <div class="col-md-12 card shadow-sm mb-3 p-3">
                                                     <p class="font-weight-light text-center">Votre entreprise</p>
 
+
+                                                    <div class="portraitCompte fa fa-user user-avatar-field upload-zone">
+                                                        <input name="file-avatar" type="file" class="file-input" data-type="single" />
+                                                        <div class="field">{{ form_widget(form.profilePhoto) }}</div>
+                                                        <div class="thumb" style="background-image: url({% if form.avatar.vars.value.id is defined %}{{ form.avatar.vars.value.getUrl() }}{% endif %});"></div>
+                                                        <span class="label">
+                                                                <span class="text">Ajouter</span>
+                                                                <i class="fas fa-spinner fa-spin"></i>
+                                                            </span>
+                                                    </div>
                                                     {{ form_widget(form.clientInfo.siret) }}
                                                     {{ form_errors(form.clientInfo.siret) }}
 
@@ -117,7 +181,7 @@
                                                     <button class="btn btn-pink btn-pill mx-auto lh2" type="submit">Créer mon compte</button>
                                                 </div>
                                             </div>
-                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -141,35 +205,22 @@
             </div>
         </div>
     </div>
+
+    {% embed "front/_modals/image-crop.html.twig" %}{% endembed %}
+
+    <div id="api-routes"
+         data-upload-route="{{ path('front_user_ajax_upload_avatar') }}"
+    ></div>
+
     {{ form_row(form._token) }}
     {{ form_end(form,{render_rest:false}) }}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
 {#    <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/client_registration.js')) }}"></script>#}
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="{{ asset('build/front/js/pages/client-register.js') }}"></script>
 
-    <script>
-
-        $(document).ready(function()
-        {
-            function readURL(input) {
-
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        $('#profile-photo').attr('src', e.target.result);
-                    }
-
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-
-            $('input[type="file"]').on('change', function(e){
-            readURL(this);
-        });
-        });
-    </script>
     <script>
         /* custom per page scripts */
         $('input').keyup(function() {

@@ -74,7 +74,7 @@ class ClientController extends Controller
         $notifications = $notificationRepo->findBy(['client'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);
 
         //Get missions
-        $missions = $missionRepo->findMissionForClient($this->getUser(), MissionStatus::ONGOING);
+        $missions = $missionRepo->findOngoingMissions($this->getUser(), 'client');
 
         //Get proposals
         $proposal_unique = [];
