@@ -76,6 +76,21 @@ class MissionPayment
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $margin;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $marginPercentage;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $adjustment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -209,6 +224,42 @@ class MissionPayment
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getMargin(): ?float
+    {
+        return $this->margin;
+    }
+
+    public function setMargin(?float $margin): self
+    {
+        $this->margin = $margin;
+
+        return $this;
+    }
+
+    public function getMarginPercentage(): ?int
+    {
+        return $this->marginPercentage;
+    }
+
+    public function setMarginPercentage(?int $marginPercentage): self
+    {
+        $this->marginPercentage = $marginPercentage;
+
+        return $this;
+    }
+
+    public function getAdjustment(): ?float
+    {
+        return $this->adjustment;
+    }
+
+    public function setAdjustment(?float $adjustment): self
+    {
+        $this->adjustment = $adjustment;
 
         return $this;
     }
