@@ -1,20 +1,104 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/client/base.html.twig' %}
 
-{% block title %}Hello TransactionController!{% endblock %}
+{% import 'b2b/shared/macros.html.twig' as macros %}
+{% block title %}Client | Home {% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <!-- my billing -->
+    <div class="tab-pane" id="billing" role="tabpanel">
+        <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i
+                        class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation</div>
+            <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
+                mission</a>
+        </div>
+        <div class="col-md-12 tab-pane-content p-4" data-simplebar>
+            <table class="table table-sm table-borderless my-billings-list-table">
+                <thead>
+                <tr class="text-normalgray fz-12">
+                    <th class="font-weight-normal w-5"><span class="sr-only">Mission filetype</span></th>
+                    <th class="font-weight-normal w-30">Nom du fichier </th>
+                    <th class="font-weight-normal w-15">Date d’émission</th>
+                    <th class="font-weight-normal w-15">Dernière modification</th>
+                    <th class="font-weight-normal w-15">Montant</th>
+                    <th class="font-weight-normal w-15">Statut du paiement</th>
+                    <th class="font-weight-normal w-5"><span class="sr-only">Mission actions</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="text-darkgray fz-14">
+                    <td valign="middle" class="text-center">
+                        <i class="far fa-file-alt fz-25"></i>
+                    </td>
+                    <td valign="middle">Facture PX-13032109-00752</td>
+                    <td valign="middle">16/03/2019</td>
+                    <td valign="middle">19/03/2019</td>
+                    <td valign="middle">240€</td>
+                    <td valign="middle"><span class="text-inprogress">En cours</span></td>
+                    <td valign="middle">
+                        <div class="d-flex align-items-center">
+                            <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-eye fz-16"></i></a>
+                            <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="text-darkgray fz-14">
+                    <td valign="middle" class="text-center">
+                        <i class="far fa-file-alt fz-25"></i>
+                    </td>
+                    <td valign="middle">Facture PX-13032109-00752</td>
+                    <td valign="middle">16/03/2019</td>
+                    <td valign="middle">19/03/2019</td>
+                    <td valign="middle">240€</td>
+                    <td valign="middle"><span class="text-completed">Payée</span></td>
+                    <td valign="middle">
+                        <div class="d-flex align-items-center">
+                            <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-eye fz-16"></i></a>
+                            <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="text-darkgray fz-14">
+                    <td valign="middle" class="text-center">
+                        <i class="far fa-file-alt fz-25"></i>
+                    </td>
+                    <td valign="middle">Facture PX-13032109-00752</td>
+                    <td valign="middle">16/03/2019</td>
+                    <td valign="middle">19/03/2019</td>
+                    <td valign="middle">240€</td>
+                    <td valign="middle"><span class="text-inprogress">En cours</span></td>
+                    <td valign="middle">
+                        <div class="d-flex align-items-center">
+                            <a href="javascript:;"
+                               class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i
+                                        class="fas fa-eye fz-16"></i></a>
+                            <a href="javascript:;"
+                               class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i
+                                        class="fas fa-download fz-16"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="text-darkgray fz-14">
+                    <td valign="middle" class="text-center">
+                        <i class="far fa-file-alt fz-25"></i>
+                    </td>
+                    <td valign="middle">Facture PX-13032109-00752</td>
+                    <td valign="middle">16/03/2019</td>
+                    <td valign="middle">19/03/2019</td>
+                    <td valign="middle">240€</td>
+                    <td valign="middle"><span class="text-completed">Payée</span></td>
+                    <td valign="middle">
+                        <div class="d-flex align-items-center">
+                            <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-eye fz-16"></i></a>
+                            <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- my billing end here -->
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/wamp64/www/pixcity-staging/src/Controller/B2B/TransactionController.php'|file_link(0) }}">src/Controller/B2B/TransactionController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/wamp64/www/pixcity-staging/templates/b2_b/transaction/index.html.twig'|file_link(0) }}">templates/b2_b/transaction/index.html.twig</a></code></li>
-    </ul>
-</div>
 {% endblock %}

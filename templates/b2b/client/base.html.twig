@@ -24,7 +24,7 @@
     <div class="container-fluid bg-dashboard  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
         <div class="row">
 
-            {% if route != 'b2b_client_main_index' %}
+            {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' %}
             <!-- Header -->
             <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
                 <div class="container">
@@ -96,7 +96,181 @@
             <!-- Header -->
             {% endif %}
 
-            {% block body %}{% endblock %}
+            {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' %}
+            <div class="col-md-2 p-sm-0 dash-left vh-100">
+                <div class="user-avatar w-100">
+                    <figure class="position-relative m-0 w-100">
+                        {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
+                            <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
+                        {% else %}
+                            <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
+                        {% endif %}
+
+                        <figcaption class="position-absolute d-flex align-items-center"><i class="fas fa-user-circle mr-2"></i>
+                            <span><a class="nav-link active" href="/client/profile">Prévisualiser mon profil</a></span></figcaption>
+                    </figure>
+
+                </div>
+                <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link {% if route == 'b2b_client_main_index'%}active{% endif %}" href="/client/index" role="tab" aria-controls="home">
+                            <i class="fas fa-home"></i>Accueil</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if route == 'b2b_client_mission_list'%}active{% endif %}" href="/client/mission/list" role="tab" aria-controls="myMissions">
+                            <i class="fas fa-briefcase"></i>Mes missions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">
+                            <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
+                    </li>
+                </ul>
+                <footer class="text-center p-2 text-pink fz-12">
+                    <i class="fas fa-cog"></i>Retourner sur Pix.city
+                </footer>
+            </div>
+
+                <div class="col-md-10 offset-md-2 dash-right vh-100 p-0">
+                    <div class="tab-content">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+
+            {% else %}
+
+                {% block newbody %}{% endblock %}
+
+            {% endif %}
+
+
+
+
+            <!-- My missions preview contents -->
+            <div class="mission-preview-container col-sm-12 p-0 vh-100">
+                <!-- <div class="overlay-dashboard"></div> -->
+                <div class="col-sm-12 mission-preview-content bg-white p-0" data-simplebar>
+                    <div id="preview-mission"></div>
+                </div>
+            </div>
+            <!-- My missions preview contents ends -->
+
+            <!-- Mission payment contents -->
+            <div class="col-md-12 mission-payment-content p-0 bg-white">
+                <div id="preview-payment"></div>
+            </div>
+            <!-- Mission payment contents ends -->
+
+            <!-- Mission payment acknowledment contents -->
+            <div class="mission-pyament-acknowledgement-container col-sm-12 p-0 vh-100">
+                <div class="overlay-dashboard"></div>
+                <div class="col-sm-10 offset-sm-2 mission-payment-acknowledgement-content bg-white p-0 d-flex align-items-center justify-content-center position-relative"
+                     data-simplebar>
+                    <div class="d-flex align-items-center justify-content-center vh-100 col-sm-10 p-0">
+                        <div class="text-darkgray w-50 d-flex align-items-center flex-column justify-content-center">
+                            <i class="fas fa-check fz-30 my-3 btn-circle-60 bg-green text-white"></i>
+                            <h5 class="font-weight-bold text-center">Votre paiement est validé !</h5>
+                            <p class="text-center">Votre city maker a été notifié ! La mission peut commencer !</p>
+                            <p class="my-3">
+                                <a href="javascript:;" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
+                            </p>
+                            <i class="fas fa-times fz-30 my-3 btn-circle-60 bg-error text-white"></i>
+                            <h5 class="font-weight-bold text-center">Votre paiement a été refusé :-(</h5>
+                            <p class="text-center">Malheureusement votre paiement n'a pas abouti. Veuillez rééssayer ou nous contacter si le refus n'est pas lié à votre banque.</p>
+                            <p class="my-3 d-flex flex-column align-items-center">
+                                <a href="javascript:;" class="btn btn-darkblue btn-pill mb-2 retry-payment">RÉÉSSAYER</a>
+                                <a href="javascript:;" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mission payment acknowledment contents ends -->
+
+            <!-- Cancel mission payment modal -->
+            <div class="modal fade cancel-created-mission-modal" id="cancelMissionPayment" tabindex="-1" role="dialog" aria-labelledby="cancelMissionPayment" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold">Vous souhaitez annuler le paiement?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Êtes-vous sur de vouloir annuler le paiement de la mission ?
+                                Celle-ci ne pourra débuter tant que les fonds n’auront pas été reçus.</p>
+                            <p>Si vous avez des questions sur l’annulation du paiement, n’hésitez pas à consulter
+                                notre <a href="javascript:;">page d’aide.</a> </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
+                            <button type="button" class="btn btn-pink cancel-payment-confirmation" data-dismiss="modal">ANNULER LE PAIEMENT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cancel mission payment modal ends -->
+
+            <!-- Cancel missions contents -->
+            <div class="cancel-mission-container col-sm-12 p-0 vh-100">
+                <div class="overlay-dashboard"></div>
+                <div class="col-sm-10 offset-sm-2 cancel-mission-show-content bg-white p-0">
+                    <div class="row">
+                        <div class="col-md-10 mx-auto my-5">
+                            <p class="fz-20 text-error">Annuler la mission</p>
+                            <h2 class="fz-28 font-weight-bold">Shooting soirée d’ouverture du O’Tacos Levallois-Perret</h2>
+                            <p class="fz-15 font-weight-light">Vous souhaitez annuler la mission, merci de remplir les champs ci-dessous. </p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form action="" method="get" accept-charset="utf-8">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label>Qui souhaite annuler la mission ?</label>
+                                                <select class="selectpicker" data-width="100%" data-live-search="true">
+                                                    <option value="Nord Pas de Calais">Je souhaite annuler la mission</option>
+                                                    <option value="Upper Normandy">Le client souhaite annuler la mission</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <textarea class="form-control form-control bg-lightwhite fz-14 pack-description" cols="30" rows="10">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a href="javascript:;" class="close-cancel-mission btn btn-white-cancel btn-block btn-pill lh2">Annuler</a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <a href="javascript:;" class="btn btn-error btn-block btn-pill lh2">Mettre fin à la mission</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cancel-mission-commentary-container d-flex align-items-center justify-content-center vh-100">
+                        <div class="cancel-mission-commentary">
+                            <div class="client-request-cancellation text-center">
+                                <p class="fz-20 mb-3">Votre demande d’annulation à bien été envoyée à votre client</p>
+                                <p class="fz-16 font-weight-light">Dès la confirmation d'annulation de la mission côté client, la mission apparaitra comme "annulée" dans votre espace city-maker.</p>
+                                <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
+                            </div>
+                            <div class="customer-request-cancellation text-center">
+                                <p class="fz-20 mb-3">A la demande du client, vous avez accepté d’annuler la mission</p>
+                                <p class="fz-16 font-weight-light">Votre mission apparaitra comme annulée dans votre dashboard une fois que votre client l’aura confirmé. </p>
+                                <p class="fz-16 font-weight-light">Si vous avez des  questions, consultez notre <a href="javascript:;">FAQ</a></p>
+                                <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cancel missions contents ends-->
+
+
         </div>
     </div>
 

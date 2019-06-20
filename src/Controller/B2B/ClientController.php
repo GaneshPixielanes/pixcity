@@ -87,19 +87,10 @@ class ClientController extends Controller
             }
         }
 
-        $mymissions['ongoing'] = $missionRepo->findOngoingMissions($this->getUser(),'client');
-        $mymissions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
-        $mymissions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
-        $mymissions['created'] = $missionRepo->findBy(['status' => MissionStatus::CREATED, 'client' => $this->getUser()],[]);
-
-        $missions_notification = $missionRepo->findBy(['client' => $this->getUser()]);
-
         return $this->render('b2b/client/index.html.twig',[
             'notifications' => $notifications,
             'missions' => $missions,
             'proposals' => $proposals,
-            'mymissions' => $mymissions,
-            'missions_notification' => $missions_notification,
             'proposal_unique' => $proposal_unique
         ]);
 
