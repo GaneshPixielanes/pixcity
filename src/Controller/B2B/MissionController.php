@@ -532,14 +532,16 @@ class MissionController extends AbstractController
         $em = $this->getDoctrine()->getEntityManager();
 
         $media = $mediaRepo->findOneBy(['name' => $request->get('name')]);
-
+        if(is_null($media))
+        {
+            return new JsonResponse(['success' => false]);
+        }
         $em->remove($media);
 
         $em->flush();
-
+        return new JsonResponse(['success' => true]);
 //        unlink('uploads/mission/'.$mission->getId().'/'.$request->get('name'));
 
-        exit;
 
     }
 
