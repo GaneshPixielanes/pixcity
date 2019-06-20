@@ -181,7 +181,7 @@ class MissionController extends AbstractController
         return $this->render('b2b/mission/form.html.twig',
             [
                 'form' => $form->createView(),
-                'margin' => $margin[0]->getValue()
+                'margin' => $margin->getValue()
             ]);
     }
 
@@ -313,7 +313,7 @@ class MissionController extends AbstractController
         [
             'form' => $form->createView(),
             'mission' => $mission,
-            'margin' => $margin
+            'margin' => $margin->getValue()
         ]);
     }
 
