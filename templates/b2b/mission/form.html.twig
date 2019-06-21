@@ -65,14 +65,14 @@
                             <div class="col-md-12">
                                 <div class="pack-details p-3">
                                     <div class="selected-pack-container edit col-md-12 border-bottom mt-2 mb-4 pb-4">
-                                        <p class="text-textgray mb-0" id="selected-pack-skill">PACK PHOTOGRAPHE</p>
+                                        <p class="text-textgray mb-0 selected-pack-skill" id="selected-pack-skill">PACK PHOTOGRAPHE</p>
                                         <small>Cette information ne peut pas être modifiée</small>
                                     </div>
                                     <div class="pack-overview-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4" style="display: none;">
-                                        <p class="text-textgray text-12 mb-0">PACK PHOTOGRAPHE</p>
+                                        <p class="text-textgray text-12 mb-0 selected-pack-skill">PACK PHOTOGRAPHE</p>
                                         <h5 class="text-darkgray mb-3 mission-title">Shooting photo de votre établissement (plats et
                                             locaux) </h5>
-                                        <p class="fz-12">
+                                        <p class="fz-12 mission-description">
                                             Bonjour,<br><br>
 
                                             Ce tarif inclut :<br>
@@ -127,15 +127,15 @@
                         </div>
                         <div class="user-name-level mr-3">
                             <p class="mb-0 fz-12 text-darkblue experte-level">Experte Pix.City</p>
-                            <p class="mb-0 text-darkgray user-name">@Lily_Bordeaux</p>
+                            <p class="mb-0 text-darkgray user-name client-name">@{{ app.user }}</p>
                         </div>
                         <div class=" mr-3">
                             <p class="mb-0 fz-12 text-normalgray">Région</p>
-                            <p class="mb-0 text-darkgray user-region">ÎLE DE FRANCE</p>
+                            <p class="mb-0 text-darkgray user-region client-region"></p>
                         </div>
                         <div class="">
                             <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                            <p class="mb-0 text-darkgray user-price">149€</p>
+                            <p class="mb-0 text-darkgray user-price">€</p>
                         </div>
                     </div>
                     <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
@@ -152,7 +152,7 @@
                         </div>
                         <div class="mr-4">
                             <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                            <p class="mb-0 text-darkgray user-price">120€</p>
+                            <p class="mb-0 text-darkgray user-price">€</p>
                         </div>
 {#                        <div class="mission-invoice d-flex align-items-center opacity-40">#}
 {#                            <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i>#}
@@ -439,7 +439,13 @@
                 if (price == NaN) {
                     // alert('Price cannot be calculated');
                 } else {
-                        $('.mission-price').html((parseInt($('input[name="mission[missionBasePrice]"]').val()) + (price * ({{ margin }}/100) )));
+                    var basePrice = $(this).val();
+                    var clientPrice = (100 * basePrice)/(100 - {{ margin }});
+                    $('.mission-price').html(clientPrice.toFixed(2)+"€");
+                    $('.user-price').html(clientPrice.toFixed(2)+"€");
+                    // $('.user-price').html('');
+                    // $('.mission-price').html(clientPrice.toFixed(2)+"€");
+                    <!--    $('.mission-price').html((parseInt($('input[name="mission[missionBasePrice]"]').val()) + (price * ({{ margin }}/100) )));-->
                 }
             });
 
@@ -619,6 +625,12 @@
             e.preventDefault();
             $('#document-file-upload').trigger('click');
 
+        });
+
+        $(document).on('click','.preview-mission', function () {
+            $('.mission-title').html($('input[name="mission[title]"]').val());
+            $('.selected-pack-skill').html($('#selected-pack-skill').html());
+            $('.mission-description').html($('[name="mission[description]"]').val());
         });
 
 
