@@ -147,7 +147,7 @@
             <p class="mx-3 inline-block mb-0 text-textgray fz-12"> Ce qui sera affiché sur
                 la plateforme
                 <i class="fas fa-arrow-right fz-16 mx-3"></i> <span
-                        class="text-pink fz-16 mission-price">144€</span>
+                        class="text-pink fz-16 mission-price">{% if mission.userMissionPayment.clientTotal is defined %}{{ mission.userMissionPayment.clientTotal }}{% endif %}€</span>
             </p>
         </div>
     </div>

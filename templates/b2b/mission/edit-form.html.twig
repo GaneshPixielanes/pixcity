@@ -30,9 +30,9 @@
         <h5 class="text-darkgray mb-0">Fixez votre nouveaux prix</h5>
         <p class="text-textgray">Si vous ne savez pas comment définir vos prix suivez <a
                     href="javascript:;">notre guide !</a></p>
-        <p class="mb-0 mt-4 text-textgray fz-12"><span class="text-pink fz-16 mr-2">{{ mission.userMissionPayment.clientPrice }}€</span> Ce qui sera
+        <p class="mb-0 mt-4 text-textgray fz-12"><span class="text-pink fz-16 mr-2 user-price">{{ mission.userMissionPayment.cmTotal | number_format(2) }}€</span> Ce qui sera
             affiché sur la plateforme
-            <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16">{{ mission.userMissionPayment.total }}€</span>
+            <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16 client-price">{{ mission.userMissionPayment.clientTotal | number_format(2) }}€</span>
         </p>
     </div>
     <div class="work-documents-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
@@ -441,7 +441,7 @@
             </div>
             <div class="mr-4">
                 <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                <p class="mb-0 text-darkgray user-price">{{ mission.userMissionPayment.clientPrice }}€</p>
+                <p class="mb-0 text-darkgray user-price">{{ mission.userMissionPayment.cmTotal | number_format(2) }}€</p>
             </div>
             {% if mission.status == 'terminated' %}
             <div class="mission-invoice d-flex align-items-center">
