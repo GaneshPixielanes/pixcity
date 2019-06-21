@@ -72,7 +72,7 @@
                                         <p class="text-textgray text-12 mb-0 selected-pack-skill">PACK PHOTOGRAPHE</p>
                                         <h5 class="text-darkgray mb-3 mission-title">Shooting photo de votre établissement (plats et
                                             locaux) </h5>
-                                        <p class="fz-12 mission-description">
+                                        <p class="fz-12 mission-description" style="white-space: pre-wrap;">
                                             Bonjour,<br><br>
 
                                             Ce tarif inclut :<br>
@@ -140,7 +140,7 @@
                     </div>
                     <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
                         <div class="client-image btn-circle-50 p-0 mr-3">
-                            <img src="../images/client-logo.png" class="img-fluid rounded-circle" alt="client Logo">
+                            <img src="{{ app.user.getAvatar() }}" class="img-fluid rounded-circle" alt="client Logo">
                         </div>
                         <div class="client-name-mission-status mr-4">
                             <p class="mb-0 fz-11 text-inprogress mission-status">Mission en cours</p>
@@ -515,13 +515,17 @@
                             var price = $('input[name="mission[missionBasePrice]"]').val();
                             $('[name="mission[description]"]').text(result.data.description);
                             $('[name="mission[title]"]').val(result.data.title);
-                            $('.mission-price').html((parseInt($('input[name="mission[missionBasePrice]"]').val()) + (price * ({{ margin }}/100) )));
+
+                            var basePrice = result.data.price;
+                            var clientPrice = (100 * basePrice)/(100 - {{ margin }});
+                            $('.mission-price').html(clientPrice.toFixed(2)+'€');
                             $('#selected-pack-skill').html(result.data.skill);
                             $('#mission-images-display').html('');
                             $.each(result.data.images, function(key, value)
                             {
                                 $('.pack-photos-list').append(`<li class="pack-photos-list-item d-inline-flex">
-                                                                <img src="/uploads/pack/`+result.data.id+`/`+value.name+`" />
+                                                                <img src="/uploads/pack/`+result.data.id+`/`+value.name+`" data-filename="`+value.name+`"/>
+<a href="#" class="removeLink" data-filename="`+value.name+`">Remove Link</a>
                                                                 </li>`);
                                 $('#mission-images-display').append('<input type="hidden" name="mission[missionMedia]['+key+'][name]" value="'+value.name+'"/>');
                             });
@@ -533,9 +537,9 @@
         });
 
         /* Update margin */
-        $(document).on('change','input[name="mission[missionBasePrice]"]', function () {
-
-        })
+        // $(document).on('change','input[name="mission[missionBasePrice]"]', function () {
+        //
+        // })
         $(document).on('click', 'li.pack-region-item', function () {
 
             $(this).find('input[type="radio"]').prop('checked', true);
@@ -582,6 +586,7 @@
             })
         });
         /* toasts ends */
+
         $("div.dropzone").dropzone({
             url: "/community-manager/mission/upload",
             addRemoveLinks: true,
@@ -633,6 +638,11 @@
             $('.mission-description').html($('[name="mission[description]"]').val());
         });
 
-
+        $(document).on('click','.removeLink', function (e) {
+            e.preventDefault();
+            var file = $(this).attr('data-filename');
+            $("[data-filename='"+file+"'").remove();
+            $('input[value="'+file+'"').remove();
+        })
     </script>
 {% endblock %}
