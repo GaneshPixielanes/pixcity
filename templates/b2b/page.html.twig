@@ -159,17 +159,17 @@
                 $('.pack-title[data-id="'+id+'"]').html($('[name="pack[title]"]').val());
             });
 
-            $('body').on('click','.preview-pack', function () {
-                // $('.user-price').html($('.total-pack-price:last').text());
-
-                // $images = $('.dz-image');
-                // console.log($images);
-                // $.each($images, function(key, value)
-                // {
-                //     $('.pack-photos-list-item > li:last').after('<li class="pack-photos-list-item dz-item">' +
-                //         '<img src="'+$(this).find('img').attr('src')+'" /></li>');
-                // })
-            });
+            // $('body').on('click','.preview-pack', function () {
+            //     // $('.user-price').html($('.total-pack-price:last').text());
+            //
+            //     // $images = $('.dz-image');
+            //     // console.log($images);
+            //     // $.each($images, function(key, value)
+            //     // {
+            //     //     $('.pack-photos-list-item > li:last').after('<li class="pack-photos-list-item dz-item">' +
+            //     //         '<img src="'+$(this).find('img').attr('src')+'" /></li>');
+            //     // })
+            // });
 
             $(document).on('click','.delete-document', function () {
                 if(confirm('Are you sure about deleting this document?'))
@@ -267,9 +267,9 @@
             $(document).on('keyup','#pack_userBasePrice',function () {
                 var basePrice = $(this).val();
                 var clientPrice = (100 * basePrice)/(100 - tax);
-                $('#clientPrice').html(clientPrice+"€");
+                $('#clientPrice').html(clientPrice.toFixed(2)+"€");
                 $('.user-price').html('');
-                $('#user-price').html(clientPrice+"€");
+                $('#user-price').html(clientPrice.toFixed(2)+"€");
 
             });
         })
