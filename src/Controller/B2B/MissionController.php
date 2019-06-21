@@ -40,10 +40,9 @@ class MissionController extends AbstractController
         $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()],[],['id' => 'DESC']);
         $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()],[],['id' => 'DESC']);
         $missions['drafts'] = $userMissionRepo->findBy(['status' => MissionStatus::CREATED, 'user' => $this->getUser()],[],['id' => 'DESC']);
-
         return $this->render('b2b/mission/index.html.twig', [
             'missions' => $missions,
-            'tax' => $optionsRepo->findOneBy(['slug' => 'tax'])
+            'tax' => $optionsRepo->findOneBy(['slug' => 'margin'])
         ]);
     }
 
@@ -360,7 +359,6 @@ class MissionController extends AbstractController
             $mission = $mission[0];
         }
         $em = $this->getDoctrine()->getManager();
-
         switch($request->get('status'))
         {
             case 'cancel': if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
@@ -368,13 +366,13 @@ class MissionController extends AbstractController
                                 $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
                                 $mission->setCancelledBy($request->get('cancelledBy'));
                                 $mission->setCancelReason($request->get('reason'));
-//                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has requested for the cancellation of mission '.$mission->getStatus(),null);
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has requested for the cancellation of mission '.$mission->getStatus(),$mission->getId());
                                 break;
                             }
                             elseif($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT)
                             {
                                 $mission->setStatus(MissionStatus::CANCELLED);
-//                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus(),null);
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus(),$mission->getId());
                                 break;
                             }
 
@@ -382,13 +380,13 @@ class MissionController extends AbstractController
                 if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
                 {
                     $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
-//                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle(),null);
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle(),$mission->getId());
                     break;
                 }
                 elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT)
                 {
                     $mission->setStatus(MissionStatus::TERMINATED);
-//                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),null);
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),$mission->getId());
                     break;
                 }
 

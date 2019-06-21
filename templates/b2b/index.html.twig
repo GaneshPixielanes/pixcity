@@ -137,7 +137,27 @@
     <script src="{{ asset('/assets/js/pages/main.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/pages/pack.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/mission.js') }}" type="text/javascript"></script>
+    <script>
+        $(document).on('keyup','input[name="mission[missionBasePrice]"]', function () {
+            $('.user-price').html($(this).val()+'€');
 
+            var price = $('input[name="mission[missionBasePrice]"]').val();
+            if (price == NaN) {
+                // alert('Price cannot be calculated');
+            } else {
+                var basePrice = $(this).val();
+                var clientPrice = (100 * basePrice)/(100 - {{ tax.value }});
+                $('.mission-price').html(clientPrice.toFixed(2)+"€");
+                $('.cmPrice').html(clientPrice.toFixed(2)+"€");
+                $('.client-price').html(clientPrice.toFixed(2)+"€");
+                // $('.mission-price').html(clientPrice.toFixed(2)+"€");
+            }
+        });
+
+        $(document).on('click','.edit-the-mission', function () {
+            $('.mission-price').html($('.client-price').html());
+        })
+    </script>
 {% endblock %}
 
 
