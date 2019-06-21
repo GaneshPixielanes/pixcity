@@ -62,7 +62,7 @@
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-inprogress">Draft</p>
-                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
+                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.userBasePrice | number_format(2) }}€</p>
                                         <i class="fas fa-eye preview-edit-mission" data-id="{{ mission.id }}"></i>
                                     </li>
                                 {% endfor %}
@@ -78,7 +78,7 @@
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-inprogress">En cours</p>
-                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
+                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.userBasePrice | number_format(2) }}€</p>
                                         <i class="fas fa-eye preview-edit-mission" data-id="{{ mission.id }}"></i>
                                     </li>
                                 {% endfor %}
@@ -93,7 +93,7 @@
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-completed">Terminée</p>
-                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
+                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.userBasePrice | number_format(2) }}€</p>
                                         <i class="fas fa-edit preview-edit-mission"></i>
                                     </li>
                                 {% endfor %}
@@ -108,7 +108,7 @@
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}/p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-canceled">Annulée</p>
-                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
+                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.userBasePrice | number_format(2) }}€</p>
                                         <i class="fas fa-edit preview-edit-mission"></i>
                                     </li>
                                 {% endfor %}
