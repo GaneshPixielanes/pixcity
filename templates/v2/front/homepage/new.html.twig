@@ -191,10 +191,16 @@
 
     <script>
         var coordinates = {};
-
     </script>
+
     <script src="{{ asset('build/js/map.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.nav-bar-main').load('/load-header');
+        });
+    </script>
 {% endblock %}
 
 {% block javascripts_footer %}
+
 {% endblock %}

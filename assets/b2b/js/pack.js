@@ -66,11 +66,14 @@ jQuery(document).ready(function() {
 });
 
 var $form = $("form[name='pack']");
+try {
+    $form.validate({
+        rules : {
+            "pack[packSkill]":{require:true},
+            "pack[title]":{require:true},
+        },
 
-$form.validate({
-    rules : {
-        "pack[packSkill]":{require:true},
-        "pack[title]":{require:true},
-    },
-
-})
+    })
+}catch (e) {
+    //DO NOTHING
+}

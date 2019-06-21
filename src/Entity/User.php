@@ -315,7 +315,7 @@ class User implements UserInterface, EquatableInterface
     private $userPacks;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="user", cascade={"persist", "remove"}, fetch="EAGER")
      */
     private $userMission;
 

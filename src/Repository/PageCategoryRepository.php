@@ -24,10 +24,12 @@ class PageCategoryRepository extends ServiceEntityRepository
     public function findAllActive($regions = [])
     {
         $qb = $this->createQueryBuilder("p")
+
             ->select(["p", "r",  "t", "bg", "COUNT(cards.id) as totalCards"]) 
                 ->join("p.region", "r")
                 ->join("p.thumb", "t")
                 ->join("p.background", "bg")
+
 
             ->leftJoin("r.cards", "cards", Join::WITH, "cards.status = :status")->setParameter("status", CardStatus::VALIDATED)
 
