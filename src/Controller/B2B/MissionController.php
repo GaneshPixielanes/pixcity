@@ -359,7 +359,6 @@ class MissionController extends AbstractController
             $mission = $mission[0];
         }
         $em = $this->getDoctrine()->getManager();
-
         switch($request->get('status'))
         {
             case 'cancel': if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
@@ -381,13 +380,13 @@ class MissionController extends AbstractController
                 if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
                 {
                     $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
-//                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle(),null);
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle(),$mission->getId());
                     break;
                 }
                 elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT)
                 {
                     $mission->setStatus(MissionStatus::TERMINATED);
-//                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),null);
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),$mission->getId());
                     break;
                 }
 
