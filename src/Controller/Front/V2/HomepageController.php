@@ -5,7 +5,6 @@ namespace App\Controller\Front\V2;
 use App\Constant\CardStatus;
 use App\Entity\Card;
 use App\Repository\CardCategoryRepository;
-use App\Repository\CardProjectRepository;
 use App\Repository\CardRepository;
 use App\Repository\PageCategoryRepository;
 use App\Repository\PageRepository;
@@ -25,28 +24,27 @@ class HomepageController extends Controller
     /**
      * @Route("", name="index")
     */
-    public function homepage(        Request $request,
+    public function homepage(
                                      PageRepository $pagesRepo,
                                      PageCategoryRepository $pagesCategoriesRepo,
                                      UserRepository $usersRepo,
                                      CardRepository $cardsRepo,
-                                     CardCategoryRepository $categoriesRepo,
-                                     CardProjectRepository $cardProjectRepository
+                                     CardCategoryRepository $categoriesRepo
     ){
-//        YEah! commit is here , click it DO you want me to commit it? yes Ok!
         $page = $pagesRepo->findOneBySlug("accueil");
         $regions = $pagesCategoriesRepo->findAllActive();
-        $coordinates = [];
+        $coordinates = array_column($regions,'coordinates');
         $center = [];
         // $coordinates = '';
         $noOfCards = [];
-        foreach($regions as $region)
-        {
-            $coordinates []= trim($region[0]->getRegion()->getCoordinates());
-            $noOfCards[] = $region["totalCards"];
-
-
-        }
+//        foreach($regions as $region)
+//        {
+//            $coordinates []= trim($region[0]->getRegion()->getCoordinates());
+//            $noOfCards[] = $region["totalCards"];
+//
+//
+//        }
+//        dd($coordinates);
         // $coordinates = str_replace('],[',',',$coordinates);
         // $coordinates = rtrim($coordinates,",");
         $pixies = $usersRepo->findRandomPixies();
@@ -82,7 +80,7 @@ class HomepageController extends Controller
         {
             $filters = ["userFavorite"=>$user->getId()];
 
-            if(count($cardsRepo->search($filters)) == 0) {
+            if($cardsRepo->countSearchResult($filters) == 0) {
                 $isCardFavoritedFirstTime = true;
             }
         }
@@ -98,8 +96,7 @@ class HomepageController extends Controller
             ->getQuery()
             ->getResult();
         $cardPerRegion = array_combine(array_column($result,'slug'),array_column($result,'card_count'));
-        $country = @unserialize(file_get_contents('http://ip-api.com/php/'.$_SERVER['REMOTE_ADDR']));
-        
+
         return $this->render('v2/front/homepage/new.html.twig', [
             'page' => $page,
             'regions' => $regions,
@@ -164,4 +161,12 @@ class HomepageController extends Controller
         }
         dd($user);
     }
+
+//    /**
+//     * @Route('/load-header',name="load_header")
+//     */
+//    public function _loadHeader()
+//    {
+//        return $this->render('v2/_shared/header.html.twig');
+//    }
 }
