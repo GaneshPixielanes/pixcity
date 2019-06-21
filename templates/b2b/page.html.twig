@@ -150,6 +150,7 @@
 
             $('body').on('keyup','[name="pack[description]"]', function () {
                 $('.pack-description-preview').html($('[name="pack[description]"]').val());
+                $('.packDescriptionLength').html($('[name="pack[description]"]').val().length);
             });
 
             $('body').on('submit','#pack-form', function()
@@ -159,7 +160,7 @@
             });
 
             $('body').on('click','.preview-pack', function () {
-                $('.user-price').html($('.total-pack-price:last').text());
+                // $('.user-price').html($('.total-pack-price:last').text());
 
                 // $images = $('.dz-image');
                 // console.log($images);
@@ -259,5 +260,18 @@
             }
 
         });
+
+        $(document).ready(function () {
+                var tax = "{{ tax.value }}";
+
+            $(document).on('keyup','#pack_userBasePrice',function () {
+                var basePrice = $(this).val();
+                var clientPrice = (100 * basePrice)/(100 - tax);
+                $('#clientPrice').html(clientPrice+"€");
+                $('.user-price').html('');
+                $('#user-price').html(clientPrice+"€");
+
+            });
+        })
     </script>
 {% endblock %}
