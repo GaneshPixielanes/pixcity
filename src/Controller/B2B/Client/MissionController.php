@@ -115,7 +115,7 @@ class MissionController extends AbstractController
     {
         $transaction = new ClientTransaction();
         $mission = $missionRepo->find($id);
-        $amount = $mission->getUserMissionPayment()->getTotal();
+        $amount = $mission->getUserMissionPayment()->getClientTotal();
         // Create a mango pay user
         $mangoUser = new UserNatural();
 

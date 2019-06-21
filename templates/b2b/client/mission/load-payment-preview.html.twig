@@ -31,7 +31,7 @@
                     {% endif %}
                     <div class="financial-infos-container preview col-sm-12 mt-2 mb-4 pb-4">
                         <h5 class="text-darkblue mb-0">Informations financières</h5>
-                        <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ mission.userMissionPayment.total }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
+                        <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ mission.userMissionPayment.clientTotal }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
 {#                        <div class="btn-group" role="group" aria-label="">#}
 {#                            <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>#}
 {#                            <button type="button" class="btn btn-darkblue"><i class="fas fa-download fz-16"></i></button>#}
@@ -119,26 +119,26 @@
                         <p class="mb-0">{{ mission.title }}</p>
                         <small class="fz-10">{{ mission.description }}</small>
                     </div>
-                    <div class="col-sm-2 text-right">{{ mission.userMissionPayment.userBasePrice }}€</div>
+                    <div class="col-sm-2 text-right">{{ mission.userMissionPayment.clientPrice }}€</div>
                 </div>
                 <div class="row justify-content-end">
                     <div class="col-sm-4">
                         <div class="row mb-2">
                             <div class="col-sm-6 fz-14">
-                                TVA {{  mission.userMissionPayment.taxPercentage }}%
+                                TVA 25
                             </div>
-                            <div class="col-sm-6 text-right">{{ mission.userMissionPayment.taxValue }} €</div>
+                            <div class="col-sm-6 text-right">{% if mission.userMissionPayment.clientTax != null  %} {{  mission.userMissionPayment.clientTax  }}{% else %}0{% endif %} €</div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6 fz-14">
                                 Transaction fees
                             </div>
-                            <div class="col-sm-6 text-right">{{ mission.userMissionPayment.transactionFee }} €</div>
+                            <div class="col-sm-6 text-right">0 €</div>
                         </div><div class="row">
                             <div class="col-sm-6 fz-14">
                                 TOTAL TTC
                             </div>
-                            <div class="col-sm-6 text-right">{{ mission.userMissionPayment.total }} €</div>
+                            <div class="col-sm-6 text-right">{{ mission.userMissionPayment.clientTotal }} €</div>
                         </div>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
                                         class="btn btn-white-cancel text-normalgray mr-4"
                                         data-toggle="modal" data-target="#cancelMissionPayment">Annuler</button>
 {#                                <button type="button" class="btn btn-darkblue disabled confirm-payment">Payer 149.00€</button>#}
-                                <a href="{{ url("b2b_client_mission_process_mission_request", {'id': mission.id}) }}" class="btn btn-darkblue">Payer {{ mission.userMissionPayment.total }} €</a>
+                                <a href="{{ url("b2b_client_mission_process_mission_request", {'id': mission.id}) }}" class="btn btn-darkblue">Payer {{ mission.userMissionPayment.clientTotal }} €</a>
                             </div>
                         </div>
                     </div>

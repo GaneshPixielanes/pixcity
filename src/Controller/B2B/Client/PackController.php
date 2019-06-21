@@ -58,9 +58,10 @@ class PackController extends AbstractController
                     $filesystem->copy('uploads/'.ClientMissionProposalMedia::tempFolder().$media->getName(),'uploads/'.ClientMissionProposalMedia::uploadFolder().'/'.$proposal->getId().'/'.$media->getName());
                 }
             }
+
             #Send notification
             $notificationsRepository->insert($pack->getUser(),null,'mission_request', $this->getUser().' has sent a mission request',null);
-//            return $this->redirect('/client/profil-community-manager/'.$pack->getUser()->getFirstname().'-'.$pack->getUser()->getLastname().'/'.$pack->getUser()->getId());
+
             return JsonResponse::create(['success' => true]);
         }
 
