@@ -117,7 +117,7 @@ class ClientController extends Controller
     public function previewPayment(Request $request,UserMissionRepository $missionRepository,OptionRepository $optionRepository){
 
 //        $mission = $missionRepository->find($request->get('id'));
-        $mission = $missionRepository->findBy(['missionAgreedClient' => null, 'id' => $request->get('id')]);
+        $mission = $missionRepository->findBy(['id' => $request->get('id')]);
         $tax = $optionRepository->findBy(['slug' => 'tax']);
         return $this->render('b2b/client/mission/load-payment-preview.html.twig',[
             'mission' => $mission[0],
