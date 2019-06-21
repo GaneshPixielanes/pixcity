@@ -359,14 +359,14 @@ class PackController extends Controller
 
         $em = $this->getDoctrine()->getEntityManager();
 
-        $media = $userPackMediaRepository->findBy(['name' => $request->get('name')]);
+        $media = $userPackMediaRepository->findOneBy(['name' => $request->get('name')]);
         if(is_null($media))
         {
             return new JsonResponse(['success' => false]);
         }
-        $pack = $media[0]->getUserPack();
+//        $pack = $media[0]->getUserPack();
 
-        $em->remove($media[0]);
+        $em->remove($media);
 
         $em->flush();
         return new JsonResponse(['success' => true]);
