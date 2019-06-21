@@ -120,7 +120,7 @@
                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                         <p class="w-15 mb-0">{{ mission.client }}</p>
                         <p class="w-15 mb-0 {% if mission.status == 'cancelled' %}text-canceled{% elseif mission.status == 'terminated' %}text-completed{% else %} text-inprogress {% endif %}">{{ ('b2b.label.' ~ mission.status)|trans }}</p>
-                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientPrice }}€</p>
+                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.cmTotal | number_format(2)}}€</p>
                         <i class="fas fa-edit preview-edit-mission" data-id="{{ mission.id }}"></i>
                     </li>
                 {% endfor %}

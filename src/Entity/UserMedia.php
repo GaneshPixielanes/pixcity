@@ -40,7 +40,10 @@ class UserMedia
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
-
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="userMedia")
+     */
+    private $user;
 
 
     //--------------------------------------------------------------

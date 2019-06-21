@@ -575,4 +575,34 @@ class MissionController extends AbstractController
 
 
     }
+
+    /**
+     * @Route("pack-image-display/{id}",name="display_pack_image")
+     */
+    public function showPackImages($id,Request $request,UserPacksRepository $packRepo){
+
+        $user = $this->getUser();
+
+        $pack = $packRepo->find($id);
+
+        $result = [];
+
+        if(count($pack->getUserPackMedia())){
+
+            foreach($pack->getUserPackMedia() as $media)
+            {
+                $obj['name'] = $media->getName();
+                $obj['size'] = '1024';
+                $obj['path'] = '/uploads/pack/'.$pack->getid().'/'.$media->getName();
+                $obj['id'] = $user->getId().'/'.$pack->getid();
+                $result[] = $obj;
+            }
+
+        }
+
+        return new JsonResponse($result);
+
+
+
+    }
 }

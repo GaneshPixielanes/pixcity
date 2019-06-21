@@ -62,6 +62,7 @@ class PackController extends Controller
         $pack = new UserPacks();
 
         $tax = $optionRepository->findBy(['slug' => 'tax']);
+        $margin = $optionRepository->findOneBy(['slug' => 'margin']);
 
         $form = $this->createForm(PackType::class,$pack);
 
@@ -70,15 +71,22 @@ class PackController extends Controller
         if($form->isSubmitted()){
 
             $em = $this->getDoctrine()->getManager();
+//            $base_price = $request->get('pack')['userBasePrice'];
+//            $tax = $tax[0]->getValue();
+//            $margin = $base_price * $tax / 100;
+//
+//            $total_value = $margin + $base_price;
+
             $base_price = $request->get('pack')['userBasePrice'];
             $tax = $tax[0]->getValue();
-            $margin = $base_price * $tax / 100;
+//            $margin = $base_price * $tax / 100;
+            $margin = $margin->getValue();
 
-            $total_value = $margin + $base_price;
+            $client_price = (100 * $base_price)/(100 - $margin);
             $pack->setUser($user);
             $pack->setMarginPercentage($tax);
-            $pack->setMarginValue($margin);
-            $pack->setTotalPrice($total_value);
+            $pack->setMarginValue($client_price - $base_price);
+            $pack->setTotalPrice($client_price);
 
             $em->persist($pack);
 
@@ -157,6 +165,7 @@ class PackController extends Controller
         }
 
         $tax = $optionRepository->findBy(['slug' => 'tax']);
+        $margin = $optionRepository->findOneBy(['slug' => 'margin']);
 
         $form = $this->createForm(PackType::class, $pack);
 
@@ -178,16 +187,23 @@ class PackController extends Controller
             if($request->get('banner')){
                 $pack->setBannerImage($request->get('banner'));
             }
+//            $base_price = $request->get('pack')['userBasePrice'];
+//            $tax = $tax[0]->getValue();
+//            $margin = $base_price * $tax / 100;
+//
+//            $total_value = $margin + $base_price;
 
             $base_price = $request->get('pack')['userBasePrice'];
             $tax = $tax[0]->getValue();
+//            $margin = $base_price * $tax / 100;
+            $margin = $margin->getValue();
 
-            $margin = $base_price * $tax / 100;
+            $client_price = (100 * $base_price)/(100 - $margin);
 
             $total_value = $margin + $base_price;
             $pack->setMarginPercentage($tax);
-            $pack->setMarginValue($margin);
-            $pack->setTotalPrice($total_value);
+            $pack->setMarginValue($client_price - $base_price);
+            $pack->setTotalPrice($client_price);
 
             $em->persist($pack);
             $em->flush();
@@ -359,14 +375,14 @@ class PackController extends Controller
 
         $em = $this->getDoctrine()->getEntityManager();
 
-        $media = $userPackMediaRepository->findBy(['name' => $request->get('name')]);
+        $media = $userPackMediaRepository->findOneBy(['name' => $request->get('name')]);
         if(is_null($media))
         {
             return new JsonResponse(['success' => false]);
         }
-        $pack = $media[0]->getUserPack();
+//        $pack = $media[0]->getUserPack();
 
-        $em->remove($media[0]);
+        $em->remove($media);
 
         $em->flush();
         return new JsonResponse(['success' => true]);
