@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-md-8">
                             <h6 class="mb-0">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
-                            <p class="mb-1">{{ notification.message }}</p>
+                            <p class="mb-1">{{ notification.message | raw }}</p>
                             <small class="text-muted">{{ notification.createdAt | date('d M Y - H:i') }}</small>
                         </div>
                         {#                            {% if notification.type == 'terminated' %}#}
@@ -117,7 +117,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <a href="{{ url('b2b_front_community_manager_view',{'name':proposal.user | lower |replace({' ':'-'}), 'id': proposal.user.id}) }}" class="btn btn-block btn-pink">DÉCOUVRIR TOUS SES PACKS</a>
+                                                    <a href="{{ url('b2b_front_community_manager_view',{'name':proposal.user | lower |replace({' ':'-'}), 'id': proposal.user.id}) }}" class="btn btn-block btn-pink fz-9">DÉCOUVRIR TOUS SES PACKS</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,7 +147,7 @@
                                 <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                 <p class="w-15 mb-0">{{ mission.title }}</p>
                                 <p class="w-15 mb-0 text-inprogress">En cours</p>
-                                <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.total }}€</p>
+                                <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientTotal }}€</p>
                                 <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
                             </li>
                         {% endfor %}

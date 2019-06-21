@@ -73,7 +73,7 @@
                         {% else %}
                             <div class="col-md-5 ml-auto mt-2 mt-lg-0">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="offset-md-5 col-md-4">
                                     <a class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" href="/client/logout"><span class="text">Log out</span><i class="fas fa-sign-in-alt"></i></a>
                                 </div>
                                 <div class="col-md-1 col-6 social-btn">
@@ -498,7 +498,7 @@
                     if ($(this).is('.pay-online')) {
 
                         var id = $(this).attr('data-id');
-                        console.log(id);
+
                         $.ajax({
                             url:"{{ path('b2b_client_main_preview_payment') }}",
                             type:'GET',

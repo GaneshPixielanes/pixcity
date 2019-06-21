@@ -174,8 +174,10 @@ class MissionController extends AbstractController
                 }
             }
 
-            $notificationsRepository->insert(null,$mission->getClient(),'create_mission', 'A mission has been created by '.$this->getUser().' on pack '.$mission->getReferencePack()->getTitle().'', $mission->getId());
+            $notificationsRepository->insert(null,$mission->getClient(),'create_mission', 'A mission <strong>'.$mission->getTitle().'</strong> has been created by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong>', $mission->getId());
+
             return $this->redirectToRoute('b2b_mission_list');
+
         }
 
         return $this->render('b2b/mission/form.html.twig',
