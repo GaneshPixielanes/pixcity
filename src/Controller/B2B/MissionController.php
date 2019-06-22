@@ -223,7 +223,7 @@ class MissionController extends AbstractController
 
             $margin = $margin->getValue();
             $tax = $tax->getValue();
-            if($cityMakerType != 'company')
+            if($cityMakerType == 'company')
             {
                 #Calculate client price; cp = (margin * baseprice)/100
 
