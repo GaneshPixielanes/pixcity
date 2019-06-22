@@ -118,46 +118,38 @@
                                 <div class="row">
                                     <div class="col-md-8 m-auto">
 
-                                            <div class="row">
-                                                <div class="col-md-12 card shadow-sm mb-3 p-3">
-                                                    <p class="font-weight-light text-center">Votre entreprise</p>
+                                        <div class="row">
+                                            <div class="col-md-12 card shadow-sm mb-3 p-3">
+                                                <p class="font-weight-light text-center">Votre entreprise</p>
 
 
-                                                    <div class="portraitCompte fa fa-user user-avatar-field upload-zone">
-                                                        <input name="file-avatar" type="file" class="file-input" data-type="single" />
-                                                        <div class="field">{{ form_widget(form.profilePhoto) }}</div>
-                                                        <div class="thumb" style="background-image: url({% if form.avatar.vars.value.id is defined %}{{ form.avatar.vars.value.getUrl() }}{% endif %});"></div>
-                                                        <span class="label">
-                                                                <span class="text">Ajouter</span>
-                                                                <i class="fas fa-spinner fa-spin"></i>
-                                                            </span>
-                                                    </div>
-                                                    {{ form_widget(form.clientInfo.siret) }}
-                                                    {{ form_errors(form.clientInfo.siret) }}
+                                                {{ form_widget(form.profilePhoto) }}
+                                                {{ form_widget(form.clientInfo.siret) }}
+                                                {{ form_errors(form.clientInfo.siret) }}
 
-                                                    {{ form_widget(form.company) }}
-                                                    {{ form_errors(form.company) }}
+                                                {{ form_widget(form.company) }}
+                                                {{ form_errors(form.company) }}
 
-                                                    {{ form_widget(form.clientInfo.address) }}
-                                                    {{ form_errors(form.clientInfo.address) }}
-                                                    <div class="row">
-                                                        {{ form_widget(form.clientInfo.postalCode) }}
-                                                        {{ form_errors(form.clientInfo.postalCode) }}
+                                                {{ form_widget(form.clientInfo.address) }}
+                                                {{ form_errors(form.clientInfo.address) }}
+                                                <div class="row">
+                                                    {{ form_widget(form.clientInfo.postalCode) }}
+                                                    {{ form_errors(form.clientInfo.postalCode) }}
 
-                                                        {{ form_widget(form.clientInfo.city) }}
-                                                        {{ form_errors(form.clientInfo.city) }}
-                                                    </div>
-                                                    <div class="row">
-                                                        {{ form_widget(form.clientInfo.companyCreationDate) }}
-                                                        {{ form_errors(form.clientInfo.companyCreationDate) }}
-                                                    </div>
-                                                    <div class="row">
-                                                        {{ form_widget(form.clientInfo.business) }}
-                                                        {{ form_errors(form.clientInfo.business) }}
+                                                    {{ form_widget(form.clientInfo.city) }}
+                                                    {{ form_errors(form.clientInfo.city) }}
+                                                </div>
+                                                <div class="row">
+                                                    {{ form_widget(form.clientInfo.companyCreationDate) }}
+                                                    {{ form_errors(form.clientInfo.companyCreationDate) }}
+                                                </div>
+                                                <div class="row">
+                                                    {{ form_widget(form.clientInfo.business) }}
+                                                    {{ form_errors(form.clientInfo.business) }}
 
-                                                    </div>
                                                 </div>
                                             </div>
+                                        </div>
                                             <div class="row">
                                                 <div class="col-md-12 card shadow-sm mb-3 p-3">
                                                     <p class="font-weight-light text-center">À propos de vous</p>
@@ -206,11 +198,9 @@
         </div>
     </div>
 
-    {% embed "front/_modals/image-crop.html.twig" %}{% endembed %}
 
-    <div id="api-routes"
-         data-upload-route="{{ path('front_user_ajax_upload_avatar') }}"
-    ></div>
+
+
 
     {{ form_row(form._token) }}
     {{ form_end(form,{render_rest:false}) }}

@@ -31,7 +31,7 @@
                     {% endif %}
                     <div class="financial-infos-container preview col-sm-12 mt-2 mb-4 pb-4">
                         <h5 class="text-darkblue mb-0">Informations financières</h5>
-                        <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ mission.userMissionPayment.clientTotal }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
+                        <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
 {#                        <div class="btn-group" role="group" aria-label="">#}
 {#                            <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>#}
 {#                            <button type="button" class="btn btn-darkblue"><i class="fas fa-download fz-16"></i></button>#}
