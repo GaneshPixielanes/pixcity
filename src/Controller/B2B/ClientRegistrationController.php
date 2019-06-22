@@ -31,8 +31,10 @@ class ClientRegistrationController extends AbstractController
         $form = $this->createForm(ClientType::class, $client);
 
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid())
         {
+
             $em = $this->getDoctrine()->getManager();
             $client->setRoles(["ROLE_USER"]);
 

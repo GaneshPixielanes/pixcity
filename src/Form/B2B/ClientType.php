@@ -5,6 +5,7 @@ namespace App\Form\B2B;
 use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -24,7 +25,7 @@ class ClientType extends AbstractType
         }
 
         $builder
-            ->add('profilePhoto',TextType::class,['label'=>false])
+            ->add('profilePhoto',FileType::class,['label'=>'Add Logo'])
             ->add('email',EmailType::class,[
                 'label'=> 'Email'
             ])
