@@ -100,22 +100,22 @@
         {{ form_widget(form.referencePack) }}
         {{ form_widget(form.client) }}
     </div>
-    {% if mission.missionMedia | length > 0 %}
-        <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
-            <h5 class="text-darkgray mb-0">Photos</h5>
-            <div class="pack-photos">
-                <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
-                    {% for image in mission.missionMedia %}
-                        <li class="pack-photos-list-item d-inline-flex">
-                            <img src="/uploads/missions/{{ mission.id }}/{{ image.name }}" alt="{{ mission.title }}">
-                            <br/>
+{#    {% if mission.missionMedia | length > 0 %}#}
+{#        <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">#}
+{#            <h5 class="text-darkgray mb-0">Photos</h5>#}
+{#            <div class="pack-photos">#}
+{#                <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">#}
+{#                    {% for image in mission.missionMedia %}#}
+{#                        <li class="pack-photos-list-item d-inline-flex">#}
+{#                            <img src="/uploads/missions/{{ mission.id }}/{{ image.name }}" alt="{{ mission.title }}">#}
+{#                            <br/>#}
 {#                            <a href="javascript;" data-filename="{{ image.name }}" class="remove-image">X</a>#}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    {% endif %}
+{#                        </li>#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endif %}#}
     {{ form_widget(form.missionMedia) }}
 
 {#    <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.missionMedia.vars.prototype) |e('html_attr')  }}" id="media-block">#}
