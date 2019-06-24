@@ -45,28 +45,7 @@
         <td>{{ mission.userMissionPayment.cmTax }}€</td>
     </tr>
     {% endif %}
-    {% if mission.userMissionPayment.pcsPrice > 0%}
-    <tr>
-        <td>Pix City Services</td>
-        <td></td>
-        <td>{{ mission.userMissionPayment.pcsPrice }}€</td>
-    </tr>
-    {% endif %}
-    {% if mission.userMissionPayment.pcsTax > 0 %}
-    <tr>
-        <td>Pix City Services Tax</td>
-        <td></td>
-        <td>{{mission.userMissionPayment.pcsTax  }}€</td>
-    </tr>
-    {% endif %}
 
-    {% if mission.userMissionPayment.pcsTotal > 0 %}
-        <tr>
-            <td>Pix City Services Total</td>
-            <td></td>
-            <td>{{mission.userMissionPayment.pcsTotal  }}€</td>
-        </tr>
-    {% endif %}
 </table>
 {% if mission.userMissionPayment.cmTax == 0 %}
 Conditions d'escompte Néant / La prestation est réalisée et payée selon les conditions générales d'utilisation du City Maker, ainsi que selon les stipulations pour autrui nées de l'acceptation par les parties des conditions générales Pix.city Services que les parties reconnaissent avoir lues et acceptées et qui sont disponibles à l'adresse [URL]XXXX.
