@@ -11,7 +11,9 @@ use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,9 +34,8 @@ class ClientRegistrationController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
-
             $em = $this->getDoctrine()->getManager();
             $client->setRoles(["ROLE_USER"]);
 
@@ -48,8 +49,10 @@ class ClientRegistrationController extends AbstractController
             $em->persist($client);
             $em->flush();
 
+
             // Move profile photo to the right directory
-            $file = $request->files->get('files');
+            $file = $request->files->get('client')['profilePhoto'];
+
             if(!is_null($file))
             {
                 $fileName = $fileUploader->upload($file, 'clients'.'/'.$client->getId().'/', true);
@@ -76,25 +79,38 @@ class ClientRegistrationController extends AbstractController
                 }
             }
 
-            $mymissions['ongoing'] = $missionRepo->findOngoingMissions($this->getUser(),'client');
-            $mymissions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
-            $mymissions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
 
-            $missions_notification = $missionRepo->findBy(['client' => $this->getUser()]);
 
             return $this->render('b2b/client/index.html.twig',[
                 'notifications' => $notifications,
                 'missions' => $missions,
                 'proposals' => $proposals,
-                'mymissions' => $mymissions,
-                'missions_notification' => $missions_notification,
                 'proposal_unique' => $proposal_unique
             ]);
         }
+
+
         return $this->render('b2b/client_registration/index.html.twig', [
             'controller_name' => 'ClientRegistrationController',
             'form' => $form->createView()
         ]);
+    }
+
+
+    /**
+     * @Route("upload-logo",name="upload_logo")
+     * @Method("POST")
+     */
+    public function uploadLogo(Request $request,FileUploader $fileUploader)
+    {
+        $fileName = null;
+        foreach ($request->files as $uploadedFile) {
+            if($uploadedFile->isValid()) {
+                $fileName = $fileUploader->upload($uploadedFile, '/clients', true);
+            }
+        }
+
+        return new JsonResponse(['file' => $fileName]);
     }
 
     /**

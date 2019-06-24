@@ -103,13 +103,13 @@
                 <div class="user-avatar w-100">
                     <figure class="position-relative m-0 w-100">
                         {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
-                            <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
+                            <img class="img-fluid" src="/uploads/clients/{{ app.user.profilePhoto }}"/>
                         {% else %}
                             <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
                         {% endif %}
 
-                        <figcaption class="position-absolute d-flex align-items-center"><i class="fas fa-user-circle mr-2"></i>
-                            <span><a class="nav-link active" href="/client/profile">Prévisualiser mon profil</a></span></figcaption>
+                        <figcaption class="position-absolute d-flex align-items-center" id="profile-redirect"><i class="fas fa-user-circle mr-2"></i>
+                            <span>Prévisualiser mon profil</span></figcaption>
                     </figure>
 
                 </div>
@@ -272,6 +272,30 @@
             </div>
             <!-- Cancel missions contents ends-->
 
+            <!-- End mission confirmation modal -->
+            <div class="modal fade alert-modal end-mission-confirmation-modal" id="endMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="endMissionConfirmation" aria-hidden="true" style="">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title fz-16">Vous souhaitez terminer la mission ?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>En cliquant sur « terminer la mission », une notification de fin de mission sera envoyée au client.</p>
+                            <p>Dès sa validation, le paiement de votre mission pourra avoir lieu sous 48h.</p>
+                            <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="javascript:;">FAQ</a> ».</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                            <a href="javascript:;" id="mission-terminate" class="btn btn-pink">TERMINER LA MISSION</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End mission confirmation modal ends -->
+
 
         </div>
     </div>
@@ -380,6 +404,11 @@
         /* custom per page scripts */
 
         $(document).ready(function () {
+
+            $("#profile-redirect").on('click',function () {
+                window.location.href = "/client/profile";
+            });
+
             /* Skills Pack Buttons */
             $('a.skills-pack').click(function () {
                 // e.preventDefault();
@@ -711,6 +740,24 @@
             });
             /* Slick slider starts ends */
         });
+
+        $(document).on('click','#terminateMission',function () {
+            $('#mission-terminate').attr('data-id',$(this).attr('data-id'))
+        });
+
+        $(document).on('click','#mission-terminate',function () {
+
+           var id = $(this).attr('data-id');
+
+           $.ajax({
+               url:"{{ path('b2b_mission_status') }}",
+               data: {id: id,status:'terminate'},
+               success:function (data) {
+                window.location.href = "/client/mission/list";
+               }
+           })
+        });
+
     </script>
 
     {% block javascripts %}{% endblock %}
