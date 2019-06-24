@@ -60,7 +60,7 @@
     </style>
     <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
         <div class="container">
-            <a class="navbar-brand" href="javascript:;"><img src="../images/header-logo-main.svg" alt="Pix.City"></a>
+            <a class="navbar-brand" href="javascript:;"><img src="/images/header-logo-main.svg" alt="Pix.City"></a>
             <div class="col-3 ml-auto social-mobile">
                 <div class="row">
                     <div class="col-6 social-mobile-btn">
@@ -122,8 +122,10 @@
                                             <div class="col-md-12 card shadow-sm mb-3 p-3">
                                                 <p class="font-weight-light text-center">Votre entreprise</p>
 
+                                                <input name="file-avatar" id="client-logo" type="file" class="file-input"/>
+                                                <div class="thumb" style="background-image: url('/uploads/users')"></div>
+                                                <div class="field">{{ form_widget(form.profilePhoto) }}</div>
 
-                                                {{ form_widget(form.profilePhoto) }}
                                                 {{ form_widget(form.clientInfo.siret) }}
                                                 {{ form_errors(form.clientInfo.siret) }}
 
@@ -178,7 +180,7 @@
                                 </div>
                             </div>
                             <div class="welcome-log d-none">
-                                <img src="../images/login-welcome-mail.png" width="64" height="70" class="m-auto d-block mb-3">
+                                <img src="/images/login-welcome-mail.png" width="64" height="70" class="m-auto d-block mb-3">
                                 <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.City !</h4>
                                 <p class="text-center">Tout est bon ! Regardez votre boîte mail. </p>
                                 <p class="my-5 text-center">Vous êtes désormais inscrit en tant que Client sur Pix.City Services. Vous allez pouvoir trouver le city-maker qui vous convient ! Bonne navigation ! </p>

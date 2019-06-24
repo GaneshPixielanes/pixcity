@@ -34,8 +34,9 @@ class ClientController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
+
             $entityManager = $this->getDoctrine()->getManager();
 
             $file = $request->files->get('files');

@@ -70,6 +70,20 @@
                                                 <div class="col-md-12 card shadow-sm mb-3 p-3">
                                                     <p class="font-weight-light text-center">Votre entreprise</p>
 
+                                                    <label class="btn custom-input-btn">
+                                                        <input type="file" name="file-avatar" id="client-logo" style="display:none">
+                                                        <i class="fa fa-cloud-upload"></i> Upload Logo
+                                                    </label>
+                                                    <div class="user-avatar w-100">
+                                                        <figure class="position-relative m-0 w-100 mb-2">
+                                                            {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
+                                                                <img class="img-fluid" id="url-change" src="/uploads/clients/{{ app.user.profilePhoto }}"/>
+                                                            {% else %}
+                                                                <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
+                                                            {% endif %}
+
+                                                    </div>
+                                                    <div class="field">{{ form_widget(form.profilePhoto) }}</div>
                                                     {{ form_widget(form.clientInfo.siret) }}
                                                     {{ form_errors(form.clientInfo.siret) }}
 
@@ -153,6 +167,27 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
  <script type="text/javascript" src="{{ asset('build/b2b/js/client_registration.js') }}"></script>
-{{ parent() }}
+
+    <script>
+        $(document).on('change', '#client-logo', function () {
+
+            var image = this.files[0];
+            var formData = new FormData();
+            formData.append("file", image);
+
+
+            $.ajax({
+                url: "/client/upload-logo", type: 'POST', data: formData, cache: false, contentType: false, processData: false
+            }).done(function (attachment) {
+
+                $("#client_profilePhoto").val(attachment.file);
+                $("#url-change").attr("src","/uploads/clients/"+attachment.file);
+            }).fail(function (xhr, status, error) {
+
+            });
+
+        });
+    </script>
 {% endblock %}
