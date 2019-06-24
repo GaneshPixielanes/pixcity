@@ -124,18 +124,17 @@
             <h5 class="text-darkgray mb-0">Photos</h5>
             <div class="pack-photos">
                 <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
-                    {% if pack.userPackMedia | length > 0 %}
-                    {% for image in pack.userPackMedia %}
-                    <li class="pack-photos-list-item d-inline-flex">
-                        <img src="/uploads/pack/{{ pack.id }}/{{ image.name }}" alt="{{ pack.title }}" />
-                    </li>
-                    {% endfor %}
-                    {% endif %}
+{#                    {% if pack.userPackMedia | length > 0 %}#}
+{#                    {% for image in pack.userPackMedia %}#}
+{#                    <li class="pack-photos-list-item d-inline-flex">#}
+{#                        <img src="/uploads/pack/{{ pack.id }}/{{ image.name }}" alt="{{ pack.title }}" />#}
+{#                    </li>#}
+{#                    {% endfor %}#}
+{#                    {% endif %}#}
                 </ul>
             </div>
         </div>
-        <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" id="media-block" data-prototype="{{ form_widget(form.userPackMedia.vars.prototype) |e('html_attr') }}" id="media-block">
-            {{ form_widget(form.userPackMedia) }}
+        <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" id="media-block" data-prototype="{{ form_widget(form.userPackMedia.vars.prototype) |e('html_attr') }}">
             <h5 class="text-darkgray mb-0">Photos</h5>
             <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre bibliothèque ou en
                 téléchargez des nouvelles pour illustrer votre pack.</p>

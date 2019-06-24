@@ -129,6 +129,8 @@
         </div>
         {% endif %}
     </div>
+
+    <div id="api-box" data-margin="{{ tax.value }}"></div>
 {% endblock %}
 
 {% block javascripts %}
@@ -137,6 +139,7 @@
     <script src="{{ asset('/assets/js/pages/main.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/pages/pack.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/mission.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/assets/js/bind.js') }}" type="text/javascript"></script>
     <script>
         $(document).on('keyup','input[name="mission[missionBasePrice]"]', function () {
             $('.user-price').html($(this).val()+'€');

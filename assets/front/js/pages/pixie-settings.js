@@ -263,3 +263,8 @@ jQuery(document).ready(function() {
 
 
 });
+
+$(document).ready(function () {
+    $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
+    $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
+})
