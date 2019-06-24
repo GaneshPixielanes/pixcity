@@ -11,7 +11,7 @@
                     mission</a>
             {% endif %}
         </div>s
-            {% if missions['ongoing'] | length == 0 and missions['drafts'] | length == 0 and missions['cancelled'] and missions['terminated']| length == 0 %}
+            {% if missions['ongoing'] | length == 0 and missions['drafts'] | length == 0 and missions['cancelled'] | length == 0 and missions['terminated']| length == 0 %}
 
                 <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
                     <div
