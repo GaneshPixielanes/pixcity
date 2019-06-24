@@ -5,7 +5,7 @@
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
             <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation</div>
             {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
-                <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill" data-toggle="modal" data-target="#createMissionModal">Créer une nouvelle
+                <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill">Créer une nouvelle
                     mission</a>
             {% endif %}
         </div>
@@ -32,8 +32,23 @@
                 </div>
             </div>
         </div>
+        {% if missions | length == 0 %}
+            <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                    <div class="w-60">
+                        <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-invoice-empty.png') }}" alt="My Facturation">
+                    </div>
+                    <h4 class="mt-4 text-darkblue">Pour facturer, faut bosser !</h4>
+                    <p> Ici vous trouverez le récapitulatif de vos factures. <a href="javascript:;">Consultez la FAQ</a> si vous avez des questions.
+                    </p>
+                    <div class="d-block text-center mt-4">
+                        <a href="javascript:;" class="btn btn-darkblue btn-pill d-none">Créer un pack</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
         <div class="col-md-12 tab-pane-content p-4" data-simplebar="init"><div class="simplebar-wrapper" style="margin: -24px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content" style="padding: 24px; height: 100%; overflow: hidden;">
-                            <table class="table table-sm table-borderless my-billings-list-table">
+            <table class="table table-sm table-borderless my-billings-list-table">
                                 <thead>
                                 <tr class="text-normalgray fz-12">
                                     <th class="font-weight-normal w-5"><span class="sr-only">Mission filetype</span></th>
@@ -66,7 +81,8 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
-                        </div></div></div><div class="simplebar-placeholder" style="width: 1280px; height: 384px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="transform: translate3d(0px, 0px, 0px); visibility: hidden;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="transform: translate3d(0px, 0px, 0px); visibility: hidden;"></div></div></div>
+        </div></div></div><div class="simplebar-placeholder" style="width: 1280px; height: 384px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="transform: translate3d(0px, 0px, 0px); visibility: hidden;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="transform: translate3d(0px, 0px, 0px); visibility: hidden;"></div></div></div>
+        {% endif %}
     </div>
 
 
