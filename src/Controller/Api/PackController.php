@@ -125,6 +125,10 @@ class PackController extends AbstractController
                         $filesystem->copy('uploads/pack/temp/' . $file, 'uploads/pack/' . $pack->getId() . '/' . $file);
 
                     }
+                    else
+                    {
+                        $filesystem->copy('uploads/community_media/' . $user->getId() . '/' . $file, 'uploads/pack/' . $pack->getId() . '/' . $image[4]);
+                    }
 
 
                 }
