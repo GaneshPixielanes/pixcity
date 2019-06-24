@@ -608,6 +608,7 @@
                     } else if ($(this).is('.close-mission-preview')) {
                         $('.mission-preview-container').fadeOut()
                         $('.dash-left, .dash-right').fadeIn()
+                        $("#preview-mission").html('');
                     }
                 });
             $(document).on('input change focus',
@@ -750,12 +751,22 @@
            var id = $(this).attr('data-id');
 
            $.ajax({
-               url:"{{ path('b2b_mission_status') }}",
+               url:"{{ path('api_mission_client_status') }}",
                data: {id: id,status:'terminate'},
                success:function (data) {
                 window.location.href = "/client/mission/list";
                }
            })
+        });
+
+        $(document).on('click','#printInvoice',function () {
+
+            Popup($('.invoice')[0].outerHTML);
+            function Popup(data)
+            {
+                window.print();
+                return true;
+            }
         });
 
     </script>

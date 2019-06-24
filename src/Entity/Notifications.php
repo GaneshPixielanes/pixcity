@@ -104,7 +104,7 @@ class Notifications
         return $this;
     }
 
-    public function getNotifyBy(): ?int
+    public function getNotifyBy()
     {
         return $this->notify_by;
     }

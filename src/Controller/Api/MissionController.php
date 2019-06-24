@@ -75,7 +75,7 @@ class MissionController extends AbstractController
                     {
                         $status = MissionStatus::ONGOING;
                         $mission->setMissionAgreedClient(1);
-                        $notificationsRepository->insert($mission->getUser(),null,'accept_mission','Mission "'.$mission->getTitle().'" has been accepted by '.$mission->getClient());
+                        $notificationsRepository->insert($mission->getUser(),null,'accept_mission','Mission "'.$mission->getTitle().'" has been accepted by '.$mission->getClient(),1);
                     }
                     else
                     {
@@ -87,7 +87,7 @@ class MissionController extends AbstractController
                     {
                         $status = MissionStatus::CLIENT_DECLINED;
                         $mission->setMissionAgreedClient(0);
-                        $notificationsRepository->insert($mission->getUser(),null,'deny_mission','Mission "'.$mission->getTitle().'" has been denied by '.$mission->getClient());
+                        $notificationsRepository->insert($mission->getUser(),null,'deny_mission','Mission "'.$mission->getTitle().'" has been denied by '.$mission->getClient(),1);
                     }
                     else{
                         return new JsonResponse(['success' => false, 'message' => 'Illegal operation']);
@@ -97,13 +97,13 @@ class MissionController extends AbstractController
                     if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
                     {
                         $status = MissionStatus::CANCELLED;
-                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has accepted cancellation request of mission '.$mission->getTitle());
+                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has accepted cancellation request of mission '.$mission->getTitle(),1);
                         break;
                     }
                     elseif ($mission->getStatus() == MissionStatus::CREATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
                         $status = MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT;
-                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle());
+                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle(),1);
                     }
                     else
                     {
@@ -114,14 +114,14 @@ class MissionController extends AbstractController
                     if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
                         $status = MissionStatus::TERMINATED;
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle());
+                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),1);
 
                         break;
                     }
                     elseif ($mission->getStatus() == MissionStatus::CREATED)
                     {
                         $status = MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT;
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle());
+                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),1);
 
                     }
                     else

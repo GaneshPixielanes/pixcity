@@ -33,14 +33,14 @@
                             <td valign="middle" class="text-center">
                                 <i class="far fa-file-alt fz-25"></i>
                             </td>
-                            <td valign="middle">Facture PX-13032109-00752</td>
-                            <td valign="middle">16/03/2019</td>
-                            <td valign="middle">19/03/2019</td>
-                            <td valign="middle">240€</td>
-                            <td valign="middle"><span class="text-inprogress">En cours</span></td>
+                            <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}</td>
+                            <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
+                            <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
+                            <td valign="middle">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</td>
+                            <td valign="middle"><span class="text-inprogress">Completed</span></td>
                             <td valign="middle">
-                                <div class="d-flex align-items-center">
-                                    <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none text-inprogress"><i class="fas fa-eye fz-16"></i></a>
+                                <div class="d-flex align-items-center pay-online">
+                                    <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none preview-my-mission" data-id="{{ mission.id }}"><i class="fas fa-eye fz-16"></i></a>
 {#                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>#}
                                 </div>
                             </td>
