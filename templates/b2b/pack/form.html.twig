@@ -134,8 +134,7 @@
                 </ul>
             </div>
         </div>
-        <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" id="media-block" data-prototype="{{ form_widget(form.userPackMedia.vars.prototype) |e('html_attr') }}">
-
+        <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" id="media-block" data-prototype="{{ form_widget(form.userPackMedia.vars.prototype) |e('html_attr') }}" id="media-block">
             {{ form_widget(form.userPackMedia) }}
             <h5 class="text-darkgray mb-0">Photos</h5>
             <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre bibliothèque ou en
@@ -301,6 +300,10 @@
      data-load-images-route="{{ path('b2b_pack_delete_image') }}"
      data-id="{{ pack.id }}"
      data-delete-route="{{ url('b2b_pack_delete_image') }}"
+     {% if pack.id is not null %}
      data-display-route="/b2b/pack/image-display/{{ pack.id }}"
+     {% else %}
+     data-display-route="/api/pack/images-community-media"
+     {% endif %}
 ></div>
 {{ form_end(form,{render_rest:false}) }}

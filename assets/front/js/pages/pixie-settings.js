@@ -174,29 +174,46 @@ jQuery(document).ready(function() {
     // Limit the number of selected regions
 
     $('[name="user[pixie][regions][]"]').on('change', function (evt) {
-        console.log("changed !", $('[name="user[pixie][regions][]"]:checked').length);
+        console.log('hi');
         if ($('[name="user[pixie][regions][]"]:checked').length > 2) {
             this.checked = false;
-            $(this).parents(".plCheck").removeClass("clicked");
+            // $(this).parents(".plCheck").removeClass("clicked");
         }
 
         $('[name="user[pixie][regions][]"]:checked').each(function () {
-            console.log($(this).val());
+            console.log($(this).text());
+            $('[data-original-title="'+$(this+" option:selected").text()+'"]').addClass('active');
         });
     });
 
-    $('[name="user[userRegion][]"]').on('change', function (evt) {
-        console.log("changed !", $('[name="user[userRegion][]"]:checked').length);
-        if ($('[name="user[userRegion][]"]:checked').length > 2) {
-            this.checked = false;
-            $(this).parents(".plCheck").removeClass("clicked");
-        }
+    $('[name="user[userRegion][0]"]').on('change', function (evt) {
+        console.log($("[name='user[userRegion][0]'] option:selected").text());
+        $('[data-original-title]').removeClass('active');
+        $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
+        // if ($('[name="user[userRegion][]"]:selected').length > 2) {
+        //     this.checked = false;
+        //     evt.preventDefault();
+        // }
 
-        $('[name="user[userRegion][]"]:checked').each(function () {
-            console.log($(this).val());
-        });
+        // $('[name="user[userRegion][]"]:selected').each(function () {
+        //     console.log($(this).text());
+        // });
     });
+    $('[name="user[userRegion][1]"]').on('change', function (evt) {
+        console.log($("[name='user[userRegion][0]'] option:selected").text());
+        $('[data-original-title]').removeClass('active');
+        $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
+        // if ($('[name="user[userRegion][]"]:selected').length > 2) {
+        //     this.checked = false;
+        //     evt.preventDefault();
+        // }
 
+        // $('[name="user[userRegion][]"]:selected').each(function () {
+        //     console.log($(this).text());
+        // });
+    });
     //---------------------------------------------
     // Limit the number of selected categories
 
@@ -238,6 +255,11 @@ jQuery(document).ready(function() {
             $form.submit();
         }
     });
+
+    // $('.region-select').on('select', function () {
+    //     console.log('asasdsad');
+    //     $('[data-original-title="'+$(this+" option:selected").text()+'"]').addClass('active');
+    // });
 
 
 });

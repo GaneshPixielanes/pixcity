@@ -121,6 +121,8 @@
 
         </div>
     </div>
+    <div id="api-box" data-date="{{ "now"|date("d/m/Y") }}" data-margin="{{ tax.value }}"></div>
+
 {% endblock %}
 
 {% block javascripts %}
@@ -128,35 +130,36 @@
     <script src="{{ asset('/assets/js/jquery-validation/dist/jquery.validate.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/pages/main.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/mission.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/assets/js/bind.js') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
 
-            $(document).on('keyup','input[name="mission[missionBasePrice]"]', function () {
-                $('.user-price').html($(this).val()+'€');
+            {#$(document).on('keyup','input[name="mission[missionBasePrice]"]', function () {#}
+            {#    $('.user-price').html($(this).val()+'€');#}
 
-                var price = $('input[name="mission[missionBasePrice]"]').val();
-                if (price == NaN) {
-                    // alert('Price cannot be calculated');
-                } else {
-                    var basePrice = $(this).val();
-                    var clientPrice = (100 * basePrice)/(100 - {{ tax.value }});
-                    $('.mission-price').html(clientPrice.toFixed(2)+"€");
-                    $('.cmPrice').html(clientPrice.toFixed(2)+"€");
-                    $('.client-price').html(clientPrice.toFixed(2)+"€");
-                    // $('.mission-price').html(clientPrice.toFixed(2)+"€");
-                }
-            });
-            $("#pack_userBasePrice").on('change', function () {
+            {#    var price = $('input[name="mission[missionBasePrice]"]').val();#}
+            {#    if (price == NaN) {#}
+            {#        // alert('Price cannot be calculated');#}
+            {#    } else {#}
+            {#        var basePrice = $(this).val();#}
+            {#        var clientPrice = (100 * basePrice)/(100 - {{ tax.value }});#}
+            {#        $('.mission-price').html(clientPrice.toFixed(2)+"€");#}
+            {#        $('.cmPrice').html(clientPrice.toFixed(2)+"€");#}
+            {#        $('.client-price').html(clientPrice.toFixed(2)+"€");#}
+            {#        // $('.mission-price').html(clientPrice.toFixed(2)+"€");#}
+            {#    }#}
+            {#});#}
+            {#$("#pack_userBasePrice").on('change', function () {#}
 
-                var actual_price = $("#pack_userBasePrice").val();
-                var after_price = parseFloat(actual_price) * 20 / 100;
+            {#    var actual_price = $("#pack_userBasePrice").val();#}
+            {#    var after_price = parseFloat(actual_price) * 20 / 100;#}
 
-                var total = parseFloat(actual_price) + parseFloat(after_price);
-                $('.mission-price').text(total + '€');
-                $('.mission-price').text(total + '€');
-                {#$("#actula_value").text('The Value after {{ tax.value }} % added ' + total);#}
+            {#    var total = parseFloat(actual_price) + parseFloat(after_price);#}
+            {#    $('.mission-price').text(total + '€');#}
+            {#    $('.mission-price').text(total + '€');#}
+            {#    #}{#$("#actula_value").text('The Value after {{ tax.value }} % added ' + total);#}
 
-            });
+            {#});#}
 
             $(document).on('click', '.delete-document',function () {
 
