@@ -441,7 +441,7 @@
             </div>
             <div class="mr-4">
                 <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                <p class="mb-0 text-darkgray user-price cm-base-price">{{ mission.userMissionPayment.clientTotal | number_format(2) }}€</p>
+                <p class="mb-0 text-darkgray user-price cm-base-price">{{ mission.userMissionPayment.cmTotal | number_format(2) }}€</p>
             </div>
             {% if mission.status == 'terminated' %}
             <div class="mission-invoice d-flex align-items-center">
