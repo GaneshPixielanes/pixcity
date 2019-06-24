@@ -8,7 +8,9 @@ use App\Entity\UserMission;
 use App\Entity\UserPackMedia;
 use App\Entity\UserPacks;
 use App\Form\B2B\ClientMissionProposalType;
+use App\Form\B2B\CommunityMediaType;
 use App\Form\B2B\PackType;
+use App\Repository\CommunityMediaRepository;
 use App\Repository\OptionRepository;
 use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
@@ -181,5 +183,44 @@ class PackController extends AbstractController
                 'title' => $pack->getTitle(),
                 'description' => $pack->getDescription()]]);
         }
+    }
+
+    /**
+     * @Route("images/{id}",name="images")
+     */
+    public function imagesPack($id, UserPacksRepository $packRepo)
+    {
+        $pack = $packRepo->find($id);
+
+        foreach($pack->getUserPackMedia() as $media)
+        {
+            $obj['name'] = $media->getName();
+            $obj['size'] = '1024';
+            $obj['path'] = '/uploads/pack/'.$pack->getId().'/'.$media->getName();
+            $obj['id'] = $this->getUser()->getId().'/'.$pack->getid();
+            $result[] = $obj;
+        }
+
+        return new JsonResponse($result);
+    }
+
+    /**
+     * @Route("images-community-media",name="images_community_media")
+     */
+    public function imagesCommunityMedia(CommunityMediaRepository $mediaRepository)
+    {
+        $user = $this->getUser();
+        $medias = $mediaRepository->findBy(['user' => $user]);
+
+        foreach($medias as $media)
+        {
+            $obj['name'] = $media->getName();
+            $obj['size'] = '1024';
+            $obj['path'] = '/uploads/community_media/'.$user->getId().'/'.$media->getName();
+            $obj['id'] = $this->getUser()->getId().'/'.$user->getid();
+            $result[] = $obj;
+        }
+
+        return new JsonResponse($result);
     }
 }

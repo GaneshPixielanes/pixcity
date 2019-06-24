@@ -138,7 +138,8 @@
         <div class="d-flex align-items-center">
             <div class="input-group w-10">
                 <input name="{{ form.vars.full_name }}" type="text" class="form-control fz-16 font-weight-bold bg-lightwhite"
-                       placeholder="120" aria-label="Pack price" aria-describedby="pack-price" value="{{ form.vars.value }}">
+                       placeholder="120" aria-label="Pack price" aria-describedby="pack-price" value="{{ form.vars.value }}" data-bind="cm-base-price">
+                <input type="hidden" class="cm-base-price" data-bind="cm-client-price" data-bind-callback="calculateClientPrice" />
                 <div class="input-group-append">
                                                         <span class="input-group-text bg-textgray border-textgray text-white"
                                                               id="pack-price">€</span>
@@ -146,8 +147,7 @@
             </div>
             <p class="mx-3 inline-block mb-0 text-textgray fz-12"> Ce qui sera affiché sur
                 la plateforme
-                <i class="fas fa-arrow-right fz-16 mx-3"></i> <span
-                        class="text-pink fz-16 mission-price">{% if mission.userMissionPayment.clientTotal is defined %}{{ mission.userMissionPayment.clientTotal }}{% endif %}€</span>
+                <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16 cm-client-price ">€</span>
             </p>
         </div>
     </div>
