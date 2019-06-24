@@ -98,6 +98,10 @@ class PackController extends Controller
                 {
                     $filesystem->copy('uploads/pack/temp/'.$media->getName(),'uploads/pack/'.$pack->getId().'/'.$media->getName());
                 }
+                else
+                {
+                    $filesystem->copy('uploads/community_media/' . $user->getId() . '/' . $media->getName(), 'uploads/pack/' . $pack->getId() . '/' . $media->getName());
+                }
             }
 
 
