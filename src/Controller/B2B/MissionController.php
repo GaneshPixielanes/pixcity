@@ -2,6 +2,7 @@
 
 namespace App\Controller\B2B;
 
+use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
 use App\Entity\Option;
@@ -39,7 +40,8 @@ class MissionController extends AbstractController
         $missions['ongoing'] = $userMissionRepo->findOngoingMissions($this->getUser());
         $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()],[],['id' => 'DESC']);
         $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()],[],['id' => 'DESC']);
-        $missions['drafts'] = $userMissionRepo->findBy(['status' => MissionStatus::CREATED, 'user' => $this->getUser()],[],['id' => 'DESC']);
+        $missions['drafts'] = $userMissionRepo->findBy(['status' => 'created', 'user' => $this->getUser()]);
+
         return $this->render('b2b/mission/index.html.twig', [
             'missions' => $missions,
             'tax' => $optionsRepo->findOneBy(['slug' => 'margin'])
@@ -80,48 +82,59 @@ class MissionController extends AbstractController
 
             $margin = $margin->getValue();
             $tax = $tax->getValue();
-            if($cityMakerType == 'company')
+            if($cityMakerType != CompanyStatus::COMPANY)
             {
                 #Calculate client price; cp = (margin * baseprice)/100
-
-
-                /* Get client price details*/
-                $clientPrice = (100 * $price)/(100 - $margin);
-                $clientTax = 0;
-                $clientTotal = $clientPrice;
 
                 /* Get CM price details */
                 $basePrice = $price;
                 $cmTax = 0;
                 $cmTotal = $price;
 
+                /* Get client price details*/
+                $clientPrice = (100 * $price)/(100 - $margin);
+                $clientTax = 0;
+                $clientTotal = $clientPrice;
+
+
+
                 /* Get Pix City Services details */
 
-                $pcsPrice = $clientPrice - $price;
-                $pcsTax = $pcsPrice * ($margin/100);
-                $pcsTotal = $pcsPrice - $pcsTax;
+//                $pcsPrice = $clientPrice - $price;
+//                $pcsTax = $pcsPrice * ($margin/100);
+//                $pcsTotal = $pcsPrice - $pcsTax;
+                $pcsPrice = (($clientPrice - $price)/100)*(100-16.66667);
+                $pcsTax = (($clientPrice - $price)/100)* 16.66667;
+                $pcsTotal = $pcsPrice + $pcsTax;
+
 
             }
             else
             {
-
-                /* Get client price details*/
-                $clientTotal = (100 * $price)/(100 - $margin);
-                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
-                $clientTax = $clientTotal - $clientPrice;
-
                 /* Get CM price details */
-                $cmTotal = $price;
-                $basePrice = $price - ($price * ($tax/100));
+//                $basePrice = $price - ($price * ($tax/100));
+//                $basePrice =  $price/(100 -  $margin) * 100;
+                $basePrice =  $price;
+                $cmTotal = $price + ($basePrice * ($tax/100));
                 $cmTax = $cmTotal - $basePrice;
 
+
+                /* Get client price details*/
+                $clientPrice = $price/(100 - $margin) * 100;
+                $clientTax = $clientPrice * $tax/100;
+                $clientTotal = $clientPrice + $clientTax;
+//                $clientTotal = (100 * $price)/(100 - $margin);
+//                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
+
+//                $clientTax = $clientTotal - $clientPrice;
+
                 /* Get Pix City Services details */
-                $pcsPrice = $clientTotal - ($clientTotal * ((100 - $margin)/100));
+                $pcsPrice = $clientPrice - $price;
                 $pcsTax = $pcsPrice * ($tax/100);
-                $pcsTotal = $pcsPrice - $pcsTax;
+                $pcsTotal = $pcsPrice + $pcsTax;
+
 
             }
-
 //            $transactionFee = 0;
 //            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
@@ -223,45 +236,57 @@ class MissionController extends AbstractController
 
             $margin = $margin->getValue();
             $tax = $tax->getValue();
-            if($cityMakerType == 'company')
+            if($cityMakerType != CompanyStatus::COMPANY)
             {
                 #Calculate client price; cp = (margin * baseprice)/100
-
-
-                /* Get client price details*/
-                $clientPrice = (100 * $price)/(100 - $margin);
-                $clientTax = 0;
-                $clientTotal = $clientPrice;
 
                 /* Get CM price details */
                 $basePrice = $price;
                 $cmTax = 0;
                 $cmTotal = $price;
 
+                /* Get client price details*/
+                $clientPrice = (100 * $price)/(100 - $margin);
+                $clientTax = 0;
+                $clientTotal = $clientPrice;
+
+
+
                 /* Get Pix City Services details */
 
-                $pcsPrice = $clientPrice - $price;
-                $pcsTax = $pcsPrice * ($margin/100);
-                $pcsTotal = $pcsPrice - $pcsTax;
+//                $pcsPrice = $clientPrice - $price;
+//                $pcsTax = $pcsPrice * ($margin/100);
+//                $pcsTotal = $pcsPrice - $pcsTax;
+                $pcsPrice = (($clientPrice - $price)/100)*(100-16.66667);
+                $pcsTax = (($clientPrice - $price)/100)* 16.66667;
+                $pcsTotal = $pcsPrice + $pcsTax;
+
 
             }
             else
             {
-
-                /* Get client price details*/
-                $clientTotal = (100 * $price)/(100 - $margin);
-                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
-                $clientTax = $clientTotal - $clientPrice;
-
                 /* Get CM price details */
-                $cmTotal = $price;
-                $basePrice = $price - ($price * ($tax/100));
+//                $basePrice = $price - ($price * ($tax/100));
+//                $basePrice =  $price/(100 -  $margin) * 100;
+                $basePrice =  $price;
+                $cmTotal = $price + ($basePrice * ($tax/100));
                 $cmTax = $cmTotal - $basePrice;
 
+
+                /* Get client price details*/
+                $clientPrice = $price/(100 - $margin) * 100;
+                $clientTax = $clientPrice * $tax/100;
+                $clientTotal = $clientPrice + $clientTax;
+//                $clientTotal = (100 * $price)/(100 - $margin);
+//                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
+
+//                $clientTax = $clientTotal - $clientPrice;
+
                 /* Get Pix City Services details */
-                $pcsPrice = $clientTotal - ($clientTotal * ((100 - $margin)/100));
+                $pcsPrice = $clientPrice - $price;
                 $pcsTax = $pcsPrice * ($tax/100);
-                $pcsTotal = $pcsPrice - $pcsTax;
+                $pcsTotal = $pcsPrice + $pcsTax;
+
 
             }
 

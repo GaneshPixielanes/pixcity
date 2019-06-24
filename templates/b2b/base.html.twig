@@ -157,36 +157,11 @@
 
             /* pack/mission creation/preview/edit invoke */
             $(document).on('click', '.add-package, .preview-edit-mission, .edit-the-pack', function () {
-                var missionPreview = $(this).is('.preview-edit-mission');
                 if ($(this).is('.add-package, .edit-the-pack')) {
                     $('.dash-right').fadeOut()
                     $('.pack-creation-edition-container').fadeIn()
                 } else if ($(this).is('.preview-edit-mission')) {
-                    $('.dash-right').fadeOut()
-                    $.ajax('/community-manager/mission/edit/'+$(this).attr('data-id'),
-                    {
-                        type: 'GET',
-                        success:function(result)
-                        {
-                            $('#mission-edit-container').html(result);
-                            $('.selectpicker').selectpicker('refresh');
-                            $('.mission-edition-container').fadeIn();
-                            if(missionPreview)
-                            {
-                                $('a[data-original-title="'+$('select[name="mission[region]"] option:selected').text()+'"]').addClass('active');
-                                imageDropzone();
-                                if(validateMissionForm())
-                                {
-                                    $('.save-changes').removeClass('disabled');
-                                }
-
-                            }
-                            else
-                            {
-                                $('a[data-original-title="'+$('.selectpicker option:selected').text()+'"]').addClass('active');
-                            }
-                        }
-                    });
+                    $('.dash-right').fadeOut();
 
 
                 }

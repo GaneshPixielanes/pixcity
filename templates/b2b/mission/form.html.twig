@@ -135,7 +135,7 @@
                         </div>
                         <div class="">
                             <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                            <p class="mb-0 text-darkgray user-price">€</p>
+                            <p class="mb-0 text-darkgray user-price cm-base-price">€</p>
                         </div>
                     </div>
                     <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
@@ -152,7 +152,7 @@
                         </div>
                         <div class="mr-4">
                             <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                            <p class="mb-0 text-darkgray user-price">€</p>
+                            <p class="mb-0 text-darkgray user-price cm-base-price">€</p>
                         </div>
 {#                        <div class="mission-invoice d-flex align-items-center opacity-40">#}
 {#                            <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i>#}
@@ -235,12 +235,16 @@
     <div id="api-box" data-api-route="{{ url('b2b_mission_create') }}"
          data-document-upload="{{ url('b2b_mission__upload') }}"
     data-date="{{ "now" | date('d/m/Y') }}"
-    data-profile-image="{{ app.user.avatar }}" data-first-name="{{ app.user.firstName }}"></div>
+    data-profile-image="{{ app.user.avatar }}" data-first-name="{{ app.user.firstName }}"
+    data-margin="{{ margin }}"></div>
+
+    <div id="dropzone-routes" data-upload-route="{{ url('b2b_mission__upload') }}" data-display-route="/api/pack/images/17"></div>
     {{ form_end(form,{'render_rest':false}) }}
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{ absolute_url('/assets/js/bind.js') }}" type="text/javascript"></script>
+    <script src="{{ absolute_url('/assets/js/dropzone.js') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
             function readURL(input) {
@@ -441,8 +445,8 @@
                 } else {
                     var basePrice = $(this).val();
                     var clientPrice = (100 * basePrice)/(100 - {{ margin }});
-                    $('.mission-price').html(clientPrice.toFixed(2)+"€");
-                    $('.user-price').html(clientPrice.toFixed(2)+"€");
+                    // $('.mission-price').html(clientPrice.toFixed(2)+"€");
+                    // $('.user-price').html(clientPrice.toFixed(2)+"€");
                     // $('.user-price').html('');
                     // $('.mission-price').html(clientPrice.toFixed(2)+"€");
                     <!--    $('.mission-price').html((parseInt($('input[name="mission[missionBasePrice]"]').val()) + (price * ({{ margin }}/100) )));-->
@@ -511,7 +515,7 @@
                     {
                         if(result.success == true)
                         {
-                            $('input[name="mission[missionBasePrice]"').val(result.data.price);
+                            $('input[name="mission[missionBasePrice]"').val(result.data.price).trigger('change');
                             var price = $('input[name="mission[missionBasePrice]"]').val();
                             $('[name="mission[description]"]').text(result.data.description);
                             $('[name="mission[title]"]').val(result.data.title);
@@ -586,35 +590,50 @@
         });
         /* toasts ends */
 
-        $("div.dropzone").dropzone({
-            url: "/community-manager/mission/upload",
-            addRemoveLinks: true,
-            dictDefaultMessage: "Drop files here or<br>click to upload...",
-            // acceptedFiles: $(this).attr('accepted-files'),
-            maxFilesize: 5,
-            success: function (file, response) {
-                var prototype = $('#media-block').attr('data-prototype');
-                var index = $('#media-block').find('input').length;
-
-                prototype = prototype.replace(/__name__/g, index);
-                $('#media-block').append(prototype);
-                $('#media-block')
-                    .find('input:last')
-                    .val(response.fileName).attr('data-filename', file.upload.filename);
-
-                $('.pack-photos-list').html('');
-                $.each($('.dz-image > img'), function(val, element){
-
-                    $('.pack-photos-list').append('<li class="pack-photos-list-item d-inline-flex"><img src="'+$(element).attr('src')+'" /></li>')
-
-                });
-                validateStep2();
-            },
-            removedfile: function (file) {
-                $('input[data-filename="' + file.upload.filename + '"]').remove();
-                file.previewElement.remove();
-                validateStep2();
-            }
+        $('#toStep2').on('click', function () {
+            console.log('activated');
+            imageDropzone();
+            // Dropzone.autoDiscover = false;
+            // $(".dropzone > .dz-default").html('');
+            //
+            // $('.dropzone > .dz-default').html(`<div class="upload-area mb-4 dz-clickable">
+            //                         <div class="area-label text-center p-4">
+            //                         <i class="fas fa-cloud-upload-alt"></i>
+            //                         <p class="mb-0">Déposez vos images ici</p>
+            //                         <a href="javascript:;">Depuis votre navigateur</a>
+            //                         </div>
+            //                     </div>`);
+            //
+            // $("div.dropzone").dropzone({
+            //     url: "/community-manager/mission/upload",
+            //     addRemoveLinks: true,
+            //     dictDefaultMessage: "Drop files here or<br>click to upload...",
+            //     // acceptedFiles: $(this).attr('accepted-files'),
+            //     maxFilesize: 5,
+            //     success: function (file, response) {
+            //         var prototype = $('#media-block').attr('data-prototype');
+            //         var index = $('#media-block').find('input').length;
+            //
+            //         prototype = prototype.replace(/__name__/g, index);
+            //         $('#media-block').append(prototype);
+            //         $('#media-block')
+            //             .find('input:last')
+            //             .val(response.fileName).attr('data-filename', file.upload.filename);
+            //
+            //         $('.pack-photos-list').html('');
+            //         $.each($('.dz-image > img'), function(val, element){
+            //
+            //             $('.pack-photos-list').append('<li class="pack-photos-list-item d-inline-flex"><img src="'+$(element).attr('src')+'" /></li>')
+            //
+            //         });
+            //         validateStep2();
+            //     },
+            //     removedfile: function (file) {
+            //         $('input[data-filename="' + file.upload.filename + '"]').remove();
+            //         file.previewElement.remove();
+            //         validateStep2();
+            //     }
+            // });
         });
 
 
