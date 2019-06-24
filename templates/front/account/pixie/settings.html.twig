@@ -629,6 +629,10 @@
 
                             <div class="container">
                                 <div class="row">
+                                    <div class="alert alert-info alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4>Comment renseigner mes compétences ?</h4>Chaque city-maker a ses propres compétences : Influenceur local (réalisation de posts sponsorisés au nom du client sur vos réseaux sociaux), Community Manager (gestion des réseaux sociaux pour le compte d’établissements près de chez vous), Photographe (shooting photo pour le compte de clients sur tout support) ou « Autre » (mise en valeur d’autres compétences : rédaction de contenus, traduction, vidéos 3D, drônes….).
+                                    </div>
                                     <div class="col-md-12 skills-pack-container mb-4">
                                         <div class="row">
                                             <div class="col-md-12 maj">Skills</div>
@@ -803,7 +807,7 @@
                 autoProcessQueue:false,
                 parallelUploads: 100,
 
-                dictRemoveFileConfirmation:'Are you sure you want to save this image?',
+                dictRemoveFileConfirmation:'Are you sure you want to remove this image?',
                 removedfile: function(file) {
                     var name = file.name;
 
@@ -812,7 +816,7 @@
                         url: '{{ path('front_pixie_account_delete_image') }}',
                         data: {name: name,request: 2},
                         sucess: function(data){
-                            console.log('success: ' + data);
+                            // console.log('success: ' + data);
                         }
                     });
 
