@@ -63,6 +63,10 @@ jQuery(document).ready(function() {
         });
     }
 
+    $(document).on('click', '.pack-save-changes',function () {
+        saveForm($(this));
+    });
+
 });
 
 var $form = $("form[name='pack']");
@@ -77,3 +81,4 @@ try {
 }catch (e) {
     //DO NOTHING
 }
+
