@@ -408,7 +408,7 @@ class MissionController extends AbstractController
                     $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has requested for termination of mission '.$mission->getTitle(),$mission->getId());
                     break;
                 }
-                elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT || $mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED)
+                elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT)
                 {
                     $mission->setStatus(MissionStatus::TERMINATED);
                     $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),$mission->getId());

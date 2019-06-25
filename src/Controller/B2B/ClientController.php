@@ -34,9 +34,8 @@ class ClientController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted())
+        if($form->isSubmitted() && $form->isValid())
         {
-
             $entityManager = $this->getDoctrine()->getManager();
 
             $file = $request->files->get('files');
@@ -105,9 +104,10 @@ class ClientController extends Controller
 
 
         $mission = $missionRepository->find($request->get('id'));
-
+        $route = $request->get('route');
         return $this->render('b2b/client/mission/load-mission-preview.html.twig',[
-            'mission' => $mission
+            'mission' => $mission,
+            'route' => $route,
         ]);
 
     }

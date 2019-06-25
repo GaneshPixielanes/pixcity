@@ -186,6 +186,7 @@ class PixieAccountController extends Controller
                         )
                     ;
 
+
                     $mailer->send($message);
 
                     return $this->redirectToRoute('front_pixie_account_manager_thank_you');
@@ -203,6 +204,8 @@ class PixieAccountController extends Controller
 
 
 
+            $entityManager->persist($user);
+            $entityManager->flush();
             // Add the flash message
             $this->addFlash('account_saved_settings', '');
 
