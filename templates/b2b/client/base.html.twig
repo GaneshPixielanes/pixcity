@@ -765,7 +765,7 @@
 
            $.ajax({
                url:"{{ path('api_mission_client_status') }}",
-               data: {id: id,status:'terminate'},
+               data: {id: id,status:'cancel'},
                success:function (data) {
                 window.location.href = "/client/mission/list";
                }
