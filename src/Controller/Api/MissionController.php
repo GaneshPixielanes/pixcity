@@ -173,8 +173,8 @@ class MissionController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $mission->setStatus($status);
 
-//        $entityManager->persist($mission);
-//        $entityManager->flush();
+        $entityManager->persist($mission);
+        $entityManager->flush();
 
         return new JsonResponse(['success' => true, 'message' => 'Status has been updated']);
 
