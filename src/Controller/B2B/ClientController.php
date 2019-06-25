@@ -12,6 +12,7 @@ use App\Repository\UserMissionRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -26,7 +27,7 @@ class ClientController extends Controller
     /**
      * @Route("profile",name="profile")
      */
-    public function profile(Request $request, FileUploader $fileUploader, UserPasswordEncoderInterface $passwordEncoder)
+    public function profile(Request $request, FileUploader $fileUploader, UserPasswordEncoderInterface $passwordEncoder,Filesystem $filesystem)
     {
         $user = $this->getUser();
 
@@ -42,9 +43,9 @@ class ClientController extends Controller
 
             if(!is_null($file))
             {
-                $fileName = $fileUploader->upload($file, 'clients'.'/'.$user->getId().'/', true);
-                $user->setProfilePhoto($fileName);
+                $user->setProfilePhoto($file);
             }
+
             if(trim($user->getPlainPassword()) != '')
             {
                 $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
@@ -54,6 +55,12 @@ class ClientController extends Controller
 
             $entityManager->persist($user);
             $entityManager->flush();
+
+            // Move profile photo to the right directory
+            if($filesystem->exists('uploads/clients/'.$user->getProfilePhoto()) && $user->getProfilePhoto() != ''){
+                $filesystem->copy('uploads/clients/'.$user->getProfilePhoto(),'uploads/clients/'.$user->getId().'/'.$user->getProfilePhoto());
+            }
+
 
             return $this->redirect('/client/profile');
         }

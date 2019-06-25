@@ -103,7 +103,7 @@
                 <div class="user-avatar w-100">
                     <figure class="position-relative m-0 w-100">
                         {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
-                            <img class="img-fluid" src="/uploads/clients/{{ app.user.profilePhoto }}"/>
+                            <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
                         {% else %}
                             <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
                         {% endif %}
@@ -747,6 +747,19 @@
         });
 
         $(document).on('click','#mission-terminate',function () {
+
+           var id = $(this).attr('data-id');
+
+           $.ajax({
+               url:"{{ path('api_mission_client_status') }}",
+               data: {id: id,status:'terminate'},
+               success:function (data) {
+                window.location.href = "/client/mission/list";
+               }
+           })
+        });
+
+        $(document).on('click','#mission-cancel',function () {
 
            var id = $(this).attr('data-id');
 

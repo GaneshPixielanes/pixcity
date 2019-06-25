@@ -4,6 +4,7 @@ namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
 use App\Entity\Client;
+use App\Entity\UserMission;
 use App\Form\B2B\ClientType;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\ClientRepository;
@@ -27,7 +28,7 @@ class ClientRegistrationController extends AbstractController
     /**
      * @Route("register", name="register")
      */
-    public function index(Request $request,ClientMissionProposalRepository $proposalRepo,UserMissionRepository $missionRepo,NotificationsRepository $notificationRepo,UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader)
+    public function index(Request $request,ClientMissionProposalRepository $proposalRepo,UserMissionRepository $missionRepo,NotificationsRepository $notificationRepo,UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader,Filesystem $filesystem)
     {
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
@@ -46,21 +47,21 @@ class ClientRegistrationController extends AbstractController
                 $client->setPassword($password);
             }
 
-            $em->persist($client);
-            $em->flush();
-
-
-            // Move profile photo to the right directory
             $file = $request->files->get('client')['profilePhoto'];
 
             if(!is_null($file))
             {
-                $fileName = $fileUploader->upload($file, 'clients'.'/'.$client->getId().'/', true);
                 // Update client with the name of the profile pic
-                $client->setProfilePhoto($fileName);
+                $client->setProfilePhoto($file);
             }
+
             $em->persist($client);
             $em->flush();
+
+            // Move profile photo to the right directory
+            if($filesystem->exists('uploads/clients/'.$client->getProfilePhoto()) && $client->getProfilePhoto() != ''){
+                $filesystem->copy('uploads/clients/'.$client->getProfilePhoto(),'uploads/clients/'.$client->getId().'/'.$client->getProfilePhoto());
+            }
 
             // Get client notifications
             $notifications = $notificationRepo->findBy(['client'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);

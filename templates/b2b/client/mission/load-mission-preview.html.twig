@@ -166,95 +166,95 @@
     }
 </style>
 
-{% if route == 'b2b_client_mission_list' %}
-<div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
-    <img src="{{ mission.getBannerUrl() }}" class="cover-image w-100 h-100" alt="Mission Cover Image">
-</div>
+ {% if route == 'b2b_client_mission_list'  or route == 'b2b_client_main_index' %}
 
-<div class="pack-details p-3">
-    <div class="pack-overview-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
-        <p class="text-textgray fz-12 mb-0">{{ mission.referencePack.packskill.name }}</p>
-        <h5 class="text-darkgray mb-3">{{ mission.title }} </h5>
-        {{ mission.description }}
+     <div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
+        <img src="{{ mission.getBannerUrl() }}" class="cover-image w-100 h-100" alt="Mission Cover Image">
     </div>
-    {% if mission.missionMedia | length > 0 %}
-    <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Photos</h5>
-        <div class="pack-photos">
-            <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
-                {% for media in mission.missionMedia %}
-                    <li class="pack-photos-list-item d-inline-flex">
-                        <img src="{{ media.url }}" alt="Pack photo 1">
-                    </li>
-                {% endfor %}
 
-            </ul>
+    <div class="pack-details p-3">
+        <div class="pack-overview-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
+            <p class="text-textgray fz-12 mb-0">{{ mission.referencePack.packskill.name }}</p>
+            <h5 class="text-darkgray mb-3">{{ mission.title }} </h5>
+            {{ mission.description }}
         </div>
-    </div>
-    {% endif %}
-</div>
+        {% if mission.missionMedia | length > 0 %}
+        <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
+            <h5 class="text-darkgray mb-0">Photos</h5>
+            <div class="pack-photos">
+                <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
+                    {% for media in mission.missionMedia %}
+                        <li class="pack-photos-list-item d-inline-flex">
+                            <img src="{{ media.url }}" alt="Pack photo 1">
+                        </li>
+                    {% endfor %}
 
-<nav class="col-sm-12 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
-    <div class="container-fluid align-items-center justify-content-end">
-        <div class="d-flex user-infos flex-grow-1 justify-content-start align-items-center">
-            <div class="user-image btn-circle-64 badge badge--bottom badge--right p-0 mr-4">
-                <img src="{{ mission.user.getAvatar() }}" class="img-fluid rounded-circle" alt="User-Avatar">
-                <img src="/images/icons/cm-level-badge-01.svg" class="badge-icon" alt="User-Badge">
+                </ul>
             </div>
-            <div class="user-name-level mr-4">
-                <p class="mb-0 fz-12 text-inprogress experte-level">Experte Pix.City</p>
-                <p class="mb-0 text-darkgray user-name">@{{ mission.user.firstname }}</p>
-            </div>
-            {% if mission.region | length > 0 %}
-            <div class="mr-4">
-                <p class="mb-0 fz-12 text-normalgray">Région</p>
-                <p class="mb-0 text-darkgray user-region">{{ mission.region.name }}</p>
-            </div>
-            {% endif %}
-            <div class="mr-4">
-                <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                <p class="mb-0 text-darkgray user-price">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</p>
-            </div>
-            {% if mission.status == 'terminated' %}
-                <div class="mission-invoice d-flex align-items-center">
-                    <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i></p>
-                    <p class="mb-0 text-darkgray">
-                        {{ mission.briefFiles }}
-                        <a href="{{ path('b2b_mission_download',{'id':mission.id}) }}" class="d-block fz-12 text-inprogress">Voir le devis</a>
-                    </p>
+        </div>
+        {% endif %}
+    </div>
+
+    <nav class="col-sm-12 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
+        <div class="container-fluid align-items-center justify-content-end">
+            <div class="d-flex user-infos flex-grow-1 justify-content-start align-items-center">
+                <div class="user-image btn-circle-64 badge badge--bottom badge--right p-0 mr-4">
+                    <img src="{{ mission.user.getAvatar() }}" class="img-fluid rounded-circle" alt="User-Avatar">
+                    <img src="/images/icons/cm-level-badge-01.svg" class="badge-icon" alt="User-Badge">
                 </div>
-            {% endif %}
-        </div>
-        <div class="preview-cta d-flex align-items-center">
-            {% if mission.status == 'terminate_request_cm' %}
-            <div class="dropdown dropup mt-3 mr-2">
-                <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="userActions"></i>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userActions">
-
-                    <a class="dropdown-item text-darkgray fz-12" href="javascript:;" id="terminateMission" data-id="{{ mission.id }}" data-toggle="modal" data-target="#endMissionConfirmation"><i class="far fa-check-circle mr-2"></i>Accept Terminer</a>
-
-
-{#                    <a class="dropdown-item text-pink fz-12" href="javascript:;" data-toggle="modal"#}
-{#                        data-target="#removePackConfirmation"><i class="far fa-times-circle mr-2"></i>Annuler#}
-{#                        mission</a>#}
+                <div class="user-name-level mr-4">
+                    <p class="mb-0 fz-12 text-inprogress experte-level">Experte Pix.City</p>
+                    <p class="mb-0 text-darkgray user-name">@{{ mission.user.firstname }}</p>
                 </div>
+                {% if mission.region | length > 0 %}
+                <div class="mr-4">
+                    <p class="mb-0 fz-12 text-normalgray">Région</p>
+                    <p class="mb-0 text-darkgray user-region">{{ mission.region.name }}</p>
+                </div>
+                {% endif %}
+                <div class="mr-4">
+                    <p class="mb-0 fz-12 text-normalgray">Prix</p>
+                    <p class="mb-0 text-darkgray user-price">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</p>
+                </div>
+                {% if mission.status == 'terminated' %}
+                    <div class="mission-invoice d-flex align-items-center">
+                        <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i></p>
+                        <p class="mb-0 text-darkgray">
+                            {{ mission.briefFiles }}
+                            <a href="{{ path('b2b_mission_download',{'id':mission.id}) }}" class="d-block fz-12 text-inprogress">Voir le devis</a>
+                        </p>
+                    </div>
+                {% endif %}
             </div>
-            {% endif %}
-            <a class="close-mission-preview text-darkgray d-flex flex-column align-items-center fz-12 text-decoration-none"
-               href="javascript:;">
-                <img src="/images/icons/preview-off-icon.svg" alt="Preview off">Retourner aux missions
-            </a>
+            <div class="preview-cta d-flex align-items-center">
+                {% if mission.status == 'terminate_request_cm' or mission.status == 'cancel_request_cm'  %}
+                <div class="dropdown dropup mt-3 mr-2">
+                    <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="userActions"></i>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userActions">
+                        {% if mission.status == 'terminate_request_cm' %}
+                            <a class="dropdown-item text-darkgray fz-12" href="javascript:;" id="terminateMission" data-id="{{ mission.id }}" data-toggle="modal" data-target="#endMissionConfirmation"><i class="far fa-check-circle mr-2"></i>Accept Terminer</a>
+                        {% endif %}
+                        {% if mission.status == 'cancel_request_cm' %}
+                            <a class="dropdown-item text-pink fz-12" href="javascript:;" id="mission-cancel" data-id="{{ mission.id }}"><i class="far fa-times-circle mr-2"></i>Accept Annuler</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                <a class="close-mission-preview text-darkgray d-flex flex-column align-items-center fz-12 text-decoration-none"
+                   href="javascript:;">
+                    <img src="/images/icons/preview-off-icon.svg" alt="Preview off">Retourner aux missions
+                </a>
 
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 {% else %}
 
 
-    <!------ Include the above in your HEAD tag ---------->
+    <!------ Invoice preview ---------->
 
-    <!--Author      : @arboshiki-->
+
     <div id="invoice">
 
         <div class="toolbar hidden-print">
