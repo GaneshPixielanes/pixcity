@@ -538,7 +538,7 @@
                         $.ajax({
                             url:"{{ path('b2b_client_main_preview_mission') }}",
                             type:'GET',
-                            data: {id: id},
+                            data: {id: id,route: "{{ route }}"},
                             dataType:'html',
                             success: function(data){
                                 $("#preview-mission").html(data);

@@ -165,7 +165,8 @@
         }
     }
 </style>
-{% if mission.status != 'terminated' %}
+
+{% if route == 'b2b_client_mission_list' %}
 <div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
     <img src="{{ mission.getBannerUrl() }}" class="cover-image w-100 h-100" alt="Mission Cover Image">
 </div>
