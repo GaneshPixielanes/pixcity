@@ -77,7 +77,7 @@
                                                     <div class="user-avatar w-100">
                                                         <figure class="position-relative m-0 w-100 mb-2">
                                                             {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
-                                                                <img class="img-fluid" id="url-change" src="/uploads/clients/{{ app.user.profilePhoto }}"/>
+                                                                <img class="img-fluid" id="url-change" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
                                                             {% else %}
                                                                 <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
                                                             {% endif %}
