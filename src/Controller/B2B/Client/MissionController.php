@@ -115,7 +115,13 @@ class MissionController extends AbstractController
     {
         $transaction = new ClientTransaction();
         $mission = $missionRepo->find($id);
-        $amount = $mission->getUserMissionPayment()->getClientTotal();
+
+        if($mission->getUserMissionPayment()->getAdjustment() == null){
+            $amount = $mission->getUserMissionPayment()->getClientTotal();
+        }else{
+            $amount = $mission->getUserMissionPayment()->getAdjustment();
+        }
+
         // Create a mango pay user
         $mangoUser = new UserNatural();
 
@@ -187,6 +193,12 @@ class MissionController extends AbstractController
                     $em->flush();
                 }
 
+            }
+
+            if($mission_id->getUserMissionPayment()->getAdjustment() != null){
+                $mission_id->setStatus(MissionStatus::TERMINATED);
+                $em->persist($mission_id);
+                $em->flush();
             }
 
             return $this->render('b2b/client/transaction/success.html.twig');
