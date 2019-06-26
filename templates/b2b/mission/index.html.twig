@@ -10,8 +10,8 @@
                    onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle
                     mission</a>
             {% endif %}
-        </div>s
-            {% if missions['ongoing'] | length == 0 and missions['drafts'] | length == 0 and missions['cancelled'] and missions['terminated']| length == 0 %}
+        </div>
+            {% if missions['ongoing'] | length == 0 and missions['drafts'] | length == 0 and missions['cancelled'] | length == 0 and missions['terminated']| length == 0 %}
 
                 <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
                     <div
@@ -25,8 +25,6 @@
                             Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
                             une bonne négociation !
                         </p>
-                        <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
-                                lien).</a> </p>
                     </div>
                 </div>
             {% else %}
@@ -78,7 +76,7 @@
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-inprogress">En cours</p>
-                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.cmTotal | number_format(2) }}€</p>
+                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.userBasePrice | number_format(2) }}€</p>
                                         <i class="fas fa-eye preview-edit-mission" data-id="{{ mission.id }}"></i>
                                     </li>
                                 {% endfor %}

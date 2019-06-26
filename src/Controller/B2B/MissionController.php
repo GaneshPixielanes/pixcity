@@ -12,6 +12,7 @@ use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\MissionDocumentRepository;
 use App\Repository\MissionMediaRepository;
+use App\Repository\MissionPaymentRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\PackRepository;
@@ -82,59 +83,7 @@ class MissionController extends AbstractController
 
             $margin = $margin->getValue();
             $tax = $tax->getValue();
-            if($cityMakerType != CompanyStatus::COMPANY)
-            {
-                #Calculate client price; cp = (margin * baseprice)/100
 
-                /* Get CM price details */
-                $basePrice = $price;
-                $cmTax = 0;
-                $cmTotal = $price;
-
-                /* Get client price details*/
-                $clientPrice = (100 * $price)/(100 - $margin);
-                $clientTax = 0;
-                $clientTotal = $clientPrice;
-
-
-
-                /* Get Pix City Services details */
-
-//                $pcsPrice = $clientPrice - $price;
-//                $pcsTax = $pcsPrice * ($margin/100);
-//                $pcsTotal = $pcsPrice - $pcsTax;
-                $pcsPrice = (($clientPrice - $price)/100)*(100-16.66667);
-                $pcsTax = (($clientPrice - $price)/100)* 16.66667;
-                $pcsTotal = $pcsPrice + $pcsTax;
-
-
-            }
-            else
-            {
-                /* Get CM price details */
-//                $basePrice = $price - ($price * ($tax/100));
-//                $basePrice =  $price/(100 -  $margin) * 100;
-                $basePrice =  $price;
-                $cmTotal = $price + ($basePrice * ($tax/100));
-                $cmTax = $cmTotal - $basePrice;
-
-
-                /* Get client price details*/
-                $clientPrice = $price/(100 - $margin) * 100;
-                $clientTax = $clientPrice * $tax/100;
-                $clientTotal = $clientPrice + $clientTax;
-//                $clientTotal = (100 * $price)/(100 - $margin);
-//                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
-
-//                $clientTax = $clientTotal - $clientPrice;
-
-                /* Get Pix City Services details */
-                $pcsPrice = $clientPrice - $price;
-                $pcsTax = $pcsPrice * ($tax/100);
-                $pcsTotal = $pcsPrice + $pcsTax;
-
-
-            }
 //            $transactionFee = 0;
 //            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
@@ -202,21 +151,24 @@ class MissionController extends AbstractController
     /**
      * @Route("edit/{id}",name="edit")
      */
-    public function edit($id, Request $request,UserMissionRepository $userMissionRepo, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo)
+    public function edit($id, Request $request,
+                         UserMissionRepository $userMissionRepo,
+                         Filesystem $filesystem,
+                         ClientMissionProposalRepository $clientMissionProposalRepo,
+                         MissionPaymentRepository $missionPaymentRepo
+                        )
     {
-        $mission = $userMissionRepo->findBy([
+        $mission = $userMissionRepo->findOneBy([
             'id' => $id,
             'user' => $this->getUser()
         ]);
 
-        if(empty($mission))
+        $oldBasePrice = $mission->getMissionBasePrice();
+        if(is_null($mission))
         {
             return $this->redirect('/community-manager/mission/list');
         }
-        else
-        {
-            $mission = $mission[0];
-        }
+
         $options = $this->getDoctrine()->getRepository(Option::class);
         $tax = $options->findOneBy(['slug' => 'tax']);
         $margin = $options->findOneBy(['slug' => 'margin']);
@@ -225,85 +177,22 @@ class MissionController extends AbstractController
             'user' => $this->getUser(),
             'proposals' => $clientMissionProposalRepo->findBy(['user' => $this->getUser()])
         ]);
-
         $form->handleRequest($request);
         if($form->isSubmitted())
         {
-            $em = $this->getDoctrine()->getManager();
-
             $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
             $price = $mission->getMissionBasePrice();
 
             $margin = $margin->getValue();
             $tax = $tax->getValue();
-            if($cityMakerType != CompanyStatus::COMPANY)
-            {
-                #Calculate client price; cp = (margin * baseprice)/100
 
-                /* Get CM price details */
-                $basePrice = $price;
-                $cmTax = 0;
-                $cmTotal = $price;
+            $result = $missionPaymentRepo->getPrices($price, $margin, $tax, $cityMakerType);
 
-                /* Get client price details*/
-                $clientPrice = (100 * $price)/(100 - $margin);
-                $clientTax = 0;
-                $clientTotal = $clientPrice;
+            $em = $this->getDoctrine()->getManager();
 
-
-
-                /* Get Pix City Services details */
-
-//                $pcsPrice = $clientPrice - $price;
-//                $pcsTax = $pcsPrice * ($margin/100);
-//                $pcsTotal = $pcsPrice - $pcsTax;
-                $pcsPrice = (($clientPrice - $price)/100)*(100-16.66667);
-                $pcsTax = (($clientPrice - $price)/100)* 16.66667;
-                $pcsTotal = $pcsPrice + $pcsTax;
-
-
-            }
-            else
-            {
-                /* Get CM price details */
-//                $basePrice = $price - ($price * ($tax/100));
-//                $basePrice =  $price/(100 -  $margin) * 100;
-                $basePrice =  $price;
-                $cmTotal = $price + ($basePrice * ($tax/100));
-                $cmTax = $cmTotal - $basePrice;
-
-
-                /* Get client price details*/
-                $clientPrice = $price/(100 - $margin) * 100;
-                $clientTax = $clientPrice * $tax/100;
-                $clientTotal = $clientPrice + $clientTax;
-//                $clientTotal = (100 * $price)/(100 - $margin);
-//                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
-
-//                $clientTax = $clientTotal - $clientPrice;
-
-                /* Get Pix City Services details */
-                $pcsPrice = $clientPrice - $price;
-                $pcsTax = $pcsPrice * ($tax/100);
-                $pcsTotal = $pcsPrice + $pcsTax;
-
-
-            }
-
-            $mission->setUser($this->getUser());
-            $mission->setReferencePack($mission->getReferencePack());
-
-            $mission->getUserMissionPayment()->setClientPrice($clientPrice); // Client's price
-            $mission->getUserMissionPayment()->setClientTax($clientTax);
-            $mission->getUserMissionPayment()->setClientTotal($clientTotal);
-
-            $mission->getUserMissionPayment()->setUserBasePrice($basePrice); // Base price
-            $mission->getUserMissionPayment()->setCmTax($cmTax);
-            $mission->getUserMissionPayment()->setCmTotal($cmTotal);
-
-            $mission->getUserMissionPayment()->setPcsPrice($pcsPrice); //PCS price
-            $mission->getUserMissionPayment()->setPcsTax($pcsTax);
-            $mission->getUserMissionPayment()->setPcsTotal($pcsTotal);
+            $mission->getMissionAgreedClient(0);
+            $mission->getUserMissionPayment()->setUserBasePrice($oldBasePrice);
+            $mission->getUserMissionPayment()->setAdjustment($result['client_total'] - $missionOld->getUserMissionPayment()->getClientTotal());
 
             $em->persist($mission);
             $em->flush();

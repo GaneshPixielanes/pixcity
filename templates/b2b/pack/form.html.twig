@@ -1,6 +1,7 @@
 {{ form_start(form,{'attr':{'id' : 'pack-form'}}) }}
 
 {{ form_row(form._token) }}
+
 <div class="col-sm-10 offset-sm-2 pack-creation-content bg-white p-0" data-simplebar>
     <div
             class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
@@ -14,7 +15,7 @@
             {{ form_row(form.bannerImage) }}
             <a href="javascript:;" class="btn btn-lightgray btn-pill">Modifier</a>
         </div>
-        <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-preview-edit"><i
+        <a href="javascript:;" class="d-none btn btn-circle-40 btn-black opacity-50 btn-no-hover close-preview-edit"><i
                     class="fal fa-times fz-20"></i></a>
     </div>
 
@@ -70,12 +71,11 @@
                 votre prestation !
                 Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez pas à lire
                 notre <a href="javascript:;">FAQ</a></p>
-            {{ form_widget(form.description) }}
-            <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength packDescriptionLength">{{ pack.description | length }}</span>/<span
-                        class="input-maxlength">1200</span></p>
             <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder=""
                       name="" id="" cols="30"
-                      rows="10" readonly>Bonjour,
+                      rows="10" name="{{ form.description.vars.full_name }}" data-bind="pack-description-preview">
+                {% if form.description.vars.data == '' %}
+                Bonjour,
 
                                                 Ce tarif inclut :
                                                 - Un shooting photo de 2 heures dans votre établissement (en journée) en haute résolution
@@ -84,7 +84,13 @@
                                                 - La livraison d’une quarantaine de photos sous 48h après le shooting
                                                 - Je me déplace dans tout Paris
 
-                                                Pour respecter ce tarif les équipes, plats (..) devront être mis en place à mon arrivé. </textarea>
+                                                Pour respecter ce tarif les équipes, plats (..) devront être mis en place à mon arrivé.
+            {% else %}
+
+                {{ form.description.vars.data }}
+
+            {% endif %}
+            </textarea>
             <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">256</span>/<span
                         class="input-maxlength">1200</span></p>
         </div>
@@ -174,11 +180,7 @@
 {#        </div>#}
         <div class="pack-region-container edit col-sm-12 mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Zone géographique</h5>
-            <p class="text-textgray">Choisissez la région ou vous pourrez intervenir pour réaliser ce
-                pack. Cliquez sur une région pour la sélectionner.
-                les régions affichées ci-dessous sont celles indiquées dans l'espace profil. Pour les
-                modifier, vous devez retourner
-                dans votre compte city-maker Services</p>
+            <p class="text-textgray">Choisissez la région où vous souhaitez intervenir pour réaliser le pack décrit ci-dessus.Les régions affichées sont par défaut celles que vous préalablement renseignées dans votre profil city-maker. N’oubliez pas que vous devez vous trouver à moins d’1h du lieu d’intervention du pack (environ !). Pour dé-sélectionner une région, cliquez simplement dessus.</p>
 
             <div class="row">
                 <div class="col-md-6 choose-regions-container">

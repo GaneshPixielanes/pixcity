@@ -20,7 +20,7 @@
                         <ul class="d-flex w-100">
                             {% set data = form.vars.data %}
                             {% for client in form.vars.choices %}
-                                <li class="col-md-4 mb-4 client-info" data-id="{{ client.data.id }}" data-name="{{ client.data.company }}" data-image="{% if client.data.profilePhoto is null or client.data.profilePhoto == '' %}http://placehold.it/280x170.jpeg{% else %}/uploads/client/{{ client.data.id }}/{{ client.data.profilePhoto }}{% endif %}">
+                                <li class="col-md-4 mb-4 client-info" data-id="{{ client.data.id }}" data-name="{{ client.data.company }}" data-image="{% if client.data.profilePhoto is null or client.data.profilePhoto == '' %}http://placehold.it/280x170.jpeg{% else %}/uploads/clients/{{ client.id }}/{{ client.data.profilePhoto }}{% endif %}">
                                     <a href="javascript:;" class="card p-3">
                                         {% if data.id is defined and data.id == client.data.id %}
                                         <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ client.data.id }}" checked>
@@ -59,7 +59,7 @@
                         <ul class="d-flex w-100">
                             {% set data = form.vars.data %}
                             {% for choice in form.vars.choices %}
-                            <li class="col-md-4 mb-4 pack-info" data-id="{{ choice.data.id }}" data-price="{{ choice.data.totalPrice }}">
+                            <li class="col-md-4 mb-4 pack-info" data-id="{{ choice.data.id }}" data-price="{{ choice.data.totalPrice }}" data-banner-image="{{ choice.data.bannerImage }}" data-banner-image-url="/uploads/pack/banner/{{ choice.data.bannerImage }}">
                                 <a href="javascript:;" class="card">
                                     {% if data.id is defined and choice.data.id == data.id %}
                                     <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ choice.data.id }}" checked>
@@ -105,8 +105,8 @@
             instantanément
             votre prestation</p>
         <input class="form-control bg-lightwhite pack-title" maxlength="64" type="text"
-               placeholder="Je m’occupe de vos réseaux sociaux " name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
-        <p class="mb-0 fz-12 text-textgray mt-2" data-bind="mission-title"><span class="inputlength">0</span>/<span
+               placeholder="Je m’occupe de vos réseaux sociaux " name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" data-bind="pcs-mission-name"/>
+        <p class="mb-0 fz-12 text-textgray mt-2" data-bind="mission-title"><span class="inputlength">{{ form.vars.value | length }}</span>/<span
                     class="input-maxlength">64</span></p>
     </div>
 {% endblock %}
@@ -122,7 +122,7 @@
             notre <a href="javascript:;">FAQ</a></p>
         <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200"
                   placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" id="" cols="30" rows="10" name="{{ form.vars.full_name }}">{{ form.vars.value }}</textarea>
-        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">0</span>/<span
+        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength missionDescriptionLength">0</span>/<span
                     class="input-maxlength">1200</span></p>
     </div>
 
@@ -157,11 +157,7 @@
 
     <div class="pack-region-container col-sm-12 mt-2 mb-4 pb-4">
         <h5 class="text-darkgray mb-0">Zone géographique</h5>
-        <p class="text-textgray">Choisissez la région ou vous pourrez intervenir pour réaliser ce
-            pack. Cliquez sur une région pour la sélectionner.
-            les régions affichées ci-dessous sont celles indiquées dans l'espace profil. Pour les
-            modifier, vous devez retourner
-            dans votre compte city-maker Services</p>
+        <p class="text-textgray">Choisissez la région où vous souhaitez intervenir pour réaliser le pack décrit ci-dessus.Les régions affichées sont par défaut celles que vous préalablement renseignées dans votre profil city-maker. N’oubliez pas que vous devez vous trouver à moins d’1h du lieu d’intervention du pack (environ !). Pour dé-sélectionner une région, cliquez simplement dessus.</p>
 
         <div class="row">
             <div class="col-md-6 choose-regions-container">
