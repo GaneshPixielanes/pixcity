@@ -192,7 +192,7 @@ class MissionController extends AbstractController
 
             $mission->getMissionAgreedClient(0);
             $mission->getUserMissionPayment()->setUserBasePrice($oldBasePrice);
-            $mission->getUserMissionPayment()->setAdjustment($result['client_total'] - $missionOld->getUserMissionPayment()->getClientTotal());
+            $mission->getUserMissionPayment()->setAdjustment($result['client_total'] - $oldBasePrice);
 
             $em->persist($mission);
             $em->flush();
