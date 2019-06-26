@@ -20,7 +20,7 @@
                         <ul class="d-flex w-100">
                             {% set data = form.vars.data %}
                             {% for client in form.vars.choices %}
-                                <li class="col-md-4 mb-4 client-info" data-id="{{ client.data.id }}" data-name="{{ client.data.company }}" data-image="{% if client.data.profilePhoto is null or client.data.profilePhoto == '' %}http://placehold.it/280x170.jpeg{% else %}/uploads/clients/{{ client.id }}/{{ client.data.profilePhoto }}{% endif %}">
+                                <li class="col-md-4 mb-4 client-info" data-id="{{ client.data.id }}" data-name="{{ client.data.company }}" data-image="{% if client.data.profilePhoto is null or client.data.profilePhoto == '' %}http://placehold.it/280x170.jpeg{% else %}/uploads/clients/{{ client.data.id }}/{{ client.data.profilePhoto }}{% endif %}">
                                     <a href="javascript:;" class="card p-3">
                                         {% if data.id is defined and data.id == client.data.id %}
                                         <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ client.data.id }}" checked>
