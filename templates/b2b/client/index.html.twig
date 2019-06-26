@@ -31,31 +31,54 @@
 
 
             <!-- all notification -->
+
             <div class="col-md-12 alert-notifications">
                 {% for key, notification in notifications %}
-                    <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2"
-                         role="alert" >
-                        <div class="col-md-1 d-flex justify-content-center">
-                            <i class="fas fa-piggy-bank fz-40"></i>
-                        </div>
+                    <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2" role="alert" >
+
+                        {% if notification.type == 'create_mission' %}
+                            <div class="col-md-1 d-flex justify-content-center">
+                                <i class="fas fa-piggy-bank fz-40"></i>
+                            </div>
+                        {% endif %}
+                        {% if notification.type == 'edit_mission' %}
+                            <div class="col-md-1 d-flex justify-content-center">
+                                <i class="fas fa-edit fz-40"></i>
+                            </div>
+                        {% endif %}
+
+
+
                         <div class="col-md-8">
                             <h6 class="mb-0">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
                             <p class="mb-1">{{ notification.message | raw }}</p>
                             <small class="text-muted">{{ notification.createdAt | date('d M Y - H:i') }}</small>
                         </div>
+
                         {#                            {% if notification.type == 'terminated' %}#}
                         {#                            <div class="col-md-3 d-flex justify-content-end">#}
                         {#                                <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>#}
                         {#                            </div>#}
                         {#                            {% endif %}#}
+
                         {% if notification.type == 'create_mission' %}
                             <div class="col-md-3 d-flex justify-content-end">
                                 <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">PAYER EN LIGNE</a>
                             </div>
                         {% endif %}
+
+                        {% if notification.type == 'edit_mission' %}
+                            <div class="col-md-3 d-flex justify-content-end">
+                                <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">Confirmer la mission</a>
+                            </div>
+                        {% endif %}
+
+
+
                         <button type="button" class="close align-self-start mark-notification-read" data-dismiss="alert" aria-label="Close"  data-id="{{ notification.id }}">
                             <span aria-hidden="true">&times;</span>
                         </button>
+
                     </div>
 
 
