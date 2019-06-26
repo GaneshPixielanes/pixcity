@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserMissionRepository")
+ * @ORM\EntityListeners({"App\Entity\Listener\MissionListener"})
  * @ORM\Table(name="pxl_b2b_user_mission")
  */
 class UserMission
@@ -147,12 +148,18 @@ class UserMission
      */
     private $cancelledBy;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MissionLog", mappedBy="mission",cascade={"persist"})
+     */
+    private $missionLogs;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
         $this->missionMedia = new ArrayCollection();
         $this->clientTransactions = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->missionLogs = new ArrayCollection();
     }
 
     protected function datePath(){
@@ -546,6 +553,37 @@ class UserMission
     public function setCancelledBy(?int $cancelledBy): self
     {
         $this->cancelledBy = $cancelledBy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MissionLog[]
+     */
+    public function getMissionLogs(): Collection
+    {
+        return $this->missionLogs;
+    }
+
+    public function addMissionLog(MissionLog $missionLog): self
+    {
+        if (!$this->missionLogs->contains($missionLog)) {
+            $this->missionLogs[] = $missionLog;
+            $missionLog->setMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMissionLog(MissionLog $missionLog): self
+    {
+        if ($this->missionLogs->contains($missionLog)) {
+            $this->missionLogs->removeElement($missionLog);
+            // set the owning side to null (unless already changed)
+            if ($missionLog->getMission() === $this) {
+                $missionLog->setMission(null);
+            }
+        }
 
         return $this;
     }

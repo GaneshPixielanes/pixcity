@@ -252,7 +252,7 @@ class PackController extends Controller
 //                }
 //
 //            }
-            return new JsonResponse(['success' => true]);
+            return new JsonResponse(['success' => true,'url' => $this->generateUrl('b2b_community_manager_index')]);
         }
 
         $page = new Page();
@@ -530,7 +530,7 @@ class PackController extends Controller
 
             }
 
-            return new JsonResponse(['success' => true]);
+            return new JsonResponse(['success' => true, 'url' => $this->generateUrl('b2b_community_manager_index')]);
         }
 
         return $this->render('b2b/pack/form.html.twig',
