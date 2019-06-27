@@ -5,14 +5,17 @@ namespace App\Controller\B2B;
 use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
+use App\Entity\MissionLog;
 use App\Entity\Option;
 use App\Entity\UserMission;
 use App\Form\B2B\MissionType;
 use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\MissionDocumentRepository;
+use App\Repository\MissionLogRepository;
 use App\Repository\MissionMediaRepository;
 use App\Repository\MissionPaymentRepository;
+use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\PackRepository;
@@ -72,7 +75,8 @@ class MissionController extends AbstractController
         $form = $this->createForm(MissionType::class, $mission,[
             'region' => $regions,
             'user' => $this->getUser(),
-            'proposals' => $proposals
+            'proposals' => $proposals,
+            'type' => 'create'
         ]);
 
         $form->handleRequest($request);
@@ -164,6 +168,13 @@ class MissionController extends AbstractController
         ]);
 
         $oldBasePrice = $mission->getMissionBasePrice();
+        $oldDocuments = $mission->getDocuments();
+        $docs = [];
+        foreach($oldDocuments as $document)
+        {
+            $docs[] = $document->getName();
+        }
+
         if(is_null($mission))
         {
             return $this->redirect('/community-manager/mission/list');
@@ -175,53 +186,17 @@ class MissionController extends AbstractController
         $regions = $mission->getReferencePack()->getUser()->getUserRegion();
         $form = $this->createForm(MissionType::class, $mission,['region' => $regions,
             'user' => $this->getUser(),
-            'proposals' => $clientMissionProposalRepo->findBy(['user' => $this->getUser()])
+            'proposals' => $clientMissionProposalRepo->findBy(['user' => $this->getUser()]),
+            'type' => 'edit'
         ]);
+
         $form->handleRequest($request);
+
         if($form->isSubmitted())
         {
-            $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
-            $price = $mission->getMissionBasePrice();
+            $this->_resetClientPermission($id);
 
-            $margin = $margin->getValue();
-            $tax = $tax->getValue();
-
-            $result = $missionPaymentRepo->getPrices($price, $margin, $tax, $cityMakerType);
-
-            $em = $this->getDoctrine()->getManager();
-
-            $mission->getMissionAgreedClient(0);
-            $mission->getUserMissionPayment()->setUserBasePrice($oldBasePrice);
-            $mission->getUserMissionPayment()->setAdjustment($result['client_total'] - $oldBasePrice);
-
-            $em->persist($mission);
-            $em->flush();
-
-            #Move banner and brief files
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()) && $mission->getBannerImage() != '')
-            {
-                $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBannerImage(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBannerImage());
-            }
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()) && $mission->getBriefFiles() != '')
-            {
-                $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBriefFiles(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBriefFiles());
-            }
-            #Move files to the upload folder from temp folder
-            foreach($mission->getMissionMedia() as $media)
-            {
-                # If files are found in the temp folder, then move the files from temp folder.
-                # Otherwise check the packs folder and move files from there (import images from packs)
-                if($filesystem->exists('uploads/'.UserMission::tempFolder().$media->getName()))
-                {
-                    $filesystem->copy('uploads/'.UserMission::tempFolder().$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
-                }
-                elseif ($filesystem->exists('uploads/mission/'.$mission->getReferencePack()->getId().'/'.$media->getName()))
-                {
-                    $filesystem->copy('uploads/mission/'.$mission->getReferencePack()->getId().'/'.$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
-                }
-            }
-
-            return $this->redirectToRoute('b2b_mission_list');
+            return new JsonResponse(['success' => true]);
         }
         return $this->render('b2b/mission/edit-form.html.twig',
         [
@@ -231,6 +206,20 @@ class MissionController extends AbstractController
         ]);
     }
 
+    private function _resetClientPermission($id)
+    {
+
+        $mission = $this->getDoctrine()->getRepository(UserMission::class)->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $mission->setMissionAgreedClient(1);
+
+        $em->flush();
+
+        return true;
+    }
     /**
      * @Route("view/{id}",name="view")
      */
@@ -516,5 +505,31 @@ class MissionController extends AbstractController
 
 
 
+    }
+
+    /**
+     * @Route("edit-ajax/{id}",name="edit_ajax")
+     */
+    public function editAjax($id, Request $request, NotificationsRepository $notificationsRepo)
+    {
+        $mission = $this->getDoctrine()->getRepository(UserMission::class)->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $mission->setMissionAgreedClient(1);
+        /* Add the logs */
+        $missionLog = new MissionLog();
+        $missionLog->setUserBasePrice($request->get('price'));
+        $missionLog->setCreatedAt(new \DateTime());
+        $missionLog->setCreatedBy($mission->getUser()->getId());
+        $missionLog->setMission($mission);
+        $missionLog->setIsActive(0);
+        $missionLog->setBriefFiles($request->get('document'));
+
+        $mission->addMissionLog($missionLog);
+        $em->flush();
+        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getId().' has been edited and needs your approval', $missionLog->getId());
+
+        return new JsonResponse(['success' => true]);
     }
 }
