@@ -153,6 +153,11 @@ class UserMission
      */
     private $missionLogs;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\missionLog", inversedBy="userMisson", cascade={"persist", "remove"})
+     */
+    private $log;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
@@ -584,6 +589,18 @@ class UserMission
                 $missionLog->setMission(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLog(): ?missionLog
+    {
+        return $this->log;
+    }
+
+    public function setLog(?missionLog $log): self
+    {
+        $this->log = $log;
 
         return $this;
     }

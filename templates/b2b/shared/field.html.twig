@@ -94,6 +94,7 @@
             <input type="file" name="myFile" data-toggle="tooltip" title="" data-original-title="Edit Cover image" id="banner-image-upload">
             <input type="hidden" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}"/>
             <a href="javascript:;" class="btn btn-lightgray btn-pill">Modifier</a>
+
         </div>
     </div>
 {% endblock %}
@@ -105,7 +106,7 @@
             instantanément
             votre prestation</p>
         <input class="form-control bg-lightwhite pack-title" maxlength="64" type="text"
-               placeholder="Je m’occupe de vos réseaux sociaux " name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" data-bind="pcs-mission-name"/>
+               placeholder="Je m’occupe de vos réseaux sociaux " name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" data-bind="pcs-mission-name" {% if form.vars.value != '' %}readonly="readonly"{% endif %}/>
         <p class="mb-0 fz-12 text-textgray mt-2" data-bind="mission-title"><span class="inputlength">{{ form.vars.value | length }}</span>/<span
                     class="input-maxlength">64</span></p>
     </div>
@@ -121,7 +122,7 @@
             pas à lire
             notre <a href="javascript:;">FAQ</a></p>
         <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200"
-                  placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" id="" cols="30" rows="10" name="{{ form.vars.full_name }}">{{ form.vars.value }}</textarea>
+                  placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" id="" cols="30" rows="10" name="{{ form.vars.full_name }}" {% if form.vars.value != '' %}readonly="readonly"{% endif %}>{{ form.vars.value }}</textarea>
         <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength missionDescriptionLength">0</span>/<span
                     class="input-maxlength">1200</span></p>
     </div>
@@ -166,12 +167,14 @@
                         <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
                             {% set data = form.vars.data %}
                             <select class="selectpicker" data-width="100%" data-live-search="true"
-                                    title="Choose a region from the list" readonly="readonly" name="{{ form.vars.full_name }}">
+                                    title="Choose a region from the list" name="{{ form.vars.full_name }}">
                                 {% for choice in form.vars.choices %}
                                     {% if data.id is defined and data.id == choice.value %}
                                         <option value="{{ choice.data.id }}" selected>{{ choice.data.name }}</option>
                                     {% else %}
-                                        <option value="{{ choice.data.id }}">{{ choice.data.name }}</option>
+                                        {% if data.id is not defined %}
+                                            <option value="{{ choice.data.id }}">{{ choice.data.name }}</option>
+                                        {% endif %}
                                     {% endif %}
                                 {% endfor %}
                             </select>
@@ -256,14 +259,14 @@
 {% endblock %}
 
 {% block _mission_missionMedia_widget %}
-    <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr')  }}" id="media-block">
+    <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr')  }}" id="media-block" >
         <h5 class="text-darkgray mb-0">Photos</h5>
         <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre
             bibliothèque
             ou en
             téléchargez des nouvelles pour illustrer votre pack.</p>
         <small class="text-textgray">Format : JPEG, PNG. Taille : 2Mo max</small>
-        <div class="form-group dropzone clearfix mt-3 dz-clickable" id="photos-dropzone">
+        <div class="form-group dropzone clearfix mt-3 dz-clickable" id="photos-dropzone " style="{% if form.vars.value != '' %}display:none{% endif %}">
             <!-- <div class="row">
                                     <div class="col-md-12 upload-area">
                                         <div class="area-label text-center p-4">
@@ -339,7 +342,7 @@
                     <a href="javascript:;" class="btn btn-pink mr-4" id="uploadTermFile"><i
                                 class="fas fa-upload"></i> Upload</a> <span class="fz-14">Télécharger mes GCV
                                             (format .pdf 5mo max)</span>
-                    <input type="file" class="d-none" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief"/>
+                    <input type="file" class="d-none" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief" />
                     <input type="hidden" id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" />
                 </div>
                 <div class="col-md-12">

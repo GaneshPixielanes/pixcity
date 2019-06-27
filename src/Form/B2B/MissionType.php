@@ -32,7 +32,14 @@ class MissionType extends AbstractType
 
         $regions = [];
         $clients = [];
-
+        if($options['type'] == 'create' )
+        {
+            $readonly = false;
+        }
+        else
+        {
+            $readonly = true;
+        }
         foreach($options['region'] as $region)
         {
             $regions[] = $region->getId();
@@ -48,7 +55,7 @@ class MissionType extends AbstractType
         $builder
             ->add('title',TextType::class,['label' => false])
             ->add('description', TextareaType::class,[
-                'attr' => ['maxlength' => 100],
+                'attr' => ['maxlength' => 1200, 'readonly' => $readonly],
                 'label' => false
             ])
             ->add('client',EntityType::class,[
@@ -136,6 +143,7 @@ class MissionType extends AbstractType
             'region' => null,
             'user' => null,
             'proposals' => null,
+            'type' => null
         ]);
     }
 }

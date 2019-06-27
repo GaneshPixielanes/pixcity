@@ -18,29 +18,29 @@ class MissionListener{
 
     public function preFlush(UserMission $mission, PreFlushEventArgs $event)
     {
-        $request = Request::createFromGlobals();
-
-        if(count($request->request->all())){
-            $request = $request->request->get('mission');
-            $missionLog = new MissionLog();
-            $documents = [];
-
-            if(!empty($request['documents'])){
-                foreach($request['documents'] as $document)
-                {
-                    $documents[] = $document;
-                }
-            }
-
-            $missionLog->setMission($mission);
-            $missionLog->setUserBasePrice($request['missionBasePrice']);
-            $missionLog->setBriefFiles(json_encode($documents));
-            $missionLog->setIsActive(0);
-            $missionLog->setCreatedAt(new \DateTime());
-            $missionLog->setCreatedBy($mission->getUser()->getId());
-
-            $mission->addMissionLog($missionLog);
-        }
+//        $request = Request::createFromGlobals();
+//
+//        if(count($request->request->all())){
+//            $request = $request->request->get('mission');
+//            $missionLog = new MissionLog();
+//            $documents = [];
+//
+//            if(!empty($request['documents'])){
+//                foreach($request['documents'] as $document)
+//                {
+//                    $documents[] = $document;
+//                }
+//            }
+//
+//            $missionLog->setMission($mission);
+//            $missionLog->setUserBasePrice($request['missionBasePrice']);
+//            $missionLog->setBriefFiles(json_encode($documents));
+//            $missionLog->setIsActive(0);
+//            $missionLog->setCreatedAt(new \DateTime());
+//            $missionLog->setCreatedBy($mission->getUser()->getId());
+//
+//            $mission->addMissionLog($missionLog);
+//        }
 
 
     }
