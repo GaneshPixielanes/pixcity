@@ -5,6 +5,7 @@ namespace App\Controller\B2B;
 
 use App\Repository\MissionLogRepository;
 use App\Repository\MissionPaymentRepository;
+use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,42 +38,37 @@ class NotificationController extends AbstractController
     /**
      * @Route("accept-edited-mission", name="accept_edited_mission")
      */
-    public function acceptEditedMission(Request $request,NotificationsRepository $notificationsRepository,MissionLogRepository $missionLogRepository,MissionPaymentRepository $missionPaymentRepository){
+    public function acceptEditedMission(Request $request,NotificationsRepository $notificationsRepository,MissionLogRepository $missionLogRepository){
 
         $em = $this->getDoctrine()->getManager();
         $notification = $notificationsRepository->find($request->get('id'));
-        $notification->setUnread(1);
+        $notification->setUnread(0);
 
         $em->persist($notification);
-        $em->flush();
+
 
         $missionlog = $missionLogRepository->find($notification->getNotifyBy());
-        $missionlog->getIsActive(1);
+
+        $missions = $missionLogRepository->findBy(['mission' => $missionlog->getMission()]);
+
+        foreach ($missions as $key => $mission){
+            $mission->setIsActive(0);
+            $em->persist($mission);
+        }
+
+        $missionlog->setIsActive(1);
+
+        $adjustment = $missionlog->getUserBasePrice() - $missionlog->getMission()->getMissionBasePrice();
+
+        $missionlog->getMission()->setLog($missionlog);
+        $missionlog->getMission()->setMissionAgreedClient(1);
+        $missionlog->getMission()->getUserMissionPayment()->setAdjustment($adjustment);
+
         $em->persist($missionlog);
         $em->flush();
 
-        $missionPayment = $missionPaymentRepository->find($missionlog->getMission()->getId());
 
-        $cityMakerType = $missionPayment->getMission()->getUser()->getPixie()->getBilling()->getstatus();
-
-
-        $result = $missionPaymentRepository->getPrices($missionlog->getUserBasePrice(),25,20,$cityMakerType);
-
-
-        $missionPayment->setUserBasePrice($result['cm_price']);
-        $missionPayment->setCmTax($result['cm_tax']);
-        $missionPayment->setCmTotal($result['cm_total']);
-        $missionPayment->setClientPrice($result['client_price']);
-        $missionPayment->setClientTax($result['client_tax']);
-        $missionPayment->setClientTotal($result['client_total']);
-        $missionPayment->setPcsPrice($result['pcs_price']);
-        $missionPayment->setPcsTax($result['pcs_tax']);
-        $missionPayment->setPcsTotal($result['pcs_total']);
-
-        $em->persist($missionPayment);
-        $em->flush();
-
-        return JsonResponse::create(['success' => false]);
+        return JsonResponse::create(['success' => true]);
 
     }
 }

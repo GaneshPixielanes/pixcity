@@ -154,7 +154,7 @@ class UserMission
     private $missionLogs;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\missionLog", inversedBy="userMisson", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\missionLog", cascade={"persist", "remove"})
      */
     private $log;
 

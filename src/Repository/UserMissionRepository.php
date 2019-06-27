@@ -68,6 +68,17 @@ class UserMissionRepository extends ServiceEntityRepository
                     ->getQuery()->getResult();
     }
 
+
+    public function activePrices($mission){
+
+        return $this->createQueryBuilder('m')
+            ->where('m.id = :mission')->setParameter('mission', $mission)
+            ->leftJoin('m.missionLogs','logs')
+            ->andWhere('logs.isActive = 1')
+            ->getQuery()->getOneOrNullResult();
+
+    }
+
     // /**
     //  * @return UserMission[] Returns an array of UserMission objects
     //  */
