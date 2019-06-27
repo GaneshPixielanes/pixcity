@@ -168,8 +168,8 @@ class MissionController extends AbstractController
     public function edit($id,
                          Request $request,
                          UserMissionRepository $missionRepo,
-                         Filesystem $filesystem,
-                        OptionRepository $optionRepo
+                        OptionRepository $optionRepo,
+                        NotificationsRepository $notificationsRepository
                         )
     {
         $mission = $missionRepo->findOneBy([
@@ -204,6 +204,8 @@ class MissionController extends AbstractController
             $em->persist($missionLog);
             $em->persist($mission);
             $em->flush();
+
+            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'A mission <strong>'.$mission->getTitle().'</strong> has been edited by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong>', $missionLog->getId());
 
             return new JsonResponse(['success' => true]);
         }
