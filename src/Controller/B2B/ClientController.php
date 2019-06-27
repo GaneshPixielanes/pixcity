@@ -3,8 +3,10 @@
 namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
+use App\Entity\Option;
 use App\Form\B2B\ClientType;
 use App\Repository\ClientMissionProposalRepository;
+use App\Repository\MissionPaymentRepository;
 use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
@@ -107,10 +109,24 @@ class ClientController extends Controller
     /**
      * @Route("preview-mission", name="preview_mission")
      */
-    public function previewMission(Request $request,UserMissionRepository $missionRepository){
+    public function previewMission(Request $request,UserMissionRepository $missionRepository,MissionPaymentRepository $missionPaymentRepository){
 
 
-        $mission = $missionRepository->find($request->get('id'));
+        $mission = $missionRepository->activePrices($request->get('id'));
+
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);
+
+        $margin = $options->findOneBy(['slug' => 'margin']);
+
+        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+
+        $margin = $margin->getValue();
+
+        $tax = $tax->getValue();
+
+        $result = $missionPaymentRepository->getPrices($mission->getLog()->getUserBasePrice(), $margin, $tax, $cityMakerType);
 
         $filename = $this->createSlug($mission->getTitle());
 
@@ -119,7 +135,8 @@ class ClientController extends Controller
         return $this->render('b2b/client/mission/load-mission-preview.html.twig',[
             'mission' => $mission,
             'route' => $route,
-            'filename' => $filename
+            'filename' => $filename,
+            'result' => $result
         ]);
 
     }
