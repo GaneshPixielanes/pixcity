@@ -8,6 +8,7 @@ use App\Entity\ClientMissionProposal;
 use App\Entity\MissionLog;
 use App\Entity\Option;
 use App\Entity\UserMission;
+use App\Form\B2B\MissionLogType;
 use App\Form\B2B\MissionType;
 use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
@@ -110,6 +111,15 @@ class MissionController extends AbstractController
 //            $mission->getUserMissionPayment()->setTotal($total); // Total
             $mission->setStatus(MissionStatus::CREATED);
 //            $mission->setCreatedAt(new \DateTime('Y-m-d H:i:s'));
+            $missionLog = new MissionLog();
+            $missionLog->setUserBasePrice($request->get('price'));
+            $missionLog->setCreatedAt(new \DateTime());
+            $missionLog->setCreatedBy($mission->getUser()->getId());
+            $missionLog->setMission($mission);
+            $missionLog->setIsActive(1);
+            $missionLog->setBriefFiles($request->get('document'));
+
+            $mission->addMissionLog($missionLog);
 
             $em = $this->getDoctrine()->getManager();
 
@@ -155,46 +165,45 @@ class MissionController extends AbstractController
     /**
      * @Route("edit/{id}",name="edit")
      */
-    public function edit($id, Request $request,
-                         UserMissionRepository $userMissionRepo,
+    public function edit($id,
+                         Request $request,
+                         UserMissionRepository $missionRepo,
                          Filesystem $filesystem,
-                         ClientMissionProposalRepository $clientMissionProposalRepo,
-                         MissionPaymentRepository $missionPaymentRepo
+                        OptionRepository $optionRepo
                         )
     {
-        $mission = $userMissionRepo->findOneBy([
+        $mission = $missionRepo->findOneBy([
             'id' => $id,
             'user' => $this->getUser()
-        ]);
-
-        $oldBasePrice = $mission->getMissionBasePrice();
-        $oldDocuments = $mission->getDocuments();
-        $docs = [];
-        foreach($oldDocuments as $document)
-        {
-            $docs[] = $document->getName();
-        }
-
+            ]);
         if(is_null($mission))
         {
-            return $this->redirect('/community-manager/mission/list');
+            return $this->redirectToRoute('b2b_community_manager_index');
         }
 
-        $options = $this->getDoctrine()->getRepository(Option::class);
-        $tax = $options->findOneBy(['slug' => 'tax']);
-        $margin = $options->findOneBy(['slug' => 'margin']);
-        $regions = $mission->getReferencePack()->getUser()->getUserRegion();
-        $form = $this->createForm(MissionType::class, $mission,['region' => $regions,
-            'user' => $this->getUser(),
-            'proposals' => $clientMissionProposalRepo->findBy(['user' => $this->getUser()]),
-            'type' => 'edit'
-        ]);
+        $missionLog = new MissionLog();
+        $margin = $optionRepo->findOneBy([
+            'slug' => 'margin'
+        ])->getValue();
+
+        $form = $this->createForm(MissionLogType::class, $missionLog);
 
         $form->handleRequest($request);
-
         if($form->isSubmitted())
         {
-            $this->_resetClientPermission($id);
+            $em = $this->getDoctrine()->getManager();
+
+            $missionLog->setBriefFiles(json_encode($request->get('document')));
+            $missionLog->setIsActive(0);
+            $missionLog->setMission($mission);
+            $missionLog->setCreatedAt(new \DateTime());
+            $missionLog->setCreatedBy($this->getUser()->getId());
+
+
+            $mission->setMissionAgreedClient(0);
+            $em->persist($missionLog);
+            $em->persist($mission);
+            $em->flush();
 
             return new JsonResponse(['success' => true]);
         }
@@ -202,7 +211,8 @@ class MissionController extends AbstractController
         [
             'form' => $form->createView(),
             'mission' => $mission,
-            'margin' => $margin->getValue()
+            'missionLog' => $mission,
+            'margin' => $margin
         ]);
     }
 

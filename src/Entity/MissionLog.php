@@ -57,6 +57,11 @@ class MissionLog
      */
     private $createdBy;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\UserMission", mappedBy="log", cascade={"persist", "remove"})
+     */
+    private $userMisson;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +159,24 @@ class MissionLog
     public function setCreatedBy(int $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getUserMisson(): ?UserMission
+    {
+        return $this->userMisson;
+    }
+
+    public function setUserMisson(?UserMission $userMisson): self
+    {
+        $this->userMisson = $userMisson;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newLog = $userMisson === null ? null : $this;
+        if ($newLog !== $userMisson->getLog()) {
+            $userMisson->setLog($newLog);
+        }
 
         return $this;
     }
