@@ -56,7 +56,12 @@ class MissionController extends AbstractController
     /**
      * @Route("create", name="create")
      */
-    public function create(Request $request, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo,NotificationsRepository $notificationsRepository)
+    public function create(Request $request,
+                           Filesystem $filesystem,
+                           ClientMissionProposalRepository $clientMissionProposalRepo,
+                           NotificationsRepository $notificationsRepository,
+                           MissionPaymentRepository $missionPaymentRepository
+    )
     {
 
         $mission = new UserMission();
@@ -92,38 +97,46 @@ class MissionController extends AbstractController
 //            $transactionFee = 0;
 //            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
+            $result = $missionPaymentRepository->getPrices($price, $margin, $tax, $cityMakerType);
 
             $mission->setUser($this->getUser());
-            $mission->getUserMissionPayment()->setClientPrice($clientPrice); // Client's price
-            $mission->getUserMissionPayment()->setClientTax($clientTax);
-            $mission->getUserMissionPayment()->setClientTotal($clientTotal);
+            $mission->getUserMissionPayment()->setClientPrice($result['client_price']); // Client's price
+            $mission->getUserMissionPayment()->setClientTax($result['client_tax']);
+            $mission->getUserMissionPayment()->setClientTotal($result['client_total']);
 
-            $mission->getUserMissionPayment()->setUserBasePrice($basePrice); // Base price
-            $mission->getUserMissionPayment()->setCmTax($cmTax);
-            $mission->getUserMissionPayment()->setCmTotal($cmTotal);
+            $mission->getUserMissionPayment()->setUserBasePrice($result['cm_price']); // Base price
+            $mission->getUserMissionPayment()->setCmTax($result['cm_tax']);
+            $mission->getUserMissionPayment()->setCmTotal($result['cm_total']);
 
-            $mission->getUserMissionPayment()->setPcsPrice($pcsPrice); //PCS price
-            $mission->getUserMissionPayment()->setPcsTax($pcsTax);
-            $mission->getUserMissionPayment()->setPcsTotal($pcsTotal);
+            $mission->getUserMissionPayment()->setPcsPrice($result['pcs_price']); //PCS price
+            $mission->getUserMissionPayment()->setPcsTax($result['pcs_tax']);
+            $mission->getUserMissionPayment()->setPcsTotal($result['pcs_total']);
 
 //            $mission->getUserMissionPayment()->setTransactionFee($transactionFee); // Trasnsaction Fee
 //            $mission->getUserMissionPayment()->setTaxValue($total - $clientPrice); // Tax charged
 //            $mission->getUserMissionPayment()->setTotal($total); // Total
             $mission->setStatus(MissionStatus::CREATED);
 //            $mission->setCreatedAt(new \DateTime('Y-m-d H:i:s'));
+            $documents = [];
+            foreach($mission->getDocuments() as $document)
+            {
+                $documents[] = $document->getName();
+            }
             $missionLog = new MissionLog();
-            $missionLog->setUserBasePrice($request->get('price'));
+            $missionLog->setUserBasePrice($mission->getMissionBasePrice());
             $missionLog->setCreatedAt(new \DateTime());
             $missionLog->setCreatedBy($mission->getUser()->getId());
             $missionLog->setMission($mission);
             $missionLog->setIsActive(1);
-            $missionLog->setBriefFiles($request->get('document'));
+            $missionLog->setBriefFiles(json_encode($documents));
 
             $mission->addMissionLog($missionLog);
 
             $em = $this->getDoctrine()->getManager();
 
+            $mission->setLog($missionLog);
             $em->persist($mission);
+            $em->persist($missionLog);
             $em->flush();
             #Move banner and brief files
             if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()) && $mission->getBannerImage() != '')
