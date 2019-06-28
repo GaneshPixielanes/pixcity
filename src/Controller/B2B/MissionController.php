@@ -147,7 +147,6 @@ class MissionController extends AbstractController
             {
                 $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBriefFiles(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBriefFiles());
             }
-
             if($filesystem->exists('uploads/pack/banner/'.$mission->getBannerImage()) && $mission->getBannerImage() != '')
             {
                 $filesystem->copy('uploads/pack/banner/'.$mission->getBannerImage(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBannerImage());
@@ -561,5 +560,22 @@ class MissionController extends AbstractController
         $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getId().' has beefed and needs your approval', $missionLog->getId());
 
         return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * @Route("download-mission-log-document/{name}",name="download_log_document")
+     */
+    public function downloadLogDocument($name)
+    {
+        $response = new BinaryFileResponse('uploads/missions/temp/'.$name);
+//        $ext = pathinfo('uploads/missions/temp/'.$name,PATHINFO_EXTENSION);
+
+        $response->headers->set('Content-Type','text/plain');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $name
+        );
+
+        return $response;
     }
 }
