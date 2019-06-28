@@ -232,7 +232,7 @@
                     <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="userActions"></i>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userActions">
                         {% if mission.status == 'terminate_request_cm' %}
-                            <a class="dropdown-item text-darkgray fz-12" href="javascript:;" id="terminateMission" data-id="{{ mission.id }}" data-adjust-amount="{{ mission.userMissionPayment.adjustment }}" data-toggle="modal" data-target="#endMissionConfirmation"><i class="far fa-check-circle mr-2"></i>Accept Terminer</a>
+                            <a class="dropdown-item text-darkgray fz-12" href="javascript:;" id="terminateMission" data-id="{{ mission.id }}" data-adjust-amount="{{ mission.log.userBasePrice | clientPrice(margin) | round(2, 'floor') - mission.userMissionPayment.userBasePrice | clientPrice(margin) | round(2, 'floor')  }}" data-toggle="modal" data-target="#endMissionConfirmation"><i class="far fa-check-circle mr-2"></i>Accept Terminer</a>
                         {% endif %}
                         {% if mission.status == 'cancel_request_cm' %}
                             <a class="dropdown-item text-pink fz-12" href="javascript:;" id="mission-cancel" data-id="{{ mission.id }}"><i class="far fa-times-circle mr-2"></i>Accept Annuler</a>

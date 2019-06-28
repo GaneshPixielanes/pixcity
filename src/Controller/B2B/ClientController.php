@@ -136,7 +136,8 @@ class ClientController extends Controller
             'mission' => $mission,
             'route' => $route,
             'filename' => $filename,
-            'result' => $result
+            'result' => $result,
+            'margin' => $margin
         ]);
 
     }

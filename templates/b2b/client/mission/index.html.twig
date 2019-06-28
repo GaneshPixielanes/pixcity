@@ -42,7 +42,9 @@
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.title }}</p>
                                     <p class="w-15 mb-0 text-inprogress">En cours</p>
-                                    <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }}€</p>
+                                    {% if mission.log.userBasePrice is defined %}
+                                        <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round(2, 'floor') }} €</p>
+                                    {% endif %}
                                     <i class="fas fa-eye preview-my-mission px-2" data-id="{{ mission.id }}"></i>
                                     <i class="fas fa-credit-card pay-online" data-id="{{ mission.id }}"></i>
                                 </li>
@@ -77,7 +79,9 @@
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.title }}</p>
                                     <p class="w-15 mb-0 text-inprogress">En cours</p>
-                                    <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }}€</p>
+                                    {% if mission.log.userBasePrice is defined %}
+                                        <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round(2, 'floor') }} €</p>
+                                    {% endif %}
                                     <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
                                 </li>
                             {% endfor %}
@@ -111,7 +115,9 @@
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.title }}</p>
                                     <p class="w-15 mb-0 text-inprogress">Annulée</p>
-                                    <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }}€</p>
+                                    {% if mission.log.userBasePrice is defined %}
+                                        <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round(2, 'floor') }} €</p>
+                                    {% endif %}
                                     <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
                                 </li>
                             {% endfor %}
@@ -145,7 +151,9 @@
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.title }}</p>
                                     <p class="w-15 mb-0 text-inprogress">Terminée</p>
-                                    <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }}€</p>
+                                    {% if mission.log.userBasePrice is defined %}
+                                        <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round(2, 'floor') }} €</p>
+                                    {% endif %}
                                     <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
                                 </li>
                             {% endfor %}
