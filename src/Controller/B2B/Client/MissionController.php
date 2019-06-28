@@ -140,8 +140,8 @@ class MissionController extends AbstractController
             $result['price'] = $last_result['client_price'];
             $result['tax'] = $last_result['client_tax'];
             $result['total'] = $result['price'] + $result['tax'];
-            $result['advance_payment'] = $first_result['client_price'];
-            $result['need_to_pay'] = $result['total'] - $first_result['client_price'];
+            $result['advance_payment'] = $first_result['client_total'];
+            $result['need_to_pay'] = $result['total'] -  $result['advance_payment'];
 
             $amount = $result['need_to_pay'];
 
