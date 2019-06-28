@@ -545,7 +545,6 @@ class MissionController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        $mission->setMissionAgreedClient(1);
         /* Add the logs */
         $missionLog = new MissionLog();
         $missionLog->setUserBasePrice($request->get('price'));

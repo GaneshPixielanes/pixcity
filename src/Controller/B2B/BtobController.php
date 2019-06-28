@@ -40,7 +40,7 @@ class BtobController extends AbstractController{
         $packs = $packRepo->findByUser($user);
 
         #Missions listed by the user
-        $missions = $missionRepo->findBy(['user' => $this->getUser()]);
+        $missions = $missionRepo->findBy(['user' => $this->getUser()],['id' => 'DESC']);
 
         return $this->render('b2b/index.html.twig',[
             'notifications' => $notifications,
