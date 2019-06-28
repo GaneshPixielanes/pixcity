@@ -553,7 +553,7 @@ class MissionController extends AbstractController
 
         $mission->addMissionLog($missionLog);
         $em->flush();
-        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getId().' has been edited and needs your approval', $missionLog->getId());
+        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getId().' has beefed and needs your approval', $missionLog->getId());
 
         return new JsonResponse(['success' => true]);
     }
