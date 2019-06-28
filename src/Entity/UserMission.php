@@ -154,7 +154,7 @@ class UserMission
     private $missionLogs;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\missionLog", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\missionLog")
      */
     private $log;
 
@@ -603,5 +603,14 @@ class UserMission
         $this->log = $log;
 
         return $this;
+    }
+
+    public function getActiveLog()
+    {
+        $log = $this->missionLogs->filter(function (MissionLog $logs){
+            return $logs->getIsActive() == 1;
+        });
+        $log = array_values($log->toArray());
+        return (isset($log) && count($log) > 0)?$log[0]:null;
     }
 }

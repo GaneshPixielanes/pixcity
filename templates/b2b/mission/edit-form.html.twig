@@ -73,9 +73,9 @@
         </p>
         <h5 class="text-darkgray mb-0">Fixez votre nouveaux prix</h5>
         <p class="text-textgray">Si vous ne savez pas comment définir vos prix suivez <a href="javascript:;">notre guide !</a></p>
-        <p class="mb-0 mt-4 text-textgray fz-12"><span class="text-pink fz-16 mr-2">{{ mission.userMissionPayment.userBasePrice }}€</span> Ce qui sera
+        <p class="mb-0 mt-4 text-textgray fz-12"><span class="text-pink fz-16 mr-2">{{ mission.getActiveLog().userBasePrice  }}€</span> Ce qui sera
             affiché sur la plateforme
-            <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16">{{ mission.userMissionPayment.clientPrice }}€</span>
+            <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16">{{ mission.getActiveLog().userBasePrice | clientPrice(margin) | number_format(2) }}€</span>
         </p>
     </div>
     <div class="work-documents-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
@@ -93,16 +93,16 @@
             </tr>
             </thead>
             <tbody id="mission-log-list">
-            {% for document in mission.documents %}
+            {% for document in mission.getActiveLog().briefFiles | json_decode %}
             <tr class="text-darkgray fz-14">
                 <td valign="middle" class="text-center">
                     <i class="far fa-file-image fz-25"></i>
                 </td>
                 <td valign="middle">
-                    {{ document.name }}
-                    <input type="hidden" name="document[]" value="{{ document.name }}"/>
+                    {{ document }}
+                    <input type="hidden" name="document[]" value="{{ document }}"/>
                 </td>
-                <td valign="middle">{{ document.createdAt | date('d/m/Y') }}</td>
+                <td valign="middle">{{ mission.getActiveLog().createdAt | date('d/m/Y') }}</td>
                 <td valign="middle">
                     <div class="d-flex align-items-center">
                                             <span class="btn-circle-28 mr-3">
@@ -134,6 +134,29 @@
             </tfoot>
         </table>
     </div>
+    <div class="row">
+        <h3>Edit Logs</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>ID</th>
+                <th>Base Price</th>
+                <th>Documents</th>
+                <th>Edited On</th>
+            </tr>
+            {% for log in mission.missionLogs %}
+            <tr class="{% if log.isActive == 1 %}table-successs{% endif %}">
+                <td>{{ log.id }}{% if log.isActive == 1 %}[active log]{% endif %}  </td>
+                <td>{{ log.userBasePrice }}</td>
+                <td>
+                    {% for document in log.briefFiles | json_decode %}
+                        {{ document }}<br/>
+                    {% endfor %}
+                </td>
+                <td>{{ log.createdAt | date('d-m-Y') }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
     <div class="pack-description-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
         <h5 class="text-darkgray mb-0">Décrivez votre pack</h5>
         <p class="text-textgray">N’hésitez pas à être le plus précis possible dans la description de
@@ -152,7 +175,7 @@
         <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
         <div class="d-flex align-items-center">
             <div class="input-group w-10">
-                <input type="numbers" name="{{ form.userBasePrice.vars.full_name }}" class="form-control fz-16 font-weight-bold bg-lightwhite" placeholder="99" aria-label="Pack price" aria-describedby="pack-price" value="{{ mission.userMissionPayment.userBasePrice }}">
+                <input type="number" name="{{ form.userBasePrice.vars.full_name }}" class="form-control fz-16 font-weight-bold bg-lightwhite" placeholder="99" aria-label="Pack price" aria-describedby="pack-price" value="{{ mission.getActiveLog().userBasePrice }}">
                 <div class="input-group-append">
                     <span class="input-group-text bg-textgray border-textgray text-white" id="pack-price">€</span>
                 </div>
@@ -264,7 +287,7 @@
             </div>
             <div class="mr-4">
                 <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                <p class="mb-0 text-darkgray user-price">{{ mission.userMissionPayment.userBasePrice }}€</p>
+                <p class="mb-0 text-darkgray user-price">{{ mission.getActiveLog().userBasePrice }}€</p>
             </div>
             {% if mission.status == 'terminated' %}
             <div class="mission-invoice d-flex align-items-center">
