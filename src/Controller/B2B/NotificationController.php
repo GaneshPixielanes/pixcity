@@ -42,7 +42,7 @@ class NotificationController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $notification = $notificationsRepository->find($request->get('id'));
-        $notification->setUnread(0);
+        $notification->setUnread(1);
 
         $em->persist($notification);
 
@@ -68,7 +68,7 @@ class NotificationController extends AbstractController
         $em->flush();
 
         #Send notification
-        $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', $this->getUser().' has accepted your new price',null);
+        $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', $this->getUser()->get.' has accepted your new price',null);
 
 
         return JsonResponse::create(['success' => true]);
