@@ -27,18 +27,21 @@ class UserMissionRepository extends ServiceEntityRepository
     {
         $result = $this->createQueryBuilder('m')
                         ->where('m.status = :ongoing OR m.status = :cancel_requested OR m.status = :terimate_requested')
+                        ->leftJoin('m.missionLogs','logs')
                         ->setParameter('ongoing',MissionStatus::ONGOING)
                         ->setParameter('cancel_requested',MissionStatus::CANCEL_REQUEST_INITIATED)
                         ->setParameter('terimate_requested',MissionStatus::TERMINATE_REQUEST_INITIATED);
                         if($type == 'client')
                         {
                             $result = $result->andWhere('m.client = :user')->setParameter('user',$user )
-                                             ->andWhere('m.missionAgreedClient = 1');
+                                             ->andWhere('m.missionAgreedClient = 1')
+                                             ->andWhere('logs.isActive = 1');
 
                         }
                         else
                         {
                             $result = $result->andWhere('m.user = :user')->setParameter('user',$user );
+
                         }
 
         $result = $result->orderBy('m.id','DESC')
@@ -66,6 +69,17 @@ class UserMissionRepository extends ServiceEntityRepository
                     ->andWhere('m.status = :status')->setParameter('status', $status)
                     ->setFirstResult($limit * ($page - 1))
                     ->getQuery()->getResult();
+    }
+
+
+    public function activePrices($mission){
+
+        return $this->createQueryBuilder('m')
+            ->where('m.id = :mission')->setParameter('mission', $mission)
+            ->leftJoin('m.missionLogs','logs')
+            ->andWhere('logs.isActive = 1')
+            ->getQuery()->getOneOrNullResult();
+
     }
 
     // /**

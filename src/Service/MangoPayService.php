@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Repository\ClientTransactionRepository;
 use MangoPay;
 use MangoPay\DemoWorkflow\MockStorageStrategy;
 class MangoPayService
@@ -87,6 +88,25 @@ class MangoPayService
         $response = $this->mangoPayApi->PayIns->Get($payincardweb);
 
         return $response;
+
+
+    }
+
+
+    public function refundPayment($mission_id,ClientTransactionRepository $clientTransactionRepository){
+
+        $transaction = $clientTransactionRepository->findBy(['mission' => $mission_id]);
+
+        $PayInId = $transaction[0]->getMangopayUserId();
+        $Refund = $this->mangoPayApi->Refunds();
+        $Refund->AuthorId = $row[0];
+        $Refund->DebitedFunds = $this->mangoPayApi->Money();
+        $Refund->DebitedFunds->Currency = "EUR";
+        $Refund->DebitedFunds->Amount = $row[3]*100;
+        $Refund->Fees = new \MangoPay\Money();
+        $Refund->Fees->Currency = "EUR";
+        $Refund->Fees->Amount = $_POST['amount']*100;
+        $result = $mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
 
 
     }

@@ -8,6 +8,7 @@ use App\Entity\ClientMissionProposal;
 use App\Entity\MissionLog;
 use App\Entity\Option;
 use App\Entity\UserMission;
+use App\Form\B2B\MissionLogType;
 use App\Form\B2B\MissionType;
 use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
@@ -55,7 +56,12 @@ class MissionController extends AbstractController
     /**
      * @Route("create", name="create")
      */
-    public function create(Request $request, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo,NotificationsRepository $notificationsRepository)
+    public function create(Request $request,
+                           Filesystem $filesystem,
+                           ClientMissionProposalRepository $clientMissionProposalRepo,
+                           NotificationsRepository $notificationsRepository,
+                           MissionPaymentRepository $missionPaymentRepository
+    )
     {
 
         $mission = new UserMission();
@@ -91,29 +97,46 @@ class MissionController extends AbstractController
 //            $transactionFee = 0;
 //            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
+            $result = $missionPaymentRepository->getPrices($price, $margin, $tax, $cityMakerType);
 
             $mission->setUser($this->getUser());
-            $mission->getUserMissionPayment()->setClientPrice($clientPrice); // Client's price
-            $mission->getUserMissionPayment()->setClientTax($clientTax);
-            $mission->getUserMissionPayment()->setClientTotal($clientTotal);
+            $mission->getUserMissionPayment()->setClientPrice($result['client_price']); // Client's price
+            $mission->getUserMissionPayment()->setClientTax($result['client_tax']);
+            $mission->getUserMissionPayment()->setClientTotal($result['client_total']);
 
-            $mission->getUserMissionPayment()->setUserBasePrice($basePrice); // Base price
-            $mission->getUserMissionPayment()->setCmTax($cmTax);
-            $mission->getUserMissionPayment()->setCmTotal($cmTotal);
+            $mission->getUserMissionPayment()->setUserBasePrice($result['cm_price']); // Base price
+            $mission->getUserMissionPayment()->setCmTax($result['cm_tax']);
+            $mission->getUserMissionPayment()->setCmTotal($result['cm_total']);
 
-            $mission->getUserMissionPayment()->setPcsPrice($pcsPrice); //PCS price
-            $mission->getUserMissionPayment()->setPcsTax($pcsTax);
-            $mission->getUserMissionPayment()->setPcsTotal($pcsTotal);
+            $mission->getUserMissionPayment()->setPcsPrice($result['pcs_price']); //PCS price
+            $mission->getUserMissionPayment()->setPcsTax($result['pcs_tax']);
+            $mission->getUserMissionPayment()->setPcsTotal($result['pcs_total']);
 
 //            $mission->getUserMissionPayment()->setTransactionFee($transactionFee); // Trasnsaction Fee
 //            $mission->getUserMissionPayment()->setTaxValue($total - $clientPrice); // Tax charged
 //            $mission->getUserMissionPayment()->setTotal($total); // Total
             $mission->setStatus(MissionStatus::CREATED);
 //            $mission->setCreatedAt(new \DateTime('Y-m-d H:i:s'));
+            $documents = [];
+            foreach($mission->getDocuments() as $document)
+            {
+                $documents[] = $document->getName();
+            }
+            $missionLog = new MissionLog();
+            $missionLog->setUserBasePrice($mission->getMissionBasePrice());
+            $missionLog->setCreatedAt(new \DateTime());
+            $missionLog->setCreatedBy($mission->getUser()->getId());
+            $missionLog->setMission($mission);
+            $missionLog->setIsActive(1);
+            $missionLog->setBriefFiles(json_encode($documents));
+
+            $mission->addMissionLog($missionLog);
 
             $em = $this->getDoctrine()->getManager();
 
+            $mission->setLog($missionLog);
             $em->persist($mission);
+            $em->persist($missionLog);
             $em->flush();
             #Move banner and brief files
             if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()) && $mission->getBannerImage() != '')
@@ -155,46 +178,47 @@ class MissionController extends AbstractController
     /**
      * @Route("edit/{id}",name="edit")
      */
-    public function edit($id, Request $request,
-                         UserMissionRepository $userMissionRepo,
-                         Filesystem $filesystem,
-                         ClientMissionProposalRepository $clientMissionProposalRepo,
-                         MissionPaymentRepository $missionPaymentRepo
+    public function edit($id,
+                         Request $request,
+                         UserMissionRepository $missionRepo,
+                        OptionRepository $optionRepo,
+                        NotificationsRepository $notificationsRepository
                         )
     {
-        $mission = $userMissionRepo->findOneBy([
+        $mission = $missionRepo->findOneBy([
             'id' => $id,
             'user' => $this->getUser()
-        ]);
-
-        $oldBasePrice = $mission->getMissionBasePrice();
-        $oldDocuments = $mission->getDocuments();
-        $docs = [];
-        foreach($oldDocuments as $document)
-        {
-            $docs[] = $document->getName();
-        }
-
+            ]);
         if(is_null($mission))
         {
-            return $this->redirect('/community-manager/mission/list');
+            return $this->redirectToRoute('b2b_community_manager_index');
         }
 
-        $options = $this->getDoctrine()->getRepository(Option::class);
-        $tax = $options->findOneBy(['slug' => 'tax']);
-        $margin = $options->findOneBy(['slug' => 'margin']);
-        $regions = $mission->getReferencePack()->getUser()->getUserRegion();
-        $form = $this->createForm(MissionType::class, $mission,['region' => $regions,
-            'user' => $this->getUser(),
-            'proposals' => $clientMissionProposalRepo->findBy(['user' => $this->getUser()]),
-            'type' => 'edit'
-        ]);
+        $missionLog = new MissionLog();
+        $margin = $optionRepo->findOneBy([
+            'slug' => 'margin'
+        ])->getValue();
+
+        $form = $this->createForm(MissionLogType::class, $missionLog);
 
         $form->handleRequest($request);
-
         if($form->isSubmitted())
         {
-            $this->_resetClientPermission($id);
+            $em = $this->getDoctrine()->getManager();
+
+            $missionLog->setBriefFiles(json_encode($request->get('document')));
+            $missionLog->setIsActive(0);
+            $missionLog->setMission($mission);
+            $missionLog->setCreatedAt(new \DateTime());
+            $missionLog->setCreatedBy($this->getUser()->getId());
+
+
+            $mission->setMissionAgreedClient(0);
+            $em->persist($missionLog);
+            $em->persist($mission);
+            $em->flush();
+
+            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'A mission <strong>'.$mission->getTitle().'</strong> has been edited by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong>', $missionLog->getId());
 
             return new JsonResponse(['success' => true]);
         }
@@ -202,7 +226,8 @@ class MissionController extends AbstractController
         [
             'form' => $form->createView(),
             'mission' => $mission,
-            'margin' => $margin->getValue()
+            'missionLog' => $mission,
+            'margin' => $margin
         ]);
     }
 
@@ -528,7 +553,7 @@ class MissionController extends AbstractController
 
         $mission->addMissionLog($missionLog);
         $em->flush();
-        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getId().' has been edited and needs your approval', $missionLog->getId());
+        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getId().' has beefed and needs your approval', $missionLog->getId());
 
         return new JsonResponse(['success' => true]);
     }

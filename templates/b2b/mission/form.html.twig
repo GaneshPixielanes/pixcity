@@ -530,7 +530,7 @@
                                 $('.pack-photos-list').append(`<li class="pack-photos-list-item d-inline-flex">
                                                                 <img src="/uploads/pack/`+result.data.id+`/`+value.name+`" data-filename="`+value.name+`"/>
                                                                 </li>`);
-                                $('#mission-images-display').append('<input type="hidden" name="mission[missionMedia]['+key+'][name]" value="'+value.name+'"/>');
+                                // $('#mission-images-display').append('<input type="hidden" name="mission[missionMedia]['+key+'][name]" value="'+value.name+'"/>');
                             });
                         }
                     }
@@ -591,8 +591,8 @@
         /* toasts ends */
 
         $('#toStep2').on('click', function () {
-            console.log('activated');
-            imageDropzone();
+            // console.log('activated');
+            // imageDropzone();
             // Dropzone.autoDiscover = false;
             // $(".dropzone > .dz-default").html('');
             //

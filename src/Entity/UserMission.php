@@ -153,6 +153,11 @@ class UserMission
      */
     private $missionLogs;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\missionLog")
+     */
+    private $log;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
@@ -586,5 +591,26 @@ class UserMission
         }
 
         return $this;
+    }
+
+    public function getLog(): ?missionLog
+    {
+        return $this->log;
+    }
+
+    public function setLog(?missionLog $log): self
+    {
+        $this->log = $log;
+
+        return $this;
+    }
+
+    public function getActiveLog()
+    {
+        $log = $this->missionLogs->filter(function (MissionLog $logs){
+            return $logs->getIsActive() == 1;
+        });
+        $log = array_values($log->toArray());
+        return (isset($log) && count($log) > 0)?$log[0]:null;
     }
 }

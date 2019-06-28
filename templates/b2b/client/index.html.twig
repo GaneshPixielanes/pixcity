@@ -69,7 +69,7 @@
 
                         {% if notification.type == 'edit_mission' %}
                             <div class="col-md-3 d-flex justify-content-end">
-                                <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">Confirmer la mission</a>
+                                <a href="javascript:;" class="btn btn-darkblue fz-10 accept-mission" data-dismiss="alert" aria-label="Close" data-id="{{ notification.id }}" data-notifyby="{{ notification.notifyby }}">Confirmer la mission</a>
                             </div>
                         {% endif %}
 
@@ -229,6 +229,19 @@
                     data: {id: id},
                     success: function(data){
                         console.log('success: ' + data);
+                    }
+                });
+            });
+
+            $(".accept-mission").on('click',function () {
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('b2b_notification_accept_edited_mission') }}',
+                    data: {id: id},
+                    success: function(data){
+                        console.log('success: ' + data);
+
                     }
                 });
             });

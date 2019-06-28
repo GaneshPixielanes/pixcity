@@ -57,6 +57,11 @@ class MissionLog
      */
     private $createdBy;
 
+//    /**
+//     * @ORM\OneToOne(targetEntity="App\Entity\UserMission", mappedBy="log")
+//     */
+////    private $userMisson;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,4 +162,5 @@ class MissionLog
 
         return $this;
     }
+
 }

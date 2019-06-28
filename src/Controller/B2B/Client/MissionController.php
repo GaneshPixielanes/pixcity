@@ -4,6 +4,7 @@ namespace App\Controller\B2B\Client;
 
 use App\Constant\MissionStatus;
 use App\Entity\ClientTransaction;
+use App\Entity\Option;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionRepository;
@@ -35,6 +36,8 @@ class MissionController extends AbstractController
      */
     public function index(UserMissionRepository $missionRepo)
     {
+        $options = $this->getDoctrine()->getRepository(Option::class);
+        $margin = $options->findOneBy(['slug' => 'margin']);
         $missions['ongoing'] = $missionRepo->findOngoingMissions($this->getUser(),'client');
         $missions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
         $missions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
@@ -42,6 +45,7 @@ class MissionController extends AbstractController
 
         return $this->render('b2b/client/mission/index.html.twig', [
             'missions' => $missions,
+            'margin' => $margin
         ]);
     }
 
