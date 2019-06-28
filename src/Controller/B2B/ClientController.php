@@ -204,13 +204,15 @@ class ClientController extends Controller
 
         $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
-        $last_result = $missionPaymentRepository->getPrices($mission->getLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
         $result = [];
 
-        $result['price'] = $last_result['client_price'] - $first_result['client_price'];
+        $result['price'] = $last_result['client_price'];
         $result['tax'] = $last_result['client_tax'];
-        $result['total'] = $result['price']+ $result['tax'];
+        $result['total'] = $result['price'] + $result['tax'];
+        $result['advance_payment'] = $first_result['client_price'];
+        $result['need_to_pay'] = $result['total'] - $first_result['client_price'];
 
 
         return new JsonResponse($result);

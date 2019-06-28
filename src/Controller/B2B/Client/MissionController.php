@@ -131,18 +131,19 @@ class MissionController extends AbstractController
 
         if($mission->getUserMissionPayment()->getAdjustment() == null){
             $amount = $mission->getUserMissionPayment()->getClientTotal();
-
         }else{
 
             $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
-            $last_result = $missionPaymentRepository->getPrices($mission->getLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+            $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
-            $result['price'] = $last_result['client_price'] - $first_result['client_price'];
+            $result['price'] = $last_result['client_price'];
             $result['tax'] = $last_result['client_tax'];
-            $result['total'] = $result['price']+ $result['tax'];
+            $result['total'] = $result['price'] + $result['tax'];
+            $result['advance_payment'] = $first_result['client_price'];
+            $result['need_to_pay'] = $result['total'] - $first_result['client_price'];
 
-            $amount = $result['total'];
+            $amount = $result['need_to_pay'];
 
         }
 
