@@ -212,7 +212,7 @@ class ClientController extends Controller
         $result['tax'] = $last_result['client_tax'];
         $result['total'] = $result['price'] + $result['tax'];
         $result['advance_payment'] = $first_result['client_price'] + $last_result['client_tax'];
-        $result['need_to_pay'] = $result['total'] - $first_result['advance_payment'];
+        $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
 
 
         return new JsonResponse($result);
