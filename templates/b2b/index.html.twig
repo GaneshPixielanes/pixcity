@@ -114,7 +114,7 @@
                 {% endif %}
             </div>
             <ul class="available-missions-list m-0 mt-3 col-md-12">
-                {% for mission in app.user.userMission %}
+                {% for mission in missions %}
                     <li class="mission-list-item d-flex align-items-center text-darkgray">
                         <i class="fas {{ mission.referencePack.packSkill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
                         <p class="mb-0 px-3 w-40">{{ mission.title }}
