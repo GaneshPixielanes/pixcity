@@ -302,8 +302,10 @@
         </div>
 
         <div class="mission-cta d-flex align-items-center">
+            {% if mission.status != 'terminated' and mission.status != 'cancelled' %}
             <a href="javascript:;" class="btn btn-outline-darkgray btn-pill mr-3 edit-the-mission">Éditer la
                 mission</a>
+            {% endif %}
             <div class="dropdown dropup">
                 <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="userActions"></i>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userActions">

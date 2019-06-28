@@ -123,7 +123,7 @@
                         <p class="w-15 mb-0">{{ mission.client }}</p>
                         <p class="w-15 mb-0 {% if mission.status == 'cancelled' %}text-canceled{% elseif mission.status == 'terminated' %}text-completed{% else %} text-inprogress {% endif %}">{{ ('b2b.label.' ~ mission.status)|trans }}</p>
                         <p class="mb-0 px-4 w-10">{% if mission.getActiveLog().userBasePrice is defined %}{{ mission.getActiveLog().userBasePrice |number_format(2)}}{% else %}{{  mission.missionBasePrice }}{% endif %}€</p>
-                        <i class="fas fa-edit preview-edit-mission" data-id="{{ mission.id }}"></i>
+                        <i class="fas {% if mission.status == 'cancelled' or mission.status == 'terminated'%}fa-eye{% else %}fa-edit{% endif %} preview-edit-mission" data-id="{{ mission.id }}"></i>
                     </li>
                 {% endfor %}
             </ul>
