@@ -353,7 +353,7 @@ class User implements UserInterface, EquatableInterface
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="skill_id", referencedColumnName="id")})
      */
-//    private $userSkills;
+    private $userSkills;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
