@@ -4,10 +4,14 @@ namespace App\Controller\Api;
 
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
+use App\Entity\Option;
+use App\Repository\ClientTransactionRepository;
+use App\Repository\MissionPaymentRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
+use App\Service\MangoPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
@@ -61,9 +65,15 @@ class MissionController extends Controller
     /**
      * @Route("/status",name="client_status")
      */
-    public function statusUpdate(UserMissionRepository $missionRepo, Request $request, NotificationsRepository $notificationsRepository,Filesystem $filesystem)
+    public function statusUpdate(UserMissionRepository $missionRepo,
+                                 Request $request,
+                                 NotificationsRepository $notificationsRepository,
+                                 Filesystem $filesystem,
+                                 ClientTransactionRepository $clientTransactionRepository,
+                                 MissionPaymentRepository $missionPaymentRepository,
+                                 MangoPayService $mangoPayService)
     {
-        $mission = $missionRepo->find($request->get('id'));
+        $mission = $missionRepo->activePrices($request->get('id'));
         $status = '';
 
         if(is_null($mission) || $mission->getClient()->getId() != $this->getUser()->getId())
@@ -116,7 +126,35 @@ class MissionController extends Controller
             case 'terminate':
                     if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
+
                         $status = MissionStatus::TERMINATED;
+
+                        $options = $this->getDoctrine()->getRepository(Option::class);
+
+                        $tax = $options->findOneBy(['slug' => 'tax']);
+                        $margin = $options->findOneBy(['slug' => 'margin']);
+
+                        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+
+                        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+                        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+                        $result = [];
+
+                        $result['price'] = $last_result['client_price'];
+                        $result['tax'] = $last_result['client_tax'];
+                        $result['total'] = $result['price'] + $result['tax'];
+                        $result['advance_payment'] = $first_result['client_total'];
+                        $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
+                        $result['refund_amount'] = $result['advance_payment'] - $result['total'];
+
+
+                        $transaction = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
+
+
+                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$result['refund_amount']);
+                        dd($response);
                         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),1);
 
                         $filesystem->mkdir('invoices/'.$mission->getId());
