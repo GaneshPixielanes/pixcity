@@ -211,7 +211,7 @@ class ClientController extends Controller
         $result['price'] = $last_result['client_price'];
         $result['tax'] = $last_result['client_tax'];
         $result['total'] = $result['price'] + $result['tax'];
-        $result['advance_payment'] = $first_result['client_price'] + $last_result['client_tax'];
+        $result['advance_payment'] = $first_result['client_total'];
         $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
 
 
