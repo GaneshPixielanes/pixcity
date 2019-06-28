@@ -5,13 +5,17 @@ namespace App\Controller\B2B;
 use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
+use App\Entity\MissionLog;
 use App\Entity\Option;
 use App\Entity\UserMission;
 use App\Form\B2B\MissionType;
 use App\Repository\ClientMissionProposalMediaRepository;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\MissionDocumentRepository;
+use App\Repository\MissionLogRepository;
 use App\Repository\MissionMediaRepository;
+use App\Repository\MissionPaymentRepository;
+use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\PackRepository;
@@ -71,7 +75,8 @@ class MissionController extends AbstractController
         $form = $this->createForm(MissionType::class, $mission,[
             'region' => $regions,
             'user' => $this->getUser(),
-            'proposals' => $proposals
+            'proposals' => $proposals,
+            'type' => 'create'
         ]);
 
         $form->handleRequest($request);
@@ -82,59 +87,7 @@ class MissionController extends AbstractController
 
             $margin = $margin->getValue();
             $tax = $tax->getValue();
-            if($cityMakerType != CompanyStatus::COMPANY)
-            {
-                #Calculate client price; cp = (margin * baseprice)/100
 
-                /* Get CM price details */
-                $basePrice = $price;
-                $cmTax = 0;
-                $cmTotal = $price;
-
-                /* Get client price details*/
-                $clientPrice = (100 * $price)/(100 - $margin);
-                $clientTax = 0;
-                $clientTotal = $clientPrice;
-
-
-
-                /* Get Pix City Services details */
-
-//                $pcsPrice = $clientPrice - $price;
-//                $pcsTax = $pcsPrice * ($margin/100);
-//                $pcsTotal = $pcsPrice - $pcsTax;
-                $pcsPrice = (($clientPrice - $price)/100)*(100-16.66667);
-                $pcsTax = (($clientPrice - $price)/100)* 16.66667;
-                $pcsTotal = $pcsPrice + $pcsTax;
-
-
-            }
-            else
-            {
-                /* Get CM price details */
-//                $basePrice = $price - ($price * ($tax/100));
-//                $basePrice =  $price/(100 -  $margin) * 100;
-                $basePrice =  $price;
-                $cmTotal = $price + ($basePrice * ($tax/100));
-                $cmTax = $cmTotal - $basePrice;
-
-
-                /* Get client price details*/
-                $clientPrice = $price/(100 - $margin) * 100;
-                $clientTax = $clientPrice * $tax/100;
-                $clientTotal = $clientPrice + $clientTax;
-//                $clientTotal = (100 * $price)/(100 - $margin);
-//                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
-
-//                $clientTax = $clientTotal - $clientPrice;
-
-                /* Get Pix City Services details */
-                $pcsPrice = $clientPrice - $price;
-                $pcsTax = $pcsPrice * ($tax/100);
-                $pcsTotal = $pcsPrice + $pcsTax;
-
-
-            }
 //            $transactionFee = 0;
 //            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
 
@@ -202,137 +155,48 @@ class MissionController extends AbstractController
     /**
      * @Route("edit/{id}",name="edit")
      */
-    public function edit($id, Request $request,UserMissionRepository $userMissionRepo, Filesystem $filesystem, ClientMissionProposalRepository $clientMissionProposalRepo)
+    public function edit($id, Request $request,
+                         UserMissionRepository $userMissionRepo,
+                         Filesystem $filesystem,
+                         ClientMissionProposalRepository $clientMissionProposalRepo,
+                         MissionPaymentRepository $missionPaymentRepo
+                        )
     {
-        $mission = $userMissionRepo->findBy([
+        $mission = $userMissionRepo->findOneBy([
             'id' => $id,
             'user' => $this->getUser()
         ]);
 
-        if(empty($mission))
+        $oldBasePrice = $mission->getMissionBasePrice();
+        $oldDocuments = $mission->getDocuments();
+        $docs = [];
+        foreach($oldDocuments as $document)
+        {
+            $docs[] = $document->getName();
+        }
+
+        if(is_null($mission))
         {
             return $this->redirect('/community-manager/mission/list');
         }
-        else
-        {
-            $mission = $mission[0];
-        }
+
         $options = $this->getDoctrine()->getRepository(Option::class);
         $tax = $options->findOneBy(['slug' => 'tax']);
         $margin = $options->findOneBy(['slug' => 'margin']);
         $regions = $mission->getReferencePack()->getUser()->getUserRegion();
         $form = $this->createForm(MissionType::class, $mission,['region' => $regions,
             'user' => $this->getUser(),
-            'proposals' => $clientMissionProposalRepo->findBy(['user' => $this->getUser()])
+            'proposals' => $clientMissionProposalRepo->findBy(['user' => $this->getUser()]),
+            'type' => 'edit'
         ]);
 
         $form->handleRequest($request);
+
         if($form->isSubmitted())
         {
-            $em = $this->getDoctrine()->getManager();
+            $this->_resetClientPermission($id);
 
-            $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
-            $price = $mission->getMissionBasePrice();
-
-            $margin = $margin->getValue();
-            $tax = $tax->getValue();
-            if($cityMakerType != CompanyStatus::COMPANY)
-            {
-                #Calculate client price; cp = (margin * baseprice)/100
-
-                /* Get CM price details */
-                $basePrice = $price;
-                $cmTax = 0;
-                $cmTotal = $price;
-
-                /* Get client price details*/
-                $clientPrice = (100 * $price)/(100 - $margin);
-                $clientTax = 0;
-                $clientTotal = $clientPrice;
-
-
-
-                /* Get Pix City Services details */
-
-//                $pcsPrice = $clientPrice - $price;
-//                $pcsTax = $pcsPrice * ($margin/100);
-//                $pcsTotal = $pcsPrice - $pcsTax;
-                $pcsPrice = (($clientPrice - $price)/100)*(100-16.66667);
-                $pcsTax = (($clientPrice - $price)/100)* 16.66667;
-                $pcsTotal = $pcsPrice + $pcsTax;
-
-
-            }
-            else
-            {
-                /* Get CM price details */
-//                $basePrice = $price - ($price * ($tax/100));
-//                $basePrice =  $price/(100 -  $margin) * 100;
-                $basePrice =  $price;
-                $cmTotal = $price + ($basePrice * ($tax/100));
-                $cmTax = $cmTotal - $basePrice;
-
-
-                /* Get client price details*/
-                $clientPrice = $price/(100 - $margin) * 100;
-                $clientTax = $clientPrice * $tax/100;
-                $clientTotal = $clientPrice + $clientTax;
-//                $clientTotal = (100 * $price)/(100 - $margin);
-//                $clientPrice = $clientTotal - ($clientTotal * ($tax/100));
-
-//                $clientTax = $clientTotal - $clientPrice;
-
-                /* Get Pix City Services details */
-                $pcsPrice = $clientPrice - $price;
-                $pcsTax = $pcsPrice * ($tax/100);
-                $pcsTotal = $pcsPrice + $pcsTax;
-
-
-            }
-
-            $mission->setUser($this->getUser());
-            $mission->setReferencePack($mission->getReferencePack());
-
-            $mission->getUserMissionPayment()->setClientPrice($clientPrice); // Client's price
-            $mission->getUserMissionPayment()->setClientTax($clientTax);
-            $mission->getUserMissionPayment()->setClientTotal($clientTotal);
-
-            $mission->getUserMissionPayment()->setUserBasePrice($basePrice); // Base price
-            $mission->getUserMissionPayment()->setCmTax($cmTax);
-            $mission->getUserMissionPayment()->setCmTotal($cmTotal);
-
-            $mission->getUserMissionPayment()->setPcsPrice($pcsPrice); //PCS price
-            $mission->getUserMissionPayment()->setPcsTax($pcsTax);
-            $mission->getUserMissionPayment()->setPcsTotal($pcsTotal);
-
-            $em->persist($mission);
-            $em->flush();
-
-            #Move banner and brief files
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()) && $mission->getBannerImage() != '')
-            {
-                $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBannerImage(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBannerImage());
-            }
-            if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBriefFiles()) && $mission->getBriefFiles() != '')
-            {
-                $filesystem->copy('uploads/'.UserMission::tempFolder().$mission->getBriefFiles(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$mission->getBriefFiles());
-            }
-            #Move files to the upload folder from temp folder
-            foreach($mission->getMissionMedia() as $media)
-            {
-                # If files are found in the temp folder, then move the files from temp folder.
-                # Otherwise check the packs folder and move files from there (import images from packs)
-                if($filesystem->exists('uploads/'.UserMission::tempFolder().$media->getName()))
-                {
-                    $filesystem->copy('uploads/'.UserMission::tempFolder().$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
-                }
-                elseif ($filesystem->exists('uploads/mission/'.$mission->getReferencePack()->getId().'/'.$media->getName()))
-                {
-                    $filesystem->copy('uploads/mission/'.$mission->getReferencePack()->getId().'/'.$media->getName(),'uploads/'.UserMission::uploadFolder().'/'.$mission->getId().'/'.$media->getName());
-                }
-            }
-
-            return $this->redirectToRoute('b2b_mission_list');
+            return new JsonResponse(['success' => true]);
         }
         return $this->render('b2b/mission/edit-form.html.twig',
         [
@@ -342,6 +206,20 @@ class MissionController extends AbstractController
         ]);
     }
 
+    private function _resetClientPermission($id)
+    {
+
+        $mission = $this->getDoctrine()->getRepository(UserMission::class)->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $mission->setMissionAgreedClient(1);
+
+        $em->flush();
+
+        return true;
+    }
     /**
      * @Route("view/{id}",name="view")
      */
@@ -627,5 +505,31 @@ class MissionController extends AbstractController
 
 
 
+    }
+
+    /**
+     * @Route("edit-ajax/{id}",name="edit_ajax")
+     */
+    public function editAjax($id, Request $request, NotificationsRepository $notificationsRepo)
+    {
+        $mission = $this->getDoctrine()->getRepository(UserMission::class)->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $mission->setMissionAgreedClient(1);
+        /* Add the logs */
+        $missionLog = new MissionLog();
+        $missionLog->setUserBasePrice($request->get('price'));
+        $missionLog->setCreatedAt(new \DateTime());
+        $missionLog->setCreatedBy($mission->getUser()->getId());
+        $missionLog->setMission($mission);
+        $missionLog->setIsActive(0);
+        $missionLog->setBriefFiles($request->get('document'));
+
+        $mission->addMissionLog($missionLog);
+        $em->flush();
+        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getId().' has been edited and needs your approval', $missionLog->getId());
+
+        return new JsonResponse(['success' => true]);
     }
 }

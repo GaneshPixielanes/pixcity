@@ -163,7 +163,6 @@ class PixieAccountController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
 
 
-
             if($session->has('cm')){
 
                 if($user->getCmUpgradeB2bDate() == null){
@@ -202,7 +201,8 @@ class PixieAccountController extends Controller
 
             }
 
-
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             $entityManager->persist($user);
             $entityManager->flush();

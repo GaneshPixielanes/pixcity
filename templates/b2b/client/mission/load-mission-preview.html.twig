@@ -52,7 +52,7 @@
     }
 
     .invoice main .thanks {
-        margin-top: -100px;
+        margin-top: -79px;
         font-size: 2em;
         margin-bottom: 50px
     }
@@ -221,7 +221,7 @@
                         <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i></p>
                         <p class="mb-0 text-darkgray">
                             {{ mission.briefFiles }}
-                            <a href="{{ path('b2b_mission_download',{'id':mission.id}) }}" class="d-block fz-12 text-inprogress">Voir le devis</a>
+                            <a href="/invoices/{{ mission.id }}/{{ filename }}-client.pdf" class="d-block fz-12 text-inprogress" download>Voir le devis</a>
                         </p>
                     </div>
                 {% endif %}
@@ -232,7 +232,7 @@
                     <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="userActions"></i>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userActions">
                         {% if mission.status == 'terminate_request_cm' %}
-                            <a class="dropdown-item text-darkgray fz-12" href="javascript:;" id="terminateMission" data-id="{{ mission.id }}" data-toggle="modal" data-target="#endMissionConfirmation"><i class="far fa-check-circle mr-2"></i>Accept Terminer</a>
+                            <a class="dropdown-item text-darkgray fz-12" href="javascript:;" id="terminateMission" data-id="{{ mission.id }}" data-adjust-amount="{{ mission.userMissionPayment.adjustment }}" data-toggle="modal" data-target="#endMissionConfirmation"><i class="far fa-check-circle mr-2"></i>Accept Terminer</a>
                         {% endif %}
                         {% if mission.status == 'cancel_request_cm' %}
                             <a class="dropdown-item text-pink fz-12" href="javascript:;" id="mission-cancel" data-id="{{ mission.id }}"><i class="far fa-times-circle mr-2"></i>Accept Annuler</a>

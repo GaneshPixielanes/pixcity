@@ -5,7 +5,7 @@
 {% block content %}
     <div class="tab-pane active" id="home" role="tabpanel">
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Accueil
+            <div class="d-flex align-items-center fz-20 text-darkblue"><a href="{{ url('b2b_community_manager_index') }}" style="color:#103358;text-decoration: none;"><i class="fas fa-home fz-30 mr-2"></i> Accueil </a>
             </div>
             {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
             <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"
@@ -70,7 +70,7 @@
 
             </div>
             <div class="col-md-12 content-top-header d-flex align-items-center">
-                <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> packs disponibles</h4>
+                <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> packs disponible{% if packs|length > 1 %}s{% endif %}</h4>
                 <div class="filter-packages d-flex">
                     <label class="text-seagreen m-0 mr-3 d-none active">
                         <input type="checkbox" name="filterpackage" value="all">
@@ -106,7 +106,9 @@
             </ul>
             <div class="col-md-12 content-top-header d-flex align-items-center">
                 {% if app.user.userMission | length == 0 %}
-                    <h4 class="mb-0">Aucune mission créée, <a href="{{ url('b2b_mission_create') }}">cliquez</a> ici pour en créer une</a></h4>
+                    {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
+                        <h4 class="mb-0">Aucune mission créée, <a href="{{ url('b2b_mission_create') }}">cliquez</a> ici pour en créer une</a></h4>
+                    {% endif %}
                 {% else %}
                     <h4 class="mb-0">Listes des missions</h4>
                 {% endif %}
