@@ -15,6 +15,7 @@ use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -184,6 +185,35 @@ class ClientController extends Controller
             'mission' => $mission[0],
             'tax' => $tax[0]->getValue()
         ]);
+
+    }
+
+    /**
+     * @Route("mission-details", name="mission_details")
+     */
+    public function missionDetail(Request $request,UserMissionRepository $missionRepository,MissionPaymentRepository $missionPaymentRepository){
+
+        $mission = $missionRepository->activePrices($request->get('id'));
+
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);
+        $margin = $options->findOneBy(['slug' => 'margin']);
+
+        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+
+        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $last_result = $missionPaymentRepository->getPrices($mission->getLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $result = [];
+
+        $result['price'] = $last_result['client_price'] - $first_result['client_price'];
+        $result['tax'] = $last_result['client_tax'];
+        $result['total'] = $result['price']+ $result['tax'];
+
+
+        return new JsonResponse($result);
 
     }
 
