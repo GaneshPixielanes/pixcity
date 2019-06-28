@@ -1,14 +1,23 @@
-{% extends 'base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
 
 {% block body %}
-    <div class="container" style="margin-top:100px">
-        <div class="col-md-12">
-
-            <a href="{{ path('front_pixie_account_settings') }}">
-                <img src="/uploads/users/Capture.png" alt="" style="width: 100%">
-            </a>
-
-
+    <div class="felicitation-wrap cm-welcome">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 felicitation-content d-flex align-items-center">
+                    <div class="row">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-7">
+                            <img src="/assets/images/felicitation-logo.svg">
+                            <h4 class="font-weight-bold text-darkblue fz-20 my-3">Mettez votre savoir faire de community-manager auservice de votre région avec Pix.City Services</h4>
+                            <p class="fz-16 font-weight-light">Vous avez un compte Instagram actif, vous souhaitez mettre vos compétences de community manager, d’influenceur local, de photographe (ou autre) auprès d’acteurs locaux.. </p>
+                            <br>
+                            <p class="fz-16 font-weight-light">Inscrivez-vous et vous serez peut-être sélectionné(e) pour devenir le community manager incontournable de boutiques, restaurants et commerces près de chez vous. Vous deviendrez alors un city-maker services !</p>
+                            <a href="/city-maker/compte/parametres" class="btn btn-pink btn-pill lh2">Devenir City-maker Services</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
