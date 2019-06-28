@@ -57,10 +57,10 @@ class MissionLog
      */
     private $createdBy;
 
-//    /**
-//     * @ORM\OneToOne(targetEntity="App\Entity\UserMission", mappedBy="log")
-//     */
-//    private $userMisson;
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\UserMission", mappedBy="log")
+     */
+    private $userMisson;
 
     public function getId(): ?int
     {
@@ -163,21 +163,21 @@ class MissionLog
         return $this;
     }
 
-//    public function getUserMisson(): ?UserMission
-//    {
-//        return $this->userMisson;
-//    }
-//
-//    public function setUserMisson(?UserMission $userMisson): self
-//    {
-//        $this->userMisson = $userMisson;
-//
-//        // set (or unset) the owning side of the relation if necessary
-//        $newLog = $userMisson === null ? null : $this;
-//        if ($newLog !== $userMisson->getLog()) {
-//            $userMisson->setLog($newLog);
-//        }
-//
-//        return $this;
-//    }
+    public function getUserMisson(): ?UserMission
+    {
+        return $this->userMisson;
+    }
+
+    public function setUserMisson(?UserMission $userMisson): self
+    {
+        $this->userMisson = $userMisson;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newLog = $userMisson === null ? null : $this;
+        if ($newLog !== $userMisson->getLog()) {
+            $userMisson->setLog($newLog);
+        }
+
+        return $this;
+    }
 }

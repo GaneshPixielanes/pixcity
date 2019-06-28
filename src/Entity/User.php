@@ -338,14 +338,14 @@ class User implements UserInterface, EquatableInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\Region")
      * @ORM\JoinTable(name="pxl_b2b_regions_users")
      */
-        private $userRegion;
+    private $userRegion;
 
 
 
-        /**
-         * @ORM\OneToMany(targetEntity="App\Entity\CommunityMedia", mappedBy="user",cascade={"persist"})
-         */
-        private $communityMedia;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CommunityMedia", mappedBy="user",cascade={"persist"})
+     */
+    private $communityMedia;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Skill")
@@ -353,9 +353,9 @@ class User implements UserInterface, EquatableInterface
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="skill_id", referencedColumnName="id")})
      */
-    private $userSkills;
+//    private $userSkills;
 
-     /**
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $cm_upgrade_b2b_date;
