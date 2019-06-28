@@ -187,7 +187,10 @@ class MissionController extends AbstractController
     public function missionAcceptProcess($id, ClientTransactionRepository $transactionRepo,
                                          ClientRepository $clientRepository,
                                          UserMissionRepository $missionRepo,
-                                         Request $request,MangoPayService $mangoPayService,NotificationsRepository $notificationsRepository)
+                                         Request $request,
+                                         MangoPayService $mangoPayService,
+                                         NotificationsRepository $notificationsRepository,
+                                         MissionPaymentRepository $missionPaymentRepository)
     {
 
         $response = $mangoPayService->getResponse($request->get('transactionId'));
@@ -207,6 +210,14 @@ class MissionController extends AbstractController
             if($transaction->getMission()->getUserMissionPayment()->getAdjustment() == null){
                 $transaction->getMission()->setStatus(MissionStatus::ONGOING);
             }else{
+
+//                $missionPaymentRepository->getPrices()
+//
+//
+//
+//                $transaction->getMission()->getUserMissionPayment()->setUserBasePrice();
+//                $transaction->getMission()->getUserMissionPayment()->setClientPrice();
+//                $transaction->getMission()->getUserMissionPayment()->setClientPrice();
                 $transaction->getMission()->setStatus(MissionStatus::TERMINATED);
             }
 
