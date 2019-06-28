@@ -7,6 +7,7 @@ use App\Entity\ClientTransaction;
 use App\Entity\Option;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTransactionRepository;
+use App\Repository\MissionPaymentRepository;
 use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
@@ -114,16 +115,35 @@ class MissionController extends AbstractController
      */
     public function missionProcess($id,
                                    MangoPayService $mangoPayService,
-                                   UserMissionRepository $missionRepo
+                                   UserMissionRepository $missionRepo,
+                                   MissionPaymentRepository $missionPaymentRepository
     )
     {
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);
+        $margin = $options->findOneBy(['slug' => 'margin']);
+
         $transaction = new ClientTransaction();
-        $mission = $missionRepo->find($id);
+        $mission = $missionRepo->activePrices($id);
+
+        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
 
         if($mission->getUserMissionPayment()->getAdjustment() == null){
             $amount = $mission->getUserMissionPayment()->getClientTotal();
+
         }else{
-            $amount = $mission->getUserMissionPayment()->getAdjustment();
+
+            $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+            $last_result = $missionPaymentRepository->getPrices($mission->getLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+            $result['price'] = $last_result['client_price'] - $first_result['client_price'];
+            $result['tax'] = $last_result['client_tax'];
+            $result['total'] = $result['price']+ $result['tax'];
+
+            $amount = $result['total'];
+
         }
 
         // Create a mango pay user
@@ -179,9 +199,15 @@ class MissionController extends AbstractController
 
             $transaction->setMangopayTransactionId($request->get('transactionId'));
             $transaction->setPaymentStatus(true);
-            $transaction->getMission()->setStatus(MissionStatus::ONGOING);
+
             $transaction->getMission()->setMissionAgreedClient(1);
             $em = $this->getDoctrine()->getManager();
+
+            if($transaction->getMission()->getUserMissionPayment()->getAdjustment() == null){
+                $transaction->getMission()->setStatus(MissionStatus::ONGOING);
+            }else{
+                $transaction->getMission()->setStatus(MissionStatus::TERMINATED);
+            }
 
             $em->persist($transaction);
             $em->flush();

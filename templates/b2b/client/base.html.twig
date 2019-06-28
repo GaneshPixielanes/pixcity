@@ -283,7 +283,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p id="mission-termination-text"></p>
+                            <p>The Breakup amount need to pay to terminate the mission</p>
+                            <p id="price"></p>
+                            <p id="tax"></p>
+                            <hr>
+                            <p id="total"></p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
@@ -743,16 +747,27 @@
         $(document).on('click','#terminateMission',function () {
 
             var amount = $(this).attr('data-adjust-amount');
-            console.log(amount > 0);
-            if(amount > 0){
-                $("#mission-termination-text").text("The access amount "+amount+" you need to pay to terminate the mission");
-                $("#mission-termination-text").text("The access amount "+amount+" you need to pay to terminate the mission");
-                $("#mission-termination-text").text("The access amount "+amount+" you need to pay to terminate the mission");
-                $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+$(this).attr('data-id'));
-            }else{
-                $('#mission-termination-text').text("The remaining amount "+amount+" will be paid back to you within 48 hours");
-                $('#mission-terminate').attr('data-id',$(this).attr('data-id'));
-            }
+            var id = $(this).attr('data-id');
+
+            $.ajax({
+                url:"{{ path('b2b_client_main_mission_details') }}",
+                data:{id:id},
+                method:'GET',
+                success:function (data) {
+                    console.log(data.client_price);
+                    if(amount > 0){
+                        $("#price").text('Price :'+data.price);
+                        $("#tax").text("Vat :"+data.tax);
+                        $('#total').text("Total :"+data.total);
+                        $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+id);
+                    }else{
+                        $('#mission-termination-text').text("The remaining amount "+amount+" will be paid back to you within 48 hours");
+                        $('#mission-terminate').attr('data-id',$(this).attr('data-id'));
+                    }
+                }
+            })
+
+
 
 
 
