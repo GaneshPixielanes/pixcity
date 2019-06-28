@@ -1,4 +1,5 @@
 {{ form_start(form) }}
+<input type="hidden" class="base-price" value="" data-bind-callback="calculateClientPrice" data-bind="client-price"/>
 <div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
     <img src="{{ mission.bannerUrl }}" class="cover-image w-100 h-100" alt="Mission Cover Image">
     <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-preview-edit"><i class="fal fa-times fz-20"></i></a>
@@ -73,9 +74,9 @@
         </p>
         <h5 class="text-darkgray mb-0">Fixez votre nouveaux prix</h5>
         <p class="text-textgray">Si vous ne savez pas comment définir vos prix suivez <a href="javascript:;">notre guide !</a></p>
-        <p class="mb-0 mt-4 text-textgray fz-12"><span class="text-pink fz-16 mr-2">{{ mission.getActiveLog().userBasePrice  }}€</span> Ce qui sera
+        <p class="mb-0 mt-4 text-textgray fz-12"><span class="text-pink fz-16 mr-2"><span class="base-price">{{ mission.getActiveLog().userBasePrice  }}</span>€</span> Ce qui sera
             affiché sur la plateforme
-            <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16">{{ mission.getActiveLog().userBasePrice | clientPrice(margin) | number_format(2) }}€</span>
+            <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16"><span class="client-price">{{ mission.getActiveLog().userBasePrice | clientPrice(margin) | number_format(2) }}</span>€</span>
         </p>
     </div>
     <div class="work-documents-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
@@ -175,7 +176,7 @@
         <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
         <div class="d-flex align-items-center">
             <div class="input-group w-10">
-                <input type="number" name="{{ form.userBasePrice.vars.full_name }}" class="form-control fz-16 font-weight-bold bg-lightwhite" placeholder="99" aria-label="Pack price" aria-describedby="pack-price" value="{{ mission.getActiveLog().userBasePrice }}">
+                <input type="number" name="{{ form.userBasePrice.vars.full_name }}" class="form-control fz-16 font-weight-bold bg-lightwhite" placeholder="99" aria-label="Pack price" aria-describedby="pack-price" value="{{ mission.getActiveLog().userBasePrice }}" data-bind="base-price">
                 <div class="input-group-append">
                     <span class="input-group-text bg-textgray border-textgray text-white" id="pack-price">€</span>
                 </div>
@@ -287,7 +288,7 @@
             </div>
             <div class="mr-4">
                 <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                <p class="mb-0 text-darkgray user-price">{{ mission.getActiveLog().userBasePrice }}€</p>
+                <p class="mb-0 text-darkgray user-price "><span class="base-price">{{ mission.getActiveLog().userBasePrice }}</span>€</p>
             </div>
             {% if mission.status == 'terminated' %}
             <div class="mission-invoice d-flex align-items-center">
@@ -331,5 +332,5 @@
     </div>
 </nav>
 
-<div id="api-box" data-date="{{ "now" | date('d/m/Y') }}"></div>
+<div id="api-box" data-date="{{ "now" | date('d/m/Y') }}" data-margin="{{ margin }}"></div>
 {{ form_end(form,{'render_rest':false}) }}
