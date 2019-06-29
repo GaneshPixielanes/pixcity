@@ -1,0 +1,97 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.clientsList'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.clients'|trans }} - {{ client.firstName ~' '~ client.lastName}}
+                </h2>
+                <div>
+                <a href="{{ path('admin_client_index') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
+
+                | <a href="{{ path('admin_client_edit', {'id': client.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
+                </div>
+            </div>
+            <div class="body">
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <td><img src="{{ absolute_url('/uploads/'~client.profilePhoto) }}" alt="{{ client.firstName }}" width="20%"></td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ client.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Company</th>
+                        <td>{{ client.company }}</td>
+                    </tr>
+                    <tr>
+                        <th>CreatedAt</th>
+                        <td>{{ client.createdAt ? client.createdAt|date('d-M-Y H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>UpdatedAt</th>
+                        <td>{{ client.updatedAt ? client.updatedAt|date('d-M-Y H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>LastLoggedinAt</th>
+                        <td>{{ client.lastLoggedinAt ? client.lastLoggedinAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>Client Info</th>
+                    </tr>
+                    <tr>
+                        <th>Siret</th>
+                        <td>{{ client.clientInfo.siret }}</td>
+                    </tr>
+                    <tr>
+                        <th>Business</th>
+                        <td>{{ client.clientInfo.business }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ client.clientInfo.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Address</th>
+                        <td>{{ client.clientInfo.address }}</td>
+                    </tr>
+                    <tr>
+                        <th>Postal Code</th>
+                        <td>{{ client.clientInfo.postalCode }}</td>
+                    </tr>
+                    <tr>
+                        <th>City</th>
+                        <td>{{ client.clientInfo.city }}</td>
+                    </tr>
+                    <tr>
+                        <th>Company Type</th>
+                        <td>{{ client.clientInfo.companyType }}</td>
+                    </tr>
+                    <tr>
+                        <th>City</th>
+                        <td>{{ client.clientInfo.companyCreationDate ? client.clientInfo.companyCreationDate|date('d-M-Y H:i:s') : ''  }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
