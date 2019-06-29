@@ -152,10 +152,11 @@ class MissionController extends Controller
 
                         $transaction = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
 
+                        if($result['need_to_pay'] != 0){
+                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$result['refund_amount']);
+                        }
 
-                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$result['refund_amount']);
-                        dd($response);
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),1);
+                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
                         $filesystem->mkdir('invoices/'.$mission->getId());
 

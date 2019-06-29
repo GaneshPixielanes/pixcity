@@ -765,7 +765,7 @@
                         $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
                         $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
                         $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+id);
-                    }else{
+                    }else if(amount < 0){
                         $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
                         $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
                         $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
@@ -775,6 +775,8 @@
                         $('#mission-termination-text').text("The remaining amount "+amount+" will be paid back to you within 48 hours");
                         $('#mission-terminate').attr('data-id',id);
 
+                    }else if(amount == 0){
+                        $('#mission-terminate').attr('data-id',id);
                     }
                 }
             })
@@ -793,7 +795,7 @@
                url:"{{ path('api_mission_client_status') }}",
                data: {id: id,status:'terminate'},
                success:function (data) {
-                // window.location.href = "/client/mission/list";
+                    window.location.href = "/client/mission/list";
                }
            })
         });
