@@ -5,6 +5,15 @@ ROLE_PIXIE: City-maker
 ROLE_USER: Utilisateur
 
 label:
+    cmlist: CM list
+    cm: CM
+    clientsList: Clients List
+    clients: Client
+    packsList: Packs List
+    packs: Packs
+    missions: Missions
+    payments: Payments
+    pagenotfound: Page not found
     title: Titre
     email: Email
     name: Nom
@@ -252,6 +261,8 @@ action:
     view_on_website: Ouvrir la page sur le site
     show_more_cards: VOIR PLUS DE CARDS
     submit: Submit
+    backtolist: Back To List
+    detail_view: Detail View
 
 orderby:
     popular: Les plus populaires
@@ -300,7 +311,7 @@ settings:
 
 b2b:
     label:
-        created: Draft
+        created: En cours
         terminate_request_cm: En cours
         cancel_request_cm: En cours
         terminate_request_client: En cours
