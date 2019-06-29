@@ -256,7 +256,12 @@ class MissionController extends AbstractController
                 $mission_id->setStatus(MissionStatus::TERMINATED);
                 $em->persist($mission_id);
                 $em->flush();
+                $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid','The mission '.$mission_id->getTitle().' is terminated from client side too',1);
+            }else{
+                $notificationsRepository->insert($mission_id->getUser(),null,'mission_paid','The mission '.$mission_id->getTitle().' amount has been paid',0);
             }
+
+           
 
             return $this->render('b2b/client/transaction/success.html.twig');
 
