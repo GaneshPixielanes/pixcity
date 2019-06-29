@@ -42,7 +42,7 @@ class DashboardController extends Controller
         $clientQuery = $em->createQuery('SELECT count(clint) as allClientCount FROM App:Client as clint');
         $clientData =  $clientQuery->getResult();
 
-        $activePackQuery = $em->createQuery('SELECT count(pck) as allpckCount FROM App:UserPacks as pck WHERE pck.active = 1');
+        $activePackQuery = $em->createQuery('SELECT count(pck) as allpckCount FROM App:UserPacks as pck WHERE pck.active IS NULL OR pck.active = 0');
         $activePack =  $activePackQuery->getResult();
 
         $userMissionQuery = $em->createQuery("SELECT count(msn) as allmsnCount FROM App:UserMission as msn WHERE msn.status = 'active' ");
