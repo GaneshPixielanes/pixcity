@@ -150,7 +150,7 @@ class MissionController extends Controller
                         $result['refund_amount'] = $result['advance_payment'] - $result['total'];
 
 
-                        $transaction[0] = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
+                        $transaction = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
 
                         if($result['need_to_pay'] != 0){
 //                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$result['refund_amount']);

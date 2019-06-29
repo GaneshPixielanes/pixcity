@@ -6,6 +6,7 @@ namespace App\Controller\B2B\Client;
 use App\Constant\MissionStatus;
 use App\Entity\ClientTransaction;
 use App\Entity\Option;
+use App\Entity\Royalties;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionPaymentRepository;
@@ -279,6 +280,17 @@ class MissionController extends Controller
                         )
                     ), $pcsInvoicePath
                 );
+
+                $royalties = new Royalties();
+                $royalties->setMission($mission_id);
+                $royalties->setCm($mission_id->getUser());
+                $royalties->setTax($tax->getValue());
+                $royalties->setTaxValue($mission_id->getUserMissionPayment()->getCmTax());
+                $royalties->setTotalPrice($mission_id->getUserMissionPayment()->getCmTotal());
+                $royalties->setInvoicePath($cmInvoicePath);
+                $royalties->setPaymentType('Mango_pay');
+                $royalties->setStatus(1);
+                $royalties->setBankDetails(json_encode($response));
 
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid','The mission '.$mission_id->getTitle().' is terminated from client side too',1);
 
