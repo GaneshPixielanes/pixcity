@@ -60,7 +60,7 @@ class PackController extends AbstractController
             }
 
             #Send notification
-            $notificationsRepository->insert($pack->getUser(),null,'mission_request', $this->getUser().' has sent a mission request',null);
+            $notificationsRepository->insert($pack->getUser(),null,'mission_request', $this->getUser()->getFirstName().' has sent a mission request',0);
 
             return JsonResponse::create(['success' => true]);
         }
