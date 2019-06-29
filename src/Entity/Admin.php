@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use App\Constant\ViewMode;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -97,7 +97,10 @@ class Admin implements UserInterface
      */
     private $configUpdatedBy;
 
-
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $viewMode = "";
 
 
 
@@ -381,6 +384,22 @@ class Admin implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getViewMode()
+    {
+        return (isset($this->viewMode) && $this->viewMode !== "")?$this->viewMode:ViewMode::B2C;
+    }
+
+    /**
+     * @param mixed $viewMode
+     */
+    public function setViewMode($viewMode)
+    {
+        $this->viewMode = isset($viewMode)?$viewMode:ViewMode::B2C;
     }
 
 }

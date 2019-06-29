@@ -2,15 +2,20 @@
 
 namespace App\Controller\Admin\Pages;
 
+use App\Entity\User;
 use App\Form\Admin\AdminType;
 use App\Entity\Admin;
 use App\Repository\AdminRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Constant\ViewMode;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Route("/admin/administrators", name="admin_admins_")
@@ -116,5 +121,83 @@ class AdminUsersController extends Controller
 
         return $this->redirectToRoute('admin_admins_list');
     }
+    /**
+     * @Route("/switch-business", name="switch_business_mode")
+     * @Method({"GET", "POST"})
+     */
+    public function switchBusinessUser(Request $request)
+    {
+        $user = $this->getUser();
+        if($user->getViewMode() == ViewMode::B2C){
+            $user->setViewMode(ViewMode::B2B);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+        elseif($user->getViewMode() == ViewMode::B2B){
+            $user->setViewMode(ViewMode::B2C);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
 
+
+        $referer = $request->headers->get('referer');
+        if ($referer == NULL) {
+            return $this->redirectToRoute('front_homepage_index');
+        } else {
+            return $this->redirect($referer);
+        }
+    }
+
+    /**
+     * @Route("/cm-lists", name="cm_lists")
+     * @Method({"GET", "POST"})
+     */
+    public function cmLists(Request $request, AuthorizationCheckerInterface $authChecker,UserRepository $userRepository)
+    {
+        $user = $this->getUser();
+        if($user->getViewMode() == ViewMode::B2B){
+            if($authChecker->isGranted('ROLE_B2C')) {
+                $em= $this->getDoctrine()->getManager();
+                $query = $em->createQuery('SELECT g, COUNT(m.user) AS userPack
+                    FROM App:User AS g
+                    LEFT JOIN App:UserPacks AS m WITH g.id = m.user
+                    WHERE g.active=1 AND g.b2b_cm_approval =1 GROUP BY g.id');
+                $result =  $query->getResult();
+
+                //$list = $userRepository->findBy([], ['createdAt' => 'DESC']);
+                return $this->render('admin/b2b/cmlists.html.twig',['list'=>$result]);
+            }
+        }
+        else{
+            return $this->render('admin/errorpage/index.html.twig');
+        }
+    }
+
+    /**
+     * @Route("/payments", name="payments")
+     * @Method({"GET", "POST"})
+     */
+    public function paymentsData(Request $request, AuthorizationCheckerInterface $authChecker)
+    {
+        $user = $this->getUser();
+        if($user->getViewMode() == ViewMode::B2B){
+            if($authChecker->isGranted('ROLE_B2C')) {
+                return $this->render('admin/b2b/payments.html.twig');
+            }
+        }
+        else{
+            return $this->render('admin/errorpage/index.html.twig');
+        }
+    }
+    /**
+     * @Route("/{id}", name="show", methods={"GET"})
+     */
+    public function show(User $user): Response
+    {
+        return $this->render('admin/b2b/cmlists/show.html.twig', [
+            'user' => $user,
+        ]);
+    }
 }
