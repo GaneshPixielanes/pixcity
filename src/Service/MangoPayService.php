@@ -64,7 +64,6 @@ class MangoPayService
 
     public function getPayIn($mangoUser, $wallet, $amount, $transaction)
     {
-
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
@@ -82,11 +81,8 @@ class MangoPayService
         $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
         $payIn->ExecutionDetails->Culture = "EN";
 
-        $session = new Session();
-
-
         $result =  $this->mangoPayApi->PayIns->Create($payIn);
-        $session->set('PayInCardWeb',$result->Id);
+
         return $result->ExecutionDetails->RedirectURL;
     }
 
