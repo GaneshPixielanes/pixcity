@@ -138,11 +138,11 @@ class MissionController extends AbstractController
         $result['total'] = $result['price'] + $result['tax'];
         $result['advance_payment'] = $first_result['client_total'];
         $result['need_to_pay'] = $result['total'] -  $result['advance_payment'];
-        $amount = 0;
 
+        $amount = 0;
         if($mission->getStatus() == MissionStatus::CREATED){
             $amount = $result['total'];
-        }elseif($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING){
+        }elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING){
             $amount = $result['need_to_pay'];
         }
 
@@ -212,7 +212,7 @@ class MissionController extends AbstractController
 
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_paid','The mission '.$mission_id->getTitle().' amount has been paid',0);
 
-            }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED){
+            }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){
 
                 $mission = $missionRepo->activePrices($mission_id);
 
@@ -237,6 +237,40 @@ class MissionController extends AbstractController
 
                 $transaction->getMission()->setStatus(MissionStatus::TERMINATED);
 
+                $filesystem->mkdir('invoices/'.$mission->getId());
+
+                $filename = $this->createSlug($mission->getTitle());
+
+                $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/client_invoice.html.twig',
+                        array(
+                            'mission' => $mission
+                        )
+                    ), $clientInvoicePath
+                );
+
+                $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/cm_invoice.html.twig',
+                        array(
+                            'mission' => $mission
+                        )
+                    ), $cmInvoicePath
+                );
+
+                $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/pcs_invoice.html.twig',
+                        array(
+                            'mission' => $mission
+                        )
+                    ), $pcsInvoicePath
+                );
+
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid','The mission '.$mission_id->getTitle().' is terminated from client side too',1);
 
             }
@@ -257,14 +291,6 @@ class MissionController extends AbstractController
                 }
 
             }
-
-            if($mission_id->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED || $mission_id->getStatus() == MissionStatus::ONGOING){
-                $mission_id->setStatus(MissionStatus::TERMINATED);
-                $em->persist($mission_id);
-                $em->flush();
-            }else{
-            }
-
 
 
             return $this->render('b2b/client/transaction/success.html.twig');
