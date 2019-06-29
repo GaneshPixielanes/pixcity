@@ -210,7 +210,30 @@ class MissionController extends Controller
             $transaction->setPaymentStatus(true);
 
             $transaction->getMission()->setMissionAgreedClient(1);
+
             $em = $this->getDoctrine()->getManager();
+
+            $mission = $missionRepo->activePrices($mission_id);
+
+            $options = $this->getDoctrine()->getRepository(Option::class);
+
+            $tax = $options->findOneBy(['slug' => 'tax']);
+
+            $margin = $options->findOneBy(['slug' => 'margin']);
+
+            $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+
+            $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+            $transaction->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
+            $transaction->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
+            $transaction->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
+            $transaction->getMission()->getUserMissionPayment()->setClientPrice($last_result['client_price']);
+            $transaction->getMission()->getUserMissionPayment()->setClientTax($last_result['client_tax']);
+            $transaction->getMission()->getUserMissionPayment()->setClientTotal($last_result['client_total']);
+            $transaction->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
+            $transaction->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
+            $transaction->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
 
             if($transaction->getMission()->getStatus() == MissionStatus::CREATED){
 
@@ -219,27 +242,6 @@ class MissionController extends Controller
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_paid','The mission '.$mission_id->getTitle().' amount has been paid',0);
 
             }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){
-
-                $mission = $missionRepo->activePrices($mission_id);
-
-                $options = $this->getDoctrine()->getRepository(Option::class);
-
-                $tax = $options->findOneBy(['slug' => 'tax']);
-                $margin = $options->findOneBy(['slug' => 'margin']);
-
-                $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
-
-                $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
-
-                $transaction->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
-                $transaction->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
-                $transaction->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
-                $transaction->getMission()->getUserMissionPayment()->setClientPrice($last_result['client_price']);
-                $transaction->getMission()->getUserMissionPayment()->setClientTax($last_result['client_tax']);
-                $transaction->getMission()->getUserMissionPayment()->setClientTotal($last_result['client_total']);
-                $transaction->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
-                $transaction->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
-                $transaction->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
 
                 $transaction->getMission()->setStatus(MissionStatus::TERMINATED);
 
@@ -297,7 +299,6 @@ class MissionController extends Controller
                 }
 
             }
-
 
             return $this->render('b2b/client/transaction/success.html.twig');
 
