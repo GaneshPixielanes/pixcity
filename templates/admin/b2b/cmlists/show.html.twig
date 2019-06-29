@@ -1,0 +1,86 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.cmlist'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.cm'|trans }} - {{ user.firstname~' '~user.lastname }}
+                </h2>
+                <div>
+                    <a href="{{ path('admin_admins_cm_lists') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
+
+                    | <a href="{{ path('admin_users_edit', {'id': user.id})}}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
+                </div>
+            </div>
+            <div class="body">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Phone</th>
+                        <td>{{ user.phone }}</td>
+                    </tr>
+                    <tr>
+                        <th>Birth Location</th>
+                        <td>{{ user.birthLocation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Birth date</th>
+                        <td>{{ user.birthdate ? user.birthdate|date('d-M-Y') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Current Location</th>
+                        <td>{{ user.currentLocation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Gender</th>
+                        <td>{{ user.gender }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Favorite Categories</th>
+                        <td>
+                            {% for favCar in user.favoriteCategories %}
+                                {{ favCar.name~',' }}
+                            {% endfor %}
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>User Region</th>
+                        <td>
+                            {% for region in user.userRegion %}
+                                {{ region.name~',' }}
+                            {% endfor %}
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>CM Upgrade B2b Date</th>
+                        <td>{{ user.cmUpgradeB2bDate ? user.cmUpgradeB2bDate|date('d-M-Y') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>CreatedAt</th>
+                        <td>{{ user.createdAt ? user.createdAt|date('d-M-Y H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>UpdatedAt</th>
+                        <td>{{ user.updatedAt ? user.updatedAt|date('d-M-Y H:i:s') : '' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

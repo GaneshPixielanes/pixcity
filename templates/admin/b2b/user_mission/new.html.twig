@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New UserMission{% endblock %}
+
+{% block body %}
+    <h1>Create new UserMission</h1>
+
+    {{ include('admin/b2b/user_mission/_form.html.twig') }}
+
+    <a href="{{ path('admin_user_mission_index') }}">back to list</a>
+{% endblock %}

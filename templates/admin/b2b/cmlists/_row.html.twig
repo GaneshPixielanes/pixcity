@@ -1,0 +1,19 @@
+<tr data-id="{{ item[0].id }}">
+	<td> {{ item[0].id }}</td>
+    <td>{{ item[0].firstName }}</td>
+    <td>{{ item[0].lastName }}</td>
+    <td>{{ item[0].email }}</td>
+    <td>{{ item[0].cmUpgradeB2bDate|date('d-M-Y') }}</td>
+    <td>{{ item.userPack }}</td>
+    <td class="text-right">
+        <div class="item-actions">
+            <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_users_edit', {'id': item[0].id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                <i class="material-icons">edit</i>
+            </a>
+            |
+            <a href="{{ path('admin_admins_show', {'id': item[0].id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float" title="{{ 'action.detail_view'|trans }}">
+                <i class="material-icons">visibility</i>
+            </a>
+        </div>
+    </td>
+</tr>
