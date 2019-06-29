@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New UserPacks{% endblock %}
+
+{% block body %}
+    <h1>Create new UserPacks</h1>
+
+    {{ include('admin/b2b/user_packs/_form.html.twig') }}
+
+    <a href="{{ path('admin_user_packs_index') }}">back to list</a>
+{% endblock %}

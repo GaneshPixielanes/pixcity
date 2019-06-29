@@ -1,0 +1,100 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.missions'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.missions'|trans }}
+                </h2>
+                <div>
+                    <a href="{{path('admin_user_mission_index') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
+
+                    | <a href="{{ path('admin_user_mission_edit', {'id': user_mission.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
+                </div>
+            </div>
+            <div class="body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>User</th>
+                            <td>{{ user_mission.user.firstname~' '~user_mission.user.lastname }}</td>
+                        </tr>
+                        <tr>
+                            <th>Client</th>
+                            <td>{{ user_mission.client.firstName~' '~user_mission.client.lastName }}</td>
+                        </tr>
+                        <tr>
+                            <th>Title</th>
+                            <td> {{ user_mission.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ user_mission.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>BannerImage</th>
+                            <td><img src="{{ absolute_url('/uploads/'~user_mission.bannerImage) }}" alt="{{ user_mission.title }}" width="20%"></td>
+                        </tr>
+                        <tr>
+                            <th>BriefFiles</th>
+                            <td>{{ user_mission.briefFiles }}</td>
+                        </tr>
+                        <tr>
+                            <th>MissionBasePrice</th>
+                            <td>{{ user_mission.missionBasePrice }}</td>
+                        </tr>
+                        <tr>
+                            <th>CreatedAt</th>
+                            <td>{{ user_mission.createdAt ? user_mission.createdAt|date('d-M-Y H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>UpdatedAt</th>
+                            <td>{{ user_mission.updatedAt ? user_mission.updatedAt|date('d-M-Y H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>{{ user_mission.status }}</td>
+                        </tr>
+                        <tr>
+                            <th>DueDate</th>
+                            <td>{{ user_mission.dueDate ? user_mission.dueDate|date('d-M-Y H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>ConditionsAgreed</th>
+                            <td>{{ user_mission.conditionsAgreed ? 'Yes' : 'No' }}</td>
+                        </tr>
+                        <tr>
+                            <th>AxaInsurance</th>
+                            <td>{{ user_mission.axaInsurance ? 'Yes' : 'No' }}</td>
+                        </tr>
+                        <tr>
+                            <th>GeneralConditionsBrief</th>
+                            <td>{{ user_mission.generalConditionsBrief }}</td>
+                        </tr>
+                        <tr>
+                            <th>MissionAgreedClient</th>
+                            <td>{{ user_mission.missionAgreedClient }}</td>
+                        </tr>
+                        <tr>
+                            <th>CancelReason</th>
+                            <td>{{ user_mission.cancelReason }}</td>
+                        </tr>
+                        <tr>
+                            <th>CancelledBy</th>
+                            <td>{{ user_mission.cancelledBy }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
