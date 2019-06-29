@@ -51,7 +51,7 @@ class NotificationController extends AbstractController
 
         $missions = $missionLogRepository->findBy(['mission' => $missionlog->getMission()]);
 
-        foreach ($missions as $key => $mission){
+        foreach($missions as $key => $mission){
             $mission->setIsActive(0);
             $em->persist($mission);
         }
@@ -69,7 +69,6 @@ class NotificationController extends AbstractController
 
         #Send notification
         $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', $missionlog->getMission()->getClient()->getFirstName().' has accepted your new price of mission '.$missionlog->getMission()->getTitle().' of amount '.$missionlog->getUserBasePrice(),0);
-
 
         return JsonResponse::create(['success' => true]);
 
