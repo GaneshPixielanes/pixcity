@@ -25,7 +25,7 @@
                 <tbody>
                     <tr>
                         <th></th>
-                        <td><img src="{{ absolute_url('/uploads/'~client.profilePhoto) }}" alt="{{ client.firstName }}" width="20%"></td>
+                        <td><img src="{{ absolute_url('/uploads/clients/'~client.id~'/'~client.profilePhoto) }}" alt="{{ client.firstName }}" width="20%"></td>
                     </tr>
                     <tr>
                         <th>Email</th>
@@ -84,7 +84,7 @@
                         <td>{{ client.clientInfo.companyType }}</td>
                     </tr>
                     <tr>
-                        <th>City</th>
+                        <th>Company Creation Date</th>
                         <td>{{ client.clientInfo.companyCreationDate ? client.clientInfo.companyCreationDate|date('d-M-Y H:i:s') : ''  }}</td>
                     </tr>
                 </tbody>
