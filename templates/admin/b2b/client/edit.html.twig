@@ -1,0 +1,38 @@
+{% extends 'admin/page.html.twig' %}
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.clientsList'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Edit Client
+                </h2>
+            </div>
+            <div class="body">
+                {{ include('admin/b2b/client/_form.html.twig', {'button_label': 'Update'}) }}
+
+                <a href="{{ path('admin_client_index') }}">back to list</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <script>
+
+        $(function () {
+            $("#client_clientInfo_companyCreationDate").bootstrapMaterialDatePicker({ format : 'YYYY-MM-DD', lang : 'fr', weekStart : 1, cancelText : 'ANNULER', time: false });
+
+        });
+    </script>
+{% endblock %}
