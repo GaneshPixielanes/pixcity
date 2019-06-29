@@ -16,7 +16,7 @@
                 <div>
                     <a href="{{ path('admin_user_packs_index') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
 
-                    | <a href="{{ path('admin_user_packs_edit', {'id': user_pack.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
+                    {#| <a href="{{ path('admin_user_packs_edit', {'id': user_pack.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>#}
                 </div>
             </div>
             <div class="body">
@@ -46,10 +46,10 @@
                             <th>Total Price</th>
                             <td>{{ user_pack.totalPrice }}</td>
                         </tr>
-                        <tr>
-                            <th>Pack Photos</th>
-                            <td> <img src="{{ absolute_url('/uploads/pack/'~user_pack.packPhotos) }}" alt="{{ user_pack.title }}" width="20%"></td>
-                        </tr>
+                        {#<tr>#}
+                            {#<th>Pack Photos</th>#}
+                            {#<td> <img src="{{ absolute_url('/uploads/pack/'~user_pack.packPhotos) }}" alt="{{ user_pack.title }}" width="20%"></td>#}
+                        {#</tr>#}
                         <tr>
                             <th>Created Date</th>
                             <td>{{ user_pack.createdAt ? user_pack.createdAt|date('d-M-Y H:i:s') : '' }}</td>
