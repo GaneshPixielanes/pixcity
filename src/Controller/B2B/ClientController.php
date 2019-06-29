@@ -176,14 +176,23 @@ class ClientController extends Controller
     /**
      * @Route("preview-payment", name="preview_payment")
      */
-    public function previewPayment(Request $request,UserMissionRepository $missionRepository,OptionRepository $optionRepository){
+    public function previewPayment(Request $request,UserMissionRepository $missionRepository,OptionRepository $optionRepository,MissionPaymentRepository $missionPaymentRepository){
 
 //        $mission = $missionRepository->find($request->get('id'));
-        $mission = $missionRepository->findBy(['id' => $request->get('id')]);
+        $mission = $missionRepository->activePrices($request->get('id'));
+
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);
+        $margin = $options->findOneBy(['slug' => 'margin']);
+        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
         $tax = $optionRepository->findBy(['slug' => 'tax']);
         return $this->render('b2b/client/mission/load-payment-preview.html.twig',[
-            'mission' => $mission[0],
-            'tax' => $tax[0]->getValue()
+            'mission' => $mission,
+            'tax' => $tax[0]->getValue(),
+            'last_result' => $last_result
         ]);
 
     }
@@ -213,7 +222,7 @@ class ClientController extends Controller
         $result['total'] = $result['price'] + $result['tax'];
         $result['advance_payment'] = $first_result['client_total'];
         $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
-
+        $result['refund_amount'] = $result['advance_payment'] - $result['total'];
 
         return new JsonResponse($result);
 

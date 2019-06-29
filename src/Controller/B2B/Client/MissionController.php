@@ -187,7 +187,10 @@ class MissionController extends AbstractController
     public function missionAcceptProcess($id, ClientTransactionRepository $transactionRepo,
                                          ClientRepository $clientRepository,
                                          UserMissionRepository $missionRepo,
-                                         Request $request,MangoPayService $mangoPayService,NotificationsRepository $notificationsRepository)
+                                         Request $request,
+                                         MangoPayService $mangoPayService,
+                                         NotificationsRepository $notificationsRepository,
+                                         MissionPaymentRepository $missionPaymentRepository)
     {
 
         $response = $mangoPayService->getResponse($request->get('transactionId'));
@@ -207,11 +210,34 @@ class MissionController extends AbstractController
             if($transaction->getMission()->getUserMissionPayment()->getAdjustment() == null){
                 $transaction->getMission()->setStatus(MissionStatus::ONGOING);
             }else{
+
+                $mission = $missionRepo->activePrices($mission_id);
+
+                $options = $this->getDoctrine()->getRepository(Option::class);
+
+                $tax = $options->findOneBy(['slug' => 'tax']);
+                $margin = $options->findOneBy(['slug' => 'margin']);
+
+                $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+
+                $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+                $transaction->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
+                $transaction->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
+                $transaction->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
+                $transaction->getMission()->getUserMissionPayment()->setClientPrice($last_result['client_price']);
+                $transaction->getMission()->getUserMissionPayment()->setClientTax($last_result['client_tax']);
+                $transaction->getMission()->getUserMissionPayment()->setClientTotal($last_result['client_total']);
+                $transaction->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
+                $transaction->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
+                $transaction->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
+
                 $transaction->getMission()->setStatus(MissionStatus::TERMINATED);
             }
 
             $em->persist($transaction);
             $em->flush();
+
 
             $notification = $notificationsRepository->findBy(['notify_by' => $mission_id]);
 

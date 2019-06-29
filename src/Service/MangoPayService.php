@@ -2,9 +2,13 @@
 
 namespace App\Service;
 
+use App\Entity\Option;
 use App\Repository\ClientTransactionRepository;
+use App\Repository\UserMissionRepository;
 use MangoPay;
 use MangoPay\DemoWorkflow\MockStorageStrategy;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class MangoPayService
 {
 
@@ -18,6 +22,7 @@ class MangoPayService
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
         $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
+        $this->mangoPayMoney = new MangoPay\Money();
     }
 
     public function createUser(MangoPay\UserNatural $userNatural)
@@ -76,8 +81,11 @@ class MangoPayService
         $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
         $payIn->ExecutionDetails->Culture = "EN";
 
-        $result =  $this->mangoPayApi->PayIns->Create($payIn);
+        $session = new Session();
 
+
+        $result =  $this->mangoPayApi->PayIns->Create($payIn);
+        $session->set('PayInCardWeb',$result->Id);
         return $result->ExecutionDetails->RedirectURL;
     }
 
@@ -92,22 +100,23 @@ class MangoPayService
     }
 
 
-    public function refundPayment($mission_id,ClientTransactionRepository $clientTransactionRepository){
+    public function refundPayment($transaction,$amount,$refund){
 
-        $transaction = $clientTransactionRepository->findBy(['mission' => $mission_id]);
+        $PayInId = $transaction[0]->getMangopayTransactionId();
 
-        $PayInId = $transaction[0]->getMangopayUserId();
-        $Refund = $this->mangoPayApi->Refunds();
-        $Refund->AuthorId = $row[0];
-        $Refund->DebitedFunds = $this->mangoPayApi->Money();
+        $Refund = $this->mangoPayApi->Refunds;
+        $Refund->AuthorId = $transaction[0]->getMangopayUserId();
+        $Refund->DebitedFunds = $this->mangoPayMoney;
         $Refund->DebitedFunds->Currency = "EUR";
-        $Refund->DebitedFunds->Amount = $row[3]*100;
-        $Refund->Fees = new \MangoPay\Money();
+        $Refund->DebitedFunds->Amount = $amount;
+        $Refund->Fees = $this->mangoPayMoney;
         $Refund->Fees->Currency = "EUR";
-        $Refund->Fees->Amount = $_POST['amount']*100;
-        $result = $mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
+        $Refund->Fees->Amount = $amount;
 
 
+        $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
+
+        dd($reponse->ResultMessage);
     }
 
 }
