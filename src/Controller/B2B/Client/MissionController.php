@@ -129,22 +129,21 @@ class MissionController extends AbstractController
 
         $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
 
-        if($mission->getUserMissionPayment()->getAdjustment() == null){
-            $amount = $mission->getUserMissionPayment()->getClientTotal();
-        }else{
+        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
-            $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
-            $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+        $result['price'] = $last_result['client_price'];
+        $result['tax'] = $last_result['client_tax'];
+        $result['total'] = $result['price'] + $result['tax'];
+        $result['advance_payment'] = $first_result['client_total'];
+        $result['need_to_pay'] = $result['total'] -  $result['advance_payment'];
+        $amount = 0;
 
-            $result['price'] = $last_result['client_price'];
-            $result['tax'] = $last_result['client_tax'];
-            $result['total'] = $result['price'] + $result['tax'];
-            $result['advance_payment'] = $first_result['client_total'];
-            $result['need_to_pay'] = $result['total'] -  $result['advance_payment'];
-
+        if($mission->getStatus() == MissionStatus::CREATED){
+            $amount = $result['total'];
+        }elseif($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING){
             $amount = $result['need_to_pay'];
-
         }
 
         // Create a mango pay user
@@ -207,9 +206,13 @@ class MissionController extends AbstractController
             $transaction->getMission()->setMissionAgreedClient(1);
             $em = $this->getDoctrine()->getManager();
 
-            if($transaction->getMission()->getUserMissionPayment()->getAdjustment() == null){
+            if($transaction->getMission()->getStatus() == MissionStatus::CREATED){
+
                 $transaction->getMission()->setStatus(MissionStatus::ONGOING);
-            }else{
+
+                $notificationsRepository->insert($mission_id->getUser(),null,'mission_paid','The mission '.$mission_id->getTitle().' amount has been paid',0);
+
+            }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED){
 
                 $mission = $missionRepo->activePrices($mission_id);
 
@@ -233,6 +236,9 @@ class MissionController extends AbstractController
                 $transaction->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
 
                 $transaction->getMission()->setStatus(MissionStatus::TERMINATED);
+
+                $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid','The mission '.$mission_id->getTitle().' is terminated from client side too',1);
+
             }
 
             $em->persist($transaction);
@@ -252,16 +258,14 @@ class MissionController extends AbstractController
 
             }
 
-            if($mission_id->getUserMissionPayment()->getAdjustment() != null){
+            if($mission_id->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED || $mission_id->getStatus() == MissionStatus::ONGOING){
                 $mission_id->setStatus(MissionStatus::TERMINATED);
                 $em->persist($mission_id);
                 $em->flush();
-                $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid','The mission '.$mission_id->getTitle().' is terminated from client side too',1);
             }else{
-                $notificationsRepository->insert($mission_id->getUser(),null,'mission_paid','The mission '.$mission_id->getTitle().' amount has been paid',0);
             }
 
-           
+
 
             return $this->render('b2b/client/transaction/success.html.twig');
 
