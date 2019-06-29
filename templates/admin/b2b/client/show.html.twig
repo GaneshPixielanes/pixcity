@@ -16,7 +16,7 @@
                 <div>
                 <a href="{{ path('admin_client_index') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
 
-                | <a href="{{ path('admin_client_edit', {'id': client.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
+                {#| <a href="{{ path('admin_client_edit', {'id': client.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>#}
                 </div>
             </div>
             <div class="body">
@@ -36,15 +36,15 @@
                         <td>{{ client.company }}</td>
                     </tr>
                     <tr>
-                        <th>CreatedAt</th>
+                        <th>Created Date</th>
                         <td>{{ client.createdAt ? client.createdAt|date('d-M-Y H:i:s') : '' }}</td>
                     </tr>
                     <tr>
-                        <th>UpdatedAt</th>
+                        <th>Updated Date</th>
                         <td>{{ client.updatedAt ? client.updatedAt|date('d-M-Y H:i:s') : '' }}</td>
                     </tr>
                     <tr>
-                        <th>LastLoggedinAt</th>
+                        <th>Last Loggedin Date</th>
                         <td>{{ client.lastLoggedinAt ? client.lastLoggedinAt|date('Y-m-d H:i:s') : '' }}</td>
                     </tr>
                     <tr>
@@ -63,10 +63,10 @@
                         <th>Business</th>
                         <td>{{ client.clientInfo.business }}</td>
                     </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>{{ client.clientInfo.email }}</td>
-                    </tr>
+                    {#<tr>#}
+                        {#<th>Email</th>#}
+                        {#<td>{{ client.clientInfo.email }}</td>#}
+                    {#</tr>#}
                     <tr>
                         <th>Address</th>
                         <td>{{ client.clientInfo.address }}</td>
