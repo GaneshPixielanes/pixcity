@@ -153,9 +153,19 @@ class MissionController extends Controller
                         $transaction = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
 
                         if($result['need_to_pay'] != 0){
-                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$result['refund_amount']);
+//                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$result['refund_amount']);
                         }
 
+                        $transaction->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
+                        $transaction->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
+                        $transaction->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
+                        $transaction->getMission()->getUserMissionPayment()->setClientPrice($last_result['client_price']);
+                        $transaction->getMission()->getUserMissionPayment()->setClientTax($last_result['client_tax']);
+                        $transaction->getMission()->getUserMissionPayment()->setClientTotal($last_result['client_total']);
+                        $transaction->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
+                        $transaction->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
+                        $transaction->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
+                        $transaction->getMission()->
                         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
                         $filesystem->mkdir('invoices/'.$mission->getId());

@@ -234,6 +234,7 @@ class MissionController extends Controller
             $transaction->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
             $transaction->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
             $transaction->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
+            $transaction->getMission()->setMissionBasePrice($last_result['cm_price']);
 
             if($transaction->getMission()->getStatus() == MissionStatus::CREATED){
 
