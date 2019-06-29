@@ -96,10 +96,11 @@ class MissionController extends AbstractController
 
 //            $transactionFee = 0;
 //            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
-
             $result = $missionPaymentRepository->getPrices($price, $margin, $tax, $cityMakerType);
 
             $mission->setUser($this->getUser());
+            $mission->setMissionBasePrice($price);
+            $mission->setStatus(MissionStatus::CREATED);
             $mission->getUserMissionPayment()->setClientPrice($result['client_price']); // Client's price
             $mission->getUserMissionPayment()->setClientTax($result['client_tax']);
             $mission->getUserMissionPayment()->setClientTotal($result['client_total']);
@@ -118,11 +119,13 @@ class MissionController extends AbstractController
             $mission->setStatus(MissionStatus::CREATED);
 //            $mission->setCreatedAt(new \DateTime('Y-m-d H:i:s'));
             $documents = [];
+
             foreach($mission->getDocuments() as $document)
             {
                 $documents[] = $document->getName();
             }
             $missionLog = new MissionLog();
+
             $missionLog->setUserBasePrice($mission->getMissionBasePrice());
             $missionLog->setCreatedAt(new \DateTime());
             $missionLog->setCreatedBy($mission->getUser()->getId());
@@ -222,7 +225,7 @@ class MissionController extends AbstractController
             $em->persist($mission);
             $em->flush();
 
-            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'A mission <strong>'.$mission->getTitle().'</strong> has been edited by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong>', $missionLog->getId());
+            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'A mission <strong>'.$mission->getTitle().'</strong> has been edited by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong> <br/> Initial price '.$mission->getMissionBasePrice().' was changed to '.$missionLog->getUserBasePrice(), $missionLog->getId());
 
             return new JsonResponse(['success' => true]);
         }
