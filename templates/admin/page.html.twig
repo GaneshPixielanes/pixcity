@@ -38,10 +38,24 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="{{ path('admin_dashboard_index') }}"><img class="align logo" style="margin-top:-20px" height="80" width="140" src="{{ asset('build/images/logo-white.svg') }}"> <small>CMS</small></a>
+                <a class="navbar-brand" href="{{ path('admin_dashboard_index') }}"><img class="align logo" style="margin-top:-20px" height="80" width="140" src="{{ asset('build/images/logo-white.svg') }}">
+
+                    <small>CMS</small></a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{ path('admin_admins_switch_business_mode') }}" class="btn bg-green btn-visit-site">
+                            <i class="material-icons">transform</i>
+                            <span>
+                                Switch to
+                                {% if app.user.viewMode == "b2b" %}
+                                    B2C
+                                {% elseif app.user.viewMode == "b2c" %}
+                                    B2B
+                                {% endif %}
+                            </span></a>
+                    </li>
                     <li>
                         <a href="{{ path('front_homepage_index') }}" class="btn bg-green btn-visit-site"><i class="material-icons">open_in_new</i> <span>Aller sur le site</span></a>
                     </li>
@@ -113,7 +127,40 @@
                             <span>{{ 'label.dashboard'|trans }}</span>
                         </a>
                     </li>
-
+                    <!-- B2B menus start-->
+                    {% if app.user.viewMode == "b2b" %}
+                        <li class="{{ route starts with 'admin_admins_cm_lists' ? 'active' }}">
+                            <a href="{{ url('admin_admins_cm_lists') }}" class="waves-blue-grey">
+                                <i class="material-icons">list</i>
+                                <span>{{ 'label.cmlist'|trans }}</span>
+                            </a>
+                        </li>
+                        <li class="{{ route starts with 'admin_client_index' ? 'active' }}">
+                            <a href="{{ url('admin_client_index') }}" class="waves-blue-grey">
+                                <i class="material-icons">recent_actors</i>
+                                <span>{{ 'label.clientsList'|trans }}</span>
+                            </a>
+                        </li>
+                        <li class="{{ route starts with 'admin_user_packs_index' ? 'active' }}">
+                            <a href="{{ url('admin_user_packs_index') }}" class="waves-blue-grey">
+                                <i class="material-icons">list_alt</i>
+                                <span>{{ 'label.packsList'|trans }}</span>
+                            </a>
+                        </li>
+                        <li class="{{ route starts with 'admin_user_mission_index' ? 'active' }}">
+                            <a href="{{ url('admin_user_mission_index') }}" class="waves-blue-grey">
+                                <i class="material-icons">terrain</i>
+                                <span>{{ 'label.missions'|trans }}</span>
+                            </a>
+                        </li>
+                        <li class="{{ route starts with 'admin_admins_payments' ? 'active' }}">
+                            <a href="{{ url('admin_admins_payments') }}" class="waves-blue-grey">
+                                <i class="material-icons">attach_money</i>
+                                <span>{{ 'label.payments'|trans }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <!-- B2B menus ends -->
                     {% if is_granted('ROLE_ADMIN') %}
                     <li class="{{ route starts with 'admin_users' ? 'active' }}">
                         <a href="{{ path('admin_users_list') }}" class="waves-blue-grey">
@@ -211,6 +258,7 @@
                         </ul>
                     </li>
                     <!--Card Extractions start-->
+
 					<li class="{{ route starts with 'admin_card_extractions' ? 'active' }}">
                         <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
                             <i class="material-icons">view_carousel</i>
@@ -221,14 +269,15 @@
                                 <a href="{{ path('admin_card_extractions_search') }}" class="waves-blue-grey">
                                     <span>{{ 'label.cardextraction'|trans }}</span>
                                 </a>
-                            </li>             
+                            </li>
                             <li>
                                 <a href="{{ path('admin_card_extractions_search_categories') }}" class="waves-blue-grey">
                                     <span>{{ 'label.categoriesdataextractions'|trans }}</span>
                                 </a>
-                            </li>                            
+                            </li>
                         </ul>
                     </li>
+
 					<!--Card Extractions end-->
                     {% if is_granted('ROLE_ADMIN') %}
                     <li class="{{ route starts with 'admin_menus' ? 'active' }}">

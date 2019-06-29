@@ -15,22 +15,22 @@
                     </figure>
                 </div>
                 <ul class="nav nav-tabs nav-tabs-sticky flex-column pt-3 flex-grow-1 border-0 dashboard-menu" id="cmDashboardMainNav" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('b2b_community_manager_index') }}" aria-controls="home"><i
+                    <li class="nav-item ">
+                        <a class="nav-link {% if(app.request.pathinfo == '/community-manager/profile') %}active{% endif %}" href="{{ url('b2b_community_manager_index') }}" aria-controls="home"><i
                                     class="fas fa-home"></i>Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('b2b_pack_list') }}" aria-controls="myPacks"><i
+                        <a class="nav-link {% if(app.request.pathinfo == '/b2b/pack/list') %}active{% endif %}" href="{{ url('b2b_pack_list') }}" aria-controls="myPacks"><i
                                     class="fas fa-dungeon"></i>Mes packs</a>
                     </li>
                     {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('b2b_mission_list') }}" aria-controls="myMissions"><i
+                        <a class="nav-link {% if(app.request.pathinfo == '/community-manager/mission/list') %}active{% endif %}" href="{{ url('b2b_mission_list') }}" aria-controls="myMissions"><i
                                     class="fas fa-briefcase"></i>Mes missions</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('b2b_community_manager_invoice_list') }}" aria-controls="billing"><i
+                        <a class="nav-link {% if(app.request.pathinfo == '/community-manager/invoice/list') %}active{% endif %}" href="{{ url('b2b_community_manager_invoice_list') }}" aria-controls="billing"><i
                                     class="fas fa-file-invoice-dollar"></i>Facturation</a>
                     </li>
                 </ul>
