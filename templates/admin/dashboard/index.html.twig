@@ -19,8 +19,8 @@
                     <i class="material-icons">group</i>
                 </div>
                 <div class="content">
-                    <div class="text">Nombre d'utilisateurs</div>
-                    <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{ stats.users }}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Nombre d'utilisateurs{% elseif app.user.viewMode == "b2b" %} Nb of CM {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}{{ stats.users }}{% elseif app.user.viewMode == "b2b" %}  <a href="{{ url('admin_admins_cm_lists') }}"><span class="text">{{ cmUpgradeB2b[0].allCmCount }}</span>{% endif %}</a></div>
                 </div>
             </div>
         </div>
@@ -30,8 +30,8 @@
                     <i class="material-icons">account_circle</i>
                 </div>
                 <div class="content">
-                    <div class="text">Nombre de Pixies</div>
-                    <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{{ stats.pixies }}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Nombre de Pixies{% elseif app.user.viewMode == "b2b" %} Nb of Clients {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}{{ stats.pixies }}{% elseif app.user.viewMode == "b2b" %}  <a href="{{ url('admin_client_index') }}"><span class="text">{{ clientData[0].allClientCount }}</span></a>{% endif %}</div>
                 </div>
             </div>
         </div>
@@ -41,8 +41,8 @@
                     <i class="material-icons">view_carousel</i>
                 </div>
                 <div class="content">
-                    <div class="text">Nombre de Cards</div>
-                    <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">{{ stats.cards }}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Nombre de Cards{% elseif app.user.viewMode == "b2b" %} Nb of packs {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}{{ stats.cards }}{% elseif app.user.viewMode == "b2b" %} <a href="{{ url('admin_user_packs_index') }}"><span class="text">{{ activePack[0].allpckCount }}</span></a>{% endif %}</div>
                 </div>
             </div>
         </div>
@@ -52,8 +52,8 @@
                     <i class="material-icons">help</i>
                 </div>
                 <div class="content">
-                    <div class="text">-</div>
-                    <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">-</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Help{% elseif app.user.viewMode == "b2b" %} Nb of missions {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}-{% elseif app.user.viewMode == "b2b" %} <a href="{{ url('admin_user_mission_index') }}"><span class="text">{{ userMission[0].allmsnCount }}</span></a>{% endif %}</div>
                 </div>
             </div>
         </div>
