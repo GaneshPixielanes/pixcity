@@ -169,6 +169,9 @@ class AdminUsersController extends Controller
                 //$list = $userRepository->findBy([], ['createdAt' => 'DESC']);
                 return $this->render('admin/b2b/cmlists.html.twig',['list'=>$result]);
             }
+            else{
+                return $this->render('admin/errorpage/index.html.twig');
+            }
         }
         else{
             return $this->render('admin/errorpage/index.html.twig');
@@ -185,6 +188,9 @@ class AdminUsersController extends Controller
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 return $this->render('admin/b2b/payments.html.twig');
+            }
+            else{
+                return $this->render('admin/errorpage/index.html.twig');
             }
         }
         else{
