@@ -68,7 +68,7 @@ class NotificationController extends AbstractController
         $em->flush();
 
         #Send notification
-        $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', $this->getUser()->getFirstName().' has accepted your new price',null);
+        $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', $missionlog->getMission()->getClient()->getFirstName().' has accepted your new price of mission '.$missionlog->getMission()->getTitle().' of amount '.$missionlog->getUserBasePrice(),0);
 
 
         return JsonResponse::create(['success' => true]);
