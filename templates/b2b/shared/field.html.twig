@@ -59,7 +59,13 @@
                         <ul class="d-flex w-100">
                             {% set data = form.vars.data %}
                             {% for choice in form.vars.choices %}
-                            <li class="col-md-4 mb-4 pack-info" data-id="{{ choice.data.id }}" data-price="{{ choice.data.totalPrice }}" data-banner-image="{{ choice.data.bannerImage }}" data-banner-image-url="/uploads/pack/banner/{{ choice.data.bannerImage }}">
+                            <li class="col-md-4 mb-4 pack-info"
+                                data-id="{{ choice.data.id }}"
+                                data-price="{{ choice.data.totalPrice }}"
+                                data-banner-image="{{ choice.data.bannerImage }}"
+                                data-banner-image-url="/uploads/pack/banner/{{ choice.data.bannerImage }}"
+                                data-description="{{ choice.data.description }}"
+                            >
                                 <a href="javascript:;" class="card">
                                     {% if data.id is defined and choice.data.id == data.id %}
                                     <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ choice.data.id }}" checked>
