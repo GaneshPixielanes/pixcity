@@ -129,80 +129,7 @@ class MissionController extends Controller
 
                         $status = MissionStatus::TERMINATED;
 
-                        $options = $this->getDoctrine()->getRepository(Option::class);
-
-                        $tax = $options->findOneBy(['slug' => 'tax']);
-                        $margin = $options->findOneBy(['slug' => 'margin']);
-
-                        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
-
-                        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
-
-                        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
-
-                        $result = [];
-
-                        $result['price'] = $last_result['client_price'];
-                        $result['tax'] = $last_result['client_tax'];
-                        $result['total'] = $result['price'] + $result['tax'];
-                        $result['advance_payment'] = $first_result['client_total'];
-                        $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
-                        $result['refund_amount'] = $result['advance_payment'] - $result['total'];
-
-
-                        $transaction = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
-
-                        if($result['need_to_pay'] != 0){
-//                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$result['refund_amount']);
-                        }
-
-                        $transaction[0]->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
-                        $transaction[0]->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
-                        $transaction[0]->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
-                        $transaction[0]->getMission()->getUserMissionPayment()->setClientPrice($last_result['client_price']);
-                        $transaction[0]->getMission()->getUserMissionPayment()->setClientTax($last_result['client_tax']);
-                        $transaction[0]->getMission()->getUserMissionPayment()->setClientTotal($last_result['client_total']);
-                        $transaction[0]->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
-                        $transaction[0]->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
-                        $transaction[0]->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
-                        $transaction[0]->getMission()->setMissionBasePrice($last_result['cm_price']);
-
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
-
-                        $filesystem->mkdir('invoices/'.$mission->getId());
-
-                        $filename = $this->createSlug($mission->getTitle());
-
-                        $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
-
-                        $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                            $this->renderView('b2b/invoice/client_invoice.html.twig',
-                                array(
-                                    'mission' => $mission
-                                )
-                            ), $clientInvoicePath
-                        );
-
-                        $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
-
-                        $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                            $this->renderView('b2b/invoice/cm_invoice.html.twig',
-                                array(
-                                    'mission' => $mission
-                                )
-                            ), $cmInvoicePath
-                        );
-
-                        $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
-
-                        $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                            $this->renderView('b2b/invoice/pcs_invoice.html.twig',
-                                array(
-                                    'mission' => $mission
-                                )
-                            ), $pcsInvoicePath
-                        );
-
+                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),1);
 
                         break;
                     }
@@ -219,6 +146,80 @@ class MissionController extends Controller
                     break;
 
         }
+
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);
+        $margin = $options->findOneBy(['slug' => 'margin']);
+
+        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+
+        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $result = [];
+
+        $result['price'] = $last_result['client_price'];
+        $result['tax'] = $last_result['client_tax'];
+        $result['total'] = $result['price'] + $result['tax'];
+        $result['advance_payment'] = $first_result['client_total'];
+        $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
+        $result['refund_amount'] = $result['advance_payment'] - $result['total'];
+
+
+        $transaction = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
+
+        if($result['need_to_pay'] != 0){
+//                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$result['refund_amount']);
+        }
+
+        $transaction[0]->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setClientPrice($last_result['client_price']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setClientTax($last_result['client_tax']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setClientTotal($last_result['client_total']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
+        $transaction[0]->getMission()->setMissionBasePrice($last_result['cm_price']);
+
+        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
+
+        $filesystem->mkdir('invoices/'.$mission->getId());
+
+        $filename = $this->createSlug($mission->getTitle());
+
+        $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
+
+        $this->container->get('knp_snappy.pdf')->generateFromHtml(
+            $this->renderView('b2b/invoice/client_invoice.html.twig',
+                array(
+                    'mission' => $mission
+                )
+            ), $clientInvoicePath
+        );
+
+        $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
+
+        $this->container->get('knp_snappy.pdf')->generateFromHtml(
+            $this->renderView('b2b/invoice/cm_invoice.html.twig',
+                array(
+                    'mission' => $mission
+                )
+            ), $cmInvoicePath
+        );
+
+        $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
+
+        $this->container->get('knp_snappy.pdf')->generateFromHtml(
+            $this->renderView('b2b/invoice/pcs_invoice.html.twig',
+                array(
+                    'mission' => $mission
+                )
+            ), $pcsInvoicePath
+        );
 
         $entityManager = $this->getDoctrine()->getManager();
         $mission->setStatus($status);
