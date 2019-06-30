@@ -147,6 +147,14 @@ class MissionController extends Controller
 
         }
 
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $mission->setStatus($status);
+
+        $entityManager->persist($mission);
+        $entityManager->flush();
+
         $options = $this->getDoctrine()->getRepository(Option::class);
 
         $tax = $options->findOneBy(['slug' => 'tax']);
@@ -220,12 +228,6 @@ class MissionController extends Controller
                 )
             ), $pcsInvoicePath
         );
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $mission->setStatus($status);
-
-        $entityManager->persist($mission);
-        $entityManager->flush();
 
         return new JsonResponse(['success' => true, 'message' => 'Status has been updated']);
 
