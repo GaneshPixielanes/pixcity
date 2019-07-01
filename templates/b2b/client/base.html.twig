@@ -302,6 +302,36 @@
             </div>
             <!-- End mission confirmation modal ends -->
 
+            <!-- End mission cancellation confirmation modal -->
+            <div class="modal fade alert-modal end-mission-confirmation-modal" id="endCancelledMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="endCancelledMissionConfirmation" aria-hidden="true" style="">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title fz-16">Vous voulez finir la mission annulée ?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>The Breakup amount need</p>
+                            <p id="price"></p>
+                            <p id="tax"></p>
+                            <hr>
+                            <p id="total"></p>
+                            <p id="advance-payment"></p>
+                            <hr>
+                            <p id="need-to-pay"></p>
+                            <p id="mission-termination-text"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                            <a href="javascript:;" id="mission-terminate" class="btn btn-pink">Annuler LA MISSION</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End mission confirmation modal ends -->
+
 
         </div>
     </div>
