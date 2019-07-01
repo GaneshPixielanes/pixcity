@@ -24,27 +24,27 @@
                 <tbody>
                     <tr>
                         <th>Phone</th>
-                        <td>{{ user.phone }}</td>
+                        <td>{{ user.phone ? user.phone : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Birth Location</th>
-                        <td>{{ user.birthLocation }}</td>
+                        <td>{{ user.birthLocation ? user.birthLocation : 'N/A'}}</td>
                     </tr>
                     <tr>
                         <th>Birth date</th>
-                        <td>{{ user.birthdate ? user.birthdate|date('d-M-Y') : '' }}</td>
+                        <td>{{ user.birthdate ? user.birthdate|date('d-M-Y') : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Current Location</th>
-                        <td>{{ user.currentLocation }}</td>
+                        <td>{{ user.currentLocation ? user.currentLocation : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Gender</th>
-                        <td>{{ user.gender }}</td>
+                        <td>{{ user.gender ? user.gender : 'N/A'}}</td>
                     </tr>
                     <tr>
                         <th>Email</th>
-                        <td>{{ user.email }}</td>
+                        <td>{{ user.email ? user.email : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Favorite Categories</th>
@@ -66,15 +66,15 @@
                     </tr>
                     <tr>
                         <th>CM Upgrade B2b Date</th>
-                        <td>{{ user.cmUpgradeB2bDate ? user.cmUpgradeB2bDate|date('d-M-Y') : '' }}</td>
+                        <td>{{ user.cmUpgradeB2bDate ? user.cmUpgradeB2bDate|date('d-M-Y') : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>CreatedAt</th>
-                        <td>{{ user.createdAt ? user.createdAt|date('d-M-Y H:i:s') : '' }}</td>
+                        <td>{{ user.createdAt ? user.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>UpdatedAt</th>
-                        <td>{{ user.updatedAt ? user.updatedAt|date('d-M-Y H:i:s') : '' }}</td>
+                        <td>{{ user.updatedAt ? user.updatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
                 </tbody>
             </table>
