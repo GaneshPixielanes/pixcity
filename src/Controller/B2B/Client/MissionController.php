@@ -291,6 +291,8 @@ class MissionController extends Controller
                 $royalties->setPaymentType('Mango_pay');
                 $royalties->setStatus(1);
                 $royalties->setBankDetails(json_encode($response));
+                $em->persist($royalties);
+                $em->flush();
 
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid','The mission '.$mission_id->getTitle().' is terminated from client side too',1);
 
