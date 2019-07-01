@@ -68,7 +68,7 @@ class InvoiceController extends AbstractController
         ]);
         $fileName = $missionRepo->createSlug($mission->getTitle())."-client.pdf";
 
-        return new JsonResponse(json_encode(['url' => 'http://localhost:8000/invoices/'.$mission->getId().'/'.$fileName]));
+        return new JsonResponse(json_encode(['url' => '/invoices/'.$mission->getId().'/'.$fileName]));
 
         if(empty($mission))
         {
