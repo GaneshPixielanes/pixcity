@@ -7,6 +7,7 @@ use App\Repository\MissionRepository;
 use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/community-manager/invoice/", name="b2b_community_manager_invoice_")
@@ -60,12 +61,14 @@ class InvoiceController extends AbstractController
     public function preview($id, UserMissionRepository $missionRepo)
     {
         $user = $this->getUser();
-
-        $mission = $missionRepo->findBy([
+        $mission = $missionRepo->findOneBy([
             'user' => $user,
             'id' => $id,
             'status' => MissionStatus::TERMINATED
         ]);
+        $fileName = $missionRepo->createSlug($mission->getTitle())."-client.pdf";
+
+        return new JsonResponse(json_encode(['url' => 'http://localhost:8000/invoices/'.$mission->getId().'/'.$fileName]));
 
         if(empty($mission))
         {
