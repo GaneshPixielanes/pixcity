@@ -554,7 +554,7 @@ class MissionController extends AbstractController
         $missionLog->setCreatedAt(new \DateTime());
         $missionLog->setCreatedBy($mission->getUser()->getId());
         $missionLog->setMission($mission);
-        $missionLog->setIsActive(0);
+        $missionLog->setIsActive(1);
         $missionLog->setBriefFiles($request->get('document'));
 
         $mission->addMissionLog($missionLog);
