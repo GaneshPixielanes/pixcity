@@ -783,6 +783,7 @@
                         }
 
                     }else if(amount < 0){
+
                         if(type == 'terminate'){
 
                             $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
@@ -791,7 +792,7 @@
                             $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
                             $("#need-to-pay").text('Refund Amount:'+parseFloat(data.refund_amount).toFixed(2));
 
-                            $('#mission-termination-text').text("The remaining amount "+amount+" will be paid back to you within 48 hours");
+                            $('#mission-termination-text').text("The remaining amount "+parseFloat(data.refund_amount)+" will be paid back to you within 48 hours");
                             $('#mission-terminate').attr('data-id',id);
                             $('#mission-terminate').attr('data-type','terminate');
 
