@@ -313,15 +313,15 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>The Breakup amount need</p>
-                            <p id="price"></p>
-                            <p id="tax"></p>
+                            <p>The Breakup amount</p>
+                            <p id="price-cancel"></p>
+                            <p id="tax-cancel"></p>
                             <hr>
-                            <p id="total"></p>
-                            <p id="advance-payment"></p>
+                            <p id="total-cancel"></p>
+                            <p id="advance-payment-cancel"></p>
                             <hr>
-                            <p id="need-to-pay"></p>
-                            <p id="mission-termination-text"></p>
+                            <p id="need-to-pay-cancel"></p>
+                            <p id="mission-termination-text-cancel"></p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
@@ -803,13 +803,13 @@
 
                         }else if(type == 'cancel'){
 
-                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
-                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
-                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                            $("#need-to-pay").text('if you cancelled the Mission we will refund you:'+parseFloat(data.advance_payment).toFixed(2)+' amount to your account,');
-                            $('#mission-terminate').attr('data-id',id);
-                            $('#mission-terminate').attr('data-type','cancel');
+                            $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+parseFloat(data.advance_payment).toFixed(2)+' amount to your account,');
+                            $('#mission-terminate-cancel').attr('data-id',id);
+                            $('#mission-terminate-cancel').attr('data-type','cancel');
                         }
 
                     }else if(amount < 0){
@@ -842,15 +842,16 @@
                             $('#mission-terminate').attr('data-type','terminate');
 
                         }else if (type == 'cancel'){
+
                             var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
                             var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
-                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
-                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
-                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                            $("#need-to-pay").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
-                            $('#mission-terminate').attr('data-id',id);
-                            $('#mission-terminate').attr('data-type','cancel');
+                            $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
+                            $('#mission-terminate-cancel').attr('data-id',id);
+                            $('#mission-terminate-cancel').attr('data-type','cancel');
 
                         }
 
