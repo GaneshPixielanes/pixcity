@@ -208,7 +208,7 @@ class MissionController extends Controller
 
         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
-        $filesystem->mkdir('invoices/'.$mission->getId());
+        $filesystem->mkdir('invoices/'.$mission->getId(),0777);
 
         $filename = $this->createSlug($mission->getTitle());
 
