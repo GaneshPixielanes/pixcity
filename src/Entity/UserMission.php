@@ -158,6 +158,11 @@ class UserMission
      */
     private $log;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Royalties", mappedBy="mission", cascade={"persist", "remove"})
+     */
+    private $royalties;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
@@ -612,5 +617,22 @@ class UserMission
         });
         $log = array_values($log->toArray());
         return (isset($log) && count($log) > 0)?$log[0]:null;
+    }
+
+    public function getRoyalties(): ?Royalties
+    {
+        return $this->royalties;
+    }
+
+    public function setRoyalties(Royalties $royalties): self
+    {
+        $this->royalties = $royalties;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $royalties->getMission()) {
+            $royalties->setMission($this);
+        }
+
+        return $this;
     }
 }

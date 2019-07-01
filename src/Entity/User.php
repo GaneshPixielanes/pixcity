@@ -375,6 +375,11 @@ class User implements UserInterface, EquatableInterface
      */
     private $tickets;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Royalties", mappedBy="cm", cascade={"persist", "remove"})
+     */
+    private $royalties;
+
     //--------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------
@@ -1739,6 +1744,23 @@ class User implements UserInterface, EquatableInterface
             if ($ticket->getCm() === $this) {
                 $ticket->setCm(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getRoyalties(): ?Royalties
+    {
+        return $this->royalties;
+    }
+
+    public function setRoyalties(Royalties $royalties): self
+    {
+        $this->royalties = $royalties;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $royalties->getCm()) {
+            $royalties->setCm($this);
         }
 
         return $this;

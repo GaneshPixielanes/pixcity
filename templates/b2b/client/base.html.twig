@@ -750,6 +750,7 @@
         $(document).on('click','#terminateMission',function () {
 
             var amount = $(this).attr('data-adjust-amount');
+            var type = $(this).attr('data-type');
             var id = $(this).attr('data-id');
 
             $.ajax({
@@ -757,43 +758,69 @@
                 data:{id:id},
                 method:'GET',
                 success:function (data) {
-                    console.log(amount);
-                    if(amount > 0){
-                        $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
-                        $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                        $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
-                        $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                        $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
-                        $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+id);
-                    }else{
-                        $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
-                        $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                        $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
-                        $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                        $("#need-to-pay").text('Refund Amount:'+parseFloat(data.refund_amount).toFixed(2));
 
-                        $('#mission-termination-text').text("The remaining amount "+amount+" will be paid back to you within 48 hours");
-                        $('#mission-terminate').attr('data-id',id);
+                    if(amount > 0){
+                        if(type == 'terminate'){
+                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
+                            $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+id);
+                            $('#mission-terminate').attr('data-type','terminate');
+                        }else if(type == 'cancel'){
+                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay").text('if you cancelled the Mission we will refund you:'+parseFloat(data.advance_payment).toFixed(2)+' amount to your account,');
+                            $('#mission-terminate').attr('data-id',id);
+                            $('#mission-terminate').attr('data-type','cancel');
+                        }
+
+                    }else if(amount < 0){
+                        if(type == 'terminate'){
+                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay").text('Refund Amount:'+parseFloat(data.refund_amount).toFixed(2));
+
+                            $('#mission-termination-text').text("The remaining amount "+amount+" will be paid back to you within 48 hours");
+                            $('#mission-terminate').attr('data-id',id);
+                            $('#mission-terminate').attr('data-type','cancel');
+                        }
+
+
+                    }else if(amount == 0){
+                        if(type == 'terminate'){
+                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
+
+                            $('#mission-terminate').attr('data-id',id);
+                            $('#mission-terminate').attr('data-type','terminate');
+                        }
+
 
                     }
                 }
             })
-
-
-
-
 
         });
 
         $(document).on('click','#mission-terminate',function () {
 
            var id = $(this).attr('data-id');
-
+           var type = $(this).attr('data-type');
+           console.log(type);
            $.ajax({
                url:"{{ path('api_mission_client_status') }}",
-               data: {id: id,status:'terminate'},
+               data: {id: id,status:type},
                success:function (data) {
-                // window.location.href = "/client/mission/list";
+                    // window.location.href = "/client/mission/list";
                }
            })
         });

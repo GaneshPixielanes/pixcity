@@ -16,7 +16,7 @@
                 <div>
                     <a href="{{ path('admin_user_packs_index') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
 
-                    | <a href="{{ path('admin_user_packs_edit', {'id': user_pack.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
+                    {#| <a href="{{ path('admin_user_packs_edit', {'id': user_pack.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>#}
                 </div>
             </div>
             <div class="body">
@@ -31,37 +31,37 @@
                             <td>{{ user_pack.description }}</td>
                         </tr>
                         <tr>
-                            <th>BannerImage</th>
-                            <td> <img src="{{ absolute_url('/uploads/packs/banner/'~user_pack.bannerImage) }}" alt="{{ user_pack.title }}" width="20%"></td>
+                            <th>Banner Image</th>
+                            <td> <img src="{{ absolute_url('/uploads/pack/banner/'~user_pack.bannerImage) }}" alt="{{ user_pack.title }}" width="20%"></td>
                         </tr>
                         <tr>
-                            <th>UserBasePrice</th>
+                            <th>User Base Price</th>
                             <td>{{ user_pack.userBasePrice }}</td>
                         </tr>
                         <tr>
-                            <th>MarginValue</th>
+                            <th>Margin Value</th>
                             <td>{{ user_pack.marginValue }}</td>
                         </tr>
                         <tr>
-                            <th>TotalPrice</th>
+                            <th>Total Price</th>
                             <td>{{ user_pack.totalPrice }}</td>
                         </tr>
+                        {#<tr>#}
+                            {#<th>Pack Photos</th>#}
+                            {#<td> <img src="{{ absolute_url('/uploads/pack/'~user_pack.packPhotos) }}" alt="{{ user_pack.title }}" width="20%"></td>#}
+                        {#</tr>#}
                         <tr>
-                            <th>PackPhotos</th>
-                            <td> <img src="{{ absolute_url('/uploads/pack/'~user_pack.packPhotos) }}" alt="{{ user_pack.title }}" width="20%"></td>
-                        </tr>
-                        <tr>
-                            <th>CreatedAt</th>
+                            <th>Created Date</th>
                             <td>{{ user_pack.createdAt ? user_pack.createdAt|date('d-M-Y H:i:s') : '' }}</td>
                         </tr>
                         <tr>
-                            <th>UpdatedAt</th>
+                            <th>Updated Date</th>
                             <td>{{ user_pack.updatedAt ? user_pack.updatedAt|date('d-M-Y H:i:s') : '' }}</td>
                         </tr>
-                        <tr>
-                            <th>DeletedAt</th>
-                            <td>{{ user_pack.deletedAt ? user_pack.deletedAt|date('d-M-Y H:i:s') : '' }}</td>
-                        </tr>
+                        {#<tr>#}
+                            {#<th>Deleted Date</th>#}
+                            {#<td>{{ user_pack.deletedAt ? user_pack.deletedAt|date('d-M-Y H:i:s') : '' }}</td>#}
+                        {#</tr>#}
                         <tr>
                             <th>Active</th>
                             <td>{{ user_pack.active ? 'Yes' : 'No' }}</td>
@@ -87,11 +87,11 @@
                             <td>{{ user_pack.packSkill.slug }}</td>
                         </tr>
                         <tr>
-                            <th>Created At</th>
+                            <th>Created Date</th>
                             <td>{{ user_pack.packSkill.createdAt ? user_pack.packSkill.createdAt|date('d-M-Y H:i:s') : '' }}</td>
                         </tr>
                         <tr>
-                            <th>Updated At</th>
+                            <th>Updated Date</th>
                             <td>{{ user_pack.packSkill.updatedAt ? user_pack.packSkill.updatedAt|date('d-M-Y H:i:s') : ''  }}</td>
                         </tr>
                     </tbody>

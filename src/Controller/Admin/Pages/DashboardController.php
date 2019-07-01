@@ -35,6 +35,19 @@ class DashboardController extends Controller
     public function index(Request $request, AuthenticationUtils $authUtils, UserRepository $users, CardProjectRepository $projects, CardRepository $cards)
     {
 
+        $em= $this->getDoctrine()->getManager();
+        $cmUpgrade = $em->createQuery('SELECT count(usr) as allCmCount FROM App:User as usr WHERE usr.active = 1 AND usr.b2b_cm_approval =1');
+        $cmUpgradeB2b =  $cmUpgrade->getResult();
+
+        $clientQuery = $em->createQuery('SELECT count(clint) as allClientCount FROM App:Client as clint');
+        $clientData =  $clientQuery->getResult();
+
+        $activePackQuery = $em->createQuery('SELECT count(pck) as allpckCount FROM App:UserPacks as pck WHERE pck.active IS NULL OR pck.active = 0');
+        $activePack =  $activePackQuery->getResult();
+
+        $userMissionQuery = $em->createQuery("SELECT count(msn) as allmsnCount FROM App:UserMission as msn WHERE msn.status = 'active' ");
+        $userMission =  $userMissionQuery->getResult();
+
         //------------------------------------------
         // Get users stats
         //------------------------------------------
@@ -135,6 +148,10 @@ class DashboardController extends Controller
         }
 
         return $this->render('admin/dashboard/index.html.twig', array(
+            'cmUpgradeB2b'=>$cmUpgradeB2b,
+            'clientData'=>$clientData,
+            'activePack'=>$activePack,
+            'userMission'=>$userMission,
             'stats' => [
                 'pixies' => $totalPixies,
                 'users' => $totalUsers,
@@ -151,6 +168,4 @@ class DashboardController extends Controller
             ]
         ));
     }
-
-
 }

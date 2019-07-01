@@ -3,6 +3,88 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('build/admin/js/pages/dashboard.js') }}"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+
+            var dps = []; // dataPoints
+            var chart = new CanvasJS.Chart("cmUpgradation", {
+                title :{
+                    text: "CM upgradation"
+                },
+                axisX: {
+                    title: "Upgraded User"
+                },
+                axisY: {
+                    includeZero: false,
+                    title: "User"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: dps
+                }]
+            });
+
+            var xVal = 0;
+            var yVal = 100;
+            var updateInterval = 1000;
+            var dataLength = 20; // number of dataPoints visible at any point
+
+            var updateChart = function (count) {
+
+                count = count || 1;
+
+                for (var j = 0; j < count; j++) {
+                    yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
+                    dps.push({
+                        x: xVal,
+                        y: yVal
+                    });
+                    xVal++;
+                }
+
+                if (dps.length > dataLength) {
+                    dps.shift();
+                }
+
+                chart.render();
+            };
+
+            updateChart(dataLength);
+            setInterval(function(){updateChart()}, updateInterval);
+            var clientRegistrations = new CanvasJS.Chart("clientRegistrations", {
+                animationEnabled: true,
+                theme: "light2",
+                title:{
+                    text: "Client registrations"
+                },
+                axisX:{
+                    title: "Client registered "
+                },
+                axisY:{
+                    includeZero: false
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: [
+                        { y: 450 },
+                        { y: 414},
+                        { y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
+                        { y: 460 },
+                        { y: 450 },
+                        { y: 500 },
+                        { y: 480 },
+                        { y: 480 },
+                        { y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+                        { y: 500 },
+                        { y: 480 },
+                        { y: 510 }
+                    ]
+                }]
+            });
+            clientRegistrations.render();
+        }
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -19,8 +101,8 @@
                     <i class="material-icons">group</i>
                 </div>
                 <div class="content">
-                    <div class="text">Nombre d'utilisateurs</div>
-                    <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{ stats.users }}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Nombre d'utilisateurs{% elseif app.user.viewMode == "b2b" %} Nb of CM {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}{{ stats.users }}{% elseif app.user.viewMode == "b2b" %}  <a href="{{ url('admin_admins_cm_lists') }}"><span class="text">{{ cmUpgradeB2b[0].allCmCount }}</span>{% endif %}</a></div>
                 </div>
             </div>
         </div>
@@ -30,8 +112,8 @@
                     <i class="material-icons">account_circle</i>
                 </div>
                 <div class="content">
-                    <div class="text">Nombre de Pixies</div>
-                    <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{{ stats.pixies }}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Nombre de Pixies{% elseif app.user.viewMode == "b2b" %} Nb of Clients {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}{{ stats.pixies }}{% elseif app.user.viewMode == "b2b" %}  <a href="{{ url('admin_client_index') }}"><span class="text">{{ clientData[0].allClientCount }}</span></a>{% endif %}</div>
                 </div>
             </div>
         </div>
@@ -41,8 +123,8 @@
                     <i class="material-icons">view_carousel</i>
                 </div>
                 <div class="content">
-                    <div class="text">Nombre de Cards</div>
-                    <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">{{ stats.cards }}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Nombre de Cards{% elseif app.user.viewMode == "b2b" %} Nb of packs {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}{{ stats.cards }}{% elseif app.user.viewMode == "b2b" %} <a href="{{ url('admin_user_packs_index') }}"><span class="text">{{ activePack[0].allpckCount }}</span></a>{% endif %}</div>
                 </div>
             </div>
         </div>
@@ -52,14 +134,14 @@
                     <i class="material-icons">help</i>
                 </div>
                 <div class="content">
-                    <div class="text">-</div>
-                    <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">-</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Help{% elseif app.user.viewMode == "b2b" %} Nb of missions {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}-{% elseif app.user.viewMode == "b2b" %} <a href="{{ url('admin_user_mission_index') }}"><span class="text">{{ userMission[0].allmsnCount }}</span></a>{% endif %}</div>
                 </div>
             </div>
         </div>
     </div>
     <!-- #END# Widgets -->
-
+    {% if app.user.viewMode == "b2c" %}
     <!-- Graph -->
     <div class="row clearfix">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -215,5 +297,25 @@
         </div>
         <!-- #END# Task Info -->
     </div>
-
+    {% elseif app.user.viewMode == "b2b" %}
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <div class="row clearfix">
+                            <div class="col-xs-12 col-sm-6">
+                                <h2>Visites</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="body" style="height: 600px;">
+                        <div id="cmUpgradation"></div>
+                    </div>
+                    <div class="body" style="height: 600px;">
+                        <div id="clientRegistrations"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

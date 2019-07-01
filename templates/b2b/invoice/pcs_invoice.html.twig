@@ -234,19 +234,30 @@
                     <tfoot>
                     <tr>
                         <td colspan="1"></td>
-                        <td colspan="1">SUBTOTAL</td>
+                        <td colspan="1">Total</td>
                         <td>{{ mission.userMissionPayment.userBasePrice |round(2, 'floor') }}</td>
+                    </tr>
+                    </tfoot>
+                </table>
+
+                <table border="0" cellspacing="0" cellpadding="0">
+
+                    <tfoot>
+                    <tr>
+                        <td colspan="1"></td>
+                        <td colspan="1">PCS Margin 25%</td>
+                        <td>{{ mission.userMissionPayment.pcsPrice |round(2, 'floor') }}</td>
                     </tr>
                     <tr>
                         <td colspan="1"></td>
-                        <td colspan="1">Margin 25%</td>
-                        <td>{{ mission.userMissionPayment.pcsTotal | round(2, 'floor') }}</td>
+                        <td colspan="1">VAT</td>
+                        <td>{{ mission.userMissionPayment.pcsTax | round(2, 'floor') }}</td>
                     </tr>
 
                     <tr>
                         <td colspan="1"></td>
-                        <td colspan="1">GRAND TOTAL</td>
-                        <td>{{ mission.userMissionPayment.userBasePrice + mission.userMissionPayment.pcsTotal |round(2, 'floor') }} €</td>
+                        <td colspan="1">TOTAL</td>
+                        <td>{{ mission.userMissionPayment.pcsTotal |round(2, 'floor') }} €</td>
                     </tr>
                     </tfoot>
                 </table>
