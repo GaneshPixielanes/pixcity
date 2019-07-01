@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
 use App\Entity\Option;
+use App\Entity\Royalties;
 use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionPaymentRepository;
 use App\Repository\NotificationsRepository;
@@ -76,6 +77,11 @@ class MissionController extends Controller
         $mission = $missionRepo->activePrices($request->get('id'));
         $status = '';
 
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);
+        $margin = $options->findOneBy(['slug' => 'margin']);
+
         if(is_null($mission) || $mission->getClient()->getId() != $this->getUser()->getId())
         {
             return new JsonResponse(['success' => false, 'message' => 'Please login to the right account']);
@@ -129,6 +135,8 @@ class MissionController extends Controller
 
                         $status = MissionStatus::TERMINATED;
 
+
+
                         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),1);
 
                         break;
@@ -155,10 +163,7 @@ class MissionController extends Controller
         $entityManager->persist($mission);
         $entityManager->flush();
 
-        $options = $this->getDoctrine()->getRepository(Option::class);
 
-        $tax = $options->findOneBy(['slug' => 'tax']);
-        $margin = $options->findOneBy(['slug' => 'margin']);
 
         $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
 
@@ -228,6 +233,24 @@ class MissionController extends Controller
                 )
             ), $pcsInvoicePath
         );
+
+        if($mission->getStatus() == 'terminate'){
+            $royalties = new Royalties();
+            $royalties->setMission($mission);
+            $royalties->setCm($mission->getUser());
+            $royalties->setTax($tax->getValue());
+            $royalties->setBasePrice($mission->getUserMissionPayment()->getUserBasePrice());
+            $royalties->setTaxValue($mission->getUserMissionPayment()->getCmTax());
+            $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
+            $royalties->setInvoicePath($cmInvoicePath);
+            $royalties->setPaymentType('Mango_pay');
+            $royalties->setStatus(1);
+            $royalties->setBankDetails(json_encode('Mango_pay'));
+            $entityManager->persist($royalties);
+            $entityManager->flush();
+        }
+
+
 
         return new JsonResponse(['success' => true, 'message' => 'Status has been updated']);
 

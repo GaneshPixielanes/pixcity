@@ -114,7 +114,7 @@
                                     </p>
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.title }}</p>
-                                    <p class="w-15 mb-0 text-inprogress">Annulée</p>
+                                    <p class="w-15 mb-0 text-inprogress">Terminée</p>
                                     {% if mission.log.userBasePrice is defined %}
                                         <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round(2, 'floor') }} €</p>
                                     {% endif %}
@@ -150,7 +150,7 @@
                                     </p>
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.title }}</p>
-                                    <p class="w-15 mb-0 text-inprogress">Terminée</p>
+                                    <p class="w-15 mb-0 text-inprogress">Annulée</p>
                                     {% if mission.log.userBasePrice is defined %}
                                         <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round(2, 'floor') }} €</p>
                                     {% endif %}
