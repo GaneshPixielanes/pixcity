@@ -285,6 +285,7 @@ class MissionController extends Controller
                 $royalties->setMission($mission_id);
                 $royalties->setCm($mission_id->getUser());
                 $royalties->setTax($tax->getValue());
+                $royalties->setBasePrice($mission_id->getUserMissionPayment()->getUserBasePrice());
                 $royalties->setTaxValue($mission_id->getUserMissionPayment()->getCmTax());
                 $royalties->setTotalPrice($mission_id->getUserMissionPayment()->getCmTotal());
                 $royalties->setInvoicePath('asas');
