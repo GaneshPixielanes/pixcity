@@ -311,7 +311,7 @@ settings:
 
 b2b:
     label:
-        created: En cours
+        created: Draft
         terminate_request_cm: En cours
         cancel_request_cm: En cours
         terminate_request_client: En cours
