@@ -136,8 +136,9 @@ class MissionController extends Controller
                     {
                         $status = MissionStatus::CANCELLED;
 
-                        $calculate_refund = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
-
+                        $refund_percentage = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
+                        $calculate_refund = $first_result['client_price'] - $refund_percentage;
+                        $transaction[0]->getMission()->getUserMissionPayment()->setAdjustment($calculate_refund);
                         $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
 
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has accepted cancellation request of mission '.$mission->getTitle(),1);
@@ -161,7 +162,10 @@ class MissionController extends Controller
 
                         if($result['need_to_pay'] < 0){
 
-                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$result['refund_amount']);
+                            $refund_percentage = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
+                            $calculate_refund = $first_result['client_price'] - $refund_percentage;
+
+                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
 
                         }
 
