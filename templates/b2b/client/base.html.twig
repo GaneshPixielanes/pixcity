@@ -864,7 +864,21 @@
 
         });
 
-        $(document).on('click','#mission-terminate','#mission-terminate-cancel',function () {
+        $(document).on('click','#mission-terminate',function () {
+
+           var id = $(this).attr('data-id');
+           var type = $(this).attr('data-type');
+           console.log(type);
+           $.ajax({
+               url:"{{ path('api_mission_client_status') }}",
+               data: {id: id,status:type},
+               success:function (data) {
+                    window.location.href = "/client/mission/list";
+               }
+           })
+        });
+
+        $(document).on('click','#mission-terminate-cancel',function () {
 
            var id = $(this).attr('data-id');
            var type = $(this).attr('data-type');
