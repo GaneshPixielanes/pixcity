@@ -146,4 +146,17 @@ class UserPacksController extends AbstractController
         // uniqid(), which is based on timestamps
         return md5(uniqid());
     }
+    /**
+     * @Route("/view/{id}", name="view", methods={"GET"})
+     */
+    public function viewByUser(Request $request,UserPacksRepository $userPacksRepository): Response
+    {
+        $userId = $request->attributes->get('id');
+        $selectedUserRelated = $userPacksRepository->findBy(['user'=>$userId]);
+
+
+        return $this->render('admin/b2b/user_packs/index.html.twig', [
+            'user_packs' => $selectedUserRelated,
+        ]);
+    }
 }
