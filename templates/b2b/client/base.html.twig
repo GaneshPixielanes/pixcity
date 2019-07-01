@@ -283,7 +283,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>The Breakup amount need to pay to terminate the mission</p>
+                            <p id="break-up-text"></p>
                             <p id="price"></p>
                             <p id="tax"></p>
                             <hr>
@@ -794,7 +794,7 @@
 
                     if(amount > 0){
                         if(type == 'terminate'){
-
+                            $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
                             $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
@@ -805,7 +805,7 @@
                             $(".teminate-class").removeAttr('id','none');
 
                         }else if(type == 'cancel'){
-
+                            $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
                             $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
                             $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
@@ -818,7 +818,7 @@
                     }else if(amount < 0){
 
                         if(type == 'terminate'){
-
+                            $("#break-up-text").text('The Refundable amount will be once you terminate the mission');
                             $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
@@ -835,6 +835,7 @@
                     }else if(amount == 0){
 
                         if(type == 'terminate'){
+                            $("#break-up-text").text('Please terminate the mission');
                             $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
