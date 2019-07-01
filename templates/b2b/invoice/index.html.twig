@@ -85,7 +85,7 @@
                                         <td valign="middle">
                                             <div class="d-flex align-items-center">
                                                 <a href="javascript:;" class="invoice-preview-btn preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" data-id="{{ mission.id }}" data-target="#invoicePreviewModal" data-toggle="modal"><i class="fas fa-eye fz-16"></i></a>
-                                                <a href="{{ url('b2b_mission_invoice_download') }}" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                                                <a href="{{ url('b2b_mission_invoice_download',{'id':mission.id}) }}" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
                                             </div>
                                         </td>
                                     </tr>
