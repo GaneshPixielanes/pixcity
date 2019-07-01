@@ -290,7 +290,7 @@ class MissionController extends Controller
                 $royalties->setTotalPrice($mission_id->getUserMissionPayment()->getCmTotal());
                 $royalties->setInvoicePath($cmInvoicePath);
                 $royalties->setStatus('pending');
-                $royalties->setBankDetails(json_encode('Mango_pay'));
+                $royalties->setBankDetails(json_encode($response));
                 $em->persist($royalties);
                 $em->flush();
 
