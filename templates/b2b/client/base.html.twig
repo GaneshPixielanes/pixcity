@@ -808,8 +808,8 @@
                             $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
                             $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
                             $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+parseFloat(data.advance_payment).toFixed(2)+' amount to your account,');
-                            $('#mission-terminate-cancel').attr('data-id',id);
-                            $('#mission-terminate-cancel').attr('data-type','cancel');
+                            $('#mission-terminate').attr('data-id',id);
+                            $('#mission-terminate').attr('data-type','cancel');
                         }
 
                     }else if(amount < 0){
