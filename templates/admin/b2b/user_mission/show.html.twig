@@ -44,7 +44,11 @@
                         </tr>
                         <tr>
                             <th>Brief Files</th>
-                            <td>{{ user_mission.briefFiles }}</td>
+                            <td>
+                                {% for document in user_mission.documents %}
+                                <img src="{{ absolute_url('/uploads/missions/'~user_mission.id~'/'~document.name) }}" alt="{{ user_mission.title }}" width="20%" class="img-rounded">
+                                {% endfor %}
+                            </td>
                         </tr>
                         <tr>
                             <th>Mission Base Price</th>
