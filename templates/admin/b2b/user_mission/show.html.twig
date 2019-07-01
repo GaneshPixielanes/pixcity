@@ -64,7 +64,7 @@
                         </tr>
                         <tr>
                             <th>Status</th>
-                            <td>{{ user_mission.status ? user_mission.status|upper : 'N/A' }}</td>
+                            <td>{{ user_mission.status ? user_mission.status|upper|replace({("_"):" "}) : 'N/A' }}</td>
                         </tr>
                         {#<tr>#}
                             {#<th>Due Date</th>#}
