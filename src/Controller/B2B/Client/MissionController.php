@@ -247,39 +247,39 @@ class MissionController extends Controller
 
                 $transaction->getMission()->setStatus(MissionStatus::TERMINATED);
 
-//                $filesystem->mkdir('invoices/'.$mission->getId(),0777);
-//
-//                $filename = $this->createSlug($mission->getTitle());
-//
-//                $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
-//
-//                $this->container->get('knp_snappy.pdf')->generateFromHtml(
-//                    $this->renderView('b2b/invoice/client_invoice.html.twig',
-//                        array(
-//                            'mission' => $mission
-//                        )
-//                    ), $clientInvoicePath
-//                );
-//
-//                $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
-//
-//                $this->container->get('knp_snappy.pdf')->generateFromHtml(
-//                    $this->renderView('b2b/invoice/cm_invoice.html.twig',
-//                        array(
-//                            'mission' => $mission
-//                        )
-//                    ), $cmInvoicePath
-//                );
-//
-//                $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
-//
-//                $this->container->get('knp_snappy.pdf')->generateFromHtml(
-//                    $this->renderView('b2b/invoice/pcs_invoice.html.twig',
-//                        array(
-//                            'mission' => $mission
-//                        )
-//                    ), $pcsInvoicePath
-//                );
+                $filesystem->mkdir('invoices/'.$mission->getId(),0777);
+
+                $filename = $this->createSlug($mission->getTitle());
+
+                $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/client_invoice.html.twig',
+                        array(
+                            'mission' => $mission
+                        )
+                    ), $clientInvoicePath
+                );
+
+                $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/cm_invoice.html.twig',
+                        array(
+                            'mission' => $mission
+                        )
+                    ), $cmInvoicePath
+                );
+
+                $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/pcs_invoice.html.twig',
+                        array(
+                            'mission' => $mission
+                        )
+                    ), $pcsInvoicePath
+                );
 
                 $royalties = new Royalties();
                 $royalties->setMission($mission_id);
