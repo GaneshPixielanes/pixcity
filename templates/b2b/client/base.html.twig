@@ -295,7 +295,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
-                            <a href="javascript:;" id="mission-terminate" class="btn btn-pink">TERMINER LA MISSION</a>
+                            <a href="javascript:;" id="mission-terminate" class="btn btn-pink teminate-class">TERMINER LA MISSION</a>
                         </div>
                     </div>
                 </div>
@@ -802,6 +802,7 @@
                             $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
                             $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+id);
                             $('#mission-terminate').attr('data-type','terminate');
+                            $(".teminate-class").removeAttr('id','none');
 
                         }else if(type == 'cancel'){
 
