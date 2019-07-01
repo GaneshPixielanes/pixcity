@@ -136,11 +136,10 @@ class MissionController extends Controller
                     {
                         $status = MissionStatus::CANCELLED;
 
-//                        $calculate_refund = $result['price'] - ($result['price']/100) * 2;
-//                        dd($calculate_refund);
-//                        if($result['need_to_pay'] != 0){
-//                            $response = $mangoPayService->refundPayment($transaction,$result['price'],$result['refund_amount']);
-//                        }
+                        $refund_percentage = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
+                        $calculate_refund = $first_result['client_price'] - $refund_percentage;
+                        $transaction[0]->getMission()->getUserMissionPayment()->setAdjustment($calculate_refund);
+                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
 
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has accepted cancellation request of mission '.$mission->getTitle(),1);
                         break;
@@ -161,7 +160,14 @@ class MissionController extends Controller
 
                         $status = MissionStatus::TERMINATED;
 
+                        if($result['need_to_pay'] < 0){
 
+                            $refund_percentage = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
+                            $calculate_refund = $first_result['client_price'] - $refund_percentage;
+
+                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
+
+                        }
 
                         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),1);
 
@@ -201,10 +207,12 @@ class MissionController extends Controller
         $transaction[0]->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
         $transaction[0]->getMission()->setMissionBasePrice($last_result['cm_price']);
 
+        $entityManager->persist($transaction[0]);
+        $entityManager->flush();
 
         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
-        $filesystem->mkdir('invoices/'.$mission->getId());
+        $filesystem->mkdir('invoices/'.$mission->getId(),0777);
 
         $filename = $this->createSlug($mission->getTitle());
 
@@ -247,9 +255,9 @@ class MissionController extends Controller
             $royalties->setTaxValue($mission->getUserMissionPayment()->getCmTax());
             $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
             $royalties->setInvoicePath($cmInvoicePath);
-            $royalties->setPaymentType('Mango_pay');
-            $royalties->setStatus(1);
-            $royalties->setBankDetails(json_encode('Mango_pay'));
+            $royalties->setPaymentType(null);
+            $royalties->setStatus('pending');
+            $royalties->setBankDetails(json_encode('no_response'));
             $entityManager->persist($royalties);
             $entityManager->flush();
         }
