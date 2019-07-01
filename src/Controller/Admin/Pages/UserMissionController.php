@@ -140,7 +140,7 @@ class UserMissionController extends AbstractController
         $userOrClientId = $request->attributes->get('id');
         $userType    = $request->attributes->get('usrtype');
         if($userType == 'user'){
-            $selectedUserRelated = $userMissionRepository->findBy(['user'=>$userOrClientId, 'status'=>'active']);
+            $selectedUserRelated = $userMissionRepository->findBy(['user'=>$userOrClientId, 'status'=>'ongoing']);
         }
         elseif($userType == 'client'){
             $selectedUserRelated = $userMissionRepository->findBy(['client'=>$userOrClientId]);
