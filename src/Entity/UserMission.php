@@ -52,10 +52,10 @@ class UserMission
      */
     private $bannerImage;
 
-//    /**
-//     * @ORM\Column(type="string", length=255, nullable=true)
-//     */
-//    private $briefFiles;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $briefFiles;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -269,17 +269,17 @@ class UserMission
         return $this;
     }
 
-//    public function getBriefFiles(): ?string
-//    {
-//        return $this->briefFiles;
-//    }
-//
-//    public function setBriefFiles(?string $briefFiles): self
-//    {
-//        $this->briefFiles = $briefFiles;
-//
-//        return $this;
-//    }
+    public function getBriefFiles(): ?string
+    {
+        return $this->briefFiles;
+    }
+
+    public function setBriefFiles(?string $briefFiles): self
+    {
+        $this->briefFiles = $briefFiles;
+
+        return $this;
+    }
 
     public function getMissionBasePrice(): ?string
     {
