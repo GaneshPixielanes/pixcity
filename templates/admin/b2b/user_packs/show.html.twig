@@ -23,6 +23,10 @@
                 <table class="table">
                     <tbody>
                         <tr>
+                            <th>CM</th>
+                            <td>{{ user_pack.user.firstname~' '~user_pack.user.lastname }} <a href="{{path('admin_user_packs_view', {'id': user_pack.user.id })  }}" title="view" class="btn bg-green btn-visit-site"> View All Related</a> </td>
+                        </tr>
+                        <tr>
                             <th>Title</th>
                             <td>{{ user_pack.title }}</td>
                         </tr>
@@ -40,7 +44,7 @@
                         </tr>
                         <tr>
                             <th>Margin Value</th>
-                            <td>{{ user_pack.marginValue }}</td>
+                            <td>{{ user_pack.marginValue }} </td>
                         </tr>
                         <tr>
                             <th>Total Price</th>
@@ -56,11 +60,11 @@
                         </tr>
                         <tr>
                             <th>Created Date</th>
-                            <td>{{ user_pack.createdAt ? user_pack.createdAt|date('d-M-Y H:i:s') : '' }}</td>
+                            <td>{{ user_pack.createdAt ? user_pack.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Updated Date</th>
-                            <td>{{ user_pack.updatedAt ? user_pack.updatedAt|date('d-M-Y H:i:s') : '' }}</td>
+                            <td>{{ user_pack.updatedAt ? user_pack.updatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                         </tr>
                         {#<tr>#}
                             {#<th>Deleted Date</th>#}
@@ -84,19 +88,19 @@
                         </tr>
                         <tr>
                             <th>Name</th>
-                            <td>{{ user_pack.packSkill.name }}</td>
+                            <td>{{ user_pack.packSkill.name ? user_pack.packSkill.name : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Slug</th>
-                            <td>{{ user_pack.packSkill.slug }}</td>
+                            <td>{{ user_pack.packSkill.slug ? user_pack.packSkill.slug : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Created Date</th>
-                            <td>{{ user_pack.packSkill.createdAt ? user_pack.packSkill.createdAt|date('d-M-Y H:i:s') : '' }}</td>
+                            <td>{{ user_pack.packSkill.createdAt ? user_pack.packSkill.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Updated Date</th>
-                            <td>{{ user_pack.packSkill.updatedAt ? user_pack.packSkill.updatedAt|date('d-M-Y H:i:s') : ''  }}</td>
+                            <td>{{ user_pack.packSkill.updatedAt ? user_pack.packSkill.updatedAt|date('d-M-Y H:i:s') : 'N/A'  }}</td>
                         </tr>
                     </tbody>
                 </table>

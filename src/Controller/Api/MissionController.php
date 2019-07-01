@@ -77,15 +77,33 @@ class MissionController extends Controller
         $mission = $missionRepo->activePrices($request->get('id'));
         $status = '';
 
+        $transaction = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
+
         $options = $this->getDoctrine()->getRepository(Option::class);
 
         $tax = $options->findOneBy(['slug' => 'tax']);
         $margin = $options->findOneBy(['slug' => 'margin']);
 
+        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+
+        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $result = [];
+
+        $result['price'] = $last_result['client_price'];
+        $result['tax'] = $last_result['client_tax'];
+        $result['total'] = $result['price'] + $result['tax'];
+        $result['advance_payment'] = $first_result['client_total'];
+        $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
+        $result['refund_amount'] = $result['advance_payment'] - $result['total'];
+
         if(is_null($mission) || $mission->getClient()->getId() != $this->getUser()->getId())
         {
             return new JsonResponse(['success' => false, 'message' => 'Please login to the right account']);
         }
+
         switch($request->get('status'))
         {
 
@@ -113,9 +131,16 @@ class MissionController extends Controller
                     }
                     break;
             case 'cancel':
+
                     if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
                     {
                         $status = MissionStatus::CANCELLED;
+
+                        $refund_percentage = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
+                        $calculate_refund = $first_result['client_price'] - $refund_percentage;
+                        $transaction[0]->getMission()->getUserMissionPayment()->setAdjustment($calculate_refund);
+                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
+
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has accepted cancellation request of mission '.$mission->getTitle(),1);
                         break;
                     }
@@ -135,7 +160,14 @@ class MissionController extends Controller
 
                         $status = MissionStatus::TERMINATED;
 
+                        if($result['need_to_pay'] < 0){
 
+                            $refund_percentage = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
+                            $calculate_refund = $first_result['client_price'] - $refund_percentage;
+
+                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
+
+                        }
 
                         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),1);
 
@@ -164,29 +196,6 @@ class MissionController extends Controller
         $entityManager->flush();
 
 
-
-        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
-
-        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
-
-        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
-
-        $result = [];
-
-        $result['price'] = $last_result['client_price'];
-        $result['tax'] = $last_result['client_tax'];
-        $result['total'] = $result['price'] + $result['tax'];
-        $result['advance_payment'] = $first_result['client_total'];
-        $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
-        $result['refund_amount'] = $result['advance_payment'] - $result['total'];
-
-
-        $transaction = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
-
-        if($result['need_to_pay'] != 0){
-//                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$result['refund_amount']);
-        }
-
         $transaction[0]->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
         $transaction[0]->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
         $transaction[0]->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
@@ -198,9 +207,12 @@ class MissionController extends Controller
         $transaction[0]->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
         $transaction[0]->getMission()->setMissionBasePrice($last_result['cm_price']);
 
+        $entityManager->persist($transaction[0]);
+        $entityManager->flush();
+
         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
-        $filesystem->mkdir('invoices/'.$mission->getId());
+        $filesystem->mkdir('invoices/'.$mission->getId(),0777);
 
         $filename = $this->createSlug($mission->getTitle());
 
@@ -234,7 +246,7 @@ class MissionController extends Controller
             ), $pcsInvoicePath
         );
 
-        if($mission->getStatus() == 'terminate'){
+        if($mission->getStatus() == 'terminated'){
             $royalties = new Royalties();
             $royalties->setMission($mission);
             $royalties->setCm($mission->getUser());
@@ -243,9 +255,9 @@ class MissionController extends Controller
             $royalties->setTaxValue($mission->getUserMissionPayment()->getCmTax());
             $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
             $royalties->setInvoicePath($cmInvoicePath);
-            $royalties->setPaymentType('Mango_pay');
-            $royalties->setStatus(1);
-            $royalties->setBankDetails(json_encode('Mango_pay'));
+            $royalties->setPaymentType(null);
+            $royalties->setStatus('pending');
+            $royalties->setBankDetails(json_encode('no_response'));
             $entityManager->persist($royalties);
             $entityManager->flush();
         }

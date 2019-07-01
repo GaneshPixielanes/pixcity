@@ -5,6 +5,44 @@
     <script src="{{ asset('build/admin/js/pages/dashboard.js') }}"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script type="text/javascript">
+        window.onload = function() {
+
+            var dataPoints = [];
+
+            var options =  {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Daily Sales Data"
+                },
+                axisX: {
+                    valueFormatString: "DD MMM YYYY",
+                },
+                axisY: {
+                    title: "User",
+                    titleFontSize: 24,
+                    includeZero: false
+                },
+                data: [{
+                    type: "spline",
+                    yValueFormatString: "$#,###.##",
+                    dataPoints: dataPoints
+                }]
+            };
+
+            function addData(data) {
+                for (var i = 0; i < data.length; i++) {
+                    dataPoints.push({
+                        x: new Date(data[i].date),
+                        y: data[i].units
+                    });
+                }
+                $("#cmUpgradation").CanvasJSChart(options);
+
+            }
+            $.getJSON("https://canvasjs.com/data/gallery/jquery/daily-sales-data.json", addData);
+
+        }
         window.onload = function () {
 
             var dps = []; // dataPoints
@@ -134,7 +172,7 @@
                     <i class="material-icons">help</i>
                 </div>
                 <div class="content">
-                    <div class="text">{% if app.user.viewMode == "b2c" %}Help{% elseif app.user.viewMode == "b2b" %} Nb of missions {% endif %}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Help{% elseif app.user.viewMode == "b2b" %} Nb of ongoing missions {% endif %}</div>
                     <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}-{% elseif app.user.viewMode == "b2b" %} <a href="{{ url('admin_user_mission_index') }}"><span class="text">{{ userMission[0].allmsnCount }}</span></a>{% endif %}</div>
                 </div>
             </div>

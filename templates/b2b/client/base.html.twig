@@ -283,7 +283,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>The Breakup amount need to pay to terminate the mission</p>
+                            <p id="break-up-text"></p>
                             <p id="price"></p>
                             <p id="tax"></p>
                             <hr>
@@ -794,7 +794,7 @@
 
                     if(amount > 0){
                         if(type == 'terminate'){
-
+                            $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
                             $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
@@ -805,12 +805,15 @@
                             $(".teminate-class").removeAttr('id','none');
 
                         }else if(type == 'cancel'){
+                            var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
+                            var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
 
+                            $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
                             $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
                             $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
                             $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+parseFloat(data.advance_payment).toFixed(2)+' amount to your account,');
+                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
                             $('#mission-terminate-cancel').attr('data-id',id);
                             $('#mission-terminate-cancel').attr('data-type','cancel');
                         }
@@ -818,7 +821,7 @@
                     }else if(amount < 0){
 
                         if(type == 'terminate'){
-
+                            $("#break-up-text").text('The Refundable amount will be once you terminate the mission');
                             $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
@@ -835,6 +838,7 @@
                     }else if(amount == 0){
 
                         if(type == 'terminate'){
+                            $("#break-up-text").text('Please terminate the mission');
                             $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
@@ -886,7 +890,7 @@
            console.log(type);
            $.ajax({
                url:"{{ path('api_mission_client_status') }}",
-               data: {id: id,status:type},
+               data: {id: id,status:'cancel'},
                success:function (data) {
                     window.location.href = "/client/mission/list";
                }
