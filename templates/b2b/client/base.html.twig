@@ -778,7 +778,9 @@
             /* Slick slider starts ends */
         });
 
-        $(document).on('click','#terminateMission', '#mission-terminate-cancel',function () {
+
+
+        $(document).on('click','#terminateMission',function () {
 
             var amount = $(this).attr('data-adjust-amount');
             var type = $(this).attr('data-type');
@@ -862,7 +864,7 @@
 
         });
 
-        $(document).on('click','#mission-terminate',function () {
+        $(document).on('click','#mission-terminate','#mission-terminate-cancel',function () {
 
            var id = $(this).attr('data-id');
            var type = $(this).attr('data-type');
