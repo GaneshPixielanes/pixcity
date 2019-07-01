@@ -296,7 +296,7 @@ class MissionController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         switch($request->get('status'))
         {
-            case 'cancel': if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING)
+            case 'cancel': if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING || $mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED)
                             {
                                 $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
                                 $mission->setCancelledBy($request->get('cancelledBy'));
@@ -579,5 +579,39 @@ class MissionController extends AbstractController
         );
 
         return $response;
+    }
+
+    /**
+     * @param $id
+     * @param UserMissionRepository $missionRepository
+     *
+     * @Route("download-invoice/{id}",name="invoice_download")
+     */
+    public function downloadInvoice($id, UserMissionRepository $missionRepository)
+    {
+        $mission = $missionRepository->findOneBy(
+            [
+                'id' => $id,
+                'user' => $this->getUser(),
+                'status' => MissionStatus::TERMINATED
+            ]
+        );
+
+        if(!is_null($mission))
+        {
+            $fileName = $missionRepository->createSlug($mission->getTitle())."-cm.pdf";
+            $response = new BinaryFileResponse('invoices/'.$mission->getId().'/'.$fileName);
+
+            $response->headers->set('Content-Type','text/plain');
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                $fileName
+            );
+
+            return $response;
+        }
+
+        return new JsonResponse(['success' => false, 'message' => 'File Not Found!']);
+
     }
 }

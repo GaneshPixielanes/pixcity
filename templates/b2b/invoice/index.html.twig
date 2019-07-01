@@ -134,6 +134,7 @@
             var id =$(this).attr('data-id');
             var url = '/community-manager/invoice/preview/'+id;
            $('#invoice-preview-body').load(url);
+           window.print();
        });
     });
 </script>
