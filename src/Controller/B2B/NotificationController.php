@@ -45,7 +45,7 @@ class NotificationController extends AbstractController
         $notification->setUnread(0);
 
         $em->persist($notification);
-
+        $em->flush();
 
         $missionlog = $missionLogRepository->find($notification->getNotifyBy());
 
