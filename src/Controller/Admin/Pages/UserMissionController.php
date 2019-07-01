@@ -131,4 +131,26 @@ class UserMissionController extends AbstractController
 
         return $this->redirectToRoute('admin_user_mission_index');
     }
+
+    /**
+     * @Route("/view/{id}/{usrtype}", name="view", methods={"GET"})
+     */
+    public function viewByUser(Request $request,UserMissionRepository $userMissionRepository): Response
+    {
+        $userOrClientId = $request->attributes->get('id');
+        $userType    = $request->attributes->get('usrtype');
+        if($userType == 'user'){
+            $selectedUserRelated = $userMissionRepository->findBy(['user'=>$userOrClientId, 'status'=>'ongoing']);
+        }
+        elseif($userType == 'client'){
+            $selectedUserRelated = $userMissionRepository->findBy(['client'=>$userOrClientId]);
+        }
+        else{
+            $selectedUserRelated = $userMissionRepository->findAll();
+        }
+
+        return $this->render('admin/b2b/user_mission/index.html.twig', [
+            'user_missions' => $selectedUserRelated,
+        ]);
+    }
 }

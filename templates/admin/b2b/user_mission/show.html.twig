@@ -24,11 +24,11 @@
                     <tbody>
                         <tr>
                             <th>User</th>
-                            <td>{{ user_mission.user.firstname~' '~user_mission.user.lastname }}</td>
+                            <td>{{ user_mission.user.firstname~' '~user_mission.user.lastname }} <a href="{{path('admin_user_mission_view', {'id': user_mission.user.id , 'usrtype':'user'})  }}" title="view" class="btn bg-green btn-visit-site"> View All Related</a> </td>
                         </tr>
                         <tr>
                             <th>Client</th>
-                            <td>{{ user_mission.client.firstName~' '~user_mission.client.lastName }}</td>
+                            <td>{{ user_mission.client.firstName~' '~user_mission.client.lastName }} <a href="{{path('admin_user_mission_view', {'id': user_mission.client.id , 'usrtype':'client'})  }}" title="view" class="btn bg-green btn-visit-site"> View All Related</a> </td>
                         </tr>
                         <tr>
                             <th>Title</th>

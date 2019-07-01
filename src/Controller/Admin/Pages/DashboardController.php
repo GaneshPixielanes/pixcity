@@ -45,9 +45,19 @@ class DashboardController extends Controller
         $activePackQuery = $em->createQuery('SELECT count(pck) as allpckCount FROM App:UserPacks as pck WHERE pck.active IS NULL OR pck.active = 0');
         $activePack =  $activePackQuery->getResult();
 
-        $userMissionQuery = $em->createQuery("SELECT count(msn) as allmsnCount FROM App:UserMission as msn WHERE msn.status = 'active' ");
+        $userMissionQuery = $em->createQuery("SELECT count(msn) as allmsnCount FROM App:UserMission as msn WHERE msn.status = 'ongoing' ");
         $userMission =  $userMissionQuery->getResult();
 
+
+//        $clientUpgradeQuery = $em->createQuery('SELECT count(createdAt) as unitCount, DATE(createdAt) as cDate FROM App:Client GROUP BY DATE(createdAt)');
+//        $clientUpgrade =  $clientUpgradeQuery->getResult();
+//
+//        $clientArr = array();
+//        foreach ($clientUpgrade as $k => $v){
+//            $clientArr['date'] = $v['cDate'];
+//            $clientArr['units'] = $v['unitCount'];
+//        }
+//        dd($clientArr);die;
         //------------------------------------------
         // Get users stats
         //------------------------------------------
