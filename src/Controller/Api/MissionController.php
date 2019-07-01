@@ -203,6 +203,8 @@ class MissionController extends Controller
         $transaction[0]->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
         $transaction[0]->getMission()->setMissionBasePrice($last_result['cm_price']);
 
+        $entityManager->persist($transaction[0]);
+        $entityManager->flush();
 
         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
