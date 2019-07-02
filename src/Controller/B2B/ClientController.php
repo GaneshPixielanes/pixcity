@@ -110,7 +110,8 @@ class ClientController extends Controller
     /**
      * @Route("preview-mission", name="preview_mission")
      */
-    public function previewMission(Request $request,UserMissionRepository $missionRepository,MissionPaymentRepository $missionPaymentRepository){
+    public function previewMission(Request $request,UserMissionRepository $missionRepository,
+                                   MissionPaymentRepository $missionPaymentRepository,NotificationsRepository $notificationRepo){
 
 
         $mission = $missionRepository->activePrices($request->get('id'));
@@ -133,12 +134,15 @@ class ClientController extends Controller
 
         $route = $request->get('route');
 
+        $notifications = $notificationRepo->findBy(['client'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);
+
         return $this->render('b2b/client/mission/load-mission-preview.html.twig',[
             'mission' => $mission,
             'route' => $route,
             'filename' => $filename,
             'result' => $result,
-            'margin' => $margin
+            'margin' => $margin,
+            'notifications' => $notifications
         ]);
 
     }

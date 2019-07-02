@@ -3,6 +3,7 @@
 namespace App\Controller\B2B;
 
 
+use App\Entity\Option;
 use App\Repository\MissionLogRepository;
 use App\Repository\MissionPaymentRepository;
 use App\Repository\MissionRepository;
@@ -69,8 +70,12 @@ class NotificationController extends AbstractController
 
         #Send notification
         $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', $missionlog->getMission()->getClient()->getFirstName().' has accepted your new price of mission '.$missionlog->getMission()->getTitle().' of amount '.$missionlog->getUserBasePrice(),0);
+        $options = $this->getDoctrine()->getRepository(Option::class);
+        $margin = $options->findOneBy(['slug' => 'margin']);
 
-        return JsonResponse::create(['success' => true]);
+        $client_price = $missionlog->getUserBasePrice()/(100 - $margin->getValue()) * 100;
+
+        return JsonResponse::create(['success' => true,'client_price' => $client_price]);
 
     }
 }
