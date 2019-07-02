@@ -66,8 +66,8 @@ label:
     socialnetworks: Réseaux sociaux
     notifications: Notifications
     citymaker_profile: Card rédigée par notre City-maker
-    card_id: CARD ID		
-    card_title: CARD TITLE		
+    card_id: CARD ID
+    card_title: CARD TITLE
     card_url: CARD URL
     network:
         facebook: Facebook
@@ -254,7 +254,7 @@ action:
     checkcollections: Voir les collections
     duplicate: Dupliquer
     register: Devenir City-maker
-#    register: Inscription
+    #    register: Inscription
     register_pixie: Devenir City-maker
     become_a_pixie: Devenir un City-maker
     follow_region_facebook: Suivez-nous sur Facebook
@@ -320,13 +320,16 @@ b2b:
         terminated: Terminée
         cancelled: Annulée
         client_declined: Client Declined
-        terminate_mission: Mission Has Been Terminated
-        cancel_mission: Mission Has Been Cancelled
         create_mission: Mission Has Been Created
         edit_mission: MISSION MODIFIEE
         edit_mission_cm: VALIDATION D'UNE MISSION MODIFIEE
+        terminate_mission_cm: MISSION TERMINEE
         cancel_mission: DEMANDE D'ANNULATION MISSION
         cancel_mission_cm: VALIDATION ANNULATION MISSION
         terminate_mission: MISSION TERMINEE
-        terminate_mission_cm: MISSION TERMINEE
-
+        mission_accepted_edit: EDITION DE MISSION VALIDE
+        mission_accepted_edit_client: MISSION MODIFIEE
+        cancel_mission_accept: MISSION ANNULEE
+        cancel_mission_client: MISSION ANNULEE
+        terminate_mission_accept: MISSION TERMINEE COTE CLIENT
+        terminate_mission_client: MISSION TERMINEE ACCEPTEE
