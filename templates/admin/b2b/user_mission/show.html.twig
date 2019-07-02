@@ -52,24 +52,24 @@
                         </tr>
                         <tr>
                             <th>Mission Base Price</th>
-                            <td>{{ user_mission.missionBasePrice }}</td>
+                            <td>{{ user_mission.missionBasePrice ? user_mission.missionBasePrice : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Created Date</th>
-                            <td>{{ user_mission.createdAt ? user_mission.createdAt|date('d-M-Y H:i:s') : '' }}</td>
+                            <td>{{ user_mission.createdAt ? user_mission.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Updated Date</th>
-                            <td>{{ user_mission.updatedAt ? user_mission.updatedAt|date('d-M-Y H:i:s') : '' }}</td>
+                            <td>{{ user_mission.updatedAt ? user_mission.updatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Status</th>
-                            <td>{{ user_mission.status }}</td>
+                            <td>{{ user_mission.status ? user_mission.status|upper|replace({("_"):" "}) : 'N/A' }}</td>
                         </tr>
-                        <tr>
-                            <th>Due Date</th>
-                            <td>{{ user_mission.dueDate ? user_mission.dueDate|date('d-M-Y H:i:s') : '' }}</td>
-                        </tr>
+                        {#<tr>#}
+                            {#<th>Due Date</th>#}
+                            {#<td>{{ user_mission.dueDate ? user_mission.dueDate|date('d-M-Y H:i:s') : 'N/A' }}</td>#}
+                        {#</tr>#}
                         <tr>
                             <th>Conditions Agreed</th>
                             <td>{{ user_mission.conditionsAgreed ? 'Yes' : 'No' }}</td>
@@ -80,19 +80,19 @@
                         </tr>
                         <tr>
                             <th>General Conditions Brief</th>
-                            <td>{{ user_mission.generalConditionsBrief }}</td>
+                            <td>{{ user_mission.generalConditionsBrief ? user_mission.generalConditionsBrief : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Mission Agreed Client</th>
-                            <td>{{ user_mission.missionAgreedClient }}</td>
+                            <td>{{ user_mission.missionAgreedClient ? user_mission.missionAgreedClient : 'N/A'}}</td>
                         </tr>
                         <tr>
                             <th>Cancel Reason</th>
-                            <td>{{ user_mission.cancelReason }}</td>
+                            <td>{{ user_mission.cancelReason ? user_mission.cancelReason : 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>Cancelled By</th>
-                            <td>{{ user_mission.cancelledBy }}</td>
+                            <td>{{ user_mission.cancelledBy ? user_mission.cancelledBy : 'N/A' }}</td>
                         </tr>
                     </tbody>
                 </table>

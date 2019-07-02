@@ -1,6 +1,11 @@
 {% extends 'b2b/page.html.twig' %}
 
 {% block content %}
+    	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"
+	  integrity="sha256-vIL0pZJsOKSz76KKVCyLxzkOT00vXs+Qz4fYRVMoDhw="
+        crossorigin="anonymous"></script>
+
     <div class="tab-pane active" id="billing" role="tabpanel">
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
             <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation</div>
@@ -131,9 +136,19 @@
 
     $(document).ready(function () {
        $('.invoice-preview-btn').on('click', function () {
+           const pdf = new jsPDF();
             var id =$(this).attr('data-id');
             var url = '/community-manager/invoice/preview/'+id;
-           $('#invoice-preview-body').load(url);
+
+           // $('#invoice-preview-body').load(url);
+           $.ajax('/community-manager/invoice/preview/'+id,{
+              success:function (result) {
+
+                  $('#invoice-preview-body').html(`<!--<embed src='/community-manager/invoice/preview/'+id width="100%" height="100%" />-->`);
+                  $('#invoice-preview-body').html(`<embed src="`+result+`" width="100%" height="100%" />`);
+
+              }
+           });
        });
     });
 </script>

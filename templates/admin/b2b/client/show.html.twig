@@ -29,39 +29,32 @@
                     </tr>
                     <tr>
                         <th>Email</th>
-                        <td>{{ client.email }}</td>
+                        <td>{{ client.email ? client.email : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Company</th>
-                        <td>{{ client.company }}</td>
+                        <td>{{ client.company ? client.company : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Created Date</th>
-                        <td>{{ client.createdAt ? client.createdAt|date('d-M-Y H:i:s') : '' }}</td>
+                        <td>{{ client.createdAt ? client.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Updated Date</th>
-                        <td>{{ client.updatedAt ? client.updatedAt|date('d-M-Y H:i:s') : '' }}</td>
+                        <td>{{ client.updatedAt ? client.updatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Last Loggedin Date</th>
-                        <td>{{ client.lastLoggedinAt ? client.lastLoggedinAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ client.lastLoggedinAt ? client.lastLoggedinAt|date('Y-m-d H:i:s') : 'N/A' }}</td>
                     </tr>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th>Client Info</th>
-                    </tr>
+
                     <tr>
                         <th>Siret</th>
-                        <td>{{ client.clientInfo.siret }}</td>
+                        <td>{{ client.clientInfo.siret ? client.clientInfo.siret : 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <th>Business</th>
-                        <td>{{ client.clientInfo.business }}</td>
+                        <th>Company Type</th>
+                        <td>{{ client.clientInfo.business ? client.clientInfo.business : 'N/A' }}</td>
                     </tr>
                     {#<tr>#}
                         {#<th>Email</th>#}
@@ -69,23 +62,23 @@
                     {#</tr>#}
                     <tr>
                         <th>Address</th>
-                        <td>{{ client.clientInfo.address }}</td>
+                        <td>{{ client.clientInfo.address ? client.clientInfo.address : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Postal Code</th>
-                        <td>{{ client.clientInfo.postalCode }}</td>
+                        <td>{{ client.clientInfo.postalCode ? client.clientInfo.postalCode : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>City</th>
-                        <td>{{ client.clientInfo.city }}</td>
+                        <td>{{ client.clientInfo.city ? client.clientInfo.city : 'N/A' }}</td>
                     </tr>
-                    <tr>
-                        <th>Company Type</th>
-                        <td>{{ client.clientInfo.companyType }}</td>
-                    </tr>
+                    {#<tr>#}
+                        {#<th>Company Type</th>#}
+                        {#<td>{{ client.clientInfo.companyType }}</td>#}
+                    {#</tr>#}
                     <tr>
                         <th>Company Creation Date</th>
-                        <td>{{ client.clientInfo.companyCreationDate ? client.clientInfo.companyCreationDate|date('d-M-Y H:i:s') : ''  }}</td>
+                        <td>{{ client.clientInfo.companyCreationDate ? client.clientInfo.companyCreationDate|date('d-M-Y H:i:s') : 'N/A'  }}</td>
                     </tr>
                 </tbody>
             </table>
