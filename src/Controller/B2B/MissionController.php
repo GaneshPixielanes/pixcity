@@ -128,6 +128,7 @@ class MissionController extends AbstractController
             $missionLog = new MissionLog();
 
             $missionLog->setUserBasePrice($mission->getMissionBasePrice());
+            $missionLog->setDescription($mission->getDescription());
             $missionLog->setCreatedAt(new \DateTime());
             $missionLog->setCreatedBy($mission->getUser()->getId());
             $missionLog->setMission($mission);
