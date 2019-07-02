@@ -73,7 +73,7 @@ class NotificationController extends AbstractController
         $options = $this->getDoctrine()->getRepository(Option::class);
         $margin = $options->findOneBy(['slug' => 'margin']);
 
-        $client_price = $missionlog->getUserBasePrice()/(100 - $margin->getValue()) * 100;
+        $client_price = (100 * $missionlog->getUserBasePrice())/(100 - $margin->getValue());
 
         return JsonResponse::create(['success' => true,'client_price' => $client_price]);
 
