@@ -7,6 +7,7 @@ use App\Form\Admin\AdminType;
 use App\Entity\Admin;
 use App\Repository\AdminRepository;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -205,5 +206,20 @@ class AdminUsersController extends Controller
         return $this->render('admin/b2b/cmlists/show.html.twig', [
             'user' => $user,
         ]);
+    }
+
+    /**
+     * @Route("/status-update/{id}/{status}", name="status_update", methods={"GET"})
+     */
+    public function status(Request $request, AuthorizationCheckerInterface $authChecker): Response
+    {
+        $status = $request->get('status');
+        $id = $request->get('id');
+        $entityManager = $this->getDoctrine()->getManager();
+        $userCm = $entityManager->getRepository(User::class)->find($id);
+        $userCm->setActive($status);
+        $entityManager->flush();
+
+        return new JsonResponse(['data' => 'Updated']);
     }
 }

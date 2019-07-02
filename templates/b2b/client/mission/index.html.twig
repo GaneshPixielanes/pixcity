@@ -6,6 +6,7 @@
 {% block body %}
 
     <!-- my mission -->
+
     <div class="tab-pane active">
 
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
@@ -13,7 +14,16 @@
             </div>
             <a href="javascript:;" class="btn btn-outline-darkgray btn-pill" data-toggle="modal" data-target="#createMissionModal">{{ missions['ongoing'] | length }} missions en cours</a>
         </div>
+
         <div class="col-md-12 tab-pane-content p-4" data-simplebar>
+
+            {% for message in app.flashes('mission_change_setting') %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Congratulations!</strong> {{ message }}
+                </div>
+            {% endfor %}
+
             <nav class="internal-nav">
                 <ul class="nav nav-tabs border-0 line-tabs line-tabs-pink" id="dashboardMyMissions" role="tablist">
                     <li class="nav-item">
@@ -30,6 +40,7 @@
                     </li>
                 </ul>
             </nav>
+
             <div class="tab-content">
                 <div class="tab-pane active" id="inDraft" role="tabpanel">
                     <ul class="available-missions-list m-0 mt-3 col-md-12">
@@ -183,5 +194,9 @@
 
     </div>
     <!-- my mission end here -->
+
+{% endblock %}
+
+{% block javascripts %}
 
 {% endblock %}

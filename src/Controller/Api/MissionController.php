@@ -64,9 +64,9 @@ class MissionController extends Controller
     }
 
     /**
-     * @Route("/status",name="client_status")
+     * @Route("/status/{id}/{mstatus}",name="client_status")
      */
-    public function statusUpdate(UserMissionRepository $missionRepo,
+    public function statusUpdate($id,$mstatus,UserMissionRepository $missionRepo,
                                  Request $request,
                                  NotificationsRepository $notificationsRepository,
                                  Filesystem $filesystem,
@@ -74,10 +74,12 @@ class MissionController extends Controller
                                  MissionPaymentRepository $missionPaymentRepository,
                                  MangoPayService $mangoPayService)
     {
-        $mission = $missionRepo->activePrices($request->get('id'));
+
+        $mission = $missionRepo->activePrices($id);
+
         $status = '';
 
-        $transaction = $clientTransactionRepository->findBy(['mission' => $mission->getId()]);
+        $transaction = $mission->getClientTransactions();
 
         $options = $this->getDoctrine()->getRepository(Option::class);
 
@@ -88,9 +90,11 @@ class MissionController extends Controller
 
         $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
-        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+        $last_result  = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
         $result = [];
+
+
 
         $result['price'] = $last_result['client_price'];
         $result['tax'] = $last_result['client_tax'];
@@ -104,7 +108,7 @@ class MissionController extends Controller
             return new JsonResponse(['success' => false, 'message' => 'Please login to the right account']);
         }
 
-        switch($request->get('status'))
+        switch($mstatus)
         {
 
             case 'accept':
@@ -138,7 +142,7 @@ class MissionController extends Controller
 
                         $refund_percentage = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
                         $calculate_refund = $first_result['client_price'] - $refund_percentage;
-                        $transaction[0]->getMission()->getUserMissionPayment()->setAdjustment($calculate_refund);
+                        $mission->getUserMissionPayment()->setAdjustment($calculate_refund);
                         $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
 
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has accepted cancellation request of mission '.$mission->getTitle(),1);
@@ -262,9 +266,13 @@ class MissionController extends Controller
             $entityManager->flush();
         }
 
+          if($mission->getStatus() == 'terminated'){
+              $this->addFlash('mission_change_setting', 'You successfully terminate the mission');
+          }elseif($mission->getStatus() == 'cancelled'){
+              $this->addFlash('mission_change_setting', 'You successfully terminate the mission');
+          }
 
-
-        return new JsonResponse(['success' => true, 'message' => 'Status has been updated']);
+          return $this->redirect('/client/mission/list');
 
     }
 

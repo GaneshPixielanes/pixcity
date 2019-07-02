@@ -295,7 +295,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
-                            <a href="javascript:;" id="mission-terminate" class="btn btn-pink teminate-class">TERMINER LA MISSION</a>
+                            <a href="javascript:;" id="mission-terminate" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Demande de traitement.." class="btn btn-pink teminate-class">TERMINER LA MISSION</a>
                         </div>
                     </div>
                 </div>
@@ -325,7 +325,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
-                            <a href="javascript:;" id="mission-terminate-cancel" class="btn btn-pink">Annuler LA MISSION</a>
+                            <a href="javascript:;" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Demande de traitement.." id="mission-terminate-cancel" class="btn btn-pink teminate-class-cancel">Annuler LA MISSION</a>
                         </div>
                     </div>
                 </div>
@@ -814,14 +814,16 @@
                             $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
                             $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
                             $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
-                            $('#mission-terminate-cancel').attr('data-id',id);
-                            $('#mission-terminate-cancel').attr('data-type','cancel');
+
+                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
+                            $('#mission-terminate-cancel').attr('data-type','terminate');
+                            $(".teminate-class-cancel").removeAttr('id','none');
                         }
 
                     }else if(amount < 0){
 
                         if(type == 'terminate'){
-                            $("#break-up-text").text('The Refundable amount will be once you terminate the mission');
+                            $("#break-up-text").text('The Refundable amount will be done once you terminate the mission');
                             $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
@@ -829,8 +831,9 @@
                             $("#need-to-pay").text('Refund Amount:'+parseFloat(data.refund_amount).toFixed(2));
 
                             $('#mission-termination-text').text("The remaining amount "+parseFloat(data.refund_amount).toFixed(2)+" will be paid back to you within 48 hours");
-                            $('#mission-terminate').attr('data-id',id);
+                            $("#mission-terminate").attr("href","/client/api/mission/status/"+id+'/'+type);
                             $('#mission-terminate').attr('data-type','terminate');
+                            $(".teminate-class").removeAttr('id','none');
 
                         }
 
@@ -844,9 +847,9 @@
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
                             $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
                             $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
-
-                            $('#mission-terminate').attr('data-id',id);
+                            $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+id);
                             $('#mission-terminate').attr('data-type','terminate');
+                            $(".teminate-class").removeAttr('id','none');
 
                         }else if (type == 'cancel'){
 
@@ -857,8 +860,9 @@
                             $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
                             $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
                             $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
-                            $('#mission-terminate-cancel').attr('data-id',id);
-                            $('#mission-terminate-cancel').attr('data-type','cancel');
+                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
+                            $('#mission-terminate-cancel').attr('data-type','terminate');
+                            $(".teminate-class-cancel").removeAttr('id','none');
 
                         }
 
@@ -869,46 +873,18 @@
 
         });
 
-        $(document).on('click','#mission-terminate',function () {
 
-           var id = $(this).attr('data-id');
-           var type = $(this).attr('data-type');
-           console.log(type);
-           $.ajax({
-               url:"{{ path('api_mission_client_status') }}",
-               data: {id: id,status:type},
-               success:function (data) {
-                    window.location.href = "/client/mission/list";
-               }
-           })
-        });
 
-        $(document).on('click','#mission-terminate-cancel',function () {
-
-           var id = $(this).attr('data-id');
-           var type = $(this).attr('data-type');
-           console.log(type);
-           $.ajax({
-               url:"{{ path('api_mission_client_status') }}",
-               data: {id: id,status:'cancel'},
-               success:function (data) {
-                    window.location.href = "/client/mission/list";
-               }
-           })
-        });
-
-        $(document).on('click','#mission-cancel',function () {
-
-           var id = $(this).attr('data-id');
-
-           $.ajax({
-               url:"{{ path('api_mission_client_status') }}",
-               data: {id: id,status:'cancel'},
-               success:function (data) {
-                window.location.href = "/client/mission/list";
-               }
-           })
-        });
+        (function($) {
+            $.fn.button = function(action) {
+                if (action === 'loading' && this.data('loading-text')) {
+                    this.data('original-text', this.html()).html(this.data('loading-text')).prop('disabled', true);
+                }
+                if (action === 'reset' && this.data('original-text')) {
+                    this.html(this.data('original-text')).prop('disabled', false);
+                }
+            };
+        }(jQuery));
 
         $(document).on('click','#printInvoice',function () {
 
