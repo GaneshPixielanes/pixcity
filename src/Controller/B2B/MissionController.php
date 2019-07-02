@@ -220,7 +220,7 @@ class MissionController extends AbstractController
             $missionLog->setCreatedBy($this->getUser()->getId());
 
 
-            $mission->setMissionAgreedClient(0);
+            $mission->setMissionAgreedClient(1);
             $em->persist($missionLog);
             $em->persist($mission);
             $em->flush();
