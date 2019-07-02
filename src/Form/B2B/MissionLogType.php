@@ -4,6 +4,7 @@ namespace App\Form\B2B;
 
 use App\Entity\MissionLog;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,8 @@ class MissionLogType extends AbstractType
     {
         $builder
             ->add('briefFiles')
-            ->add('userBasePrice')
+            ->add('description',TextareaType::class)
+            ->add('userBasePrice');
         ;
     }
 
