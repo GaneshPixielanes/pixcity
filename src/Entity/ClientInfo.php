@@ -63,10 +63,7 @@ class ClientInfo
      */
     private $companyCreationDate;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $companyType;
+
 
     public function getId(): ?int
     {
@@ -167,15 +164,5 @@ class ClientInfo
         return $this;
     }
 
-    public function getCompanyType(): ?string
-    {
-        return $this->companyType;
-    }
 
-    public function setCompanyType(?string $companyType): self
-    {
-        $this->companyType = $companyType;
-
-        return $this;
-    }
 }

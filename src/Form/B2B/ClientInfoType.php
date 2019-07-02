@@ -31,7 +31,6 @@ class ClientInfoType extends AbstractType
                 'label'=>false,
                 'widget' => 'single_text'
             ])
-            ->add('companyType', TextType::class,['label'=>false])
         ;
     }
 
