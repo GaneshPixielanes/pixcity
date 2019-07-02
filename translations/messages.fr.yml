@@ -323,4 +323,10 @@ b2b:
         terminate_mission: Mission Has Been Terminated
         cancel_mission: Mission Has Been Cancelled
         create_mission: Mission Has Been Created
+        edit_mission: MISSION MODIFIEE
+        edit_mission_cm: VALIDATION D'UNE MISSION MODIFIEE
+        cancel_mission: DEMANDE D'ANNULATION MISSION
+        cancel_mission_cm: VALIDATION ANNULATION MISSION
+        terminate_mission: MISSION TERMINEE
+        terminate_mission_cm: MISSION TERMINEE
 
