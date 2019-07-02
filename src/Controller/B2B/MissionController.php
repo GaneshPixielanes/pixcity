@@ -5,6 +5,7 @@ namespace App\Controller\B2B;
 use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
+use App\Entity\MissionDocument;
 use App\Entity\MissionLog;
 use App\Entity\Option;
 use App\Entity\UserMission;
@@ -211,6 +212,7 @@ class MissionController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted())
         {
+
             $em = $this->getDoctrine()->getManager();
 
             $missionLog->setBriefFiles(json_encode($request->get('document')));
@@ -219,13 +221,33 @@ class MissionController extends AbstractController
             $missionLog->setCreatedAt(new \DateTime());
             $missionLog->setCreatedBy($this->getUser()->getId());
 
+            foreach($mission->getDocuments() as $document)
+            {
+                $mission->removeDocument($document);
+            }
 
+            foreach($request->get('document') as $document)
+            {
+                $missionDocument = new MissionDocument();
+
+                $missionDocument->setName($document);
+                $missionDocument->setCreatedAt(new \DateTime());
+
+                $mission->addDocument($missionDocument);
+            }
             $mission->setMissionAgreedClient(1);
             $em->persist($missionLog);
             $em->persist($mission);
             $em->flush();
 
-            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'A mission <strong>'.$mission->getTitle().'</strong> has been edited by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong> <br/> Initial price '.$mission->getMissionBasePrice().' was changed to '.$missionLog->getUserBasePrice(), $missionLog->getId());
+            /* Notificaton sent to the client informing about the edit*/
+            $message = 'CM '.$mission->getUser().'  a édité la mission '.$mission->getId().'. Vous devez valider cette nouvelle version pour que le city-maker puisse continuer la mission';
+//            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'Vous avez édité la mission '.$mission->getId().'. La nouvelle version de cette mission est en cours de validation côté client.');
+            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', $message, $mission->getId());
+
+            /* Notification sent to the CM verifying that his edit request has been sent */
+            $message = 'Vous avez édité la mission '.$mission->getId().'. La nouvelle version de cette mission est en cours de validation côté client.';
+            $notificationsRepository->insert($mission->getUser(),null,'edit_mission_cm', $message, $mission->getId());
 
             return new JsonResponse(['success' => true]);
         }
@@ -556,6 +578,12 @@ class MissionController extends AbstractController
         $missionLog->setMission($mission);
         $missionLog->setIsActive(1);
         $missionLog->setBriefFiles($request->get('document'));
+
+        foreach($mission->getDocuments() as $document)
+        {
+            $mission->removeDocument($document);
+        }
+
 
         $mission->addMissionLog($missionLog);
         $em->flush();

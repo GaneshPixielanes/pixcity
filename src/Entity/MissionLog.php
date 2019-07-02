@@ -57,6 +57,11 @@ class MissionLog
      */
     private $createdBy;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
 //    /**
 //     * @ORM\OneToOne(targetEntity="App\Entity\UserMission", mappedBy="log")
 //     */
@@ -159,6 +164,18 @@ class MissionLog
     public function setCreatedBy(int $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
