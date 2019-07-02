@@ -145,7 +145,7 @@ class MissionController extends Controller
                         $mission->getUserMissionPayment()->setAdjustment($calculate_refund);
                         $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
 
-                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Le '.$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',1);
+                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept','Le '.$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',1);
 
                         $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission_client','L\'annulation de la mission '.$mission->getTitle().' est confirmée. Le pré-paiement que vous avez réalisé lors de l\'acceptation du devis va vous être restitué par notre partenaire Mango Pay sous 4 jours. ',1);
 
@@ -176,7 +176,7 @@ class MissionController extends Controller
 
                         }
 
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Vous avez validé la fin de la mission. La validation est en cours côté client pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation après validation du client). PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s\'est bien passée !',1);
+                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept','Vous avez validé la fin de la mission. La validation est en cours côté client pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation après validation du client). PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s\'est bien passée !',1);
                         $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. Votre paiement sera donc déclenché sous 48H via notre partenaire Mango Pay. A très bientôt pour une nouvelle mission sur Pix.City Services. ',1);
 
                         break;
