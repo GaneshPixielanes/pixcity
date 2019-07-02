@@ -68,8 +68,11 @@ class NotificationController extends AbstractController
         $em->persist($missionlog);
         $em->flush();
 
-        #Send notification
-        $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', $missionlog->getMission()->getClient()->getFirstName().' has accepted your new price of mission '.$missionlog->getMission()->getTitle().' of amount '.$missionlog->getUserBasePrice(),0);
+        #Send notification 16
+        $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', 'Le client a validé la nouvelle version de votre mission.',0);
+        #32 need to send
+        $notificationsRepository->insert(null,$missionlog->getMission()->getClient(),'mission_accepted_edit_client', 'Vous avez accepté la nouvelle version de la mission. Le city-maker va être averti via une notification sur son espace et va pouvoir reprendre la mission.',0);
+
         $options = $this->getDoctrine()->getRepository(Option::class);
         $margin = $options->findOneBy(['slug' => 'margin']);
 
