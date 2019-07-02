@@ -5,7 +5,12 @@
     <td>{{ item[0].email }}</td>
     <td>{{ item[0].cmUpgradeB2bDate|date('d-M-Y') }}</td>
     <td>{{ item.userPack }}</td>
-    <td> </td>
+    <td>
+        <label class="switch">
+            <input type="checkbox" id="status_{{ item[0].id }}" {{ item[0].active ? "checked" : " "}}>
+            <span class="slider round"></span>
+        </label>
+    </td>
     <td class="text-right">
         <div class="item-actions">
             {#<a title="{{ 'action.edit'|trans }}" href="{{ path('admin_users_edit', {'id': item[0].id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">#}
@@ -18,3 +23,30 @@
         </div>
     </td>
 </tr>
+{% block javascripts  %}
+    <script>
+        $(function () {
+            $('#status_'+{{ item[0].id }}).on( "click", function() {
+                if ($('#status_'+{{ item[0].id }}).is(':checked'))
+                {
+                    $.ajax('{{ url('admin_admins_status_update',{ 'id': item[0].id, 'status': 1} )}}',{
+                        method: 'GET',
+                        success: function(result)
+                        {
+                            alert('Status Updated to Active..!');
+                        }
+                    });
+                }else{
+                    $.ajax('{{ url('admin_admins_status_update',{ 'id': item[0].id, 'status': 0} )}}',{
+                    method: 'GET',
+                    success: function(result)
+                    {
+                        alert('Status Updated to Inactive..!');
+                    }
+                });
+
+                }
+            });
+        })
+    </script>
+{% endblock %}
