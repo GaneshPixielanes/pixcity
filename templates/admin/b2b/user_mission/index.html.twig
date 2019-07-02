@@ -38,7 +38,7 @@
                             <td>{{ user_mission.client.firstName ~' '~ user_mission.client.lastName}}</td>
                             <td>{{ user_mission.missionBasePrice }}</td>
                             <td>{{ user_mission.referencePack.packSkill.name }} </td>
-                            <td>{{ user_mission.status }} </td>
+                            <td>{{ user_mission.status ? user_mission.status|upper|replace({("_"):" "}) : 'N/A' }} </td>
                             <td>{{ user_mission.createdAt ? user_mission.createdAt|date('d-M-Y H:i:s') : '' }}</td>
                             <td>
                                 <a href="{{ path('admin_user_mission_show', {'id': user_mission.id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
