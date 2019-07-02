@@ -70,7 +70,7 @@
         <p class="text-textgray text-12 mb-0">{{ mission.referencePack.packSkill | upper }}</p>
         <h5 class="text-darkgray mb-3">{{ mission.title }}</h5>
         <p class="fz-12 w-70 mb-4">
-            {{ mission.description }}
+            {{ mission.getActiveLog().description }}
         </p>
         <h5 class="text-darkgray mb-0">Fixez votre nouveaux prix</h5>
         <p class="text-textgray">Si vous ne savez pas comment définir vos prix suivez <a href="javascript:;">notre guide !</a></p>
@@ -167,7 +167,7 @@
         <textarea name="{{ form.description.vars.full_name }}" class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" name="" id="" cols="30" rows="10" required>
             {{ mission.getActiveLog().description }}
         </textarea>
-        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">{{ mission.description | length }}</span>/<span class="input-maxlength">1200</span></p>
+        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">{{ mission.getActiveLog().description | length }}</span>/<span class="input-maxlength">1200</span></p>
     </div>
     <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
         <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
