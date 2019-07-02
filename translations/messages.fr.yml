@@ -329,11 +329,4 @@ b2b:
         cancel_mission_cm: VALIDATION ANNULATION MISSION
         terminate_mission: MISSION TERMINEE
         terminate_mission_cm: MISSION TERMINEE
-        mission_accepted_edit: EDITION DE MISSION VALIDE
-        mission_accepted_edit_client: MISSION MODIFIEE
-        cancel_mission: MISSION ANNULEE
-        cancel_mission_client: MISSION ANNULEE
-        terminate_mission: MISSION TERMINEE COTE CLIENT
-        terminate_mission_client: MISSION TERMINEE ACCEPTEE
-
 
