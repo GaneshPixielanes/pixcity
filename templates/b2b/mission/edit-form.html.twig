@@ -94,16 +94,16 @@
             </tr>
             </thead>
             <tbody id="mission-log-list">
-            {% for document in mission.getActiveLog().briefFiles | json_decode %}
+            {% for document in mission.documents%}
             <tr class="text-darkgray fz-14">
                 <td valign="middle" class="text-center">
                     <i class="far fa-file-image fz-25"></i>
                 </td>
                 <td valign="middle">
-                    {{ document }}
+                    {{ document.name }}
                     <input type="hidden" name="document[]" value="{{ document }}"/>
                 </td>
-                <td valign="middle">{{ mission.getActiveLog().createdAt | date('d/m/Y') }}</td>
+                <td valign="middle">{{ document.createdAt | date('d/m/Y') }}</td>
                 <td valign="middle">
                     <div class="d-flex align-items-center">
                                             <span class="btn-circle-28 mr-3">
@@ -135,7 +135,7 @@
             </tfoot>
         </table>
     </div>
-    <div class="row">
+    <div class="row d-none">
         <h3>Edit Logs</h3>
         <table class="table table-striped">
             <tr>
@@ -164,8 +164,8 @@
             votre prestation !
             Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez pas à lire
             notre <a href="javascript:;">FAQ</a></p>
-        <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" name="" id="" cols="30" rows="10" required>
-            {{ mission.description }}
+        <textarea name="{{ form.description.vars.full_name }}" class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" name="" id="" cols="30" rows="10" required>
+            {{ form.description.vars.value }}
         </textarea>
         <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">{{ mission.description | length }}</span>/<span class="input-maxlength">1200</span></p>
     </div>
