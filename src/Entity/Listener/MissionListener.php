@@ -2,6 +2,7 @@
 
 namespace App\Entity\Listener;
 
+use App\Constant\MissionStatus;
 use App\Entity\MissionLog;
 use App\Entity\UserMission;
 use App\Service\Mailer;
@@ -31,39 +32,71 @@ class MissionListener{
         $missionBeforeUpdate = $uow->getOriginalEntityData($mission);
         if(!empty($mission) && (!empty($missionBeforeUpdate) && $missionBeforeUpdate['status'] !== $mission->getStatus()))
         {
+            if($mission->getStatus() == MissionStatus::ONGOING)
+            {
+                $message = "Le client a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer.";
+
+                $this->mailer->send($mission->getUser()->getEmail(),
+                    'PRE-PAIEMENT RECU ET DEVIS ACCEPTE',
+                    'emails/b2b/mission-create-accept.html.twig',
+                    [
+                        'message' => $message,
+                        'mission' => $mission
+                    ]);
+            }
+
+            if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
+            {
+                /* Mail sent to the CM */
+                $this->mailer->send($mission->getUser()->getEmail(),
+                    "DEMANDE D'ANNULATION MISSION",
+                    'emails/b2b/mission-cancel-request-cm.html.twig',
+                    [
+                        'mission' => $mission
+                    ]);
+
+                /* Mail sent to the Client */
+                $this->mailer->send($mission->getClient()->getEmail(),
+                    "VALIDATION ANNULATION MISSION",
+                    'emails/b2b/mission-cancel-request-client.html.twig',
+                    [
+                        'mission' => $mission
+                    ]);
+            }
+
+            /* Client has accepted cancellation */
+            if($mission->getStatus() == MissionStatus::CANCELLED)
+            {
+                /* Mail sent to the CM */
+                $this->mailer->send($mission->getUser()->getEmail(),
+                    "MISSION ANNULEE",
+                    'emails/b2b/mission-cancel-accept-cm.html.twig',
+                    [
+                        'mission' => $mission
+                    ]);
+
+                /* Mail sent to the Client */
+                $this->mailer->send($mission->getClient()->getEmail(),
+                    "MISSION ANNULEE",
+                    'emails/b2b/mission-cancel-accept-client.html.twig',
+                    [
+                        'mission' => $mission
+                    ]);
+            }
+        }
+
+        if(empty($missionBeforeUpdate))
+        {
             $message = "Le ".$mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getId()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission";
 
             $this->mailer->send($mission->getUser()->getEmail(),
-                'emails/b2b/mission-create.html.twig',
                 'PRE-PAIEMENT',
+                'emails/b2b/mission-create.html.twig',
                 [
                     'message' => $message,
-                    'firstname' => $mission
+                    'mission' => $mission
                 ]);
         }
-//        $request = Request::createFromGlobals();
-//
-//        if(count($request->request->all())){
-//            $request = $request->request->get('mission');
-//            $missionLog = new MissionLog();
-//            $documents = [];
-//
-//            if(!empty($request['documents'])){
-//                foreach($request['documents'] as $document)
-//                {
-//                    $documents[] = $document;
-//                }
-//            }
-//
-//            $missionLog->setMission($mission);
-//            $missionLog->setUserBasePrice($request['missionBasePrice']);
-//            $missionLog->setBriefFiles(json_encode($documents));
-//            $missionLog->setIsActive(0);
-//            $missionLog->setCreatedAt(new \DateTime());
-//            $missionLog->setCreatedBy($mission->getUser()->getId());
-//
-//            $mission->addMissionLog($missionLog);
-//        }
 
 
     }
