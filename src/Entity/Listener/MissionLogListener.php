@@ -52,27 +52,24 @@ class MissionLogListener{
                 ]);
 
         }
-        if($missionLog->getIsActive() == 1)
+        /* CM approved the change */
+        if(!empty($missionLogBeforeUpdate) && $missionLog->getIsActive() == 1)
         {
-            /* Client has approved the change */
-            if(!empty($missionLogBeforeUpdate) )
-            {
-                /* Mail sent to CM */
-                $this->mailer->send($missionLog->getMission()->getUser()->getEmail(),
-                    'MISSION MODIFIEE',
-                    'emails/b2b/mission-edit-accept-cm.html.twig',
-                    [
-                        'mission' => $missionLog->getMission()
-                    ]);
+            /* Mail sent to CM */
+            $this->mailer->send($missionLog->getMission()->getUser()->getEmail(),
+                'MISSION MODIFIEE',
+                'emails/b2b/mission-edit-accept-cm.html.twig',
+                [
+                    'mission' => $missionLog->getMission()
+                ]);
 
-                /* Mail sent to Client */
-                $this->mailer->send($missionLog->getMission()->getClient()->getEmail(),
-                    'MISSION MODIFIEE',
-                    'emails/b2b/mission-edit-accept-client.html.twig',
-                    [
-                        'mission' => $missionLog->getMission()
-                    ]);
-            }
+            /* Mail sent to Client */
+            $this->mailer->send($missionLog->getMission()->getClient()->getEmail(),
+                'MISSION MODIFIEE',
+                'emails/b2b/mission-edit-accept-client.html.twig',
+                [
+                    'mission' => $missionLog->getMission()
+                ]);
 
         }
 
