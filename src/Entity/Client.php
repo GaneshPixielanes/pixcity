@@ -77,7 +77,14 @@ class Client implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
-
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $deleted = false;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
     /**
      * @var \DateTime $createdAt
      *
@@ -204,6 +211,34 @@ class Client implements UserInterface
     {
         $this->roles = $roles;
     }
+    /**
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param mixed $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    }
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
 
     public function getEmail(): ?string
     {
