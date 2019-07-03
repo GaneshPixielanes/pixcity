@@ -116,6 +116,12 @@ services:
       tags:
       - { name: doctrine.orm.entity_listener }
 
+    user_mission_log_listener:
+      class: App\Entity\Listener\MissionLogListener
+      tags:
+        - { name: doctrine.orm.entity_listener }
+
+
     # ------------------------------------------------------
     # Entities listeners
     client_registration_listener:

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MissionLogRepository")
+ * @ORM\EntityListeners({"App\Entity\Listener\MissionLogListener"})
  * @ORM\Table(name="pxl_b2b_user_mission_logs")
  */
 class MissionLog
