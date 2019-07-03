@@ -171,7 +171,7 @@
                                 </p>
                                 <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                 <p class="w-15 mb-0">{{ mission.title }}</p>
-                                <p class="w-15 mb-0 text-inprogress">En cours</p>
+                                <p class="w-15 mb-0 {% if mission.status == 'cancelled' %}text-canceled{% elseif mission.status == 'terminated' %}text-completed{% else %} text-inprogress {% endif %}">{{ ('b2b.label.' ~ mission.status)|trans }}</p>
                                 <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</p>
                                 <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
                             </li>
