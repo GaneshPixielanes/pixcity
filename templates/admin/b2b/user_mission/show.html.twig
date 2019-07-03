@@ -31,7 +31,7 @@
                             <td>{{ user_mission.client.firstName~' '~user_mission.client.lastName }} <a href="{{path('admin_user_mission_view', {'id': user_mission.client.id , 'usrtype':'client'})  }}" title="view" class="btn bg-green btn-visit-site"> View All Related</a> </td>
                         </tr>
                         <tr>
-                            <th>Title</th>
+                            <th>Titre</th>
                             <td> {{ user_mission.title }}</td>
                         </tr>
                         <tr>
@@ -39,11 +39,11 @@
                             <td>{{ user_mission.description }}</td>
                         </tr>
                         <tr>
-                            <th>Banner Image</th>
+                            <th>Image bannière</th>
                             <td><img src="{{ absolute_url(user_mission.bannerUrl) }}" alt="{{ user_mission.title }}" width="20%" class="img-rounded"></td>
                         </tr>
                         <tr>
-                            <th>Brief Files</th>
+                            <th>Documents de travail</th>
                             <td>
                                 {% for document in user_mission.documents %}
                                 <img src="{{ absolute_url('/uploads/missions/temp/'~document.name) }}" alt="{{ user_mission.title }}" width="20%" class="img-rounded">
@@ -51,15 +51,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Mission Base Price</th>
+                            <th>Prix mission CM</th>
                             <td>{{ user_mission.missionBasePrice ? user_mission.missionBasePrice : 'N/A' }}</td>
                         </tr>
                         <tr>
-                            <th>Created Date</th>
+                            <th>Date de création</th>
                             <td>{{ user_mission.createdAt ? user_mission.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                         </tr>
                         <tr>
-                            <th>Updated Date</th>
+                            <th>Date d’update</th>
                             <td>{{ user_mission.updatedAt ? user_mission.updatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                         </tr>
                         <tr>
