@@ -31,7 +31,7 @@ class MissionLogListener{
 
         $missionLogBeforeUpdate = $uow->getOriginalEntityData($missionLog);
 
-        if($missionLog->getIsActive() == 0)
+        if($missionLog->getIsActive() == 0 && empty($missionLogBeforeUpdate))
         {
             /* A new mission log has been added/mission is edited */
 
@@ -52,7 +52,7 @@ class MissionLogListener{
                 ]);
 
         }
-        else
+        elseif($missionLog->getIsActive() == 1)
         {
             /* Client has approved the change */
             if(!empty($missionLogBeforeUpdate))
