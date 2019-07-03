@@ -53,7 +53,7 @@ class MissionLogListener{
 
         }
         /* CM approved the change */
-        if(!empty($missionLogBeforeUpdate) && $missionLogBeforeUpdate->getIsActive() == 0 && $missionLog->getIsActive() == 1)
+        if(!empty($missionLogBeforeUpdate) && (isset($missionLogBeforeUpdate['isActive']) && $missionLogBeforeUpdate['isActive'] == false) && $missionLog->getIsActive() == 1)
         {
             /* Mail sent to CM */
             $this->mailer->send($missionLog->getMission()->getUser()->getEmail(),
