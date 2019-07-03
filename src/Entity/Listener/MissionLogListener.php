@@ -52,10 +52,10 @@ class MissionLogListener{
                 ]);
 
         }
-        elseif($missionLog->getIsActive() == 1)
+        if($missionLog->getIsActive() == 1)
         {
             /* Client has approved the change */
-            if(!empty($missionLogBeforeUpdate))
+            if(!empty($missionLogBeforeUpdate) )
             {
                 /* Mail sent to CM */
                 $this->mailer->send($missionLog->getMission()->getUser()->getEmail(),
