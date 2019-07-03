@@ -16,8 +16,33 @@ use Doctrine\ORM\Events;
 
 class MissionListener{
 
+    private $mailer;
+
+    public function __construct(TokenStorage $tokenStorage, Mailer $mailer)
+    {
+        $this->tokenStorage = $tokenStorage;
+        $this->mailer = $mailer;
+    }
+
     public function preFlush(UserMission $mission, PreFlushEventArgs $event)
     {
+        $em = $event->getEntityManager();
+        $uow = $em->getUnitOfWork();
+
+        $missionBeforeUpdate = $uow->getOriginalEntityData($mission);
+
+        if(!empty($mission) && (!empty($missionBeforeUpdate) && $missionBeforeUpdate['status'] !== $mission->getStatus()))
+        {
+            $message = "Le ".$mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getId()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission";
+
+            $this->mailer->send($mission->getUser()->getEmail(),
+                'emails/b2b/mission-create.html.twig',
+                'PRE-PAIEMENT',
+                [
+                    'message' => $message,
+                    'firstname' => $mission
+                ]);
+        }
 //        $request = Request::createFromGlobals();
 //
 //        if(count($request->request->all())){
@@ -47,24 +72,7 @@ class MissionListener{
 
     public function postFlush(UserMission $mission, LifecycleEventArgs $args)
     {
-        $em = $event->getEntityManager();
-        $uow = $em->getUnitOfWork();
 
-        $mission = $uow->getOriginalEntityData($mission);
-        {
-            $missionLog = new MissionLog();
-
-            $missionLog->setMission($mission);
-            $missionLog->setUserBasePrice($mission->getUserBasePrice);
-            $missionLog->setIsActive(1);
-            $missionLog->setCreatedAt(new \DateTime());
-            $missionLog->setCreatedBy($this->getUser()->getId());
-
-            $mission->addMissionLog($missionLog);
-            $em->persist($mission);
-            $em->flush();
-
-        }
 
     }
 
