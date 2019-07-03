@@ -18,9 +18,8 @@ class MissionListener{
 
     private $mailer;
 
-    public function __construct(TokenStorage $tokenStorage, Mailer $mailer)
+    public function __construct(Mailer $mailer)
     {
-        $this->tokenStorage = $tokenStorage;
         $this->mailer = $mailer;
     }
 
@@ -30,7 +29,6 @@ class MissionListener{
         $uow = $em->getUnitOfWork();
 
         $missionBeforeUpdate = $uow->getOriginalEntityData($mission);
-
         if(!empty($mission) && (!empty($missionBeforeUpdate) && $missionBeforeUpdate['status'] !== $mission->getStatus()))
         {
             $message = "Le ".$mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getId()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission";

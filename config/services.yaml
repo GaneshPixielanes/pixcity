@@ -113,7 +113,6 @@ services:
 
     user_mission_listener:
       class: App\Entity\Listener\MissionListener
-      arguments: ["@security.token_storage"]
       tags:
       - { name: doctrine.orm.entity_listener }
 
