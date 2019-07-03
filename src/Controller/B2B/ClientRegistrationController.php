@@ -12,6 +12,7 @@ use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
+use App\Service\Mailer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -28,7 +29,14 @@ class ClientRegistrationController extends AbstractController
     /**
      * @Route("register", name="register")
      */
-    public function index(Request $request,ClientMissionProposalRepository $proposalRepo,UserMissionRepository $missionRepo,NotificationsRepository $notificationRepo,UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader,Filesystem $filesystem)
+    public function index(Request $request,
+                          ClientMissionProposalRepository $proposalRepo,
+                          UserMissionRepository $missionRepo,
+                          NotificationsRepository $notificationRepo,
+                          UserPasswordEncoderInterface $passwordEncoder,
+                          FileUploader $fileUploader,
+                          Filesystem $filesystem,
+                          Mailer $mailer)
     {
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
@@ -80,7 +88,12 @@ class ClientRegistrationController extends AbstractController
                 }
             }
 
-
+            $this->mailer->send($client->getEmail(),
+                'Bienvenue sur Pix.city Services !',
+                'emails/b2b/client-register.html.twig',
+                [
+                    'client' => $client
+                ]);
 
             return $this->render('b2b/client/index.html.twig',[
                 'notifications' => $notifications,
