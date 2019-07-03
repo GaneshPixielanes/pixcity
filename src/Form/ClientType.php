@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -29,8 +30,8 @@ class ClientType extends AbstractType
                 'second_options' => array('label' => 'label.repeatpassword'),
                 'required' => $passwordRequired
             ))
-            ->add('firstName')
-            ->add('lastName')
+            ->add('firstName', TextType::class, array('label' => 'label.firstname'))
+            ->add('lastName', TextType::class, array('label' => 'label.lastname'))
             ->add('company')
             ->add('roles', ChoiceType::class,array(
                 'label' => 'label.role',

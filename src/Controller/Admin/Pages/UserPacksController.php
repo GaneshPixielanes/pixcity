@@ -30,7 +30,7 @@ class UserPacksController extends AbstractController
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 return $this->render('admin/b2b/user_packs/index.html.twig', [
-                    'user_packs' => $userPacksRepository->findAll(),
+                    'user_packs' => $userPacksRepository->findBy(['deletedAt'=>null]),
                 ]);
             }
         }
@@ -65,8 +65,10 @@ class UserPacksController extends AbstractController
     /**
      * @Route("/{id}", name="show", methods={"GET"})
      */
-    public function show(UserPacks $userPack): Response
+    public function show(Request $request, UserPacks $userPack): Response
     {
+        $userId = $request->attributes->get('id');
+       // $selectedUserRelated = $userPacksRepository->findBy(['user'=>$userId]);
         return $this->render('admin/b2b/user_packs/show.html.twig', [
             'user_pack' => $userPack,
         ]);
@@ -131,7 +133,11 @@ class UserPacksController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$userPack->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($userPack);
+            //$entityManager->remove($userPack);
+            $userPacks = $entityManager->getRepository(UserPacks::class)->find($userPack->getId());
+            $userPacks->setDeleted(1);
+            $userPacks->setDeletedAt(new \DateTime());
+            $userPacks->setActive(0);
             $entityManager->flush();
         }
 
