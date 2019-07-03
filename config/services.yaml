@@ -113,8 +113,9 @@ services:
 
     user_mission_listener:
       class: App\Entity\Listener\MissionListener
+      arguments: ["@security.token_storage"]
       tags:
-        - { name: doctine.orm.entity_listener }
+      - { name: doctrine.orm.entity_listener }
 
     # ------------------------------------------------------
     # Entities listeners

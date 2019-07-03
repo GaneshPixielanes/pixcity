@@ -16,15 +16,47 @@
                 <div>
                     <a href="{{ path('admin_admins_cm_lists') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
 
-                    {#| <a href="{{ path('admin_users_edit', {'id': user.id})}}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>#}
+                     | <a href="{{ path('admin_users_edit', {'id': user.id})}}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
                 </div>
             </div>
             <div class="body">
             <table class="table">
                 <tbody>
                     <tr>
-                        <th>Phone</th>
+                        <th></th>
+                        <td><img src="{{ user.avatar }}" alt="{{ user.firstname~' '~user.lastname }}" class="img-rounded"></td>
+                    </tr>
+                    <tr>
+                        <th>Téléphone</th>
                         <td>{{ user.phone ? user.phone : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Régions couvertes</th>
+                        <td>
+                            {% for region in user.userRegion %}
+                                {{ region.name~',' }}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Genre</th>
+                        <td>{{ user.gender ? user.gender : 'N/A'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ user.email ? user.email : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date d’upgrade en b2b</th>
+                        <td>{{ user.cmUpgradeB2bDate ? user.cmUpgradeB2bDate|date('d-M-Y') : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Compétences</th>
+                        <td>
+                            {% for skill in user.userSkill %}
+                                {{ skill.name~',' }}
+                            {% endfor %}
+                        </td>
                     </tr>
                     <tr>
                         <th>Birth Location</th>
@@ -39,14 +71,6 @@
                         <td>{{ user.currentLocation ? user.currentLocation : 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <th>Gender</th>
-                        <td>{{ user.gender ? user.gender : 'N/A'}}</td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>{{ user.email ? user.email : 'N/A' }}</td>
-                    </tr>
-                    <tr>
                         <th>Favorite Categories</th>
                         <td>
                             {% for favCar in user.favoriteCategories %}
@@ -56,24 +80,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>User Region</th>
-                        <td>
-                            {% for region in user.userRegion %}
-                                {{ region.name~',' }}
-                            {% endfor %}
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>CM Upgrade B2b Date</th>
-                        <td>{{ user.cmUpgradeB2bDate ? user.cmUpgradeB2bDate|date('d-M-Y') : 'N/A' }}</td>
-                    </tr>
-                    <tr>
-                        <th>CreatedAt</th>
+                        <th>Profil crée le</th>
                         <td>{{ user.createdAt ? user.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <th>UpdatedAt</th>
+                        <th>Profil updaté le</th>
                         <td>{{ user.updatedAt ? user.updatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
                 </tbody>
