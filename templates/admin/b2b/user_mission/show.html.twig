@@ -16,7 +16,12 @@
                 <div>
                     <a href="{{path('admin_user_mission_index') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
 
-                    {#| <a href="{{ path('admin_user_mission_edit', {'id': user_mission.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>#}
+                    | <a href="{{ path('admin_user_mission_edit', {'id': user_mission.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
+                    <form method="post" class="delete-form" action="{{ path('admin_user_mission_delete', {'id': user_mission.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user_mission.id) }}">
+                        <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                    </form>
                 </div>
             </div>
             <div class="body">

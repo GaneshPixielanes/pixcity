@@ -33,7 +33,7 @@ class ClientController extends AbstractController
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 return $this->render('admin/b2b/client/index.html.twig', [
-                    'clients' => $clientRepository->findAll(),
+                    'clients' => $clientRepository->findBy(['deleted'=>null]),
                 ]);
             }
         }
@@ -133,7 +133,10 @@ class ClientController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($client);
+           // $entityManager->remove($client);
+            $clients = $entityManager->getRepository(Client::class)->find($client->getId());
+            $clients->setDeleted(1);
+            $clients->setDeletedAt(new \DateTime());
             $entityManager->flush();
         }
 

@@ -61,6 +61,15 @@ class UserMission
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $missionBasePrice;
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $deleted = false;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     /**
      * @var \DateTime $createdAt
@@ -289,6 +298,34 @@ class UserMission
     public function setMissionBasePrice(?string $missionBasePrice): self
     {
         $this->missionBasePrice = $missionBasePrice;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param mixed $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    }
+
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }

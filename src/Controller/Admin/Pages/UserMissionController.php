@@ -30,7 +30,7 @@ class UserMissionController extends AbstractController
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 return $this->render('admin/b2b/user_mission/index.html.twig', [
-                    'user_missions' => $userMissionRepository->findAll(),
+                    'user_missions' => $userMissionRepository->findBy(['deleted'=>0]),
                 ]);
             }
         }
@@ -125,7 +125,10 @@ class UserMissionController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$userMission->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($userMission);
+            //$entityManager->remove($userMission);
+            $userMissions = $entityManager->getRepository(UserMission::class)->find($userMission->getId());
+            $userMissions->setDeleted(1);
+            $userMissions->setDeletedAt(new \DateTime());
             $entityManager->flush();
         }
 
