@@ -320,7 +320,8 @@ b2b:
         terminated: Terminée
         cancelled: Annulée
         client_declined: Client Declined
-        create_mission: Mission Has Been Created
+        create_mission: DEVIS ET PRE-PAIEMENT
+        create_mission_cm: PRE-PAIEMENT
         edit_mission: MISSION MODIFIEE
         edit_mission_cm: VALIDATION D'UNE MISSION MODIFIEE
         terminate_mission_cm: MISSION TERMINEE

@@ -171,7 +171,13 @@ class MissionController extends AbstractController
                 }
             }
 
-            $notificationsRepository->insert(null,$mission->getClient(),'create_mission', 'A mission <strong>'.$mission->getTitle().'</strong> has been created by <strong>'.$this->getUser().'</strong> on pack <strong>'.$mission->getReferencePack()->getTitle().'</strong>', $mission->getId());
+            /* Notification to CM */
+            $message = "Le ".$mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getId()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission ";
+            $notificationsRepository->insert($mission->getUser(),null,'create_mission_cm', $message, $mission->getId());
+
+            /* Notification to Client */
+            $message = "CM ".$mission->getUser()." a préparé pour vous un devis pour la mission ".$mission->getId().". Cliquez-ici pour accepter le devis et procéder au pré-paiement de la mission via notre partenaire MangoPay.";
+            $notificationsRepository->insert(null,$mission->getClient(),'create_mission', $message, $mission->getId());
 
             return $this->redirectToRoute('b2b_mission_list');
 
