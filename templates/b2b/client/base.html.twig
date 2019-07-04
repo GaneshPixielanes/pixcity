@@ -15,13 +15,16 @@
     <!-- Site CSS -->
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
+
     {% block stylesheets %}{% endblock %}
 
     {% set route = app.request.get('_route') %}
 </head>
 <body>
 
-    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' %}
+    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' and route != 'client_email_inbox' and route != 'client_email_send_emails' %}
         <!-- Header -->
         <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
             <div class="container">
@@ -98,7 +101,7 @@
 
 
 
-            {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' or route == 'client_transaction_index' %}
+            {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' or route == 'client_transaction_index' or  route == 'client_email_inbox' or  route == 'client_email_send_emails' %}
             <div class="col-md-2 p-sm-0 dash-left vh-100">
                 <div class="user-avatar w-100">
                     <figure class="position-relative m-0 w-100">
@@ -109,7 +112,7 @@
                         {% endif %}
 
                         <figcaption class="position-absolute d-flex align-items-center" id="profile-redirect"><i class="fas fa-user-circle mr-2"></i>
-                            <span>Modifier mes infos</span></figcaption>
+                            <span>Prévisualiser mon profil</span></figcaption>
                     </figure>
 
                 </div>
@@ -126,6 +129,10 @@
                     <li class="nav-item">
                         <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="/client/transaction" role="tab" aria-controls="billing">
                             <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if route == 'client_email_inbox'%}active{% endif %}{% if route == 'client_email_send_emails'%}active{% endif %}" href="/client/email/inbox" role="tab" aria-controls="billing">
+                            <i class="fas fa-envelope"></i>Email</a>
                     </li>
                 </ul>
                 <footer class="text-center p-2 text-pink fz-12">
@@ -336,7 +343,7 @@
         </div>
     </div>
 
-    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' %}
+    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' and route != 'client_email_inbox' and route != 'client_email_send_emails'  %}
 
         <!-- Footer -->
         <div class="social-wrap">
@@ -435,6 +442,11 @@
     <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
     <!-- <script src="js/app.js"></script> -->
     <script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
+
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
     <script>
         /* custom per page scripts */
@@ -778,6 +790,145 @@
             /* Slick slider starts ends */
         });
 
+        /* Email datatable initialization */
+        var emailDataTable = $('#emailTable').DataTable({
+            dom: `<"d-flex align-items-center sticky-top px-3 pb-3 bg-dashboard"
+
+                            <"flex-grow-1 mx-2"f>
+                            i
+                            <"ml-2"p>
+                            ><"p-3"rt>`,
+            columnDefs: [ {
+                orderable: false,
+
+                targets: 0
+            } ],
+            pageLength: 25,
+            pagingType: "simple",
+
+            language: {
+                info: "_START_ to _END_ of _TOTAL_ emails",
+                select: {
+                    rows: {
+                        _: "%d emails selected",
+                        0: "",
+                        1: "%d email selected"
+                    }
+                },
+                searchPlaceholder: "Search emails",
+                buttons: {
+                    selectAll: "Select all items",
+                    selectNone: "Select none"
+                }
+            },
+            // oLanguage: {
+            //     sInfo: "_START_ to _END_ of _TOTAL_ emails"
+            // },
+
+        });
+        /* Email datatable initialization ends */
+        /* Compose email invoke */
+        $(document).on('click', '.compose-email, .cancel-compose, .back-to-inbox, .email-table tbody tr.odd td.view-message, .email-table tbody tr:nth-child(3) td.view-message, .email-table tbody tr.even td.view-message', function(){
+            if($(this).is('.compose-email')) {
+                $('.inbox-body, .view-email-container').fadeOut('fast',function(){
+                    $('.compose-email-container').slideDown()
+                })
+            } else if($(this).is('.cancel-compose')) {
+                $('.compose-email-container').fadeOut()
+                $('.inbox-body').slideDown(function(){
+                    $(this).parents('.simplebar-content').animate({
+                        scrollTop: 0
+                    }, '200');
+                })
+            } else if($(this).is('.back-to-inbox')) {
+                $('.view-email-container').fadeOut()
+                $('.inbox-body, .email-options').slideDown(function(){
+                    $(this).parents('.simplebar-content').animate({
+                        scrollTop: 0
+                    }, '200');
+                })
+            }
+        })
+
+
+
+        $('#emailTable tbody').on( 'click', 'tr', function (e) {
+            var id = emailDataTable.row( this ).data()[0];
+            console.log(id);
+
+            $.ajax({
+                url:"/client/email/view/"+id,
+                type:'GET',
+                dataType:'html',
+                success: function(data){
+                    $("#preview-inbox").html(data);
+                    $('.inbox-body, .email-options').fadeOut('fast', function(){
+                        $('.view-email-container.small-email').fadeIn('fast')
+                    });
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            });
+        });
+
+
+        /* $(document).on('click', '.email-table tbody tr td.select-checkbox', function(){
+            if($('.email-table tbody tr').hasClass('selected')) {
+                $('.selected-email-options').removeClass('d-none')
+            } else {
+                $('.selected-email-options').addClass('d-none')
+            }
+        }) */
+        /* Compose email invoke ends */
+        /* Email selections */
+        $(document).on('change', 'input.check-all-emails', function(){
+            if (this.checked) {
+                emailDataTable.rows({page: 'current'}).select();
+                $('input.check-all-emails').removeClass('half-checked')
+            } else {
+                emailDataTable.rows({page: 'current'}).deselect();
+                $('input.check-all-emails').removeClass('half-checked')
+                // $('input.check-all-emails').prop('checked', false)
+            }
+        })
+        $(document).on('click', '.select-all-emails, .select-none, .select-read, .select-unread', function(){
+            if($(this).is('.select-all-emails')) {
+                emailDataTable.rows({page: 'current'}).select();
+                $('input.check-all-emails').prop('checked', true).removeClass('half-checked')
+            } else if ($(this).is('.select-none')){
+                emailDataTable.rows({page: 'current'}).deselect();
+                $('input.check-all-emails').prop('checked', false)
+                $('input.check-all-emails').removeClass('half-checked')
+            } else if ($(this).is('.select-read')){
+                emailDataTable.rows(':not(.unread)',{page: 'current'}).select();
+                emailDataTable.rows('.unread',{page: 'current'}).deselect();
+                toggleChkAll()
+            } else if ($(this).is('.select-unread')){
+                emailDataTable.rows('.unread', {page: 'current'}).select();
+                emailDataTable.rows(':not(.unread)', {page: 'current'}).deselect();
+                toggleChkAll()
+            }
+        })
+        emailDataTable.on('select deselect', function(e, dt, type, indexes){
+            toggleChkAll()
+        })
+        function toggleChkAll(){
+            if($(".email-table tbody tr.selected").length == $(".email-table tbody tr").length) {
+                $('.selected-email-options').removeClass('d-none')
+                $('input.check-all-emails').prop('checked', true).removeClass('half-checked')
+            } else if ($('.email-table tbody tr').hasClass('selected')) {
+                $('.selected-email-options').removeClass('d-none')
+                $('input.check-all-emails').prop('checked', true).addClass('half-checked')
+            } else {
+                $('.selected-email-options').addClass('d-none')
+                $('input.check-all-emails').prop('checked', false).removeClass('half-checked')
+            }
+        }
+        /* Email selections ends */
+        /* Custom file input show file name in file type input */
+        bsCustomFileInput.init()
+        /* Custom file input show file name in file type input ends */
+
 
 
         $(document).on('click','#terminateMission',function () {
@@ -847,8 +998,8 @@
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
                             $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
                             $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
-                            $("#mission-terminate").attr("href","/client/api/mission/status/"+id+'/'+type);
-                            $('#mission-terminate').attr('data-type','terminate');
+                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
+                            $('#mission-terminate-cancel').attr('data-type','terminate');
                             $(".teminate-class").removeAttr('id','none');
 
                         }else if (type == 'cancel'){

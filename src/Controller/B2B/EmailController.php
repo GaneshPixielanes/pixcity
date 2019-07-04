@@ -159,11 +159,14 @@ class EmailController extends Controller
 
         $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
 
-        return $this->render('b2b/email/cm/view.html.twig',[
+        $nowDate = new \DateTime();
+
+        return $this->render('b2b/email/cm/_view.html.twig',[
             'tickit_data' => $tickit_data,
             'tickits' => $tickits,
             'sendMails' => $sendMails,
-            'receiverMails' => $receiverMails
+            'receiverMails' => $receiverMails,
+            'nowDate' => $nowDate->format('Y-m-d h:i')
         ]);
     }
 
@@ -257,7 +260,7 @@ class EmailController extends Controller
     /**
      * @Route("/inbox", name="inbox")
      */
-    public function inboxEmail(Request $request,TicketRepository $ticketRepository)
+    public function inboxEmail(Request $request,ClientRepository $clientRepository,FileUploader $fileUploader,TicketRepository $ticketRepository)
     {
         $user = $this->getUser();
 
@@ -267,7 +270,96 @@ class EmailController extends Controller
 
         $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
 
+        $user = $this->getUser();
+
+        $proposals = $this->getDoctrine()
+            ->getRepository(ClientMissionProposal::class)
+            ->findBy(['user' => $user->getId()]);
+
+        $emails = [];
+
+        foreach ($proposals as $proposal){
+            if(!in_array($proposal->getUser()->getId(),$emails)){
+                $emails[] = $proposal->getClient()->getId();
+            }
+        }
+        $ticket = new Ticket();
+
+        $form = $this->createForm(TicketType::class,$ticket,['emails' => $emails]);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && !$form->isValid()){
+
+            $em = $this->getDoctrine()->getManager();
+
+            $client = $clientRepository->find($request->get('ticket')['client']);
+
+            $template = $this->getDoctrine() ->getRepository(AutoMail::class)->find(1);
+
+            $ticket->setClient($client);
+            $ticket->setCm($user);
+            $ticket->setTemplateType($template);
+            $ticket->setInitiator('cm');
+            $ticket->setObject($request->get('ticket')['Object']);
+            $ticket->setStatus('open');
+            $ticket->setCreatedAt(new \DateTime('now'));
+            $ticket->setUpdatedAt(new \DateTime('now'));
+
+            $em->persist($ticket);
+            $em->flush();
+
+            $message = new Message();
+            $message->setTicket($ticket);
+            $message->setContent($request->get('ticket')['messages']['content']);
+            $message->setType('1');
+            $message->setStatus(1);
+
+            $fileName = [];
+
+            $files = $request->files->get('ticket')['messages']['attachment'];
+
+            foreach ($files as $file){
+
+                $fileExtension = md5(uniqid()).'.'.$file->guessExtension();
+
+                $uploadDir = $this->get('kernel')->getRootDir() . '/../public/uploads/attachment/'.$ticket->getId();
+
+                if (!file_exists($uploadDir) && !is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0775, true);
+                }
+
+
+                if ($file->move($uploadDir, $fileExtension)) {
+                    $fileName[] = $fileExtension;
+                }
+
+
+
+            }
+
+            $message->setAttachment(implode(',',$fileName));
+            $message->setAutoMail('no');
+
+            $message->setCreatedAt(new \DateTime('now'));
+            $message->setUpdatedAt(new \DateTime('now'));
+
+            $em->persist($message);
+            $em->flush();
+
+            return $this->redirectToRoute('b2b_email_send_emails');
+
+
+        }
+
+        $mails = $ticketRepository->findBy(['cm' => $user->getId()]);
+
+        $sendMails = $ticketRepository->getAllSenderCM($user->getId());
+
+        $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
+
         return $this->render('b2b/email/cm/inbox.html.twig',[
+            'form' => $form->createView(),
             'mails' => $mails,
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails
@@ -277,7 +369,7 @@ class EmailController extends Controller
     /**
      * @Route("/send-emails", name="send_emails")
      */
-    public function emailsSend(Request $request,TicketRepository $ticketRepository)
+    public function emailsSend(Request $request,ClientRepository $clientRepository,FileUploader $fileUploader,TicketRepository $ticketRepository)
     {
         $user = $this->getUser();
 
@@ -287,7 +379,96 @@ class EmailController extends Controller
 
         $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
 
+        $user = $this->getUser();
+
+        $proposals = $this->getDoctrine()
+            ->getRepository(ClientMissionProposal::class)
+            ->findBy(['user' => $user->getId()]);
+
+        $emails = [];
+
+        foreach ($proposals as $proposal){
+            if(!in_array($proposal->getUser()->getId(),$emails)){
+                $emails[] = $proposal->getClient()->getId();
+            }
+        }
+        $ticket = new Ticket();
+
+        $form = $this->createForm(TicketType::class,$ticket,['emails' => $emails]);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && !$form->isValid()){
+
+            $em = $this->getDoctrine()->getManager();
+
+            $client = $clientRepository->find($request->get('ticket')['client']);
+
+            $template = $this->getDoctrine() ->getRepository(AutoMail::class)->find(1);
+
+            $ticket->setClient($client);
+            $ticket->setCm($user);
+            $ticket->setTemplateType($template);
+            $ticket->setInitiator('cm');
+            $ticket->setObject($request->get('ticket')['Object']);
+            $ticket->setStatus('open');
+            $ticket->setCreatedAt(new \DateTime('now'));
+            $ticket->setUpdatedAt(new \DateTime('now'));
+
+            $em->persist($ticket);
+            $em->flush();
+
+            $message = new Message();
+            $message->setTicket($ticket);
+            $message->setContent($request->get('ticket')['messages']['content']);
+            $message->setType('1');
+            $message->setStatus(1);
+
+            $fileName = [];
+
+            $files = $request->files->get('ticket')['messages']['attachment'];
+
+            foreach ($files as $file){
+
+                $fileExtension = md5(uniqid()).'.'.$file->guessExtension();
+
+                $uploadDir = $this->get('kernel')->getRootDir() . '/../public/uploads/attachment/'.$ticket->getId();
+
+                if (!file_exists($uploadDir) && !is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0775, true);
+                }
+
+
+                if ($file->move($uploadDir, $fileExtension)) {
+                    $fileName[] = $fileExtension;
+                }
+
+
+
+            }
+
+            $message->setAttachment(implode(',',$fileName));
+            $message->setAutoMail('no');
+
+            $message->setCreatedAt(new \DateTime('now'));
+            $message->setUpdatedAt(new \DateTime('now'));
+
+            $em->persist($message);
+            $em->flush();
+
+            return $this->redirectToRoute('b2b_email_send_emails');
+
+
+        }
+
+        $mails = $ticketRepository->findBy(['cm' => $user->getId()]);
+
+        $sendMails = $ticketRepository->getAllSenderCM($user->getId());
+
+        $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
+
         return $this->render('b2b/email/cm/inbox.html.twig',[
+            'form' => $form->createView(),
             'mails' => $mails,
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails

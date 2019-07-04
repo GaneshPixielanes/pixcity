@@ -33,6 +33,10 @@
                         <a class="nav-link {% if(app.request.pathinfo == '/community-manager/invoice/list') %}active{% endif %}" href="{{ url('b2b_community_manager_invoice_list') }}" aria-controls="billing"><i
                                     class="fas fa-file-invoice-dollar"></i>Facturation</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if(app.request.pathinfo == '/b2b/email/inbox') %}active{% endif %}" href="{{ url('b2b_email_inbox') }}" aria-controls="email"><i
+                                    class="fas fa-envelope"></i>Email</a>
+                    </li>
                 </ul>
                 <footer class="text-center p-2 text-pink fz-11">
                     <div class="row">
