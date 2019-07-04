@@ -88,7 +88,7 @@ class ClientRegistrationController extends AbstractController
                 }
             }
 
-            $this->mailer->send($client->getEmail(),
+            $mailer->send($client->getEmail(),
                 'Bienvenue sur Pix.city Services !',
                 'emails/b2b/client-register.html.twig',
                 [
