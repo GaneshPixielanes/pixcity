@@ -263,7 +263,7 @@ class MissionController extends Controller
             $royalties->setTaxValue($mission->getUserMissionPayment()->getCmTax());
             $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
             $royalties->setInvoicePath($cmInvoicePath);
-            $royalties->setPaymentType(null);
+            $royalties->setPaymentType('mango_pay');
             $royalties->setStatus('pending');
             $royalties->setBankDetails(json_encode('no_response'));
             $entityManager->persist($royalties);
