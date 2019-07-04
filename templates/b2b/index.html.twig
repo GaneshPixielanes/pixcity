@@ -73,31 +73,34 @@
                         <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Voir tout</a>
                     </div>
                     <div class="w-100 text-center my-4 show-less">
-                        <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Reduire</a>
+                        <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Réduire</a>
                     </div>
                 {% endif %}
 
             </div>
             <div class="col-md-12 content-top-header d-flex align-items-center">
-                <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> packs disponible{% if packs|length > 1 %}s{% endif %}</h4>
+                <h4 class="mb-0">
+{#                    <span class="total-packs-available">{{ packs | length }}</span> #}
+                   {% if packs|length > 1 %}Mes packs publiés {% else %} Mon pack publié {% endif %}
+                </h4>
                 <div class="filter-packages d-flex">
-                    <label class="text-seagreen m-0 mr-3 d-none active">
+                    <label class="text-seagreen m-0 mr-3 d-none active"  data-toggle="tooltip" title="All">
                         <input type="checkbox" name="filterpackage" value="all">
                         <i class="fas fa-sync-alt fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
-                    <label class="text-seagreen m-0 mr-3">
+                    <label class="text-seagreen m-0 mr-3"  data-toggle="tooltip" title="Influencer">
                         <input type="checkbox" name="filterpackage" value="influencer">
                         <i class="fas fa-map-marked-alt fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
-                    <label class="text-seagreen m-0 mr-3">
+                    <label class="text-seagreen m-0 mr-3"  data-toggle="tooltip" title="Photographer">
                         <input type="checkbox" name="filterpackage" value="photographer">
                         <i class="fas fa-camera fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
-                    <label class="text-seagreen m-0 mr-3">
+                    <label class="text-seagreen m-0 mr-3"  data-toggle="tooltip" title="Community Manager">
                         <input type="checkbox" name="filterpackage" value="communitymanager">
                         <i class="far fa-handshake fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
-                    <label class="text-seagreen m-0">
+                    <label class="text-seagreen m-0"  data-toggle="tooltip" title="Autres">
                         <input type="checkbox" name="filterpackage" value="other">
                         <i class="far fa-gem fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
@@ -132,7 +135,7 @@
                         <p class="w-15 mb-0">{{ mission.client }}</p>
                         <p class="w-15 mb-0 {% if mission.status == 'cancelled' %}text-canceled{% elseif mission.status == 'terminated' %}text-completed{% else %} text-inprogress {% endif %}">{{ ('b2b.label.' ~ mission.status)|trans }}</p>
                         <p class="mb-0 px-4 w-10">{% if mission.getActiveLog().userBasePrice is defined %}{{ mission.getActiveLog().userBasePrice |number_format(2)}}{% else %}{{  mission.missionBasePrice }}{% endif %}€</p>
-                        <i class="fas {% if mission.status == 'cancelled' or mission.status == 'terminated'%}fa-eye{% else %}fa-edit{% endif %} preview-edit-mission" data-id="{{ mission.id }}"></i>
+                        <i class="fas {% if mission.status == 'cancelled' or mission.status == 'terminated'%}fa-eye{% else %}fa-edit{% endif %} preview-edit-mission" data-id="{{ mission.id }}" data-toggle="tooltip" title="éditor"></i>
                     </li>
                 {% endfor %}
             </ul>
