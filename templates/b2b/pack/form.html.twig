@@ -2,9 +2,16 @@
 
 {{ form_row(form._token) }}
 
-<div class="col-sm-10 offset-sm-2 pack-creation-content bg-white p-0" data-simplebar>
-    <div
-            class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
+<div class="col-sm-10 offset-sm-2 pack-creation-content bg-white p-0 " data-simplebar>
+    <div class="{% if pack.bannerImage != '' %}d-none {% endif %}pack-create-screen cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center bg-lightgray position-relative">
+        <input type="file" name="myFile" data-toggle="tooltip" title="" data-original-title="Changer votre image de couverture " data-upload-type="banner">
+        <i class="far fa-image fz-40"></i>
+        <p class="mb-0 fz-22">Changer votre image de couverture </p>
+        <small class="mb-3 fz-16">Format .png .jpg max 2mo</small>
+        <a href="javascript:;" class="btn btn-outline-normalgray btn-pill create-banner-upload-btn">Lire l'article</a>
+    </div>
+
+    <div class="{% if pack.bannerImage == '' %}d-none {% endif %}pack-edit-screen cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
         {% if pack.bannerImage != '' %}
         <img src="/uploads/pack/banner/{{ pack.bannerImage }}" class="cover-image w-100 h-100" alt="Pack Cover Image" id="banner-image">
         {% else %}
