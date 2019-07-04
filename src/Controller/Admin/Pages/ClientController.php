@@ -6,10 +6,12 @@ use App\Constant\ViewMode;
 use App\Entity\Client;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
+use App\Service\FileUploader;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -92,22 +94,22 @@ class ClientController extends AbstractController
                         $password = $passwordEncoder->encodePassword($client, $client->getPlainPassword());
                         $client->setPassword($password);
                     }
-                    $uploadedFile = $form['profilePhoto']->getData();
-
-                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
-                    if ($uploadedFile) {
-
-                        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
-                        $uploadedFile->move(
-                            $destination,
-                            $newFilename
-                        );
-
-
-                        // instead of its contents
-                        $client->setProfilePhoto($newFilename);
-                    }
+//                    $uploadedFile = $form['profilePhoto']->getData();
+//
+//                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+//                    if ($uploadedFile) {
+//
+//                        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+//                        $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
+//                        $uploadedFile->move(
+//                            $destination,
+//                            $newFilename
+//                        );
+//
+//
+//                        // instead of its contents
+//                        $client->setProfilePhoto($newFilename);
+//                    }
                     $this->getDoctrine()->getManager()->flush();
 
                     return $this->redirectToRoute('admin_client_index', [
@@ -141,5 +143,15 @@ class ClientController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_client_index');
+    }
+
+    /**
+     * @Route("upload", name="upload")
+     */
+    public function upload(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'clients/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
     }
 }

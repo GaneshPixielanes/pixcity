@@ -34,5 +34,27 @@
             $("#client_clientInfo_companyCreationDate").bootstrapMaterialDatePicker({ format : 'YYYY-MM-DD', lang : 'fr', weekStart : 1, cancelText : 'ANNULER', time: false });
 
         });
+        $(document).ready(function(){
+            $('#profilePhoto').change(function()
+            {
+                var data = new FormData();
+                data.append('file',$(this)[0].files[0]);
+                data.append('id',{{ client.id }});
+                $.ajax('{{ url('admin_client_upload') }}',{
+                    method: 'POST',
+                    processData: false,
+                    cacheable:false,
+                    data:data,
+                    contentType: false,
+                    success: function(result)
+                    {
+                        if(result.success == true)
+                        {
+                            $('[name="client[profilePhoto]"').val(result.fileName);
+                        }
+                    }
+                });
+            });
+        });
     </script>
 {% endblock %}

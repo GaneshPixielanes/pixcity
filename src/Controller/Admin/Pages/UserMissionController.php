@@ -3,12 +3,15 @@
 namespace App\Controller\Admin\Pages;
 
 use App\Constant\ViewMode;
+use App\Entity\User;
 use App\Entity\UserMission;
 use App\Form\UserMissionType;
 use App\Repository\UserMissionRepository;
+use App\Service\FileUploader;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -84,22 +87,22 @@ class UserMissionController extends AbstractController
                 $form->handleRequest($request);
 
                 if ($form->isSubmitted() && $form->isValid()) {
-                    $uploadedFile = $form['bannerImage']->getData();
-
-                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
-                    if ($uploadedFile) {
-
-                        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
-                        $uploadedFile->move(
-                            $destination,
-                            $newFilename
-                        );
-
-
-                        // instead of its contents
-                        $userMission->setBannerImage($newFilename);
-                    }
+//                    $uploadedFile = $form['bannerImage']->getData();
+//
+//                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+//                    if ($uploadedFile) {
+//
+//                        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+//                        $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
+//                        $uploadedFile->move(
+//                            $destination,
+//                            $newFilename
+//                        );
+//
+//
+//                        // instead of its contents
+//                        $userMission->setBannerImage($newFilename);
+//                    }
                     $this->getDoctrine()->getManager()->flush();
 
                     return $this->redirectToRoute('admin_user_mission_index', [
@@ -155,5 +158,21 @@ class UserMissionController extends AbstractController
         return $this->render('admin/b2b/user_mission/index.html.twig', [
             'user_missions' => $selectedUserRelated,
         ]);
+    }
+    /**
+     * @Route("upload", name="upload")
+     */
+    public function upload(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'missions/'.$request->get('id'), true);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $userMissions = $entityManager->getRepository(UserMission::class)->findOneBy(['id'=>$request->get('id')]);
+        $userMissions->setBannerImage($fileName);
+        $entityManager->flush();
+
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
     }
 }

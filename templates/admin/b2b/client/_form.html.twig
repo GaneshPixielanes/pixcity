@@ -1,4 +1,30 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {#{{ form_widget(form) }}#}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {#{{ form_row(form.profilePhoto) }}#}
+<br/>
+<ul class="repeater-container user-profilePhoto">
+    <li class="align-center">
+        {% if form.vars.data.profilePhoto  %}
+            <img class="thumb" src="{{ '/uploads/clients/'~form.vars.data.id~'/'~form.vars.data.profilePhoto}}" width="20%">
+        {% endif %}
+
+        <div class="upload-zone">
+            <input type="file" id="profilePhoto"/>
+            <label>Profile Photo</label>
+            <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                <i class="material-icons">add</i>
+            </a>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+    </li>
+</ul>
+<br/>
+    {{ form_row(form.email) }}
+    {{ form_row(form.plainPassword) }}
+    {{ form_row(form.roles) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
