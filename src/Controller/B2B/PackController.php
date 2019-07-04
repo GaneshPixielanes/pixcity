@@ -288,6 +288,7 @@ class PackController extends Controller
 
         $fileName = $fileUploader->upload($file, 'pack/banner/', true);
 
+
         return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
     }
 
