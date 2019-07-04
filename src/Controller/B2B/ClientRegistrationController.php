@@ -43,7 +43,7 @@ class ClientRegistrationController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted())
+        if($form->isSubmitted() && $form->isValid())
         {
             $em = $this->getDoctrine()->getManager();
             $client->setRoles(["ROLE_USER"]);
@@ -94,13 +94,13 @@ class ClientRegistrationController extends AbstractController
                 [
                     'client' => $client
                 ]);
-
-            return $this->render('b2b/client/index.html.twig',[
-                'notifications' => $notifications,
-                'missions' => $missions,
-                'proposals' => $proposals,
-                'proposal_unique' => $proposal_unique
-            ]);
+            $this->redirectToRoute('b2b_client_main_index');
+//            return $this->render('b2b/client/index.html.twig',[
+//                'notifications' => $notifications,
+//                'missions' => $missions,
+//                'proposals' => $proposals,
+//                'proposal_unique' => $proposal_unique
+//            ]);
         }
 
 
