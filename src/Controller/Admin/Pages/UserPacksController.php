@@ -6,10 +6,12 @@ use App\Constant\ViewMode;
 use App\Entity\UserPacks;
 use App\Form\UserPacksType;
 use App\Repository\UserPacksRepository;
+use App\Service\FileUploader;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -87,28 +89,28 @@ class UserPacksController extends AbstractController
 
                 if ($form->isSubmitted() && $form->isValid()) {
 
-                    $uploadedFile = $form['bannerImage']->getData();
-                    $packPhotos = $form['packPhotos']->getData();
-                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
-                    if ($uploadedFile) {
-
-                        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
-                        $uploadedFile->move(
-                            $destination,
-                            $newFilename
-                        );
-
-                        $originalFilenamePhotoPacks = pathinfo($packPhotos->getClientOriginalName(), PATHINFO_FILENAME);
-                        $newFilenamePhotoPacks = Urlizer::urlize($originalFilenamePhotoPacks).'-'.uniqid().'.'.$packPhotos->guessExtension();
-                        $packPhotos->move(
-                            $destination,
-                            $newFilenamePhotoPacks
-                        );
-                        // instead of its contents
-                        $userPack->setBannerImage($newFilename);
-                        $userPack->setPackPhotos($newFilenamePhotoPacks);
-                    }
+//                    $uploadedFile = $form['bannerImage']->getData();
+//                    $packPhotos = $form['packPhotos']->getData();
+//                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+//                    if ($uploadedFile) {
+//
+//                        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+//                        $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
+//                        $uploadedFile->move(
+//                            $destination,
+//                            $newFilename
+//                        );
+//
+//                        $originalFilenamePhotoPacks = pathinfo($packPhotos->getClientOriginalName(), PATHINFO_FILENAME);
+//                        $newFilenamePhotoPacks = Urlizer::urlize($originalFilenamePhotoPacks).'-'.uniqid().'.'.$packPhotos->guessExtension();
+//                        $packPhotos->move(
+//                            $destination,
+//                            $newFilenamePhotoPacks
+//                        );
+//                        // instead of its contents
+//                        $userPack->setBannerImage($newFilename);
+//                        $userPack->setPackPhotos($newFilenamePhotoPacks);
+//                    }
 
                     $this->getDoctrine()->getManager()->flush();
                     return $this->redirectToRoute('admin_user_packs_index', [
@@ -164,5 +166,23 @@ class UserPacksController extends AbstractController
         return $this->render('admin/b2b/user_packs/index.html.twig', [
             'user_packs' => $selectedUserRelated,
         ]);
+    }
+    /**
+     * @Route("upload", name="upload")
+     */
+    public function upload(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'pack/banner/', true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+    /**
+     * @Route("upload/packs", name="upload_pack")
+     */
+    public function uploadPacks(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'pack/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
     }
 }

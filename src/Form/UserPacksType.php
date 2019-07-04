@@ -2,9 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use App\Entity\UserPacks;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +19,7 @@ class UserPacksType extends AbstractType
         $builder
             ->add('title')
             ->add('description')
-            ->add('bannerImage',FileType::class,array('data_class'=> null, 'label' => 'BannerImage'))
+            ->add('bannerImage',HiddenType::class,array('data_class'=> null, 'label' => 'Image bannière'))
             ->add('userBasePrice')
             ->add('marginValue',TextareaType::class, array(
                 'attr' => array(
@@ -28,17 +31,17 @@ class UserPacksType extends AbstractType
                     'readonly' => true,
                 ),
             ))
-            ->add('packPhotos',FileType::class,array('data_class'=> null, 'label' => 'Pack Photos'))
+            ->add('packPhotos',HiddenType::class,array('data_class'=> null, 'label' => 'Pack Photos'))
             //->add('createdAt')
             //->add('updatedAt')
            // ->add('deletedAt')
             ->add('active')
             //->add('deleted')
             //->add('marginPercentage')
-            ->add('user',TextareaType::class, array(
-                'attr' => array(
-                    'readonly' => true,
-                ),
+            ->add('user',EntityType::class, array(
+                'class' => User::class,
+                'choice_label' => 'firstname',
+                'label'=>'CM'
             ))
            // ->add('packSkill')
         ;

@@ -24,4 +24,30 @@
         </div>
     </div>
 {% endblock %}
-
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#banner-image-upload').change(function()
+            {
+                var data = new FormData();
+                data.append('file',$(this)[0].files[0]);
+                data.append('id',{{ user_mission.id }});
+                $.ajax('{{ url('admin_user_mission_upload') }}',{
+                    method: 'POST',
+                    processData: false,
+                    cacheable:false,
+                    data:data,
+                    contentType: false,
+                    success: function(result)
+                    {
+                        if(result.success == true)
+                        {
+                            $('[name="user_mission[bannerImage]"').val(result.fileName);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
