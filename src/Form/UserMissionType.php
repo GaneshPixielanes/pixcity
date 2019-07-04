@@ -28,12 +28,12 @@ class UserMissionType extends AbstractType
            // ->add('createdAt')
            // ->add('updatedAt')
             ->add('status',TextType::class,array('label'=>'Statut'))
-            ->add('dueDate', DateType::class, [
-                'placeholder' => [
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                ]
-            ])
-            ->add('conditionsAgreed')
+//            ->add('dueDate', DateType::class, [
+//                'placeholder' => [
+//                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+//                ]
+//            ])
+            //->add('conditionsAgreed')
             ->add('axaInsurance')
             ->add('generalConditionsBrief')
             ->add('missionAgreedClient')
