@@ -27,3 +27,50 @@
     </div>
 </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#banner-image-upload').change(function()
+            {
+                var data = new FormData();
+                data.append('file',$(this)[0].files[0]);
+                $.ajax('{{ url('admin_user_packs_upload') }}',{
+                    method: 'POST',
+                    processData: false,
+                    cacheable:false,
+                    data:data,
+                    contentType: false,
+                    success: function(result)
+                    {
+                        if(result.success == true)
+                        {
+                            $('[name="user_packs[bannerImage]"').val(result.fileName);
+                        }
+                    }
+                });
+            });
+            $('#packPhotos').change(function()
+            {
+                var data = new FormData();
+                data.append('file',$(this)[0].files[0]);
+                data.append('id',{{ user_pack.id }});
+                $.ajax('{{ url('admin_user_packs_upload_pack') }}',{
+                    method: 'POST',
+                    processData: false,
+                    cacheable:false,
+                    data:data,
+                    contentType: false,
+                    success: function(result)
+                    {
+                        if(result.success == true)
+                        {
+                            $('[name="user_packs[packPhotos]"').val(result.fileName);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

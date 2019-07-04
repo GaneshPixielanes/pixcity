@@ -2,9 +2,16 @@
 
 {{ form_row(form._token) }}
 
-<div class="col-sm-10 offset-sm-2 pack-creation-content bg-white p-0" data-simplebar>
-    <div
-            class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
+<div class="col-sm-10 offset-sm-2 pack-creation-content bg-white p-0 " data-simplebar>
+    <div class="{% if pack.bannerImage != '' %}d-none {% endif %}pack-create-screen cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center bg-lightgray position-relative">
+        <input type="file" name="myFile" data-toggle="tooltip" title="" data-original-title="Changer votre image de couverture " data-upload-type="banner">
+        <i class="far fa-image fz-40"></i>
+        <p class="mb-0 fz-22">Changer votre image de couverture </p>
+        <small class="mb-3 fz-16">Format .png .jpg max 2mo</small>
+        <a href="javascript:;" class="btn btn-outline-normalgray btn-pill create-banner-upload-btn">TELECHARGER</a>
+    </div>
+
+    <div class="{% if pack.bannerImage == '' %}d-none {% endif %}pack-edit-screen cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
         {% if pack.bannerImage != '' %}
         <img src="/uploads/pack/banner/{{ pack.bannerImage }}" class="cover-image w-100 h-100" alt="Pack Cover Image" id="banner-image">
         {% else %}
@@ -95,8 +102,7 @@
         </div>
         <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
-            <p class="text-textgray">Besoin de conseils. <a href="javascript:;">Consultez notre FAQ
-                    City-Maker Services.</a></p>
+            <p class="text-textgray">Si vous ne savez pas comment définir vos prix, <a href="#">consultez notre FAQ</a></p>
             <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
             <div class="d-flex align-items-center">
                 <div class="input-group w-10">
@@ -179,7 +185,9 @@
 {#        </div>#}
         <div class="pack-region-container edit col-sm-12 mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Zone géographique</h5>
-            <p class="text-textgray">Choisissez la région où vous souhaitez intervenir pour réaliser le pack décrit ci-dessus.Les régions affichées sont par défaut celles que vous préalablement renseignées dans votre profil city-maker. N’oubliez pas que vous devez vous trouver à moins d’1h du lieu d’intervention du pack (environ !). Pour dé-sélectionner une région, cliquez simplement dessus.</p>
+            <p class="text-textgray">
+                Choisissez la région où vous souhaitez intervenir pour réaliser le pack décrit ci-dessus. Les régions affichées sont par défaut celles que vous préalablement renseignées dans votre profil city-maker. N’oubliez pas que vous devez vous trouver à moins d’1h du lieu d’intervention du pack (environ !). Pour dé-sélectionner une région, cliquez simplement dessus
+                .</p>
 
             <div class="row">
                 <div class="col-md-6 choose-regions-container">

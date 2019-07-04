@@ -269,6 +269,12 @@ class User implements UserInterface, EquatableInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $deleted = false;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
@@ -315,7 +321,7 @@ class User implements UserInterface, EquatableInterface
     private $userPacks;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="user", cascade={"persist", "remove"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="user", cascade={"persist", "remove"})
      */
     private $userMission;
 
@@ -358,7 +364,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $cm_upgrade_b2b_date;
+    private $cmUpgradeB2bDate;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Notifications", mappedBy="user")
@@ -1227,6 +1233,17 @@ class User implements UserInterface, EquatableInterface
         $this->deleted = $deleted;
     }
 
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
     /**
      * @return mixed
      */
@@ -1665,12 +1682,12 @@ class User implements UserInterface, EquatableInterface
 
     public function getCmUpgradeB2bDate(): ?\DateTimeInterface
     {
-        return $this->cm_upgrade_b2b_date;
+        return $this->cmUpgradeB2bDate;
     }
 
-    public function setCmUpgradeB2bDate(?\DateTimeInterface $cm_upgrade_b2b_date): self
+    public function setCmUpgradeB2bDate(?\DateTimeInterface $cmUpgradeB2bDate): self
     {
-        $this->cm_upgrade_b2b_date = $cm_upgrade_b2b_date;
+        $this->cmUpgradeB2bDate = $cmUpgradeB2bDate;
 
         return $this;
     }

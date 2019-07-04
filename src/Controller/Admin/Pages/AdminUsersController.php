@@ -164,7 +164,7 @@ class AdminUsersController extends Controller
                 $query = $em->createQuery('SELECT g, COUNT(m.user) AS userPack
                     FROM App:User AS g
                     LEFT JOIN App:UserPacks AS m WITH g.id = m.user
-                    WHERE g.active=1 AND g.b2b_cm_approval =1 GROUP BY g.id');
+                    WHERE g.active=1 AND g.deleted = 0 AND g.b2b_cm_approval =1 GROUP BY g.id');
                 $result =  $query->getResult();
 
                 //$list = $userRepository->findBy([], ['createdAt' => 'DESC']);
@@ -221,5 +221,21 @@ class AdminUsersController extends Controller
         $entityManager->flush();
 
         return new JsonResponse(['data' => 'Updated']);
+    }
+    /**
+     * @Route("/{id}/soft-delete", name="soft_delete", methods={"DELETE"})
+     */
+    public function deleteSoft(Request $request, User $user): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            //$entityManager->remove($userMission);
+            $users = $entityManager->getRepository(User::class)->find($user->getId());
+            $users->setDeleted(1);
+            $users->setDeletedAt(new \DateTime());
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('admin_admins_cm_lists');
     }
 }

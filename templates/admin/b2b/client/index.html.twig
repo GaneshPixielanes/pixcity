@@ -19,10 +19,10 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>First name </th>
-                            <th>Last name </th>
+                            <th>Prénom</th>
+                            <th>nom </th>
                             <th>Email</th>
-                            <th>Company</th>
+                            <th>Société</th>
                             <th>SIRET</th>
                             <th>Date of Reg </th>
                             <th>Action</th>
@@ -38,9 +38,18 @@
                             <td>{{ client.company }}</td>
                             <td>{{ client.clientInfo ? client.clientInfo.siret: 'N/A' }}</td>
                             <td>{{ client.createdAt ? client.createdAt|date('d-M-Y'):'N/A' }}</td>
-                            <td>
-                                <a href="{{ path('admin_client_show', {'id': client.id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
-                                {#| <a href="{{ path('admin_client_edit', {'id': client.id}) }}" title="{{ 'action.edit'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">edit</i></a>#}
+                            <td class="text-right">
+                                <div class="item-actions">
+                                    <a href="{{ path('admin_client_show', {'id': client.id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
+                                    | <a href="{{ path('admin_client_edit', {'id': client.id}) }}" title="{{ 'action.edit'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">edit</i></a>
+
+
+                                    <form method="post" class="delete-form" action="{{ path('admin_client_delete', {'id': client.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+                                        <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     {% else %}

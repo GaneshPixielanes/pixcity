@@ -13,10 +13,17 @@
                 <h2>
                     {{ 'label.clients'|trans }} - {{ client.firstName ~' '~ client.lastName}}
                 </h2>
-                <div>
+                <div class="item-actions">
                 <a href="{{ path('admin_client_index') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
 
-                {#| <a href="{{ path('admin_client_edit', {'id': client.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>#}
+                | <a href="{{ path('admin_client_edit', {'id': client.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
+
+                    <form method="post" class="delete-form" action="{{ path('admin_client_delete', {'id': client.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+                        <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                    </form>
+
                 </div>
             </div>
             <div class="body">
@@ -32,53 +39,59 @@
                         <td>{{ client.email ? client.email : 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <th>Company</th>
+                        <th>Société</th>
                         <td>{{ client.company ? client.company : 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <th>Created Date</th>
+                        <th>Date de création</th>
                         <td>{{ client.createdAt ? client.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <th>Updated Date</th>
+                        <th>Date d’update</th>
                         <td>{{ client.updatedAt ? client.updatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <th>Last Loggedin Date</th>
+                        <th>Dernière connexion</th>
                         <td>{{ client.lastLoggedinAt ? client.lastLoggedinAt|date('Y-m-d H:i:s') : 'N/A' }}</td>
                     </tr>
 
                     <tr>
                         <th>Siret</th>
-                        <td>{{ client.clientInfo.siret ? client.clientInfo.siret : 'N/A' }}</td>
+                        <td>
+                            {% if client.clientInfo is not null %}
+                                {{client.clientInfo.siret}}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
-                        <th>Company Type</th>
-                        <td>{{ client.clientInfo.business ? client.clientInfo.business : 'N/A' }}</td>
+                        <th>Type société</th>
+                        <td>{{ client.clientInfo ? client.clientInfo.business : 'N/A' }}</td>
                     </tr>
                     {#<tr>#}
                         {#<th>Email</th>#}
                         {#<td>{{ client.clientInfo.email }}</td>#}
                     {#</tr>#}
                     <tr>
-                        <th>Address</th>
-                        <td>{{ client.clientInfo.address ? client.clientInfo.address : 'N/A' }}</td>
+                        <th>Adresse</th>
+                        <td>{{ client.clientInfo ? client.clientInfo.address : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Postal Code</th>
-                        <td>{{ client.clientInfo.postalCode ? client.clientInfo.postalCode : 'N/A' }}</td>
+                        <td>{{ client.clientInfo ? client.clientInfo.postalCode : 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <th>City</th>
-                        <td>{{ client.clientInfo.city ? client.clientInfo.city : 'N/A' }}</td>
+                        <th>Ville</th>
+                        <td>{{ client.clientInfo ? client.clientInfo.city : 'N/A' }}</td>
                     </tr>
                     {#<tr>#}
                         {#<th>Company Type</th>#}
                         {#<td>{{ client.clientInfo.companyType }}</td>#}
                     {#</tr>#}
                     <tr>
-                        <th>Company Creation Date</th>
-                        <td>{{ client.clientInfo.companyCreationDate ? client.clientInfo.companyCreationDate|date('d-M-Y H:i:s') : 'N/A'  }}</td>
+                        <th>Date création société</th>
+                        <td>{{ client.clientInfo ? client.clientInfo.companyCreationDate|date('d-M-Y H:i:s') : 'N/A'  }}</td>
                     </tr>
                 </tbody>
             </table>

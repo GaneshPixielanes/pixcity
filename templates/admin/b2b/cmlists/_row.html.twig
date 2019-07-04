@@ -13,13 +13,19 @@
     </td>
     <td class="text-right">
         <div class="item-actions">
-            {#<a title="{{ 'action.edit'|trans }}" href="{{ path('admin_users_edit', {'id': item[0].id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">#}
-                {#<i class="material-icons">edit</i>#}
-            {#</a>#}
+            <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_users_edit', {'id': item[0].id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                <i class="material-icons">edit</i>
+            </a>
             {#|#}
             <a href="{{ path('admin_admins_show', {'id': item[0].id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float" title="{{ 'action.detail_view'|trans }}">
                 <i class="material-icons">visibility</i>
             </a>
+            <form method="post" class="delete-form" action="{{ path('admin_admins_soft_delete', {'id': item[0].id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item[0].id) }}">
+                <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+            </form>
+
         </div>
     </td>
 </tr>

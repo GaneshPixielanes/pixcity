@@ -240,8 +240,9 @@ class MissionController extends Controller
             if($transaction->getMission()->getStatus() == MissionStatus::CREATED){
 
                 $transaction->getMission()->setStatus(MissionStatus::ONGOING);
+                $message = 'Le client a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
 
-                $notificationsRepository->insert($mission_id->getUser(),null,'mission_paid','The mission '.$mission_id->getTitle().' amount has been paid',0);
+                $notificationsRepository->insert($mission_id->getUser(),null,'mission_paid',$message,0);
 
             }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){
 
@@ -294,7 +295,8 @@ class MissionController extends Controller
                 $em->persist($royalties);
                 $em->flush();
 
-                $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid','The mission '.$mission_id->getTitle().' is terminated from client side too',1);
+                $message = 'Le client a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
+                $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid',$message,1);
 
             }
 

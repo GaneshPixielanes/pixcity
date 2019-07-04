@@ -129,7 +129,11 @@
                     <a href="javascript:;" class="btn btn-outline-darkblue btn-pill add-a-log-document">Ajouter
                         un document</a>
                     <input type="file" class="d-none" id="mission-log-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief" />
-
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7" class="pt-4 text-center">
+                    <small>Format: .doc, .docx, .pdf, .ppt and .jpeg</small>
                 </td>
             </tr>
             </tfoot>
@@ -311,7 +315,7 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userActions">
                     {% if mission.status == "ongoing" %}<a class="dropdown-item text-darkgray fz-12 terminate-mission-activate" href="javascript:;" data-toggle="modal" data-target="#endMissionConfirmation" data-id="{{ mission.id }}"><i class="far fa-check-circle mr-2"></i>Terminer
                         mission</a>{% endif %}
-                    <a class="dropdown-item text-darkgray fz-12 cancel-mission-activate" href="javascript:;"><i class="far fa-comments mr-2"></i>Support</a>
+                    <a class="dropdown-item text-darkgray fz-12" href="mailto:services@pix.city" ><i class="far fa-comments mr-2"></i>Support</a>
                     <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i class="far fa-paper-plane mr-2"></i>Partager</a>
                     {% if mission.status == "ongoing" or mission.status == "terminate_request_cm" %}<a class="dropdown-item text-pink fz-12 cancel-mission-activate" href="javascript:;"  data-id="{{ mission.id }}" terminate-data-id="{{ mission.id }}"><i class="far fa-times-circle mr-2"></i>Annuler
                         mission</a>{% endif %}
