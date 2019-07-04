@@ -22,12 +22,12 @@ class TicketType extends AbstractType
 
         $builder
             ->add('initiator',TextType::class)
-            ->add('Object',TextType::class,['label' => 'subject'])
+            ->add('Object',TextType::class,['label' => false])
             ->add('client',EntityType::class,[
                 'class' => Client::class,
                 'multiple' => false,
                 'expanded' => false,
-                'label' => 'label.email',
+                'label' => false,
                 'choice_label' => 'email',
                 'query_builder' => function(EntityRepository $er) use($emails)
                 {
@@ -40,7 +40,7 @@ class TicketType extends AbstractType
                 'class' => User::class,
                 'multiple' => false,
                 'expanded' => false,
-                'label' => 'label.email',
+                'label' => false,
                 'choice_label' => 'email',
                 'query_builder' => function(EntityRepository $er) use($emails)
                 {
@@ -49,8 +49,8 @@ class TicketType extends AbstractType
                 }
             ])
 
-            ->add('template_type',TextType::class)
-            ->add('messages', MessageType::class,[
+            ->add('template_type',TextType::class,['label' => false])
+            ->add('messages', MessageType::class,['label' => false,
                 'constraints' => array(new Valid())
             ])
         ;

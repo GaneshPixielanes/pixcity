@@ -1,413 +1,374 @@
-{% extends 'b2b/base.html.twig' %}
+{% extends 'b2b/page.html.twig' %}
 
-{% block title %}Email Page{% endblock %}
+{% block title %}Client | Home {% endblock %}
 
-{% block body %}
-
-    <style>
-        .mail-box aside {
-            display: table-cell;
-            float: none;
-            height: 100%;
-            padding: 0;
-            vertical-align: top;
-        }
-        .mail-box .sm-side {
-            background: none repeat scroll 0 0 #e5e8ef;
-            border-radius: 4px 0 0 4px;
-            width: 25%;
-        }
-        .mail-box .lg-side {
-            background: none repeat scroll 0 0 #fff;
-            border-radius: 0 4px 4px 0;
-            width: 75%;
-        }
-        .mail-box .sm-side .user-head {
-            background: none repeat scroll 0 0 #00a8b3;
-            border-radius: 4px 0 0;
-            color: #fff;
-            min-height: 80px;
-            padding: 10px;
-        }
-        .user-head .inbox-avatar {
-            float: left;
-            width: 65px;
-        }
-        .user-head .inbox-avatar img {
-            border-radius: 4px;
-        }
-        .user-head .user-name {
-            display: inline-block;
-            margin: 0 0 0 10px;
-        }
-        .user-head .user-name h5 {
-            font-size: 14px;
-            font-weight: 300;
-            margin-bottom: 0;
-            margin-top: 15px;
-        }
-        .user-head .user-name h5 a {
-            color: #fff;
-        }
-        .user-head .user-name span a {
-            color: #87e2e7;
-            font-size: 12px;
-        }
-        a.mail-dropdown {
-            background: none repeat scroll 0 0 #80d3d9;
-            border-radius: 2px;
-            color: #01a7b3;
-            font-size: 10px;
-            margin-top: 20px;
-            padding: 3px 5px;
-        }
-        .inbox-body {
-            padding: 20px;
-        }
-        .btn-compose {
-            background: none repeat scroll 0 0 #ff6c60;
-            color: #fff;
-            padding: 12px 0;
-            text-align: center;
-            width: 100%;
-        }
-        .btn-compose:hover {
-            background: none repeat scroll 0 0 #f5675c;
-            color: #fff;
-        }
-        ul.inbox-nav {
-            display: inline-block;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-        .inbox-divider {
-            border-bottom: 1px solid #d5d8df;
-        }
-        ul.inbox-nav li {
-            display: inline-block;
-            line-height: 45px;
-            width: 100%;
-        }
-        ul.inbox-nav li a {
-            color: #6a6a6a;
-            display: inline-block;
-            line-height: 45px;
-            padding: 0 20px;
-            width: 100%;
-        }
-        ul.inbox-nav li a:hover, ul.inbox-nav li.active a, ul.inbox-nav li a:focus {
-            background: none repeat scroll 0 0 #d5d7de;
-            color: #6a6a6a;
-        }
-        ul.inbox-nav li a i {
-            color: #6a6a6a;
-            font-size: 16px;
-            padding-right: 10px;
-        }
-        ul.inbox-nav li a span.label {
-            margin-top: 13px;
-        }
-        ul.labels-info li h4 {
-            color: #5c5c5e;
-            font-size: 13px;
-            padding-left: 15px;
-            padding-right: 15px;
-            padding-top: 5px;
-            text-transform: uppercase;
-        }
-        ul.labels-info li {
-            margin: 0;
-        }
-        ul.labels-info li a {
-            border-radius: 0;
-            color: #6a6a6a;
-        }
-        ul.labels-info li a:hover, ul.labels-info li a:focus {
-            background: none repeat scroll 0 0 #d5d7de;
-            color: #6a6a6a;
-        }
-        ul.labels-info li a i {
-            padding-right: 10px;
-        }
-        .nav.nav-pills.nav-stacked.labels-info p {
-            color: #9d9f9e;
-            font-size: 11px;
-            margin-bottom: 0;
-            padding: 0 22px;
-        }
-        .inbox-head {
-            background: none repeat scroll 0 0 #0a05ff;
-            border-radius: 0 4px 0 0;
-            color: #fff;
-            min-height: 80px;
-            padding: 20px;
-        }
-        .inbox-head h3 {
-            display: inline-block;
-            font-weight: 300;
-            margin: 0;
-            padding-top: 6px;
-        }
-        .inbox-head .sr-input {
-            border: medium none;
-            border-radius: 4px 0 0 4px;
-            box-shadow: none;
-            color: #8a8a8a;
-            float: left;
-            height: 40px;
-            padding: 0 10px;
-        }
-        .inbox-head .sr-btn {
-            background: none repeat scroll 0 0 #00a6b2;
-            border: medium none;
-            border-radius: 0 4px 4px 0;
-            color: #fff;
-            height: 40px;
-            padding: 0 20px;
-        }
-        .table-inbox {
-            border: 1px solid #d3d3d3;
-            margin-bottom: 0;
-        }
-        .table-inbox tr td {
-            padding: 12px !important;
-        }
-        .table-inbox tr td:hover {
-            cursor: pointer;
-        }
-        .table-inbox tr td .fa-star.inbox-started, .table-inbox tr td .fa-star:hover {
-            color: #f78a09;
-        }
-        .table-inbox tr td .fa-star {
-            color: #d5d5d5;
-        }
-        .table-inbox tr.unread td {
-            background: none repeat scroll 0 0 #f7f7f7;
-            font-weight: 600;
-        }
-        ul.inbox-pagination {
-            float: right;
-        }
-        ul.inbox-pagination li {
-            float: left;
-        }
-        .mail-option {
-            display: inline-block;
-            margin-bottom: 10px;
-            width: 100%;
-        }
-        .mail-option .chk-all, .mail-option .btn-group {
-            margin-right: 5px;
-        }
-        .mail-option .chk-all, .mail-option .btn-group a.btn {
-            background: none repeat scroll 0 0 #fcfcfc;
-            border: 1px solid #e7e7e7;
-            border-radius: 3px !important;
-            color: #afafaf;
-            display: inline-block;
-            padding: 5px 10px;
-        }
-        .inbox-pagination a.np-btn {
-            background: none repeat scroll 0 0 #fcfcfc;
-            border: 1px solid #e7e7e7;
-            border-radius: 3px !important;
-            color: #afafaf;
-            display: inline-block;
-            padding: 5px 15px;
-        }
-        .mail-option .chk-all input[type="checkbox"] {
-            margin-top: 0;
-        }
-        .mail-option .btn-group a.all {
-            border: medium none;
-            padding: 0;
-        }
-        .inbox-pagination a.np-btn {
-            margin-left: 5px;
-        }
-        .inbox-pagination li span {
-            display: inline-block;
-            margin-right: 5px;
-            margin-top: 7px;
-        }
-        .fileinput-button {
-            background: none repeat scroll 0 0 #eeeeee;
-            border: 1px solid #e6e6e6;
-        }
-        .inbox-body .modal .modal-body input, .inbox-body .modal .modal-body textarea {
-            border: 1px solid #e6e6e6;
-            box-shadow: none;
-        }
-        .btn-send, .btn-send:hover {
-            background: none repeat scroll 0 0 #00a8b3;
-            color: #fff;
-        }
-        .btn-send:hover {
-            background: none repeat scroll 0 0 #009da7;
-        }
-        .modal-header h4.modal-title {
-            font-family: 'Open Sans', sans-serif !important;
-            font-weight: 300;
-        }
-        .modal-body label {
-            font-family: 'Open Sans', sans-serif !important;
-            font-weight: 400;
-        }
-        .heading-inbox h4 {
-            border-bottom: 1px solid #ddd;
-            color: #444;
-            font-size: 18px;
-            margin-top: 20px;
-            padding-bottom: 10px;
-        }
-        .sender-info {
-            margin-bottom: 20px;
-        }
-        .sender-info img {
-            height: 30px;
-            width: 30px;
-        }
-        .sender-dropdown {
-            background: none repeat scroll 0 0 #eaeaea;
-            color: #777;
-            font-size: 10px;
-            padding: 0 3px;
-        }
-        .view-mail a {
-            color: #ff6c60;
-        }
-        .attachment-mail {
-            margin-top: 30px;
-        }
-        .attachment-mail ul {
-            display: inline-block;
-            margin-bottom: 30px;
-            width: 100%;
-        }
-        .attachment-mail ul li {
-            float: left;
-            margin-bottom: 10px;
-            margin-right: 10px;
-            width: 150px;
-        }
-        .attachment-mail ul li img {
-            width: 100%;
-        }
-        .attachment-mail ul li span {
-            float: right;
-        }
-        .attachment-mail .file-name {
-            float: left;
-        }
-        .attachment-mail .links {
-            display: inline-block;
-            width: 100%;
-        }
-
-        .fileinput-button {
-            float: left;
-            margin-right: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-        .fileinput-button input {
-            cursor: pointer;
-            direction: ltr;
-            font-size: 23px;
-            margin: 0;
-            opacity: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            transform: translate(-300px, 0px) scale(4);
-        }
-        .fileupload-buttonbar .btn, .fileupload-buttonbar .toggle {
-            margin-bottom: 5px;
-        }
-        .files .progress {
-            width: 200px;
-        }
-        .fileupload-processing .fileupload-loading {
-            display: block;
-        }
-        * html .fileinput-button {
-            line-height: 24px;
-            margin: 1px -3px 0 0;
-        }
-        * + html .fileinput-button {
-            margin: 1px 0 0;
-            padding: 2px 15px;
-        }
-        @media (max-width: 767px) {
-            .files .btn span {
-                display: none;
-            }
-            .files .preview * {
-                width: 40px;
-            }
-            .files .name * {
-                display: inline-block;
-                width: 80px;
-                word-wrap: break-word;
-            }
-            .files .progress {
-                width: 20px;
-            }
-            .files .delete {
-                width: 60px;
-            }
-        }
-        ul {
-            list-style-type: none;
-            padding: 0px;
-            margin: 0px;
-        }
-    </style>
+{% block content %}
 
 
-    <div class="container">
+    <div class="tab-pane active" id="email" role="tabpanel">
+        <div
+                class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm mail-box">
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-envelope fz-30 mr-2"></i> Email
+            </div>
+            <div>
+{#                <a href="javascript:;" class="btn btn-outline-darkblue rounded-circle mr-2 position-relative">#}
+{#                    <span class="new-notification"></span>#}
+{#                    <i class="far fa-bell"></i>#}
+{#                </a>#}
+                <a href="javascript:;" class="btn btn-outline-darkblue btn-pill" onclick="location.href='/connexion/signout';">Logout</a>
+            </div>
 
-        <aside class="lg-side">
+        </div>
+
+        <div class="tab-pane-content p-0 email-creation-content mial-box bg-white" data-simplebar id="emailContainer">
+
+            <div class="email-options sticky-top p-3 bg-dashboard">
+                <div class="mail-option">
+                    <div class="inbox-option d-inline-flex mr-3">
+                        {#                        <div class="chk-all d-inline-flex align-items-center">#}
+                        {#                            <!-- <input type="checkbox" class="mail-checkbox mail-group-checkbox"> -->#}
+                        {#                            <div class="custom-control custom-checkbox">#}
+                        {#                                <input type="checkbox" class="custom-control-input check-all-emails" id="selectAll">#}
+                        {#                                <label class="custom-control-label text-darkblue" for="selectAll"></label>#}
+                        {#                            </div>#}
+                        {#                            <div class="btn-group">#}
+                        {#                                <div class="dropdown">#}
+                        {#                                    <a data-toggle="dropdown" href="javascript:;" class="btn all" aria-expanded="false" id="emailOptions">#}
+                        {#                                        All#}
+                        {#                                        <i class="fas fa-chevron-down"></i>#}
+                        {#                                    </a>#}
+                        {#                                    <div class="dropdown-menu" aria-labelledby="emailOptions">#}
+                        {#                                        <a class="dropdown-item text-darkgray fz-12 select-all-emails" href="javascript:;">All</a>#}
+                        {#                                        <a class="dropdown-item text-darkgray fz-12 select-none" href="javascript:;">None</a>#}
+                        {#                                        <a class="dropdown-item text-darkgray fz-12 select-read" href="javascript:;">Read</a>#}
+                        {#                                        <a class="dropdown-item text-darkgray fz-12 select-unread" href="javascript:;">Unread</a>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                        <div class="btn-group selected-email-options d-none" role="group" aria-label="selected-options">
+                            <a href="javascript:;" class="btn btn-outline-normalgray" data-toggle="tooltip" data-placement="bottom"
+                               title="Delete"><i class="fas fa-trash"></i></a>
+                            <a href="javascript:;" class="btn btn-outline-normalgray" data-toggle="tooltip" data-placement="bottom"
+                               title="Mark as read"><i class="fas fa-envelope-open"></i></a>
+                            <a href="javascript:;" class="btn btn-outline-normalgray" data-toggle="tooltip" data-placement="bottom"
+                               title="Mark as unread"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="btn-group mr-3">
+                        <a data-toggle="tooltip" title="Compose" data-placement="bottom" href="javascript:;"
+                           class="btn btn-pink compose-email">
+                            <i class="far fa-plus mr-2"></i> Compose
+                        </a>
+                    </div>
+                    <div class="btn-group mr-3">
+                        <a data-toggle="tooltip" title="Inbox" data-placement="bottom" href="/b2b/email/inbox"
+                           class="btn btn-darkblue go-to-inbox">
+                            <i class="fas fa-inbox mr-2"></i> Inbox <span class="badge bg-pink text-white fz-12">{{ receiverMails | length }}</span>
+                        </a>
+
+
+                        <a data-toggle="tooltip" title="Sent" data-placement="bottom" href="/b2b/email/send-emails"
+                           class="btn btn-darkblue go-to-inbox">
+                            <i class="fas fa-inbox mr-2"></i> Sent box <span class="badge bg-pink text-white fz-12">{{ sendMails | length }}</span>
+                        </a>
+                        <!-- <div class="btn-group"> -->
+                        <a data-toggle="tooltip" title="Refresh" data-placement="bottom" href="javascript:;" id="refresh" class="btn btn-darkblue">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </a>
+                        <!-- </div> -->
+                        <!-- <a data-toggle="tooltip" title="Important" data-placement="bottom" href="javascript:;"
+                            class="btn btn-darkblue">
+                            <i class="far fa-bookmark mr-2"></i> Important
+                        </a> -->
+                        {#                        <a data-toggle="tooltip" title="Drafts" data-placement="bottom" href="javascript:;"#}
+                        {#                           class="btn btn-darkblue">#}
+                        {#                            <i class="fas fa-external-link-alt mr-2"></i> Drafts#}
+                        {#                        </a>#}
+                    </div>
+                    {#                    <div class="btn-group">#}
+                    {#                        <a data-toggle="tooltip" title="Trash" data-placement="bottom" href="javascript:;"#}
+                    {#                           class="btn btn-darkgray">#}
+                    {#                            <i class="fas fa-trash-alt mr-2"></i> Trash#}
+                    {#                        </a>#}
+                    {#                    </div>#}
+
+                </div>
+            </div>
+            <!-- compose mail -->
+            <div class="compose-email-container px-3 pb-3 bg-dashboard">
+                <div class="card">
+                    {{ form_start(form) }}
+                    <!-- Mail header -->
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="text-darkblue mb-0">Compose New Message</h5>
+                        <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="" data-original-title="Discard"><i class="fas fa-times mr-1"></i> Discard</button>
+                    </div>
+                    <!-- Mail header ends -->
+
+                    <!-- Mail body -->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <!-- <label for="toEmailAddress" class="fz-14">To</label> -->
+                            {#                                <input class="form-control fz-14" placeholder="To:" id="toEmailAddress">#}
+                            {{ form_row(form.client,{ 'attr': {'class': 'form-control fz-14'}}) }}
+                        </div>
+                        <div class="form-group">
+                            <!-- <label for="emailSubject" class="fz-14">Subject</label> -->
+                            {#                                <input class="form-control fz-14" placeholder="Subject:" id="emailSubject">#}
+                            {{ form_row(form.Object,{ 'attr': {'class': 'form-control fz-14','placeholder': 'Subject'}}) }}
+                        </div>
+                        <div class="form-group">
+                            <label for="emailMessage" class="fz-14">Message:</label>
+                            {{ form_row(form.messages.content,{'attr' : {'class' : 'form-control fz-14','rows' : '10','cols' : '30'}}) }}
+                        </div>
+                        <div class="">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupFileAddon01"><i class="fas fa-paperclip"></i></span>
+                                </div>
+                                <div class="custom-file">
+                                    {{ form_row(form.messages.attachment,{'attr' : {'class' : 'custom-file-input','aria-describedby':'inputGroupFileAddon01'}}) }}
+                                    <label class="custom-file-label mb-0 fz-14" for="ticket_messages_attachment">Attachment</label>
+                                </div>
+                            </div>
+                            <small>Max. 32MB</small>
+                            <!-- <p class="help-block">Max. 32MB</p> -->
+                        </div>
+                    </div>
+                    <!-- Mail body ends -->
+                    <!-- Mail footer -->
+                    <div class="card-footer">
+                        <div class="float-right">
+                            {#                                <button type="button" class="btn btn-textgray mr-2" data-toggle="tooltip" title="Draft"><i class="fas fa-pencil mr-1"></i> Draft</button>#}
+                            <button type="submit" class="btn btn-pink send-message" data-toggle="tooltip" title="Send">Send <i class="fas fa-paper-plane ml-1"></i></button>
+                        </div>
+                        <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="Discard"><i class="fas fa-times mr-1"></i> Discard</button>
+                    </div>
+                    <!-- Mail footer ends -->
+                    {{ form_end(form,{render_rest:false}) }}
+                </div>
+            </div>
+            <!-- compose mail ends -->
+            <!-- view mail -->
+            <div class="view-email-container small-email p-3 bg-dashboard" data-simplebar>
+                <div id="preview-inbox"></div>
+            </div>
+
+            <div class="view-email-container long-email p-3 bg-dashboard" data-simplebar>
+                <div class="card">
+                    <!-- Mail header -->
+                    <div class="card-header">
+                        <div class="mb-2 d-flex align-items-center justify-content-between">
+                            <button type="" class="btn btn-textgray back-to-inbox" data-toggle="tooltip" title="Back to inbox">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <h5 class="text-darkblue mb-0 mx-3">Message Title</h5>
+                            <button type="button" class="btn btn-pink" data-toggle="tooltip" title="Forward">
+                                <i class="fas fa-share"></i>
+                            </button>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <img src="/images/USER-AVATAR.jpg" alt="" class="rounded-circle btn-circle-50 mr-2">
+                                <div class="d-flex flex-column">
+                                    <div class="sender-email"><span class="font-weight-bold">From:</span> <a
+                                                href="mailto:test@rest123.com" class="text-textgray">test@rest123.com</a></div>
+                                    <div class="to-email"><span class="font-weight-bold">To:</span> Me</div>
+                                    <div class="cc-email"><span class="font-weight-bold">CC:</span> <a
+                                                href="mailto:test@rest123.com" class="text-textgray">test@rest123.com</a></div>
+                                </div>
+                            </div>
+                            <div class="align-self-start">
+                                <div class="time-of-email">Jun 17, 2019, 11:46 AM (2 days ago)</div>
+                                <small class="text-normalgray">(3 files, 103.2 KB)</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mail header ends -->
+                    <!-- Mail body -->
+                    <div class="card-body">
+                        <div class="message-body">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut nesciunt perspiciatis aut, dolor harum
+                                quidem optio, asperiores a veniam illo tempore sunt numquam similique deserunt quisquam, ratione
+                                reprehenderit! Ullam, impedit!</p>
+                            <p>Id necessitatibus odit hic soluta consequatur laboriosam tempora sed vero tempore quae natus, ducimus
+                                voluptatum obcaecati? Itaque magni, expedita labore esse nam incidunt sed, repellendus tempore
+                                aspernatur veniam, amet laborum.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut nesciunt perspiciatis aut, dolor harum
+                                quidem optio, asperiores a veniam illo tempore sunt numquam similique deserunt quisquam, ratione
+                                reprehenderit! Ullam, impedit!</p>
+                            <p>Id necessitatibus odit hic soluta consequatur laboriosam tempora sed vero tempore quae natus, ducimus
+                                voluptatum obcaecati? Itaque magni, expedita labore esse nam incidunt sed, repellendus tempore
+                                aspernatur veniam, amet laborum.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut nesciunt perspiciatis aut, dolor harum
+                                quidem optio, asperiores a veniam illo tempore sunt numquam similique deserunt quisquam, ratione
+                                reprehenderit! Ullam, impedit!</p>
+                            <p>Id necessitatibus odit hic soluta consequatur laboriosam tempora sed vero tempore quae natus, ducimus
+                                voluptatum obcaecati? Itaque magni, expedita labore esse nam incidunt sed, repellendus tempore
+                                aspernatur veniam, amet laborum.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut nesciunt perspiciatis aut, dolor harum
+                                quidem optio, asperiores a veniam illo tempore sunt numquam similique deserunt quisquam, ratione
+                                reprehenderit! Ullam, impedit!</p>
+                            <p>Id necessitatibus odit hic soluta consequatur laboriosam tempora sed vero tempore quae natus, ducimus
+                                voluptatum obcaecati? Itaque magni, expedita labore esse nam incidunt sed, repellendus tempore
+                                aspernatur veniam, amet laborum.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut nesciunt perspiciatis aut, dolor harum
+                                quidem optio, asperiores a veniam illo tempore sunt numquam similique deserunt quisquam, ratione
+                                reprehenderit! Ullam, impedit!</p>
+                            <p>Id necessitatibus odit hic soluta consequatur laboriosam tempora sed vero tempore quae natus, ducimus
+                                voluptatum obcaecati? Itaque magni, expedita labore esse nam incidunt sed, repellendus tempore
+                                aspernatur veniam, amet laborum.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut nesciunt perspiciatis aut, dolor harum
+                                quidem optio, asperiores a veniam illo tempore sunt numquam similique deserunt quisquam, ratione
+                                reprehenderit! Ullam, impedit!</p>
+                            <p>Id necessitatibus odit hic soluta consequatur laboriosam tempora sed vero tempore quae natus, ducimus
+                                voluptatum obcaecati? Itaque magni, expedita labore esse nam incidunt sed, repellendus tempore
+                                aspernatur veniam, amet laborum.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut nesciunt perspiciatis aut, dolor harum
+                                quidem optio, asperiores a veniam illo tempore sunt numquam similique deserunt quisquam, ratione
+                                reprehenderit! Ullam, impedit!</p>
+                            <p>Id necessitatibus odit hic soluta consequatur laboriosam tempora sed vero tempore quae natus, ducimus
+                                voluptatum obcaecati? Itaque magni, expedita labore esse nam incidunt sed, repellendus tempore
+                                aspernatur veniam, amet laborum.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut nesciunt perspiciatis aut, dolor harum
+                                quidem optio, asperiores a veniam illo tempore sunt numquam similique deserunt quisquam, ratione
+                                reprehenderit! Ullam, impedit!</p>
+                            <p>Id necessitatibus odit hic soluta consequatur laboriosam tempora sed vero tempore quae natus, ducimus
+                                voluptatum obcaecati? Itaque magni, expedita labore esse nam incidunt sed, repellendus tempore
+                                aspernatur veniam, amet laborum.</p>
+                        </div>
+                    </div>
+                    <!-- Mail body ends -->
+                    <!-- Mail footer -->
+                    <div class="card-footer">
+                        <div class="attachments mb-3">
+                            <ul class="attachments-list d-flex mx-n2">
+                                <li class="attachment-item px-2 w-20">
+                                    <div class="card">
+                                        <div class="card-body d-flex justify-content-center"><i class="fas fa-file-word fz-40"></i>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between">
+                                            <a href="javascript:;"
+                                               class="fz-12 text-decoration-none d-block mb-2 line-height-normal">
+                                                <i class="fas fa-paperclip"></i>
+                                                Workflow description.docx
+                                                <small class="d-block text-textgray mt-1">1,243 KB</small>
+                                            </a>
+                                            <a href="javascript:;" class="btn btn-normalgray btn-sm align-self-end"><i
+                                                        class="fas fa-cloud-download-alt"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="attachment-item px-2 w-20">
+                                    <div class="card">
+                                        <div class="card-body d-flex justify-content-center"><i class="fas fa-file-pdf fz-40"></i>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between">
+                                            <a href="javascript:;"
+                                               class="fz-12 text-decoration-none d-block mb-2 line-height-normal">
+                                                <i class="fas fa-paperclip"></i>
+                                                Workflow description.pdf
+                                                <small class="d-block text-textgray mt-1">2,143 KB</small>
+                                            </a>
+                                            <a href="javascript:;" class="btn btn-normalgray btn-sm align-self-end"><i
+                                                        class="fas fa-cloud-download-alt"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="attachment-item px-2 w-20">
+                                    <div class="card">
+                                        <div class="card-body d-flex justify-content-center"><i
+                                                    class="fas fa-file-powerpoint fz-40"></i>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between">
+                                            <a href="javascript:;"
+                                               class="fz-12 text-decoration-none d-block mb-2 line-height-normal">
+                                                <i class="fas fa-paperclip"></i>
+                                                Workflow presentation.pptx
+                                                <small class="d-block text-textgray mt-1">1,843 KB</small>
+                                            </a>
+                                            <a href="javascript:;" class="btn btn-normalgray btn-sm align-self-end"><i
+                                                        class="fas fa-cloud-download-alt"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="float-right">
+                            <button type="button" class="btn btn-textgray mr-2" data-toggle="tooltip" title="Reply"><i
+                                        class="fas fa-reply"></i></button>
+                            <button type="reset" class="btn btn-textgray mr-2" data-toggle="tooltip" title="Reply all"><i
+                                        class="fas fa-reply-all"></i></button>
+                            <button type="button" class="btn btn-pink" data-toggle="tooltip" title="Forward"><i
+                                        class="fas fa-share"></i></button>
+                        </div>
+                        <button type="" class="btn btn-textgray back-to-inbox mr-2" data-toggle="tooltip" title="Back to inbox">
+                            <i class="fas fa-chevron-left"></i></button>
+                        <button type="button" class="btn btn-outline-textgray" data-toggle="tooltip" title="Delete"><i
+                                    class="fas fa-trash"></i></button>
+                    </div>
+                    <!-- Mail footer ends -->
+                </div>
+            </div>
+            <div class="view-email-container email-conversation p-3 bg-dashboard" data-simplebar>
+
+            </div>
+            <!-- view mail ends -->
 
             <div class="inbox-body">
-                <table class="table table-inbox table-hover">
+                <table class="table table-inbox table-hover email-table" id="emailTable">
                     <thead>
                     <tr>
-                        <th>send from</th>
-                        <th>Subject</th>
-                        <th>Date</th>
+                        <th>#ID</th>
+                        <th>Sender</th>
+                        <th>Message title</th>
                         <th>Attachment</th>
+                        <th>Time of email</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for mail in mails %}
-                        <a href="person1.html">
-                            <tr onclick="document.location = 'view/{{ mail.id }}';" class="{% if mail.messages.last.status == 1 %}unread{% endif %}">
-                                <td class="view-message  dont-show">{{ mail.client.firstName }}</td>
-                                <td class="view-message ">{{ mail.Object }}</td>
-                                <td class="view-message  text-right">{{ mail.createdAt | date('d-m-y h:i A') }}</td>
+                        <tr class="{% if mail.messages.last.status == 1 %}unread{% endif %}">
+                            <td class="inbox-small-cells">
+                                {{ mail.id }}
+                            </td>
+                            <td class="view-message  dont-show">{{ mail.client.firstName }}</td>
+                            <td class="view-message ">{{ mail.Object }}</td>
+                            <td class="view-message  inbox-small-cells">
                                 {% set flag = true %}
                                 {% for message in mail.messages %}
                                     {% if flag %}
                                         {% if message.attachment is not empty %}
                                             {% set flag = false %}
-                                            <td class="view-message unread inbox-small-cells"><i class="fa fa-paperclip"></i></td>
-                                        {% else %}
-                                            <td class="view-message unread inbox-small-cells"></td>
+                                            <i class="fa fa-paperclip"></i>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
-                            </tr>
-                        </a>
+                            </td>
+                            <td class="view-message text-right">{{  mail.createdAt | date('d-m-y h:i A') }}</td>
+                        </tr>
                     {% endfor %}
+
                     </tbody>
                 </table>
             </div>
-        </aside>
-    </div>
+            <!-- <aside class="lg-side">
+            </aside> -->
+        </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#refresh').on('click',function () {
+                location.reload();
+            });
+        });
+
+    </script>
 {% endblock %}
 
 
