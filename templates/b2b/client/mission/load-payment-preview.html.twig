@@ -30,7 +30,7 @@
                         </div>
                     {% endif %}
                     <div class="financial-infos-container preview col-sm-12 mt-2 mb-4 pb-4">
-                        <h5 class="text-darkblue mb-0">Informations financières</h5>
+                        <h5 class="text-darkblue mb-0"> Montant TTC de la mission</h5>
                         <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ last_result['client_total'] |round(2, 'floor') }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
 {#                        <div class="btn-group" role="group" aria-label="">#}
 {#                            <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>#}
@@ -63,7 +63,7 @@
 {#                        </div>#}
 {#                    </div>#}
                     <div class="city-maker-container preview col-sm-12 mt-2 mb-4 pb-4">
-                        <h5 class="text-darkblue mb-3">Votre City Maker</h5>
+                        <h5 class="text-darkblue mb-3">votre City-Maker</h5>
                         <div class="d-flex align-items-center">
                             <div class="city-maker-pic rounded-circle mr-4">
                                 <img src="{{ mission.user.getAvatarUrl }}" class="img-fluid rounded-circle" alt="">
@@ -108,6 +108,7 @@
             <div
                     class="col-sm-12 payment-heading d-flex align-items-center border-bottom justify-content-between pt-4">
                 <h5 class="font-weight-bold">Payer en ligne</h5>
+                <p></p>
                 <button type="button" class="close align-self-start" aria-label="Close"
                         data-toggle="modal" data-target="#cancelMissionPayment">
                     <i class="far fa-times fz-20"></i>
@@ -132,11 +133,6 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6 fz-14">
-                                Transaction fees
-                            </div>
-                            <div class="col-sm-6 text-right">0 €</div>
-                        </div><div class="row">
-                            <div class="col-sm-6 fz-14">
                                 TOTAL TTC
                             </div>
                             <div class="col-sm-6 text-right">{{ last_result['client_total'] |round(2, 'floor') }} €</div>
@@ -147,6 +143,7 @@
             <div class="col-sm-12">
                 <div class="form py-3">
                     <div class="row">
+                        <p class="fz-10 mb-4">* Ce paiement est assimilé à un cantonnement du montant de la mission. Le paiement ne sera déclenché au city-maker que lorsque la mission sera terminée. Si elle est annulée, l’argent de ce compte de cantonnement vous sera restitué”</p>
 {#                        <div class="col-sm-12 mb-3">#}
 {#                            <label for="cardholder">Titulaire de la carte</label>#}
 {#                            <input name="cardholder" id="cardholder"#}

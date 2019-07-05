@@ -271,9 +271,9 @@ class MissionController extends Controller
         }
 
           if($mission->getStatus() == 'terminated'){
-              $this->addFlash('mission_change_setting', 'You successfully terminate the mission!');
+              $this->addFlash('mission_change_setting', 'Toutes nos félicitations! La mission est terminée');
           }elseif($mission->getStatus() == 'cancelled'){
-              $this->addFlash('mission_change_setting', 'You successfully cancelled the mission!');
+              $this->addFlash('mission_change_setting', 'Félicitations! La mission a bien été annulée');
           }
 
           return $this->redirect('/client/mission/list');

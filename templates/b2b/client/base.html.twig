@@ -28,7 +28,8 @@
         <!-- Header -->
         <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('b2b_client_main_index') }}"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
+                <a class="navbar-brand" href="{{ path('b2b_client_main_index') }}">
+                    <img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
                 <div class="col-3 ml-auto social-mobile">
                     <div class="row">
                         <div class="col-6 social-mobile-btn">
@@ -807,7 +808,8 @@
             pagingType: "simple",
 
             language: {
-                info: "_START_ to _END_ of _TOTAL_ emails",
+                info: "_START_ à _END_ sur  _TOTAL_ emails",
+                search: "{{ ('b2b.label.search') | trans }}",
                 select: {
                     rows: {
                         _: "%d emails selected",
@@ -815,11 +817,17 @@
                         1: "%d email selected"
                     }
                 },
-                searchPlaceholder: "Search emails",
+                searchPlaceholder: "{{ ('b2b.label.search_email') | trans }}",
                 buttons: {
                     selectAll: "Select all items",
                     selectNone: "Select none"
-                }
+                },
+                paginate: {
+                    first:"{{ ('b2b.label.first') | trans }}",
+                    previous:"{{ ('b2b.label.last') | trans }}",
+                    next:"{{ ('b2b.label.previous') | trans }}",
+                    last:"{{ ('b2b.label.next') | trans }}"
+                },
             },
             // oLanguage: {
             //     sInfo: "_START_ to _END_ of _TOTAL_ emails"
