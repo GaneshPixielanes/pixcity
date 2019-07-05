@@ -336,3 +336,26 @@ b2b:
         terminate_mission_client: MISSION TERMINEE ACCEPTEE
         mission_paid: PRE-PAIEMENT RECU ET DEVIS ACCEPTE
         mission_client_paid: PRE-PAIEMENT RECU ET DEVIS ACCEPTE
+        compose: Rédiger
+        inbox: Réception
+        sent_box: Envoyés
+        refresh: Actualiser
+        search: Rechercher
+        search_email: Rechercher emails
+        first: Premier
+        last : Dernier
+        previous: Précédent
+        next: Suivant
+        Logout: Déconnexion
+        compose_new_message: Rédiger un nouveau message
+        discard: Annuler
+        subject: Titre email
+        attachment: Pièces joints
+        browse: Parcourir
+        send: Envoyer
+        from: De
+        file: fichier
+        to_days_start: Il y a
+        to_days_end: jours
+        reply : Répondre
+

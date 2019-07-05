@@ -287,7 +287,8 @@
                 pagingType: "simple",
 
                 language: {
-                    info: "_START_ to _END_ of _TOTAL_ emails",
+                    info: "_START_ à _END_ sur  _TOTAL_ emails",
+                    search: "{{ ('b2b.label.search') | trans }}",
                     select: {
                         rows: {
                             _: "%d emails selected",
@@ -295,11 +296,17 @@
                             1: "%d email selected"
                         }
                     },
-                    searchPlaceholder: "Search emails",
+                    searchPlaceholder: "{{ ('b2b.label.search_email') | trans }}",
                     buttons: {
                         selectAll: "Select all items",
                         selectNone: "Select none"
-                    }
+                    },
+                    paginate: {
+                        first:"{{ ('b2b.label.first') | trans }}",
+                        previous:"{{ ('b2b.label.last') | trans }}",
+                        next:"{{ ('b2b.label.previous') | trans }}",
+                        last:"{{ ('b2b.label.next') | trans }}"
+                    },
                 },
                 // oLanguage: {
                 //     sInfo: "_START_ to _END_ of _TOTAL_ emails"

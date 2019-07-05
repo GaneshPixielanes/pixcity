@@ -1,6 +1,6 @@
 
 {% for data in tickit_data.getMessages %}
-    {% set files = 0 %}
+    {% set files = [] %}
     {% if data.attachment is not empty %}
         {% set files = data.attachment | split(',') %}
     {% endif %}
@@ -24,23 +24,24 @@
 
 
 
-            {% set difference = date(nowDate).diff(date(data.createdAt | date('Y-m-d h:i'))) %}
+            {% set difference = date(nowDate).diff(date(data.createdAt | date('Y-m-d'))) %}
+
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     {#                <img src="/images/USER-AVATAR.jpg" alt="" class="rounded-circle btn-circle-50 mr-2">#}
                     <div class="d-flex flex-column">
-                        <div class="sender-email"><span class="font-weight-bold">From:</span> <a
+                        <div class="sender-email"><span class="font-weight-bold">{{ ('b2b.label.from')| trans }}:</span> <a
                                     href="mailto:test@rest123.com" class="text-textgray">{{ from.email }}</a></div>
                         {#                    <div class="to-email"><span class="font-weight-bold">To:</span>me</div>#}
                     </div>
                 </div>
                 <div class="align-self-start">
                     {% if difference.d == 0  %}
-                        <div class="time-of-email">{{ data.createdAt | date('M d, Y  h:i  A') }}({{ difference.h~' hour : '~difference.h~' min' }} ago)</div>
+                        <div class="time-of-email">{{ data.createdAt | date('M d, Y  H:i  A') }}({{ difference.h~' heure : '~difference.h~' min' }} depuis)</div>
                     {% else %}
-                        <div class="time-of-email">{{ data.createdAt | date('M d, Y  h:i  A') }}({{ difference.d }} days ago)</div>
+                        <div class="time-of-email">{{ data.createdAt | date('M d, Y  H:i  A') }}( {{ ('b2b.label.to_days_start')| trans }} {{ difference.d }}  {{ ('b2b.label.to_days_end')| trans }})</div>
                     {% endif %}
-                    <small class="text-normalgray">({{ files | length }} files)</small>
+                    <small class="text-normalgray">({{ files | length }} {{ ('b2b.label.file')| trans }})</small>
                 </div>
             </div>
 
@@ -59,16 +60,19 @@
                 <ul class="attachments-list d-flex mx-n2">
                     {% if data.attachment is not empty %}
                         {% for file in files %}
+                            {% set ext = file |split('.')|last %}
+
                             <li class="attachment-item px-2 w-20">
                                 <div class="card">
-                                    <div class="card-body d-flex justify-content-center"><i class="fas fa-file-word fz-40"></i>
+                                    <div class="card-body d-flex justify-content-center">
+                                        {#                                        <i class="fas fa-file-word fz-40"></i>#}
                                     </div>
                                     <div class="card-footer d-flex justify-content-between">
                                         <a href="javascript:;"
                                            class="fz-12 text-decoration-none d-block mb-2 line-height-normal">
                                             <i class="fas fa-paperclip"></i>
-                                            Workflow description.docx
-                                            <small class="d-block text-textgray mt-1">1,243 KB</small>
+                                            {{ file | truncate(10) }}
+                                            {#                                            <small class="d-block text-textgray mt-1">1,243 KB</small>#}
                                         </a>
                                         <a href="/uploads/attachment/{{ data.getTicket().getId() }}/{{ file }}" class="btn btn-normalgray btn-sm align-self-end" download><i
                                                     class="fas fa-cloud-download-alt"></i></a>
@@ -102,8 +106,8 @@
 <div class="card reply-card d-none">
     <!-- Mail header -->
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="text-darkblue mb-0">Reply</h5>
-        <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="" data-original-title="Discard"><i class="fas fa-times mr-1"></i> Discard</button>
+        <h5 class="text-darkblue mb-0">{{ ('b2b.label.reply')| trans }}</h5>
+        <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="" data-original-title="Discard"><i class="fas fa-times mr-1"></i> {{ ('b2b.label.discard')| trans }}</button>
     </div>
     <!-- Mail header ends -->
     <!-- Mail body -->
@@ -123,10 +127,10 @@
                 <div class="custom-file">
                     <input type="file" multiple class="custom-file-input" id="inputGroupFile01"
                            aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label mb-0 fz-14" for="inputGroupFile01">Attachment</label>
+                    <label class="custom-file-label mb-0 fz-14" for="inputGroupFile01">{{ ('b2b.label.attachment')| trans }}</label>
                 </div>
             </div>
-            <small>Max. 32MB</small>
+            {#            <small>Max. 32MB</small>#}
             <!-- <p class="help-block">Max. 32MB</p> -->
         </div>
     </div>
@@ -134,9 +138,9 @@
     <!-- Mail footer -->
     <div class="card-footer">
         <div class="float-right">
-            <button type="submit" id="subit-comment" class="btn btn-pink send-message" data-toggle="tooltip" title="Send">Send <i class="fas fa-paper-plane ml-1"></i></button>
+            <button type="submit" id="subit-comment" class="btn btn-pink send-message" data-toggle="tooltip" title="Send">{{ ('b2b.label.send')| trans }} <i class="fas fa-paper-plane ml-1"></i></button>
         </div>
-        <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="Discard"><i class="fas fa-times mr-1"></i> Discard</button>
+        <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="Discard"><i class="fas fa-times mr-1"></i> {{ ('b2b.label.discard')| trans }}</button>
     </div>
     <!-- Mail footer ends -->
 </div>
