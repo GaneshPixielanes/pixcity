@@ -173,3 +173,58 @@
 </div>
 <!-- Saved changes toast ends -->
 <!-- Toasts ends -->
+
+<!-- Remove document confirmation modal -->
+<div class="modal fade alert-modal remove-document-confirmation-modal" id="removeDocumentConfirmation" tabindex="-1" role="dialog" aria-labelledby="removePackConfirmation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fz-16">Supprimer le Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Supprimer un document
+                </p>
+                <p>
+                    Êtes-vous sûr de vouloir supprimer ce document ?
+                    Si vous avez des questions sur le fonctionnement de Pix.City Services, n’hésitez pas à consulter nos <a href="#">pages de FAQ.</a>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
+                <button type="button" class="btn btn-pink" id="confirmDocumentDelete" data-id="">SUPPRIMER Document</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Remove documents confirmation modal ends -->
+
+<!-- Cancel Mission Success modal -->
+<div class="modal fade alert-modal cancel-mission-confirmation-modal" id="cancelMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="removePackConfirmation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fz-16">Annuler La Mission</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    A votre demande, avez accepté d’annuler la mission.<br/>
+                    Une notification a été envoyée au client pour qu’il accepte cette annulation<br/>
+                    Votre mission apparaîtra comme annulée dans votre dashboard et le client sera re-crédité de son pré-paiement.<br/>
+                    Si vous avez des questions, consultez notre <a href="#">FAQ</a>
+                </p>
+            </div>
+            <div class="modal-footer">
+{#                <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>#}
+                <button type="button" class="btn btn-pink" id="confirmMissionCancel" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cancel Mission Success modal ends -->
