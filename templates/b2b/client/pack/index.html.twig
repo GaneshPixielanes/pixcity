@@ -119,10 +119,10 @@
                         </div>
                         <div class="col-md-6 p-0">
                             <div class="p-5 subscription-info sticky-top">
-                                <h5 class="font-weight-bold">Contactez moi {{ pack.user.firstname }}</h5>
+                                <h5 class="font-weight-bold" id="send-text">Contactez-moi {{ pack.user.firstname }}</h5>
                                 <div class="alert bg-error text-white mb-3 d-flex align-items-center fz-12">
-                                    <i class="far fa-exclamation-circle fz-20 mr-3"></i> Échangez avec xxx en remplissant les champs ci-dessous. Il vous répondra via votre espace client dès qu’il le pourra ou choisira de clore la discussion.Vous devrez alors contacter un autre city-maker”
-                                    Replace déposez vos images by “Joindre un document”
+                                    <i class="far fa-exclamation-circle fz-20 mr-3"></i>  “Échangez avec CMUSERNAME en remplissant les champs ci-dessous. Il vous répondra via votre espace client dès qu’il le pourra ou choisira de clore la discussion. Vous devrez alors contacter un autre city-maker”
+                                    Joindre un document
                                 </div>
                                 <h6 class="edit fz-16">Décrivez votre projet à {{ pack.user.firstname }}</h6>
                                 {{ form_start(form,{'attr':{'id':'proposal-form'}}) }}
@@ -285,6 +285,7 @@
         $(this).siblings('.back-to-profile').add($(this).parents('.subscription-info').find('.preview')).removeClass('d-none').fadeIn();
         $("#drp-class").addClass('d-none');
         $("#char-count-p").addClass('d-none');
+        $("#send-text").text('envoyé '+"{{ pack.user.firstname }}");
         return false;
 
     });

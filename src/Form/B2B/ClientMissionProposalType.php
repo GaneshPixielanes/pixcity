@@ -18,7 +18,7 @@ class ClientMissionProposalType extends AbstractType
     {
         $builder
             ->add('description',TextareaType::class,['label' => false,
-                'attr' => ['placeholder' => 'Write your proposal here', 'rows' => '15', 'maxlength' => 1200]
+                'attr' => ['placeholder' => 'Ecrivez votre message ici', 'rows' => '15', 'maxlength' => 1200]
             ])
             ->add('medias', CollectionType::class,[
                 'required' => true,

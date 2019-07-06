@@ -43,7 +43,7 @@ class NotificationController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $notification = $notificationsRepository->find($request->get('id'));
-        $notification->setUnread(0);
+        $notification->setUnread(1);
 
         $em->persist($notification);
         $em->flush();
