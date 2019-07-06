@@ -1000,6 +1000,7 @@
                     }else if(amount == 0){
 
                         if(type == 'terminate'){
+                            console.log(amount);
                             $("#break-up-text").text('Please terminate the mission');
                             $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
                             $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
