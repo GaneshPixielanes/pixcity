@@ -353,7 +353,7 @@ class MissionController extends AbstractController
                 {
                     $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
                     /* Notification sent to client */
-                    $message = 'CM Username  a validé la fin de la mission. Vous devez terminer la mission pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). ';
+                    $message = 'CM '.$mission->getUser().'  a validé la fin de la mission. Vous devez terminer la mission pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). ';
                     $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $message, $mission->getId());
 
                     /* Notification sent to CM */
