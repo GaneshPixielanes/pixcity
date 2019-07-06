@@ -63,13 +63,13 @@
 
                         {% if notification.type == 'create_mission' %}
                             <div class="col-md-3 d-flex justify-content-end">
-                                <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">PAYER EN LIGNE</a>
+                                <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR DEVIS</a>
                             </div>
                         {% endif %}
 
                         {% if notification.type == 'edit_mission' %}
                             <div class="col-md-3 d-flex justify-content-end">
-                                <a href="javascript:;" class="btn btn-darkblue fz-10 accept-mission" data-dismiss="alert" aria-label="Close" data-id="{{ notification.id }}" data-notifyby="{{ notification.notifyby }}">Confirmer la mission</a>
+                                <a href="javascript:;" class="btn btn-darkblue fz-10 accept-mission" data-dismiss="alert" aria-label="Close" data-id="{{ notification.id }}" data-notifyby="{{ notification.notifyby }}">VOIR MISSION</a>
                             </div>
                         {% endif %}
 

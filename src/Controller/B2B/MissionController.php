@@ -172,7 +172,7 @@ class MissionController extends AbstractController
             }
 
             /* Notification to CM */
-            $message = "Le ".$mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getId()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission ";
+            $message = $mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getId()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission ";
             $notificationsRepository->insert($mission->getUser(),null,'create_mission_cm', $message, $mission->getId());
 
             /* Notification to Client */
@@ -353,11 +353,11 @@ class MissionController extends AbstractController
                 {
                     $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
                     /* Notification sent to client */
-                    $message = 'Vous avez validé la fin de la mission. La validation est en cours côté client pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s\'est bien passée ! ';
+                    $message = 'CM '.$mission->getUser().'  a validé la fin de la mission. Vous devez terminer la mission pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). ';
                     $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $message, $mission->getId());
 
                     /* Notification sent to CM */
-                    $message = 'CM Username  a validé la fin de la mission. Vous devez terminer la mission pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). ';
+                    $message = 'Vous avez validé la fin de la mission. La validation est en cours côté client pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s\'est bien passée ! ';
                     $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_cm', $message, $mission->getId());
 
                     break;
