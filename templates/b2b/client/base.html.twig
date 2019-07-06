@@ -1006,8 +1006,8 @@
                             $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
                             $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
                             $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
-                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
-                            $('#mission-terminate-cancel').attr('data-type','terminate');
+                            $("#mission-terminate").attr("href","/client/api/mission/status/"+id+'/'+type);
+                            $('#mission-terminate').attr('data-type','terminate');
                             $(".teminate-class").removeAttr('id','none');
 
                         }else if (type == 'cancel'){
