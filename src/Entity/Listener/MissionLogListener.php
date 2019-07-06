@@ -57,7 +57,7 @@ class MissionLogListener{
         {
             /* Mail sent to CM */
             $this->mailer->send($missionLog->getMission()->getUser()->getEmail(),
-                'MISSION MODIFIEE',
+                'EDITION DE MISSION VALIDEE',
                 'emails/b2b/mission-edit-accept-cm.html.twig',
                 [
                     'mission' => $missionLog->getMission()

@@ -295,8 +295,11 @@ class MissionController extends Controller
                 $em->persist($royalties);
                 $em->flush();
 
-                $message = 'Le client a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
+                $message = $mission_id->getClient().' a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid',$message,1);
+
+                $message = 'Notre partenaire a bien reçu votre pré-paiement. Le city-maker va être averti du cantonnement de cette somme et il va pouvoir démarrer la mission. ';
+                $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,1);
 
             }
 
