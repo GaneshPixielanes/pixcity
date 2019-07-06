@@ -34,13 +34,11 @@ class MissionListener{
         {
             if($mission->getStatus() == MissionStatus::ONGOING)
             {
-                $message = "Le client a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer.";
 
                 $this->mailer->send($mission->getUser()->getEmail(),
                     'PRE-PAIEMENT RECU ET DEVIS ACCEPTE',
                     'emails/b2b/mission-create-accept.html.twig',
                     [
-                        'message' => $message,
                         'mission' => $mission
                     ]);
             }
