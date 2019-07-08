@@ -2,6 +2,7 @@
     {#{{ form_widget(form) }}#}
     {{ form_row(form.firstName) }}
     {{ form_row(form.lastName) }}
+    {{ form_row(form.company) }}
     {#{{ form_row(form.profilePhoto) }}#}
 <br/>
 <ul class="repeater-container user-profilePhoto">
@@ -25,6 +26,8 @@
 <br/>
     {{ form_row(form.email) }}
     {{ form_row(form.plainPassword) }}
-    {{ form_row(form.roles) }}
+    {{ form_row(form.clientInfo) }}
+    {#{{ form_row(form.roles) }}#}
+
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
