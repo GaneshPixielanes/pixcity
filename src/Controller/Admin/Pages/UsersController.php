@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\Pages;
 
+use App\Constant\ViewMode;
 use App\Entity\Card;
 use App\Entity\User;
 use App\Entity\UserMedia;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -175,7 +177,7 @@ class UsersController extends Controller
      * @Route("/{id}/edit", requirements={"id": "\d+"}, name="edit")
      * @Method({"GET", "POST"})
      */
-    public function edit(Request $request, User $editedUser, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader)
+    public function edit(Request $request, User $editedUser, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader,AuthorizationCheckerInterface $authChecker)
     {
 
         //-------------------------------------------------------
@@ -191,8 +193,17 @@ class UsersController extends Controller
             }
         }
 
+        $user = $this->getUser();
+        $roleSet = 'b2c';
+        if($user->getViewMode() == ViewMode::B2B) {
+            if ($authChecker->isGranted('ROLE_B2C')) {
+                $roleSet = 'b2b';
+            }
+        }else{
+            $roleSet = 'b2c';
+        }
 
-        $form = $this->createForm(UserType::class, $editedUser, ["type"=>"editFromAdmin"]);
+        $form = $this->createForm(UserType::class, $editedUser, ["type"=>"editFromAdmin","roleSet"=>$roleSet]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 

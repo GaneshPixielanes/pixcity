@@ -4,6 +4,7 @@ namespace App\Form\Admin;
 
 use App\Entity\CardCategory;
 use App\Entity\Region;
+use App\Entity\Skill;
 use App\Entity\User;
 use App\Form\Shared\UserLinkType;
 use App\Form\Shared\UserMediaType;
@@ -99,8 +100,16 @@ class UserType extends AbstractType
                 'attr' => [
                     'rowClass' => 'multiple-checkboxes'
                 ]
-            ))
-        ;
+            ));
+        if((!isset($options["type"]) || "editFromAdmin" === $options["type"]) && (!isset($options["roleSet"]) || "b2b" === $options["roleSet"])) {
+            $builder
+                ->add('b2bCmApproval', ChoiceType::class, [
+                    'choices' => [
+                        'Yes' => 1,
+                        'No' => 0
+                    ],
+                ]);
+        }
 
     }
 
@@ -112,7 +121,8 @@ class UserType extends AbstractType
                 User::class,
                 'determineValidationGroups',
             ),
-            'type' => ''
+            'type' => '',
+            'roleSet' => 'b2c',
         ));
 
 

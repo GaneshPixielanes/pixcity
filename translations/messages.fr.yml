@@ -69,6 +69,8 @@ label:
     card_id: CARD ID
     card_title: CARD TITLE
     card_url: CARD URL
+    pixie_cmapproval: Approve
+    user_cmapproval: Grant Permission
     network:
         facebook: Facebook
         twitter: Twitter
