@@ -23,7 +23,7 @@
                             <th>nom </th>
                             <th>Email</th>
                             <th>Société</th>
-                            <th>SIRET</th>
+                            <th>Nb of mission</th>
                             <th>Date of Reg </th>
                             <th>Action</th>
                         </tr>
@@ -31,22 +31,24 @@
                     <tbody>
                     {% for client in clients %}
                         <tr>
-                            <td>{{ client.id }}</td>
-                            <td>{{ client.firstName }}</td>
-                            <td>{{ client.lastName }}</td>
-                            <td>{{ client.email }}</td>
-                            <td>{{ client.company }}</td>
-                            <td>{{ client.clientInfo ? client.clientInfo.siret: 'N/A' }}</td>
-                            <td>{{ client.createdAt ? client.createdAt|date('d-M-Y'):'N/A' }}</td>
+                            <td>{{ client[0].id }}</td>
+                            <td>{{ client[0].firstName }}</td>
+                            <td>{{ client[0].lastName }}</td>
+                            <td>{{ client[0].email }}</td>
+                            <td>{{ client[0].company }}</td>
+                            <td>
+                                <a href="{{path('admin_user_mission_view', {'id': client[0].id , 'usrtype':'client'})  }}" title="view client" >{{ client.missionCount }}</a>
+                            </td>
+                            <td>{{ client[0].createdAt ? client[0].createdAt|date('d-M-Y'):'N/A' }}</td>
                             <td class="text-right">
                                 <div class="item-actions">
-                                    <a href="{{ path('admin_client_show', {'id': client.id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
-                                    | <a href="{{ path('admin_client_edit', {'id': client.id}) }}" title="{{ 'action.edit'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">edit</i></a>
+                                    <a href="{{ path('admin_client_show', {'id': client[0].id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
+                                    | <a href="{{ path('admin_client_edit', {'id': client[0].id}) }}" title="{{ 'action.edit'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">edit</i></a>
 
 
-                                    <form method="post" class="delete-form" action="{{ path('admin_client_delete', {'id': client.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <form method="post" class="delete-form" action="{{ path('admin_client_delete', {'id': client[0].id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client[0].id) }}">
                                         <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
                                     </form>
                                 </div>
