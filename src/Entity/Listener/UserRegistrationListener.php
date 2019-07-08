@@ -19,7 +19,7 @@ class UserRegistrationListener
     {
         $this->mailer = $mailer;
     }
-    public function  preFlush(User $user, PreFlushEventArgs $event, NotificationsRepository $notificationsRepo)
+    public function  preFlush(User $user, PreFlushEventArgs $event)
     {
         $em = $event->getEntityManager();
         $uow = $em->getUnitOfWork();
