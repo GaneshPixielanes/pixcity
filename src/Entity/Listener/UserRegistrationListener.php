@@ -4,75 +4,55 @@ namespace App\Entity\Listener;
 
 use App\Entity\User;
 use App\Entity\UserInstagramDetailsApi;
+use App\Repository\NotificationsRepository;
+use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PreFlushEventArgs;
 
 class UserRegistrationListener
 {
-    private $entityManager;
+    private $mailer;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Mailer $mailer)
     {
-        $this->entityManager = $entityManager;
+        $this->mailer = $mailer;
     }
-
-    public function postFlush(User $user, LifecycleEventArgs $event)
+    public function  preFlush(User $user, PreFlushEventArgs $event)
     {
         $em = $event->getEntityManager();
-
         $uow = $em->getUnitOfWork();
 
-        $newUser = $uow->getOriginalEntityData($user);
+        $userBeforeUpdate = $uow->getOriginalEntityData($user);
 
-        $user = $this->tokenStorage->getToken()->getUser();
-        $user->setIgFlag(3);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-
-        if(!is_null($newUser->getInstaram()) && isset(explode('/', $newUser->getInstaram())[3]))
+        if(!empty($user) && !empty($userBeforeUpdate) && $user->getB2bCmApproval() != $userBeforeUpdate['b2b_cm_approval'])
         {
-            $instagram = explode('/', $newUser->getInstaram())[3];
-            $details = $this->_extractInstagramUserDetails($this->_getInstagramInfo($instagram));
+            // User has been approved by Admin to become B2B
+            if($user['b2b_cm_approval'] == 1)
+            {
+//                $message = '';
+//                $notificationsRepo->insert($user,null,'b2b_cm_approved',$message,$user->getId());
+                $this->mailer->send($user->getEmail(),
+                    'Votre inscription est validée!',
+                    'emails/b2b/b2b-cm-approved.html.twig',
+                    [
+                        'user'=> $user
+                    ]);
 
-            #Store IG details
-            $instagramDetails = new UserInstagramDetailsApi();
+            }
 
-            #Update the instagram information to be shown to the users
-//            $instagramDetails->setNoOfFollowed($details['following']);
-//            $instagramDetails->setNoOfFollowers($details['followers']);
-//            $instagramDetails->setNoOfPosts((int)$details['posts']);
-//            $instagramDetails->setName($details['user']);
-//            $instagramDetails->setUser($newUser);
-//            $instagramDetails->setResponse(json_encode($details));
-//            $instagramDetails->setCreatedAt(new \DateTime());
-
+            // User has been denied by Admin to become B2B
+            if($user['b2b_cm_approval'] == 0)
+            {
+                $this->mailer->send($user->getEmail(),
+                    'Votre inscription est validée!',
+                    'emails/b2b/b2b-cm-declined.html.twig',
+                    [
+                        'user'=> $user
+                    ]);
+            }
         }
     }
 
-    private function _getInstagramInfo($instagram)
-    {
-
-        $ch = curl_init();
-        $data = ['social_media' => ['users' => '#'.$instagram]];
-        $url = "http://172.104.240.209:4000/apis/social_medias/instagram_user_from_id";
-        curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:') );
-        curl_setopt($ch,CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return $response;
-    }
-
-    private function _extractInstagramUserDetails($details)
-    {
-        $details = stripslashes($details);
-        $details = str_replace('{data: ["','',$details);
-        $details = str_replace('"]}','',$details);
-        $details = json_decode($details,true);
-
-        return $details;
-    }
 }

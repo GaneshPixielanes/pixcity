@@ -324,11 +324,11 @@ b2b:
         client_declined: Client Declined
         create_mission: DEVIS ET PRE-PAIEMENT
         create_mission_cm: PRE-PAIEMENT
-        edit_mission: MISSION MODIFIEE
-        edit_mission_cm: VALIDATION D'UNE MISSION MODIFIEE
+        edit_mission: VALIDATION D'UNE MISSION MODIFIEE
+        edit_mission_cm: MISSION MODIFIEE
         terminate_mission_cm: MISSION TERMINEE
-        cancel_mission: DEMANDE D'ANNULATION MISSION
-        cancel_mission_cm: VALIDATION ANNULATION MISSION
+        cancel_mission: VALIDATION ANNULATION MISSION
+        cancel_mission_cm: DEMANDE D'ANNULATION MISSION
         terminate_mission: MISSION TERMINEE
         mission_accepted_edit: EDITION DE MISSION VALIDEE
         mission_accepted_edit_client: MISSION MODIFIEE

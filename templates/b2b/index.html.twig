@@ -47,6 +47,7 @@
                 <small>Dernière connexion lun 11 mars</small>
             </div>
             <div class="col-md-12 alert-notifications">
+
                 {% for notification in notifications %}
                     <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2"
                          role="alert" >
@@ -62,7 +63,12 @@
                             {% if notification.type == 'terminated' %}
                             <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>
                             {% endif %}
+                            {% if notification.type == 'mission_client_paid' or notification.type == 'edit_mission_cm' or notification.type == 'mission_accepted_edit' or notification.type == 'cancel_mission_cm'%}
+                                <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-darkblue fz-10" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR MISSION</a>
+                            {% endif %}
                         </div>
+
+
                         <button type="button" class="close align-self-start mark-notification-read" data-dismiss="alert" aria-label="Close"  data-id="{{ notification.id }}"s>
                             <span aria-hidden="true">&times;</span>
                         </button>
