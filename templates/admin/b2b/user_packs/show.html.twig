@@ -94,6 +94,14 @@
                             <th>Compétence du pack</th>
                         </tr>
                         <tr>
+                            <th>Region pack</th>
+                            <td>
+                                {% for pack in user_pack.user.userRegion %}
+                                    {{ pack.name~', ' }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
                             <th>Nom</th>
                             <td>{{ user_pack.packSkill.name ? user_pack.packSkill.name : 'N/A' }}</td>
                         </tr>
