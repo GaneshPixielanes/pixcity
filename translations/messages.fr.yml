@@ -5,6 +5,7 @@ ROLE_PIXIE: City-maker
 ROLE_USER: Utilisateur
 
 label:
+    messageList: Message list
     cmlist: CM list
     cm: CM
     clientsList: Clients List
