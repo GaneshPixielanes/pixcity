@@ -63,13 +63,12 @@
                             {% if notification.type == 'terminated' %}
                             <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>
                             {% endif %}
+                            {% if notification.type == 'mission_client_paid' %}
+                                <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-darkblue fz-10" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR MISSION</a>
+                            {% endif %}
                         </div>
 
-                        {% if notification.type == 'mission_client_paid' %}
-                            <div class="col-md-3 d-flex justify-content-end">
-                                <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-darkblue fz-10" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR MISSION</a>
-                            </div>
-                        {% endif %}
+
                         <button type="button" class="close align-self-start mark-notification-read" data-dismiss="alert" aria-label="Close"  data-id="{{ notification.id }}"s>
                             <span aria-hidden="true">&times;</span>
                         </button>
