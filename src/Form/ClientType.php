@@ -34,15 +34,15 @@ class ClientType extends AbstractType
             ->add('firstName', TextType::class, array('label' => 'label.firstname'))
             ->add('lastName', TextType::class, array('label' => 'label.lastname'))
             ->add('company')
-            ->add('roles', ChoiceType::class,array(
-                'label' => 'label.role',
-                'multiple' => true,
-                'expanded' => true, // render check-boxes
-                'choices'  => array(
-                    'label.user' => 'ROLE_USER',
-                    'label.moderator' => 'ROLE_MODERATOR'
-                ),
-            ))
+//            ->add('roles', ChoiceType::class,array(
+//                'label' => 'label.role',
+//                'multiple' => true,
+//                'expanded' => true, // render check-boxes
+//                'choices'  => array(
+//                    'label.user' => 'ROLE_USER',
+//                    'label.moderator' => 'ROLE_MODERATOR'
+//                ),
+//            ))
             //->add('createdAt')
             //->add('updatedAt')
             ->add('profilePhoto',HiddenType::class,array('data_class'=> null, 'label' => 'Profile Photo'))
