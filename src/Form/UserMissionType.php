@@ -43,8 +43,8 @@ class UserMissionType extends AbstractType
                     'No' => 0,
                 ],
             ])
-            ->add('cancelReason')
-            ->add('cancelledBy')
+            ->add('cancelReason',TextType::class,array('label'=>'Raison annulation'))
+            ->add('cancelledBy',TextType::class,array('label'=>'Annulé par'))
             ->add('user',EntityType::class, array(
                 'class' => User::class,
                 'choice_label' => 'firstname',
