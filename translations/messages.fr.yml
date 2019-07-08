@@ -325,8 +325,8 @@ b2b:
         edit_mission: VALIDATION D'UNE MISSION MODIFIEE
         edit_mission_cm: MISSION MODIFIEE
         terminate_mission_cm: MISSION TERMINEE
-        cancel_mission: DEMANDE D'ANNULATION MISSION
-        cancel_mission_cm: VALIDATION ANNULATION MISSION
+        cancel_mission: VALIDATION ANNULATION MISSION
+        cancel_mission_cm: DEMANDE D'ANNULATION MISSION
         terminate_mission: MISSION TERMINEE
         mission_accepted_edit: EDITION DE MISSION VALIDEE
         mission_accepted_edit_client: MISSION MODIFIEE
