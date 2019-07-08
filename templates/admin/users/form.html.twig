@@ -27,6 +27,13 @@
                     <i class="material-icons">credit_card</i> {{ 'label.pixie_remuneration'|trans }}
                 </a>
             </li>
+            {% if form.b2bCmApproval is defined %}
+                <li class="tab-cmapproval only-pixie">
+                    <a href="#user_cmapproval" data-toggle="tab">
+                        <i class="material-icons">settings</i> {{ 'label.pixie_cmapproval'|trans }}
+                    </a>
+                </li>
+            {% endif %}
         </ul>
 
         <div class="tab-content">
@@ -173,10 +180,23 @@
                     </div>
                 </div>
 
+
             </div>
+            {% if form.b2bCmApproval is defined %}
+            <div role="tabpanel" class="tab-pane fade" id="user_cmapproval">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>{{ 'label.user_cmapproval'|trans }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>&nbsp;</h3>
+                        {{ form_row(form.b2bCmApproval) }}
+
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
-
-
         <div class="flex-row-space-between">
             <a href="{{ path('admin_users_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
             <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>

@@ -218,7 +218,7 @@ class MissionController extends Controller
         $entityManager->persist($transaction[0]);
         $entityManager->flush();
 
-        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
+//        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
         $filesystem->mkdir('invoices/'.$mission->getId(),0777);
 

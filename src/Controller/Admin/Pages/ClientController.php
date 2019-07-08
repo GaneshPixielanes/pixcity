@@ -34,8 +34,13 @@ class ClientController extends AbstractController
         $user = $this->getUser();
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
+                $em= $this->getDoctrine()->getManager();
+                $query = $em->createQuery('SELECT pbc, COUNT(pbum.client) as missionCount FROM App:Client pbc LEFT JOIN App:UserMission pbum WITH pbum.client = pbc.id WHERE pbc.deleted IS Null GROUP BY pbc.id');
+                $result =  $query->getResult();
+
                 return $this->render('admin/b2b/client/index.html.twig', [
-                    'clients' => $clientRepository->findBy(['deleted'=>null]),
+//                    'clients' => $clientRepository->findBy(['deleted'=>null]),
+                   'clients' => $result,
                 ]);
             }
         }
