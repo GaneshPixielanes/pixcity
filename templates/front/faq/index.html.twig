@@ -1,0 +1,474 @@
+{% extends 'b2b/base.html.twig' %}
+
+{% block body_class %}{{ parent() }} home bgPictos{% endblock %}
+ {% block stylesheets %}
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
+ {% endblock %}
+{% block body %}
+    {% embed '/v2/_shared/header.html.twig' %}{% endembed%}
+
+    <div class="home">
+
+        <div class="faq-page" id="top">
+            <div class="search-faq-wrap shadow">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-7 mx-auto search-faq py-4">
+                            <label class="fz-28 font-weight-bold text-darkblue">Search</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control faq" placeholder="Search with topic or keywords" aria-label="Search with topic or keywords">
+                                <div class="input-group-append">
+                                    <button class="btn btn-pink btn-no-hover" type="button" id="btnFaqSearch">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-page-wrap">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 my-5">
+                            <div class="row">
+                                <div class="col-3 column-left">
+                                    <ul class="categories sticky-top mt-5">
+                                        <li><a href="#top" class="btn btn-block btn-link btn-green mb-3 text-left"><i class="fas fa-store mr-2"></i> Je suis client <span class="badge badge-light">9</span></a></li>
+                                        <li><a href="#cmFAQ" class="btn btn-block btn-link btn-green mb-3 text-left"><i class="fas fa-user-tie mr-2"></i> Je suis city-maker <span class="badge badge-light">9</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-9 column-right">
+                                    <div class="row">
+                                        <div class="col-md-12 categorie-faqs-container">
+                                            <div class="row">
+                                                <div class="col-md-12 categorie-title">
+                                                    <h2 class="fz-28 font-weight-regular text-darkblue mb-2" id="clientFAQ">Clients' frequently asked questions</h2>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 pl-5 categorie-faqs">
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3 faq-container">
+                                                            <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>Tech</h5>
+                                                            <div class="faq-list" id="accordion" >
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingOne">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechOne" aria-expanded="false" aria-controls="collapseOne">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #1
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseTechOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                                                                            <img src="../images/asset-3.png"> <img src="../images/asset-4.png">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingTwo">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #2
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseTechTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingThree">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #3
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseTechThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3 faq-container">
+                                                            <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="far fa-users mr-2"></i> HR</h5>
+                                                            <div class="faq-list" id="accordion" >
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingOne">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHrOne" aria-expanded="false" aria-controls="collapseOne">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #1
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseHrOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                                                                            <img src="../images/asset-3.png"> <img src="../images/asset-4.png">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingTwo">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHrTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #2
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseHrTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingThree">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHrThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #3
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseHrThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3 faq-container">
+                                                            <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="far fa-universal-access mr-2"></i> Sales</h5>
+                                                            <div class="faq-list" id="accordion" >
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingOne">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSalesOne" aria-expanded="false" aria-controls="collapseOne">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #1
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseSalesOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                                                                            <img src="../images/asset-3.png"> <img src="../images/asset-4.png">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingTwo">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSalesTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #2
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseSalesTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingThree">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSalesThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #3
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseSalesThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 categorie-faqs-container">
+                                            <div class="row">
+                                                <div class="col-md-12 categorie-title">
+                                                    <h2 class="fz-28 font-weight-regular text-darkblue mb-2" id="cmFAQ">City-makers' frequently asked questions</h2>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 pl-5 categorie-faqs">
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3 faq-container">
+                                                            <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>Tech</h5>
+                                                            <div class="faq-list" id="accordion" >
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingOne">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechFour" aria-expanded="false" aria-controls="collapseFour">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #1
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseTechFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                                                                            <img src="../images/asset-3.png"> <img src="../images/asset-4.png">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingTwo">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechFive" aria-expanded="false" aria-controls="collapseFive">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #2
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseTechFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingThree">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechSix" aria-expanded="false" aria-controls="collapseSix">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #3
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseTechSix" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3 faq-container">
+                                                            <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="far fa-users mr-2"></i> HR</h5>
+                                                            <div class="faq-list" id="accordion" >
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingOne">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHrFour" aria-expanded="false" aria-controls="collapseFour">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #1
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseHrFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                                                                            <img src="../images/asset-3.png"> <img src="../images/asset-4.png">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingTwo">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHrFive" aria-expanded="false" aria-controls="collapseFive">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #2
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseHrFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingThree">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHrSix" aria-expanded="false" aria-controls="collapseSix">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #3
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseHrSix" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3 faq-container">
+                                                            <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="far fa-universal-access mr-2"></i> Sales</h5>
+                                                            <div class="faq-list" id="accordion" >
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingOne">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSalesFour" aria-expanded="false" aria-controls="collapseFour">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #1
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseSalesFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                                                                            <img src="../images/asset-3.png"> <img src="../images/asset-4.png">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingTwo">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSalesFive" aria-expanded="false" aria-controls="collapseFive">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #2
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseSalesFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card mb-3 shadow-sm ">
+                                                                    <div class="card-header" id="headingThree">
+                                                                        <h5 class="mb-0">
+                                                                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSalesSix" aria-expanded="false" aria-controls="collapseSix">
+                                                                                <i class="fas fa-chevron-right"></i> Frequently Asked Questions #3
+                                                                            </button>
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div id="collapseSalesSix" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    {% embed '/v2/_shared/footer.html.twig' %}{% endembed%}
+{% endblock %}
+{% block javascripts %}
+
+    {{ parent() }}
+    <script type="text/javascript" href="{{ absolute_url('/assets/js/faqs/custom.js') }}"></script>
+    <script type="text/javascript" href="{{ absolute_url('/assets/js/faqs/js-bundle.js') }}"></script>
+    <script>
+        /* custom per page scripts */
+        /* Search faq */
+        $(function () {
+            function FullTextContains(innerText, searchTerm) {
+                for (x = 0; x < searchTerm.length; x++) {
+                    if (innerText.toLowerCase().indexOf(searchTerm[x].toLowerCase()) >= 0) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            $('.faq').on('keyup input', function (e) {
+                var text = $.trim($(this).val());
+                if (e.keyCode == 13) {
+                    SearchFAQ(text);
+                } else if (text == '') {
+                    SearchFAQ('');
+                }
+            });
+            $('#btnFaqSearch').on('click', function (e) {
+                var text = $.trim($('.faq').val());
+                SearchFAQ(text);
+            });
+            function SearchFAQ(searchTermText) {
+                var searchTerm = searchTermText.split(' ');
+                if (searchTermText != '') {
+                    $(".faq-list .card").filter(function (index) {
+                        var panelText = $.trim($(this).text());
+                        if (FullTextContains(panelText, searchTerm) == true) {
+                            //console.log("found it");
+                            return true;
+                        } else {
+                            //console.log("not found");
+                            $(this).slideUp();
+                            return false;
+                        }
+                    }).slideDown();
+                } else {
+                    $(".faq-list .card").slideDown();
+                }
+            }
+            /* Smooth Scrolling */
+            // Select all links with hashes
+            $('a[href*="#"]')
+            // Remove links that don't actually link to anything
+                .not('[href="#"]')
+                .not('[href="#0"]')
+                .click(function(event) {
+                    // On-page links
+                    if (
+                        location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+                        &&
+                        location.hostname == this.hostname
+                    ) {
+                        // Figure out element to scroll to
+                        var target = $(this.hash);
+                        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                        // Does a scroll target exist?
+                        if (target.length) {
+                            // Only prevent default if animation is actually gonna happen
+                            event.preventDefault();
+                            $('html, body').animate({
+                                scrollTop: target.offset().top + (-100)
+                            }, 1000, function() {
+                                // Callback after animation
+                                // Must change focus!
+                                var $target = $(target);
+                                $target.focus();
+                                if ($target.is(":focus")) { // Checking if the target was focused
+                                    return false;
+                                } else {
+                                    $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+                                    $target.focus(); // Set focus again
+                                };
+                            });
+                        }
+                    }
+                });
+        });
+    </script>
+{% endblock %}
