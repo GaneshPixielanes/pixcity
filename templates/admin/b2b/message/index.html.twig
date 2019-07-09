@@ -35,9 +35,9 @@
                             <td>
                                 {{ message_list.client ? message_list.client.firstName ~' '~message_list.client.lastName : 'N/A' }}
                             </td>
-                            <td>
+                            <>
                                 {% for media in message_list.medias %}
-                                   <a href="{{ url('admin_message_proposal_document_download',{'id':media.id}) }}" class="btn btn-sm btn-info">{{ media.name }}</a>
+                                <a href="{{ url('admin_message_proposal_document_download',{'id':media.id}) }}" class="btn btn-sm btn-info">{{ media.name }}</a><br/>
                                 {% endfor %}
                             </td>
                             <td>{{ message_list.createdAt ? message_list.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
