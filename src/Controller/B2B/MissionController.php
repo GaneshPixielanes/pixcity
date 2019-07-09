@@ -217,6 +217,7 @@ class MissionController extends AbstractController
         $form = $this->createForm(MissionLogType::class, $missionLog);
 
         $form->handleRequest($request);
+
         if($form->isSubmitted())
         {
 
