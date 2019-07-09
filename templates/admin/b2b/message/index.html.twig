@@ -19,27 +19,55 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Display message</th>
                             <th>CM</th>
+                            <th>Client name</th>
                             <th>Attachment</th>
                             <th>Date of sending</th>
+                            <th>View</th>
                         </tr>
                     </thead>
                     {% for message_list in message_lists %}
                         <tr>
                             <td>{{ message_list.id }}</td>
-                            <td>{{ message_list.description }}</td>
                             <td>
                                 {{ message_list.user ? message_list.user.firstname ~' '~message_list.user.lastname : 'N/A' }}
                             </td>
                             <td>
+                                {{ message_list.client ? message_list.client.firstName ~' '~message_list.client.lastName : 'N/A' }}
+                            </td>
+                            <td>
                                 {% for media in message_list.medias %}
-                                    {{ media.name }}
+                                    <a href="{{ absolute_url('/uploads/proposals/'~media.name) }}" title="{{ media.name }}" target="_blank"> {{ media.name }}</a>
                                 {% endfor %}
                             </td>
                             <td>{{ message_list.createdAt ? message_list.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                            <td>
+                                <button type="button" class="btn bg-green btn-md" data-toggle="modal" data-target="#myModal{{ message_list.id }}">View More..</button>
+                            </td>
 
                         </tr>
+
+                        <!-- Modal Start-->
+                        <div class="modal fade" id="myModal{{ message_list.id }}" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">View In Details</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                    <label>Description</label> : <p>{{ message_list.description }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Modal End-->
                     {% else %}
                         <tr>
                             <td colspan="5">no records found</td>
