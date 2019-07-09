@@ -70,8 +70,9 @@ label:
     card_id: CARD ID
     card_title: CARD TITLE
     card_url: CARD URL
-    pixie_cmapproval: Approve
+    pixie_cmapproval: Settings
     user_cmapproval: Grant Permission
+    skills: Skill
     network:
         facebook: Facebook
         twitter: Twitter

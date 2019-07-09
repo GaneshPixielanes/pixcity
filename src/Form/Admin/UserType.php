@@ -108,7 +108,15 @@ class UserType extends AbstractType
                         'Yes' => 1,
                         'No' => 0
                     ],
-                ]);
+                ])
+                ->add('userSkill', EntityType::class, array(
+                    'label' => 'label.skills',
+                    'class' => Skill::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'expanded' => true
+                ))
+            ;
         }
 
     }
