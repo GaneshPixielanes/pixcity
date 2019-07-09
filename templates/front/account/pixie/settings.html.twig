@@ -78,7 +78,8 @@
     }
 
     /* Upload images container with Dropzone */
-    /* .upload-images-container .upload-area .area-label, [class*=upload-] .upload-area .area-label {
+    /*
+    .upload-images-container .upload-area .area-label, [class*=upload-] .upload-area .area-label {
       border: 2px dashed #b4aeb0;
       border-radius: 10px;
     }
@@ -192,6 +193,7 @@
       width: 20px;
       height: 20px;
     }
+
     */
 
     /* Choose map division */
@@ -298,6 +300,21 @@
     .btn-pill {
         border-radius: 25px !important;
     }
+
+    .dropzone-custom{
+        background: white;
+        border-radius: 5px;
+        border: 2px dashed #aaa;
+        border-image: none;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        cursor: pointer;
+        height:200px;
+    }
+
+
+
 
 </style>
 
@@ -699,20 +716,22 @@
                                 </div>
                             </div>
                     <br>
-                    <div class="row upload-images-container">
-                        <div class="col-md-12 maj">Images</div>
-                        <div class="form-group dropzone clearfix mt-3 dz-clickable dz-started" style="">
-{#                            <div id="dropzone-custom" style="height:300px;width:auto">#}
-                                <div class="dz-default dz-message"><div class="upload-area mb-4 dz-clickable">
-                                        <div class="area-label text-center p-4">
-                                            <i class="fas fa-cloud-upload-alt"></i>
-                                            <p class="mb-0">Déposez vos images ici</p>
-                                            <a href="javascript:;">Depuis votre navigateur</a>
-                                        </div>
-                                    </div>
-{#                                </div>#}
-                            </div>
+                            <div class="row maj">Images</div>
+
+                    <div class="row">
+
+{#                        <div class="upload-images-container">#}
+
+{#                        </div>#}
+
+
+                        <div class="dropzone-custom text-center">
+                            <i class="fas fa-cloud-upload-alt"></i>
+
+                            <p class="mb-0">Déposez vos images ici</p>
+                            <a href="javascript:;">Depuis votre navigateur</a>
                         </div>
+
                     </div>
 
                 </div>
@@ -807,7 +826,7 @@
                 // console.log($('#user_userRegion option:selected').val());
             });
 
-            var $dropZone  = $('#dropzone-custom').dropzone({
+            var $dropZone  = $('.dropzone-custom').dropzone({
                 url:'{{ path('front_pixie_account_fileuploadhandler') }}',
                 maxFiles: 7,
                 acceptedFiles: 'image/*',
@@ -858,7 +877,7 @@
 
                     $.get('{{ path('front_pixie_account_display_image') }}', function(data) {
 
-                        if(data.length){
+
                             $.each(data, function(key,value){
 
                                 var mockFile = { name: value.name, size: value.size };
@@ -868,9 +887,7 @@
                                 thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "/uploads/community_media/"+value.id+'/'+value.name);
 
                             });
-                        }else{
-                            $("#dropzone-custom").height(250);
-                        }
+
 
 
                     });
@@ -883,6 +900,7 @@
             });
 
         });
+
         $(document).ready(function(){
             /* Skills Pack Buttons */
             $('a.skills-pack').click(function(e){
