@@ -2,6 +2,7 @@
 
 namespace App\Controller\B2B\Client;
 
+use App\Constant\MissionStatus;
 use App\Entity\AutoMail;
 use App\Entity\ClientMissionProposal;
 use App\Entity\Message;
@@ -10,6 +11,7 @@ use App\Form\B2B\TicketType;
 use App\Repository\ClientRepository;
 use App\Repository\MessageRepository;
 use App\Repository\TicketRepository;
+use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -266,7 +268,7 @@ class EmailController extends Controller
     /**
      * @Route("/inbox", name="inbox")
      */
-    public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository)
+    public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository, UserMissionRepository $missionRepo)
     {
 
         $user = $this->getUser();
@@ -366,7 +368,8 @@ class EmailController extends Controller
             'form' => $form->createView(),
             'mails' => $mails,
             'sendMails' => $sendMails,
-            'receiverMails' => $receiverMails
+            'receiverMails' => $receiverMails,
+            'missionsCount' => count($missionRepo->findOngoingMissions($this->getUser(),'client'))
         ]);
     }
 
