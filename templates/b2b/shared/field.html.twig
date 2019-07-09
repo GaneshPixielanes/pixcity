@@ -173,7 +173,7 @@
                         <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
                             {% set data = form.vars.data %}
                             <select class="selectpicker" data-width="100%" data-live-search="true"
-                                    title="Choose a region from the list" name="{{ form.vars.full_name }}">
+                                    title="Sélectionnez une région" name="{{ form.vars.full_name }}">
                                 {% for choice in form.vars.choices %}
                                     {% if data.id is defined and data.id == choice.value %}
                                         <option value="{{ choice.data.id }}" selected>{{ choice.data.name }}</option>
