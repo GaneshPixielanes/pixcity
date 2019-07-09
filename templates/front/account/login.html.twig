@@ -78,4 +78,41 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function()
+        {
+            if($('[name="_username"').val() != '')
+            {
+                loginCheck();
+            }
+            $('[name="_username"]').on('input', function()
+            {
+                loginCheck();
+            });
+
+            function loginCheck()
+            {
+                $.ajax('/connexion/check-user',{
+                    method:'POST',
+                    data:{
+                        'email': $('[name="_username"]').val()
+                    },
+                    success:function(result) {
+
+                        if(result.success == false)
+                        {
+                            $('.btn-submit').addClass('disabled');
+                        }
+                        else
+                        {
+                            $('.btn-submit').removeClass('disabled');
+                            $('[name="_target_path"]').val(result.url);
+                            $('form#sign_in').attr('action',result.url);
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
 {% endblock %}

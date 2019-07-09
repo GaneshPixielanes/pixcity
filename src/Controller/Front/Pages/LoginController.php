@@ -5,9 +5,11 @@ namespace App\Controller\Front\Pages;
 use App\Constant\AfterLoginAction;
 use App\Constant\SessionName;
 use App\Entity\Page;
+use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
 use DateTime;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -334,5 +336,31 @@ class LoginController extends Controller
         $entityManager->flush();
 
         return $this->redirectToRoute('front_logout');
+    }
+
+    /**
+     * @Route("/check-user",name="_check_user");
+     */
+    public function checkUser(Request $request, UserRepository $userRepo, ClientRepository $clientRepo)
+    {
+        $user = $userRepo->findOneBy([
+            'email' => $request->get('email')
+        ]);
+
+        if(is_null($user))
+        {
+            $client = $clientRepo->findOneBy([
+                'email' => $request->get('email')
+            ]);
+
+            if(is_null($client))
+            {
+                return new JsonResponse(['success' => false]);
+            }
+
+            return new JsonResponse(['success' => true, 'url' => $this->generateUrl('b2b_client_login')]);
+        }
+
+        return new JsonResponse((['success' => true, 'url' => $this->generateUrl('front_login')]));
     }
 }
