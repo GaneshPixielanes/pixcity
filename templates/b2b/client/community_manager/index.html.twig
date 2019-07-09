@@ -25,11 +25,7 @@
                                 <span class="d-block fz-12 text-seagreen">{{ region.name | upper }}</span>
                             {% endfor %}
 
-                        <p class="fz-15 font-weight-light">Bienvenue sur le profil de @{{ user }}. Vous trouverez ses
-                            compétences listées sous forme de packs. N'hésitez pas à sélectionner un pack et/ou rentrer
-                            en contact avec notre city-maker via notre espace de discussion (en bas à droite de cette
-                            page) pour pour lui poser vos questions ! Attention vous ne pouvez parler qu'à un city-maker
-                            Services à la fois !</p>
+                        <p class="fz-15 font-weight-light">Bienvenue sur le profil de {{ user }}. Vous trouverez ses différents packs de compétences, créés par ses soins. N’hésitez pas à sélectionner un pack pour entrer en contact avec ce city-maker. Vous pourrez alors discuter avec lui et personnaliser le pack avec lui/ elle par la suite selon vos besoins.</p>
                         <div class="row">
                             {% if user.userInstagramDetailsApi is not null %}
                             <div class="col-md-4 p-0 fz-16 font-weight-bold text-center">
