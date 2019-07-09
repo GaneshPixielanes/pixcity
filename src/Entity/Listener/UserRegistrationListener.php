@@ -29,7 +29,7 @@ class UserRegistrationListener
         if(!empty($user) && !empty($userBeforeUpdate) && $user->getB2bCmApproval() != $userBeforeUpdate['b2b_cm_approval'])
         {
             // User has been approved by Admin to become B2B
-            if($user['b2b_cm_approval'] == 1)
+            if($user->getB2bCmApproval() == 1)
             {
 //                $message = '';
 //                $notificationsRepo->insert($user,null,'b2b_cm_approved',$message,$user->getId());
@@ -43,7 +43,7 @@ class UserRegistrationListener
             }
 
             // User has been denied by Admin to become B2B
-            if($user['b2b_cm_approval'] == 0)
+            if($user->getB2bCmApproval() == 0)
             {
                 $this->mailer->send($user->getEmail(),
                     'Votre inscription est validée!',
