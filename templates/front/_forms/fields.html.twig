@@ -368,6 +368,8 @@
     <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
         <select title="Choose a region from the list" class="region-select" name="{{ form.vars.full_name }}[1]" id="user_userRegion_1"  data-max-options="2" class="selectpicker">
 
+            <option value="null">Select Region</option>
+
             {% for region in form.vars.choices %}
 
                 {% if ids | length != 0 %}
