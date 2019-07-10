@@ -132,6 +132,10 @@ controllers_client_email:
     resource: ../src/Controller/B2B/Client/EmailController.php
     type: annotation
 
+controllers_services:
+    resource: ../src/Controller/B2B/ServiceController.php
+    type: annotation
+
 controllers_front_regions:
     resource: ../src/Controller/Front/V2/RegionController.php
     type: annotation
