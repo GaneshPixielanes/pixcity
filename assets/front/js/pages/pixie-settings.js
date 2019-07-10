@@ -7,6 +7,7 @@ require('../components/links-collection') ;
 require('../components/froala-max') ;
 require('../components/cropper') ;
 
+
 jQuery(document).ready(function() {
     //---------------------------------------------
     // Refresh Froala on tab change (dispatch a window resize event)
@@ -267,4 +268,5 @@ jQuery(document).ready(function() {
 $(document).ready(function () {
     $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
     $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
-})
+});
+
