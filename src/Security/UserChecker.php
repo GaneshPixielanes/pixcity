@@ -3,7 +3,9 @@
 namespace App\Security;
 
 use App\Constant\SessionName;
+use App\Entity\Client;
 use App\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
@@ -33,6 +35,10 @@ class UserChecker implements UserCheckerInterface
     public function checkPostAuth(UserInterface $user)
     {
         if (!$user instanceof User) {
+            if($user instanceof  Client)
+            {
+                return $this->redirect('client_b2b_index');
+            }
             return;
         }
     }
