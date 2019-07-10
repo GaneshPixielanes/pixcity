@@ -12,7 +12,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-{#    <link rel="stylesheet" href="/assets/css/style.css" rel="stylesheet" />#}
+    <link rel="stylesheet" href="https://www.dropzonejs.com/css/dropzone.css?v=1533562669" rel="stylesheet" />
 {#    <link rel="stylesheet" href="{{ absolute_url(asset('build/css/dropzone.css')) }}">#}
 {#    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />#}
 
@@ -301,21 +301,32 @@
         border-radius: 25px !important;
     }
 
-    .dropzone-custom{
-        background: white;
-        border-radius: 5px;
-        border: 2px dashed #aaa;
-        border-image: none;
-        max-width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        cursor: pointer;
-        height:200px;
+    /*.dropzone-custom{*/
+    /*    background: white;*/
+    /*    border-radius: 5px;*/
+    /*    border: 2px dashed #aaa;*/
+    /*    border-image: none;*/
+    /*    max-width: 100%;*/
+    /*    margin-left: auto;*/
+    /*    margin-right: auto;*/
+    /*    cursor: pointer;*/
+    /*    height:200px;*/
+    /*}*/
+
+    .dropzone{
+        border-radius:4px;
+        border-color:#aaa;
+        /*height:160px;*/
+        border-style: dashed;
     }
 
-
-
-
+    .dz-remove{
+        top:0;
+        right:0;
+        position:absolute;
+        color:black;
+        z-index:9999;
+    }
 </style>
 
 
@@ -661,7 +672,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="row">
-                                        <div class="col-md-12 maj">Regions</div>
+                                        <div class="col-md-12 maj">Vos régions</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                        Les régions sont les lieux ou vous serez susceptible d'intervenir pour le compte d'un client. Vous pouvez choisir jusqu'à 3 régions Sélectionnez les régions souhaitées sur la carte à droite ou utilisez la liste déroulante
+                                        </div>
                                     </div>
                                     <div class="col-md-6 choose-regions-container">
                                         <div class="choose-regions-dropdowns mb-5">
@@ -721,17 +738,16 @@
                     <div class="row">
 
 {#                        <div class="upload-images-container">#}
+{#                            <div class="dropzone text-center">#}
+{#                                <i class="fas fa-cloud-upload-alt"></i>#}
 
+{#                                <p class="mb-0">Déposez vos images ici</p>#}
+{#                                <a href="javascript:;">Depuis votre navigateur</a>#}
+{#                            </div>#}
 {#                        </div>#}
+                        <div class="form-group dropzone clearfix mt-3 dz-clickable" id="dropzone">
 
-
-                        <div class="dropzone-custom text-center">
-                            <i class="fas fa-cloud-upload-alt"></i>
-
-                            <p class="mb-0">Déposez vos images ici</p>
-                            <a href="javascript:;">Depuis votre navigateur</a>
                         </div>
-
                     </div>
 
                 </div>
@@ -780,11 +796,96 @@
 
 {% block javascripts %}
     {{ parent() }}
+{#    <script src="{{ asset('build/js/dropzone.js') }}"></script>#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
     <script src="{{ asset('build/front/js/pages/pixie-settings.js') }}"></script>
-    <script src="{{ asset('build/js/dropzone.js') }}"></script>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 
     <script>
+        Dropzone.autoDiscover = false;
+        Dropzone.prototype.defaultOptions.dictDefaultMessage = "<div class=\"area-label text-center p-4\"> <i class=\"fas fa-cloud-upload-alt\"></i> <p class=\"mb-0\">Déposez vos images ici</p> <a href=\"javascript:;\">Depuis votre navigateur</a> </div>";
+        Dropzone.prototype.defaultOptions.dictRemoveFile = "<i class=\"fa fa-times-circle\" aria-hidden=\"true\"></i>";
+
+        $(document).ready( function () {
+            var $dropZone  = $('.dropzone').dropzone({
+                url:"{{ path('front_pixie_account_fileuploadhandler') }}",
+                maxFiles: 7,
+                acceptedFiles: 'image/*',
+                maxFilesize: 2,  // in Mb
+                addRemoveLinks: true,
+                autoProcessQueue:false,
+                parallelUploads: 100,
+
+                dictRemoveFileConfirmation:'Are you sure you want to remove this image?',
+                removedfile: function(file) {
+                    var name = file.name;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ path('front_pixie_account_delete_image') }}",
+                        data: {name: name,request: 2},
+                        sucess: function(data){
+                            // console.log('success: ' + data);
+                        }
+                    });
+
+                    var _ref;
+                    if (file.previewElement) {
+                        if ((_ref = file.previewElement) != null) {
+                            _ref.parentNode.removeChild(file.previewElement);
+                        }
+                    }
+                    return this._updateMaxFilesReachedClass();
+
+                },
+                init: function () {
+
+
+                    this.on("maxfilesexceeded", function(file) {
+                        this.removeFile(file);
+                        alert('please upload maximum 7 files');
+                    });
+                    this.on("sending", function(file, xhr, formData) {
+                        // send additional data with the file as POST data if needed.
+                        // formData.append("key", "value");
+                    });
+                    this.on("success", function(file, response) {
+                        if (response.uploaded)
+                            console.log('File Uploaded: ' + response.fileName);
+                    });
+
+                    thisDropzone = this;
+
+                    $.get("{{ path('front_pixie_account_display_image') }}", function(data) {
+
+
+                        $.each(data, function(key,value){
+
+                            var mockFile = { name: value.name, size: value.size };
+
+                            thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+
+                            thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "/uploads/community_media/"+value.id+'/'+value.name);
+
+                        });
+
+
+                    });
+                }
+            });
+
+            // //
+            // $('.dropzone > .dz-default').html(`<div class="upload-area mb-4 dz-clickable">
+            //                         <div class="area-label text-center p-4">
+            //                         <i class="fas fa-cloud-upload-alt"></i>
+            //                         <p class="mb-0">Déposez vos images ici</p>
+            //                         <a href="javascript:;">Depuis votre navigateur</a>
+            //                         </div>
+            //                     </div>`);
+        });
+
         $(document).ready(function(){
             var hit = $("#hit_url").val();
 
@@ -826,73 +927,6 @@
                 // console.log($('#user_userRegion option:selected').val());
             });
 
-            var $dropZone  = $('.dropzone-custom').dropzone({
-                url:'{{ path('front_pixie_account_fileuploadhandler') }}',
-                maxFiles: 7,
-                acceptedFiles: 'image/*',
-                maxFilesize: 2,  // in Mb
-                addRemoveLinks: true,
-                autoProcessQueue:false,
-                parallelUploads: 100,
-
-                dictRemoveFileConfirmation:'Are you sure you want to remove this image?',
-                removedfile: function(file) {
-                    var name = file.name;
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ path('front_pixie_account_delete_image') }}',
-                        data: {name: name,request: 2},
-                        sucess: function(data){
-                            // console.log('success: ' + data);
-                        }
-                    });
-
-                    var _ref;
-                    if (file.previewElement) {
-                        if ((_ref = file.previewElement) != null) {
-                            _ref.parentNode.removeChild(file.previewElement);
-                        }
-                    }
-                    return this._updateMaxFilesReachedClass();
-
-                },
-                init: function () {
-
-
-                    this.on("maxfilesexceeded", function(file) {
-                        this.removeFile(file);
-                        alert('please upload maximum 7 files');
-                    });
-                    this.on("sending", function(file, xhr, formData) {
-                        // send additional data with the file as POST data if needed.
-                        // formData.append("key", "value");
-                    });
-                    this.on("success", function(file, response) {
-                        if (response.uploaded)
-                            console.log('File Uploaded: ' + response.fileName);
-                    });
-
-                    thisDropzone = this;
-
-                    $.get('{{ path('front_pixie_account_display_image') }}', function(data) {
-
-
-                            $.each(data, function(key,value){
-
-                                var mockFile = { name: value.name, size: value.size };
-
-                                thisDropzone.options.addedfile.call(thisDropzone, mockFile);
-
-                                thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "/uploads/community_media/"+value.id+'/'+value.name);
-
-                            });
-
-
-
-                    });
-                }
-            });
 
 
             $("#submitform").on('click',function(){
