@@ -140,6 +140,10 @@ controllers_front_faq:
     resource: ../src/Controller/Front/FaqController.php
     type: annotation
 
+controllers_services:
+    resource: ../src/Controller/B2B/ServiceController.php
+    type: annotation
+
 controllers_front_regions:
     resource: ../src/Controller/Front/V2/RegionController.php
     type: annotation
