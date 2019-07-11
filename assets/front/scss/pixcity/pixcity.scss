@@ -5336,7 +5336,7 @@ footer .socialMenu li:hover:before {
 .plTabs .nav-tabs .active {
     background-color: #fff;
     color: #103558;
-    text-transform: uppercase;
+    //text-transform: uppercase;
     font-family: $fontRegular;
     font-weight: 500;
 }
@@ -5400,7 +5400,7 @@ footer .socialMenu li:hover:before {
     height: 50px;
     min-height: 50px;
     line-height: 1.2em;
-    color: #fff;
+    color: #007bff;
     margin-right: 0;
     border: none;
     border-right: 1px solid #fff;

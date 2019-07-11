@@ -333,7 +333,7 @@
     <div class="container main">
         <div class="row">
             <div class="col-md-12 text-center">
-                <p style="color:#484848 !important; padding-top:20px; font-size:20px;"><strong>Paramètres</strong></p>
+                <h2><strong>Paramètres</strong></p>
             </div>
         </div>
 
@@ -657,13 +657,13 @@
 
                             <div class="container">
                                 <div class="row">
-                                    <div class="alert alert-info alert-dismissible" role="alert">
+                                    <div class="alert alert-info alert-dismissible" role="alert" style="background:rgb(237, 237, 237); border:rgb(237, 237, 237);font-weight: 300">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <h4>Comment renseigner mes compétences ?</h4>Chaque city-maker a ses propres compétences : Influenceur local (réalisation de posts sponsorisés au nom du client sur vos réseaux sociaux), Community Manager (gestion des réseaux sociaux pour le compte d’établissements près de chez vous), Photographe (shooting photo pour le compte de clients sur tout support) ou « Autre » (mise en valeur d’autres compétences : rédaction de contenus, traduction, vidéos 3D, drônes….).
                                     </div>
                                     <div class="col-md-12 skills-pack-container mb-4">
                                         <div class="row">
-                                            <div class="col-md-12 maj">COMPETENCES</div>
+                                            <div class="col-md-12 maj">VOS COMPETENCES</div>
                                         </div>
                                         <div class="row">
                                             {{ form_widget(form.userSkill) }}
@@ -678,10 +678,16 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                         Les régions sont les lieux ou vous serez susceptible d'intervenir pour le compte d'un client. Vous pouvez choisir jusqu'à 3 régions Sélectionnez les régions souhaitées sur la carte à droite ou utilisez la liste déroulante
+                                            <div class="col-md-12">
+                                                <a href="#" class="btn btn-pill btn-pink" id="add-cm-region">
+                                                    <i class="fas fa-plus"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 choose-regions-container">
                                         <div class="choose-regions-dropdowns mb-5">
+
                                             {{ form_widget(form.userRegion) }}
                                         </div>
                                     </div>
@@ -748,8 +754,11 @@
                         <div class="form-group dropzone clearfix mt-3 dz-clickable" id="dropzone">
 
                         </div>
+                        <small>Format : .png, .jpg - 2mo maximum</small>
                     </div>
-
+                    <div class="row">
+                        <button type="submit" class="btn btn-pill btn-pink">Soumettre ma candidature</button>
+                    </div>
                 </div>
 
 
