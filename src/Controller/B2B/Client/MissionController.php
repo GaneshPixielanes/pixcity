@@ -41,7 +41,7 @@ class MissionController extends Controller
     /**
      * @Route("/list", name="list")
      */
-    public function index(UserMissionRepository $missionRepo)
+    public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepository)
     {
         $options = $this->getDoctrine()->getRepository(Option::class);
         $margin = $options->findOneBy(['slug' => 'margin']);
@@ -52,7 +52,11 @@ class MissionController extends Controller
 
         return $this->render('b2b/client/mission/index.html.twig', [
             'missions' => $missions,
-            'margin' => $margin
+            'margin' => $margin,
+            'notifications' => $notificationsRepository->findBy([
+               'unread' => 1,
+               'client' => $this->getUser()
+            ])
         ]);
     }
 

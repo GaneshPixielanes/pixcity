@@ -9,6 +9,7 @@ use App\Entity\Ticket;
 use App\Form\B2B\TicketType;
 use App\Repository\ClientRepository;
 use App\Repository\MessageRepository;
+use App\Repository\NotificationsRepository;
 use App\Repository\TicketRepository;
 use App\Service\FileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -260,7 +261,7 @@ class EmailController extends Controller
     /**
      * @Route("/inbox", name="inbox")
      */
-    public function inboxEmail(Request $request,ClientRepository $clientRepository,FileUploader $fileUploader,TicketRepository $ticketRepository)
+    public function inboxEmail(Request $request,ClientRepository $clientRepository,NotificationsRepository $notificationsRepo,TicketRepository $ticketRepository)
     {
         $user = $this->getUser();
 
@@ -362,7 +363,11 @@ class EmailController extends Controller
             'form' => $form->createView(),
             'mails' => $mails,
             'sendMails' => $sendMails,
-            'receiverMails' => $receiverMails
+            'receiverMails' => $receiverMails,
+            'notifications' => $notificationsRepo->findBy([
+                'unread' => 1,
+                'user' => $this->getUser()
+            ])
         ]);
     }
 
