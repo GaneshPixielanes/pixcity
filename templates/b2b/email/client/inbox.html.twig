@@ -3,6 +3,12 @@
 
 {% block title %}Community Manager | Email{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock %}
+
 {% block body %}
 
 
@@ -11,14 +17,18 @@
                 class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm mail-box">
             <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-envelope fz-30 mr-2"></i> Email
             </div>
-            <div>
+{#            <div>#}
 {#                <a href="javascript:;" class="btn btn-outline-darkblue rounded-circle mr-2 position-relative">#}
 {#                    <span class="new-notification"></span>#}
 {#                    <i class="far fa-bell"></i>#}
 {#                </a>#}
-                <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missionsCount }} missions en cours</a>
-            </div>
+{#                <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missionsCount }} missions en cours</a>#}
+{#            </div>#}
+            <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+                <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Accueil</div>
+                {% embed 'b2b/shared/_notification_header.html.twig' with {'notifications':notifications} %}{% endembed %}
 
+            </div>
         </div>
 
         <div class="tab-pane-content p-0 email-creation-content mial-box bg-white" data-simplebar id="emailContainer">
@@ -203,7 +213,13 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+
     <script>
+
+        var editor = new FroalaEditor('#ticket_messages_content');
+
         $('#refresh').on('click',function () {
             location.reload();
         });

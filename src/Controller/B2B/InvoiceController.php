@@ -4,6 +4,7 @@ namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
 use App\Repository\MissionRepository;
+use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +18,7 @@ class InvoiceController extends AbstractController
     /**
      * @Route("list", name="list")
      */
-    public function index(UserMissionRepository $missionRepo, OptionRepository $optionsRepo)
+    public function index(UserMissionRepository $missionRepo, OptionRepository $optionsRepo, NotificationsRepository $notificationsRepo)
     {
         $missions = $missionRepo->findBy([
            'user' => $this->getUser(),
@@ -26,7 +27,11 @@ class InvoiceController extends AbstractController
 
         return $this->render('b2b/invoice/index.html.twig', [
             'missions' => $missions,
-            'tax' => $optionsRepo->findOneBy(['slug' => 'margin'])
+            'tax' => $optionsRepo->findOneBy(['slug' => 'margin']),
+            'notifications' => $notificationsRepo->findBy([
+                'unread' => 1,
+                'user' => $this->getUser()
+            ])
         ]);
     }
 
