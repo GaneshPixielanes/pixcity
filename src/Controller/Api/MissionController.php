@@ -138,12 +138,14 @@ class MissionController extends Controller
 
                     if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
                     {
+
                         $status = MissionStatus::CANCELLED;
 
-                        $refund_percentage = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
-                        $calculate_refund = $first_result['client_price'] - $refund_percentage;
-                        $mission->getUserMissionPayment()->setAdjustment($calculate_refund);
-                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
+                        $refund_amount = $first_result['client_price'] - ($first_result['client_price'] * (2/100));
+
+                        $mission->getUserMissionPayment()->setAdjustment($refund_amount);
+
+                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$refund_amount);
 
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',1);
 
@@ -169,11 +171,12 @@ class MissionController extends Controller
 
                         if($result['need_to_pay'] < 0){
 
-                            $refund_percentage = $first_result['client_price'] - ($first_result['client_price']/100) * 2;
-                            $calculate_refund = $first_result['client_price'] - $refund_percentage;
+                            $refund_percentage = $first_result['client_price'] - $last_result['client_price'];
+
+                            $calculate_refund  = $refund_percentage;
 
                             $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
-
+                            dd($response);
                         }
 
                         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. Vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s'est bien passée ! ",1);
