@@ -293,18 +293,24 @@
                         $('#mission_bannerImage').val(result.fileName);
                     } else if (type == 'brief') {
                         var prototype = $('#mission-documents-upload').attr('data-prototype');
-                        var index = $('#mission-documents-list').find('input').length;
+                        var totalInputElements = $('#mission-documents-list').find('input').length;
+                        var index = totalInputElements/2;
 
-                        prototype = prototype.replace(/__name__/g, index);
+                       prototype = prototype.replace(/__name__/g, index);
+
                         $('#mission-documents-list').append(prototype);
                         $('#mission-documents-list')
-                            .find('input:last')
+                            .find('input:eq('+(totalInputElements)+')')
                             .val(result.fileName);
+
+                        $('#mission-documents-list')
+                            .find('input:eq('+(totalInputElements+1)+')')
+                            .val(result.originalName);
                        $('#mission-documents-list').append(`<tr class="text-darkgray fz-14">
                             <td valign="middle" class="text-center">
                                 <i class="far fa-file-image fz-25"></i>
                             </td>
-                            <td valign="middle">`+result.fileName+`</td>
+                            <td valign="middle">`+result.originalName+`</td>
                             <td valign="middle">`+$('#api-box').attr('data-date')+`</td>
                             <td valign="middle">
                                 <div class="d-flex align-items-center">
