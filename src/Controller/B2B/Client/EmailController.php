@@ -378,7 +378,7 @@ class EmailController extends Controller
     /**
      * @Route("/send-emails", name="send_emails")
      */
-    public function emailsSend(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository)
+    public function emailsSend(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository,NotificationsRepository $notificationsRepo)
     {
         $user = $this->getUser();
 
@@ -476,7 +476,8 @@ class EmailController extends Controller
             'form' => $form->createView(),
             'mails' => $mails,
             'sendMails' => $sendMails,
-            'receiverMails' => $receiverMails
+            'receiverMails' => $receiverMails,
+            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1])
         ]);
     }
 
