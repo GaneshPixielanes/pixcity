@@ -10,6 +10,7 @@ use App\Entity\UserPackMedia;
 use App\Entity\UserPacks;
 use App\Form\B2B\PackType;
 use App\Repository\CommunityMediaRepository;
+use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\PackRepository;
 use App\Repository\UserPackMediaRepository;
@@ -35,7 +36,7 @@ class PackController extends Controller
     /**
      * @Route("/list", name="list")
      */
-    public function index(UserPacksRepository $packRepo,OptionRepository $optionRepo)
+    public function index(UserPacksRepository $packRepo,OptionRepository $optionRepo, NotificationsRepository $notificationsRepo)
     {
         $user = $this->getUser();
 
@@ -43,7 +44,11 @@ class PackController extends Controller
 
         return $this->render('b2b/pack/index.html.twig', [
             'packs' => $packs,
-            'tax' =>  $optionRepo->findBy(['slug' => 'margin'])[0]
+            'tax' =>  $optionRepo->findBy(['slug' => 'margin'])[0],
+            'notifications' => $notificationsRepo->findBy([
+                'unread' => 1,
+                'user' => $this->getUser()
+                ])
         ]);
     }
 

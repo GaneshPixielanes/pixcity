@@ -35,6 +35,11 @@ class MissionDocument
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $originalName;
+
     public  function __toString()
     {
         return $this->getName();
@@ -77,6 +82,18 @@ class MissionDocument
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getOriginalName(): ?string
+    {
+        return $this->originalName;
+    }
+
+    public function setOriginalName(?string $originalName): self
+    {
+        $this->originalName = $originalName;
 
         return $this;
     }
