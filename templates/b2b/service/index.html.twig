@@ -181,7 +181,7 @@
                                 <div class="col-md-4 testimonial-slider">
                                     <div class="testimonial-card card p-3 mb-3">
                                         <div class="testimonial-user text-center">
-                                            <img src="../images/USER-AVATAR.jpg" class="rounded-circle mx-auto">
+                                            <img src="{{ asset('assets/images/juliagauthier.jpg') }}" class="rounded-circle mx-auto">
                                             <h4 class="fz-16 font-weight-bold text-center m-0">Julia</h4>
                                             <p class="fz-12 text-center text-normalgray mb-0">@_juliagauthier_ - CITYMAKER</p>
                                         </div>
@@ -205,7 +205,7 @@
                                 <div class="col-md-4 testimonial-slider">
                                     <div class="testimonial-card card p-3 mb-3">
                                         <div class="testimonial-user">
-                                            <img src="../images/USER-AVATAR.jpg" class="rounded-circle mx-auto">
+                                            <img src="{{ asset('assets/images/olivier.JPG') }}" class="rounded-circle mx-auto">
                                             <h4 class="fz-16 font-weight-bold text-center m-0">Olivier</h4>
                                             <p class="fz-12 text-center text-normalgray mb-0">Coiffeur L’olivier à Chantilly - CLIENT</p>
                                         </div>
@@ -214,30 +214,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 testimonial-slider">
-                                    <div class="testimonial-card card p-3 mb-3">
-                                        <div class="testimonial-user">
-                                            <img src="../images/USER-AVATAR.jpg" class="rounded-circle mx-auto">
-                                            <h4 class="fz-16 font-weight-bold text-center m-0">Mathéo Marchal</h4>
-                                            <p class="fz-12 text-center text-normalgray mb-0">CEO at O’Tacos WordWide</p>
-                                        </div>
-                                        <div class="testimonial-quote fz-16 text-center font-weight-light">
-                                            Sint quidem saepe ad odit et mollitia magnam. Quasi reprehenderit quod reprehenderit qui voluptates magni modi unde.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 testimonial-slider">
-                                    <div class="testimonial-card card p-3 mb-3">
-                                        <div class="testimonial-user">
-                                            <img src="../images/USER-AVATAR.jpg" class="rounded-circle mx-auto">
-                                            <h4 class="fz-16 font-weight-bold text-center m-0">Mathéo Marchal</h4>
-                                            <p class="fz-12 text-center text-normalgray mb-0">CEO at O’Tacos WordWide</p>
-                                        </div>
-                                        <div class="testimonial-quote fz-16 text-center font-weight-light">
-                                            Sint quidem saepe ad odit et mollitia magnam. Quasi reprehenderit quod reprehenderit qui voluptates magni modi unde.
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -315,14 +292,14 @@
                     <p class="fz-16 font-weight-light">A très vite sur Pix.City Services.</p>
                 </div>
                 <div class="col-md-6 contact-form-container">
-                    <form action="">
+                    <form action="{{ path('b2b_contact_services') }}" method="post">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="input-group shadow-lg">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="far fa-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Nom" aria-label="Nom" required>
+                                    <input type="text" name="contact[firstName]" class="form-control" placeholder="Nom" aria-label="Nom" required>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -330,7 +307,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="far fa-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Prénom" aria-label="Prénom" required>
+                                    <input type="text" name="contact[lastName]" class="form-control" placeholder="Prénom" aria-label="Prénom" required>
                                 </div>
                             </div>
                         </div>
@@ -340,14 +317,14 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="far fa-envelope"></i></span>
                                     </div>
-                                    <input type="email" class="form-control" placeholder="Email" aria-label="Email" required>
+                                    <input type="email" name="contact[email]" class="form-control" placeholder="Email" aria-label="Email" required>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 mb-3">
                                 <div class="input-group shadow-lg">
-                                    <textarea class="form-control" placeholder="Dites nous comment vous aider" rows="10" aria-label="With textarea" required></textarea>
+                                    <textarea class="form-control" name="contact[message]" placeholder="Dites nous comment vous aider" rows="10" aria-label="With textarea" required></textarea>
                                 </div>
                             </div>
                         </div>

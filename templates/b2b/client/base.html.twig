@@ -97,8 +97,8 @@
         <!-- Header -->
     {% endif %}
 
-    <div class="container-fluid bg-dashboard  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
-        <div class="row">
+    <div class="{{ route starts with 'prestations_de_service' ? '' : 'container-fluid bg-dashboard' }}  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
+        <div class="{{ route starts with 'prestations_de_service' ? '' : 'row' }}">
 
 
 

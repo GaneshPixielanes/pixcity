@@ -42,4 +42,37 @@ class ContactController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/contact-services", name="b2b_contact_services")
+     */
+    public function serviceContactUs(Request $request, Mailer $mailer)
+    {
+
+        $contact = new Contact();
+
+        $form = $this->createForm(ContactType::class, $contact);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted())
+        {
+            $em = $this->getDoctrine()->getManager();
+
+            $contact->setCreatedAt(new \DateTime());
+            //Send mail
+//            $mailer->send('ganesh@pix.city',
+//                $contact->getFirstName().' '.$contact->getLastName().' has sent the message',
+//                $contact->getMessage(), [
+//            ]);
+
+             //Save content
+            $em->persist($contact);
+            $em->flush();
+
+            return $this->redirect('prestations-de-service');
+        }
+
+        return $this->redirect('prestations-de-service');
+    }
 }
