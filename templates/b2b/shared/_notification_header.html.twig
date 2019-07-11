@@ -5,8 +5,19 @@
         {% endif %}
         <i class="far fa-bell"></i>
     </a>
+    {% if app.user.missionProposalsToCityMaker is defined %}
     {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
         <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill">Créer une nouvelle
             mission</a>
+    {% endif %}
+        {% else %}
+            {% if missions is defined %}
+                <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missions|length }} missions en cours
+                    mission</a>
+            {% endif %}
+            {% if missionsCount is defined %}
+                <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missionsCount }} missions en cours
+                    mission</a>
+            {% endif %}
     {% endif %}
 </div>

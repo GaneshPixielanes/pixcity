@@ -10,6 +10,7 @@ use App\Entity\Ticket;
 use App\Form\B2B\TicketType;
 use App\Repository\ClientRepository;
 use App\Repository\MessageRepository;
+use App\Repository\NotificationsRepository;
 use App\Repository\TicketRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
@@ -268,7 +269,7 @@ class EmailController extends Controller
     /**
      * @Route("/inbox", name="inbox")
      */
-    public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository, UserMissionRepository $missionRepo)
+    public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository, UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo)
     {
 
         $user = $this->getUser();
@@ -369,7 +370,8 @@ class EmailController extends Controller
             'mails' => $mails,
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails,
-            'missionsCount' => count($missionRepo->findOngoingMissions($this->getUser(),'client'))
+            'missionsCount' => count($missionRepo->findOngoingMissions($this->getUser(),'client')),
+            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1])
         ]);
     }
 
