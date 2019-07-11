@@ -885,6 +885,11 @@
                 }
             });
 
+            $("#submitCMDetails").on('click',function(e){
+                // e.preventDefault();
+                // console.log($dropZone);
+                $dropZone[0].dropzone.processQueue();
+            });
             // //
             // $('.dropzone > .dz-default').html(`<div class="upload-area mb-4 dz-clickable">
             //                         <div class="area-label text-center p-4">
@@ -938,9 +943,6 @@
 
 
 
-            $("#submitCMDetails").on('click',function(){
-                $dropZone[0].dropzone.processQueue();
-            });
 
         });
 
