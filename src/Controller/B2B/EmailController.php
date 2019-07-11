@@ -10,6 +10,7 @@ use App\Form\B2B\TicketType;
 use App\Repository\ClientRepository;
 use App\Repository\MessageRepository;
 use App\Repository\NotificationsRepository;
+use App\Repository\OptionRepository;
 use App\Repository\TicketRepository;
 use App\Service\FileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -261,7 +262,7 @@ class EmailController extends Controller
     /**
      * @Route("/inbox", name="inbox")
      */
-    public function inboxEmail(Request $request,ClientRepository $clientRepository,NotificationsRepository $notificationsRepo,TicketRepository $ticketRepository)
+    public function inboxEmail(Request $request,ClientRepository $clientRepository,NotificationsRepository $notificationsRepo,TicketRepository $ticketRepository,OptionRepository $optionRepository)
     {
         $user = $this->getUser();
 
@@ -359,6 +360,8 @@ class EmailController extends Controller
 
         $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
 
+        $tax = $optionRepository->findBy(['slug' => 'tax']);
+
         return $this->render('b2b/email/cm/inbox.html.twig',[
             'form' => $form->createView(),
             'mails' => $mails,
@@ -367,14 +370,15 @@ class EmailController extends Controller
             'notifications' => $notificationsRepo->findBy([
                 'unread' => 1,
                 'user' => $this->getUser()
-            ])
+            ]),
+            'tax' => $tax[0]
         ]);
     }
 
     /**
      * @Route("/send-emails", name="send_emails")
      */
-    public function emailsSend(Request $request,ClientRepository $clientRepository,FileUploader $fileUploader,TicketRepository $ticketRepository)
+    public function emailsSend(Request $request,ClientRepository $clientRepository,FileUploader $fileUploader,TicketRepository $ticketRepository,NotificationsRepository $notificationsRepository,OptionRepository $optionRepository)
     {
         $user = $this->getUser();
 
@@ -472,11 +476,18 @@ class EmailController extends Controller
 
         $receiverMails = $ticketRepository->getAllReceiverCM($user->getId());
 
+        $tax = $optionRepository->findBy(['slug' => 'tax']);
+
         return $this->render('b2b/email/cm/inbox.html.twig',[
             'form' => $form->createView(),
             'mails' => $mails,
             'sendMails' => $sendMails,
-            'receiverMails' => $receiverMails
+            'receiverMails' => $receiverMails,
+            'notifications' => $notificationsRepository->findBy([
+                'unread' => 1,
+                'user' => $this->getUser()
+            ]),
+            'tax' => $tax[0]
         ]);
     }
 

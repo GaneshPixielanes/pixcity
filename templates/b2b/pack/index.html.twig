@@ -102,8 +102,13 @@
     <script src="{{ asset('/assets/js/pages/main.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/pages/pack.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/mission.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+
     <script>
         $(document).ready(function () {
+
+
+
             $("#pack_userBasePrice").on('change', function () {
 
                 var actual_price = $("#pack_userBasePrice").val();

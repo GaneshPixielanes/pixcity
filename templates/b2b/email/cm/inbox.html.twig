@@ -2,6 +2,12 @@
 
 {% block title %}CM | EMail {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock %}
+
 {% block content %}
 
 
@@ -206,7 +212,13 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+
     <script>
+
+        var editor = new FroalaEditor('#ticket_messages_content');
+
         $(document).ready(function () {
             $('#refresh').on('click',function () {
                 location.reload();

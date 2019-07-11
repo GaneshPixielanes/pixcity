@@ -1,3 +1,5 @@
+<link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
 {{ form_start(form,{'attr':{'id' : 'pack-form'}}) }}
 
 {{ form_row(form._token) }}
@@ -78,7 +80,7 @@
                 votre prestation !
                 Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez pas à lire
                 notre <a href="javascript:;">FAQ</a></p>
-            <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder="" id="" cols="30"
+            <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder="" id="pack-description" cols="30"
                       rows="10" name="{{ form.description.vars.full_name }}" data-bind="pack-description-preview">
                 {% if form.description.vars.data == '' %}
                 Bonjour,
@@ -315,3 +317,16 @@
      {% endif %}
 ></div>
 {{ form_end(form,{render_rest:false}) }}
+
+
+<script>
+
+    new FroalaEditor('#pack-description', {
+        events: {
+            contentChanged: function () {
+                $('.pack-description-preview').html(this.html.get());
+
+            }
+        }
+    });
+</script>
