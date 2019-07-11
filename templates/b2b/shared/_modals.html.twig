@@ -249,9 +249,15 @@
                         <a href="javascript:;" class="notification-card card p-3 text-darkblue text-decoration-none mb-2 unread">
                             <div class="row">
                                 <div class="col-1 d-flex align-items-center justify-content-center">
-                                    {% if notification.type == 'edit_mission_cm' or notification.type == 'terminate_mission_cm' or notification.type == 'cancel_mission_cm' or notification.type == 'mission_client_paid'%}
+                                    {% if
+                                        notification.type == 'edit_mission_cm' or notification.type == 'terminate_mission_cm' or notification.type == 'cancel_mission_cm' or notification.type == 'mission_client_paid'
+                                        or notification.type == 'edit_mission' or notification.type == 'terminate_mission' or notification.type == 'mission_paid' or notification.type == 'cancel_mission'
+                                    %}
                                         <i class="fas fa-check-circle text-green fz-40"></i>
-                                    {% elseif notification.type == 'create_mission_cm' or notification.type == 'mission_accepted_edit' or notification.type == 'mission_client_paid' %}
+                                    {% elseif
+                                        notification.type == 'create_mission_cm' or notification.type == 'mission_accepted_edit' or notification.type == 'mission_client_paid'
+                                        or notification.type == 'create_mission' or notification.type == 'cancel_mission_accept' or notification.type == 'mission_accepted_edit_client' or notification.type == 'mission_cliet_paid_complete'
+                                    %}
                                         <i class="fas fa-piggy-bank fz-40"></i>
                                     {% elseif notification.client is not null %}
                                         <img src="/uploads/clients/{{ notification.client.id }}/{{ notification.client.profilePhoto }}" class="notification-img rounded-circle">
