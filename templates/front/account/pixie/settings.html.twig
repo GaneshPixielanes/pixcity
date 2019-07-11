@@ -757,7 +757,7 @@
                         <small>Format : .png, .jpg - 2mo maximum</small>
                     </div>
                     <div class="row">
-                        <button type="submit" class="btn btn-pill btn-pink">Soumettre ma candidature</button>
+                        <button type="submit" class="btn btn-pill btn-pink" id="submitCMDetails">Soumettre ma candidature</button>
                     </div>
                 </div>
 
@@ -938,7 +938,7 @@
 
 
 
-            $("#submitform").on('click',function(){
+            $("#submitCMDetails").on('click',function(){
                 $dropZone[0].dropzone.processQueue();
             });
 
