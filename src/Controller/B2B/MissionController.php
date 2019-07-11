@@ -234,11 +234,12 @@ class MissionController extends AbstractController
                 $mission->removeDocument($document);
             }
 
-            foreach($request->get('document') as $document)
+            foreach($request->get('document') as $key => $document)
             {
                 $missionDocument = new MissionDocument();
 
                 $missionDocument->setName($document);
+                $missionDocument->setOriginalName($request->get('documentName')[$key]);
                 $missionDocument->setCreatedAt(new \DateTime());
 
                 $mission->addDocument($missionDocument);
@@ -418,7 +419,7 @@ class MissionController extends AbstractController
         $file = $request->files->get('file');
         $fileName = $fileUploader->upload($file, UserMission::tempFolder(), true);
 
-        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName,'originalName' => $file->getClientOriginalName()]);
     }//End of upload
 
 

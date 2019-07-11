@@ -1,0 +1,12 @@
+<div>
+    <a href="javascript:;" class="btn btn-outline-darkblue rounded-circle mr-2 position-relative" data-toggle="modal" data-target="#notificationModal">
+        {% if notifications is defined and notifications | length > 0 %}
+            <span class="new-notification"></span>
+        {% endif %}
+        <i class="far fa-bell"></i>
+    </a>
+    {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
+        <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill">Créer une nouvelle
+            mission</a>
+    {% endif %}
+</div>

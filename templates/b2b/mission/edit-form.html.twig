@@ -100,8 +100,9 @@
                     <i class="far fa-file-image fz-25"></i>
                 </td>
                 <td valign="middle">
-                    {{ document.name }}
+                    {{ document.originalName }}
                     <input type="hidden" name="document[]" value="{{ document }}"/>
+                    <input type="hidden" name="documentName[]" value="{{ document.originalName }}"/>
                 </td>
                 <td valign="middle">{{ document.createdAt | date('d/m/Y') }}</td>
                 <td valign="middle">
