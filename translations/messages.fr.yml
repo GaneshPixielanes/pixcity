@@ -341,6 +341,7 @@ b2b:
         mission_paid: PRE-PAIEMENT RECU ET DEVIS ACCEPTE
         mission_client_paid: PRE-PAIEMENT RECU ET DEVIS ACCEPTE
         mission_cliet_paid_complete: DEMARRAGE MISSION
+        mission_request: PRE-PAIEMENT
         compose: Rédiger
         inbox: Réception
         sent_box: Envoyés
