@@ -231,7 +231,7 @@
     </div>
 </div>
 <!-- Cancel Mission Success modal ends -->
-
+{% if notifications is defined %}
 <!-- Notification Modal Starts -->
 <div class="modal fade alert-modal" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
@@ -279,3 +279,4 @@
     </div>
 </div>
 <!-- Notification Modal Ends -->
+{% endif %}
