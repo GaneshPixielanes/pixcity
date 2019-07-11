@@ -103,43 +103,43 @@
 
 
             {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' or route == 'client_transaction_index' or  route == 'client_email_inbox' or  route == 'client_email_send_emails' %}
-            <div class="col-md-2 p-sm-0 dash-left vh-100">
-                <div class="user-avatar w-100">
-                    <figure class="position-relative m-0 w-100">
-                        {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
-                            <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
-                        {% else %}
-                            <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
-                        {% endif %}
+                <div class="col-md-2 p-sm-0 dash-left vh-100">
+                    <div class="user-avatar w-100">
+                        <figure class="position-relative m-0 w-100">
+                            {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
+                                <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
+                            {% else %}
+                                <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
+                            {% endif %}
 
-                        <figcaption class="position-absolute d-flex align-items-center" id="profile-redirect"><i class="fas fa-user-circle mr-2"></i>
-                            <span>Modifier mon profill</span></figcaption>
-                    </figure>
+                            <figcaption class="position-absolute d-flex align-items-center" id="profile-redirect"><i class="fas fa-user-circle mr-2"></i>
+                                <span>Modifier mon profill</span></figcaption>
+                        </figure>
 
+                    </div>
+                    <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link {% if route == 'b2b_client_main_index'%}active{% endif %}" href="/client/index" role="tab" aria-controls="home">
+                                <i class="fas fa-home"></i>Accueil</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {% if route == 'b2b_client_mission_list'%}active{% endif %}" href="/client/mission/list" role="tab" aria-controls="myMissions">
+                                <i class="fas fa-briefcase"></i>Mes missions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="/client/transaction" role="tab" aria-controls="billing">
+                                <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if route == 'client_email_inbox'%}active{% endif %}{% if route == 'client_email_send_emails'%}active{% endif %}" href="/client/email/inbox" role="tab" aria-controls="billing">
+                                <i class="fas fa-envelope"></i>Email</a>
+                        </li>
+                    </ul>
+                    <footer class="text-center p-2 text-pink fz-12">
+                        <i class="fas fa-cog"></i><a href="/client/logout" style="color:#ed5485;text-decoration: none">Se déconnecter</a>
+                    </footer>
                 </div>
-                <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'b2b_client_main_index'%}active{% endif %}" href="/client/index" role="tab" aria-controls="home">
-                            <i class="fas fa-home"></i>Accueil</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'b2b_client_mission_list'%}active{% endif %}" href="/client/mission/list" role="tab" aria-controls="myMissions">
-                            <i class="fas fa-briefcase"></i>Mes missions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="/client/transaction" role="tab" aria-controls="billing">
-                            <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'client_email_inbox'%}active{% endif %}{% if route == 'client_email_send_emails'%}active{% endif %}" href="/client/email/inbox" role="tab" aria-controls="billing">
-                            <i class="fas fa-envelope"></i>Email</a>
-                    </li>
-                </ul>
-                <footer class="text-center p-2 text-pink fz-12">
-                    <i class="fas fa-cog"></i><a href="/client/logout" style="color:#ed5485;text-decoration: none">Se déconnecter</a>
-                </footer>
-            </div>
 
                 <div class="col-md-10 offset-md-2 dash-right vh-100 p-0">
                     <div class="tab-content">
