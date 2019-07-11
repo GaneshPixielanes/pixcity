@@ -116,6 +116,13 @@ class UserType extends AbstractType
                     'multiple' => true,
                     'expanded' => true
                 ))
+                ->add('userRegion', EntityType::class, array(
+                    'label' => 'label.regions',
+                    'class' => Region::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'expanded' => true
+                ))
             ;
         }
 
