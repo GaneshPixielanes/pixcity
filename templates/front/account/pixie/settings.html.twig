@@ -21,6 +21,8 @@
 {% block page_content %}
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
 <style>
+
+
     .felicitation-wrap {
         margin-top: 78px;
         min-height: calc(100vh - 78px);
@@ -739,7 +741,7 @@
                                 </div>
                             </div>
                     <br>
-                            <div class="row maj">Images</div>
+                            <div class="row maj">VOS IMAGES</div>
 
                     <div class="row">
 
@@ -754,7 +756,6 @@
                         <div class="form-group dropzone clearfix mt-3 dz-clickable" id="dropzone">
 
                         </div>
-                        <small>Format : .png, .jpg - 2mo maximum</small>
                     </div>
                     <div class="row">
                         <button type="submit" class="btn btn-pill btn-pink" id="submitCMDetails">Soumettre ma candidature</button>
@@ -814,7 +815,7 @@
 
     <script>
         Dropzone.autoDiscover = false;
-        Dropzone.prototype.defaultOptions.dictDefaultMessage = "<div class=\"area-label text-center p-4\"> <i class=\"fas fa-cloud-upload-alt\"></i> <p class=\"mb-0\">Déposez vos images ici</p> <a href=\"javascript:;\">Depuis votre navigateur</a> </div>";
+        Dropzone.prototype.defaultOptions.dictDefaultMessage = "<div class=\"area-label text-center p-4\"> <i class=\"fas fa-cloud-upload-alt\"></i> <p class=\"mb-0\">Déposez vos images ici</p><p><small>Format : .png, .jpg - 2mo maximum</small></p> <a href=\"javascript:;\">Depuis votre navigateur</a> </div>";
         Dropzone.prototype.defaultOptions.dictRemoveFile = "<i class=\"fa fa-times-circle\" aria-hidden=\"true\"></i>";
 
         $(document).ready( function () {
