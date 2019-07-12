@@ -167,164 +167,164 @@
                         </li>
                         <li class="{{ route starts with 'admin_faqs_index' ? 'active' }}">
                             <a href="{{ url('admin_faqs_index') }}" class="waves-blue-grey">
-                                <i class="material-icons">message</i>
+                                <i class="material-icons">feedback</i>
                                 <span>{{ 'label.faqs'|trans }}</span>
                             </a>
                         </li>
                     {% endif %}
                     <!-- B2B menus ends -->
                     {% if app.user.viewMode == "b2c" %}
-                    {% if is_granted('ROLE_ADMIN') %}
-                    <li class="{{ route starts with 'admin_users' ? 'active' }}">
-                        <a href="{{ path('admin_users_list') }}" class="waves-blue-grey">
-                            <i class="material-icons">group</i>
-                            <span>{{ 'label.users'|trans }}</span>
-                        </a>
-                    </li>
-                    <li class="{{ route starts with 'admin_pages' ? 'active' }}">
-                        <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
-                            <i class="material-icons">description</i>
-                            <span>{{ 'label.pages'|trans }}</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="{{ path('admin_pages_list') }}" class="waves-blue-grey">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="{{ route starts with 'admin_users' ? 'active' }}">
+                                <a href="{{ path('admin_users_list') }}" class="waves-blue-grey">
+                                    <i class="material-icons">group</i>
+                                    <span>{{ 'label.users'|trans }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ route starts with 'admin_pages' ? 'active' }}">
+                                <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
+                                    <i class="material-icons">description</i>
                                     <span>{{ 'label.pages'|trans }}</span>
                                 </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="{{ path('admin_pages_list') }}" class="waves-blue-grey">
+                                            <span>{{ 'label.pages'|trans }}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('admin_pages_categories_list') }}" class="waves-blue-grey">
+                                            <span>{{ 'label.homepageregions'|trans }}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('admin_pages_cards_walls_list') }}" class="waves-blue-grey">
+                                            <span>{{ 'label.cardswalls'|trans }}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('admin_pages_sliders_list') }}" class="waves-blue-grey">
+                                            <span>{{ 'label.sliders'|trans }}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('admin_pages_voyager') }}"  class="waves-blue-grey">
+                                            <span>Compte Voyageur</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li>
-                                <a href="{{ path('admin_pages_categories_list') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.homepageregions'|trans }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_pages_cards_walls_list') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.cardswalls'|trans }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_pages_sliders_list') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.sliders'|trans }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_pages_voyager') }}"  class="waves-blue-grey">
-                                    <span>Compte Voyageur</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {% endif %}
+                        {% endif %}
 
-                    <li class="{{ route starts with 'admin_cards' ? 'active' }}">
-                        <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
-                            <i class="material-icons">view_carousel</i>
-                            <span>{{ 'label.cards'|trans }}</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="{{ path('admin_cards_templates_list') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.cardtemplates'|trans }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_cards_projects_list') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.cardsprojects'|trans }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr style="margin: 5px 15px;">
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_cards_list', {cards_filters: {"status": "submitted"}}) }}" class="waves-blue-grey">
-                                    <span>{{ 'label.cards_to_validate'|trans }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_cards_list', {cards_filters: {"status": "validated"}}) }}" class="waves-blue-grey">
-                                    <span>{{ 'label.cards'|trans }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr style="margin: 5px 15px;">
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_cards_collections_list') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.collections'|trans }}</span>
-                                </a>
-                            </li>
-                            {% if is_granted('ROLE_ADMIN') %}
-                            <li>
-                                <hr style="margin: 5px 15px;">
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_cards_regions_list') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.regions'|trans }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_cards_categories_list') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.categories'|trans }}</span>
-                                </a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                    <!--Card Extractions start-->
-
-					<li class="{{ route starts with 'admin_card_extractions' ? 'active' }}">
-                        <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
-                            <i class="material-icons">view_carousel</i>
-                            <span>{{ 'label.dataextractions'|trans }}</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="{{ path('admin_card_extractions_search') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.cardextraction'|trans }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('admin_card_extractions_search_categories') }}" class="waves-blue-grey">
-                                    <span>{{ 'label.categoriesdataextractions'|trans }}</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-					<!--Card Extractions end-->
-                    {% if is_granted('ROLE_ADMIN') %}
-                    <li class="{{ route starts with 'admin_menus' ? 'active' }}">
-                        <a href="{{ path('admin_menus_list') }}" class="waves-blue-grey">
-                            <i class="material-icons">menu</i>
-                            <span>{{ 'label.menus'|trans }}</span>
-                        </a>
-                    </li>
-                    <li class="{{ route starts with 'admin_transactions' ? 'active' }}">
-                        <a href="{{ path('admin_transactions_list') }}" class="waves-blue-grey">
-                            <i class="material-icons">euro_symbol</i>
-                            <span>{{ 'label.transactions'|trans }}</span>
-                        </a>
-                    </li>
-                    <li class="{{ route starts with 'admin_options' ? 'active' }}">
-                        <a href="{{ path('admin_options_list') }}" class="waves-blue-grey">
-                            <i class="material-icons">settings</i>
-                            <span>{{ 'label.options'|trans }}</span>
-                        </a>
-                    </li>
-
-                        <li class="{{ route starts with 'admin_options' ? 'active' }}">
-                            <a href="http://seo.pix.city/social_interactions" class="waves-blue-grey" target="_blank">
-                                <i class="material-icons">group</i>
-                                <span>Instagram Crawler</span>
+                        <li class="{{ route starts with 'admin_cards' ? 'active' }}">
+                            <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
+                                <i class="material-icons">view_carousel</i>
+                                <span>{{ 'label.cards'|trans }}</span>
                             </a>
+                            <ul class="ml-menu">
+                                <li>
+                                    <a href="{{ path('admin_cards_templates_list') }}" class="waves-blue-grey">
+                                        <span>{{ 'label.cardtemplates'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('admin_cards_projects_list') }}" class="waves-blue-grey">
+                                        <span>{{ 'label.cardsprojects'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr style="margin: 5px 15px;">
+                                </li>
+                                <li>
+                                    <a href="{{ path('admin_cards_list', {cards_filters: {"status": "submitted"}}) }}" class="waves-blue-grey">
+                                        <span>{{ 'label.cards_to_validate'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('admin_cards_list', {cards_filters: {"status": "validated"}}) }}" class="waves-blue-grey">
+                                        <span>{{ 'label.cards'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr style="margin: 5px 15px;">
+                                </li>
+                                <li>
+                                    <a href="{{ path('admin_cards_collections_list') }}" class="waves-blue-grey">
+                                        <span>{{ 'label.collections'|trans }}</span>
+                                    </a>
+                                </li>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <li>
+                                    <hr style="margin: 5px 15px;">
+                                </li>
+                                <li>
+                                    <a href="{{ path('admin_cards_regions_list') }}" class="waves-blue-grey">
+                                        <span>{{ 'label.regions'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('admin_cards_categories_list') }}" class="waves-blue-grey">
+                                        <span>{{ 'label.categories'|trans }}</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                            </ul>
                         </li>
-                    {% endif %}
+                        <!--Card Extractions start-->
+
+                        <li class="{{ route starts with 'admin_card_extractions' ? 'active' }}">
+                            <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
+                                <i class="material-icons">view_carousel</i>
+                                <span>{{ 'label.dataextractions'|trans }}</span>
+                            </a>
+                            <ul class="ml-menu">
+                                <li>
+                                    <a href="{{ path('admin_card_extractions_search') }}" class="waves-blue-grey">
+                                        <span>{{ 'label.cardextraction'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('admin_card_extractions_search_categories') }}" class="waves-blue-grey">
+                                        <span>{{ 'label.categoriesdataextractions'|trans }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!--Card Extractions end-->
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="{{ route starts with 'admin_menus' ? 'active' }}">
+                                <a href="{{ path('admin_menus_list') }}" class="waves-blue-grey">
+                                    <i class="material-icons">menu</i>
+                                    <span>{{ 'label.menus'|trans }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ route starts with 'admin_transactions' ? 'active' }}">
+                                <a href="{{ path('admin_transactions_list') }}" class="waves-blue-grey">
+                                    <i class="material-icons">euro_symbol</i>
+                                    <span>{{ 'label.transactions'|trans }}</span>
+                                </a>
+                            </li>
+                            <li class="{{ route starts with 'admin_options' ? 'active' }}">
+                                <a href="{{ path('admin_options_list') }}" class="waves-blue-grey">
+                                    <i class="material-icons">settings</i>
+                                    <span>{{ 'label.options'|trans }}</span>
+                                </a>
+                            </li>
+
+                            <li class="{{ route starts with 'admin_options' ? 'active' }}">
+                                <a href="http://seo.pix.city/social_interactions" class="waves-blue-grey" target="_blank">
+                                    <i class="material-icons">group</i>
+                                    <span>Instagram Crawler</span>
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endif %}
                 </ul>
             </div>
             <!-- #Menu -->
             <!-- Footer -->
-            <div class="legal">
+            <div class="legal" style="padding: 0!important;">
                 <div class="copyright">
                     &copy; 2018 Pix.City
                 </div>
