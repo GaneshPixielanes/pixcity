@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\Pages;
 
+use App\Constant\ViewMode;
 use App\Entity\Faqs;
 use App\Form\FaqsType;
 use App\Repository\FaqsRepository;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 
 /**
@@ -23,11 +25,19 @@ class FaqsController extends AbstractController
      * @Route("", name="index")
      * @Method({"GET"})
      */
-    public function index(FaqsRepository $faqsRepository): Response
+    public function index(FaqsRepository $faqsRepository,AuthorizationCheckerInterface $authChecker): Response
     {
-        return $this->render('admin/b2b/faqs/index.html.twig', [
-            'faqs' => $faqsRepository->findAll(),
-        ]);
+        $user = $this->getUser();
+        if($user->getViewMode() == ViewMode::B2B){
+            if($authChecker->isGranted('ROLE_B2C')) {
+                return $this->render('admin/b2b/faqs/index.html.twig', [
+                    'faqs' => $faqsRepository->findAll(),
+                ]);
+            }
+        }
+        else{
+            return $this->render('admin/errorpage/index.html.twig');
+        }
     }
 
     /**
@@ -56,33 +66,49 @@ class FaqsController extends AbstractController
     /**
      * @Route("/{id}", name="show", methods={"GET"})
      */
-    public function show(Faqs $faq): Response
+    public function show(Faqs $faq,AuthorizationCheckerInterface $authChecker): Response
     {
-        return $this->render('admin/b2b/faqs/show.html.twig', [
-            'faq' => $faq,
-        ]);
+        $user = $this->getUser();
+        if($user->getViewMode() == ViewMode::B2B){
+            if($authChecker->isGranted('ROLE_B2C')) {
+                return $this->render('admin/b2b/faqs/show.html.twig', [
+                    'faq' => $faq,
+                ]);
+            }
+        }
+        else{
+            return $this->render('admin/errorpage/index.html.twig');
+        }
     }
 
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Faqs $faq): Response
+    public function edit(Request $request, Faqs $faq,AuthorizationCheckerInterface $authChecker): Response
     {
-        $form = $this->createForm(FaqsType::class, $faq);
-        $form->handleRequest($request);
+        $user = $this->getUser();
+        if($user->getViewMode() == ViewMode::B2B){
+            if($authChecker->isGranted('ROLE_B2C')) {
+                $form = $this->createForm(FaqsType::class, $faq);
+                $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_faqs_index', [
-                'id' => $faq->getId(),
-            ]);
+                    return $this->redirectToRoute('admin_faqs_index', [
+                        'id' => $faq->getId(),
+                    ]);
+                }
+
+                return $this->render('admin/b2b/faqs/edit.html.twig', [
+                    'faq' => $faq,
+                    'form' => $form->createView(),
+                ]);
+            }
         }
-
-        return $this->render('admin/b2b/faqs/edit.html.twig', [
-            'faq' => $faq,
-            'form' => $form->createView(),
-        ]);
+        else{
+            return $this->render('admin/errorpage/index.html.twig');
+        }
     }
 
     /**
