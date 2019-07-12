@@ -1,0 +1,25 @@
+{% extends 'admin/page.html.twig' %}
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+{% block content %}
+    <ol class="breadcrumb breadcrumb-col-teal">
+        <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+        <li class="active">{{ 'label.faqs'|trans }}</li>
+        <li class="active">{{ 'label.faqsNew'|trans }}</li>
+    </ol>
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        {{ 'label.faqsNew'|trans }}
+                    </h2>
+                    <a href="{{ path('admin_faqs_index') }}" class="btn btn-green">back to list</a>
+                </div>
+                <div class="body">
+                    {{ include('admin/b2b/faqs/_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
