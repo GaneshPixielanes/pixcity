@@ -298,6 +298,7 @@ $(document).ready(function () {
             $('#user_oldPassword').removeAttr('required');
             $('.password-protected-form').addClass('hidden');
             $('.save-container').addClass('hidden');
+            $('#submitform').addClass('hidden');
         }
         else
         {
@@ -305,6 +306,7 @@ $(document).ready(function () {
             $('#user_oldPassword').attr('required','required');
             $('.password-protected-form').removeClass('hidden');
             $('.save-container').removeClass('hidden');
+            $('#submitform').removeClass('hidden');
         }
 
     });

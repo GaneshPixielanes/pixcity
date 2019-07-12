@@ -679,18 +679,18 @@
 
                                     <div class="row">
                                         <div class="col-md-12">
-                                        Les régions sont les lieux ou vous serez susceptible d'intervenir pour le compte d'un client. Vous pouvez choisir jusqu'à 3 régions Sélectionnez les régions souhaitées sur la carte à droite ou utilisez la liste déroulante
-                                            <div class="col-md-12">
-                                                <a href="#" class="btn btn-pill btn-pink" id="add-cm-region">
-                                                    <i class="fas fa-plus"></i>
-                                                </a>
-                                            </div>
+                                        Les régions sont les lieux ou vous serez susceptible d'intervenir pour le compte d'un client. Vous pouvez choisir jusqu'à 2 régions Sélectionnez les régions souhaitées sur la carte à droite ou utilisez la liste déroulante
                                         </div>
                                     </div>
                                     <div class="col-md-6 choose-regions-container">
                                         <div class="choose-regions-dropdowns mb-5">
 
                                             {{ form_widget(form.userRegion) }}
+                                        </div>
+                                        <div class="col-md-12">
+                                            <a href="#" class="btn btn-pill btn-pink" id="add-cm-region">
+                                                <i class="fas fa-plus"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md-6 choose-region-map">
@@ -758,7 +758,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button type="submit" class="btn btn-pill btn-pink" id="submitCMDetails">Soumettre ma candidature</button>
+                        <button type="submit" class="btn btn-pill btn-pink pull-right" id="submitCMDetails">Soumettre ma candidature</button>
                     </div>
                 </div>
 
