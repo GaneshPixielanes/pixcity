@@ -24,10 +24,6 @@
                 <table class="table">
                     <tbody>
                         <tr>
-                            <th>Id</th>
-                            <td>{{ faq.id }}</td>
-                        </tr>
-                        <tr>
                             <th>Title</th>
                             <td>{{ faq.title }}</td>
                         </tr>
@@ -37,7 +33,7 @@
                         </tr>
                         <tr>
                             <th>Description</th>
-                            <td>{{ faq.description }}</td>
+                            <td>{{ faq.description| raw  }}</td>
                         </tr>
                         <tr>
                             <th>Subcategory</th>

@@ -7,6 +7,12 @@
 
 
     <div class="services-home-page">
+        {% for message in app.flashes('contact_send') %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong></strong> {{ message }}
+            </div>
+        {% endfor %}
         <!-- Banner Starts-->
         <div class="banner-wrap">
             <div class="banner-image"></div>
@@ -210,7 +216,7 @@
                                             <p class="fz-12 text-center text-normalgray mb-0">Coiffeur L’olivier à Chantilly - CLIENT</p>
                                         </div>
                                         <div class="testimonial-quote fz-16 text-center font-weight-light">
-                                            « Le premier contact avec Pix.City a été vraiment agréable, ils ont sur comprendre mon métier et me proposer une prestation adéquate. J’ai pu choisir parmi 3 CITY-MAKERS, j’ai porté mon choix sur  @_juliagauthier_ , nous avons fait la première journée de lancement ensemble, un vrai plaisir. Je me sens vraiment libéré du poids de la gestion des réseaux sociaux qui me prenait beaucoup de temps et qui nécessite de vraies compétences ! »
+                                            « Le premier contact avec Pix.City a été vraiment agréable, ils ont su comprendre mon métier et me proposer une prestation adéquate. J’ai pu choisir parmi 3 CITY-MAKERS, j’ai porté mon choix sur  @_juliagauthier_ , nous avons fait la première journée de lancement ensemble, un vrai plaisir. Je me sens vraiment libéré du poids de la gestion des réseaux sociaux qui me prenait beaucoup de temps et qui nécessite de vraies compétences ! »
                                         </div>
                                     </div>
                                 </div>
