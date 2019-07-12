@@ -70,6 +70,9 @@ class ContactController extends AbstractController
             $em->persist($contact);
             $em->flush();
 
+            $this->addFlash('contact_send', 'Votre message a bien été envoyé');
+
+
             return $this->redirect('prestations-de-service');
         }
 
