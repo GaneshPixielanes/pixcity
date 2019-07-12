@@ -165,6 +165,12 @@
                                 <span>{{ 'label.messageList'|trans }}</span>
                             </a>
                         </li>
+                        <li class="{{ route starts with 'admin_faqs_index' ? 'active' }}">
+                            <a href="{{ url('admin_faqs_index') }}" class="waves-blue-grey">
+                                <i class="material-icons">message</i>
+                                <span>{{ 'label.faqs'|trans }}</span>
+                            </a>
+                        </li>
                     {% endif %}
                     <!-- B2B menus ends -->
                     {% if app.user.viewMode == "b2c" %}

@@ -288,7 +288,6 @@
 
 {% for choices in form.vars.choices %}
 
-
     {% set checked = false %}
     {% for value in form.vars.data %}
         {% if value.id == choices.value %}
@@ -298,7 +297,7 @@
     <div class="col-md-3">
         <a href="javascript:;" class="skills-pack text-center d-block pt-4 pb-2 btn-group-toggle {% if checked %}active{% endif %}" data-toggle="buttons">
             <input class="skill" type="checkbox" value="{{ choices.value }}" name="{{ form.vars.full_name  }}[]" {% if checked %} checked="checked"{% endif %}>
-            <i class="fas fa-map-marked-alt"></i>
+            <i class="fa {{ choices.data.icon }}"></i>
             <p>{{ choices.label }}</p>
         </a>
     </div>
@@ -340,7 +339,7 @@
     {% endfor %}
 
     <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
-        <select title="Choose a region from the list" class="region-select" name="{{ form.vars.full_name }}[0]" id="user_userRegion_0"  data-max-options="2" class="selectpicker">
+        <select title="Choose a region from the list" class="region-select" name="{{ form.vars.full_name }}[]" id="user_userRegion_0"  data-max-options="2" class="selectpicker">
 
             {% for region in form.vars.choices %}
 
@@ -364,11 +363,9 @@
             {% endfor %}
         </select>
     </div>
-
     <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
-        <select title="Choose a region from the list" class="region-select" name="{{ form.vars.full_name }}[1]" id="user_userRegion_1"  data-max-options="2" class="selectpicker">
+        <select title="Choose a region from the list" class="region-select" name="{{ form.vars.full_name }}[]" id="user_userRegion_1"  data-max-options="2" class="selectpicker">
 
-            <option value="null">Select Region</option>
 
             {% for region in form.vars.choices %}
 
@@ -392,6 +389,9 @@
 
             {% endfor %}
         </select>
+    </div>
+    <div class="col-md-2">
+        <a href="#" class="remove-region"><i class="fa fa-times"></i></a>
     </div>
 
 {% endblock %}

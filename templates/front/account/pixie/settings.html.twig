@@ -21,6 +21,8 @@
 {% block page_content %}
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
 <style>
+
+
     .felicitation-wrap {
         margin-top: 78px;
         min-height: calc(100vh - 78px);
@@ -333,7 +335,7 @@
     <div class="container main">
         <div class="row">
             <div class="col-md-12 text-center">
-                <p style="color:#484848 !important; padding-top:20px; font-size:20px;"><strong>Paramètres</strong></p>
+                <h2><strong>Paramètres</strong></p>
             </div>
         </div>
 
@@ -657,13 +659,13 @@
 
                             <div class="container">
                                 <div class="row">
-                                    <div class="alert alert-info alert-dismissible" role="alert">
+                                    <div class="alert alert-info alert-dismissible" role="alert" style="background:rgb(237, 237, 237); border:rgb(237, 237, 237);font-weight: 300">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <h4>Comment renseigner mes compétences ?</h4>Chaque city-maker a ses propres compétences : Influenceur local (réalisation de posts sponsorisés au nom du client sur vos réseaux sociaux), Community Manager (gestion des réseaux sociaux pour le compte d’établissements près de chez vous), Photographe (shooting photo pour le compte de clients sur tout support) ou « Autre » (mise en valeur d’autres compétences : rédaction de contenus, traduction, vidéos 3D, drônes….).
                                     </div>
                                     <div class="col-md-12 skills-pack-container mb-4">
                                         <div class="row">
-                                            <div class="col-md-12 maj">COMPETENCES</div>
+                                            <div class="col-md-12 maj">VOS COMPETENCES</div>
                                         </div>
                                         <div class="row">
                                             {{ form_widget(form.userSkill) }}
@@ -677,12 +679,18 @@
 
                                     <div class="row">
                                         <div class="col-md-12">
-                                        Les régions sont les lieux ou vous serez susceptible d'intervenir pour le compte d'un client. Vous pouvez choisir jusqu'à 3 régions Sélectionnez les régions souhaitées sur la carte à droite ou utilisez la liste déroulante
+                                        Les régions sont les lieux ou vous serez susceptible d'intervenir pour le compte d'un client. Vous pouvez choisir jusqu'à 2 régions. Sélectionnez les régions souhaitées sur la carte à droite ou utilisez la liste déroulante
                                         </div>
                                     </div>
                                     <div class="col-md-6 choose-regions-container">
                                         <div class="choose-regions-dropdowns mb-5">
+
                                             {{ form_widget(form.userRegion) }}
+                                        </div>
+                                        <div class="col-md-12">
+                                            <a href="#" class="btn btn-pill btn-pink" id="add-cm-region">
+                                                <i class="fas fa-plus"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md-6 choose-region-map">
@@ -733,7 +741,7 @@
                                 </div>
                             </div>
                     <br>
-                            <div class="row maj">Images</div>
+                            <div class="row maj">VOS IMAGES</div>
 
                     <div class="row">
 
@@ -749,7 +757,11 @@
 
                         </div>
                     </div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-pill btn-pink pull-right" id="submitCMDetails">Soumettre ma candidature</button>
 
+                        <a href="{{ path('front_pixie_account_settings') }}" class="btn cancelModif pull-right">Annuler la modification</a>
+                    </div>
                 </div>
 
 
@@ -767,7 +779,7 @@
                 </div>
                 {% endif %}
 
-                <div class="col-sm-12 text-right save-container">
+                <div class="col-sm-12 text-right save-container {%  if '/city-maker/compte/community/manager' in app.request.headers.get('referer') %} hidden {% endif %}">
                     <a href="{{ path('front_pixie_account_settings') }}" class="btn cancelModif">Annuler la modification</a>
 
                     <button type="submit" class="btn transFx green fa fa-save btn-save" id="submitform"><span>Sauvegarder</span></button>
@@ -805,7 +817,7 @@
 
     <script>
         Dropzone.autoDiscover = false;
-        Dropzone.prototype.defaultOptions.dictDefaultMessage = "<div class=\"area-label text-center p-4\"> <i class=\"fas fa-cloud-upload-alt\"></i> <p class=\"mb-0\">Déposez vos images ici</p> <a href=\"javascript:;\">Depuis votre navigateur</a> </div>";
+        Dropzone.prototype.defaultOptions.dictDefaultMessage = "<div class=\"area-label text-center p-4\"> <i class=\"fas fa-cloud-upload-alt\"></i> <p class=\"mb-0\">Déposez vos images ici</p><p><small>Format : .png, .jpg - 2mo maximum</small></p> <a href=\"javascript:;\">Depuis votre navigateur</a> </div>";
         Dropzone.prototype.defaultOptions.dictRemoveFile = "<i class=\"fa fa-times-circle\" aria-hidden=\"true\"></i>";
 
         $(document).ready( function () {
@@ -876,6 +888,11 @@
                 }
             });
 
+            $("#submitCMDetails").on('click',function(e){
+                // e.preventDefault();
+                // console.log($dropZone);
+                $dropZone[0].dropzone.processQueue();
+            });
             // //
             // $('.dropzone > .dz-default').html(`<div class="upload-area mb-4 dz-clickable">
             //                         <div class="area-label text-center p-4">
@@ -929,9 +946,6 @@
 
 
 
-            $("#submitform").on('click',function(){
-                $dropZone[0].dropzone.processQueue();
-            });
 
         });
 

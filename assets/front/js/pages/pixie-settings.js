@@ -187,11 +187,10 @@ jQuery(document).ready(function() {
         });
     });
 
-    $('[name="user[userRegion][0]"]').on('change', function (evt) {
-        console.log($("[name='user[userRegion][0]'] option:selected").text());
+    $(document).on('change','.region-select:first', function (evt) {
         $('[data-original-title]').removeClass('active');
-        $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
-        $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:first option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').addClass('active');
         // if ($('[name="user[userRegion][]"]:selected').length > 2) {
         //     this.checked = false;
         //     evt.preventDefault();
@@ -201,11 +200,10 @@ jQuery(document).ready(function() {
         //     console.log($(this).text());
         // });
     });
-    $('[name="user[userRegion][1]"]').on('change', function (evt) {
-        console.log($("[name='user[userRegion][0]'] option:selected").text());
+    $(document).on('change','.region-select:last', function (evt) {
         $('[data-original-title]').removeClass('active');
-        $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
-        $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:first option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').addClass('active');
         // if ($('[name="user[userRegion][]"]:selected').length > 2) {
         //     this.checked = false;
         //     evt.preventDefault();
@@ -266,7 +264,53 @@ jQuery(document).ready(function() {
 });
 
 $(document).ready(function () {
-    $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
-    $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
+    if($('.choose-region-drop').length == 2)
+    {
+        $("#add-cm-region").hide();
+    }
+
+    $('[data-original-title="'+$("[name='user[userRegion][]']:first option:selected").text()+'"]').addClass('active');
+    $('[data-original-title="'+$("[name='user[userRegion][]']:last option:selected").text()+'"]').addClass('active');
+
+    $(document).on('click','.remove-region',function (e) {
+        e.preventDefault();
+        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').removeClass('active');
+
+        $('.choose-region-drop:last').remove();
+       $(this).remove();
+        $("#add-cm-region").show();
+    });
+
+    $('#add-cm-region').click(function (e) {
+        e.preventDefault();
+        $select = $('.choose-region-drop').clone();
+        $('.choose-region-drop:last').after($select);
+        $('.choose-region-drop:last').after('<div class="col-md-2"><a class="remove-region" href="#"><i class="fa fa-times"></i></a></div>');
+        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').addClass('active');
+
+        $(this).hide();
+    });
+
+    $('li > a').on('click', function () {
+        if($(this).attr('href') == '#community-manager-tab')
+        {
+            $('#user_oldPassword').attr('name','inactivePassword');
+            $('#user_oldPassword').removeAttr('required');
+            $('.password-protected-form').addClass('hidden');
+            $('.save-container').addClass('hidden');
+            $('#submitform').addClass('hidden');
+        }
+        else
+        {
+            $('#user_oldPassword').attr('name','user[oldPassword]');
+            $('#user_oldPassword').attr('required','required');
+            $('.password-protected-form').removeClass('hidden');
+            $('.save-container').removeClass('hidden');
+            $('#submitform').removeClass('hidden');
+        }
+
+    });
+
+    // $('.nav-tabs')
 });
 
