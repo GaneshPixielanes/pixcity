@@ -20,7 +20,7 @@
         <img src="https://via.placeholder.com/1280x336?text=S%27il%20vous%20pla%C3%AEt%20t%C3%A9l%C3%A9charger%20l%27image%20de%20la%20banni%C3%A8re%20ici" class="cover-image w-100 h-100" alt="Pack Cover Image" id="banner-image">
         {% endif %}
         <div class="edit-image">
-            <input type="file" id="imageUpload"  data-toggle="tooltip" title="Edit Cover image" data-upload-type="banner"/>
+            <input type="file" id="imageUpload"  data-toggle="tooltip" title="Modifier l’image" data-upload-type="banner"/>
             {{ form_row(form.bannerImage) }}
             <a href="javascript:;" class="btn btn-lightgray btn-pill">Modifier</a>
         </div>
@@ -30,10 +30,12 @@
 
     <input name="attached_files" value="" type="hidden"/>
     <div class="pack-details p-3">
+        {% if form.packSkill.vars.data.id is defined %}
         <div class="selected-pack-container edit col-md-12 border-bottom mt-2 mb-4 pb-4">
             <p class="text-textgray mb-0">{{ pack.packSkill | upper }}</p>
             <small>Cette information ne peut pas être modifiée</small>
         </div>
+        {% endif %}
         <div class="select-skills-container edit col-md-12 border-bottom mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Sélectionner une compétence</h5>
             <p class="text-textgray">choisissez une compétence pour créer un pack</p>
@@ -79,7 +81,7 @@
             <p class="text-textgray">N’hésitez pas à être le plus précis possible dans la description de
                 votre prestation !
                 Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez pas à lire
-                notre <a href="javascript:;">FAQ</a></p>
+                notre <a href="{{ url('front_faq_index') }}" target="_blank ">FAQ</a></p>
             <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder="" id="pack-description" cols="30"
                       rows="10" name="{{ form.description.vars.full_name }}" data-bind="pack-description-preview">
                 {% if form.description.vars.data == '' %}
@@ -104,7 +106,7 @@
         </div>
         <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
-            <p class="text-textgray">Si vous ne savez pas comment définir vos prix, <a href="#">consultez notre FAQ</a></p>
+            <p class="text-textgray">Si vous ne savez pas comment définir vos prix, <a href="{{ url('front_faq_index') }}" target="_blank ">consultez notre FAQ</a></p>
             <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
             <div class="d-flex align-items-center">
                 <div class="input-group w-10">

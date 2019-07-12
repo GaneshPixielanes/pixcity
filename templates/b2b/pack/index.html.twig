@@ -3,8 +3,8 @@
 {% import 'b2b/shared/macros.html.twig' as macros %}
 
 {% block content %}
-
             <div class="tab-pane active" id="myPacks" role="tabpanel">
+
                 <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
                     <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-dungeon fz-30 mr-2"></i> Mes Packs
                     </div>
@@ -23,7 +23,7 @@
 {#                        </div>#}
 {#                    </div>#}
                     <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-                        <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Accueil</div>
+                        <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-dungeon fz-30 mr-2"></i> Mes Packs</div>
                         {% embed 'b2b/shared/_notification_header.html.twig' with {'notifications':notifications} %}{% endembed %}
 
                     </div>
@@ -41,7 +41,7 @@
                             <p> Un pack est une compétence détaillée avec un tarif et des photos l’illustrant.
                             </p>
                             <div class="d-block text-center mt-4">
-                                <a href="javascript:;" class="btn btn-darkblue btn-pill">Créer un pack</a>
+                                <a href="javascript:;" class="btn btn-darkblue btn-pill add-package">Créer un pack</a>
                             </div>
                         </div>
                     </div>
