@@ -288,7 +288,6 @@
 
 {% for choices in form.vars.choices %}
 
-
     {% set checked = false %}
     {% for value in form.vars.data %}
         {% if value.id == choices.value %}
@@ -298,7 +297,7 @@
     <div class="col-md-3">
         <a href="javascript:;" class="skills-pack text-center d-block pt-4 pb-2 btn-group-toggle {% if checked %}active{% endif %}" data-toggle="buttons">
             <input class="skill" type="checkbox" value="{{ choices.value }}" name="{{ form.vars.full_name  }}[]" {% if checked %} checked="checked"{% endif %}>
-            <i class="fas fa-map-marked-alt"></i>
+            <i class="fa {{ choices.data.icon }}"></i>
             <p>{{ choices.label }}</p>
         </a>
     </div>
