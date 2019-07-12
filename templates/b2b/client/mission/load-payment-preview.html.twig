@@ -15,7 +15,7 @@
                         <p class="text-textgray text-12 mb-0">{{ mission.referencePack.packskill.name }}</p>
                         <h5 class="text-darkgray mb-3 font-weight-bold">{{ mission.title }}</h5>
                         <p class="fz-12">
-                            {{ mission.description }}
+                            {{ mission.description | raw }}
                         </p>
                     </div>
                     {% if mission.briefFiles is not null or mission.briefFiles != '' %}
@@ -118,7 +118,7 @@
                 <div class="row">
                     <div class="col-sm-10">
                         <p class="mb-0">{{ mission.title }}</p>
-                        <small class="fz-10">{{ mission.description }}</small>
+                        <small class="fz-10">{{ mission.description | raw }}</small>
                     </div>
                     <div class="col-sm-2 text-right">{{ last_result['client_price'] | round(2, 'floor') }}€</div>
                 </div>

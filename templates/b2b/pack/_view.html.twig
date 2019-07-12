@@ -9,7 +9,7 @@
         <div class="pack-overview-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <p class="text-textgray text-12 mb-0">{{ pack.packSkill | upper }}</p>
             <h5 class="text-darkgray mb-3">{{ pack.title }}</h5>
-            {{ pack.description }}
+            {{ pack.description | raw }}
         </div>
         {% if pack.userPackMedia | length %}
         <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
@@ -75,8 +75,15 @@
                 </div>
             </div>
             <div class="preview-cta d-flex align-items-center">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a href="{{ url('b2b_client_pack_select',{'id':pack.id}) }}"
                    class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
+                {% else %}
+
+                    <a href="/client/register"
+                       class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
+
+                {% endif %}
             </div>
         </div>
     </nav>
