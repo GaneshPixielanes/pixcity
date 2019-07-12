@@ -43,24 +43,32 @@ class FaqsController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,AuthorizationCheckerInterface $authChecker): Response
     {
-        $faq = new Faqs();
-        $form = $this->createForm(FaqsType::class, $faq);
-        $form->handleRequest($request);
+        $user = $this->getUser();
+        if($user->getViewMode() == ViewMode::B2B){
+            if($authChecker->isGranted('ROLE_B2C')) {
+                $faq = new Faqs();
+                $form = $this->createForm(FaqsType::class, $faq);
+                $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($faq);
-            $entityManager->flush();
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($faq);
+                    $entityManager->flush();
 
-            return $this->redirectToRoute('admin_faqs_index');
+                    return $this->redirectToRoute('admin_faqs_index');
+                }
+
+                return $this->render('admin/b2b/faqs/new.html.twig', [
+                    'faq' => $faq,
+                    'form' => $form->createView(),
+                ]);
+            }
         }
-
-        return $this->render('admin/b2b/faqs/new.html.twig', [
-            'faq' => $faq,
-            'form' => $form->createView(),
-        ]);
+        else{
+            return $this->render('admin/errorpage/index.html.twig');
+        }
     }
 
     /**
