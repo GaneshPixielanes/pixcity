@@ -6,7 +6,7 @@
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
             <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation</div>
             <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-                <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Accueil</div>
+                <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-file-invoice-dollar fz-30 mr-2"></i> Facturation</div>
                 {% embed 'b2b/shared/_notification_header.html.twig' with {'notifications':notifications} %}{% endembed %}
 
             </div>
@@ -55,7 +55,7 @@
                         <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-invoice-empty.png') }}" alt="My Facturation">
                     </div>
                     <h4 class="mt-4 text-darkblue">Pour facturer, faut bosser !</h4>
-                    <p> Ici vous trouverez le récapitulatif de vos factures. <a href="javascript:;">Consultez la FAQ</a> si vous avez des questions.
+                    <p> Ici vous trouverez le récapitulatif de vos factures. <a href="{{ url('front_faq_index') }}">Consultez la FAQ</a> si vous avez des questions.
                     </p>
                     <div class="d-block text-center mt-4">
                         <a href="javascript:;" class="btn btn-darkblue btn-pill d-none">Créer un pack</a>
