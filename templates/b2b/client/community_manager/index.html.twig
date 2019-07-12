@@ -44,7 +44,7 @@
                             <div class="col-md-12 mt-3">
                                 {% for link in user.links %}
                                     {% if link.type == 'instagram' %}
-                                <a href="{{ link.url }}" class="btn btn-blue btn-block">S’abonner sur Instagram <i
+                                <a href="{{ link.url }}" class="btn btn-blue btn-block" target="_blank">S’abonner sur Instagram <i
                                             class="fab fa-instagram"></i></a>
                                     {% endif %}
                                 {% endfor %}
@@ -65,7 +65,7 @@
                     <div class="row">
                         <div class="col-md-12 content-top-header d-flex align-items-center mb-3">
                             <h4 class="mb-0 font-weight-light"><span
-                                        class="total-packs-available font-weight-bold">{{ packs | length }}</span> packs disponibles</h4>
+                                        class="total-packs-available font-weight-bold">{{ packs | length }}</span> packs disponible{% if packs | length >1 %}s{% endif %}</h4>
                             <div class="filter-packages d-flex">
                                 <label class="text-seagreen m-0 mr-3 d-none active">
                                     <input type="checkbox" name="filterpackage" value="all">
@@ -96,7 +96,7 @@
                                                         <h5 class="card-title fz-16 text-darkblue font-weight-bold mb-1">
                                                             {{ pack }}</h5>
                                                         <p class="pack-cost fz-16 font-weight-bold text-normalgray">{{ pack.totalPrice }}€
-                                                            <span class="fz-12 font-weight-light">À partir de</span></p>
+{#                                                            <span class="fz-12 font-weight-light">À partir de</span></p>#}
                                                     </div>
                                                 </a>
                                             </li>

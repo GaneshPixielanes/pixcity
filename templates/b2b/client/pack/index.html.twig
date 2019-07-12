@@ -21,7 +21,7 @@
                                             <p class="text-textgray text-12 mb-0">{{ 'PACK '~pack.packSkill | upper }}</p>
                                             <h5 class="text-darkgray mb-3">{{ pack.title }}</h5>
                                             <p class="fz-12">
-                                                {{ pack.description }}
+                                                {{ pack.description | raw }}
                                             </p>
                                         </div>
                                         <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
