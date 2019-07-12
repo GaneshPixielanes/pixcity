@@ -679,7 +679,7 @@
 
                                     <div class="row">
                                         <div class="col-md-12">
-                                        Les régions sont les lieux ou vous serez susceptible d'intervenir pour le compte d'un client. Vous pouvez choisir jusqu'à 2 régions Sélectionnez les régions souhaitées sur la carte à droite ou utilisez la liste déroulante
+                                        Les régions sont les lieux ou vous serez susceptible d'intervenir pour le compte d'un client. Vous pouvez choisir jusqu'à 2 régions. Sélectionnez les régions souhaitées sur la carte à droite ou utilisez la liste déroulante
                                         </div>
                                     </div>
                                     <div class="col-md-6 choose-regions-container">
@@ -759,6 +759,8 @@
                     </div>
                     <div class="row">
                         <button type="submit" class="btn btn-pill btn-pink pull-right" id="submitCMDetails">Soumettre ma candidature</button>
+
+                        <a href="{{ path('front_pixie_account_settings') }}" class="btn cancelModif pull-right">Annuler la modification</a>
                     </div>
                 </div>
 
@@ -777,7 +779,7 @@
                 </div>
                 {% endif %}
 
-                <div class="col-sm-12 text-right save-container">
+                <div class="col-sm-12 text-right save-container {%  if '/city-maker/compte/community/manager' in app.request.headers.get('referer') %} hidden {% endif %}">
                     <a href="{{ path('front_pixie_account_settings') }}" class="btn cancelModif">Annuler la modification</a>
 
                     <button type="submit" class="btn transFx green fa fa-save btn-save" id="submitform"><span>Sauvegarder</span></button>
