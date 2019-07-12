@@ -1,0 +1,8 @@
+{{ form_start(form) }}
+    {#{{ form_widget(form) }}#}
+    {{ form_row(form.title) }}
+    {{ form_row(form.category) }}
+    {{ form_row(form.subcategory) }}
+    {{ form_row(form.description) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
