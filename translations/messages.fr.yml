@@ -5,6 +5,8 @@ ROLE_PIXIE: City-maker
 ROLE_USER: Utilisateur
 
 label:
+    faqs: FAQs
+    faqsNew: FAQs Create
     messageList: Message list
     cmlist: CM list
     cm: CM
@@ -73,6 +75,8 @@ label:
     pixie_cmapproval: B2B
     user_cmapproval: Grant Permission
     skills: Skill
+    category: Category
+    subcategory: Subcategory
     network:
         facebook: Facebook
         twitter: Twitter
