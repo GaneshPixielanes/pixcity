@@ -63,7 +63,7 @@ security:
                     - App\Security\ClientAuthenticator
             logout:
                 path: '/client/logout'
-                target: '/connexion'
+                target: '/'
                 invalidate_session: false
 
 
