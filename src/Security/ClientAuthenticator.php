@@ -49,10 +49,15 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
             'password' => $request->request->get('_password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
+
+
         $request->getSession()->set(
             Security::LAST_USERNAME,
             $credentials['email']
         );
+
+
+
 
         return $credentials;
     }
@@ -83,9 +88,16 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+
+        if ($request->getSession()->has('chosen_pack_url')){
+
+            $targetPath = $request->getSession()->get('chosen_pack_url');
+            return new RedirectResponse($targetPath);
+
+        }elseif($targetPath = $this->getTargetPath($request->getSession(), $providerKey)){
             return new RedirectResponse($targetPath);
         }
+
 
         // For example : return new RedirectResponse($this->router->generate('some_route'));
         return new RedirectResponse($this->router->generate('b2b_client_main_index'));
