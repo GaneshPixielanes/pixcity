@@ -211,7 +211,7 @@
                 e.preventDefault();
 
                 var id = $(this).attr('data-id');
-                $.ajax('/api/pack/view-pack/'+id,{
+                $.ajax('/client/profil-community-manager/pack-view/'+id,{
                     type: 'GET',
                     success: function (result) {
                         $('#preview-details').html(result);

@@ -7,6 +7,7 @@ use App\Repository\SkillRepository;
 use App\Repository\UserPacksRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -15,10 +16,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommunityManagerController extends AbstractController
 {
     /**
+     * @Route("pack-view/{id}",name="pack_view")
+     */
+    public function viewPack($id, UserPacksRepository $userPacksRepo)
+    {
+
+        $pack = $userPacksRepo->find($id);
+
+
+        if(is_null($pack))
+        {
+            return JsonResponse::create(['success' => false, 'response' => '<strong>Pack not found </strong>']);
+        }
+
+        return $response = $this->render('b2b/client/community_manager/_view.html.twig',[
+            'pack' => $pack
+        ]);
+    }
+
+    /**
      * @Route("{name}/{id}", name="view")
      */
     public function index($id, UserRepository $userRepo, UserPacksRepository $packRepo,SkillRepository $skillRepository)
     {
+
         $user = $userRepo->find($id);
         // Check if the user exists
         if(is_null($user) && !in_array('ROLE_CM', $user->getRoles()))
@@ -40,4 +61,6 @@ class CommunityManagerController extends AbstractController
             'skills' => $skills
         ]);
     }
+
+
 }
