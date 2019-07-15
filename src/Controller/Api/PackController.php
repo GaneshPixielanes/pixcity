@@ -83,7 +83,8 @@ class PackController extends AbstractController
     {
         $pack = new UserPacks();
         $user = $this->getUser();
-        $form = $this->createForm(PackType::class, $pack);
+        $regions = $user->getUserRegion();
+        $form = $this->createForm(PackType::class, $pack,['regions' => $regions]);
 
         $form->handleRequest($request);
 

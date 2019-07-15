@@ -2,8 +2,10 @@
 
 namespace App\Form\B2B;
 
+use App\Entity\Region;
 use App\Entity\Skill;
 use App\Entity\UserPacks;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -20,6 +22,12 @@ class PackType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $regions = [];
+        foreach($options['regions'] as $region)
+        {
+            $regions[] = $region->getId();
+        }
+
         $builder
             ->add('packSkill', EntityType::class, array(
                 'label' => 'skills',
@@ -57,6 +65,18 @@ class PackType extends AbstractType
                 'error_bubbling' => false,
                 'by_reference' => false
             ])
+
+            ->add('packRegions', EntityType::class, array(
+                'label' => 'regions',
+                'class' => Region::class,
+                'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => true,
+                'query_builder' => function(EntityRepository $er) use($regions)
+                {
+                    return $er->createQueryBuilder('p')->where('p.id IN (:regions)')->setParameter('regions',$regions);
+                }
+            ))
         ;
     }
 
@@ -64,6 +84,7 @@ class PackType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UserPacks::class,
+            'regions' => null
         ]);
     }
 }
