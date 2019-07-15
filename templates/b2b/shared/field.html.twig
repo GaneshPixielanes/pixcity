@@ -97,7 +97,7 @@
     <div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
         <img src="{% if form.vars.value == '' %}https://via.placeholder.com/1280x336?text=S%27il%20vous%20pla%C3%AEt%20t%C3%A9l%C3%A9charger%20l%27image%20de%20la%20banni%C3%A8re%20ici{% else %}{% endif %}" class="cover-image w-100 h-100" alt="Mission Cover Image">
         <div class="edit-image">
-            <input type="file" name="myFile" data-toggle="tooltip" title="" data-original-title="Edit Cover image" id="banner-image-upload">
+            <input type="file" name="myFile" data-toggle="tooltip" title="" data-original-title="Modifier l’image" id="banner-image-upload">
             <input type="hidden" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}"/>
             <a href="javascript:;" class="btn btn-lightgray btn-pill">Modifier</a>
 
@@ -126,7 +126,11 @@
             votre prestation !
             Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez
             pas à lire
-            notre <a href="javascript:;">FAQ</a></p>
+            notre <a href="{{ url('front_faq_index') }}">FAQ</a></p>
+        <p>
+            Pour plus d’informations concernant les conditions d’assurance et les exclusions, <p>
+            vous pouvez vous référer aux <a href="#">Conditions Générales d’Assurance</a> ou consulter l’extrait de <a href="#">Conditions particulières</a>
+        </p>
         <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200"
                   placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" id="mission-faorla-description" cols="30" rows="10" name="{{ form.vars.full_name }}" {% if form.vars.value != '' %}readonly="readonly"{% endif %}>{{ form.vars.value }}</textarea>
         <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength missionDescriptionLength">0</span>/<span
@@ -138,7 +142,7 @@
 {% block _mission_missionBasePrice_widget %}
     <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
         <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
-        <p class="text-textgray">Besoin de conseils. <a href="javascript:;">Consultez notre
+        <p class="text-textgray">Besoin de conseils. <a href="{{ url('front_faq_index') }}">Consultez notre
                 FAQ
                 City-Maker Services.</a></p>
         <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
@@ -311,23 +315,21 @@
                 responsabilité civile professionnelle pour toute mission qui commence sur notre
                 plateforme
                 (et contractualisée par son intermédiaire). Cette assurance est gratuite pour les
-                city-makers. N'hésitez pas à consulter notre page FAQ en cas de questions !</p>
+                city-makers. N'hésitez pas à consulter notre page <a href="{{ url('front_faq_index') }}">FAQ</a> en cas de questions !</p>
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="customControlInline" name="{{ form.vars.full_name }}" value="1">
                 <label class="custom-control-label fz-16 text-textgray mr-4"
-                       for="customControlInline">Souscrire à l'assurance Axa</label><img
+                       for="customControlInline">Souscrire à l’assurance en partenariat avec Axa</label><img
                         src="{{ absolute_url('/assets/images/axa-logo.png') }}">
             </div>
             <div class="row">
                 <div class="col-md-6 fz-14 font-weight-light mt-3">
                     <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Garantie
-                                            de paiement</span> même si votre client arrête la mission avant son terme
+                                            de dommages </span> causés par les travaux après leur achèvement<br/> (droit à l’image, propriété intellectuelle)
                 </div>
                 <div class="col-md-6 fz-14 font-weight-light mt-3">
-                    <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Protection
-                                            juridique en cas d’accidents</span> ou de dégâts provoqués lors de la
-                    Prestation
-                    (Franchise 150€)
+                    <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Prise en charge des conséquences des dommages (corporels, matériels, immatériels, etc.)<br/>
+                        que vous pouvez causer à autrui au cours d’une mission
                 </div>
             </div>
         </div>
@@ -522,5 +524,52 @@
     </div>
 </div>
 {% endblock %}
+
+{% block _pack_packRegions_widget %}
+    {% if form.vars.data is empty %}
+        {% for choice in form.vars.choices %}
+            <div class="row" data-pack-region-id="{{ choice.data.id }}">
+                <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
+                    <select class="selectpicker" data-width="100%" data-live-search="true"
+                            title="Choose a region from the list" readonly="readonly" disabled>
+                        <option value="{{ choice.data.name }}" selected>{{ choice.data.name }}</option>
+                    </select>
+                    <input type="checkbox" name="{{ form.vars.full_name }}[]" value="{{ choice.data.id }}" checked="checked" class="pack-region-select"/>
+                </div>
+                <div class="col-md-2 mb-3 d-flex align-items-center">
+                    <a href="#" class="remove-pack-region" data-id="{{ choice.data.id }}"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+
+        {% for choice in form.vars.choices %}
+
+        {% set checked = false %}
+        {% for value in form.vars.data %}
+            {% if value.id == choice.data.id %}
+                {% set checked = true %}
+            {% endif %}
+        {% endfor %}
+        <div class="row" data-pack-region-id="{{ choice.data.id }}" {% if checked != true %}style="display:none !important"{% endif %}>
+            <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop" >
+                <select class="selectpicker" data-width="100%" data-live-search="true"
+                        title="Choose a region from the list" readonly="readonly" disabled>
+                    <option value="{{ choice.data.name }}" selected>{{ choice.data.name }}</option>
+                </select>
+                <input type="checkbox" name="{{ form.vars.full_name }}[]" value="{{ choice.data.id }}" {% if checked == true %} checked="checked" {% endif %}class="pack-region-select"/>
+            </div>
+            <div class="col-md-2 mb-3 d-flex align-items-center">
+                <a href="#" class="remove-pack-region" data-id="{{ choice.data.id }}"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+    <div class="col-md-3 mb-3"  >
+        <a href="#" class="btn btn-block adding-block add-pack-region" {% if form.vars.data | length > 1 %}style="display:none !important;"{% endif %}><i class="fa fa-plus"></i></a>
+    </div>
+{% endblock %}
+
+
 
 

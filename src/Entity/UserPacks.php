@@ -83,12 +83,40 @@ class UserPacks
      * @ORM\OneToOne(targetEntity="App\Entity\Skill", inversedBy="userPacks", cascade={"persist", "remove"},fetch="EAGER")
      */
     private $packSkill;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserPackMedia", mappedBy="userPack",cascade={"persist"}))
+     */
+    private $userPackMedia;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $marginPercentage;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $marginValue;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $totalPrice;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Region")
+     * @ORM\JoinTable(name="pxl_b2b_pack_regions",
+     *      joinColumns={@ORM\JoinColumn(name="pack_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="region_id", referencedColumnName="id")})
+     */
+    private $packRegions;
 
 
 
     public function __construct()
     {
         $this->userPackMedia = new ArrayCollection();
+        $this->packRegions = new ArrayCollection();
     }
 
     public function __toString()
@@ -246,25 +274,6 @@ class UserPacks
         return $this;
     }
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserPackMedia", mappedBy="userPack",cascade={"persist"}))
-     */
-    private $userPackMedia;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $marginPercentage;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $marginValue;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $totalPrice;
 
     /**
      * @return Collection|UserPackMedia[]
@@ -331,6 +340,29 @@ class UserPacks
         $this->totalPrice = $totalPrice;
 
         return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getPackRegions()
+    {
+        return $this->packRegions;
+    }
+
+    /**
+     * @param mixed $packRegions
+     */
+    public function setPackRegions($packRegions): void
+    {
+        $this->packRegions = $packRegions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addPackRegions(Region $region)
+    {
+        $this->packRegions[] = $region;
     }
 
 }

@@ -94,7 +94,9 @@ class MissionType extends AbstractType
                     'error_bubbling' => false,
                     'by_reference' => false
                 ])
-            ->add('missionBasePrice', TextType::class)
+            ->add('missionBasePrice', TextType::class,[
+                'label' => false
+            ])
 //            ->add('dueDate', DateType::class)
 //            ->add('conditionsAgreed', ChoiceType::class,[
 //                'choices' => ['Yes' => 1, 'No' => 0],

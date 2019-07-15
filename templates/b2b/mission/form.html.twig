@@ -46,7 +46,7 @@
                     <div class="col-md-12 mt-5 text-center">
                         <p class="fz-12 text-seagreen">CRÉER UNE NOUVELLE MISSION</p>
                         <h1 class="fz-28 font-weight-bold">Prêt à vous lancer ?</h1>
-                        <p class="fz-16">Sélectionnez le pack à partir duquel vous allez créer votre mission</p>
+                        <p class="fz-16">&nbsp;</p>
                     </div>
                 </div>
                 {{ form_widget(form.client) }}
@@ -141,7 +141,7 @@
                         </div>
                         <div class="">
                             <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                            <p class="mb-0 text-darkgray user-price cm-base-price">€</p>
+                            <p class="mb-0 text-darkgray user-price "><span class="cm-base-price"></span>€</p>
                         </div>
                     </div>
                     <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
@@ -158,7 +158,7 @@
                         </div>
                         <div class="mr-4">
                             <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                            <p class="mb-0 text-darkgray user-price cm-base-price">€</p>
+                            <p class="mb-0 text-darkgray user-price "><span class="cm-base-price"></span>€</p>
                         </div>
 {#                        <div class="mission-invoice d-flex align-items-center opacity-40">#}
 {#                            <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i>#}
@@ -224,9 +224,10 @@
                                         créée</h4>
                                     <p>La mission <b class="pcs-mission-name">Shooting soirée d’ouverture du O’Tacos Levallois-Perret</b> vient
                                         d’être créée. </p>
-                                    <p>Le devis a été généré automatiquement, vous pouvez le retrouver dans votre espace
-                                        personnel. Celui-ci a également été envoyé à votre client, dés qu’il l’aura
-                                        signé, vous pourrez commencer la mission !</p>
+                                    <p> Le devis a été généré automatiquement, vous pouvez le retrouver dans votre espace personnel.
+                                        Celui-ci a également été envoyé à votre client, dès qu’il l’aura signé et qu’il aura pré-payé
+                                            (partenaire Mango Pay), vous pourrez commencer la mission !
+                                    </p>
                                     <a href="{{ url('b2b_community_manager_index') }}" class="btn btn-darkblue btn-pill lh2">Retourner sur mon
                                         dashboard</a>
                                 </div>
