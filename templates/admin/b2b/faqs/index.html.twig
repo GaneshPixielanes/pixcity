@@ -23,7 +23,7 @@
                             <th>Title</th>
                             <th>Category</th>
                             {#<th>Description</th>#}
-                            <th>Subcategory</th>
+                            {#<th>Subcategory</th>#}
                             <th>CreatedAt</th>
                             <th>UpdatedAt</th>
                             <th>actions</th>
@@ -36,12 +36,20 @@
                             <td>{{ faq.title }}</td>
                             <td>{{ faq.category }}</td>
                             {#<td>{{ faq.description }}</td>#}
-                            <td>{{ faq.subcategory }}</td>
+                            {#<td>{{ faq.subcategory }}</td>#}
                             <td>{{ faq.createdAt ? faq.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                             <td>{{ faq.updatedAt ? faq.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                            <td>
-                                <a href="{{ path('admin_faqs_show', {'id': faq.id}) }}">show</a>
-                                <a href="{{ path('admin_faqs_edit', {'id': faq.id}) }}">edit</a>
+                            <td class="text-right">
+                                <div class="item-actions">
+                                    <a href="{{ path('admin_faqs_show', {'id': faq.id}) }}"  class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
+                                    <a href="{{ path('admin_faqs_edit', {'id': faq.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">edit</i></a>
+
+                                    <form method="post" class="delete-form" action="{{ path('admin_faqs_delete', {'id': faq.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ faq.id) }}">
+                                        <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     {% else %}
