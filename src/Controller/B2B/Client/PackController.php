@@ -27,6 +27,10 @@ class PackController extends AbstractController
     public function index($id, UserPacksRepository $packRepo, Request $request, Filesystem $filesystem, NotificationsRepository $notificationsRepository)
     {
 
+        if($request->getSession()->has('chosen_pack_url')){
+            $request->getSession()->remove('chosen_pack_url');
+        }
+
         $pack = $packRepo->find($id);
         $proposal = new ClientMissionProposal();
 

@@ -8,6 +8,7 @@ use App\Repository\UserPacksRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -28,6 +29,9 @@ class CommunityManagerController extends AbstractController
         {
             return JsonResponse::create(['success' => false, 'response' => '<strong>Pack not found </strong>']);
         }
+
+        $session  = new Session();
+        $session->set('chosen_pack_url', '/client/pack/'.$pack->getId());
 
         return $response = $this->render('b2b/client/community_manager/_view.html.twig',[
             'pack' => $pack
