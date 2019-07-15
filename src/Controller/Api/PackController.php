@@ -172,6 +172,7 @@ class PackController extends AbstractController
     {
         $pack = $packRepo->find($id);
         $images = [];
+        $regions = [];
         if(!is_null($pack))
         {
             foreach($pack->getUserPackMedia() as $media)
@@ -181,11 +182,17 @@ class PackController extends AbstractController
                     'id' => $media->getId()
                 ];
             }
+
+            foreach($pack->getPackRegions() as $region)
+            {
+                $regions[$region->getId()] = $region->getName();
+            }
             return new JsonResponse(['success' => true, 'data' => ['id' => $pack->getId(),
                 'price' => $pack->getUserBasePrice(),
                 'images' => $images,
                 'skill' => strtoupper($pack->getPackSkill()->getName()),
                 'title' => $pack->getTitle(),
+                'regions' => $regions,
                 'description' => $pack->getDescription()]]);
         }
     }
