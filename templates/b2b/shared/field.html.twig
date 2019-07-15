@@ -572,4 +572,34 @@
 
 
 
+{% block _mission_missionRegions_widget %}
+    {% if form.vars.data is empty %}
+        {#  This content will be filled via AJAX during mission creation as it depends on the pack selected #}
+    {% else %}
 
+        {% for choice in form.vars.choices %}
+
+            {% set checked = false %}
+            {% for value in form.vars.data %}
+                {% if value.id == choice.data.id %}
+                    {% set checked = true %}
+                {% endif %}
+            {% endfor %}
+            <div class="row" data-mission-region-id="{{ choice.data.id }}" {% if checked != true %}style="display:none !important"{% endif %}>
+                <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop" >
+                    <select class="selectpicker" data-width="100%" data-live-search="true"
+                            title="Choose a region from the list" readonly="readonly" disabled>
+                        <option value="{{ choice.data.name }}" selected>{{ choice.data.name }}</option>
+                    </select>
+                    <input type="checkbox" name="{{ form.vars.full_name }}[]" value="{{ choice.data.id }}" {% if checked == true %} checked="checked" {% endif %}class="mission-region-select"/>
+                </div>
+                <div class="col-md-2 mb-3 d-flex align-items-center">
+                    <a href="#" class="remove-mission-region" data-id="{{ choice.data.id }}"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="col-md-3 mb-3"  >
+        <a href="#" class="btn btn-block adding-block add-mission-region" {% if form.vars.data | length > 1 %}style="display:none !important;"{% endif %}><i class="fa fa-plus"></i></a>
+    </div>
+{% endblock %}

@@ -89,7 +89,7 @@
                                 <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
+                                <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="on-login-click"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
                             </div>
                             <div class="col-md-1 col-6 social-btn">
                                 <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
@@ -136,8 +136,8 @@
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
                             <div class="unregistered-log">
-                                <h4 class="fz-28 font-weight-bold text-center">Apprenons à mieux nous connaître!</h4>
-                                <p class="text-center">Apprenons à mieux nous connaître 😉</p>
+                                <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.city Services!</h4>
+                                <p class="text-center">Apprenons à mieux nous connaître! 😉</p>
                                 <div class="row">
                                     <div class="col-md-8 m-auto">
 
@@ -222,11 +222,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
     {{ form_end(form,{render_rest:false}) }}
 {% endblock %}
 {% block javascripts %}
@@ -243,6 +238,10 @@
             }else{
                 $(this).addClass('font-weight-bold');
             }
+        });
+
+        $("#on-login-click").click(function () {
+            window.location.href = "/connexion";
         });
     </script>
 {% endblock %}

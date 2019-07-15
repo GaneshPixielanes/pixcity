@@ -172,6 +172,14 @@ class UserMission
      */
     private $royalties;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Region")
+     * @ORM\JoinTable(name="pxl_b2b_mission_regions",
+     *      joinColumns={@ORM\JoinColumn(name="mission_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="region_id", referencedColumnName="id")})
+     */
+    private $missionRegions;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
@@ -179,6 +187,7 @@ class UserMission
         $this->clientTransactions = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->missionLogs = new ArrayCollection();
+        $this->missionRegions = new ArrayCollection();
     }
 
     protected function datePath(){
@@ -671,5 +680,26 @@ class UserMission
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMissionRegions()
+    {
+        return $this->missionRegions;
+    }
+
+    public function addMissionRegions(Region $region)
+    {
+        $this->missionRegions[] = $region;
+    }
+
+    /**
+     * @param mixed $missionRegions
+     */
+    public function setMissionRegions($missionRegions): void
+    {
+        $this->missionRegions = $missionRegions;
     }
 }
