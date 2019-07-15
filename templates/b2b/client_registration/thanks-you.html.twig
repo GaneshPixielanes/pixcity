@@ -110,17 +110,17 @@
                         <div class="col-md-6">
                             <div class="welcome-log">
                                 <img src="/images/login-welcome-mail.png" width="64" height="70" class="m-auto d-block mb-3">
-                                <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.City !</h4>
+                                <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.City Services !</h4>
                                 <p class="text-center">Tout est bon ! Regardez votre boîte mail. </p>
                                 <p class="my-5 text-center">Vous êtes désormais inscrit en tant que Client sur Pix.City Services. Vous allez pouvoir trouver le city-maker qui vous convient ! Bonne navigation ! </p>
                                 <div class="row">
                                     <div class="col-md-12 mb-4 text-center">
-                                        <a href="javascript:;" class="btn btn-pink btn-pill mx-auto lh2">Je cherche mon city-maker</a>
+                                        <a href="{{ path('b2b_client_auth_redirect_page') }}" class="btn btn-pink btn-pill mx-auto lh2">Continuer</a>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <a href="{{ path('b2b_client_auth_redirect_page') }}" class="mx-auto mb-5">Je n’ai pas reçu le mail de confirmation</a>
-                                </div>
+{#                                <div class="row">#}
+{#                                    <a href="{{ path('b2b_client_auth_redirect_page') }}" class="mx-auto mb-5">Je n’ai pas reçu le mail de confirmation</a>#}
+{#                                </div>#}
                             </div>
                         </div>
                     </div>
