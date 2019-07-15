@@ -4,11 +4,13 @@ namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
 use App\Entity\Client;
+use App\Entity\Option;
 use App\Entity\UserMission;
 use App\Form\B2B\ClientType;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\ClientRepository;
 use App\Repository\NotificationsRepository;
+use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
@@ -37,6 +39,7 @@ class ClientRegistrationController extends AbstractController
                           UserPasswordEncoderInterface $passwordEncoder,
                           FileUploader $fileUploader,
                           Filesystem $filesystem,
+                          OptionRepository $optionRepository,
                           Mailer $mailer)
     {
         $client = new Client();
@@ -97,10 +100,12 @@ class ClientRegistrationController extends AbstractController
 
         }
 
+        $tax = $optionRepository->findBy(['slug' => 'tax']);
 
         return $this->render('b2b/client_registration/index.html.twig', [
             'controller_name' => 'ClientRegistrationController',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tax' => $tax[0]
         ]);
     }
 
