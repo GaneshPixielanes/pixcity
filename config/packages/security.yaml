@@ -54,8 +54,8 @@ security:
             pattern: ^/client
             provider: clients
             form_login:
-                check_path: b2b_client_login
-                login_path: b2b_client_login
+                check_path: front_login
+                login_path: front_login
                 csrf_token_generator: security.csrf.token_manager
                 use_referer: true
             guard:

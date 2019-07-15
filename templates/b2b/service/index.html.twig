@@ -8,11 +8,12 @@
 
     <div class="services-home-page">
         {% for message in app.flashes('contact_send') %}
-            <div class="alert alert-success alert-dismissible" role="alert">
+            <div class="alert alert-dismissible" role="alert" style="background-color: #30b996;">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <strong></strong> {{ message }}
             </div>
         {% endfor %}
+
         <!-- Banner Starts-->
         <div class="banner-wrap">
             <div class="banner-image"></div>
@@ -149,7 +150,9 @@
                                                                 <div class="col-md-12">
                                                                     <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
                                                                         <div class="work-title font-weight-bold fz-14">{{ pack.packSkill.name }}</div>
-                                                                        <div class="work-amount font-weight-bold fz-16"><span class="d-block fz-12 font-weight-light">À partir de</span>{{ pack.totalPrice }}€</div>
+                                                                        <div class="work-amount font-weight-bold fz-16">
+{#                                                                            <span class="d-block fz-12 font-weight-light">À partir de</span>#}
+                                                                            {{ pack.totalPrice }} €</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
