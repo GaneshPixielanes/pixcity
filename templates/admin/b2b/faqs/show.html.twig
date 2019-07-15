@@ -37,7 +37,23 @@
                         </tr>
                         <tr>
                             <th>Subcategory</th>
-                            <td>{{ faq.subcategory }}</td>
+                            <td>
+                                {% if faq.subcategory == '0' %}
+                                    QUESTIONS JURIDIQUES
+                                {% elseif faq.subcategory == '1' %}
+                                    QUESTIONS GENERALES
+                                {% elseif faq.subcategory == '2' %}
+                                    LES DEVIS, PACKS ET MISSIONS
+                                {% elseif faq.subcategory == '3' %}
+                                    LE PAIEMENT DU CITY-MAKER
+                                {% elseif faq.subcategory == '4' %}
+                                    COMMENT DEVENIR CITY-MAKER SUR PIX.CITY SERVICES ?
+                                {% elseif faq.subcategory == '5' %}
+                                    LE PAIEMENT COTE CLIENT
+                                {% elseif faq.subcategory == '6' %}
+                                    COMMENT DEVENIR CLIENT SUR PIX.CITY SERVICES ?
+                                {% endif  %}
+                            </td>
                         </tr>
                         <tr>
                             <th>CreatedAt</th>
