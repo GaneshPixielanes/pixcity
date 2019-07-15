@@ -1,8 +1,5 @@
 {% extends 'b2b/base.html.twig' %}
 
-{% form_theme form 'b2b/shared/field.html.twig' %}
-
-
 {% block body %}
     <style>
         .user-avatar-field {
@@ -136,7 +133,7 @@
 
 
 
-    {{ form_end(form,{render_rest:false}) }}
+
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
