@@ -75,13 +75,13 @@
                 </div>
             </div>
             <div class="preview-cta d-flex align-items-center">
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a href="{{ url('b2b_client_pack_select',{'id':pack.id}) }}"
-                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
+                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
                 {% else %}
 
                     <a href="/client/register"
-                       class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
+                       class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
 
                 {% endif %}
             </div>
