@@ -59,6 +59,7 @@ class PackController extends Controller
     {
 
         $user = $this->getUser();
+        $regions = $user->getUserRegion();
 
         if($user->getB2bCmApproval() == 0){
             return $this->redirectToRoute('b2b_pack_list');
@@ -69,7 +70,7 @@ class PackController extends Controller
         $tax = $optionRepository->findBy(['slug' => 'tax']);
         $margin = $optionRepository->findOneBy(['slug' => 'margin']);
 
-        $form = $this->createForm(PackType::class,$pack);
+        $form = $this->createForm(PackType::class,$pack, ['regions' => $regions]);
 
         $form->handleRequest($request);
 
@@ -164,7 +165,7 @@ class PackController extends Controller
         $user = $this->getUser();
 
         $pack = $packRepository->findByUserPack($user,$id);
-
+        $regions = $user->getUserRegion();
         if($user->getB2bCmApproval() == 0 || empty($pack)){
             return $this->redirectToRoute('b2b_pack_list');
         }
@@ -172,7 +173,7 @@ class PackController extends Controller
         $tax = $optionRepository->findBy(['slug' => 'tax']);
         $margin = $optionRepository->findOneBy(['slug' => 'margin']);
 
-        $form = $this->createForm(PackType::class, $pack);
+        $form = $this->createForm(PackType::class, $pack, ['regions' => $regions]);
 
         $form->handleRequest($request);
 
@@ -443,12 +444,12 @@ class PackController extends Controller
         $tax = $optionRepository->findBy(['slug' => 'margin']);
 
         $user = $this->getUser();
-
+        $regions = $user->getUserRegion();
         if(is_null($pack))
         {
             return JsonResponse::create(['You are not authorized for this action']);
         }
-        $form = $this->createForm(PackType::class, $pack);
+        $form = $this->createForm(PackType::class, $pack,['regions' => $regions]);
 
         $form->handleRequest($request);
 

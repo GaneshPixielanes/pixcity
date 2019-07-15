@@ -16,6 +16,12 @@ class UserPacksType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $regions = [];
+        foreach($options['regions'] as $region)
+        {
+            $regions[] = $region->getId();
+        }
+        dd($regions);
         $builder
             ->add('title')
             ->add('description')
@@ -51,6 +57,7 @@ class UserPacksType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UserPacks::class,
+            'regions' => null
         ]);
     }
 }

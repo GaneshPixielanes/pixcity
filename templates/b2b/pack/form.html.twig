@@ -1,5 +1,5 @@
 <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
-
+{% form_theme form 'b2b/shared/field.html.twig' %}
 {{ form_start(form,{'attr':{'id' : 'pack-form'}}) }}
 
 {{ form_row(form._token) }}
@@ -194,26 +194,10 @@
                 .</p>
 
             <div class="row">
+
                 <div class="col-md-6 choose-regions-container">
                     <div class="choose-regions-dropdowns mb-5">
-                        <div class="row">
-                            <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
-                                <select class="selectpicker" data-width="100%" data-live-search="true"
-                                        title="Choose a region from the list" readonly="readonly" disabled>
-                                    <option value="{{ app.user.userRegion.first.name }}" selected>{{ app.user.userRegion.first.name }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        {% if  app.user.userRegion | length > 1 %}
-                        <div class="row">
-                            <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
-                                <select class="selectpicker" data-width="100%" data-live-search="true"
-                                        title="Choose a region from the list" disabled>
-                                    <option value="{{ app.user.userRegion.last.name }}" selected>{{ app.user.userRegion.last.name }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        {% endif %}
+                    {{ form_widget(form.packRegions) }}
                     </div>
                 </div>
                 <div class="col-md-6 choose-region-map d-flex align-items-center justify-content-center ">
