@@ -111,10 +111,9 @@ class ClientRegistrationController extends AbstractController
         $session  = new Session();
 
         if($session->has('chosen_pack_url')){
-            dd($session->get('chosen_pack_url'));
-            $this->redirectToRoute($session->get('chosen_pack_url'));
+          return $this->redirectToRoute($session->get('chosen_pack_url'));
         }else{
-            $this->redirectToRoute('b2b_client_main_index');
+            return $this->redirectToRoute('b2b_client_main_index');
         }
     }
 
