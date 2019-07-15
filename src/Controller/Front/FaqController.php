@@ -20,13 +20,16 @@ class FaqController extends AbstractController
             'faqs0' => $faqsRepository->findBy(['category'=>'CLIENT', 'subcategory'=>0]),
             'faqs1' => $faqsRepository->findBy(['category'=>'CLIENT', 'subcategory'=>1]),
             'faqs2' => $faqsRepository->findBy(['category'=>'CLIENT', 'subcategory'=>2]),
-            'faqs3' => $faqsRepository->findBy(['category'=>'CLIENT', 'subcategory'=>3]),
-            'faqs4' => $faqsRepository->findBy(['category'=>'CLIENT', 'subcategory'=>4]),
+
+            'faqs3' => $faqsRepository->findBy(['category'=>'CLIENT', 'subcategory'=>5]),
+            'faqs4' => $faqsRepository->findBy(['category'=>'CLIENT', 'subcategory'=>6]),
+
             'faqsCm0' => $faqsRepository->findBy(['category'=>'CM', 'subcategory'=>0]),
             'faqsCm1' => $faqsRepository->findBy(['category'=>'CM', 'subcategory'=>1]),
             'faqsCm2' => $faqsRepository->findBy(['category'=>'CM', 'subcategory'=>2]),
-            'faqsCm3' => $faqsRepository->findBy(['category'=>'CM', 'subcategory'=>5]),
-            'faqsCm4' => $faqsRepository->findBy(['category'=>'CM', 'subcategory'=>6]),
+
+            'faqsCm3' => $faqsRepository->findBy(['category'=>'CM', 'subcategory'=>3]),
+            'faqsCm4' => $faqsRepository->findBy(['category'=>'CM', 'subcategory'=>4]),
         ]);
     }
 }
