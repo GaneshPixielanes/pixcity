@@ -1,0 +1,162 @@
+{% extends 'b2b/base.html.twig' %}
+
+{% form_theme form 'b2b/shared/field.html.twig' %}
+
+
+{% block body %}
+    <style>
+        .user-avatar-field {
+            position: relative;
+        }
+        .portraitCompte {
+            display: block;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: solid 2px #038090;
+            overflow: hidden;
+            position: relative;
+            text-align: center;
+            margin: 20px auto;
+            background-size: cover;
+            cursor: pointer;
+        }
+
+        .user-avatar-field .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 3;
+            cursor: pointer;
+        }
+
+        .user-avatar-field .field {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .user-avatar-field {
+            position: relative;
+        }
+
+        .portraitCompte .label {
+            color: #fff;
+            background-color: #038090;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 10px;
+            -webkit-transition: all ease 0.3s;
+            transition: all ease 0.3s;
+        }
+
+    </style>
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
+        <div class="container">
+            <a class="navbar-brand" href="javascript:;"><img src="/images/header-logo-main.svg" alt="Pix.City"></a>
+            <div class="col-3 ml-auto social-mobile">
+                <div class="row">
+                    <div class="col-6 social-mobile-btn">
+                        <a href="javascript:;" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                    <div class="col-6 social-mobile-btn">
+                        <a href="javascript:;" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <!-- <span class="navbar-toggler-icon"></span> -->
+                <img src="/images/menu.svg" />
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <div class="col-md-5 ml-auto mt-2 mt-lg-0">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
+                        </div>
+                        <div class="col-md-1 col-6 social-btn">
+                            <a href="javascript:;" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-1 col-6 social-btn">
+                            <a href="javascript:;" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="login-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 login-content d-flex align-items-center">
+                    <div class="row w-100">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <div class="welcome-log d-none">
+                                <img src="/images/login-welcome-mail.png" width="64" height="70" class="m-auto d-block mb-3">
+                                <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.City !</h4>
+                                <p class="text-center">Tout est bon ! Regardez votre boîte mail. </p>
+                                <p class="my-5 text-center">Vous êtes désormais inscrit en tant que Client sur Pix.City Services. Vous allez pouvoir trouver le city-maker qui vous convient ! Bonne navigation ! </p>
+                                <div class="row">
+                                    <div class="col-md-12 mb-4 text-center">
+                                        <a href="javascript:;" class="btn btn-pink btn-pill mx-auto lh2">Je cherche mon city-maker</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <a href="{{ path('b2b_client_auth_redirect_page') }}" class="mx-auto mb-5">Je n’ai pas reçu le mail de confirmation</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    {{ form_end(form,{render_rest:false}) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {#    <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/client_registration.js')) }}"></script>#}
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="{{ asset('build/front/js/pages/client-register.js') }}"></script>
+
+    <script>
+        /* custom per page scripts */
+        $('input').keyup(function() {
+            if ($(this).val() == '') {
+                $(this).removeClass('font-weight-bold');
+            }else{
+                $(this).addClass('font-weight-bold');
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts_footer %}
+    {{ parent() }}
+
+{% endblock %}

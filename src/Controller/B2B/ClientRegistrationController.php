@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -43,7 +44,7 @@ class ClientRegistrationController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
             $em = $this->getDoctrine()->getManager();
             $client->setRoles(["ROLE_USER"]);
@@ -88,19 +89,12 @@ class ClientRegistrationController extends AbstractController
                 }
             }
 
-            $mailer->send($client->getEmail(),
-                'Bienvenue sur Pix.city Services !',
-                'emails/b2b/client-register.html.twig',
-                [
-                    'client' => $client
-                ]);
-            $this->redirectToRoute('b2b_client_main_index');
-//            return $this->render('b2b/client/index.html.twig',[
-//                'notifications' => $notifications,
-//                'missions' => $missions,
-//                'proposals' => $proposals,
-//                'proposal_unique' => $proposal_unique
-//            ]);
+            $mailer->send($client->getEmail(),'Bienvenue sur Pix.city Services !','emails/b2b/client-register.html.twig',[
+                'client' => $client
+            ]);
+
+            return $this->render('b2b/client_registration/thanks-you.html.twig');
+
         }
 
 
@@ -108,6 +102,19 @@ class ClientRegistrationController extends AbstractController
             'controller_name' => 'ClientRegistrationController',
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("redirect-page",name="redirect_page")
+     */
+    public function redirectPage(){
+        $session  = new Session();
+
+        if($session->has('chosen_pack_url')){
+            $this->redirectToRoute($session->get('chosen_pack_url'));
+        }else{
+            $this->redirectToRoute('b2b_client_main_index');
+        }
     }
 
 
