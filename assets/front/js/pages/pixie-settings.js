@@ -175,7 +175,6 @@ jQuery(document).ready(function() {
     // Limit the number of selected regions
 
     $('[name="user[pixie][regions][]"]').on('change', function (evt) {
-        console.log('hi');
         if ($('[name="user[pixie][regions][]"]:checked').length > 2) {
             this.checked = false;
             // $(this).parents(".plCheck").removeClass("clicked");
@@ -274,7 +273,9 @@ $(document).ready(function () {
 
     $(document).on('click','.remove-region',function (e) {
         e.preventDefault();
-        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').removeClass('active');
+        $('[data-original-title]').removeClass('active');
+        $('[data-original-title="'+$(".region-select:first option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').addClass('active');
 
         $('.choose-region-drop:last').remove();
        $(this).remove();

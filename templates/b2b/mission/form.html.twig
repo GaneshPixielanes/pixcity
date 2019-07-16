@@ -591,9 +591,11 @@
                     {
                         if(result.success == true)
                         {
-                            $('input[name="mission[missionBasePrice]"').val(result.data.price).trigger('change');
+                            $('input[name="mission[missionBasePrice]"').val(result.data.price).trigger('input');
                             var price = $('input[name="mission[missionBasePrice]"]').val();
-                            $('[name="mission[description]"]').text(result.data.description);
+                            $('[name="mission[description]"]').text(result.data.description).trigger('input');
+                            $('[name="mission[description]"]').val(result.data.description).trigger('input');
+                            $('.fr-view').html(result.data.description);
                             $('[name="mission[title]"]').val(result.data.title);
                             $('.pack-title-container').find('.inputlength').html(result.data.title.length);
                             console.log(result.data.title.length);
