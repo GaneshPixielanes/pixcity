@@ -234,7 +234,7 @@ class AdminUsersController extends Controller
            // $users->setDeleted(1);
            // $users->setDeletedAt(new \DateTime());
             $users->setCmUpgradeB2bDate(null);
-            $users->setB2bCmApproval(0);
+            $users->setB2bCmApproval(null);
             $users->setRoles(['ROLE_USER', 'ROLE_PIXIE']);
             $entityManager->flush();
         }
