@@ -59,7 +59,7 @@
 											<a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
 											<a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
 											{% if app.user.getB2bCmApproval() != "0" %}
-												{% if app.user.getB2bCmApproval() == "2" or app.user.getB2bCmApproval() == null %}
+												{% if app.user.getCmUpgradeB2bDate != null and (app.user.getB2bCmApproval() == "2" or app.user.getB2bCmApproval() == null) %}
 													{% if app.user.cards | length > 0 %}
 														<a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_manager_thank_you') }}">
 															<div class="col-3 pl-0">
@@ -78,7 +78,7 @@
 															</div>
 														</a>
 													{% endif %}
-												{% else %}
+												{% elseif app.user.getCmUpgradeB2bDate != null and app.user.getB2bCmApproval() == "1"  %}
 													<a class="dropdown-item user-link-logged p-3 d-flex" href="/community-manager/profile">
 														<div class="col-9 pl-0">
 															Espace BtoB <img src="/assets/images/footer-logo-main.svg" width="58">
@@ -90,7 +90,7 @@
 												{% endif %}
 										{% endif %}
 
-										{% if app.user.getCmUpgradeB2bDate == null  and app.user.cards | length > 0 %}
+										{% if app.user.getCmUpgradeB2bDate == null  and app.user.cards | length > 0 and app.user.getB2bCmApproval != 0 %}
 										<a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_community_manager') }}">
 											<div class="col-3 pl-0">
 												<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
