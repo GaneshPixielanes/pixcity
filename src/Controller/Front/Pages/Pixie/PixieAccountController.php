@@ -169,7 +169,7 @@ class PixieAccountController extends Controller
 
                     $user->setCmUpgradeB2bDate(new \DateTime('now'));
                     $user->setRoles(["ROLE_USER", "ROLE_PIXIE","ROLE_CM"]);
-                    $user->setB2bCmApproval(null);
+                    $user->setB2bCmApproval(2);
                     $entityManager->persist($user);
                     $entityManager->flush();
 
