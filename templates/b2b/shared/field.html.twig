@@ -128,13 +128,12 @@
             pas à lire
             notre <a href="{{ url('front_faq_index') }}">FAQ</a></p>
         <p>
-            Pour plus d’informations concernant les conditions d’assurance et les exclusions, <p>
-            vous pouvez vous référer aux <a href="/assets/documents/conditions-generales.pdf" target="_blank">Conditions Générales d’Assurance</a> ou consulter l’extrait de <a href="/assets/documents/conditions-particulières.pdf" target="_blank">Conditions particulières</a>
+            Pour plus d’informations concernant les conditions d’assurance et les exclusions,
         </p>
         <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200"
                   placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" id="mission-faorla-description" cols="30" rows="10" name="{{ form.vars.full_name }}" {% if form.vars.value != '' %}readonly="readonly"{% endif %}>{{ form.vars.value }}</textarea>
-        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength missionDescriptionLength">0</span>/<span
-                    class="input-maxlength">1200</span></p>
+{#        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength missionDescriptionLength">0</span>/<span#}
+{#                    class="input-maxlength">1200</span></p>#}
     </div>
 
 {% endblock %}
@@ -316,6 +315,9 @@
                 plateforme
                 (et contractualisée par son intermédiaire). Cette assurance est gratuite pour les
                 city-makers. N'hésitez pas à consulter notre page <a href="{{ url('front_faq_index') }}">FAQ</a> en cas de questions !</p>
+            <p>
+                Vous pouvez vous référer aux <a href="/assets/documents/conditions-generales.pdf" target="_blank">Conditions Générales d’Assurance</a> ou consulter l’extrait de <a href="/assets/documents/conditions-particulières.pdf" target="_blank">Conditions particulières</a>
+            </p>
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="customControlInline" name="{{ form.vars.full_name }}" value="1">
                 <label class="custom-control-label fz-16 text-textgray mr-4"
