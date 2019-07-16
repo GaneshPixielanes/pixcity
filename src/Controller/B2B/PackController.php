@@ -61,8 +61,9 @@ class PackController extends Controller
         $user = $this->getUser();
         $regions = $user->getUserRegion();
 
-        if($user->getB2bCmApproval() == 0){
-            return $this->redirectToRoute('b2b_pack_list');
+        if($this->getUser()->getB2bCmApproval() != 1)
+        {
+            return $this->redirectToRoute('front_homepage_index');
         }
 
         $pack = new UserPacks();
@@ -162,6 +163,10 @@ class PackController extends Controller
     public function edit($id, Request $request,UserPacksRepository $packRepository,Filesystem $filesystem,OptionRepository $optionRepository)
     {
 
+        if($this->getUser()->getB2bCmApproval() != 1)
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
         $user = $this->getUser();
 
         $pack = $packRepository->findByUserPack($user,$id);
