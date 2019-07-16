@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
 
 /**
  * @Route("/client/", name="b2b_client_auth_")
@@ -66,7 +68,7 @@ class ClientRegistrationController extends AbstractController
                 // Update client with the name of the profile pic
                 $client->setProfilePhoto($file);
             }
-
+            $client->setDeleted(null);
             $em->persist($client);
             $em->flush();
 
@@ -95,6 +97,10 @@ class ClientRegistrationController extends AbstractController
             $mailer->send($client->getEmail(),'Bienvenue sur Pix.city Services !','emails/b2b/client-register.html.twig',[
                 'client' => $client
             ]);
+
+            $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
+            $this->container->get('security.token_storage')->setToken($token);
+            $this->container->get('session')->set('_security_main', serialize($token));
 
             return $this->render('b2b/client_registration/thanks-you.html.twig');
 
