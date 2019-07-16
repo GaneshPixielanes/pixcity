@@ -169,24 +169,24 @@ class PixieAccountController extends Controller
 
                     $user->setCmUpgradeB2bDate(new \DateTime('now'));
                     $user->setRoles(["ROLE_USER", "ROLE_PIXIE","ROLE_CM"]);
-                    $user->setB2bCmApproval(0);
+                    $user->setB2bCmApproval(null);
                     $entityManager->persist($user);
                     $entityManager->flush();
 
-                    $message = (new \Swift_Message('Hello Email'))
-                        ->setFrom('noreply@pix.city')
-                        ->setTo($user->getEmail())
-                        ->setBody(
-                            $this->renderView(
-                                'b2b/emails/cm_registration.html.twig',
-                                ['user' => $user]
-                            ),
-                            'text/html'
-                        )
-                    ;
-
-
-                    $mailer->send($message);
+//                    $message = (new \Swift_Message('Hello Email'))
+//                        ->setFrom('noreply@pix.city')
+//                        ->setTo($user->getEmail())
+//                        ->setBody(
+//                            $this->renderView(
+//                                'b2b/emails/cm_registration.html.twig',
+//                                ['user' => $user]
+//                            ),
+//                            'text/html'
+//                        )
+//                    ;
+//
+//
+//                    $mailer->send($message);
 
                     return $this->redirectToRoute('front_pixie_account_manager_thank_you');
 
