@@ -143,11 +143,18 @@
 
                                         <div class="row">
                                             <div class="col-md-12 card shadow-sm mb-3 p-3">
-                                                <p class="font-weight-light text-center">Votre entreprise</p>
+                                                <p class="font-weight-light text-center mb-4">Votre entreprise</p>
 
                                                 <input name="file-avatar" id="client-logo" type="file" class="file-input"/>
                                                 <div class="thumb" style="background-image: url('/uploads/users')"></div>
-                                                <div class="field">{{ form_widget(form.profilePhoto) }}</div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-3">
+                                                        <div class="field">{{ form_widget(form.profilePhoto) }}</div>
+                                                    </div>
+                                                </div>
 
                                                 {{ form_widget(form.clientInfo.siret) }}
                                                 {{ form_errors(form.clientInfo.siret) }}
