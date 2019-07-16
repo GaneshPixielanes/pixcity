@@ -233,6 +233,9 @@ class AdminUsersController extends Controller
             $users = $entityManager->getRepository(User::class)->find($user->getId());
             $users->setDeleted(1);
             $users->setDeletedAt(new \DateTime());
+            $users->setCmUpgradeB2bDate(null);
+            $users->setB2bCmApproval(0);
+            $users->setRoles(['ROLE_USER', 'ROLE_PIXIE']);
             $entityManager->flush();
         }
 

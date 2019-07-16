@@ -66,7 +66,8 @@ class UserType extends AbstractType
                 'expanded' => true,
                 'choices'  => array(
                     'label.user' => 'ROLE_USER',
-                    'label.pixie' => 'ROLE_PIXIE'
+                    'label.pixie' => 'ROLE_PIXIE',
+                    'label.cm' => 'ROLE_CM'
                 ),
             ))
             ->add('plainPassword', RepeatedType::class, array(
