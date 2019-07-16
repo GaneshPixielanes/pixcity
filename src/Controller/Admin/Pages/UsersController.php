@@ -233,6 +233,11 @@ class UsersController extends Controller
                         $editedUser->getPixie()->getBilling()->setRib($previousRib);
                 }
             }
+            if($editedUser->getB2bCmApproval() == 0){
+                $editedUser->setCmUpgradeB2bDate(null);
+                $editedUser->setB2bCmApproval(0);
+                $editedUser->setRoles(['ROLE_USER','ROLE_PIXIE']);
+            }
 
 
             // Save the user
@@ -368,5 +373,4 @@ class UsersController extends Controller
 
         return $this->redirectToRoute('admin_users_list');
     }
-
 }
