@@ -59,35 +59,46 @@
 											<a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
 											<a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
 											{% if app.user.getB2bCmApproval() != "0" %}
-											{% if app.user.getB2bCmApproval() == "2" or app.user.getB2bCmApproval() == null %}
-												{% if app.user.getCmUpgradeB2bDate()  != null %}
-													<a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_manager_thank_you') }}">
-														<div class="col-3 pl-0">
-															<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
-														</div>
-														<div class="col-6">
-															<div class="row">
-																<div class="col-12">Espace Services</div>
-																<div class="col-12">
-																	<img src="/assets/images/footer-logo-main.svg" width="58">
+												{% if app.user.getB2bCmApproval() == "2" or app.user.getB2bCmApproval() == null %}
+													{% if app.user.cards | length > 0 %}
+														<a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_manager_thank_you') }}">
+															<div class="col-3 pl-0">
+																<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
+															</div>
+															<div class="col-6">
+																<div class="row">
+																	<div class="col-12">Espace Services</div>
+																	<div class="col-12">
+																		<img src="/assets/images/footer-logo-main.svg" width="58">
+																	</div>
 																</div>
 															</div>
+															<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+																<i class="fas fa-arrow-right"></i>
+															</div>
+														</a>
+													{% endif %}
+												{% else %}
+													<a class="dropdown-item user-link-logged p-3 d-flex" href="/community-manager/profile">
+														<div class="col-9 pl-0">
+															Espace BtoB <img src="/assets/images/footer-logo-main.svg" width="58">
 														</div>
 														<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
 															<i class="fas fa-arrow-right"></i>
 														</div>
 													</a>
 												{% endif %}
-											{% else %}
-												<a class="dropdown-item user-link-logged p-3 d-flex" href="/community-manager/profile">
-													<div class="col-9 pl-0">
-														Espace BtoB <img src="/assets/images/footer-logo-main.svg" width="58">
-													</div>
-													<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
-														<i class="fas fa-arrow-right"></i>
-													</div>
-												</a>
-											{% endif %}
+										{% endif %}
+
+										{% if app.user.getCmUpgradeB2bDate == null  and app.user.cards | length > 0 %}
+											<a class="dropdown-item user-link-logged p-3 d-flex" href="{{ path('front_pixie_account_community_manager') }}">
+												<div class="col-9 pl-0">
+													Espace BtoB <img src="/assets/images/header-drop-service-person.svg" width="58">
+												</div>
+												<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+													<i class="fas fa-arrow-right"></i>
+												</div>
+											</a>
 										{% endif %}
                                         {% else %}
 
