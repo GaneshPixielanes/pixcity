@@ -20,6 +20,12 @@ class InvoiceController extends AbstractController
      */
     public function index(UserMissionRepository $missionRepo, OptionRepository $optionsRepo, NotificationsRepository $notificationsRepo)
     {
+
+        if($this->getUser()->getB2bCmApproval() != 1)
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
+
         $missions = $missionRepo->findBy([
            'user' => $this->getUser(),
            'status' => MissionStatus::TERMINATED
@@ -40,6 +46,11 @@ class InvoiceController extends AbstractController
      */
         public function generate($id, UserMissionRepository $missionRepo)
         {
+            if($this->getUser()->getB2bCmApproval() != 1)
+            {
+                return $this->redirectToRoute('front_homepage_index');
+            }
+
         $user = $this->getUser();
 
         $mission = $missionRepo->findBy([

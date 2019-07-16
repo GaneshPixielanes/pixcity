@@ -32,7 +32,10 @@ class BtobController extends AbstractController{
         $user = $this->getUser();
 
 
-
+        if($user->getB2bCmApproval() != 1)
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
         #Unread Notifications of the user
         $notifications = $notificationsRepository->findBy(['user'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);
 
