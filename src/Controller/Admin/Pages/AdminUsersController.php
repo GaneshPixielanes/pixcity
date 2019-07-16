@@ -164,7 +164,7 @@ class AdminUsersController extends Controller
                 $query = $em->createQuery('SELECT g, COUNT(m.user) AS userPack
                     FROM App:User AS g
                     LEFT JOIN App:UserPacks AS m WITH g.id = m.user
-                    WHERE g.active=1 AND g.deleted = 0 AND g.b2b_cm_approval =1 GROUP BY g.id');
+                    WHERE g.active=1 AND g.deleted = 0 AND g.cmUpgradeB2bDate is not null GROUP BY g.id');
                 $result =  $query->getResult();
 
                 //$list = $userRepository->findBy([], ['createdAt' => 'DESC']);

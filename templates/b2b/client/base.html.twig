@@ -28,7 +28,7 @@
         <!-- Header -->
         <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('b2b_client_main_index') }}">
+                <a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}">
                     <img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
                 <div class="col-3 ml-auto social-mobile">
                     <div class="row">
@@ -54,7 +54,7 @@
                         <div class="col-md-5 ml-auto mt-2 mt-lg-0">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+                                    <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" id="devenir-city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
                                 </div>
                                 <div class="col-md-4">
                                     <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="on-login-click"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
@@ -457,6 +457,10 @@
 
             $("#on-login-click").click(function () {
                 window.location.href = "/connexion";
+            });
+
+            $("#devenir-city-maker").click(function () {
+                window.location.href = "/devenez-city-maker";
             });
 
             $("#profile-redirect").on('click',function () {
