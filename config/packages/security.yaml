@@ -1,5 +1,4 @@
 security:
-    always_authenticate_before_granting: true
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     encoders:
         App\Entity\Admin:
