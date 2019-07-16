@@ -233,10 +233,14 @@ class UsersController extends Controller
                         $editedUser->getPixie()->getBilling()->setRib($previousRib);
                 }
             }
-            if($editedUser->getB2bCmApproval() == 0){
-                $editedUser->setCmUpgradeB2bDate(null);
-                $editedUser->setB2bCmApproval(0);
-                $editedUser->setRoles(['ROLE_USER','ROLE_PIXIE']);
+            if($user->getViewMode() == ViewMode::B2B) {
+                if ($authChecker->isGranted('ROLE_B2C')) {
+                    if ($editedUser->getB2bCmApproval() == 0) {
+                        $editedUser->setCmUpgradeB2bDate(null);
+                        $editedUser->setB2bCmApproval(0);
+                        $editedUser->setRoles(['ROLE_USER', 'ROLE_PIXIE']);
+                    }
+                }
             }
 
 
