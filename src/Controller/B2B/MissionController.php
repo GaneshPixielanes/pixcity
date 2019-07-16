@@ -43,6 +43,11 @@ class MissionController extends AbstractController
      */
     public function index(UserMissionRepository $userMissionRepo, OptionRepository $optionsRepo, NotificationsRepository $notificationsRepo)
     {
+        if($this->getUser()->getB2bCmApproval() != 1)
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
+
         $missions['ongoing'] = $userMissionRepo->findOngoingMissions($this->getUser());
         $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()],['id' => 'DESC']);
         $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()],['id' => 'DESC']);
@@ -68,7 +73,10 @@ class MissionController extends AbstractController
                            MissionPaymentRepository $missionPaymentRepository
     )
     {
-
+        if($this->getUser()->getB2bCmApproval() != 1)
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
         $mission = new UserMission();
         # Get the CM associated with the pack and regions thus associated
         $regions = $this->getUser()->getUserRegion();

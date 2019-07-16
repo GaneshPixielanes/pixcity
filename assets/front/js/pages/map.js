@@ -121,6 +121,10 @@ $(document).ready(function() {
 
     }
 
+
+    //Load map
+    myMap();
+
     function onBoundsChanged() {
         if ($(map.getDiv()).children().eq(0).height() == window.innerHeight &&
             $(map.getDiv()).children().eq(0).width() == window.innerWidth) {
@@ -487,7 +491,7 @@ $(document).ready(function() {
             ),
             title: "Current Position"
         });
-        myMap();
+        // myMap();
         map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
 
     }
@@ -520,7 +524,6 @@ $(document).ready(function() {
 
     function initLocationProcedure() {
 
-
         if (navigator.geolocation) {
             var loc = navigator.geolocation.getCurrentPosition(displayAndWatch, locError);
 
@@ -531,10 +534,7 @@ $(document).ready(function() {
 
     if (loadCurrentLoc == "true") {
         initLocationProcedure();
-    } else {
-        myMap();
     }
-
     $('body').on('click', '.close-sidebar', function() {
         $('#map-sidebar').removeClass('d-md-block');
     });
