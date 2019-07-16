@@ -233,7 +233,7 @@ class UsersController extends Controller
                         $editedUser->getPixie()->getBilling()->setRib($previousRib);
                 }
             }
-            if($user->getViewMode() == ViewMode::B2B) {
+            /*if($user->getViewMode() == ViewMode::B2B) {
                 if ($authChecker->isGranted('ROLE_B2C')) {
                     if ($editedUser->getB2bCmApproval() == 0) {
                        // $editedUser->setCmUpgradeB2bDate(null);
@@ -247,7 +247,7 @@ class UsersController extends Controller
                     }
                 }
 
-            }
+            }*/
 
 
             // Save the user
