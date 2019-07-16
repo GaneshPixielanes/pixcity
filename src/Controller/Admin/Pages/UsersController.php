@@ -240,8 +240,13 @@ class UsersController extends Controller
                         $editedUser->setB2bCmApproval(0);
                         $editedUser->setRoles(['ROLE_USER', 'ROLE_PIXIE']);
                     }
-                }else
-                    $editedUser->setRoles(['ROLE_USER','ROLE_PIXIE','ROLE_CM']);
+                    else
+                    {
+                        $editedUser->setRoles(['ROLE_USER','ROLE_PIXIE','ROLE_CM']);
+                        $editedUser->setCmUpgradeB2bDate(new \DateTime());
+                    }
+                }
+
             }
 
 
