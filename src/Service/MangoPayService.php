@@ -23,7 +23,18 @@ class MangoPayService
         $this->mangoPayApi->Config->TemporaryFolder = realpath('uploads/mangopay');
         // $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
+        $this->mangoPayMoney = new MangoPay\Money(); 
+
+/*
+         $this->mangoPayApi = new MangoPay\MangoPayApi();
+        $this->mangoPayApi->Config->ClientId = 'pixprod';
+        $this->mangoPayApi->Config->ClientPassword = 'jXrK3iMTKzi6Yfb6DOCJbhhFRWCNV7kxr3PBVhomKscbm8cYzZ';
+//        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay";
+//        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
+        $this->mangoPayApi->Config->BaseUrl = 'https://api.mangopay.com';
         $this->mangoPayMoney = new MangoPay\Money();
+        */
     }
 
     public function createUser(MangoPay\UserNatural $userNatural)
