@@ -98,6 +98,12 @@
     {% endif %}
 
     <div class="{{ route starts with 'prestations_de_service' ? '' : 'container-fluid bg-dashboard' }}  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
+
+        <!-- Mobile filter Starts-->
+        <a href="javascript:;" class="mobile-filter position-fixed">
+            <i class="fas fa-filter"></i>
+        </a>
+        <!-- Mobile filter Ends-->
         <div class="{{ route starts with 'prestations_de_service' ? '' : 'row' }}">
 
 
@@ -441,11 +447,11 @@
             });
 
             /* Skills Pack Buttons */
-            $('a.skills-pack').click(function () {
-                // e.preventDefault();
-                $(this).parent('li').siblings().find('a').removeClass('active');
-                $(this).addClass('active');
-            });
+            // $('a.skills-pack').click(function () {
+            //     // e.preventDefault();
+            //     $(this).parent('li').siblings().find('a').removeClass('active');
+            //     $(this).addClass('active');
+            // });
 
             /* Restrict maxlengths for input and textarea fields */
             $('textarea.pack-description, input.pack-title').on("input", function () {

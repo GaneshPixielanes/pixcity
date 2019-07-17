@@ -65,7 +65,7 @@
             </div>
             <div class="modal-body">
                 <p>Êtes-vous sûr(e) de vouloir annuler l'édition de votre pack ? Toutes les modifications apportées ne seront pas sauvegardées.</p>
-                <p>Si vous avez des questions sur cette annulation, n'hésitez pas à consulter notre page d'aide.</p>
+                <p>Si vous avez des questions sur cette annulation, n'hésitez pas à consulter  <a href="{{ url('front_faq_index') }}" target="_blank">notre page d'aide</a>.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
@@ -88,13 +88,14 @@
             </div>
             <div class="modal-body">
                 <p>Êtes-vous sur de vouloir annuler l'édition de votre mission?
-                    Toutes les modifications apporter en cours de route ne seront pas sauvegarder.</p>
+                    Toutes les modifications apportées en cours de route ne seront pas sauvegardées.
+                </p>
                 <p>Si vous avez des questions sur le fonctionnementde Pix.City services, n’hésitez pas à
-                    à consulter nos pages d’aide dédiées</p>
+                    à consulter nos <a href="{{ url('front_faq_index') }}" target="_blank">pages d’aide dédiées</a>.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
-                <button type="button" class="btn btn-pink close-preview">ANNULER LA CREATION</button>
+                <button type="button" class="btn btn-pink close-preview">ANNULER L'ÉDITION</button>
             </div>
         </div>
     </div>
@@ -139,7 +140,7 @@
             <div class="modal-body">
                 <p>En cliquant sur « terminer la mission », une notification de fin de mission sera envoyée au client.</p>
                 <p>Dès sa validation, le paiement de votre mission pourra avoir lieu sous 48h.</p>
-                <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="{{ url('front_faq_index') }}">FAQ</a> ».</p>
+                <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="{{ url('front_faq_index') }}">FAQ</a></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
@@ -198,7 +199,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
-                <button type="button" class="btn btn-pink" id="confirmDocumentDelete" data-id="">SUPPRIMER Document</button>
+                <button type="button" class="btn btn-pink" id="confirmDocumentDelete" data-id="">SUPPRIMER DOCUMENT</button>
             </div>
         </div>
     </div>
@@ -237,9 +238,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-{#                {% if app.user.notifications | length > 0 %}#}
-{#                <h5 class="modal-title font-weight-bold">Notifications</h5>#}
-{#                {% endif %}#}
+                <h5 class="modal-title font-weight-bold">Notifications</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -247,8 +246,10 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
+                        <p>
+                            Vous n’avez pas encore de notifications
+                        </p>
 {#                        {% if app.user.notifications | length == 0 %}#}
-                            <h5 class="modal-title font-weight-bold">Notifications</h5>
 {#                        {% endif %}#}
                         {% for notification in app.user.notifications|sort|reverse %}
                         <a href="javascript:;" class="notification-card card p-3 text-darkblue text-decoration-none mb-2 unread">

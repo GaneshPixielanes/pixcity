@@ -127,11 +127,10 @@
             Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez
             pas à lire
             notre <a href="{{ url('front_faq_index') }}">FAQ</a></p>
-        <p>
-            Pour plus d’informations concernant les conditions d’assurance et les exclusions,
-        </p>
-        <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200"
-                  placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" id="mission-faorla-description" cols="30" rows="10" name="{{ form.vars.full_name }}" {% if form.vars.value != '' %}readonly="readonly"{% endif %}>{{ form.vars.value }}</textarea>
+{#        <p>#}
+{#            Pour plus d’informations concernant les conditions d’assurance et les exclusions,#}
+{#        </p>#}
+        <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200"  id="mission-faorla-description" cols="30" rows="10" name="{{ form.vars.full_name }}" {% if form.vars.value != '' %}readonly="readonly"{% endif %}>{{ form.vars.value }}</textarea>
 {#        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength missionDescriptionLength">0</span>/<span#}
 {#                    class="input-maxlength">1200</span></p>#}
     </div>
@@ -141,9 +140,7 @@
 {% block _mission_missionBasePrice_widget %}
     <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
         <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
-        <p class="text-textgray">Besoin de conseils. <a href="{{ url('front_faq_index') }}">Consultez notre
-                FAQ
-                City-Maker Services.</a></p>
+        <p class="text-textgray">Si vous ne savez pas comment définir vos prix,  <a href="{{ url('front_faq_index') }}">consultez notre FAQ</a></p>
         <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
         <div class="d-flex align-items-center">
             <div class="input-group w-10">
@@ -160,6 +157,7 @@
                 <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16 cm-client-price ">€</span>
             </p>
         </div>
+        <small>Les chiffres après la virgule ne sont pas autorisés</small>
     </div>
 {% endblock %}
 
@@ -272,8 +270,7 @@
         <h5 class="text-darkgray mb-0">Photos</h5>
         <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre
             bibliothèque
-            ou en
-            téléchargez des nouvelles pour illustrer votre pack.</p>
+            ou en télécharger des nouvelles pour illustrer votre pack.</p>
         <small class="text-textgray">Format : JPEG, PNG. Taille : 2Mo max</small>
         <div class="form-group dropzone clearfix mt-3 dz-clickable" id="photos-dropzone">
             <!-- <div class="row">
@@ -322,7 +319,7 @@
                 <input type="checkbox" class="custom-control-input" id="customControlInline" name="{{ form.vars.full_name }}" value="1">
                 <label class="custom-control-label fz-16 text-textgray mr-4"
                        for="customControlInline">Souscrire à l’assurance en partenariat avec Axa</label><img
-                        src="{{ absolute_url('/assets/images/axa-logo.png') }}">
+                        src="{{ absolute_url('/assets/images/axa_logo.png') }}" style="height:32px;width:32px">
             </div>
             <div class="row">
                 <div class="col-md-6 fz-14 font-weight-light mt-3">
@@ -330,7 +327,7 @@
                                             de dommages </span> causés par les travaux après leur achèvement<br/> (droit à l’image, propriété intellectuelle)
                 </div>
                 <div class="col-md-6 fz-14 font-weight-light mt-3">
-                    <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Prise en charge des conséquences des dommages (corporels, matériels, immatériels, etc.)<br/>
+                    <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Prise en charge des conséquences des dommages (corporels, matériels, immatériels, etc.)
                         que vous pouvez causer à autrui au cours d’une mission
                 </div>
             </div>
@@ -389,7 +386,7 @@
             <tfoot>
             <tr class="">
                 <td colspan="7" class="pt-4 text-center">
-                    <input type="file" class="d-none" id="document-file-upload" multiple/>
+                    <input type="file" class="d-none" id="document-file-upload" multiple accept=".doc, .docx, .pdf, .xls, .xlsx" />
                     <a href="javascript:;" class="btn btn-outline-darkblue btn-pill add-a-document">Ajouter
                         un document</a>
                 </td>
