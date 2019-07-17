@@ -365,12 +365,13 @@ class EmailController extends Controller
 
         }
 
+
         return $this->render('b2b/email/client/inbox.html.twig',[
             'form' => $form->createView(),
             'mails' => $mails,
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails,
-            'missionsCount' => count($missionRepo->findOngoingMissions($this->getUser(),'client')),
+            'missions' => $missionRepo->findOngoingMissions($this->getUser(),'client'),
             'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1])
         ]);
     }

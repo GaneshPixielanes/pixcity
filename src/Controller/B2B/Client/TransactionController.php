@@ -19,10 +19,11 @@ class TransactionController extends AbstractController
     public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo)
     {
 
-        $missions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
-
+        $missions_index['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
+        $missions = $missionRepo->findOngoingMissions($this->getUser(), 'client');
         return $this->render('b2b/client/transaction/index.html.twig',[
             'missions' => $missions,
+            'missions_index' => $missions_index,
             'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1])
         ]);
 

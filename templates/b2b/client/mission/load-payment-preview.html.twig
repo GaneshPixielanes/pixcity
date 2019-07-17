@@ -18,6 +18,20 @@
                             {{ mission.description | raw }}
                         </p>
                     </div>
+                    {% if mission.documents is defined and mission.documents | length > 0  %}
+
+                    <div class="work-documents-container preview col-sm-12 mt-2 mb-4 pb-4">
+                        <h5 class="text-darkblue mb-3">Documents de travail</h5>
+                        <ul class="work-documents-list m-0 p-0">
+                            {% for document in mission.documents %}
+                                <li class="work-documents-list-item p-3 d-flex align-items-center justify-content-between bg-lightwhite">
+                                    <p class="mb-0 fz-14"><i class="far fa-file-alt fz-16 mr-2"></i>{{ document.originalName }}</p>
+                                    <a href="/uploads/missions/temp/{{ document.name }}" download><i class="fas fa-download fz-16"></i></a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                     {% if mission.briefFiles is not null or mission.briefFiles != '' %}
                         <div class="work-documents-container preview col-sm-12 mt-2 mb-4 pb-4">
                             <h5 class="text-darkblue mb-3">Documents de travail</h5>
