@@ -285,7 +285,9 @@
                          <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
                              <select class="selectpicker" data-width="100%" data-live-search="true"
                                      title="Choose a region from the list" readonly="readonly" disabled>
-                                 <option value="{{ mission.region.name }}" selected>{{ mission.region.name }}</option>
+                                 {% for region in mission.region %}
+                                    <option value="{{ region.name }}" selected>{{ region.name }}</option>
+                                 {% endfor %}
                              </select>
                          </div>
                      </div>

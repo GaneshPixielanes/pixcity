@@ -106,9 +106,9 @@ class UserType extends AbstractType
             $builder
                 ->add('b2bCmApproval', ChoiceType::class, [
                     'choices' => [
+                        'Wait for approval' => 2,
                         'Yes' => 1,
-                        'No' => 0,
-                        'Wait for approval' => 2
+                        'No' => 0
                     ],
                 ])
                 ->add('userSkill', EntityType::class, array(

@@ -70,7 +70,7 @@
                             <div class="text-darkblue fz-16">
                                 {{ mission.user.pixie.billing.address.address~' '~mission.user.pixie.billing.address.zipcode }}
                                 {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice != 0 %}
-                                    572 139 996  R.C.S. NANTERRE.
+                                    {{ mission.user.pixie.billing.companyName }}
                                 {% endif %}
                             </div>
                         </div>
@@ -164,10 +164,10 @@
                 <div class="invoice-details-table col-md-12 p-0 my-4 text-textgray">
                     <table class="" border="1"  cellpadding="2px" cellspacing="2">
                         <tr><th colspan="2">Coordonnées bancaires du City-Maker</th></tr>
-                        <tr><td>NOM</td><td>{{ mission.user.pixie.billing.firstname }}Fouris</td></tr>
+                        <tr><td>NOM</td><td>{{ mission.user.pixie.billing.firstname }}</td></tr>
                         <tr><td>PAYS</td><td>{% if mission.user.pixie.billing.billingCountry == 'FR' %}France{% endif %}</td></tr>
                         <tr><td>IBAN</td><td>{{ mission.user.pixie.billing.billingIban }}</td></tr>
-                        <tr><td>BIC</td><td>{{ mission.user.pixie.billing.illingBic }}</td></tr>
+                        <tr><td>BIC</td><td>{{ mission.user.pixie.billing.billingBic }}</td></tr>
                     </table>
                     <br>
                 </div>
