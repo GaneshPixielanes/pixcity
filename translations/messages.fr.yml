@@ -368,4 +368,5 @@ b2b:
         to_days_start: Il y a
         to_days_end: jours
         reply : Répondre
+        emptyTable : Vous n’avez pas d’emails
 
