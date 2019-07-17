@@ -30,13 +30,15 @@ class ClientController extends Controller
     /**
      * @Route("profile",name="profile")
      */
-    public function profile(Request $request, FileUploader $fileUploader, UserPasswordEncoderInterface $passwordEncoder,Filesystem $filesystem)
+    public function profile(Request $request,OptionRepository $options,FileUploader $fileUploader, UserPasswordEncoderInterface $passwordEncoder,Filesystem $filesystem)
     {
         $user = $this->getUser();
 
         $form = $this->createForm(ClientType::class,$user,['type' => 'edit']);
 
         $form->handleRequest($request);
+
+        $tax = $options->findBy(['slug' => 'tax']);
 
         if($form->isSubmitted() && $form->isValid())
         {
@@ -70,6 +72,7 @@ class ClientController extends Controller
 
         return $this->render('b2b/client/profile.html.twig',[
            'user' => $user,
+            'tax' => $tax[0],
             'form' => $form->createView()
         ]);
     }
@@ -78,7 +81,7 @@ class ClientController extends Controller
     /**
      * @Route("index", name="index")
      */
-    public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationRepo, ClientMissionProposalRepository $proposalRepo)
+    public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationRepo, ClientMissionProposalRepository $proposalRepo,OptionRepository $optionRepository)
     {
         // Get client notifications
         $notifications = $notificationRepo->findBy(['client'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);
@@ -91,6 +94,8 @@ class ClientController extends Controller
 
         $proposals = $proposalRepo->findBy(['client' => $this->getUser()],['id'=>'DESC'],8);
 
+        $margin = $optionRepository->findOneBy(['slug' => 'margin']);
+
         foreach ($proposals as $proposal) {
             if(!in_array($proposal->getUser()->getId(),$proposal_unique)){
                 $proposal_unique [$proposal->getId()] = $proposal->getUser()->getId();
@@ -101,7 +106,8 @@ class ClientController extends Controller
             'notifications' => $notifications,
             'missions' => $missions,
             'proposals' => $proposals,
-            'proposal_unique' => $proposal_unique
+            'proposal_unique' => $proposal_unique,
+            'margin' => $margin
         ]);
 
     }

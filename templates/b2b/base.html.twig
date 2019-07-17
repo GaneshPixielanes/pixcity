@@ -32,7 +32,8 @@
 
         $(document).ready(function () {
             $(document).on('click','.close-preview', function () {
-                $('.close').trigger('click');
+                // $('.close').trigger('click');
+                $('.alert-modal').modal('hide');
                 $('.close-preview-edit').trigger('click');
             });
             /* Skills Pack Buttons */

@@ -94,7 +94,7 @@
                                         <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
                                              alt="My Missions">
                                     </div>
-                                    <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
+                                    <h4 class="mt-4 text-darkblue">Vous n’avez pas encore de mission avec ce statut </h4>
                                     <p> Ça y est votre profil et vos packs sont à jour !
                                         Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
                                         une bonne négociation !
@@ -127,7 +127,7 @@
                                             <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
                                                  alt="My Missions">
                                         </div>
-                                        <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
+                                        <h4 class="mt-4 text-darkblue">Vous n’avez pas encore de mission avec ce statut</h4>
                                         <p> Ça y est votre profil et vos packs sont à jour !
                                             Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
                                             une bonne négociation !
@@ -159,7 +159,7 @@
                                             <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
                                                  alt="My Missions">
                                         </div>
-                                        <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
+                                        <h4 class="mt-4 text-darkblue">Vous n’avez pas encore de mission avec ce statut </h4>
                                         <p> Ça y est votre profil et vos packs sont à jour !
                                             Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
                                             une bonne négociation !
@@ -175,7 +175,7 @@
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
                                         <i class="fas fa-handshake fz-16 btn-circle-32 bg-darkblue text-white"></i>
                                         <p class="mb-0 px-3 w-40">{{ mission.title | raw }}</p>
-                                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}/p>
+                                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-canceled">Annulée</p>
                                         <p class="mb-0 px-4 w-10">{% if mission.getActiveLog().userBasePrice is defined %}{{ mission.getActiveLog().userBasePrice |number_format(2)}}{% else %}{{  mission.missionBasePrice }}{% endif %}€</p>
@@ -191,7 +191,7 @@
                                             <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
                                                  alt="My Missions">
                                         </div>
-                                        <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
+                                        <h4 class="mt-4 text-darkblue">Vous n’avez pas encore de mission avec ce statut </h4>
                                         <p> Ça y est votre profil et vos packs sont à jour !
                                             Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
                                             une bonne négociation !

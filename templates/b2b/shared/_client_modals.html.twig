@@ -1,0 +1,55 @@
+<!-- Cancel Mission Success modal ends -->
+{% if notifications is defined %}
+    <!-- Notification Modal Starts -->
+    <div class="modal fade alert-modal" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {#                {% if app.user.notifications | length > 0 %}#}
+                    {#                <h5 class="modal-title font-weight-bold">Notifications</h5>#}
+                    {#                {% endif %}#}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {#                        {% if app.user.notifications | length == 0 %}#}
+                            <h5 class="modal-title font-weight-bold">Notifications</h5>
+                            {#                        {% endif %}#}
+                            {% for notification in app.user.notifications|sort|reverse %}
+                                <a href="javascript:;" class="notification-card card p-3 text-darkblue text-decoration-none mb-2 unread">
+                                    <div class="row">
+                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                            {% if
+                                                notification.type == 'edit_mission_cm' or notification.type == 'terminate_mission_cm' or notification.type == 'cancel_mission_cm' or notification.type == 'mission_client_paid'
+                                                or notification.type == 'edit_mission' or notification.type == 'terminate_mission' or notification.type == 'mission_paid' or notification.type == 'cancel_mission'
+                                            %}
+                                                <i class="fas fa-check-circle text-green fz-40"></i>
+                                            {% elseif
+                                                notification.type == 'create_mission_cm' or notification.type == 'mission_accepted_edit' or notification.type == 'mission_client_paid' or notification.type == 'terminate_mission_accept' or notification.type == 'mission_request'
+                                                or notification.type == 'create_mission' or notification.type == 'cancel_mission_accept' or notification.type == 'mission_accepted_edit_client' or notification.type == 'mission_cliet_paid_complete'
+                                            %}
+                                                <i class="fas fa-piggy-bank fz-40"></i>
+                                            {% elseif notification.client is not null %}
+                                                <img src="/uploads/clients/{{ notification.client.id }}/{{ notification.client.profilePhoto }}" class="notification-img rounded-circle">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-11">
+                                            <h6 class="mb-0 font-weight-normal">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
+                                            <p class="mb-1 font-weight-light">{{ notification.message }}</p>
+                                            <small class="text-normalgray fz-10">09 AVRIL 2019 - 12:39{{ notification.createdAt | date('d M Y - H:i') }}</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Notification Modal Ends -->
+{% endif %}
