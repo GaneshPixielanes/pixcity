@@ -635,10 +635,10 @@
 
                                $('[data-original-title="'+value+'"]').addClass('active');
                             });
-
-                            if($('[name="mission[missionRegions][]"]').length > 1)
+                            $('.add-mission-region').hide();
+                            if($('[name="mission[missionRegions][]"]').length == 1)
                             {
-                                $('.add-mission-region').hide();
+                                $('.remove-mission-region').hide();
                             }
 
                         }
