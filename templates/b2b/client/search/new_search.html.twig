@@ -3,7 +3,7 @@
 {% import 'b2b/shared/macros.html.twig' as macros %}
 {% block title %}Client | Home {% endblock %}
 
-{% block body %}
+{% block newbody %}
 
 
 
@@ -11,71 +11,72 @@
     <div class="col-md-2 p-sm-0 wall-left">
         <div class="row">
             <form method="GET" >
-            <div class="col-md-12">
-                <div class="col-md-12 py-4 filter-container">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h4 class="font-weight-light fz-16 title">Filter</h4>
-                        </div>
-                        <div class="col-md-8 text-right reload">
-                            <a href="/client/search" class="fz-12 text-normalgray">
-                                <i class="fas fa-redo"></i><span class=" fz-10">RÉINITIALISER</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 mb-4 search-filter">
-                            <input name="search" class="form-control" type="search" placeholder="Rechercher" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="font-weight-light fz-16 title">Région</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 mb-4 filter-checks">
-                            {% for region in regions %}
-                            <div class="custom-control custom-checkbox mb-1">
-                                {% if region.slug in filters['regions'] %}
-                                    <input type="checkbox" name="regions[]" class="custom-control-input" id="customCheck{{ loop.index }}" checked="checked" value="{{ region.slug }}">
-                                {% else %}
-                                    <input type="checkbox" name="regions[]" class="custom-control-input" id="customCheck{{ loop.index }}" value="{{ region.slug }}">
-                                {% endif %}
-                                <label class="custom-control-label text-darkblue" for="customCheck{{ loop.index }}">{{ region.name }}</label>
+                <div class="col-md-12">
+                    <div class="col-md-12 py-4 filter-container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4 class="font-weight-light fz-16 title">Filter</h4>
                             </div>
-                            {% endfor %}
-
-
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="font-weight-light fz-16 title">Compétence</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 mb-4 filter-checks">
-                            {% for skill in skills %}
-                            <div class="custom-control custom-checkbox mb-1">
-                                {% if skill.id in filters['skills'] %}
-                                    <input type="checkbox" name="skills[]" class="custom-control-input" id="customskillCheck{{ loop.index }}" value="{{ skill.id }}" checked="checked">
-                                {% else %}
-                                    <input type="checkbox" name="skills[]" class="custom-control-input" id="customskillCheck{{ loop.index }}" value="{{ skill.id }}">
-                                {% endif %}
-                                <label class="custom-control-label text-darkblue" for="customskillCheck{{ loop.index }}" value="{{ skill.id }}">{{  skill.name }}</label>
+                            <div class="col-md-8 text-right reload">
+                                <a href="/client/search" class="fz-12 text-normalgray">
+                                    <i class="fas fa-redo"></i><span class=" fz-10">RÉINITIALISER</span>
+                                </a>
                             </div>
-                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-4 search-filter">
+                                <input name="search" class="form-control" type="search" placeholder="Rechercher" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="font-weight-light fz-16 title">Région</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-4 filter-checks">
+                                {% for region in regions %}
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        {% if region.slug in filters['regions'] %}
+                                            <input type="checkbox" name="regions[]" class="custom-control-input" id="customCheck{{ loop.index }}" checked="checked" value="{{ region.slug }}">
+                                        {% else %}
+                                            <input type="checkbox" name="regions[]" class="custom-control-input" id="customCheck{{ loop.index }}" value="{{ region.slug }}">
+                                        {% endif %}
+                                        <label class="custom-control-label text-darkblue" for="customCheck{{ loop.index }}">{{ region.name }}</label>
+                                    </div>
+                                {% endfor %}
+
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="font-weight-light fz-16 title">Compétence</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-4 filter-checks">
+                                {% for skill in skills %}
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        {% if skill.id in filters['skills'] %}
+                                            <input type="checkbox" name="skills[]" class="custom-control-input" id="customskillCheck{{ loop.index }}" value="{{ skill.id }}" checked="checked">
+                                        {% else %}
+                                            <input type="checkbox" name="skills[]" class="custom-control-input" id="customskillCheck{{ loop.index }}" value="{{ skill.id }}">
+                                        {% endif %}
+                                        <label class="custom-control-label text-darkblue" for="customskillCheck{{ loop.index }}" value="{{ skill.id }}">{{  skill.name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="submit" class="btn btn-block btn-darkblue lh2" value="Search" />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-                <div class="container">
-                    <div class="text-center">
-                        <input type="submit" class="btn btn-primary" value="Search" />
-                    </div>
-                </div>
+
             </form>
         </div>
     </div>
@@ -136,7 +137,7 @@
                                                             <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
                                                                 <div class="work-title font-weight-bold fz-14">{{ pack.packSkill.name }}</div>
                                                                 <div class="work-amount font-weight-bold fz-16">
-{#                                                                    <span class="d-block fz-12 font-weight-light">À partir de</span>#}
+                                                                    {#                                                                    <span class="d-block fz-12 font-weight-light">À partir de</span>#}
                                                                     {{ pack.totalPrice }}€</div>
                                                             </div>
                                                         </div>
@@ -159,34 +160,34 @@
                 </div>
             </div>
             <!-- CM Masonry columns Ends -->
-{#            <div class="row">#}
-{#                <div class="col-md-12">#}
-{#                    12 sur 171 résultat#}
-{#                </div>#}
-{#            </div>#}
+            {#            <div class="row">#}
+            {#                <div class="col-md-12">#}
+            {#                    12 sur 171 résultat#}
+            {#                </div>#}
+            {#            </div>#}
 
             <!-- Blog pagination -->
             {% if users | length > 12 %}
                 {% if filters['total_pages'] != 0 %}
-                <div class="pagination-container my-5">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <ul class="pagination justify-content-center">
-                                    {% if filters['page'] != 1 %}
-                                    <li class="page-item disabled"><a class="page-link" href="/client/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
-                                    {% endif %}
-                                    {% for i in 1..filters['total_pages'] %}
-                                        <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/client/search?page={{ i }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}">{{ i }}</a></li>
-                                    {% endfor %}
-                                    {% if filters['page'] != filters['total_pages'] %}
-                                    <li class="page-item"><a class="page-link" href="/client/search?page={{ filters['page']+1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
-                                    {% endif %}
-                                </ul>
+                    <div class="pagination-container my-5">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="pagination justify-content-center">
+                                        {% if filters['page'] != 1 %}
+                                            <li class="page-item disabled"><a class="page-link" href="/client/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
+                                        {% endif %}
+                                        {% for i in 1..filters['total_pages'] %}
+                                            <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/client/search?page={{ i }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}">{{ i }}</a></li>
+                                        {% endfor %}
+                                        {% if filters['page'] != filters['total_pages'] %}
+                                            <li class="page-item"><a class="page-link" href="/client/search?page={{ filters['page']+1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endif %}
             {% endif %}
             <!-- Blog pagination -->
@@ -194,94 +195,5 @@
     </div>
     <!-- cm list end here -->
 
-    <!-- Footer -->
-    <div class="social-wrap">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="brand-footer">
-                        <img src="/images/footer-logo-main.svg" />
-                    </div>
-                    <div class="container-propos">
-                        <h4>A Propos De Nous</h4>
-                        <ul>
-                            <li><a href="^_^">Mentions Legales</a></li>
-                            <li><a href="^_^">Conditions générales d’utilisation</a></li>
-                            <li><a href="^_^">Politique de protection des données</a></li>
-                            <li><a href="^_^">La FAQ du City-Maker</a></li>
-                            <li><a href="^_^">L’Équipe</a></li>
-                            <li><a href="^_^">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div class="container-social">
-                        <h4>Pix.city Sur Les Reseaux Sociaux</h4>
-                        <ul>
-                            <li><a href="^_^"><i class="fab fa-facebook-square"></i> <span>Facebook</span></a></li>
-                            <li><a href="^_^"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a></li>
-                            <li><a href="^_^"><i class="fab fa-instagram"></i> <span>Instagram</span></a></li>
-                        </ul>
-                    </div>
-                    <div class="container-insta">
-                        <div class="row">
-                            <div class="col-md-6 col-6 text-left pl-1">
-                                <h4><i class="fab fa-instagram"></i> Instagram</h4>
-                            </div>
-                            <div class="col-md-6 col-6 text-right pr-1 tag">
-                                @pix.city
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 col-3 container-insta-image">
-                                <a href="javascript:;" target="_blank" rel="noopener">
-                                    <img src="https://scontent.cdninstagram.com/vp/5aace280ab6fe6af8e751c95ad09ec4a/5D1FDD0E/t51.2885-15/e15/c0.126.1080.1080/s150x150/53026482_583867542091943_7089626414636293551_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-3 container-insta-image">
-                                <a href="javascript:;" target="_blank" rel="noopener">
-                                    <img src="https://scontent.cdninstagram.com/vp/d880fc4db60d51ee64a98cc907ac56de/5D092635/t51.2885-15/e15/c0.135.1080.1080/s150x150/54247548_125889325204658_541676803380358362_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-3 container-insta-image">
-                                <a href="javascript:;" target="_blank" rel="noopener">
-                                    <img src="https://scontent.cdninstagram.com/vp/6bed99e9fa696f6d5541354a7b84dc52/5D151712/t51.2885-15/e15/c0.135.1080.1080/s150x150/53637635_559627357774426_699703565427063234_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-3 container-insta-image">
-                                <a href="javascript:;" target="_blank" rel="noopener">
-                                    <img src="https://scontent.cdninstagram.com/vp/1c7df32e8b3867ece19a4006fe9ec8fa/5D22CD11/t51.2885-15/e35/c0.135.1080.1080a/s150x150/53856604_249915129121000_4243293558998398799_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-3 container-insta-image">
-                                <a href="javascript:;" target="_blank" rel="noopener">
-                                    <img src="https://scontent.cdninstagram.com/vp/5f28df971cfcaf7969efd83b744043ba/5D23CA15/t51.2885-15/e15/c0.127.1080.1080a/s150x150/52273921_261014408164932_744580050313586065_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-3 container-insta-image">
-                                <a href="javascript:;" target="_blank" rel="noopener">
-                                    <img src="https://scontent.cdninstagram.com/vp/6491c51af5952032959370f8393c4fe3/5D0C48A4/t51.2885-15/e35/s150x150/51960962_294716391203558_1597597711548461940_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-3 container-insta-image">
-                                <a href="javascript:;" target="_blank" rel="noopener">
-                                    <img src="https://scontent.cdninstagram.com/vp/f0d2c0f5c883a2d4f9317d64b728dfcf/5D14FDB0/t51.2885-15/e15/c0.131.1080.1080/s150x150/52111607_422196091859273_3895223294332133424_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-3 container-insta-image">
-                                <a href="javascript:;" target="_blank" rel="noopener">
-                                    <img src="https://scontent.cdninstagram.com/vp/261daf3423b6df918a9e8e30f8bf3c6c/5D0D25DD/t51.2885-15/e15/c0.126.1080.1080/s150x150/52161743_179739602998449_4282064336755352876_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="footer-wrap">
-        <div class="container">
-            &copy; 2019 Pix City
-        </div>
-    </div>
 
-    <!-- Footer ends -->
 {% endblock %}
