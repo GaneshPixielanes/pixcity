@@ -2,7 +2,11 @@
 
 {% import 'b2b/shared/macros.html.twig' as macros %}
 {% block title %}Client | Home {% endblock %}
-
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
+{% endblock %}
 {% block newbody %}
 
 
@@ -25,7 +29,7 @@
                                 <div class="w-100">
                                     <div class="row">
                                         <div class="col-md-9">
-                                            <h1 class="fz-28 font-weight-bold">La solution de community management local</h1>
+                                            <h1 class="fz-28 font-weight-bold main-title">La solution de community management local</h1>
                                             <p class="fz-20 font-weight-light">Un community manager / influenceur local, basé(e) près de chez vous, vous accompagne pour gérer la visibilité locale de votre enseigne, commerce, établissement.</p>
                                         </div>
                                     </div>
@@ -94,7 +98,7 @@
         <div class="container mb-3">
             <div class="row">
                 <div class="col-md-7 d-flex align-items-center justify-content-center">
-                    <div class="w-100">
+                    <div class="activity-content w-100">
                         <h4 class="fz-20 font-weight-regular">Le statut des city-makers est vérifié :</h4>
                         <p class="fz-16 font-weight-light">Vous travaillerez avec des city-makers ayant un profil auto-entrepreneur ou ayant une entreprise et qui auront souscrit à une Responsabilité Civile professionnelle.</p>
                         <h4 class="fz-20 font-weight-regular">Les paiements sont sécurisés :</h4>
@@ -403,5 +407,6 @@
                 'z-index': '1032'
             })
         });
+        $('.mobile-filter').hide();
     </script>
 {% endblock %}
