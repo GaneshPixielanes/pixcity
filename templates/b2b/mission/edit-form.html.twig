@@ -6,7 +6,7 @@
 <input type="hidden" class="base-price" value="" data-bind-callback="calculateClientPrice" data-bind="client-price"/>
 <div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
     <img src="{{ mission.bannerUrl }}" class="cover-image w-100 h-100" alt="Mission Cover Image">
-    <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-preview-edit"><i class="fal fa-times fz-20"></i></a>
+    <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-preview-edit close-mission-preview-edit"><i class="fal fa-times fz-20"></i></a>
     <a href="javascript:;" data-toggle="modal" data-target="#cancelMissionEditionConfirmation" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover cancel-edition d-none"><i class="fal fa-times fz-20"></i></a>
 {#    <a href="javascript:;" class="btn btn-black btn-no-hover opacity-50 edit-image d-none" data-toggle="tooltip" title="" data-original-title="Edit Cover image">#}
 {#        <input type="file" name="myFile">#}
@@ -352,7 +352,7 @@
     </div>
 </nav>
 
-<div id="api-box" data-date="{{ "now" | date('d/m/Y') }}" data-margin="{{ margin }}" data-cm-name="{{ app.user }}"></div>
+<div id="api-box" data-date="{{ "now" | date('d/m/Y') }}" data-margin="{{ margin }}" data-cm-name="{{ app.user.firstname }}"></div>
 {{ form_end(form,{'render_rest':false}) }}
 
 <script>

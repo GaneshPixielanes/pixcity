@@ -301,7 +301,7 @@
          data-document-upload="{{ url('b2b_mission__upload') }}"
     data-date="{{ "now" | date('d/m/Y') }}"
     data-profile-image="{{ app.user.avatar }}" data-first-name="{{ app.user }}"
-    data-margin="{{ margin }}" data-cm-name="{{ app.user }}"></div>
+    data-margin="{{ margin }}" data-cm-name="{{ app.user.firstname }}"></div>
 
     <div id="dropzone-routes" data-upload-route="{{ url('b2b_mission__upload') }}" data-display-route="/api/pack/images/17"></div>
     {{ form_end(form,{'render_rest':false}) }}
