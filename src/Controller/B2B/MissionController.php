@@ -663,7 +663,7 @@ class MissionController extends AbstractController
 
         if(!is_null($mission))
         {
-            $fileName = $missionRepository->createSlug($mission->getTitle())."-cm.pdf";
+            $fileName = $missionRepository->createSlug($mission->getTitle())."-client.pdf";
             $response = new BinaryFileResponse('invoices/'.$mission->getId().'/'.$fileName);
 
             $response->headers->set('Content-Type','text/plain');
