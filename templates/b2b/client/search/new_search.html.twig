@@ -2,22 +2,24 @@
 
 {% import 'b2b/shared/macros.html.twig' as macros %}
 {% block title %}Client | Home {% endblock %}
-
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
+{% endblock %}
 {% block newbody %}
 
-
-
     <!-- filter start -->
-    <div class="col-md-2 p-sm-0 wall-left">
-        <div class="row">
-            <form method="GET" >
-                <div class="col-md-12">
+
+        <div class="col-md-2 wall-left">
+            <div class="col-md-12 filter-block">
+                <form method="GET" >
                     <div class="col-md-12 py-4 filter-container">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-4 col-6">
                                 <h4 class="font-weight-light fz-16 title">Filter</h4>
                             </div>
-                            <div class="col-md-8 text-right reload">
+                            <div class="col-md-8 col-6 text-right reload">
                                 <a href="/client/search" class="fz-12 text-normalgray">
                                     <i class="fas fa-redo"></i><span class=" fz-10">RÉINITIALISER</span>
                                 </a>
@@ -45,9 +47,6 @@
                                         <label class="custom-control-label text-darkblue" for="customCheck{{ loop.index }}">{{ region.name }}</label>
                                     </div>
                                 {% endfor %}
-
-
-
                             </div>
                         </div>
                         <div class="row">
@@ -69,17 +68,27 @@
                                 {% endfor %}
                             </div>
                         </div>
+                        {#<div class="row">#}
+                            {#<div class="col-md-12">#}
+                                {#<input type="submit" class="btn btn-block btn-darkblue lh2" value="Search" />#}
+                            {#</div>#}
+                        {#</div>#}
                         <div class="row">
                             <div class="col-md-12">
-                                <input type="submit" class="btn btn-block btn-darkblue lh2" value="Search" />
+                                <button class="btn btn-darkblue btn-block">Rechercher</button>
+                            </div>
+                        </div>
+                        <div class="row close-mobile-filter">
+                            <div class="col-md-12 mt-3">
+                                <a href="javascript:;" class="btn btn-block btn-outline-darkblue">Fermer</a>
                             </div>
                         </div>
                     </div>
-                </div>
-
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+
+
     <!-- filter end here -->
 
     <!-- cm list -->
@@ -196,4 +205,36 @@
     <!-- cm list end here -->
 
 
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" href="{{ absolute_url('/assets/js/faqs/custom.js') }}"></script>
+    <script type="text/javascript" href="{{ absolute_url('/assets/js/faqs/js-bundle.js') }}"></script>
+    <script>
+        /* custom per page scripts */
+        /* Skills Pack Buttons */
+        $('a.skills-pack').click(function (e) {
+            e.preventDefault();
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+                $(this).find('.skill').attr('checked', false);
+            } else {
+                $(this).addClass('active');
+                $(this).find('.skill').attr('checked', true);
+            }
+        });
+        /* Mobile filter show and hide*/
+        $('.mobile-filter').click(function(e) {
+            e.preventDefault();
+            $('.wall-left').slideDown('fast', function(){
+                $('.wall-left').addClass('show');
+            })
+        });
+        $('.close-mobile-filter a').click(function(e) {
+            e.preventDefault();
+            $('.wall-left').slideUp('400', function() {
+                $('.wall-left').removeClass('show');
+            });
+        });
+    </script>
 {% endblock %}
