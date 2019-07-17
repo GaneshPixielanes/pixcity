@@ -160,6 +160,7 @@
                 <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16 cm-client-price ">€</span>
             </p>
         </div>
+        <small>Les chiffres après la virgule ne sont pas autorisés</small>
     </div>
 {% endblock %}
 
@@ -389,7 +390,7 @@
             <tfoot>
             <tr class="">
                 <td colspan="7" class="pt-4 text-center">
-                    <input type="file" class="d-none" id="document-file-upload" multiple/>
+                    <input type="file" class="d-none" id="document-file-upload" multiple accept=".doc, .docx, .pdf, .xls, .xlsx" />
                     <a href="javascript:;" class="btn btn-outline-darkblue btn-pill add-a-document">Ajouter
                         un document</a>
                 </td>
