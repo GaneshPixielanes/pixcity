@@ -9,7 +9,9 @@
         <div class="pack-overview-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <p class="text-textgray text-12 mb-0">{{ pack.packSkill | upper }}</p>
             <h5 class="text-darkgray mb-3">{{ pack.title }}</h5>
-            {{ pack.description | raw }}
+            <p class="fz-12">
+                {{ pack.description | raw }}
+            </p>
         </div>
         {% if pack.userPackMedia | length %}
         <div class="pack-photos-container preview col-sm-12 border-bottom mt-2 mb-4 pb-4">
