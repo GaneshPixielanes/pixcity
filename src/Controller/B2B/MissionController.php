@@ -184,11 +184,11 @@ class MissionController extends AbstractController
             }
 
             /* Notification to CM */
-            $message = $mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getId()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission ";
+            $message = $mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getTitle()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission ";
             $notificationsRepository->insert($mission->getUser(),null,'create_mission_cm', $message, $mission->getId());
 
             /* Notification to Client */
-            $message = "CM ".$mission->getUser()." a préparé pour vous un devis pour la mission ".$mission->getId().". Cliquez-ici pour accepter le devis et procéder au pré-paiement de la mission via notre partenaire MangoPay.";
+            $message = "CM ".$mission->getUser()." a préparé pour vous un devis pour la mission ".$mission->getTitle().". Cliquez-ici pour accepter le devis et procéder au pré-paiement de la mission via notre partenaire MangoPay.";
             $notificationsRepository->insert(null,$mission->getClient(),'create_mission', $message, $mission->getId());
 
             return $this->redirectToRoute('b2b_mission_list');
@@ -262,12 +262,12 @@ class MissionController extends AbstractController
             $em->flush();
 
             /* Notificaton sent to the client informing about the edit*/
-            $message = 'CM '.$mission->getUser().'  a édité la mission '.$mission->getId().'. Vous devez valider cette nouvelle version pour que le city-maker puisse continuer la mission';
+            $message = 'CM '.$mission->getUser().'  a édité la mission '.$mission->getTitle().'. Vous devez valider cette nouvelle version pour que le city-maker puisse continuer la mission';
 //            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'Vous avez édité la mission '.$mission->getId().'. La nouvelle version de cette mission est en cours de validation côté client.');
             $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', $message, $missionLog->getId());
 
             /* Notification sent to the CM verifying that his edit request has been sent */
-            $message = 'Vous avez édité la mission '.$mission->getId().'. La nouvelle version de cette mission est en cours de validation côté client.';
+            $message = 'Vous avez édité la mission '.$mission->getTitle().'. La nouvelle version de cette mission est en cours de validation côté client.';
             $notificationsRepository->insert($mission->getUser(),null,'edit_mission_cm', $message, $missionLog->getId());
 
             return new JsonResponse(['success' => true]);
@@ -345,11 +345,11 @@ class MissionController extends AbstractController
                                 $mission->setCancelledBy($request->get('cancelledBy'));
                                 $mission->setCancelReason($request->get('reason'));
                                 /* Notification to client */
-                                $message = 'CM '.$mission->getUser().'  a demandé une annulation de la mission. Une action est requise de votre côté pour valider l\'annulation définitive de la mission '.$mission->getId().'.';
+                                $message = 'CM '.$mission->getUser().'  a demandé une annulation de la mission. Une action est requise de votre côté pour valider l\'annulation définitive de la mission '.$mission->getTitle().'.';
                                 $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$message, $mission->getId());
 
                                 /* Notification to CM*/
-                                $message = 'Vous avez demandé une annulation de la mission. Une action est requise côté client pour l\'annulation définitive de la mission '.$mission->getId().'.';
+                                $message = 'Vous avez demandé une annulation de la mission. Une action est requise côté client pour l\'annulation définitive de la mission '.$mission->getTitle().'.';
 
                                 $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_cm',$message, $mission->getId());
                                 break;
@@ -623,7 +623,7 @@ class MissionController extends AbstractController
 
         $mission->addMissionLog($missionLog);
         $em->flush();
-        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getId().' has beefed and needs your approval', $missionLog->getId());
+        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getTitle().' has beefed and needs your approval', $missionLog->getId());
 
         return new JsonResponse(['success' => true]);
     }
