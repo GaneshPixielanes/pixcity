@@ -18,7 +18,7 @@
 
         </div>
         <div class="col-md-12 tab-pane-content p-4" data-simplebar>
-            {% if missions['terminated'] is not empty %}
+            {% if missions_index['terminated'] is not empty %}
             <table class="table table-sm table-borderless my-billings-list-table">
                 <thead>
                 <tr class="text-normalgray fz-12">
@@ -33,7 +33,7 @@
                 </thead>
                 <tbody>
 
-                    {% for mission in missions['terminated'] %}
+                    {% for mission in missions_index['terminated'] %}
                         <tr class="text-darkgray fz-14">
                             <td valign="middle" class="text-center">
                                 <i class="far fa-file-alt fz-25"></i>
