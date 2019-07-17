@@ -66,24 +66,24 @@
                         </div>
                     </div>
                     <div class="btn-group mr-3">
-                        <a data-toggle="tooltip" title="Compose" data-placement="bottom" href="javascript:;"
+                        <a data-toggle="tooltip" title="{{ ('b2b.label.compose')| trans }}" data-placement="bottom" href="javascript:;"
                            class="btn btn-pink compose-email">
                             <i class="far fa-plus mr-2"></i> {{ ('b2b.label.compose')| trans }}
                         </a>
                     </div>
                     <div class="btn-group mr-3">
-                        <a data-toggle="tooltip" title="Inbox" data-placement="bottom" href="/client/email/inbox"
+                        <a data-toggle="tooltip" title="{{ ('b2b.label.inbox')| trans }}" data-placement="bottom" href="/client/email/inbox"
                            class="btn btn-darkblue go-to-inbox">
                             <i class="fas fa-inbox mr-2"></i> {{ ('b2b.label.inbox')| trans }} <span class="badge bg-pink text-white fz-12">{{ receiverMails | length }}</span>
                         </a>
 
 
-                        <a data-toggle="tooltip" title="Sent" data-placement="bottom" href="/client/email/send-emails"
+                        <a data-toggle="tooltip" title="{{ ('b2b.label.sent_box')| trans }}" data-placement="bottom" href="/client/email/send-emails"
                            class="btn btn-darkblue go-to-inbox">
                             <i class="fas fa-inbox mr-2"></i> {{ ('b2b.label.sent_box')| trans }} <span class="badge bg-pink text-white fz-12">{{ sendMails | length }}</span>
                         </a>
                         <!-- <div class="btn-group"> -->
-                        <a data-toggle="tooltip" title="Refresh" data-placement="bottom" href="javascript:;" id="refresh" class="btn btn-darkblue">
+                        <a data-toggle="tooltip" title="{{ ('b2b.label.refresh')| trans }}" data-placement="bottom" href="javascript:;" id="refresh" class="btn btn-darkblue">
                             <i class="fas fa-sync-alt"></i> {{ ('b2b.label.refresh')| trans }}
                         </a>
                         <!-- </div> -->
@@ -112,7 +112,7 @@
                         <!-- Mail header -->
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="text-darkblue mb-0">{{ ('b2b.label.compose_new_message')| trans }}</h5>
-                            <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="" data-original-title="Discard"><i class="fas fa-times mr-1"></i> {{ ('b2b.label.discard')| trans }}</button>
+                            <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="" data-original-title="{{ ('b2b.label.discard')| trans }}"><i class="fas fa-times mr-1"></i> {{ ('b2b.label.discard')| trans }}</button>
                         </div>
                         <!-- Mail header ends -->
 
@@ -151,9 +151,9 @@
                         <div class="card-footer">
                             <div class="float-right">
 {#                                <button type="button" class="btn btn-textgray mr-2" data-toggle="tooltip" title="Draft"><i class="fas fa-pencil mr-1"></i> Draft</button>#}
-                                <button type="submit" class="btn btn-pink send-message" data-toggle="tooltip" title="Send">{{ ('b2b.label.send')| trans }} <i class="fas fa-paper-plane ml-1"></i></button>
+                                <button type="submit" class="btn btn-pink send-message" data-toggle="tooltip" title="{{ ('b2b.label.send')| trans }}">{{ ('b2b.label.send')| trans }} <i class="fas fa-paper-plane ml-1"></i></button>
                             </div>
-                            <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="Discard"><i class="fas fa-times mr-1"></i> {{ ('b2b.label.discard')| trans }}</button>
+                            <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="{{ ('b2b.label.discard')| trans }}"><i class="fas fa-times mr-1"></i> {{ ('b2b.label.discard')| trans }}</button>
                         </div>
                         <!-- Mail footer ends -->
                     {{ form_end(form,{render_rest:false}) }}

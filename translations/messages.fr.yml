@@ -353,14 +353,14 @@ b2b:
         search: Rechercher
         search_email: Rechercher emails
         first: Premier
-        last : Dernier
-        previous: Précédent
+        last : Précédent
+        previous: Suivant
         next: Suivant
         Logout: Déconnexion
         compose_new_message: Rédiger un nouveau message
         discard: Annuler
         subject: Titre email
-        attachment: Pièces joints
+        attachment: Pièces jointes
         browse: Parcourir
         send: Envoyer
         from: De
@@ -368,4 +368,5 @@ b2b:
         to_days_start: Il y a
         to_days_end: jours
         reply : Répondre
+        emptyTable : Vous n’avez pas d’emails
 
