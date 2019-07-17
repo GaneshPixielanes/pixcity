@@ -82,7 +82,7 @@
 
 
         <h5 class="text-darkgray mb-0">Fixez votre nouveaux prix</h5>
-        <p class="text-textgray">Si vous ne savez pas comment définir vos prix suivez <a href="javascript:;">notre guide !</a></p>
+        <p class="text-textgray">Si vous ne savez pas comment définir vos prix suivez <a href="{{ url('front_faq_index') }}" target="_blank ">notre guide !</a></p>
         <p class="mb-0 mt-4 text-textgray fz-12"><span class="text-pink fz-16 mr-2"><span class="base-price">{{ mission.getActiveLog().userBasePrice  }}</span>€</span> Ce qui sera
             affiché sur la plateforme
             <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16"><span class="client-price">{{ mission.getActiveLog().userBasePrice | clientPrice(margin) | number_format(2) }}</span>€</span>
@@ -185,8 +185,7 @@
     </div>
     <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
         <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
-        <p class="text-textgray">Besoin de conseils. <a href="javascript:;">Consultez notre FAQ
-                City-Maker Services.</a></p>
+        <p class="text-textgray">Si vous ne savez pas comment définir vos prix,  <a href="{{ url('front_faq_index') }}">consultez notre FAQ</a></p>
         <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
         <div class="d-flex align-items-center">
             <div class="input-group w-10">

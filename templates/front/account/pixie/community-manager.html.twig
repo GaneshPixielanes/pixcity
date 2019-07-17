@@ -47,6 +47,17 @@
 
 
 {% endblock %}
+{% block javascripts %}
+{{ parent() }}
+    <script>
+        $(document).ready(function () {
+           $('.city-maker').on('click', function (e) {
+               e.preventDefault();
+               location.href = "/connexion/signout";
+           })
+        });
+    </script>
+{% endblock %}
 
 
 
