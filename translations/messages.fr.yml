@@ -353,14 +353,14 @@ b2b:
         search: Rechercher
         search_email: Rechercher emails
         first: Premier
-        last : Dernier
-        previous: Précédent
+        last : Précédent
+        previous: Suivant
         next: Suivant
         Logout: Déconnexion
         compose_new_message: Rédiger un nouveau message
         discard: Annuler
         subject: Titre email
-        attachment: Pièces joints
+        attachment: Pièces jointes
         browse: Parcourir
         send: Envoyer
         from: De
