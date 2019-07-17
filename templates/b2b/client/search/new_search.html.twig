@@ -6,22 +6,18 @@
 {% block body %}
 
 
-    <!-- Mobile filter Starts-->
-    <a href="javascript:;" class="mobile-filter position-fixed">
-        <i class="fas fa-filter"></i>
-    </a>
-    <!-- Mobile filter Ends-->
-    <!-- filter start -->
-    <div class="col-md-2 wall-left">
-        <div class="col-md-12 filter-block">
-            <form method="GET" >
 
+    <!-- filter start -->
+    <div class="col-md-2 p-sm-0 wall-left">
+        <div class="row">
+            <form method="GET" >
+            <div class="col-md-12">
                 <div class="col-md-12 py-4 filter-container">
                     <div class="row">
-                        <div class="col-md-4 col-6">
+                        <div class="col-md-4">
                             <h4 class="font-weight-light fz-16 title">Filter</h4>
                         </div>
-                        <div class="col-md-8 col-6 text-right reload">
+                        <div class="col-md-8 text-right reload">
                             <a href="/client/search" class="fz-12 text-normalgray">
                                 <i class="fas fa-redo"></i><span class=" fz-10">RÉINITIALISER</span>
                             </a>
@@ -49,6 +45,9 @@
                                 <label class="custom-control-label text-darkblue" for="customCheck{{ loop.index }}">{{ region.name }}</label>
                             </div>
                             {% endfor %}
+
+
+
                         </div>
                     </div>
                     <div class="row">
@@ -71,22 +70,12 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <button class="btn btn-darkblue btn-block">Rechercher</button>
+            </div>
+                <div class="container">
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-primary" value="Search" />
                     </div>
                 </div>
-                <div class="row close-mobile-filter">
-                    <div class="col-md-12 mt-3">
-                        <a href="javascript:;" class="btn btn-block btn-outline-darkblue">Fermer</a>
-                    </div>
-                </div>
-                {#<div class="container">#}
-                    {#<div class="text-center">#}
-                        {#<input type="submit" class="btn btn-primary" value="Search" />#}
-                    {#</div>#}
-                {#</div>#}
             </form>
         </div>
     </div>
