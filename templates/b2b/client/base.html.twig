@@ -139,7 +139,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if route == 'client_email_inbox'%}active{% endif %}{% if route == 'client_email_send_emails'%}active{% endif %}" href="/client/email/inbox" role="tab" aria-controls="billing">
-                                <i class="fas fa-envelope"></i>Email</a>
+                                <i class="fas fa-envelope"></i>Titre de l’email</a>
                         </li>
                     </ul>
                     <footer class="text-center p-2 text-pink fz-12">
@@ -277,7 +277,7 @@
                             <div class="customer-request-cancellation text-center">
                                 <p class="fz-20 mb-3">A la demande du client, vous avez accepté d’annuler la mission</p>
                                 <p class="fz-16 font-weight-light">Votre mission apparaitra comme annulée dans votre dashboard une fois que votre client l’aura confirmé. </p>
-                                <p class="fz-16 font-weight-light">Si vous avez des  questions, consultez notre <a href="javascript:;">FAQ</a></p>
+                                <p class="fz-16 font-weight-light">Si vous avez des  questions, consultez notre <a href="https://staging.pix.city/front/faq">FAQ</a></p>
                                 <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
                             </div>
                         </div>
@@ -308,7 +308,7 @@
 {#                            <p id="mission-termination-text"></p>#}
                             <p>En cliquant sur “terminer la mission”, une notification de fin de mission sera envoyée au client.</p>
                             <p>Dès sa validation, le paiement de votre mission pourra avoir lieu sous 48h.</p>
-                            <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre FAQ. Merci !</p>
+                            <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="https://staging.pix.city/front/faq">FAQ</a>. Merci !</p>
 
                         </div>
                         <div class="modal-footer">
@@ -364,22 +364,20 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="brand-footer">
-                            {#<img src="/images/footer-logo-main.svg">#}
-                            <img src="/assets/images/services-footer-logo.svg" alt="pix-city-services-footer-logo" >
+                            <img src="/images/footer-logo-main.svg">
                         </div>
                         <div class="container-propos">
                             <h4>A Propos De Nous</h4>
                             {{ menu('footer-1', 'footerMenu') | raw }}
                             {{ menu('footer-2', 'footerMenu') | raw }}
-                            {{ menu('footer-3', 'footerMenu') | raw }}
-                            {#<ul>#}
-                                {#<li><a href="^_^">Mentions Legales</a></li>#}
-                                {#<li><a href="^_^">Conditions générales d’utilisation</a></li>#}
-                                {#<li><a href="^_^">Politique de protection des données</a></li>#}
-                                {#<li><a href="^_^">La FAQ du City-Maker</a></li>#}
-                                {#<li><a href="^_^">L’Équipe</a></li>#}
-                                {#<li><a href="^_^">Contact</a></li>#}
-                            {#</ul>#}
+                            <ul>
+                                <li><a href="^_^">Mentions Legales</a></li>
+                                <li><a href="^_^">Conditions générales d’utilisation</a></li>
+                                <li><a href="^_^">Politique de protection des données</a></li>
+                                <li><a href="^_^">La FAQ du City-Maker</a></li>
+                                <li><a href="^_^">L’Équipe</a></li>
+                                <li><a href="^_^">Contact</a></li>
+                            </ul>
                         </div>
                         <div class="container-social">
                             <h4>Pix.city Sur Les Reseaux Sociaux</h4>
@@ -389,34 +387,34 @@
                                 <li><a href="https://instagram.com/pix_city/"><i class="fab fa-instagram"></i> <span>Instagram</span></a></li>
                             </ul>
                         </div>
-                        {#<div class="container-insta">#}
-                            {#<div class="row">#}
-                                {#<div class="col-md-6 col-6 text-left pl-1">#}
-                                    {#<h4><i class="fab fa-instagram"></i> Instagram</h4>#}
-                                {#</div>#}
-                                {#<div class="col-md-6 col-6 text-right pr-1 tag">#}
-                                    {#@pix.city#}
-                                {#</div>#}
-                            {#</div>#}
-                            {#<div class="row">#}
-                                {#{% for post in instagramFeed() %}#}
+                        <div class="container-insta">
+                            <div class="row">
+                                <div class="col-md-6 col-6 text-left pl-1">
+                                    <h4><i class="fab fa-instagram"></i> Instagram</h4>
+                                </div>
+                                <div class="col-md-6 col-6 text-right pr-1 tag">
+                                    @pix.city
+                                </div>
+                            </div>
+                            <div class="row">
+                                {% for post in instagramFeed() %}
 
-                                    {#<div class="col-md-3 col-3 container-insta-image">#}
-                                        {#<a href="{{ post.link }}" target="_blank" rel="noopener">#}
-                                            {#<img src="{{ post.image }}" alt="{{ post.title }}">#}
-                                        {#</a>#}
-                                    {#</div>#}
+                                    <div class="col-md-3 col-3 container-insta-image">
+                                        <a href="{{ post.link }}" target="_blank" rel="noopener">
+                                            <img src="{{ post.image }}" alt="{{ post.title }}">
+                                        </a>
+                                    </div>
 
-                                {#{% endfor %}#}
-                            {#</div>#}
-                        {#</div>#}
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="footer-wrap">
             <div class="container">
-                © 2019 Pix City Services
+                © 2019 Pix City
             </div>
         </div>
 
