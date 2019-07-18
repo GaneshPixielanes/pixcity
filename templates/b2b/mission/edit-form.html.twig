@@ -346,8 +346,8 @@
             <a class="close-mission-preview text-darkgray d-flex flex-column align-items-center mr-3 fz-12 d-none text-decoration-none" href="javascript:;">
                 <img src="..a/images/icons/preview-off-icon.svg" alt="Preview off"> Prévisualiser
             </a>
-            <a href="javascript:;" data-toggle="modal" data-target="#missionEditionConfirmation" class="btn btn-pink btn-pill disabled fz-12 d-flex align-items-center mission-log-update-confirm" data-id="{{ mission.id }}">SAUVEGARDER</a>
-            <a href="javascript:;" data-toggle="modal" data-target="#missionEditionConfirmation" class="btn btn-pink btn-pill fz-12 d-flex align-items-center mission-log-update d-none">SAUVEGARDER</a>
+            <a href="javascript:;" class="btn btn-pink btn-pill disabled fz-12 d-flex align-items-center mission-log-update-confirm" data-id="{{ mission.id }}">SAUVEGARDER</a>
+            <a href="javascript:;"  class="btn btn-pink btn-pill fz-12 d-flex align-items-center mission-log-update d-none">SAUVEGARDER</a>
         </div>
     </div>
 </nav>
@@ -366,7 +366,7 @@
             contentChanged: function () {
                 $('#description-mission-db').addClass('d-none');
                 $('#description-mission-fr').html(this.html.get());
-
+                $('.mission-log-update-confirm').addClass('show-confirmation');
             }
         }
     });
