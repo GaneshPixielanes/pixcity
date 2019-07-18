@@ -268,7 +268,7 @@ class MissionController extends AbstractController
 
             /* Notification sent to the CM verifying that his edit request has been sent */
             $message = 'Vous avez édité la mission '.$mission->getTitle().'. La nouvelle version de cette mission est en cours de validation côté client.';
-            $notificationsRepository->insert($mission->getUser(),null,'edit_mission_cm', $message, $missionLog->getId());
+            $notificationsRepository->insert($mission->getUser(),null,'edit_mission_cm', $message, $mission->getId());
 
             return new JsonResponse(['success' => true]);
         }

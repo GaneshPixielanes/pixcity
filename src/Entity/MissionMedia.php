@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MissionMediaRepository")
- * @ORM\Table(name="pxl_mission_media")
+ * @ORM\Table(name="pxl_b2b_mission_media")
  */
 class MissionMedia
 {

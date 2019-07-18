@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MissionDocumentRepository")
+ * @ORM\Table(name="pxl_b2b_mission_document")
  */
 class MissionDocument
 {

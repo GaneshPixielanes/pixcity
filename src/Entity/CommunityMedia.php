@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommunityMediaRepository")
+ * @ORM\Table(name="pxl_b2b_community_media")
  */
 class CommunityMedia
 {
