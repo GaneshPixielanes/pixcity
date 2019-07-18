@@ -101,8 +101,8 @@
 
             {% endif %}
             </textarea>
-            <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">256</span>/<span
-                        class="input-maxlength">1200</span></p>
+{#            <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">256</span>/<span#}
+{#                        class="input-maxlength">1200</span></p>#}
         </div>
         <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
@@ -313,6 +313,8 @@
 
     new FroalaEditor('#pack-description', {
         key:'iTB2xA5C4C1C2uzbtA3mfdhnD5D4H4C2C3A6B5C2B4A4==',
+        charCounterMax: 1200,
+        language: 'fr',
         events: {
             contentChanged: function () {
                 $('.pack-description-preview').html(this.html.get());

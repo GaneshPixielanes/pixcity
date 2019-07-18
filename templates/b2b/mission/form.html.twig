@@ -311,6 +311,7 @@
     <script src="{{ absolute_url('/assets/js/bind.js') }}" type="text/javascript"></script>
     <script src="{{ absolute_url('/assets/js/dropzone.js') }}" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+    <script src="{{ absolute_url('/assets/js/froala-language.js') }}"></script>
 
     <script>
         $(document).ready(function () {
@@ -318,7 +319,8 @@
             var editor = new FroalaEditor('#mission-faorla-description',{
                 key:'iTB2xA5C4C1C2uzbtA3mfdhnD5D4H4C2C3A6B5C2B4A4==',
                 language: 'fr',
-                placeholderText: ''
+                placeholderText: '',
+                charCounterMax: 1200
             });
 
             function readURL(input) {
@@ -639,6 +641,7 @@
                             if($('[name="mission[missionRegions][]"]').length == 1)
                             {
                                 $('.remove-mission-region').hide();
+
                             }
 
                         }
