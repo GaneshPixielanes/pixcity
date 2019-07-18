@@ -214,11 +214,13 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
-
+    <script src="{{ absolute_url('/assets/js/froala-language.js') }}"></script>
     <script>
 
         var editor = new FroalaEditor('#ticket_messages_content',{
             key:'iTB2xA5C4C1C2uzbtA3mfdhnD5D4H4C2C3A6B5C2B4A4==',
+            language: 'fr',
+            placeholderText:'Ecrivez votre texte',
         });
 
         $('#refresh').on('click',function () {

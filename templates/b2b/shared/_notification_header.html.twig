@@ -15,10 +15,10 @@
     {% else %}
 
         {% if missions is defined %}
-            <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missions|length }} mission{% if missions|length > 1 %}s{% endif %} en cours mission</a>
+            <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missions|length }} mission{% if missions|length > 1 %}s{% endif %} en cours</a>
         {% endif %}
         {% if missionsCount is defined %}
-            <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missionsCount }} mission{% if missions|length > 1 %}s{% endif %} en cours mission</a>
+            <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missionsCount }} mission{% if missions|length > 1 %}s{% endif %} en cours</a>
         {% endif %}
 
     {% endif %}
