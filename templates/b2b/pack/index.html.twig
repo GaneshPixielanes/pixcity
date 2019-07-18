@@ -50,7 +50,7 @@
                         <div class="col-md-12 tab-pane-content p-4">
                             <div class="col-md-12 content-top-header d-flex align-items-center">
                                 <div class="col-md-12 content-top-header d-flex align-items-center">
-                                    <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> packs disponibles</h4>
+                                    <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> {% if packs | length > 1 %}packs disponibles{% else %}pack disponible {% endif %}</h4>
                                     <div class="filter-packages d-flex">
                                         <label class="text-seagreen m-0 mr-3 d-none active">
                                             <input type="checkbox" name="filterpackage" value="all">
