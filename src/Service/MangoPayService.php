@@ -23,8 +23,6 @@ class MangoPayService
         $this->mangoPayApi->Config->TemporaryFolder = realpath('uploads/mangopay');
         // $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-//<<<<<<< HEAD
-
         $this->mangoPayMoney = new MangoPay\Money(); 
 
 /*
@@ -34,10 +32,7 @@ class MangoPayService
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
         $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay";
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-
         $this->mangoPayApi->Config->BaseUrl = 'https://api.mangopay.com';
-=======
->>>>>>> c93a16576f2046a8b25f9f6c47d1a967ba077181
         $this->mangoPayMoney = new MangoPay\Money();
         */
     }
