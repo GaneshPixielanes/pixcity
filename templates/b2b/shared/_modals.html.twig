@@ -248,9 +248,11 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
+                        {% if app.user.notifications | length == 0 %}
                         <p>
                             Vous n’avez pas encore de notifications
                         </p>
+                        {% endif %}
 {#                        {% if app.user.notifications | length == 0 %}#}
 {#                        {% endif %}#}
                         {% for notification in app.user.notifications|sort|reverse %}
