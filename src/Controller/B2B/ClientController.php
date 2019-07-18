@@ -67,7 +67,7 @@ class ClientController extends Controller
             }
 
 
-            return $this->redirect('/client/profile');
+            return $this->redirect('/client/index');
         }
 
         return $this->render('b2b/client/profile.html.twig',[
