@@ -25,6 +25,7 @@ use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,8 +38,12 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
  * @Route("/community-manager/mission/", name="b2b_mission_")
  * @Security("has_role('ROLE_CM')")
  */
-class MissionController extends AbstractController
+class MissionController extends Controller
 {
+
+    public function __construct(\Knp\Snappy\Pdf $knpSnappy) {
+        $this->knpSnappy = $knpSnappy;
+    }
     /**
      * @Route("list", name="list")
      */
