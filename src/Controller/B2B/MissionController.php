@@ -314,12 +314,15 @@ class MissionController extends Controller
 
             $last_result = $result;
 
+
+
             $this->container->get('knp_snappy.pdf')->generateFromHtml(
                 $this->renderView('b2b/invoice/client_quotation.html.twig',
                     array(
                         'mission' => $mission,
                         'missionLog' => $missionLog,
-                        'last_result' => $last_result
+                        'last_result' => $last_result,
+                        'basedir' => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath()
                     )
                 ), $clientInvoicePath
             );
