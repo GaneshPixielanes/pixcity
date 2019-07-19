@@ -290,7 +290,7 @@ class MissionController extends AbstractController
             $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
             $price = $mission->getMissionBasePrice();
 
-            $margin = $margin->getValue();
+
             $tax = $tax->getValue();
 
 //            $transactionFee = 0;
