@@ -167,7 +167,7 @@ class MissionController extends AbstractController
             $last_result = $result;
 
             $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                $this->renderView('b2b/invoice/client_invoice.html.twig',
+                $this->renderView('b2b/invoice/client_quotation.html.twig',
                     array(
                         'mission' => $mission,
                         'missionLog' => $missionLog,
@@ -306,7 +306,7 @@ class MissionController extends AbstractController
             $last_result = $result;
 
             $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                $this->renderView('b2b/invoice/client_invoice.html.twig',
+                $this->renderView('b2b/invoice/client_quotation.html.twig',
                     array(
                         'mission' => $mission,
                         'missionLog' => $missionLog,
