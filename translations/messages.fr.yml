@@ -271,6 +271,7 @@ action:
     submit: Submit
     backtolist: Back To List
     detail_view: Detail View
+    download: Download Invoice
 
 orderby:
     popular: Les plus populaires
