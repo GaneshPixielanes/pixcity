@@ -322,7 +322,6 @@ class MissionController extends Controller
                         'mission' => $mission,
                         'missionLog' => $missionLog,
                         'last_result' => $last_result,
-                        'basedir' => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath()
                     )
                 ), $clientInvoicePath
             );
