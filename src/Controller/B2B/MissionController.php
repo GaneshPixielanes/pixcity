@@ -320,6 +320,10 @@ class MissionController extends Controller
                 ), $clientInvoicePath
             );
 
+            $missionLog->setQuotationfile($clientInvoicePath);
+            $em->persist($missionLog);
+            $em->flush();
+
             /* Notificaton sent to the client informing about the edit*/
             $message = 'CM '.$mission->getUser().'  a édité la mission '.$mission->getTitle().'. Vous devez valider cette nouvelle version pour que le city-maker puisse continuer la mission';
 //            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'Vous avez édité la mission '.$mission->getId().'. La nouvelle version de cette mission est en cours de validation côté client.');
