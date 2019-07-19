@@ -41,10 +41,10 @@
         <div class="col-md-12 pixcity-invoice-content">
             <div class="row">
                 <div class="col-md-12 invoice-header d-flex align-items-center justify-content-between p-0 py-2">
-                    <a class="navbar-brand" href="javascript:;"><img src="/images/services-home-banner-logo.svg"
+                    <a class="navbar-brand" href="javascript:;"><img src="{{ asset('/images/services-home-banner-logo.svg', absolute=true) }}"
                                                                      alt="Pix.City"></a>
                     <h1 class="invoice-title font-weight-light text-normalgray">
-                        devis
+                        Devis
                     </h1>
                 </div>
                 <div class="col-md-12 invoice-body p-4">
@@ -63,7 +63,7 @@
                         </div>
                         <div class="invoice-number text-right text-darkblue font-weight-bold">
                             <div class="fz-22">
-                                Numéro de facture
+                                Numéro de devis
                             </div>
                             <div class="fz-16 font-weight-normal">
                                 PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}
@@ -87,7 +87,7 @@
                         </div>
                         <div class="invoice-number text-right text-darkblue font-weight-bold">
                             <div class="fz-22">
-                                Date de facture
+                                Date de devis
                             </div>
                             <div class="fz-16 font-weight-normal">
                                 {{ mission.updatedAt | date('d/m/Y') }}
