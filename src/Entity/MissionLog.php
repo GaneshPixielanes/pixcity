@@ -63,6 +63,11 @@ class MissionLog
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $quotationfile;
+
 //    /**
 //     * @ORM\OneToOne(targetEntity="App\Entity\UserMission", mappedBy="log")
 //     */
@@ -177,6 +182,18 @@ class MissionLog
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getQuotationfile(): ?string
+    {
+        return $this->quotationfile;
+    }
+
+    public function setQuotationfile(?string $quotationfile): self
+    {
+        $this->quotationfile = $quotationfile;
 
         return $this;
     }
