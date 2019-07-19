@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+
+    <meta charset="utf-8" />
+    <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Fonts -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/fonts/fontawesome/css/all.min.css') }}" />
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
+    <!-- Site CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
+
+    <style type="text/css">
+        /* CSS for this page only */
+    </style>
+</head>
+
+<body>
+<div class="container pixcity-invoice-wrap">
+    <div class="row">
+        <!-- Invoice contents -->
+        <div class="col-md-12 pixcity-invoice-content">
+            <div class="row">
+                <div class="col-md-12 invoice-header d-flex align-items-center justify-content-between p-0 py-2">
+                    <a class="navbar-brand" href="javascript:;"><img src="/images/services-home-banner-logo.svg"
+                                                                     alt="Pix.City"></a>
+                    <h1 class="invoice-title font-weight-light text-normalgray">
+                        FACTURE
+                    </h1>
+                </div>
+                <div class="col-md-12 invoice-body p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div class="invoice-client-details">
+                            <div class="text-normal-gray fz-14">
+                                Client
+                            </div>
+                            <div class="text-blue fz-30 font-weight-bold">
+                                {{ mission.user.firstname }}
+                            </div>
+                            <div class="text-darkblue fz-16">
+                                {{ mission.user.ClientInfo.address~' '~mission.user.ClientInfo.postalCode }}<br>
+                                {{ mission.user.ClientInfo.email }}
+                            </div>
+                        </div>
+                        <div class="invoice-number text-right text-darkblue font-weight-bold">
+                            <div class="fz-22">
+                                Numéro de facture
+                            </div>
+                            <div class="fz-16 font-weight-normal">
+                                PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="invoice-client-details">
+                            <div class="text-normal-gray fz-14">
+                                City-Maker
+                            </div>
+                            <div class="text-pink fz-25 font-weight-bold">
+                                {{ mission.user.firstname }}<br>
+                            </div>
+                            <div class="text-darkblue fz-16">
+                                {{ mission.user.pixie.billing.address.address~' '~mission.user.pixie.billing.address.zipcode }}
+                                {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice != 0 %}
+                                    {{ mission.user.pixie.billing.companyName }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="invoice-number text-right text-darkblue font-weight-bold">
+                            <div class="fz-22">
+                                Date de facture
+                            </div>
+                            <div class="fz-16 font-weight-normal">
+                                {{ mission.updatedAt | date('d/m/Y') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="invoice-details-table col-md-12 p-0 my-4">
+                    <table class="table">
+                        <thead>
+                        <tr class="bg-lightgray border">
+                            <th class="w-5">
+                                <div class="border-right">
+                                    #
+                                </div>
+                            </th>
+                            <th class="w-45">
+                                <div class="border-right">
+                                    DESCRIPTION
+                                </div>
+                            </th>
+                            <th class="w-30">
+                                <div class="border-right">
+                                    QUANTITE
+                                </div>
+                            </th>
+                            <th class="w-20">
+                                MONTANT
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>01</td>
+                            <td>{{ mission.referencePack.packskill.name~' / '~mission.title }}</td>
+                            <td>01</td>
+                            <td>{{ last_result['client_price'] | round(2, 'floor') }} €</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>SOUS-TOTAL</td>
+                            <td></td>
+                            <td>{{  last_result['client_price'] | round(2, 'floor') }} €</td>
+                        </tr>
+                        {% if last_result['client_total'] - last_result['client_price'] | round(2, 'floor') != 0 %}
+                            <tr>
+                                <td></td>
+                                <td>TVA  20%</td>
+                                <td></td>
+                                <td>{{ last_result['client_tax'] | round(2, 'floor') }} €</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td></td>
+                            <td class="text-dargblue font-weight-bold">SOUS TOTAL HT</td>
+                            <td></td>
+                            <td class="text-dargblue font-weight-bold">{{ last_result['client_total'] |round(2, 'floor') }} € <br><br></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td class="text-dargblue font-weight-bold">TOTAL TTC</td>
+                            <td></td>
+                            <td class="text-dargblue font-weight-bold">{{ last_result['client_total'] |round(2, 'floor') }} €</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-12 invoice-footer mb-3">
+                    <p class="text-darkblue font-weight-bold fz-12 mb-1">
+                        NOTICE:
+                    </p>
+                    <p class="text-textgray fz-14 mb-1">
+                        Conditions d'escompte Néant / La prestation est réalisée et payée selon les conditions générales d'utilisation du City Maker, ainsi que selon les stipulations pour autrui nées de l'acceptation par les parties des conditions générales Pix.city Services que les parties reconnaissent avoir lues et acceptées et qui sont disponibles à l'adresse <a href="https://docs.google.com/document/d/1UKKQBA3rl-LGjtMfJJvjTHtaDo9U1Yc2nTxFjqn4oXM/edit#heading=h.mgkbkicnug0t" target="_blank">Conditions générales d’utilisation et vente Pix.City Services</a>.
+                        <br>
+                        Facture établie par Pix.City Services pour le compte du City-maker.<br>
+                        Le prix affiché comprend la commission de Pix.City Services de 25%.<br>
+                        En cas de retard de paiement s'applique une pénalité égale au taux d'intérêt appliqué par la Banque Centrale Européenne (BCE) à son opération de refinancement la plus récente majorée de 10 points.
+                        <br>
+                        Indemnité forfaitaire pour frais de recouvrement de 40 euros.
+                    </p>
+                </div>
+
+
+            </div>
+        </div>
+        <!-- Invoice contents ends -->
+    </div>
+</div>
+<!-- Footer -->
+
+<!-- Footer ends -->
+
+<!-- Scripts -->
+<!-- <script src="js/jquery-3.1.1.min.js" /></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" /></script>
+<script src="js/popper.min.js"></script>
+<script src="node_modules/slick-carousel/slick/slick.min.js"></script>
+<script src="node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="node_modules/simplebar/dist/simplebar.min.js"></script>
+<script src="node_modules/moment/min/moment.min.js"></script>
+<script src="lib/datetime-picker/build/js/bootstrap-datetimepicker.min.js"></script> -->
+<!-- Scripts -->
+<script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
+<!-- <script src="js/app.js"></script> -->
+<script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
+
+<script>
+    /* custom per page scripts */
+
+    $(document).ready(function () {
+
+    });
+</script>
+</body>
+
+</html>
