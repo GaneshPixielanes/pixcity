@@ -306,7 +306,7 @@ class MissionController extends Controller
 //            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
             $result = $missionPaymentRepository->getPrices($price, $margin, $tax, $cityMakerType);
 
-            $filesystem->mkdir('uploads/missions/temp/'.$mission->getId(),0777);
+            $filesystem->mkdir('uploads/missions/temp/'.$mission->getId());
 
             $filename = $this->createSlug($mission->getTitle());
 
@@ -314,12 +314,14 @@ class MissionController extends Controller
 
             $last_result = $result;
 
+
+
             $this->container->get('knp_snappy.pdf')->generateFromHtml(
                 $this->renderView('b2b/invoice/client_quotation.html.twig',
                     array(
                         'mission' => $mission,
                         'missionLog' => $missionLog,
-                        'last_result' => $last_result
+                        'last_result' => $last_result,
                     )
                 ), $clientInvoicePath
             );
