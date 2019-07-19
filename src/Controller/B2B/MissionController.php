@@ -167,7 +167,7 @@ class MissionController extends Controller
 
             $filename = $this->createSlug($mission->getTitle());
 
-            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client.pdf";
+            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client-".$missionLog->getId().".pdf";
 
             $last_result = $result;
 
@@ -180,6 +180,10 @@ class MissionController extends Controller
                     )
                 ), $clientInvoicePath
             );
+
+            $missionLog->setQuotationfile($clientInvoicePath);
+            $em->persist($missionLog);
+            $em->flush();
 
 
             #Move banner and brief files
