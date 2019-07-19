@@ -32,24 +32,29 @@
                         </ul>
                     </div>
                     {% endif %}
-                    {% if mission.briefFiles is not null or mission.briefFiles != '' %}
-                        <div class="work-documents-container preview col-sm-12 mt-2 mb-4 pb-4">
-                            <h5 class="text-darkblue mb-3">Documents de travail</h5>
-                            <ul class="work-documents-list m-0 p-0">
+
+                    {% if mission.documents is defined and mission.documents | length > 0  %}
+
+                    <div class="work-documents-container preview col-sm-12 mt-2 mb-4 pb-4">
+                        <h5 class="text-darkblue mb-3">Documents de travail</h5>
+                        <ul class="work-documents-list m-0 p-0">
+                            {% for document in mission.documents %}
                                 <li class="work-documents-list-item p-3 d-flex align-items-center justify-content-between bg-lightwhite">
-                                    <p class="mb-0 fz-14"><i class="far fa-file-alt fz-16 mr-2"></i> Brief mission {{ mission.user.firstname }}</p>
-                                    <a href="{{ url('b2b_mission_download',{'id':mission.id}) }}"><i class="fas fa-download fz-16"></i></a>
+                                    <p class="mb-0 fz-14"><i class="far fa-file-alt fz-16 mr-2"></i>{{ document.originalName }}</p>
+                                    <a href="/uploads/missions/temp/{{ document.name }}" download><i class="fas fa-download fz-16"></i></a>
                                 </li>
-                            </ul>
-                        </div>
+                            {% endfor %}
+                        </ul>
+                    </div>
                     {% endif %}
+
                     <div class="financial-infos-container preview col-sm-12 mt-2 mb-4 pb-4">
                         <h5 class="text-darkblue mb-0"> Montant TTC de la mission</h5>
                         <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ last_result['client_total'] |round(2, 'floor') }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
-{#                        <div class="btn-group" role="group" aria-label="">#}
-{#                            <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>#}
-{#                            <button type="button" class="btn btn-darkblue"><i class="fas fa-download fz-16"></i></button>#}
-{#                        </div>#}
+                        <div class="btn-group" role="group" aria-label="">
+                            <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>
+                            <a href="{{ mission.activelog.quotationfile }}" class="btn btn-darkblue"><i class="fas fa-download fz-16"></i></a>
+                        </div>
                     </div>
 {#                    <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">#}
 {#                        <h5 class="text-darkblue mb-3">Zone géographique</h5>#}
@@ -143,7 +148,7 @@
                                 TVA
                             </div>
                             <div class="col-sm-6 text-right">
-                                {{ last_result['client_tax'] | round(2, 'floor')  }} €</div>
+                                {{ last_result['client_tax'] | round(2, 'floor')last_result['client_tax'] | round(2, 'floor')  }} €</div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6 fz-14">
