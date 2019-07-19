@@ -306,7 +306,7 @@ class MissionController extends Controller
 
             $filename = $this->createSlug($mission->getTitle());
 
-            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client.pdf";
+            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client-".$missionLog->getId().".pdf";
 
             $last_result = $result;
 
