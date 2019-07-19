@@ -241,7 +241,7 @@ class AdminUsersController extends Controller
         $zip = new \ZipArchive();
 
         // The name of the Zip documents.
-        $zipName = 'Documents.zip';
+        $zipName = 'm_'.$id.'.zip';
 
         $zip->open($zipName,  \ZipArchive::CREATE);
         foreach ($files as $file) {

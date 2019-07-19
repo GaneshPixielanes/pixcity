@@ -58,11 +58,13 @@
                                     </thead>
                                     <tbody>
                                     {% for user_trans in user_mission.clientTransactions %}
+                                        {% if user_trans.mangopayTransactionId != '' %}
                                         <tr>
                                             <td>{{ user_trans.amount }}</td>
-                                            <td>{{ user_trans.createdAt ? user_trans.createdAt|date('d/M/Y') : 'N/A' }}</td>
+                                            <td>{{ user_trans.createdAt ? user_trans.createdAt|date('d/m/Y') : 'N/A' }}</td>
                                             <td>{{ user_trans.mangopayTransactionId }}</td>
                                         </tr>
+                                        {% endif %}
                                     {% else %}
                                         <tr>
                                             <td colspan="2">no records found</td>
