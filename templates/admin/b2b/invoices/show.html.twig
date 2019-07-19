@@ -1,0 +1,90 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.invoices'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.invoices'|trans }}
+                </h2>
+                <div>
+                    <a href="{{path('admin_admins_invoices') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
+                </div>
+            </div>
+            <div class="body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Mission Id </th>
+                            <td>{{ user_mission.id }} </td>
+                        </tr>
+                        <tr>
+                            <th>Titre</th>
+                            <td> {{ user_mission.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>CM</th>
+                            <td>{{ user_mission.user.firstname~' '~user_mission.user.lastname }} </td>
+                        </tr>
+                        <tr>
+                            <th>Client Details</th>
+                            <td>
+                                {{ user_mission.client.firstName~' '~user_mission.client.lastName }} ,
+                                {{ user_mission.client.clientInfo.address }},
+                                {{ user_mission.client.clientInfo.city }} -
+                                {{ user_mission.client.clientInfo.postalCode }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Billed Amount</th>
+                            <td>{{ user_mission.userMissionPayment.clientTotal|number_format(2, '.', ',')  }}</td>
+                        </tr>
+                        <tr>
+                            <th>Transaction details:</th>
+                            <td>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Transaction amount </th>
+                                            <th>Transaction Date </th>
+                                            <th>Transaction id of MangoPay </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user_trans in user_mission.clientTransactions %}
+                                        <tr>
+                                            <td>{{ user_trans.amount }}</td>
+                                            <td>{{ user_trans.createdAt ? user_trans.createdAt|date('d/M/Y') : 'N/A' }}</td>
+                                            <td>{{ user_trans.mangopayTransactionId }}</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="2">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Date de création</th>
+                            <td>{{ user_mission.createdAt ? user_mission.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date terminated</th>
+                            <td>{{ user_mission.updatedAt ? user_mission.updatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

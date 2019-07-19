@@ -15,7 +15,6 @@ label:
     packsList: Packs List
     packs: Packs
     missions: Missions
-    payments: Payments
     pagenotfound: Page not found
     title: Titre
     email: Email
@@ -77,6 +76,7 @@ label:
     skills: Skill
     category: Category
     subcategory: Subcategory
+    invoices: Invoices
     network:
         facebook: Facebook
         twitter: Twitter
