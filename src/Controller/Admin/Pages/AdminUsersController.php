@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\Pages;
 
+use App\Controller\B2B\Client\MissionController;
 use App\Entity\User;
 use App\Entity\UserMission;
 use App\Form\Admin\AdminType;
@@ -211,6 +212,51 @@ class AdminUsersController extends Controller
         return $this->render('admin/b2b/invoices/show.html.twig', [
             'user_mission' => $userMission,
         ]);
+    }
+    /**
+     * Create and download some zip documents.
+     *
+     * @Route("/invoices/download/{id}", name="download_invoices", methods={"GET"})
+     * @return Symfony\Component\HttpFoundation\Response
+     */
+    public function zipDownloadDocumentsAction($id, UserMissionRepository $userMissionRepository)
+    {
+        $mission = $userMissionRepository->findOneBy(['id'=>$id]);
+        $filename = MissionController::createSlug($mission->getTitle());
+
+        $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
+        $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
+        $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
+
+        $files = [];
+
+
+        //foreach ($documents as $document) {
+            array_push($files,  $clientInvoicePath);
+            array_push($files,  $cmInvoicePath);
+            array_push($files,  $pcsInvoicePath);
+        //}
+
+        // Create new Zip Archive.
+        $zip = new \ZipArchive();
+
+        // The name of the Zip documents.
+        $zipName = 'Documents.zip';
+
+        $zip->open($zipName,  \ZipArchive::CREATE);
+        foreach ($files as $file) {
+            $zip->addFromString(basename($file),  file_get_contents($file));
+        }
+        $zip->close();
+
+        $response = new Response(file_get_contents($zipName));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . $zipName . '"');
+        $response->headers->set('Content-length', filesize($zipName));
+
+        @unlink($zipName);
+
+        return $response;
     }
     /**
      * @Route("/{id}", name="show", methods={"GET"})
