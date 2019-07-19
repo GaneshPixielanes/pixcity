@@ -3,9 +3,11 @@
 namespace App\Controller\Admin\Pages;
 
 use App\Entity\User;
+use App\Entity\UserMission;
 use App\Form\Admin\AdminType;
 use App\Entity\Admin;
 use App\Repository\AdminRepository;
+use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -180,15 +182,17 @@ class AdminUsersController extends Controller
     }
 
     /**
-     * @Route("/payments", name="payments")
+     * @Route("/invoices", name="invoices")
      * @Method({"GET", "POST"})
      */
-    public function paymentsData(Request $request, AuthorizationCheckerInterface $authChecker)
+    public function invoicesData(UserMissionRepository $userMissionRepository, AuthorizationCheckerInterface $authChecker)
     {
         $user = $this->getUser();
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
-                return $this->render('admin/b2b/payments.html.twig');
+                return $this->render('admin/b2b/invoices/index.html.twig', [
+                    'user_missions' => $userMissionRepository->findBy(['status'=>'terminated']),
+                ]);
             }
             else{
                 return $this->render('admin/errorpage/index.html.twig');
@@ -197,6 +201,16 @@ class AdminUsersController extends Controller
         else{
             return $this->render('admin/errorpage/index.html.twig');
         }
+    }
+
+    /**
+     * @Route("/invoices/show/{id}", name="show_invoices", methods={"GET"})
+     */
+    public function showInvoices(UserMission $userMission): Response
+    {
+        return $this->render('admin/b2b/invoices/show.html.twig', [
+            'user_mission' => $userMission,
+        ]);
     }
     /**
      * @Route("/{id}", name="show", methods={"GET"})
