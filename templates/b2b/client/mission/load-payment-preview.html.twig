@@ -48,7 +48,7 @@
                         <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ last_result['client_total'] |round(2, 'floor') }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
                         <div class="btn-group" role="group" aria-label="">
                             <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>
-                            <a href="{{ mission.activelog.quotationfile }}" class="btn btn-darkblue" download=""><i class="fas fa-download fz-16"></i></a>
+                            <a href="/{{ mission.activelog.quotationfile }}" class="btn btn-darkblue" download=""><i class="fas fa-download fz-16"></i></a>
                         </div>
                     </div>
 {#                    <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">#}
