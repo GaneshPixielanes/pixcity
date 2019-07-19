@@ -32,6 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 /**
  * @Route("/community-manager/mission/", name="b2b_mission_")
  * @Security("has_role('ROLE_CM')")
@@ -137,6 +138,7 @@ class MissionController extends AbstractController
             {
                 $documents[] = $document->getName();
             }
+
             $missionLog = new MissionLog();
 
             $missionLog->setUserBasePrice($mission->getMissionBasePrice());
@@ -155,6 +157,26 @@ class MissionController extends AbstractController
             $em->persist($mission);
             $em->persist($missionLog);
             $em->flush();
+
+            $filesystem->mkdir('uploads/missions/temp/'.$mission->getId(),0777);
+
+            $filename = $this->createSlug($mission->getTitle());
+
+            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client.pdf";
+
+            $last_result = $result;
+
+            $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView('b2b/invoice/client_invoice.html.twig',
+                    array(
+                        'mission' => $mission,
+                        'missionLog' => $missionLog,
+                        'last_result' => $last_result
+                    )
+                ), $clientInvoicePath
+            );
+
+
             #Move banner and brief files
             if($filesystem->exists('uploads/'.UserMission::tempFolder().$mission->getBannerImage()) && $mission->getBannerImage() != '')
             {
@@ -209,6 +231,8 @@ class MissionController extends AbstractController
                          Request $request,
                          UserMissionRepository $missionRepo,
                         OptionRepository $optionRepo,
+                         MissionPaymentRepository $missionPaymentRepository,
+                         Filesystem $filesystem,
                         NotificationsRepository $notificationsRepository
                         )
     {
@@ -225,6 +249,8 @@ class MissionController extends AbstractController
         $margin = $optionRepo->findOneBy([
             'slug' => 'margin'
         ])->getValue();
+
+        $tax = $optionRepo->findOneBy(['slug' => 'tax']);
 
         $form = $this->createForm(MissionLogType::class, $missionLog);
 
@@ -260,6 +286,34 @@ class MissionController extends AbstractController
             $em->persist($missionLog);
             $em->persist($mission);
             $em->flush();
+
+            $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
+            $price = $mission->getMissionBasePrice();
+
+            $margin = $margin->getValue();
+            $tax = $tax->getValue();
+
+//            $transactionFee = 0;
+//            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
+            $result = $missionPaymentRepository->getPrices($price, $margin, $tax, $cityMakerType);
+
+            $filesystem->mkdir('uploads/missions/temp/'.$mission->getId(),0777);
+
+            $filename = $this->createSlug($mission->getTitle());
+
+            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client.pdf";
+
+            $last_result = $result;
+
+            $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView('b2b/invoice/client_invoice.html.twig',
+                    array(
+                        'mission' => $mission,
+                        'missionLog' => $missionLog,
+                        'last_result' => $last_result
+                    )
+                ), $clientInvoicePath
+            );
 
             /* Notificaton sent to the client informing about the edit*/
             $message = 'CM '.$mission->getUser().'  a édité la mission '.$mission->getTitle().'. Vous devez valider cette nouvelle version pour que le city-maker puisse continuer la mission';
@@ -600,7 +654,7 @@ class MissionController extends AbstractController
     /**
      * @Route("edit-ajax/{id}",name="edit_ajax")
      */
-    public function editAjax($id, Request $request, NotificationsRepository $notificationsRepo)
+    public function editAjax($id, Request $request, NotificationsRepository $notificationsRepo,Filesystem $filesystem)
     {
         $mission = $this->getDoctrine()->getRepository(UserMission::class)->find($id);
 
@@ -623,6 +677,26 @@ class MissionController extends AbstractController
 
         $mission->addMissionLog($missionLog);
         $em->flush();
+
+        $filesystem->mkdir('uploads/missions/temp/'.$mission->getId(),0777);
+
+        $filename = $this->createSlug($mission->getTitle());
+
+        $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client.pdf";
+
+        $last_result = $result;
+
+        $this->container->get('knp_snappy.pdf')->generateFromHtml(
+            $this->renderView('b2b/invoice/client_invoice.html.twig',
+                array(
+                    'mission' => $mission,
+                    'missionLog' => $missionLog,
+                    'last_result' => $last_result
+                )
+            ), $clientInvoicePath
+        );
+
+
         $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getTitle().' has beefed and needs your approval', $missionLog->getId());
 
         return new JsonResponse(['success' => true]);
@@ -676,6 +750,35 @@ class MissionController extends AbstractController
         }
 
         return new JsonResponse(['success' => false, 'message' => 'File Not Found!']);
+
+    }
+
+    /**
+     * Function used to create a slug associated to an "ugly" string.
+     *
+     * @param string $string the string to transform.
+     *
+     * @return string the resulting slug.
+     */
+    public function createSlug($string) {
+
+        $table = array(
+            'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
+            'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+            'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O',
+            'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss',
+            'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e',
+            'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
+            'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
+            'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r', '/' => '-', ' ' => '-'
+        );
+
+        // -- Remove duplicated spaces
+        $stripped = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $string);
+
+        // -- Returns the slug
+        return strtolower(strtr($string, $table));
+
 
     }
 }
