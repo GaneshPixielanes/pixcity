@@ -306,7 +306,7 @@ class MissionController extends Controller
 //            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
             $result = $missionPaymentRepository->getPrices($price, $margin, $tax, $cityMakerType);
 
-            $filesystem->mkdir('uploads/missions/temp/'.$mission->getId(),0777);
+            $filesystem->mkdir('uploads/missions/temp/'.$mission->getId());
 
             $filename = $this->createSlug($mission->getTitle());
 
