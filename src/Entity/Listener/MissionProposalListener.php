@@ -10,7 +10,7 @@ class MissionProposalListener{
 
     private $mailer;
 
-    public function _construct(Mailer $mailer)
+    public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
     }
@@ -25,7 +25,7 @@ class MissionProposalListener{
         if(empty($proposalBeforeUpdate))
         {
             /* Mail sent to CM */
-            $this->mailer->send($missionLog->getMission()->getUser()->getEmail(),
+            $this->mailer->send($proposal->getPack()->getUser()->getEmail(),
                 'Question sur le pack "'.$proposal->getPack()->getTitle().'"',
                 'emails/b2b/mission-proposal-cm.html.twig',
                 [
