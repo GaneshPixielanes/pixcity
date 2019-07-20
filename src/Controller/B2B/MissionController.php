@@ -297,7 +297,7 @@ class MissionController extends Controller
             $em->flush();
 
             $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
-            $price = $mission->getMissionBasePrice();
+            $price = $missionLog->getUserBasePrice();
 
 
             $tax = $tax->getValue();
@@ -313,8 +313,6 @@ class MissionController extends Controller
             $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client-".$missionLog->getId().".pdf";
 
             $last_result = $result;
-
-
 
             $this->container->get('knp_snappy.pdf')->generateFromHtml(
                 $this->renderView('b2b/invoice/client_quotation.html.twig',
