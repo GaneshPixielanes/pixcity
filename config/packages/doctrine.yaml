@@ -41,3 +41,4 @@ doctrine:
                  MONTH: DoctrineExtensions\Query\Mysql\Month
                  MONTHNAME: DoctrineExtensions\Query\Mysql\Month
                  YEAR: DoctrineExtensions\Query\Mysql\Year
+                 DATE: DoctrineExtensions\Query\Mysql\Date

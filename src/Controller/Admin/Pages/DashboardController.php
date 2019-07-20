@@ -49,7 +49,7 @@ class DashboardController extends Controller
         $userMission =  $userMissionQuery->getResult();
 
 
-        $cmUpgradeGraph = $em->createQuery("SELECT CONCAT(YEAR(c.cmUpgradeB2bDate),'-',MONTHNAME(c.cmUpgradeB2bDate)) as ym ,COUNT(c) as Nos FROM App:User as c WHERE c.b2b_cm_approval = 1 GROUP BY ym");
+        $cmUpgradeGraph = $em->createQuery("SELECT DATE(c.cmUpgradeB2bDate) as ym ,COUNT(c) as Nos FROM App:User as c WHERE c.b2b_cm_approval = 1 AND c.cmUpgradeB2bDate is not null GROUP BY ym");
         $arr = array();
         $cmUpgradeGraphData = $cmUpgradeGraph->getResult();
 
