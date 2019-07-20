@@ -44,6 +44,8 @@ class ClientRegistrationController extends AbstractController
                           OptionRepository $optionRepository,
                           Mailer $mailer)
     {
+
+
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
 
@@ -109,11 +111,19 @@ class ClientRegistrationController extends AbstractController
 
         $tax = $optionRepository->findBy(['slug' => 'tax']);
 
-        return $this->render('b2b/client_registration/index.html.twig', [
-            'controller_name' => 'ClientRegistrationController',
-            'form' => $form->createView(),
-            'tax' => $tax[0]
-        ]);
+        if($this->getUser() == null){
+
+            return $this->render('b2b/client_registration/index.html.twig', [
+                'controller_name' => 'ClientRegistrationController',
+                'form' => $form->createView(),
+                'tax' => $tax[0]
+            ]);
+
+        }else{
+            return $this->redirect('/client/index');
+        }
+
+
     }
 
     /**
