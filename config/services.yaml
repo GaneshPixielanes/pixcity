@@ -121,6 +121,11 @@ services:
       tags:
         - { name: doctrine.orm.entity_listener }
 
+    client_mission_proposal_listener:
+      class: App\Entity\Listener\MissionProposalListener
+      tags:
+        - { name: doctrine.orm.entity_listener }
+
 
     # ------------------------------------------------------
     # Entities listeners
