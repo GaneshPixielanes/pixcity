@@ -21,4 +21,5 @@ $form.validate({
             remote: "This e-mail is already in use. Please try another e-mail!"
         }
     }
-})
+});
+
