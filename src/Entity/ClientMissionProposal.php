@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientMissionProposalRepository")
+ * @ORM\EntityListeners({"App\Entity\Listener\MissionProposalListener"})
  * @ORM\Table(name="pxl_b2b_client_mission_proposal")
  */
 class ClientMissionProposal
