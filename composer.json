@@ -48,19 +48,9 @@
         "symfony/webpack-encore-pack": "^1.0",
         "symfony/yaml": "^4.0",
         "troopers/mangopay-bundle": "^3.0",
-<<<<<<< HEAD
-<<<<<<< HEAD
-        "twig/extensions": "^1.5",
-        "phpoffice/phpspreadsheet": "^1.7",
-	"phpfastcache/phpfastcache": "^7.0"
-=======
-        "twig/extensions": "^1.5"
->>>>>>> 01b8773a6d1d7e192d5345d62ab3994bfaa82927
-=======
         "twig/extensions": "^1.5",
         "phpoffice/phpspreadsheet": "^1.7",
         "beberlei/doctrineextensions": "*"
->>>>>>> b1710055da7cda28513857271856fb1c2454b735
     },
     "require-dev": {
         "symfony/browser-kit": "^4.0",
