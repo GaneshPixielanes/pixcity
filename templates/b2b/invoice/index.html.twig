@@ -25,29 +25,29 @@
 {#                </div>#}
 {#            </div>#}
         </div>
-        <div class="modal" id="invoicePreviewModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+{#        <div class="modal" id="invoicePreviewModal">#}
+{#            <div class="modal-dialog modal-lg">#}
+{#                <div class="modal-content">#}
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Invoice Preview</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
+{#                    <!-- Modal Header -->#}
+{#                    <div class="modal-header">#}
+{#                        <h4 class="modal-title">Invoice Preview</h4>#}
+{#                        <button type="button" class="close" data-dismiss="modal">&times;</button>#}
+{#                    </div>#}
 
-                    <!-- Modal body -->
-                    <div class="modal-body" id="invoice-preview-body" style="height:400px !important;">
-                        Loading preview
-                    </div>
+{#                    <!-- Modal body -->#}
+{#                    <div class="modal-body" id="invoice-preview-body" style="height:400px !important;">#}
+{#                        Loading preview#}
+{#                    </div>#}
 
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
-                    </div>
+{#                    <!-- Modal footer -->#}
+{#                    <div class="modal-footer">#}
+{#                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>#}
+{#                    </div>#}
 
-                </div>
-            </div>
-        </div>
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
         {% if missions | length == 0 %}
             <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
                 <div class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
@@ -89,7 +89,7 @@
                                         <td valign="middle"><span class="text-inprogress">En cours</span></td>
                                         <td valign="middle">
                                             <div class="d-flex align-items-center">
-                                                <a href="javascript:;" class="invoice-preview-btn preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" data-id="{{ mission.id }}" data-target="#invoicePreviewModal" data-toggle="modal"><i class="fas fa-eye fz-16"></i></a>
+                                                <a href="javascript:;" class=" preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" data-id="{{ mission.id }}" ><i class="fas fa-eye fz-16"></i></a>
                                                 <a href="{{ url('b2b_mission_invoice_download',{'id':mission.id}) }}" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
                                             </div>
                                         </td>
@@ -135,20 +135,27 @@
 <script>
 
     $(document).ready(function () {
-       $('.invoice-preview-btn').on('click', function () {
-           const pdf = new jsPDF();
+       $('.preview-invoice').on('click', function () {
             var id =$(this).attr('data-id');
-            var url = '/community-manager/invoice/preview/'+id;
-
+            var invoice = $('embed#invoice-display').parent();
            // $('#invoice-preview-body').load(url);
            $.ajax('/community-manager/invoice/preview/'+id,{
-              success:function (result){
-                result = JSON.parse(result);
-                console.log(result.url);
-          
-                 
-                  $('#invoice-preview-body').html(`<embed src="`+result+`" width="100%" height="100%" />`);
 
+              success:function (result) {
+                JSON.parse(result);
+                $('#invoice-display').remove();
+                invoice.append(`<embed src="`+result.url+`" width="100%" height="100%" />`);
+                $('#invoice-display').attr('src',result.url);
+                  // $('#invoice-preview-body').html(`<embed src="`+result+`" width="100%" height="100%" />`);
+                  /* Preview Invoice Starts */
+                  $(document).on('click', 'a.close-invoice-preview, a.preview-invoice', function(){
+                      if ($(this).is('a.preview-invoice')) {
+                          $('.facturation-show-container').fadeIn();
+                      } else if ($(this).is('a.close-invoice-preview')) {
+                          $('.facturation-show-container').fadeOut();
+                      }
+                  })
+                  /* Preview Invoice Ends */
               }
            });
        });
