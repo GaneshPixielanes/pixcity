@@ -1,4 +1,9 @@
 
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock %}
+
 {% for data in tickit_data.getMessages %}
     {% set files = [] %}
     {% if data.attachment is not empty %}
@@ -146,8 +151,17 @@
 </div>
 
 {% block javascripts %}
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+        <script src="{{ absolute_url('/assets/js/froala-language.js') }}"></script>
     <script>
         $(document).ready(function () {
+
+            var editor = new FroalaEditor('#comment',{
+                key:'iTB2xA5C4C1C2uzbtA3mfdhnD5D4H4C2C3A6B5C2B4A4==',
+                language: 'fr',
+                placeholderText:'Ecrivez votre texte',
+            });
 
 
             $(".reply-btn").click(function (e) {
