@@ -49,6 +49,15 @@ class DashboardController extends Controller
         $userMission =  $userMissionQuery->getResult();
 
 
+        $cmUpgradeGraph = $em->createQuery("SELECT CONCAT(YEAR(c.cmUpgradeB2bDate),'-',MONTHNAME(c.cmUpgradeB2bDate)) as ym ,COUNT(c) as Nos FROM App:User as c WHERE c.b2b_cm_approval = 1 GROUP BY ym");
+        $arr = array();
+        $cmUpgradeGraphData = $cmUpgradeGraph->getResult();
+
+        foreach ($cmUpgradeGraphData as $k => $value){
+            $arr[$k]['ym'] = $value['ym'];
+            $arr[$k]['Nos'] = $value['Nos'];
+        }
+
 //        $clientUpgradeQuery = $em->createQuery('SELECT count(createdAt) as unitCount, DATE(createdAt) as cDate FROM App:Client GROUP BY DATE(createdAt)');
 //        $clientUpgrade =  $clientUpgradeQuery->getResult();
 //
@@ -162,6 +171,7 @@ class DashboardController extends Controller
             'clientData'=>$clientData,
             'activePack'=>$activePack,
             'userMission'=>$userMission,
+            'dataTest'=>json_encode($arr),
             'stats' => [
                 'pixies' => $totalPixies,
                 'users' => $totalUsers,

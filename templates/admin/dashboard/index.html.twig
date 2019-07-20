@@ -3,125 +3,99 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('build/admin/js/pages/dashboard.js') }}"></script>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script type="text/javascript">
+        window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(231,233,237)'
+        };
+
+        //var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var config = {
+            type: 'line',
+            data: {
+                labels: ["1", "February", "March", "April", "May", "June", "July"],
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: window.chartColors.red,
+                    borderColor: window.chartColors.red,
+                    data: [5, 10, 25, 15, 10, 20, 30],
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                title:{
+                    display:true,
+                    text:'CM Upgrade'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Month'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value, index, values) {
+                                if (value % 5 === 0) {
+                                    return value;
+                                } else {
+                                    return ' ';
+                                }
+                            },
+                        }
+                    }]
+                }
+            }
+        };
+
         window.onload = function() {
 
-            var dataPoints = [];
 
-            var options =  {
-                animationEnabled: true,
-                theme: "light2",
-                title: {
-                    text: "Daily Sales Data"
-                },
-                axisX: {
-                    valueFormatString: "DD MMM YYYY",
-                },
-                axisY: {
-                    title: "User",
-                    titleFontSize: 24,
-                    includeZero: false
-                },
-                data: [{
-                    type: "spline",
-                    yValueFormatString: "$#,###.##",
-                    dataPoints: dataPoints
-                }]
-            };
-
-            function addData(data) {
-                for (var i = 0; i < data.length; i++) {
-                    dataPoints.push({
-                        x: new Date(data[i].date),
-                        y: data[i].units
-                    });
-                }
-                $("#cmUpgradation").CanvasJSChart(options);
-
-            }
-            $.getJSON("https://canvasjs.com/data/gallery/jquery/daily-sales-data.json", addData);
-
-        }
-        window.onload = function () {
-
-            var dps = []; // dataPoints
-            var chart = new CanvasJS.Chart("cmUpgradation", {
-                title :{
-                    text: "CM upgradation"
-                },
-                axisX: {
-                    title: "Upgraded User"
-                },
-                axisY: {
-                    includeZero: false,
-                    title: "User"
-                },
-                data: [{
-                    type: "line",
-                    dataPoints: dps
-                }]
+            var dataVal= $('#clientGraph').attr('data-values');
+            var my_json = JSON.parse(dataVal);
+            var datas = [];
+            var labels = [];
+            var array = JSON.parse(my_json);
+            array.forEach(function(object) {
+                datas.push(object.Nos);
+            });
+            array.forEach(function(object) {
+                labels.push(object.ym);
             });
 
-            var xVal = 0;
-            var yVal = 100;
-            var updateInterval = 1000;
-            var dataLength = 20; // number of dataPoints visible at any point
-
-            var updateChart = function (count) {
-
-                count = count || 1;
-
-                for (var j = 0; j < count; j++) {
-                    yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
-                    dps.push({
-                        x: xVal,
-                        y: yVal
-                    });
-                    xVal++;
-                }
-
-                if (dps.length > dataLength) {
-                    dps.shift();
-                }
-
-                chart.render();
-            };
-
-            updateChart(dataLength);
-            setInterval(function(){updateChart()}, updateInterval);
-            var clientRegistrations = new CanvasJS.Chart("clientRegistrations", {
-                animationEnabled: true,
-                theme: "light2",
-                title:{
-                    text: "Client registrations"
+            var ctx = document.getElementById("clientGraph").getContext("2d");
+            window.myLine = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'CM Upgradation',
+                        backgroundColor: window.chartColors.red,
+                        borderColor: window.chartColors.red,
+                        data: datas,
+                    }]
                 },
-                axisX:{
-                    title: "Client registered "
-                },
-                axisY:{
-                    includeZero: false
-                },
-                data: [{
-                    type: "line",
-                    dataPoints: [
-                        { y: 450 },
-                        { y: 414},
-                        { y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
-                        { y: 460 },
-                        { y: 450 },
-                        { y: 500 },
-                        { y: 480 },
-                        { y: 480 },
-                        { y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
-                        { y: 500 },
-                        { y: 480 },
-                        { y: 510 }
-                    ]
-                }]
             });
-            clientRegistrations.render();
-        }
+        };
     </script>
 {% endblock %}
 
@@ -346,8 +320,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="body" style="height: 600px;">
-                        <div id="cmUpgradation"></div>
+                    <div id="canvas-holder" class="body" style="width: 75%;">
+                        <canvas id="clientGraph" data-values="{{ dataTest |json_encode}}"></canvas>
                     </div>
                     <div class="body" style="height: 600px;">
                         <div id="clientRegistrations"></div>
