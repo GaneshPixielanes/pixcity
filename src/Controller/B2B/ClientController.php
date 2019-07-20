@@ -153,6 +153,21 @@ class ClientController extends Controller
 
     }
 
+    /**
+     * @Route("preview-invoce", name="preview_invoice")
+     */
+    public function previewInvoice(Request $request,UserMissionRepository $userMissionRepository){
+
+        $id = $request->get('id');
+
+        $mission = $userMissionRepository->find($id);
+
+        $result = '/invoices/'.$mission->getId().'/'.$this->createSlug($mission->getTitle()).'-client.pdf';
+
+        return new JsonResponse($result);
+
+    }
+
 
     /**
      * Function used to create a slug associated to an "ugly" string.
