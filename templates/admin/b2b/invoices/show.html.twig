@@ -61,7 +61,7 @@
                                         {% if user_trans.mangopayTransactionId != '' %}
                                         <tr>
                                             <td>{{ user_trans.amount }}</td>
-                                            <td>{{ user_trans.createdAt ? user_trans.createdAt|date('d/m/Y') : 'N/A' }}</td>
+                                            <td>{{ user_trans.createdAt ? user_trans.createdAt|date('d/m/Y H:i:s') : 'N/A' }}</td>
                                             <td>{{ user_trans.mangopayTransactionId }}</td>
                                         </tr>
                                         {% endif %}

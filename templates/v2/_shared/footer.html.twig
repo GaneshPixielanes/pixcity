@@ -9,8 +9,15 @@
 						<h4>A Propos De Nous</h4>
 						{{ menu('footer-1', 'footerMenu') | raw }}
 						{{ menu('footer-2', 'footerMenu') | raw }}
+						{{ menu('footer-3', 'footerMenu') | raw }}
 						<ul>
-						<li><a href="https://www.pix.city/services">Pix.city Services</a></li></ul>
+							<li>
+								<a href="https://www.pix.city/services">Pix.city Services</a>
+							</li>
+							<li>
+								<a href="{{ path('front_faq_index') }}">FAQs</a>
+							</li>
+						</ul>
 					</div>
 					<div class="container-social">
 						<h4>Pix.city Sur Les Reseaux Sociaux</h4>
