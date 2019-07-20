@@ -58,6 +58,15 @@ class DashboardController extends Controller
             $arr[$k]['Nos'] = $value['Nos'];
         }
 
+        $clientUpgradeGraph = $em->createQuery("SELECT DATE(c.createdAt) as clientCreated ,COUNT(c) as Nos FROM App:Client as c GROUP BY clientCreated");
+
+        $arrClient = array();
+        $clientResult = $clientUpgradeGraph->getResult();
+        foreach ($clientResult as $k => $value){
+            $arrClient[$k]['clientCreated'] = $value['clientCreated'];
+            $arrClient[$k]['Nos'] = $value['Nos'];
+        }
+
 //        $clientUpgradeQuery = $em->createQuery('SELECT count(createdAt) as unitCount, DATE(createdAt) as cDate FROM App:Client GROUP BY DATE(createdAt)');
 //        $clientUpgrade =  $clientUpgradeQuery->getResult();
 //
@@ -171,7 +180,8 @@ class DashboardController extends Controller
             'clientData'=>$clientData,
             'activePack'=>$activePack,
             'userMission'=>$userMission,
-            'dataTest'=>json_encode($arr),
+            'cmData'=>json_encode($arr),
+            'clientsData'=>json_encode($arrClient),
             'stats' => [
                 'pixies' => $totalPixies,
                 'users' => $totalUsers,

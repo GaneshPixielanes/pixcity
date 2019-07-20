@@ -12,7 +12,8 @@
             green: 'rgb(75, 192, 192)',
             blue: 'rgb(54, 162, 235)',
             purple: 'rgb(153, 102, 255)',
-            grey: 'rgb(231,233,237)'
+            grey: 'rgb(231,233,237)',
+            lowred: 'rgb(249,202,202)'
         };
 
         //var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -68,9 +69,7 @@
         };
 
         window.onload = function() {
-
-
-            var dataVal= $('#clientGraph').attr('data-values');
+            var dataVal= $('#cmGraph').attr('data-values');
             var my_json = JSON.parse(dataVal);
             var datas = [];
             var labels = [];
@@ -81,19 +80,63 @@
             array.forEach(function(object) {
                 labels.push(object.ym);
             });
-
-            var ctx = document.getElementById("clientGraph").getContext("2d");
+            var ctx = document.getElementById("cmGraph").getContext("2d");
             window.myLine = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
                         label: 'CM Upgradation',
-                        backgroundColor: window.chartColors.red,
                         borderColor: window.chartColors.red,
+                        backgroundColor: window.chartColors.lowred,
                         data: datas,
                     }]
                 },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+
+            var clientGraph= $('#clientGraph').attr('data-values');
+            var clientJson = JSON.parse(clientGraph);
+            var datasArr = [];
+            var labelsArr = [];
+            var arrayCM = JSON.parse(clientJson);
+            arrayCM.forEach(function(object) {
+                datasArr.push(object.Nos);
+            });
+            arrayCM.forEach(function(object) {
+                labelsArr.push(object.clientCreated);
+            });
+
+            var cmctx = document.getElementById("clientGraph").getContext("2d");
+            window.myLine = new Chart(cmctx, {
+                type: 'line',
+                data: {
+                    labels: labelsArr,
+                    datasets: [{
+                        label: 'Client registrations',
+                        borderColor: window.chartColors.red,
+                        backgroundColor: window.chartColors.lowred,
+                        data: datasArr,
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
             });
         };
     </script>
@@ -321,10 +364,10 @@
                         </div>
                     </div>
                     <div id="canvas-holder" class="body" style="width: 100%; height: 30%">
-                        <canvas id="clientGraph" data-values="{{ dataTest |json_encode}}"></canvas>
+                        <canvas id="cmGraph" data-values="{{ cmData |json_encode}}"></canvas>
                     </div>
-                    <div class="body" style="height: 600px;">
-                        <div id="clientRegistrations"></div>
+                    <div id="canvas-holder" class="body" style="width: 100%; height: 30%">
+                        <canvas id="clientGraph" data-values="{{ clientsData |json_encode}}"></canvas>
                     </div>
                 </div>
             </div>
