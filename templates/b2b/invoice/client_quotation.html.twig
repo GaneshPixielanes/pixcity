@@ -54,11 +54,11 @@
                                 Client
                             </div>
                             <div class="text-blue fz-30 font-weight-bold">
-                                {{ mission.user.firstname }}
+                                {{ mission.client.firstname }}
                             </div>
                             <div class="text-darkblue fz-16">
-                                {{ mission.user.pixie.billing.address.address~' '~mission.user.pixie.billing.address.zipcode }}<br>
-                                {{ mission.user.email }}
+                                {{ mission.client.ClientInfo.address~' '~mission.client.ClientInfo.postalCode }}<br>
+                                {{ mission.client.ClientInfo.email }}
                             </div>
                         </div>
                         <div class="invoice-number text-right text-darkblue font-weight-bold">
@@ -66,7 +66,7 @@
                                 Numéro de devis
                             </div>
                             <div class="fz-16 font-weight-normal">
-                                PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}
+                                PX-{{ mission.id }}-{{ missionLog.id }}
                             </div>
                         </div>
                     </div>

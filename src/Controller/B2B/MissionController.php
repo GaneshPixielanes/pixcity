@@ -165,9 +165,9 @@ class MissionController extends Controller
 
             $filesystem->mkdir('uploads/missions/temp/'.$mission->getId(),0777);
 
-            $filename = $this->createSlug($mission->getTitle());
+            $filename = 'PX-'.$mission->getId().'-'.$missionLog->getId().".pdf";
 
-            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client-".$missionLog->getId().".pdf";
+            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename;
 
             $last_result = $result;
 
