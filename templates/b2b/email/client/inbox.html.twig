@@ -74,13 +74,13 @@
                     <div class="btn-group mr-3">
                         <a data-toggle="tooltip" title="{{ ('b2b.label.inbox')| trans }}" data-placement="bottom" href="/client/email/inbox"
                            class="btn btn-darkblue go-to-inbox">
-                            <i class="fas fa-inbox mr-2"></i> {{ ('b2b.label.inbox')| trans }} <span class="badge bg-pink text-white fz-12">{{ receiverMails | length }}</span>
+                            <i class="fas fa-inbox mr-2"></i> {{ ('b2b.label.inbox')| trans }} <span class="badge bg-pink text-white fz-12">{% if receiverMails | length != 0 %}{{ receiverMails | length }}{% endif %}</span>
                         </a>
 
 
                         <a data-toggle="tooltip" title="{{ ('b2b.label.sent_box')| trans }}" data-placement="bottom" href="/client/email/send-emails"
                            class="btn btn-darkblue go-to-inbox">
-                            <i class="fas fa-inbox mr-2"></i> {{ ('b2b.label.sent_box')| trans }} <span class="badge bg-pink text-white fz-12">{{ sendMails | length }}</span>
+                            <i class="fas fa-inbox mr-2"></i> {{ ('b2b.label.sent_box')| trans }} <span class="badge bg-pink text-white fz-12">{% if sendMails | length != 0 %}{{ sendMails | length }}{% endif %}</span>
                         </a>
                         <!-- <div class="btn-group"> -->
                         <a data-toggle="tooltip" title="{{ ('b2b.label.refresh')| trans }}" data-placement="bottom" href="javascript:;" id="refresh" class="btn btn-darkblue">
@@ -126,7 +126,7 @@
                             <div class="form-group">
                                 <!-- <label for="emailSubject" class="fz-14">Subject</label> -->
 {#                                <input class="form-control fz-14" placeholder="Subject:" id="emailSubject">#}
-                                {{ form_row(form.Object,{ 'attr': {'class': 'form-control fz-14','placeholder': 'Titre email'}}) }}
+                                {{ form_row(form.Object,{ 'attr': {'class': 'form-control fz-14','placeholder': 'Titre de l’email'}}) }}
                             </div>
                             <div class="form-group">
                                 <label for="emailMessage" class="fz-14">Message:</label>
