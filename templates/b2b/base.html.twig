@@ -234,15 +234,7 @@
                 $(this).parents('.pack-creation-content, .mission-edition-content').find('.save-changes')
             });
             /* pack/mission creation/preview/edit invoke ends */
-            /* Preview Invoice Starts */
-            $(document).on('click', 'a.close-invoice-preview, a.preview-invoice', function(){
-                if ($(this).is('a.preview-invoice')) {
-                    $('.facturation-show-container').fadeIn();
-                } else if ($(this).is('a.close-invoice-preview')) {
-                    $('.facturation-show-container').fadeOut();
-                }
-            })
-            /* Preview Invoice Ends */
+
             /* Cancel mission Starts */
             $(document).on('click', 'a.close-cancel-mission, a.cancel-mission-activate', function(){
                 if ($(this).is('a.cancel-mission-activate')) {
