@@ -181,7 +181,7 @@ class DashboardController extends Controller
             'activePack'=>$activePack,
             'userMission'=>$userMission,
             'cmData'=>json_encode($arr),
-            'clientData'=>json_encode($arrClient),
+            'clientsData'=>json_encode($arrClient),
             'stats' => [
                 'pixies' => $totalPixies,
                 'users' => $totalUsers,
