@@ -10,7 +10,7 @@ class MissionProposalListener{
 
     private $mailer;
 
-    public function _construct(Mailer $mailer)
+    public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
     }
