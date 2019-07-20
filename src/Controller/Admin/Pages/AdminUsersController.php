@@ -213,6 +213,7 @@ class AdminUsersController extends Controller
             'user_mission' => $userMission,
         ]);
     }
+
     /**
      * Create and download some zip documents.
      *

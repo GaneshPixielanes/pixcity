@@ -3,6 +3,7 @@
 namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
+use App\Controller\B2B\Client\MissionController;
 use App\Entity\Option;
 use App\Form\B2B\ClientType;
 use App\Repository\ClientMissionProposalRepository;
@@ -17,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -251,6 +253,50 @@ class ClientController extends Controller
 
         return new JsonResponse($result);
 
+    }
+
+
+    /**
+     * @Route("invoices/download/{id}", name="download_invoices")
+     */
+    public function zipDownloadDocumentsAction($id, UserMissionRepository $userMissionRepository)
+    {
+        $mission = $userMissionRepository->findOneBy(['id'=>$id]);
+        $filename = $this->createSlug($mission->getTitle());
+
+        $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
+        $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
+        $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
+
+        $files = [];
+
+
+        //foreach ($documents as $document) {
+        array_push($files,  $clientInvoicePath);
+        array_push($files,  $cmInvoicePath);
+        array_push($files,  $pcsInvoicePath);
+        //}
+
+        // Create new Zip Archive.
+        $zip = new \ZipArchive();
+
+        // The name of the Zip documents.
+        $zipName = 'm_'.$id.'.zip';
+
+        $zip->open($zipName,  \ZipArchive::CREATE);
+        foreach ($files as $file) {
+            $zip->addFromString(basename($file),  file_get_contents($file));
+        }
+        $zip->close();
+
+        $response = new Response(file_get_contents($zipName));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . $zipName . '"');
+        $response->headers->set('Content-length', filesize($zipName));
+
+        @unlink($zipName);
+
+        return $response;
     }
 
 
