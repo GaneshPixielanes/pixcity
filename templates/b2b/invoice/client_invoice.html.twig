@@ -72,10 +72,10 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="invoice-client-details">
                             <div class="text-normal-gray fz-14">
-                                {{ mission.user.firstname }}<br>
+                                City Maker Name<br>
                             </div>
                             <div class="text-pink fz-25 font-weight-bold">
-                                City Maker Name
+                                {{ mission.user.firstname }}
                             </div>
                             <div class="text-darkblue fz-16">
                                 {{ mission.user.pixie.billing.address.address~' '~mission.user.pixie.billing.address.zipcode }}
@@ -131,12 +131,14 @@
                             <td></td>
                             <td>{{ mission.userMissionPayment.clientPrice |round(2, 'floor') }} €</td>
                         </tr>
-                        <tr>
-                            <td></td>
-                            <td>Tax 20%</td>
-                            <td></td>
-                            <td>{{ mission.userMissionPayment.clientTax|round(2, 'floor') }} €</td>
-                        </tr>
+                        {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice != 0 %}
+                            <tr>
+                                <td></td>
+                                <td>Tax 20%</td>
+                                <td></td>
+                                <td>{{ mission.userMissionPayment.clientTax|round(2, 'floor') }} €</td>
+                            </tr>
+                        {% endif %}
                         <tr>
                             <td></td>
                             <td class="text-dargblue font-weight-bold">Grand total</td>
