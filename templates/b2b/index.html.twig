@@ -72,10 +72,10 @@
                         </div>
                         <div class="col-md-3 d-flex justify-content-end">
                             {% if notification.type == 'terminated' %}
-                            <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>
+                                <a href="/client/mission/list" class="btn btn-darkblue fz-10">VOIR MISSION</a>
                             {% endif %}
                             {% if notification.type == 'mission_client_paid' or notification.type == 'edit_mission_cm' or notification.type == 'mission_accepted_edit' or notification.type == 'cancel_mission_cm'%}
-                                <a href="#" class="btn btn-darkblue fz-10 load-mission" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR MISSION</a>
+                                <a href="javascript:;" class="btn btn-darkblue fz-10 load-mission" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR MISSION</a>
                             {% endif %}
                         </div>
 
