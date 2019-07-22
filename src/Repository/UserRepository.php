@@ -157,12 +157,14 @@ class UserRepository extends ServiceEntityRepository
 //            ->leftJoin('u.links', 'c')
 //            ->leftJoin('u.favoriteCategories', 'category')
             ->innerJoin('u.pixie', 'p')
+            ->innerJoin('u.userPacks','packs')
             ->innerJoin('u.userPacks', 'd')
             ->leftJoin('u.userRegion', 'r')
 
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
-        $qb = $this->_applyFilters($qb, $filters);
+        $qb = $this->_applyFilters($qb, $filters)
+            ->orWhere('packs.title LIKE :packText OR packs.description LIKE :packText')->setParameter('packText','%'.$filters['text'].'%');
         $qb = $qb->getQuery()->getSingleScalarResult();
 
         return $qb;
