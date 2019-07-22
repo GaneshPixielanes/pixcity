@@ -180,7 +180,7 @@
                     </thead>
                     <tbody>
                     {% for mail in mails %}
-                        <tr class="{% if mail.messages.last.status == 1 %}unread{% endif %}">
+                        <tr class="{% if mail.messages.last.status is defined and mail.messages.last.status == 1 %}unread{% endif %}">
                             <td class="inbox-small-cells">
                                 {{ mail.id }}
                             </td>
