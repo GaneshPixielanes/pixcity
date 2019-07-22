@@ -8,6 +8,9 @@
     {% if data.attachment is not empty %}
         {% set files = data.attachment | split(',') %}
     {% endif %}
+    {% if data.filname is not empty %}
+        {% set filenames = data.filname | split(',') %}
+    {% endif %}
     <div class="card">
         <!-- Mail header -->
         <div class="card-header">
@@ -75,7 +78,9 @@
                                         <a href="javascript:;"
                                            class="fz-12 text-decoration-none d-block mb-2 line-height-normal">
                                             <i class="fas fa-paperclip"></i>
-                                            {{ file | truncate(10) }}
+                                            {% if filenames[loop.index-1] is defined %}
+                                                {{ filenames[loop.index-1] | truncate(13) }}
+                                            {% endif %}
                                             {#                                            <small class="d-block text-textgray mt-1">1,243 KB</small>#}
                                         </a>
                                         <a href="/uploads/attachment/{{ data.getTicket().getId() }}/{{ file }}" class="btn btn-normalgray btn-sm align-self-end" download><i
