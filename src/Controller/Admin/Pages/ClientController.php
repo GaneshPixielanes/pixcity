@@ -43,6 +43,9 @@ class ClientController extends AbstractController
                    'clients' => $result,
                 ]);
             }
+            else{
+                return $this->render('admin/errorpage/index.html.twig');
+            }
         }
         else{
             return $this->render('admin/errorpage/index.html.twig');
