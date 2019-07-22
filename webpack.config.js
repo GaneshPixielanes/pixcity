@@ -78,12 +78,12 @@ Encore
     // .addEntry('js/lazy', './assets/v2/js/jquery.lazy.min.js')
     .addEntry('js/dropzone', './assets/v2/js/dropzone.js')
 
+    // B2B
 
     .addEntry('b2b/js/app', './assets/b2b/js/app.js')
     .addEntry('b2b/js/client_registration', './assets/b2b/js/client_registration.js')
     // .addEntry('b2b/js/mission', './assets/b2b/js/mission.js')
     // .addEntry('b2b/js/pack', './assets/b2b/js/pack.js')
-
 
 
 
@@ -101,15 +101,9 @@ Encore
     .addStyleEntry('css/lightgallery', './assets/v2/node_modules/lightgallery/src/css/lightgallery.css')
     .addStyleEntry('css/style', './assets/v2/css/style.css')
     .addStyleEntry('css/main', './assets/v2/css/main.scss')
-<<<<<<< HEAD
-    .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
-    .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
-    .addStyleEntry('css/simple-sidebar', './assets/v2/css/simple-sidebar.css')
-=======
     // .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
     // .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
     // .addStyleEntry('css/simple-sidebar', './assets/v2/css/simple-sidebar.css')
->>>>>>> 2cb00705f2fc7dca11285257ddd13fa91ffe2b7a
 
 
 
