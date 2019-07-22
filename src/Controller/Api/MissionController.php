@@ -176,7 +176,7 @@ class MissionController extends Controller
                             $calculate_refund  = $refund_percentage;
 
                             $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
-                            dd($response);
+
                         }
 
                         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. Vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s'est bien passée ! ",1);
