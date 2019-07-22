@@ -201,7 +201,7 @@
         <div class="pack-overview-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <p class="text-textgray fz-12 mb-0">{{ mission.referencePack.packskill.name }}</p>
             <h5 class="text-darkgray mb-3">{{ mission.title }} </h5>
-            {{ mission.activelog.description | raw }}
+            {{ mission.missionLogs.last.description | raw}}
         </div>
         {% if mission.missionMedia | length > 0 %}
         <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
