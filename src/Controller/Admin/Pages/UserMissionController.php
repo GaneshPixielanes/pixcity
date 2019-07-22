@@ -36,6 +36,9 @@ class UserMissionController extends AbstractController
                     'user_missions' => $userMissionRepository->findBy(['deleted'=>0]),
                 ]);
             }
+            else{
+                return $this->render('admin/errorpage/index.html.twig');
+            }
         }
         else{
             return $this->render('admin/errorpage/index.html.twig');
@@ -114,6 +117,9 @@ class UserMissionController extends AbstractController
                     'user_mission' => $userMission,
                     'form' => $form->createView(),
                 ]);
+            }
+            else{
+                return $this->render('admin/errorpage/index.html.twig');
             }
         }
         else{
