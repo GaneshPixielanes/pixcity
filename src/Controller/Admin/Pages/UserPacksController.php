@@ -35,6 +35,9 @@ class UserPacksController extends AbstractController
                     'user_packs' => $userPacksRepository->findBy(['deletedAt'=>null]),
                 ]);
             }
+            else{
+                return $this->render('admin/errorpage/index.html.twig');
+            }
         }
         else{
             return $this->render('admin/errorpage/index.html.twig');

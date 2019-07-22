@@ -171,9 +171,10 @@
                                 <span>{{ 'label.faqs'|trans }}</span>
                             </a>
                         </li>
-                    {% endif %}
+                    {#{% endif %}#}
                     <!-- B2B menus ends -->
-                    {% if app.user.viewMode == "b2c" %}
+                    {% else %}
+                    {#{% if app.user.viewMode != "b2b" %}#}
                         {% if is_granted('ROLE_ADMIN') %}
                             <li class="{{ route starts with 'admin_users' ? 'active' }}">
                                 <a href="{{ path('admin_users_list') }}" class="waves-blue-grey">
