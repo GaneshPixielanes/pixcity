@@ -832,7 +832,7 @@
                 acceptedFiles: 'image/*',
                 maxFilesize: 2,  // in Mb
                 addRemoveLinks: true,
-                autoProcessQueue:false,
+                autoProcessQueue:true,
                 parallelUploads: 100,
 
                 dictRemoveFileConfirmation:'Are you sure you want to remove this image?',
@@ -896,7 +896,7 @@
             $("#submitCMDetails").on('click',function(e){
                 // e.preventDefault();
                 // console.log($dropZone);
-                $dropZone[0].dropzone.processQueue();
+                // $dropZone[0].dropzone.processQueue();
             });
             // //
             // $('.dropzone > .dz-default').html(`<div class="upload-area mb-4 dz-clickable">

@@ -74,7 +74,7 @@
         <p class="text-textgray text-12 mb-0">{{ mission.referencePack.packSkill | upper }}</p>
         <h5 class="text-darkgray mb-3">{{ mission.title }}</h5>
         <div id="description-mission-db">
-            <p class="fz-12 w-70 mb-4">{{ mission.getActiveLog().description | raw }}</p>
+            <p class="fz-12 w-70 mb-4">{{ mission.missionLogs.last.description | raw}}</p>
         </div>
         <div class="fz-12 w-70 mb-4 fr-view">
             <p id="description-mission-fr"></p>
@@ -179,9 +179,9 @@
             Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez pas à lire
             notre <a href="javascript:;">FAQ</a></p>
             <textarea name="{{ form.description.vars.full_name }}" class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" name="" id="mission-faorla-description" cols="30" rows="10" required>
-                {{ mission.getActiveLog().description }}
+                {{ mission.missionLogs.last.description }}
             </textarea>
-        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">{{ mission.getActiveLog().description | length }}</span>/<span class="input-maxlength">1200</span></p>
+        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">{{ mission.missionLogs.last.description | length}}</span>/<span class="input-maxlength">1200</span></p>
     </div>
     <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
         <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
