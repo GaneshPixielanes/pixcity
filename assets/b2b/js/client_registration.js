@@ -1,3 +1,4 @@
+require('jquery-validation');
 
 var $form = $('form[name="client"]');
 

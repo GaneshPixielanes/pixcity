@@ -139,7 +139,7 @@
             </div>
             <small>Les chiffres après la virgule ne sont pas autorisés<br/></small>
         </div>
-        <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
+        <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4 "{% if pack.id != null and pack.userPackMedia | length == 0 %}style="display:none"{% endif %}>
             <h5 class="text-darkgray mb-0">Photos</h5>
             <div class="pack-photos">
                 <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
