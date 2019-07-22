@@ -261,21 +261,18 @@ class ClientController extends Controller
      */
     public function zipDownloadDocumentsAction($id, UserMissionRepository $userMissionRepository)
     {
+
         $mission = $userMissionRepository->findOneBy(['id'=>$id]);
         $filename = $this->createSlug($mission->getTitle());
 
-        $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
-        $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
-        $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
+        $documents = $mission->getDocuments();
 
         $files = [];
 
+        foreach ($documents as $document) {
+            array_push($files,  "uploads/missions/temp/".$document->getName());
+        }
 
-        //foreach ($documents as $document) {
-        array_push($files,  $clientInvoicePath);
-        array_push($files,  $cmInvoicePath);
-        array_push($files,  $pcsInvoicePath);
-        //}
 
         // Create new Zip Archive.
         $zip = new \ZipArchive();
