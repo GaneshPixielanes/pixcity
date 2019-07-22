@@ -32,6 +32,9 @@ class MessageController extends AbstractController
                     'message_lists' => $clientMissionProposalRepository->findAll(),
                 ]);
             }
+            else{
+                return $this->render('admin/errorpage/index.html.twig');
+            }
         }
         else{
             return $this->render('admin/errorpage/index.html.twig');

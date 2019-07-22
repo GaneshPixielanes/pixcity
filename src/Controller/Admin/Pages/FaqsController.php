@@ -34,6 +34,9 @@ class FaqsController extends AbstractController
                     'faqs' => $faqsRepository->findAll(),
                 ]);
             }
+            else{
+                return $this->render('admin/errorpage/index.html.twig');
+            }
         }
         else{
             return $this->render('admin/errorpage/index.html.twig');
@@ -112,6 +115,9 @@ class FaqsController extends AbstractController
                     'faq' => $faq,
                     'form' => $form->createView(),
                 ]);
+            }
+            else{
+                return $this->render('admin/errorpage/index.html.twig');
             }
         }
         else{
