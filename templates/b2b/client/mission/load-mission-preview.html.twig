@@ -201,7 +201,7 @@
         <div class="pack-overview-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <p class="text-textgray fz-12 mb-0">{{ mission.referencePack.packskill.name }}</p>
             <h5 class="text-darkgray mb-3">{{ mission.title }} </h5>
-            {{ mission.activelog.description | raw }}
+            {{ mission.missionLogs.last.description | raw}}
         </div>
         {% if mission.missionMedia | length > 0 %}
         <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
@@ -241,7 +241,7 @@
                 {% endif %}
                 <div class="mr-4">
                     <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                    <p class="mb-0 text-darkgray user-price">{{ result['client_price'] |round(2, 'floor') }} €</p>
+                    <p class="mb-0 text-darkgray user-price">{{ mission.missionLogs.last.userBasePrice| clientPrice(margin) |round(2, 'floor') }} €</p>
                 </div>
                 {% if mission.status == 'terminated' %}
                     <div class="mission-invoice d-flex align-items-center">
@@ -301,7 +301,7 @@
                      <div class="row">
                          <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
                              <select class="selectpicker" data-width="100%" data-live-search="true" title="Choose a region from the list" readonly="readonly" disabled>
-                                 {% for region in mission.region %}
+                                 {% for region in mission.missionRegions %}
                                     <option value="{{ region.name }}" selected>{{ region.name }}</option>
                                  {% endfor %}
                              </select>
