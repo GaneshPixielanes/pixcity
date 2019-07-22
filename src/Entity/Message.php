@@ -58,6 +58,11 @@ class Message
      */
     private $updated_at;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $filname;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -155,6 +160,18 @@ class Message
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getFilname(): ?string
+    {
+        return $this->filname;
+    }
+
+    public function setFilname(?string $filname): self
+    {
+        $this->filname = $filname;
 
         return $this;
     }
