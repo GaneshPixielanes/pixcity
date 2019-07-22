@@ -138,7 +138,7 @@ class UserRepository extends ServiceEntityRepository
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFilters($qb, $filters)
-            ->orWhere('packs.title LIKE :packText OR packs.description LIKE :packText')->setParameter('packText','%'.$filters['text'].'%')
+
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         $qb = $qb->getQuery()->getResult();
@@ -158,6 +158,7 @@ class UserRepository extends ServiceEntityRepository
 //            ->leftJoin('u.favoriteCategories', 'category')
             ->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks', 'd')
+            ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
 
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
@@ -229,7 +230,8 @@ class UserRepository extends ServiceEntityRepository
     private function _applyFilters($qb, $filters){
         if($filters) {
             if (isset($filters["text"])) {
-                $qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :searchText")->setParameter("searchText", "%".$filters["text"]."%");
+//                $qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :searchText")->setParameter("searchText", "%".$filters["text"]."%");
+                $qb = $qb->andWhere('packs.title LIKE :packText OR packs.description LIKE :packText')->setParameter('packText','%'.$filters['text'].'%');
             }
 
             if (isset($filters["regions"])) {
