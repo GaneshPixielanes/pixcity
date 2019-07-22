@@ -49,12 +49,14 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        {% if  pack.user.userRegion | length > 1 %}
+                                                        {% if  pack.packRegions | length > 1 %}
                                                             <div class="row">
                                                                 <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
                                                                     <select class="selectpicker" data-width="100%" data-live-search="true"
                                                                             title="Choose a region from the list" disabled>
-                                                                        <option value="{{ pack.user.userRegion.last.name }}" selected>{{ pack.user.userRegion.last.name }}</option>
+                                                                        {% for region in pack.packRegions %}
+                                                                            <option value="{{ region.name }}" selected>{{ region.name }}</option>
+                                                                        {% endfor %}
                                                                     </select>
                                                                 </div>
                                                             </div>
