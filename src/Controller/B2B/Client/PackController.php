@@ -2,8 +2,11 @@
 
 namespace App\Controller\B2B\Client;
 
+use App\Entity\AutoMail;
 use App\Entity\ClientMissionProposal;
 use App\Entity\ClientMissionProposalMedia;
+use App\Entity\Message;
+use App\Entity\Ticket;
 use App\Form\B2B\ClientMissionProposalType;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserPacksRepository;
@@ -62,6 +65,28 @@ class PackController extends AbstractController
                     $filesystem->copy('uploads/'.ClientMissionProposalMedia::tempFolder().$media->getName(),'uploads/'.ClientMissionProposalMedia::uploadFolder().'/'.$proposal->getId().'/'.$media->getName());
                 }
             }
+
+//            $template = $this->getDoctrine() ->getRepository(AutoMail::class)->find(1);
+//
+//            $ticket = new Ticket();
+//
+//            $ticket->setClient($this->getUser());
+//            $ticket->setCm($pack->getUser());
+//            $ticket->setTemplateType($template);
+//            $ticket->setInitiator('client');
+//            $ticket->setObject($request->get('ticket')['Object']);
+//            $ticket->setStatus('open');
+//            $ticket->setCreatedAt(new \DateTime('now'));
+//            $ticket->setUpdatedAt(new \DateTime('now'));
+//
+//            $em->persist($ticket);
+//            $em->flush();
+//
+//            $message = new Message();
+//            $message->setTicket($ticket);
+//            $message->setContent($request->get('ticket')['messages']['content']);
+//            $message->setType('1');
+//            $message->setStatus(1);
 
             #Send notification
 //            $notificationsRepository->insert($pack->getUser(),null,'mission_request', $this->getUser()->getFirstName().' has sent a mission request',0);
