@@ -241,7 +241,7 @@
                 {% endif %}
                 <div class="mr-4">
                     <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                    <p class="mb-0 text-darkgray user-price">{{ result['client_price'] |round(2, 'floor') }} €</p>
+                    <p class="mb-0 text-darkgray user-price">{{ mission.missionLogs.last.userBasePrice| clientPrice(margin) |round(2, 'floor') }} €</p>
                 </div>
                 {% if mission.status == 'terminated' %}
                     <div class="mission-invoice d-flex align-items-center">
