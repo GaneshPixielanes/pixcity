@@ -136,7 +136,7 @@
                 <div class="custom-file">
                     <input type="file" multiple class="custom-file-input" id="inputGroupFile01"
                            aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label mb-0 fz-14" for="inputGroupFile01">{{ ('b2b.label.attachment')| trans }}</label>
+                    <label class="custom-file-label mb-0 fz-14" for="inputGroupFile01" id="fileList-comment">{{ ('b2b.label.attachment')| trans }}</label>
                 </div>
             </div>
             {#            <small>Max. 32MB</small>#}
@@ -176,6 +176,23 @@
             $(".cancel-compose").click(function (e) {
                 $('.reply-card').addClass('d-none');
             });
+
+            $("#inputGroupFile01").on('change',function () {
+                readURLComment(this);
+            });
+
+            function readURLComment(input) {
+                if (input.files && input.files[0]) {
+
+                    var output = document.getElementById('fileList-comment');
+                    $("#fileList-comment").text(' ');
+
+                    for (var i = 0; i < input.files.length; ++i) {
+                        output.innerHTML += input.files.item(i).name + '-';
+                    }
+
+                }
+            }
 
             $("#subit-comment").on('click',function () {
                 var data = new FormData();
