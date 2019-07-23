@@ -126,7 +126,8 @@ class MissionController extends Controller
     public function missionProcess($id,
                                    MangoPayService $mangoPayService,
                                    UserMissionRepository $missionRepo,
-                                   MissionPaymentRepository $missionPaymentRepository
+                                   MissionPaymentRepository $missionPaymentRepository,
+     ClientTransactionRepository $clientTransactionRepository
     )
     {
         $options = $this->getDoctrine()->getRepository(Option::class);
@@ -157,17 +158,26 @@ class MissionController extends Controller
             $amount = $result['need_to_pay'];
         }
 
-        // Create a mango pay user
-        $mangoUser = new UserNatural();
+        $userMissionTblId = $missionRepo->findOneBy(['id'=>$id]);
+        $tansClientId = $clientTransactionRepository->findOneBy(['user'=>$userMissionTblId->getClient()]);
+        $mangoUserGet = $mangoPayService->getUser($tansClientId->getMangopayUserId());
 
-        $mangoUser->PersonType = "NATURAL";
-        $mangoUser->FirstName = $this->getUser()->getFirstname();
-        $mangoUser->LastName = $this->getUser()->getLastname();
-        $mangoUser->Birthday = 1409735187;
-        $mangoUser->Nationality = "FR";
-        $mangoUser->CountryOfResidence = "FR";
-        $mangoUser->Email = $this->getUser()->getEmail();
-        $mangoUser = $mangoPayService->createUser($mangoUser);
+        if(isset($mangoUserGet) == null){
+            // Create a mango pay user
+            $mangoUser = new UserNatural();
+
+            $mangoUser->PersonType = "NATURAL";
+            $mangoUser->FirstName = $this->getUser()->getFirstname();
+            $mangoUser->LastName = $this->getUser()->getLastname();
+            $mangoUser->Birthday = 1409735187;
+            $mangoUser->Nationality = "FR";
+            $mangoUser->CountryOfResidence = "FR";
+            $mangoUser->Email = $this->getUser()->getEmail();
+            $mangoUser = $mangoPayService->createUser($mangoUser);
+
+        }else{
+            $mangoUser = $mangoUserGet;
+        }
 
         //Create a wallet
         $wallet = $mangoPayService->getWallet($mangoUser->Id);

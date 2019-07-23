@@ -118,7 +118,7 @@
         <aside id="leftsidebar" class="sidebar">
 
             <!-- Menu -->
-            <div class="menu">
+            <div class="menu" style="padding-bottom:70px; ">
                 <ul class="list">
                     <li class="header">MENU</li>
                     <li class="{{ route starts with 'admin_dashboard' ? 'active' }}">
@@ -169,6 +169,12 @@
                             <a href="{{ url('admin_faqs_index') }}" class="waves-blue-grey">
                                 <i class="material-icons">feedback</i>
                                 <span>{{ 'label.faqs'|trans }}</span>
+                            </a>
+                        </li>
+                        <li class="{{ route starts with 'admin_contactus_index' ? 'active' }}">
+                            <a href="{{ url('admin_contactus_index') }}" class="waves-blue-grey">
+                                <i class="material-icons">feedback</i>
+                                <span>{{ 'label.contactus'|trans }}</span>
                             </a>
                         </li>
                     {#{% endif %}#}
