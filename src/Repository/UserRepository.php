@@ -126,6 +126,10 @@ class UserRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
+//            ->leftJoin('u.cards', 'cards')
+//            ->leftJoin('u.links', 'c')
+//            ->leftJoin('u.favoriteCategories', 'category')
+            ->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
             ->orderBy('u.id','DESC')
@@ -261,27 +265,6 @@ class UserRepository extends ServiceEntityRepository
                 }
             }
         }
-
-        return $qb;
-    }
-    public function searchPixiesFilters($filters = [])
-    {
-        $qb = $this->createQueryBuilder('u')
-            ->select(["u", "avatar", "c", "p", "r", "category"])
-            ->leftJoin('u.avatar', 'avatar')
-            ->leftJoin('u.cards', 'cards')
-            ->leftJoin('u.links', 'c')
-            ->leftJoin('u.favoriteCategories', 'category')
-            ->innerJoin('u.pixie', 'p')
-            ->innerJoin('p.regions', 'r')
-
-            ->where('u.deleted IS NULL OR u.deleted = 0')
-            ->andWhere('u.visible = 1')
-        ;
-
-        $qb = $this->_applyFilters($qb, $filters);
-
-        $qb = $qb->getQuery()->getResult();
 
         return $qb;
     }
