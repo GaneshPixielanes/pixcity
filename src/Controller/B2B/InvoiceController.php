@@ -84,15 +84,15 @@ class InvoiceController extends AbstractController
         ]);
         $fileName = $missionRepo->createSlug($mission->getTitle())."-client.pdf";
 
-        return new JsonResponse(json_encode(['url' => '/invoices/'.$mission->getId().'/'.$fileName]));
-
-        if(empty($mission))
-        {
-            return $this->redirectToRoute('b2b_community_manager_invoice_list');
-        }
-
-        return $this->render('b2b/shared/_preview.html.twig',[
-            'mission' => $mission[0]
-        ]);
+        return new JsonResponse(['url' => '/invoices/'.$mission->getId().'/'.$fileName]);
+//
+//        if(empty($mission))
+//        {
+//            return $this->redirectToRoute('b2b_community_manager_invoice_list');
+//        }
+//
+//        return $this->render('b2b/shared/_preview.html.twig',[
+//            'mission' => $mission[0]
+//        ]);
     }
 }
