@@ -181,7 +181,7 @@ class MissionController extends Controller
                 ), $clientInvoicePath
             );
 
-            $missionLog->setQuotationfile($clientInvoicePath);
+            $missionLog->setQuotationfile($filename);
             $em->persist($missionLog);
             $em->flush();
 
