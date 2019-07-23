@@ -108,7 +108,7 @@
                                     <tr>
                                         <th> Version Id </th>
                                         <th> Desc </th>
-                                        <th> Price (Up/Down icon) </th>
+                                        <th> Price </th>
                                         <th> Brief files</th>
                                         <th> Date and Time</th>
                                     </tr>
@@ -122,7 +122,9 @@
                                                 <td >{{ missionLog.userBasePrice }}
                                                     <span class="label label-success">Active</span>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <a href="{{ path('admin_user_mission_download', {'id': missionLog.id}) }}" title="{{ 'action.download'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">save_alt</i></a>
+                                                </td>
                                                 <td>{{ missionLog.createdAt ? missionLog.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                                             </tr>
                                         {% else %}
@@ -130,7 +132,9 @@
                                                 <td>{{missionLog.id}}</td>
                                                 <td>{{missionLog.description|raw}}</td>
                                                 <td>{{ missionLog.userBasePrice }}</td>
-                                                <td></td>
+                                                <td>
+                                                    <a href="{{ path('admin_user_mission_download', {'id': missionLog.id}) }}" title="{{ 'action.download'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">save_alt</i></a>
+                                                </td>
                                                 <td>{{ missionLog.createdAt ? missionLog.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                                             </tr>
                                         {% endif %}

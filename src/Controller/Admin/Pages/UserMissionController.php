@@ -6,6 +6,7 @@ use App\Constant\ViewMode;
 use App\Entity\User;
 use App\Entity\UserMission;
 use App\Form\UserMissionType;
+use App\Repository\MissionLogRepository;
 use App\Repository\UserMissionRepository;
 use App\Service\FileUploader;
 use Gedmo\Sluggable\Util\Urlizer;
@@ -180,5 +181,43 @@ class UserMissionController extends AbstractController
         $entityManager->flush();
 
         return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+    /**
+     * Create and download some zip documents.
+     *
+     * @Route("/download/{id}", name="download", methods={"GET"})
+     * @return Symfony\Component\HttpFoundation\Response
+     */
+    public function zipDownloadBreifAction($id, MissionLogRepository $missionLogRepository)
+    {
+        $missionLog = $missionLogRepository->findOneBy(['id'=>$id]);
+
+        $files = [];
+        $briefFilesStr = $missionLog->getBriefFiles();
+        $briefFilesArr = json_decode($briefFilesStr);
+        foreach($briefFilesArr as $briefFile){
+            array_push($files, "uploads/missions/temp/".$briefFile);
+        }
+
+        // Create new Zip Archive.
+        $zip = new \ZipArchive();
+
+        // The name of the Zip documents.
+        $zipName = 'V_'.$id.'.zip';
+
+        $zip->open($zipName,  \ZipArchive::CREATE);
+        foreach ($files as $file) {
+            $zip->addFromString(basename($file),  file_get_contents($file));
+        }
+        $zip->close();
+
+        $response = new Response(file_get_contents($zipName));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . $zipName . '"');
+        $response->headers->set('Content-length', filesize($zipName));
+
+        @unlink($zipName);
+
+        return $response;
     }
 }
