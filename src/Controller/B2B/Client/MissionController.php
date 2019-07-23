@@ -262,7 +262,6 @@ class MissionController extends Controller
 
                 $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
 
-
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/client_invoice.html.twig',
                         array(
