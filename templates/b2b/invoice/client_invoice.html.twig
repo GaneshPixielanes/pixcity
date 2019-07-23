@@ -79,7 +79,7 @@
                             </div>
                             <div class="text-darkblue fz-16">
                                 {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice != 0 %}
-                                    {{ mission.user.pixie.billing.companyName }}
+                                    Nom de la société : {{ mission.user.pixie.billing.companyName }}<br>
                                 {% endif %}
                                 {{ mission.user.pixie.billing.address.address}}<br>
                                 {{mission.user.pixie.billing.address.city}},{{ mission.user.pixie.billing.address.country}} {{ mission.user.pixie.billing.address.zipcode}}<br>
