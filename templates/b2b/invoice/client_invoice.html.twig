@@ -41,7 +41,6 @@
         <div class="col-md-12 pixcity-invoice-content">
             <div class="row">
                 <div class="col-md-12 invoice-header d-flex align-items-center justify-content-between p-0 py-2">
-
                     <h1 class="invoice-title font-weight-light text-normalgray">
                         FACTURE
                     </h1>
@@ -53,10 +52,11 @@
                                 Client
                             </div>
                             <div class="text-blue fz-30 font-weight-bold">
-                                {{ app.user.firstname }}
+                                {{ app.user.company }}
                             </div>
                             <div class="text-darkblue fz-16">
-                                {{ app.user.ClientInfo.address~' '~app.user.ClientInfo.postalCode }}<br>
+                                {{ app.user.ClientInfo.address}}<br>
+                                {{ app.user.ClientInfo.city~','~app.user.ClientInfo.postalCode }}<br>
                                 {{ app.user.ClientInfo.email }}
                             </div>
                         </div>
@@ -75,13 +75,15 @@
                                 City-Maker
                             </div>
                             <div class="text-pink fz-25 font-weight-bold">
-                                {{ mission.user.firstname }}
+                                {{ mission.user.firstname~' '~mission.user.lastname }}<br>
                             </div>
                             <div class="text-darkblue fz-16">
-                                {{ mission.user.pixie.billing.address.address~' '~mission.user.pixie.billing.address.zipcode }}
                                 {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice != 0 %}
                                     {{ mission.user.pixie.billing.companyName }}
                                 {% endif %}
+                                {{ mission.user.pixie.billing.address.address}}<br>
+                                {{mission.user.pixie.billing.address.city~,~mission.user.pixie.billing.address.country~' '~mission.user.pixie.billing.address.zipcode}}<br>
+
                             </div>
                         </div>
                         <div class="invoice-number text-right text-darkblue font-weight-bold">
@@ -167,8 +169,10 @@
                         Le prix affiché comprend la commission de Pix.City Services de 25%.<br>
                         En cas de retard de paiement s'applique une pénalité égale au taux d'intérêt appliqué par la Banque Centrale Européenne (BCE) à son opération de refinancement la plus récente majorée de 10 points.
                         <br>
-                        {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice != 0 %}
-                            Indemnité forfaitaire pour frais de recouvrement de 40 euros.
+                        Indemnité forfaitaire pour frais de recouvrement de 40 euros.
+                        <br>
+                        {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice == 0 %}
+                            TVA non applicable, art 293 B du CGI
                         {% endif %}
                     </p>
                 </div>
