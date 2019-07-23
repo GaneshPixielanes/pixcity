@@ -138,12 +138,12 @@
        $('.preview-invoice').on('click', function () {
             var id =$(this).attr('data-id');
             var invoice = $('embed#invoice-display').parent();
+           $('#invoice-display').remove();
            // $('#invoice-preview-body').load(url);
            $.ajax('/community-manager/invoice/preview/'+id,{
 
               success:function (result) {
                 // JSON.parse(result);
-                $('#invoice-display').remove();
                 invoice.append(`<embed src="`+result.url+`" width="100%" height="100%" />`);
                 $('#invoice-display').attr('src',result.url);
                   // $('#invoice-preview-body').html(`<embed src="`+result+`" width="100%" height="100%" />`);

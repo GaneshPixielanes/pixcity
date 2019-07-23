@@ -199,7 +199,7 @@
 {#                <span class="text-normalgray">le prix#}
 {#                                    affiché sur la platefome sera votre prix auquel s'ajoute la commission payée par le#}
 {#                                    client.</span>#}
-                <span class="text-pink fz-16f client-price" id="clientPrice">{{ mission.missionLogs.last.userBasePrice | clientPrice(margin) }}€</span></p>
+                <span class="text-pink fz-16f client-price" id="clientPrice">{{ mission.missionLogs.last.userBasePrice | clientPrice(margin) | number_format(2) }}€</span></p>
 
             </p>
         </div>

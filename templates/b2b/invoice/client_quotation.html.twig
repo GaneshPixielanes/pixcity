@@ -57,9 +57,9 @@
                                 {{ mission.client.firstname }}
                             </div>
                             <div class="text-darkblue fz-16">
-                                {{ mission.client.ClientInfo.address}}<br>
-                                {{ mission.client.ClientInfo.city~','~app.user.ClientInfo.postalCode }}<br>
-                                {{ mission.client.ClientInfo.email }}
+                                {{ mission.client.clientInfo.address}}<br>
+                                {{ mission.client.clientInfo.city~','~mission.client.clientInfo.postalCode }}<br>
+                                {{ mission.client.clientInfo.email }}
                             </div>
                         </div>
                         <div class="invoice-number text-right text-darkblue font-weight-bold">
