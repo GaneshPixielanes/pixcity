@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use App\Entity\UserPacks;
+use KMS\FroalaEditorBundle\Form\Type\FroalaEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -24,7 +25,13 @@ class UserPacksType extends AbstractType
         //dd($regions);
         $builder
             ->add('title')
-            ->add('description')
+            ->add('description', FroalaEditorType::class, array(
+                'label' => 'label.content',
+                'attr' => [
+                    'rowClass' => 'type-froala'
+                ],
+                'toolbarStickyOffset' =>  70
+            ))
             ->add('bannerImage',HiddenType::class,array('data_class'=> null, 'label' => 'Image bannière'))
             ->add('userBasePrice')
             ->add('marginValue',TextareaType::class, array(

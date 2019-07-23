@@ -43,7 +43,7 @@
                 <div class="col-md-12 invoice-header d-flex align-items-center justify-content-between p-0 py-2">
 
                     <h1 class="invoice-title font-weight-light text-normalgray">
-                        INVOICE
+                        FACTURE
                     </h1>
                 </div>
                 <div class="col-md-12 invoice-body p-4">
@@ -72,7 +72,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="invoice-client-details">
                             <div class="text-normal-gray fz-14">
-                                City Maker Name<br>
+                                City-Maker
                             </div>
                             <div class="text-pink fz-25 font-weight-bold">
                                 {{ mission.user.firstname }}
@@ -105,7 +105,7 @@
                             </th>
                             <th class="w-45">
                                 <div class="border-right">
-                                    Description
+                                    DESCRIPTION
                                 </div>
                             </th>
                             <th class="w-30">
@@ -127,7 +127,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>Sub Total</td>
+                            <td>SOUS-TOTAL</td>
                             <td></td>
                             <td>{{ mission.userMissionPayment.clientPrice |round(2, 'floor') }} €</td>
                         </tr>
@@ -141,7 +141,14 @@
                         {% endif %}
                         <tr>
                             <td></td>
-                            <td class="text-dargblue font-weight-bold">Grand total</td>
+                            <td class="text-dargblue font-weight-bold">SOUS TOTAL HT</td>
+                            <td></td>
+                            <td class="text-dargblue font-weight-bold">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} € <br><br></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td class="text-dargblue font-weight-bold">TOTAL TTC</td>
                             <td></td>
                             <td class="text-dargblue font-weight-bold">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</td>
                         </tr>
@@ -163,9 +170,9 @@
                         {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice != 0 %}
                             Indemnité forfaitaire pour frais de recouvrement de 40 euros.
                         {% endif %}
-
                     </p>
                 </div>
+
                 <div class="invoice-details-table col-md-12 p-0 my-4 text-textgray">
                     <table class="" border="1"  cellpadding="2px" cellspacing="2">
                         <tr><th colspan="2">Coordonnées bancaires du City-Maker</th></tr>
@@ -176,13 +183,15 @@
                     </table>
                     <br>
                 </div>
+
+
+
+
             </div>
         </div>
         <!-- Invoice contents ends -->
     </div>
 </div>
-
-
 
 </body>
 
