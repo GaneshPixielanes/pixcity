@@ -66,27 +66,34 @@ class PackController extends AbstractController
                 }
             }
 
-//            $template = $this->getDoctrine() ->getRepository(AutoMail::class)->find(1);
-//
-//            $ticket = new Ticket();
-//
-//            $ticket->setClient($this->getUser());
-//            $ticket->setCm($pack->getUser());
-//            $ticket->setTemplateType($template);
-//            $ticket->setInitiator('client');
-//            $ticket->setObject($request->get('ticket')['Object']);
-//            $ticket->setStatus('open');
-//            $ticket->setCreatedAt(new \DateTime('now'));
-//            $ticket->setUpdatedAt(new \DateTime('now'));
-//
-//            $em->persist($ticket);
-//            $em->flush();
-//
-//            $message = new Message();
-//            $message->setTicket($ticket);
-//            $message->setContent($request->get('ticket')['messages']['content']);
-//            $message->setType('1');
-//            $message->setStatus(1);
+            $template = $this->getDoctrine() ->getRepository(AutoMail::class)->find(1);
+
+            $ticket = new Ticket();
+
+            $ticket->setClient($this->getUser());
+            $ticket->setCm($pack->getUser());
+            $ticket->setTemplateType($template);
+            $ticket->setInitiator('client');
+            $ticket->setObject("Question sur le pack ".$pack->getTitle());
+            $ticket->setStatus('open');
+            $ticket->setCreatedAt(new \DateTime('now'));
+            $ticket->setUpdatedAt(new \DateTime('now'));
+
+            $entityManager->persist($ticket);
+            $entityManager->flush();
+
+            $content = "Bonjour ".$proposal->getPack()->getUser()->getFirstname()."<br>"."NOTIFICATION  : ".$proposal->getClient()."vous a envoyé une question sur votre espace : ".$proposal->getDescription();
+
+            $message = new Message();
+            $message->setTicket($ticket);
+            $message->setContent($content);
+            $message->setType('1');
+            $message->setStatus(1);
+            $message->setAutoMail('no');
+
+            $entityManager->persist($message);
+            $entityManager->flush();
+
 
             #Send notification
 //            $notificationsRepository->insert($pack->getUser(),null,'mission_request', $this->getUser()->getFirstName().' has sent a mission request',0);
