@@ -510,7 +510,7 @@ class MissionController extends Controller
         $document = $documentRepo->find($id);
         $mission = $document->getMission();
         $date = new \DateTime();
-        $response = new BinaryFileResponse('uploads/missions/temp/'.$document->getName());
+        $response = new BinaryFileResponse('uploads/missions/temp/'.$document->getOriginalName());
         $ext = pathinfo('uploads/missions/temp/'.$document->getName(),PATHINFO_EXTENSION);
 
         $response->headers->set('Content-Type','text/plain');
