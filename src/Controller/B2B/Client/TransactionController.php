@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/client/transaction", name="client_transaction_")
+ * @Security("has_role('ROLE_USER')")
  */
 class TransactionController extends AbstractController
 {
