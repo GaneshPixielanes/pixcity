@@ -258,7 +258,10 @@ class MissionController extends Controller
 
                 $filename = $this->createSlug($mission->getTitle());
 
-                $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
+                $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
+
+                $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
+
 
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/client_invoice.html.twig',
@@ -268,7 +271,9 @@ class MissionController extends Controller
                     ), $clientInvoicePath
                 );
 
-                $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
+                $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
+
+                $cmInvoicePath = "invoices/".$mission->getId().'/'.$cm_filename;
 
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/cm_invoice.html.twig',
@@ -278,7 +283,10 @@ class MissionController extends Controller
                     ), $cmInvoicePath
                 );
 
-                $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
+                $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
+
+
+                $pcsInvoicePath = "invoices/".$mission->getId().'/'.$pcs_filename;
 
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/pcs_invoice.html.twig',
