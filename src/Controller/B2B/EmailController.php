@@ -16,8 +16,10 @@ use App\Service\FileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -496,7 +498,24 @@ class EmailController extends Controller
     }
 
 
+    /**
+     * @Route("/attachment-download/{id}",name="attachment_download")
+     */
+    public function download($id, TicketRepository $ticketRepo)
+    {
+        dd($ticketRepo->findBy($id));
+        $date = new \DateTime();
+        $response = new BinaryFileResponse('uploads/attachment/'.$id.'/'.$document->getOriginalName());
+        $ext = pathinfo('uploads/missions/temp/'.$document->getName(),PATHINFO_EXTENSION);
 
+        $response->headers->set('Content-Type','text/plain');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $mission->getTitle().'_'.$date->format('Ymd').'.'.$ext
+        );
+
+        return $response;
+    }
 
 
 
