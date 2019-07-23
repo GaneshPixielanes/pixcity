@@ -30,6 +30,12 @@ class MangoPayService
         return $this->mangoPayApi->Users->Create($userNatural);
     }
 
+
+    public function getUser($userId)
+    {
+        return $this->mangoPayApi->Users->Get($userId);
+    }
+
     /*
      * Create Mangopay User
      * @return MangopPayUser $mangoUser
