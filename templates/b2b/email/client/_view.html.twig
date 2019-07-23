@@ -87,7 +87,7 @@
                                             {% endif %}
 {#                                            <small class="d-block text-textgray mt-1">1,243 KB</small>#}
                                         </a>
-                                        <a href="/uploads/attachment/{{ data.getTicket().getId() }}/{{ file }}" class="btn btn-normalgray btn-sm align-self-end" download><i
+                                        <a href="/uploads/attachment/{{ data.getTicket().getId() }}/{{ file }}" class="btn btn-normalgray btn-sm align-self-end" download="{{ filenames[loop.index-1] }}"><i
                                                     class="fas fa-cloud-download-alt"></i></a>
                                     </div>
                                 </div>
@@ -140,7 +140,7 @@
                 <div class="custom-file">
                     <input type="file" multiple class="custom-file-input" id="inputGroupFile01"
                            aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label mb-0 fz-14" for="inputGroupFile01">{{ ('b2b.label.attachment')| trans }}</label>
+                    <label class="custom-file-label mb-0 fz-14" for="inputGroupFile01" id="fileList-comment">{{ ('b2b.label.attachment')| trans }}</label>
                 </div>
             </div>
 {#            <small>Max. 32MB</small>#}
@@ -179,6 +179,23 @@
             $(".cancel-compose").click(function (e) {
                 $('.reply-card').addClass('d-none');
             });
+
+            $("#inputGroupFile01").on('change',function () {
+                readURLComment(this);
+            });
+
+            function readURLComment(input) {
+                if (input.files && input.files[0]) {
+
+                    var output = document.getElementById('fileList-comment');
+                    $("#fileList-comment").text(' ');
+
+                    for (var i = 0; i < input.files.length; ++i) {
+                        output.innerHTML += input.files.item(i).name + '-';
+                    }
+
+                }
+            }
 
             $("#subit-comment").on('click',function () {
                 var data = new FormData();

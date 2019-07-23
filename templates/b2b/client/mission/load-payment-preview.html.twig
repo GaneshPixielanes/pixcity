@@ -26,7 +26,7 @@
                             {% for document in mission.documents %}
                                 <li class="work-documents-list-item p-3 d-flex align-items-center justify-content-between bg-lightwhite">
                                     <p class="mb-0 fz-14"><i class="far fa-file-alt fz-16 mr-2"></i>{{ document.originalName }}</p>
-                                    <a href="/uploads/missions/temp/{{ document.name }}" download><i class="fas fa-download fz-16"></i></a>
+                                    <a href="/uploads/missions/temp/{{ document.name }}" download="{{ document.originalName }}"><i class="fas fa-download fz-16"></i></a>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -51,7 +51,7 @@
 {#                            <a href="" class="btn btn-darkblue" download=""><i class="fas fa-download fz-16"></i></a>#}
 {#                        </div>#}
 
-                        <a href="/{{ mission.activelog.quotationfile }}" class="btn btn-darkblue btn-block fz-14 lh2-5" download>Télécharger le  Devis PX-{{ mission.id }}-{{ mission.createdAt | date('ymd') }} <span class="float-right"><i class="fas fa-download fz-16"></i></span></a>
+                        <a href="/uploads/missions/temp/{{ mission.id }}{{ mission.activelog.quotationfile }}" class="btn btn-darkblue btn-block fz-14 lh2-5" download>Télécharger le  Devis PX-{{ mission.id }}-{{ mission.activelog.id }} <span class="float-right"><i class="fas fa-download fz-16"></i></span></a>
                     </div>
 {#                    <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">#}
 {#                        <h5 class="text-darkblue mb-3">Zone géographique</h5>#}
