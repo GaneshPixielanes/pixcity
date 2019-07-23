@@ -57,7 +57,8 @@
                                 {{ mission.client.firstname }}
                             </div>
                             <div class="text-darkblue fz-16">
-                                {{ mission.client.ClientInfo.address~' '~mission.client.ClientInfo.postalCode }}<br>
+                                {{ mission.client.ClientInfo.address}}<br>
+                                {{ mission.client.ClientInfo.city~','~app.user.ClientInfo.postalCode }}<br>
                                 {{ mission.client.ClientInfo.email }}
                             </div>
                         </div>
@@ -66,8 +67,7 @@
                                 Numéro de devis
                             </div>
                             <div class="fz-16 font-weight-normal">
-
-
+                                PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}
                             </div>
                         </div>
                     </div>
@@ -77,13 +77,15 @@
                                 City-Maker
                             </div>
                             <div class="text-pink fz-25 font-weight-bold">
-                                {{ mission.user.firstname }}<br>
+                                {{ mission.user.firstname}} {{ mission.user.lastname }}<br>
                             </div>
                             <div class="text-darkblue fz-16">
-                                {{ mission.user.pixie.billing.address.address~' '~mission.user.pixie.billing.address.zipcode }}
-                                {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice != 0 %}
-                                    {{ mission.user.pixie.billing.companyName }}
+                                {% if last_result['client_total'] - last_result['client_price'] | round(2, 'floor') != 0 %}
+                                    Nom de la société : {{ mission.user.pixie.billing.companyName }}<br>
                                 {% endif %}
+                                {{ mission.user.pixie.billing.address.address}}<br>
+                                {{ mission.user.pixie.billing.address.city}},{{ mission.user.pixie.billing.address.country}} {{ mission.user.pixie.billing.address.zipcode}}<br>
+
                             </div>
                         </div>
                         <div class="invoice-number text-right text-darkblue font-weight-bold">
@@ -170,6 +172,25 @@
                         En cas de retard de paiement s'applique une pénalité égale au taux d'intérêt appliqué par la Banque Centrale Européenne (BCE) à son opération de refinancement la plus récente majorée de 10 points.
                         <br>
                         Indemnité forfaitaire pour frais de recouvrement de 40 euros.
+                    </p>
+                </div>
+
+                <div class="col-md-12 invoice-footer mb-3">
+                    <p class="text-darkblue font-weight-bold fz-12 mb-1">
+                        NOTICE:
+                    </p>
+                    <p class="text-textgray fz-14 mb-1">
+                        Conditions d'escompte Néant / La prestation est réalisée et payée selon les conditions générales d'utilisation du City Maker, ainsi que selon les stipulations pour autrui nées de l'acceptation par les parties des conditions générales Pix.city Services que les parties reconnaissent avoir lues et acceptées et qui sont disponibles à l'adresse <a href="https://docs.google.com/document/d/1UKKQBA3rl-LGjtMfJJvjTHtaDo9U1Yc2nTxFjqn4oXM/edit#heading=h.mgkbkicnug0t" target="_blank">Conditions générales d’utilisation et vente Pix.City Services</a>.
+                        <br>
+                        Facture établie par Pix.City Services pour le compte du City-maker.<br>
+                        Le prix affiché comprend la commission de Pix.City Services de 25%.<br>
+                        En cas de retard de paiement s'applique une pénalité égale au taux d'intérêt appliqué par la Banque Centrale Européenne (BCE) à son opération de refinancement la plus récente majorée de 10 points.
+                        <br>
+                        Indemnité forfaitaire pour frais de recouvrement de 40 euros.
+                        <br>
+                        {% if last_result['client_total'] - last_result['client_price'] | round(2, 'floor') == 0 %}
+                            TVA non applicable, art 293 B du CGI
+                        {% endif %}
                     </p>
                 </div>
 

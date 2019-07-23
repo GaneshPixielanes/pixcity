@@ -104,11 +104,11 @@ class UserRepository extends ServiceEntityRepository
             ->leftJoin('u.links', 'c')
             ->leftJoin('u.favoriteCategories', 'category')
             ->innerJoin('u.pixie', 'p')
-                ->innerJoin('p.regions', 'r')
+            ->innerJoin('p.regions', 'r')
 
             ->where('u.deleted IS NULL OR u.deleted = 0')
             ->andWhere('u.visible = 1')
-            ;
+        ;
 
         $qb = $this->_applyFilters($qb, $filters);
 
@@ -126,10 +126,6 @@ class UserRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
-//            ->leftJoin('u.cards', 'cards')
-//            ->leftJoin('u.links', 'c')
-//            ->leftJoin('u.favoriteCategories', 'category')
-            ->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
             ->orderBy('u.id','DESC')
@@ -204,12 +200,12 @@ class UserRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('u')
             ->select(["u", "c", "p", "r", "RAND() as HIDDEN rand"])
-						->join('u.cards','ca')
+            ->join('u.cards','ca')
             ->leftJoin('u.links', 'c')
             ->innerJoin('u.pixie', 'p')
-                ->innerJoin('p.regions', 'r')
+            ->innerJoin('p.regions', 'r')
             ->where('u.deleted IS NULL OR u.deleted = 0')
-						->where('ca.status = :status')->setParameter('status',CardStatus::VALIDATED)
+            ->where('ca.status = :status')->setParameter('status',CardStatus::VALIDATED)
             ->andWhere('u.visible = 1')
         ;
 
@@ -231,13 +227,13 @@ class UserRepository extends ServiceEntityRepository
         if($filters) {
             if (isset($filters["text"])) {
 //                $qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :searchText")->setParameter("searchText", "%".$filters["text"]."%");
-                $qb = $qb->andWhere('packs.title LIKE :packText OR packs.description LIKE :packText')->setParameter('packText','%'.$filters['text'].'%');
+                $qb = $qb->orWhere("packs.title LIKE :packText OR packs.description LIKE :packText OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
             }
 
             if (isset($filters["regions"])) {
                 if(trim($filters["regions"][0]) != '')
                 {
-                    $qb = $qb->andWhere("r.id IN (:regions) OR r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                    $qb = $qb->orWhere("r.id IN (:regions) OR r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
                 }
             }
 
@@ -261,10 +257,31 @@ class UserRepository extends ServiceEntityRepository
             {
                 if(trim($filters["skills"][0]) != '')
                 {
-                    $qb = $qb->andWhere('s.id IN (:skills)')->setParameter("skills",$filters['skills']);
+                    $qb = $qb->orWhere('s.id IN (:skills)')->setParameter("skills",$filters['skills']);
                 }
             }
         }
+
+        return $qb;
+    }
+    public function searchPixiesFilters($filters = [])
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select(["u", "avatar", "c", "p", "r", "category"])
+            ->leftJoin('u.avatar', 'avatar')
+            ->leftJoin('u.cards', 'cards')
+            ->leftJoin('u.links', 'c')
+            ->leftJoin('u.favoriteCategories', 'category')
+            ->innerJoin('u.pixie', 'p')
+            ->innerJoin('p.regions', 'r')
+
+            ->where('u.deleted IS NULL OR u.deleted = 0')
+            ->andWhere('u.visible = 1')
+        ;
+
+        $qb = $this->_applyFilters($qb, $filters);
+
+        $qb = $qb->getQuery()->getResult();
 
         return $qb;
     }
@@ -272,13 +289,13 @@ class UserRepository extends ServiceEntityRepository
     public function cityMakerInfo($id)
     {
         $qb = $this->createQueryBuilder('u')
-                    ->addSelect('u, n, p, m')
-                    ->leftJoin('u.notifications','n')
-                    ->leftJoin('u.userPacks','p')
-                    ->leftJoin('u.userMission','m')
-                    ->andWhere('u.id = :user')->setParameter('user',$id)
-                    ->getQuery()
-                    ->getResult();
+            ->addSelect('u, n, p, m')
+            ->leftJoin('u.notifications','n')
+            ->leftJoin('u.userPacks','p')
+            ->leftJoin('u.userMission','m')
+            ->andWhere('u.id = :user')->setParameter('user',$id)
+            ->getQuery()
+            ->getResult();
 
         return $qb;
     }
