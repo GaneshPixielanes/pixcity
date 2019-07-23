@@ -41,7 +41,7 @@
                         </tr>
                         <tr>
                             <th>Description</th>
-                            <td>{{ user_mission.description }}</td>
+                            <td>{{ user_mission.description |raw}}</td>
                         </tr>
                         <tr>
                             <th>Image bannière</th>
@@ -57,36 +57,8 @@
                         </tr>
                         <tr>
                             <th>Prix mission CM</th>
-                            {#<td>{{ user_mission.missionBasePrice ? user_mission.missionBasePrice : 'N/A' }}</td>#}
-                            <td>
-
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Amount </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for missionLog in user_mission.missionLogs %}
-                                        {% if missionLog.isActive == 1 %}
-                                            <tr>
-                                                <td >{{ missionLog.userBasePrice }}
-                                                    <span class="label label-success">Active</span>
-                                                </td>
-                                            </tr>
-                                        {% else %}
-                                            <tr>
-                                                <td>{{ missionLog.userBasePrice }}</td>
-                                            </tr>
-                                        {% endif %}
-                                    {% else %}
-                                        <tr>
-                                            <td>no records found</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </td>
+                            <td>{{ user_mission.missionBasePrice ? user_mission.missionBasePrice : 'N/A' }}</td>
+                            
                         </tr>
                         <tr>
                             <th>Date de création</th>
@@ -127,6 +99,49 @@
                         <tr>
                             <th>Annulé par</th>
                             <td>{{ user_mission.cancelledBy ? user_mission.cancelledBy : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                        	<td></td>
+                        	<td>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th> Version Id </th>
+                                        <th> Desc </th>
+                                        <th> Price (Up/Down icon) </th>
+                                        <th> Brief files</th>
+                                        <th> Date and Time</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for missionLog in user_mission.missionLogs %}
+                                        {% if missionLog.isActive == 1 %}
+                                            <tr>
+                                            	<td>{{missionLog.id}}</td>
+                                            	<td>{{missionLog.description|raw}}</td>
+                                                <td >{{ missionLog.userBasePrice }}
+                                                    <span class="label label-success">Active</span>
+                                                </td>
+                                                <td></td>
+                                                <td>{{ missionLog.createdAt ? missionLog.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td>{{missionLog.id}}</td>
+                                                <td>{{missionLog.description|raw}}</td>
+                                                <td>{{ missionLog.userBasePrice }}</td>
+                                                <td></td>
+                                                <td>{{ missionLog.createdAt ? missionLog.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% else %}
+                                        <tr>
+                                            <td>no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
