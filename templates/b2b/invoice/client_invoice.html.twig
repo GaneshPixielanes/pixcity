@@ -75,14 +75,14 @@
                                 City-Maker
                             </div>
                             <div class="text-pink fz-25 font-weight-bold">
-                                {{ mission.user.firstname~' '~mission.user.lastname }}<br>
+                                {{ mission.user.firstname}} {{ mission.user.lastname }}<br>
                             </div>
                             <div class="text-darkblue fz-16">
                                 {% if mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientPrice != 0 %}
                                     {{ mission.user.pixie.billing.companyName }}
                                 {% endif %}
                                 {{ mission.user.pixie.billing.address.address}}<br>
-                                {{mission.user.pixie.billing.address.city~,~mission.user.pixie.billing.address.country~ ~mission.user.pixie.billing.address.zipcode}}<br>
+                                {{mission.user.pixie.billing.address.city}},{{ mission.user.pixie.billing.address.country}} {{ mission.user.pixie.billing.address.zipcode}}<br>
 
                             </div>
                         </div>
