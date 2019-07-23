@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Client;
 use App\Entity\User;
 use App\Entity\UserMission;
+use KMS\FroalaEditorBundle\Form\Type\FroalaEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -21,7 +22,13 @@ class UserMissionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description', TextareaType::class,array('label'=>'Description'))
+            ->add('description', FroalaEditorType::class, array(
+                'label' => 'label.content',
+                'attr' => [
+                    'rowClass' => 'type-froala'
+                ],
+                'toolbarStickyOffset' =>  70
+            ))
             ->add('title',TextType::class,array('label'=>'Titre mission'))
             ->add('bannerImage',HiddenType::class,array('data_class'=> null, 'label' => 'Image bannière'))
             ->add('briefFiles',TextType::class,array('label'=>'Documents de travail'))
