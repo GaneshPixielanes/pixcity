@@ -57,7 +57,36 @@
                         </tr>
                         <tr>
                             <th>Prix mission CM</th>
-                            <td>{{ user_mission.missionBasePrice ? user_mission.missionBasePrice : 'N/A' }}</td>
+                            {#<td>{{ user_mission.missionBasePrice ? user_mission.missionBasePrice : 'N/A' }}</td>#}
+                            <td>
+
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Amount </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for missionLog in user_mission.missionLogs %}
+                                        {% if missionLog.isActive == 1 %}
+                                            <tr>
+                                                <td >{{ missionLog.userBasePrice }}
+                                                    <span class="label label-success">Active</span>
+                                                </td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td>{{ missionLog.userBasePrice }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% else %}
+                                        <tr>
+                                            <td>no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
                         <tr>
                             <th>Date de création</th>
