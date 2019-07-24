@@ -308,9 +308,9 @@ class MissionController extends Controller
 
             $filesystem->mkdir('uploads/missions/temp/'.$mission->getId(),0777);
 
-            $filename = $this->createSlug($mission->getTitle());
+            $filename = 'PX-'.$mission->getId().'-'.$missionLog->getId().".pdf";
 
-            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename."-client-".$missionLog->getId().".pdf";
+            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename;
 
             $last_result = $result;
 
@@ -319,12 +319,13 @@ class MissionController extends Controller
                     array(
                         'mission' => $mission,
                         'missionLog' => $missionLog,
-                        'last_result' => $last_result,
+                        'last_result' => $last_result
                     )
                 ), $clientInvoicePath
             );
 
-            $missionLog->setQuotationfile($clientInvoicePath);
+            $missionLog->setQuotationfile($filename);
+
             $em->persist($missionLog);
             $em->flush();
 
