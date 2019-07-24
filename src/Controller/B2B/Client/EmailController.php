@@ -17,8 +17,10 @@ use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -65,7 +67,7 @@ class EmailController extends Controller
 
             $cm = $userRepository->find($request->get('ticket')['cm']);
 
-            $template = $this->getDoctrine() ->getRepository(AutoMail::class)->find(1);
+            $template = $this->getDoctrine()->getRepository(AutoMail::class)->find(1);
 
             $ticket->setClient($user);
             $ticket->setCm($cm);
@@ -486,6 +488,33 @@ class EmailController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/attachment-download/{id}/{filename}",name="attachment_download")
+     */
+    public function download($id,$filename, MessageRepository $messageRepo)
+    {
+        $message = $messageRepo->find($id);
+        if($message->getTicket()->getCm() == $this->getUser() || $message->getTicket()->getClient() == $this->getUser())
+        {
+            $storedNames = explode(',',$message->getAttachment());
+            $actualNames = explode(',',$message->getFilname());
+            $position = array_search($filename,$storedNames);
 
+            $date = new \DateTime();
+            $file = 'uploads/attachment/'.$message->getTicket()->getId().'/'.$filename;
+            $response = new BinaryFileResponse($file);
+            $ext = pathinfo($file,PATHINFO_EXTENSION);
+
+            $response->headers->set('Content-Type','text/plain');
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                $actualNames[$position]
+            );
+
+            return $response;
+        }
+
+        return new JsonResponse(['success' => false]);
+    }
 
 }

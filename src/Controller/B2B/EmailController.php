@@ -499,22 +499,32 @@ class EmailController extends Controller
 
 
     /**
-     * @Route("/attachment-download/{id}",name="attachment_download")
+     * @Route("/attachment-download/{id}/{filename}",name="attachment_download")
      */
-    public function download($id, TicketRepository $ticketRepo)
+    public function download($id,$filename, MessageRepository $messageRepo)
     {
-        dd($ticketRepo->findBy($id));
-        $date = new \DateTime();
-        $response = new BinaryFileResponse('uploads/attachment/'.$id.'/'.$document->getOriginalName());
-        $ext = pathinfo('uploads/missions/temp/'.$document->getName(),PATHINFO_EXTENSION);
+        $message = $messageRepo->find($id);
+        if($message->getTicket()->getCm() == $this->getUser() || $message->getTicket()->getClient() == $this->getUser())
+        {
+            $storedNames = explode(',',$message->getAttachment());
+            $actualNames = explode(',',$message->getFilname());
+            $position = array_search($filename,$storedNames);
 
-        $response->headers->set('Content-Type','text/plain');
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $mission->getTitle().'_'.$date->format('Ymd').'.'.$ext
-        );
+            $date = new \DateTime();
+            $file = 'uploads/attachment/'.$message->getTicket()->getId().'/'.$filename;
+            $response = new BinaryFileResponse($file);
+            $ext = pathinfo($file,PATHINFO_EXTENSION);
 
-        return $response;
+            $response->headers->set('Content-Type','text/plain');
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                $actualNames[$position]
+            );
+
+            return $response;
+        }
+
+        return new JsonResponse(['success' => false]);
     }
 
 
