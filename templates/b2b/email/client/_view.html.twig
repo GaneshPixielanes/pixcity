@@ -87,7 +87,7 @@
                                             {% endif %}
 {#                                            <small class="d-block text-textgray mt-1">1,243 KB</small>#}
                                         </a>
-                                        <a href="/uploads/attachment/{{ data.getTicket().getId() }}/{{ file }}" class="btn btn-normalgray btn-sm align-self-end" download="{{ filenames[loop.index-1] }}"><i
+                                        <a href="{{ url('client_email_attachment_download',{'id':data.id,'filename':file}) }}" class="btn btn-normalgray btn-sm align-self-end"><i
                                                     class="fas fa-cloud-download-alt"></i></a>
                                     </div>
                                 </div>
