@@ -223,11 +223,9 @@ class MissionController extends Controller
 
 //        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
-            if($mission->getStatus() == 'terminate'){
+            if($mission->getStatus() == 'terminated'){
 
                 $filesystem->mkdir('invoices/'.$mission->getId(),0777);
-
-                $filename = $this->createSlug($mission->getTitle());
 
                 $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
 
