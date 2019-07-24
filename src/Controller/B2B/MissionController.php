@@ -719,15 +719,18 @@ class MissionController extends Controller
     /**
      * @Route("download-mission-log-document/{name}",name="download_log_document")
      */
-    public function downloadLogDocument($name)
+    public function downloadLogDocument($name, MissionDocumentRepository $documentRepo)
     {
+        $document = $documentRepo->findOneBy([
+            'name' => $name
+        ]);
         $response = new BinaryFileResponse('uploads/missions/temp/'.$name);
 //        $ext = pathinfo('uploads/missions/temp/'.$name,PATHINFO_EXTENSION);
 
         $response->headers->set('Content-Type','text/plain');
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $name
+            $document->getOriginalName()
         );
 
         return $response;
