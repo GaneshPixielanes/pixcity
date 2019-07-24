@@ -166,7 +166,7 @@ class ClientController extends Controller
 
         $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
 
-        $result = 'http://docs.google.com/gview?url=/invoices/'.$mission->getId().'/'.$client_filename;
+        $result = 'https://docs.google.com/gview?url=https://www.pix.city/invoices/'.$mission->getId().'/'.$client_filename.'&embedded=true';
 
         return new JsonResponse($result);
 
