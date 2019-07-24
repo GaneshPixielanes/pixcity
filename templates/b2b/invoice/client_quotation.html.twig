@@ -80,7 +80,7 @@
                                 {{ mission.user.firstname}} {{ mission.user.lastname }}<br>
                             </div>
                             <div class="text-darkblue fz-16">
-                                {% if last_result['client_total'] - last_result['client_price'] | round(2, 'floor') != 0 %}
+                                {% if last_result['client_tax'] | round(2, 'floor') != 0 %}
                                     Nom de la société : {{ mission.user.pixie.billing.companyName }}<br>
                                 {% endif %}
                                 {{ mission.user.pixie.billing.address.address}}<br>
@@ -135,7 +135,7 @@
                             <td></td>
                             <td>{{  last_result['client_price'] | round(2, 'floor') }} €</td>
                         </tr>
-                        {% if last_result['client_total'] - last_result['client_price'] | round(2, 'floor') != 0 %}
+                        {% if last_result['client_tax'] | round(2, 'floor') != 0 %}
                             <tr>
                                 <td></td>
                                 <td>TVA  20%</td>
@@ -173,7 +173,7 @@
                         <br>
                         Indemnité forfaitaire pour frais de recouvrement de 40 euros.
                         <br>
-                        {% if last_result['client_total'] - last_result['client_price'] | round(2, 'floor') == 0 %}
+                        {% if last_result['client_tax'] | round(2, 'floor') == 0 %}
                             TVA non applicable, art 293 B du CGI
                         {% endif %}
                     </p>
