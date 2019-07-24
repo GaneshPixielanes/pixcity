@@ -244,29 +244,26 @@
                     <p class="mb-0 text-darkgray user-price">{{ mission.missionLogs.last.userBasePrice| clientPrice(margin) |round(2, 'floor') }} €</p>
                 </div>
                 {% if mission.status == 'terminated' %}
-                    <div class="mission-invoice d-flex align-items-center">
+                    <div class="mission-invoice d-flex align-items-center ml-4">
                         <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i></p>
                         <p class="mb-0 text-darkgray">
-                            <a href="/invoices/{{ mission.id }}/{{ filename }}-client.pdf" class="d-block fz-12 text-inprogress" download>Voir le Factures</a>
+                            <a href="/invoices/{{ mission.id }}/PX-{{ mission.id }}-{{ mission.activelog.id }}-client.pdf" class="d-block fz-12 text-inprogress" download>Voir le Factures</a>
                         </p>
-                    </div>|
-
-
+                    </div>
+                {% else %}
+                    <div class="mission-invoice d-flex align-items-center ml-4">
+                        <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-alt fz-20 mr-2"></i></p>
+                        <p class="mb-0 text-darkgray">
+                            <a href="/client/invoices/download/{{ mission.id }}" class="d-block fz-12 text-inprogress">Voir le Documents</a>
+                        </p>
+                    </div>
+                    <div class="mission-invoice d-flex align-items-center ml-4">
+                        <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice fz-20 mr-2"></i></p>
+                        <p class="mb-0 text-darkgray">
+                            <a href="/uploads/missions/temp/{{ mission.id }}/{{ mission.activelog.quotationfile }}" class="d-block fz-12 text-inprogress" download="">Voir le devis</a>
+                        </p>
+                    </div>
                 {% endif %}
-
-                <div class="mission-invoice d-flex align-items-center">
-{#                    <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i></p>#}
-                    <p class="mb-0 text-darkgray">
-                        <a href="/client/invoices/download/{{ mission.id }}">Voir le Documents</a>
-                    </p>
-                </div>|
-
-                <div class="mission-invoice d-flex align-items-center">
-{#                    <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i></p>#}
-                    <p class="mb-0 text-darkgray">
-                        <a href="/{{ mission.activelog.quotationfile }}" download="">Voir le devis</a>
-                    </p>
-                </div>
 
             </div>
             <div class="preview-cta d-flex align-items-center">
