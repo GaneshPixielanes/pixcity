@@ -146,7 +146,7 @@
                 // JSON.parse(result);
                 // invoice.append(`<!--<embed src="`+result.url+`" width="100%" height="100%" />-->`);
                 // $('#invoice-display').attr('src',result.url);
-                $('#invoice-viewer-frame').attr('src','http://docs.google.com/gview?url='+result.url);
+                $('#invoice-viewer-frame').attr('src','https://docs.google.com/gview?url={{ absolute_url('+result.url+') }});
                   // $('#invoice-preview-body').html(`<embed src="`+result+`" width="100%" height="100%" />`);
                   /* Preview Invoice Starts */
                   $(document).on('click', 'a.close-invoice-preview, a.preview-invoice', function(){
