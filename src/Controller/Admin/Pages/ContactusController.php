@@ -10,7 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-
 /**
  * @Route("/admin/contactus", name="admin_contactus_")
  * @Security("has_role('ROLE_ADMIN')")
