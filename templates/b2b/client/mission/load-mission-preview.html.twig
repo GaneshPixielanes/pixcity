@@ -260,7 +260,7 @@
                     <div class="mission-invoice d-flex align-items-center ml-4">
                         <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice fz-20 mr-2"></i></p>
                         <p class="mb-0 text-darkgray">
-                            <a href="/uploads/missions/temp/{{ mission.id }}/{{ mission.activelog.quotationfile }}" class="d-block fz-12 text-inprogress" download="">Voir le devis</a>
+                            <a href="/uploads/missions/temp/{{ mission.id }}/{{ mission.missionLogs.last.quotationfile }}" class="d-block fz-12 text-inprogress" download="">Voir le devis</a>
                         </p>
                     </div>
                 {% endif %}
@@ -421,7 +421,7 @@
                         <tr>
                             <td class="no">01</td>
                             <td class="text-left">
-                                {{ mission.description | raw }}
+                                {{ mission.missionLogs.last.description | raw }}
                             </td>
                             <td class="qty">1</td>
                             <td class="total">{{ mission.userMissionPayment.clientPrice }}</td>
