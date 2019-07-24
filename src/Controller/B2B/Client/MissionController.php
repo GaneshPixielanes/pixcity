@@ -266,7 +266,6 @@ class MissionController extends Controller
 
                 $filesystem->mkdir('invoices/'.$mission->getId(),0777);
 
-                $filename = $this->createSlug($mission->getTitle());
 
                 $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
 
