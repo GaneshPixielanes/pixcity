@@ -164,7 +164,9 @@ class ClientController extends Controller
 
         $mission = $userMissionRepository->find($id);
 
-        $result = '/invoices/'.$mission->getId().'/'.$this->createSlug($mission->getTitle()).'-client.pdf';
+        $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
+
+        $result = '/invoices/'.$mission->getId().'/'.$client_filename;
 
         return new JsonResponse($result);
 
