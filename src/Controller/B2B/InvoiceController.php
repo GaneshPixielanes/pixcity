@@ -8,12 +8,14 @@ use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/community-manager/invoice/", name="b2b_community_manager_invoice_")
  */
-class InvoiceController extends AbstractController
+class InvoiceController extends Controller
 {
     /**
      * @Route("list", name="list")
@@ -74,7 +76,7 @@ class InvoiceController extends AbstractController
     /**
      * @Route("preview/{id}",name="preview")
      */
-    public function preview($id, UserMissionRepository $missionRepo)
+    public function preview($id, UserMissionRepository $missionRepo, Request $request)
     {
         $user = $this->getUser();
         $mission = $missionRepo->findOneBy([
@@ -84,7 +86,7 @@ class InvoiceController extends AbstractController
         ]);
         $fileName = $missionRepo->createSlug($mission->getTitle())."-client.pdf";
 
-        return new JsonResponse(['url' => '/invoices/'.$mission->getId().'/'.$fileName]);
+        return new JsonResponse(['url' => $request->getSchemeAndHttpHost().'/invoices/'.$mission->getId().'/'.$fileName]);
 //
 //        if(empty($mission))
 //        {
