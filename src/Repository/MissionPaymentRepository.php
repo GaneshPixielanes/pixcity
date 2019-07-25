@@ -53,7 +53,7 @@ class MissionPaymentRepository extends ServiceEntityRepository
             /* Get client price details*/
             $result['client_price'] = $price/(100 - $margin) * 100;
             $result['client_tax'] = $result['client_price'] * $tax/100;
-            $result['cm_total'] = $result['client_price'] + $result['client_tax'];
+            $result['client_total'] = $result['client_price'] + $result['client_tax'];
 
 
             /* Get Pix City Services details */
