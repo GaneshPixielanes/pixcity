@@ -116,7 +116,7 @@ class MissionController extends Controller
                     {
                         $status = MissionStatus::ONGOING;
                         $mission->setMissionAgreedClient(1);
-                        $notificationsRepository->insert($mission->getUser(),null,'accept_mission','Mission "'.$mission->getTitle().'" has been accepted by '.$mission->getClient(),1);
+//                        $notificationsRepository->insert($mission->getUser(),null,'accept_mission','Mission "'.$mission->getTitle().'" has been accepted by '.$mission->getClient(),$mission->getId());
                     }
                     else
                     {
@@ -128,7 +128,7 @@ class MissionController extends Controller
                     {
                         $status = MissionStatus::CLIENT_DECLINED;
                         $mission->setMissionAgreedClient(0);
-                        $notificationsRepository->insert($mission->getUser(),null,'deny_mission','Mission "'.$mission->getTitle().'" has been denied by '.$mission->getClient(),1);
+//                        $notificationsRepository->insert($mission->getUser(),null,'deny_mission','Mission "'.$mission->getTitle().'" has been denied by '.$mission->getClient(),$mission->getId());
                     }
                     else{
                         return new JsonResponse(['success' => false, 'message' => 'Illegal operation']);
@@ -147,16 +147,16 @@ class MissionController extends Controller
 
                         $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$refund_amount);
 
-                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',1);
+                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());
 
-                        $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission_client','L\'annulation de la mission '.$mission->getTitle().' est confirmée. Le pré-paiement que vous avez réalisé lors de l\'acceptation du devis va vous être restitué par notre partenaire Mango Pay sous 4 jours. ',1);
+                        $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission_client','L\'annulation de la mission '.$mission->getTitle().' est confirmée. Le pré-paiement que vous avez réalisé lors de l\'acceptation du devis va vous être restitué par notre partenaire Mango Pay sous 4 jours. ',$mission->getId());
 
                         break;
                     }
                     elseif ($mission->getStatus() == MissionStatus::CREATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
                         $status = MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT;
-                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle(),1);
+//                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle(),$mission->getId());
                     }
                     else
                     {
@@ -179,15 +179,15 @@ class MissionController extends Controller
 
                         }
 
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. Vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s'est bien passée ! ",1);
-                        $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. Votre paiement sera donc déclenché sous 48H via notre partenaire Mango Pay. A très bientôt pour une nouvelle mission sur Pix.City Services. ',1);
+                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. Vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s'est bien passée ! ",$mission->getId());
+                        $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. Votre paiement sera donc déclenché sous 48H via notre partenaire Mango Pay. A très bientôt pour une nouvelle mission sur Pix.City Services. ',$mission->getId());
 
                         break;
                     }
                     elseif ($mission->getStatus() == MissionStatus::CREATED)
                     {
                         $status = MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT;
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),1);
+//                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),$mission->getId());
 
                     }
                     else
