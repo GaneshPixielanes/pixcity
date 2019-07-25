@@ -46,38 +46,9 @@
                     <div class="financial-infos-container preview col-sm-12 mt-2 mb-4 pb-4">
                         <h5 class="text-darkblue mb-0"> Montant TTC de la mission</h5>
                         <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ last_result['client_total'] |round(2, 'floor') }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
-{#                        <div class="btn-group" role="group" aria-label="">#}
-{#                            <button type="button" class="btn btn-darkblue fz-14">Télécharger le  Devis PX-13032109-00752</button>#}
-{#                            <a href="" class="btn btn-darkblue" download=""><i class="fas fa-download fz-16"></i></a>#}
-{#                        </div>#}
-
                         <a href="/uploads/missions/temp/{{ mission.id }}/{{ mission.activelog.quotationfile }}" class="btn btn-darkblue btn-block fz-14 lh2-5" download>Télécharger le  Devis PX-{{ mission.id }}-{{ mission.activelog.id }} <span class="float-right"><i class="fas fa-download fz-16"></i></span></a>
                     </div>
-{#                    <div class="pack-region-container preview col-sm-12 mt-2 mb-4 pb-4">#}
-{#                        <h5 class="text-darkblue mb-3">Zone géographique</h5>#}
-{#                        <ul class="nav nav-pills mb-3 pack-regions nav-justified" id="pack-regions" role="tablist">#}
-{#                            <li class="nav-item pack-region-item mr-3">#}
-{#                                <a class="nav-link active bg-lightwhite text-darkgray py-3 text-left" id="region-01"#}
-{#                                   data-toggle="pill" href="#region01" role="tab" aria-controls="region01"#}
-{#                                   aria-selected="true"><span class="font-weight-bold">Région 1</span> <span class="ml-3">Île#}
-{#                                                        de#}
-{#                                                        France</span></a>#}
-{#                            </li>#}
-{#                            <!-- <li class="nav-item pack-region-item">#}
-{#                                <a class="nav-link bg-lightwhite text-darkgray py-3 text-left" id="region-02" data-toggle="pill"#}
-{#                                    href="#region02" role="tab" aria-controls="region02" aria-selected="false"><span#}
-{#                                        class="font-weight-bold">Région 2</span> <span class="ml-3">Bretagne</span></a>#}
-{#                            </li> -->#}
-{#                        </ul>#}
-{#                        <div class="tab-content" id="pills-tabContent">#}
-{#                            <div class="tab-pane fade show active" id="region01" role="tabpanel" aria-labelledby="region-01">#}
-{#                                <img src="../images/zone-map.jpg" class="img-fluid" alt="Île de France">#}
-{#                            </div>#}
-{#                            <!-- <div class="tab-pane fade" id="region02" role="tabpanel" aria-labelledby="region-02">#}
-{#                                <img src="../images/zone-map.jpg" class="img-fluid" alt="Bretagne">#}
-{#                            </div> -->#}
-{#                        </div>#}
-{#                    </div>#}
+
                     <div class="city-maker-container preview col-sm-12 mt-2 mb-4 pb-4">
                         <h5 class="text-darkblue mb-3">Votre City-Maker</h5>
                         <div class="d-flex align-items-center">
@@ -160,50 +131,14 @@
                 <div class="form py-3">
                     <div class="row">
                         <p class="fz-10 mb-4">* Ce paiement est assimilé à un cantonnement du montant de la mission. Le paiement ne sera déclenché au city-maker que lorsque la mission sera terminée. Si elle est annulée, l’argent de ce compte de cantonnement vous sera restitué”</p>
-{#                        <div class="col-sm-12 mb-3">#}
-{#                            <label for="cardholder">Titulaire de la carte</label>#}
-{#                            <input name="cardholder" id="cardholder"#}
-{#                                   class="form-control bg-lightwhite card-holder-name fz-16" maxlength=""#}
-{#                                   type="text" placeholder="John Doe">#}
-{#                        </div>#}
-{#                        <div class="col-sm-12 mb-3">#}
-{#                            <label for="cardnumber">Numéro de carte</label>#}
-{#                            <input name="cardnumber" id="cardnumber"#}
-{#                                   class="form-control bg-lightwhite card-number fz-16" maxlength="19"#}
-{#                                   type="text" placeholder="7625 3658 7361 0009">#}
-{#                        </div>#}
-{#                        <div class="col-sm-12 mb-3">#}
-{#                            <div class="row">#}
-{#                                <div class="col-sm-6">#}
-{#                                    <label for="expiredate">Expire</label>#}
-{#                                    <input name="expiredate" id="expiredate"#}
-{#                                           class="form-control bg-lightwhite expire-date fz-16" maxlength=""#}
-{#                                           type="text" placeholder="01/2019">#}
-{#                                </div>#}
-{#                                <div class="col-sm-6">#}
-{#                                    <label for="cvvnumber">CVV</label>#}
-{#                                    <input name="cvvnumber" id="cvvnumber"#}
-{#                                           class="form-control bg-lightwhite cvv-number fz-16" maxlength=""#}
-{#                                           type="text" placeholder="000">#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="col-sm-12 mb-3">#}
-{#                            <div class="custom-control custom-checkbox">#}
-{#                                <input type="checkbox" class="custom-control-input"#}
-{#                                       id="customCheckEntre">#}
-{#                                <label class="custom-control-label fz-12 text-darkgray"#}
-{#                                       for="customCheckEntre">J’ai lu et j’accepte les conditions#}
-{#                                    générales de ventes de Pix.city services</label>#}
-{#                            </div>#}
-{#                        </div>#}
                         <div class="col-sm-12">
                             <div class="d-flex align-items-center justify-content-end position-relative">
-                                <button type="button"
-                                        class="btn btn-white-cancel text-normalgray mr-4"
-                                        data-toggle="modal" data-target="#cancelMissionPayment">Annuler</button>
+                                <button type="button" class="btn btn-white-cancel text-normalgray mr-4" data-toggle="modal" data-target="#cancelMissionPayment">Annuler</button>
 {#                                <button type="button" class="btn btn-darkblue disabled confirm-payment">Payer 149.00€</button>#}
-                                <a href="{{ url("b2b_client_mission_process_mission_request", {'id': mission.id}) }}" class="btn btn-darkblue">Payer {{ last_result['client_total'] |round(2, 'floor') }} €</a>
+{#                                <a href="{{ url("b2b_client_mission_process_mission_request", {'id': mission.id}) }}" class="btn btn-darkblue">Payer {{ last_result['client_total'] |round(2, 'floor') }} €</a>#}
+
+                                 <button type="button" class="btn btn-darkblue" data-toggle="modal" data-target="#cgaMissionPayment">Payer {{ last_result['client_total'] |round(2, 'floor') }} €</button>
+
                             </div>
                         </div>
                     </div>
@@ -214,3 +149,28 @@
         <!-- Client mission payment content ends -->
     </div>
 </div>
+
+<!-- Mission edition confirmation modal -->
+<div class="modal fade alert-modal mission-edition-confirmation-modal" id="missionEditionConfirmation" tabindex="-1" role="dialog" aria-labelledby="missionEditionConfirmation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fz-16">Editer la mission</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Attention, les informations que vous avez modifiés vont générer un nouveau devis
+                    à votre client.</p>
+                <p>Voulez-vous continuer ?
+                    <a href="javascript:;" id="quatation-link" class="d-block" download>Voir le nouveau devis.</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                <button type="button" class="btn btn-pink mission-log-update">ENVOYER DEVIS</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Mission edition confirmation modal ends -->
