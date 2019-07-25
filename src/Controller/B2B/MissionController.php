@@ -57,7 +57,7 @@ class MissionController extends Controller
         $missions['ongoing'] = $userMissionRepo->findOngoingMissions($this->getUser());
         $missions['cancelled'] = $userMissionRepo->findBy(['status' => MissionStatus::CANCELLED, 'user' => $this->getUser()],['id' => 'DESC']);
         $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()],['id' => 'DESC']);
-        $missions['drafts'] = $userMissionRepo->findBy(['status' => 'created', 'user' => $this->getUser()]);
+        $missions['drafts'] = $userMissionRepo->findBy(['status' => 'created', 'user' => $this->getUser()],['id' => 'DESC']);
 
         return $this->render('b2b/mission/index.html.twig', [
             'missions' => $missions,
