@@ -258,7 +258,7 @@ class MissionController extends Controller
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid',$message,$mission_id->getId());
 
                 $message = 'Notre partenaire a bien reçu votre pré-paiement. Le city-maker va être averti du cantonnement de cette somme et il va pouvoir démarrer la mission. ';
-                $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,1);
+                $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,$mission_id->getId());
 
             }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){
 
@@ -321,7 +321,7 @@ class MissionController extends Controller
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid',$message,$mission_id->getId());
 
                 $message = 'Notre partenaire a bien reçu votre pré-paiement. Le city-maker va être averti du cantonnement de cette somme et il va pouvoir démarrer la mission. ';
-                $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,1);
+                $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,$mission_id->getId());
 
             }
 
