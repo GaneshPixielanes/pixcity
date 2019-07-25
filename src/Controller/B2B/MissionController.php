@@ -711,7 +711,7 @@ class MissionController extends Controller
         );
 
 
-        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getTitle().' has beefed and needs your approval', $missionLog->getId());
+//        $notificationsRepo->insert(null,$mission->getClient(),'edit_mission', 'Mission '.$mission->getTitle().' has beefed and needs your approval', $missionLog->getId());
 
         return new JsonResponse(['success' => true]);
     }
