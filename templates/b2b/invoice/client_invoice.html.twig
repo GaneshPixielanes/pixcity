@@ -83,7 +83,9 @@
                                 {% endif %}
                                 {{ mission.user.pixie.billing.address.address}}<br>
                                 {{mission.user.pixie.billing.address.city}},{{ mission.user.pixie.billing.address.country}} {{ mission.user.pixie.billing.address.zipcode}}<br>
-
+                                {% if mission.userMissionPayment.clientTax|round(2, 'floor') != 0 %}
+                                    {{ mission.user.pixie.billing.rcs }} R.C.S NANTERRE
+                                {% endif %}
                             </div>
                         </div>
                         <div class="invoice-number text-right text-darkblue font-weight-bold">
