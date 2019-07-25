@@ -34,8 +34,6 @@ class ContactusController extends AbstractController
         }
         else{
             return $this->render('admin/errorpage/index.html.twig');
-
-
         }
     }
 

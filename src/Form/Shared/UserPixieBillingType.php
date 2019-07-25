@@ -32,7 +32,10 @@ class UserPixieBillingType extends AbstractType
                 'label' => 'label.tva',
                 'required' => false,
             ))
-
+            ->add('rcs',TextType::class, array(
+                'label' => 'R.C.S. NANTERRE',
+                'required' => false,
+            ))
             ->add('address', AddressType::class, array(
                 'required' => true,
                 'constraints' => array(new Valid()),

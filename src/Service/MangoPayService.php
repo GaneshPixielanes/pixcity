@@ -79,6 +79,11 @@ class MangoPayService
         return $this->mangoPayApi->Wallets->Create($wallet);
     }
 
+    public function getWalletId($user)
+    {
+        return $this->mangoPayApi->Wallets->Get($user);
+    }
+
     public function getPayIn($mangoUser, $wallet, $amount, $transaction)
     {
         $payIn = new MangoPay\PayIn();

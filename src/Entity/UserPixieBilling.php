@@ -115,6 +115,11 @@ class UserPixieBilling
      */
     private $needRevolutUpdate = true;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $rcs;
+
 
 
     //--------------------------------------------------------------
@@ -382,6 +387,18 @@ class UserPixieBilling
     public function setNeedRevolutUpdate($needRevolutUpdate)
     {
         $this->needRevolutUpdate = $needRevolutUpdate;
+    }
+
+    public function getRcs(): ?string
+    {
+        return $this->rcs;
+    }
+
+    public function setRcs(?string $rcs): self
+    {
+        $this->rcs = $rcs;
+
+        return $this;
     }
 
 
