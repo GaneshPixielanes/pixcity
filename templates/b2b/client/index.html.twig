@@ -77,7 +77,7 @@
 
                         {% if notification.type == 'cancel_mission' %}
                             <div class="col-md-3 d-flex justify-content-end">
-                                <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-darkblue fz-10" data-unread="{{ notification.id }}" >ANNULER MISSION</a>
+                                <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-darkblue fz-10" data-unread="{{ notification.id }}" >VOIR MISSION</a>
                             </div>
                         {% endif %}
                         {% if notification.type == 'terminate_mission_accept' or notification.type == 'terminate_mission_client' or notification.type == 'cancel_mission_client' or notification.type == 'terminate_mission' %}

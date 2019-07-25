@@ -92,19 +92,19 @@ class UserRepository extends ServiceEntityRepository
 
 
     //---------------------------------------
-    // City Makers
+    // Pixies
     //---------------------------------------
 
     public function searchPixies($filters = [])
     {
         $qb = $this->createQueryBuilder('u')
-            ->select(["u", "avatar", "c", "p", "r", "category"])
+            ->select(["u", "avatar", "c", "p",  "category"])
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.cards', 'cards')
             ->leftJoin('u.links', 'c')
             ->leftJoin('u.favoriteCategories', 'category')
             ->innerJoin('u.pixie', 'p')
-            ->innerJoin('p.regions', 'r')
+            //    ->innerJoin('p.regions', 'r')
 
             ->where('u.deleted IS NULL OR u.deleted = 0')
             ->andWhere('u.visible = 1')
@@ -142,7 +142,6 @@ class UserRepository extends ServiceEntityRepository
         return $qb;
     }
 
-
     public function searchCommunityManagerCount($filters = [], $limit, $page)
     {
         $qb = $this->createQueryBuilder('u')
@@ -165,6 +164,28 @@ class UserRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    public function searchPixiesFilters($filters = [])
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select(["u", "avatar", "c", "p", "r", "category"])
+            ->leftJoin('u.avatar', 'avatar')
+            ->leftJoin('u.cards', 'cards')
+            ->leftJoin('u.links', 'c')
+            ->leftJoin('u.favoriteCategories', 'category')
+            ->innerJoin('u.pixie', 'p')
+            ->innerJoin('p.regions', 'r')
+
+            ->where('u.deleted IS NULL OR u.deleted = 0')
+            ->andWhere('u.visible = 1')
+        ;
+
+        $qb = $this->_applyFilters($qb, $filters);
+
+        $qb = $qb->getQuery()->getResult();
+
+        return $qb;
+    }
+
     public function findByPixieRegion($regionId)
     {
         return $this->createQueryBuilder('u')
@@ -179,6 +200,7 @@ class UserRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
 
 
     public function countPixieByRegion($regionId)
@@ -264,27 +286,6 @@ class UserRepository extends ServiceEntityRepository
 
         return $qb;
     }
-    public function searchPixiesFilters($filters = [])
-    {
-        $qb = $this->createQueryBuilder('u')
-            ->select(["u", "avatar", "c", "p", "r", "category"])
-            ->leftJoin('u.avatar', 'avatar')
-            ->leftJoin('u.cards', 'cards')
-            ->leftJoin('u.links', 'c')
-            ->leftJoin('u.favoriteCategories', 'category')
-            ->innerJoin('u.pixie', 'p')
-            ->innerJoin('p.regions', 'r')
-
-            ->where('u.deleted IS NULL OR u.deleted = 0')
-            ->andWhere('u.visible = 1')
-        ;
-
-        $qb = $this->_applyFilters($qb, $filters);
-
-        $qb = $qb->getQuery()->getResult();
-
-        return $qb;
-    }
 
     public function cityMakerInfo($id)
     {
@@ -299,4 +300,8 @@ class UserRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+
+
+
 }
