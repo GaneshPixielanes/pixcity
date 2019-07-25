@@ -43,6 +43,7 @@ class SearchController extends SearchPageController
             'users' => $users,
             'regions' => $regions,
             'skills' => $skills,
-            'filters' => $filters,]);
+            'filters' => $filters
+        ]);
     }
 }
