@@ -48,12 +48,12 @@ jQuery(document).ready(function() {
 
     function checkPixieStatus() {
         if (isPixieStatusCompany()) {
-            $("#user_pixie_billing_companyName").parents(".form-row").show();
+            $("#user_pixie_billing_companyName, #user_pixie_billing_rcs").parents(".form-row").show();
             $("#user_pixie_billing_firstname, #user_pixie_billing_lastname").parents(".form-row").hide();
             $("#user_pixie_billing_tva").prop("required", true).parents(".form-row").find("label").first().addClass("oblig");
         }
         else {
-            $("#user_pixie_billing_companyName").parents(".form-row").hide();
+            $("#user_pixie_billing_companyName, #user_pixie_billing_rcs").parents(".form-row").hide();
             $("#user_pixie_billing_firstname, #user_pixie_billing_lastname").parents(".form-row").show();
             $("#user_pixie_billing_tva").prop("required", false).parents(".form-row").find("label").first().removeClass("oblig");
         }
@@ -131,6 +131,7 @@ jQuery(document).ready(function() {
             "user[pixie][billing][lastname]": {required: isPixieStatusIndividual, maxlength: 50},
 
             "user[pixie][billing][tva]": {required: isPixieTva},
+            "user[pixie][billing][rcs]": {required: isPixieStatusCompany},
 
             "user[pixie][billing][phone]": {minlength: 10, maxlength: 20, phone: true},
 
