@@ -56,6 +56,7 @@
                                 <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR DEVIS</a>
                             </div>
                         {% else %}
+                            {{ notification.type }}
                             <div class="col-md-3 d-flex justify-content-end">
                                 <a href="javascript:;" class="btn btn-darkblue fz-10 preview-my-mission" data-dismiss="alert" aria-label="Close" data-id="{{ notification.notifyby }}" data-notifyby="{{ notification.notifyby }}">VOIR MISSION</a>
                             </div>

@@ -332,7 +332,7 @@ class MissionController extends Controller
             /* Notificaton sent to the client informing about the edit*/
             $message = 'CM '.$mission->getUser().'  a édité la mission '.$mission->getTitle().'. Vous devez valider cette nouvelle version pour que le city-maker puisse continuer la mission';
 //            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'Vous avez édité la mission '.$mission->getId().'. La nouvelle version de cette mission est en cours de validation côté client.');
-            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', $message, $missionLog->getId());
+            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', $message, $mission->getId());
 
             /* Notification sent to the CM verifying that his edit request has been sent */
             $message = 'Vous avez édité la mission '.$mission->getTitle().'. La nouvelle version de cette mission est en cours de validation côté client.';
