@@ -24,13 +24,26 @@ class SearchController extends SearchPageController
         $searchParams = $this->getSearchParams($request);
         $limit = 12;
         $page = is_null($request->get('page'))?1:$request->get('page');
-        $filters = [
-            'regions' => $searchParams['regions'],
-            'skills' => $searchParams['skills'],
-            'text' => $searchParams['text'],
-            'roles' => 'ROLE_CM',
-            'page' => $page
-        ];
+        if($searchParams['text']!="")
+        {
+            $filters = [
+                'regions' => $searchParams['regions'],
+                'skills' => $searchParams['skills'],
+                'text' => $searchParams['text'],
+                'roles' => 'ROLE_CM',
+                'page' => $page
+            ];
+        }
+        else
+        {
+           $filters = [
+                'regions' => $searchParams['regions'],
+                'skills' => $searchParams['skills'],
+                //'text' => $searchParams['text'],
+                'roles' => 'ROLE_CM',
+                'page' => $page
+            ]; 
+        }
         $users = $userRepo->searchClients($filters, $limit, $page);
 
         $filters['cm_count'] = $userRepo->searchCommunityManagerCount($filters, $limit, $page);

@@ -123,6 +123,7 @@ class UserRepository extends ServiceEntityRepository
 
     public function searchClients($filters = [], $limit = 12, $page = 1)
     {
+        // /dd($filters);
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
@@ -151,7 +152,7 @@ class UserRepository extends ServiceEntityRepository
 //            ->leftJoin('u.cards', 'cards')
 //            ->leftJoin('u.links', 'c')
 //            ->leftJoin('u.favoriteCategories', 'category')
-            ->innerJoin('u.pixie', 'p')
+            //->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
