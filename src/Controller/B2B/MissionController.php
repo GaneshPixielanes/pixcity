@@ -280,7 +280,7 @@ class MissionController extends Controller
     }
 
     /**
-     * @Route("status",name="status")
+     * @Route("/status",name="status")
      */
     public function status(Request $request, UserMissionRepository $userMissionRepo,NotificationsRepository $notificationsRepository)
     {
