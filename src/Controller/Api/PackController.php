@@ -179,61 +179,68 @@ class PackController extends Controller
             $em->persist($pack);
             $em->flush();
 
-            $files = explode(',', $request->get('attached_files'));
-
-            if ($files[0] != '') {
-
-                foreach ($files as $file) {
-                    $file = trim($file);
-
-                    $em = $this->getDoctrine()->getManager();
-
-                    if ($filesystem->exists('uploads/pack/temp/' . $file)) {
-                        if (!$filesystem->exists('uploads/pack/' . $pack->getId() . '/' . $file)) {
-                            $mediaEntity = new UserPackMedia();
-                            $mediaEntity->setName($file);
-                            $mediaEntity->setUserPack($pack);
-
-                            $em->persist($mediaEntity);
-                            $em->flush();
-
-                            $filesystem->copy('uploads/pack/temp/' . $file, 'uploads/pack/' . $pack->getId() . '/' . $file);
-
-                        }
-                    }
-
-
+            foreach($pack->getUserPackMedia() as $media)
+            {
+                if($filesystem->exists('uploads/pack/temp/'.$media->getName()))
+                {
+                    $filesystem->copy('uploads/pack/temp/'.$media->getName(),'uploads/pack/'.$pack->getId().'/'.$media->getName());
                 }
-
             }
+//            $files = explode(',', $request->get('attached_files'));
+//
+//            if ($files[0] != '') {
+//
+//                foreach ($files as $file) {
+//                    $file = trim($file);
+//
+//                    $em = $this->getDoctrine()->getManager();
+//
+//                    if ($filesystem->exists('uploads/pack/temp/' . $file)) {
+//                        if (!$filesystem->exists('uploads/pack/' . $pack->getId() . '/' . $file)) {
+//                            $mediaEntity = new UserPackMedia();
+//                            $mediaEntity->setName($file);
+//                            $mediaEntity->setUserPack($pack);
+//
+//                            $em->persist($mediaEntity);
+//                            $em->flush();
+//
+//                            $filesystem->copy('uploads/pack/temp/' . $file, 'uploads/pack/' . $pack->getId() . '/' . $file);
+//
+//                        }
+//                    }
+//
+//
+//                }
+//
+//            }
 
-            if ($request->get('cm_images')) {
-
-                foreach ($request->get('cm_images') as $key => $item) {
-
-                    $image = explode('/', $item);
-
-
-                    if ($filesystem->exists('uploads/community_media/' . $user->getId() . '/' . $image[4])) {
-                        if (!$filesystem->exists('uploads/pack/' . $pack->getId() . '/' . $image[4])) {
-
-                            $mediaEntity = new UserPackMedia();
-                            $mediaEntity->setName($image[4]);
-                            $mediaEntity->setUserPack($pack);
-
-                            $em->persist($mediaEntity);
-                            $em->flush();
-
-                            $filesystem->copy('uploads/community_media/' . $user->getId() . '/' . $image[4], 'uploads/pack/' . $pack->getId() . '/' . $image[4]);
-
-
-                        }
-
-                    }
-
-                }
-
-            }
+//            if ($request->get('cm_images')) {
+//
+//                foreach ($request->get('cm_images') as $key => $item) {
+//
+//                    $image = explode('/', $item);
+//
+//
+//                    if ($filesystem->exists('uploads/community_media/' . $user->getId() . '/' . $image[4])) {
+//                        if (!$filesystem->exists('uploads/pack/' . $pack->getId() . '/' . $image[4])) {
+//
+//                            $mediaEntity = new UserPackMedia();
+//                            $mediaEntity->setName($image[4]);
+//                            $mediaEntity->setUserPack($pack);
+//
+//                            $em->persist($mediaEntity);
+//                            $em->flush();
+//
+//                            $filesystem->copy('uploads/community_media/' . $user->getId() . '/' . $image[4], 'uploads/pack/' . $pack->getId() . '/' . $image[4]);
+//
+//
+//                        }
+//
+//                    }
+//
+//                }
+//
+//            }
 
             return new JsonResponse(['success' => true, 'url' => $this->generateUrl('b2b_community_manager_index')]);
         }
