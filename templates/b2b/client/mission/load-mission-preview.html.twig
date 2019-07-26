@@ -9,19 +9,21 @@
             {% if notification.type == 'edit_mission' %}
 
                 {% if notification.logId == mission.missionLogs.last.id and notification.unread != 0 %}
-                     <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2" role="alert" >
-                         <div class="col-md-8">
-                             <h6 class="mb-0">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
-                             <p class="mb-1">{{ notification.message | raw }}</p>
-                             <small class="text-muted">{{ notification.createdAt | date('d M Y - H:i') }}</small>
-                         </div>
-
-                         {% if notification.type == 'edit_mission' %}
-                             <div class="col-md-3 d-flex justify-content-end">
-                                 <a href="javascript:;" class="btn btn-darkblue fz-10 accept-mission" data-dismiss="alert" aria-label="Close" data-id="{{ notification.id }}" data-notifyby="{{ notification.logId }}">Confirmer la mission</a>
+                    {% if mission.status == 'terminated' or mission.status == 'cancelled'%}
+                         <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2" role="alert" >
+                             <div class="col-md-8">
+                                 <h6 class="mb-0">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
+                                 <p class="mb-1">{{ notification.message | raw }}</p>
+                                 <small class="text-muted">{{ notification.createdAt | date('d M Y - H:i') }}</small>
                              </div>
-                         {% endif %}
-                     </div>
+
+                             {% if notification.type == 'edit_mission' %}
+                                 <div class="col-md-3 d-flex justify-content-end">
+                                     <a href="javascript:;" class="btn btn-darkblue fz-10 accept-mission" data-dismiss="alert" aria-label="Close" data-id="{{ notification.id }}" data-notifyby="{{ notification.logId }}">Confirmer la mission</a>
+                                 </div>
+                             {% endif %}
+                         </div>
+                        {% endif %}
                 {% endif %}
              {% endif %}
 
@@ -204,6 +206,9 @@
                 success: function(data){
                     $(".user-price").text(data.client_price+' €');
                     console.log('success: ' + data);
+                    $('.to-validate-quote-toast').toast('show').css({
+                        'z-index': '1050'
+                    });
 
                 }
             });
