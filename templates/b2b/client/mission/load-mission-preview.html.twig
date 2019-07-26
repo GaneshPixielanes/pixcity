@@ -196,10 +196,11 @@
     $(document).ready(function(){
         $(".accept-mission").on('click',function () {
             var id = $(this).attr('data-id');
+            var notifyLogId = $(this).attr('data-notifyby');
             $.ajax({
                 type: 'GET',
                 url: '{{ path('b2b_notification_accept_edited_mission') }}',
-                data: {id: id},
+                data: {id: id,notifyLogId:notifyLogId},
                 success: function(data){
                     $(".user-price").text(data.client_price+' €');
                     console.log('success: ' + data);
