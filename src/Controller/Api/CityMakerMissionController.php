@@ -12,6 +12,7 @@ use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("api/city-maker/mission/", name="api_city_maker_mission_")
  */
-class CityMakerMissionController extends AbstractController
+class CityMakerMissionController extends Controller
 {
     /**
      * @Route("upload", name="upload")
