@@ -285,7 +285,7 @@ class MissionController extends Controller
               $this->addFlash('mission_change_setting', 'Félicitations! La mission a bien été annulée');
           }
 
-          return $this->redirect('/client/mission/list');
+          return $this->redirect('/client/mission');
 
     }
 
