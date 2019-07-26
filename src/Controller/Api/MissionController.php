@@ -142,10 +142,10 @@ class MissionController extends Controller
                         $status = MissionStatus::CANCELLED;
 
                         $refund_amount = $first_result['client_total'] - ($first_result['client_price'] * 0.02);
-                        dd($refund_amount);
+
                         $mission->getUserMissionPayment()->setAdjustment($refund_amount);
 
-                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$refund_amount);
+                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$refund_amount);
 
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());
 
