@@ -50,7 +50,7 @@ security:
 
         client_area:
             anonymous: true
-            pattern: ^/client
+            pattern: ^/client|^/freelance
             provider: clients
             form_login:
                 check_path: front_login
