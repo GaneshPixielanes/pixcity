@@ -204,8 +204,6 @@ class EmailController extends Controller
                 $fileName[] = $fileExtension;
             }
 
-
-
         }
 
         $tickit = $ticketRepository->find($request->get('id'));
@@ -235,13 +233,27 @@ class EmailController extends Controller
         $em->persist($message);
         $em->flush();
 
-        $files = [];
+        $proposal_ticket = $ticketRepository->getclientPropsal($tickit->getClient()->getId());
 
-        foreach (explode(',',$message->getAttachment()) as $file){
-            $files[$file] =  "/uploads/attachments/".$message->getTicket()->getId().'/'.$file;
+        foreach ($proposal_ticket as $object) {
+
+            if($object->getObject() == $tickit->getObject()){
+
+                if($messageRepository->getMessagesCountByclient($tickit->getId()) < 4 ){
+
+                    $this->mailer->send($tickit->getCm()->getEmail(),
+                        $tickit->getObject(),
+                        'emails/b2b/internal_email.html.twig',
+                        [
+                            'tickit' => $tickit,
+                            'content' => $message->getContent()
+                        ]);
+
+
+                }
+
+            }
         }
-
-        $files = implode(',',$files);
 
         return JsonResponse::create(['success' => true,'file' => $message->getAttachment()]);
 
@@ -367,8 +379,7 @@ class EmailController extends Controller
             $em->persist($message);
             $em->flush();
 
-            $proposal = $clientMissionProposalRepository->findOneBy(['client' => $user->getId]);
-            dd($proposal);
+
 
             return $this->redirectToRoute('client_email_inbox');
 
