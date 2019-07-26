@@ -241,7 +241,7 @@ class EmailController extends Controller
 
             if($object->getObject() == $tickit->getObject()){
 
-                if(count($messageRepository->getMessagesCountByclient($tickit->getId())) < 4 ){
+//                if(count($messageRepository->getMessagesCountByclient($tickit->getId())) < 4 ){
 
                     $mailer->send($tickit->getCm()->getEmail(),
                         $tickit->getObject(),
@@ -252,7 +252,7 @@ class EmailController extends Controller
                         ]);
 
 
-                }
+//                }
 
             }
         }
