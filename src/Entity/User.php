@@ -386,6 +386,18 @@ class User implements UserInterface, EquatableInterface
      */
     private $royalties;
 
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mangopayUserId;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mangopayWalletId;
+
+
     //--------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------
@@ -1782,6 +1794,30 @@ class User implements UserInterface, EquatableInterface
 
         return $this;
     }
+    public function getMangopayUserId(): ?int
+    {
+        return $this->mangopayUserId;
+    }
+
+    public function setMangopayUserId(int $mangopayUserId): self
+    {
+        $this->mangopayUserId = $mangopayUserId;
+
+        return $this;
+    }
+
+    public function getMangopayWalletId(): ?int
+    {
+        return $this->mangopayWalletId;
+    }
+
+    public function setMangopayWalletId(int $mangopayWalletId): self
+    {
+        $this->mangopayWalletId = $mangopayWalletId;
+
+        return $this;
+    }
+
 
 
 

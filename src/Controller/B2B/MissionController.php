@@ -223,11 +223,11 @@ class MissionController extends Controller
 
             /* Notification to CM */
             $message = $mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getTitle()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission ";
-            $notificationsRepository->insert($mission->getUser(),null,'create_mission_cm', $message, $mission->getId());
+            $notificationsRepository->insert($mission->getUser(),null,'create_mission_cm', $message, $mission->getId(),1);
 
             /* Notification to Client */
             $message = "CM ".$mission->getUser()." a préparé pour vous un devis pour la mission ".$mission->getTitle().". Cliquez-ici pour accepter le devis et procéder au pré-paiement de la mission via notre partenaire MangoPay.";
-            $notificationsRepository->insert(null,$mission->getClient(),'create_mission', $message, $mission->getId());
+            $notificationsRepository->insert(null,$mission->getClient(),'create_mission', $message, $mission->getId(),1);
 
             return $this->redirectToRoute('b2b_mission_list');
 
@@ -306,19 +306,19 @@ class MissionController extends Controller
                                 $mission->setCancelReason($request->get('reason'));
                                 /* Notification to client */
                                 $message = 'CM '.$mission->getUser().'  a demandé une annulation de la mission. Une action est requise de votre côté pour valider l\'annulation définitive de la mission '.$mission->getTitle().'.';
-                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$message, $mission->getId());
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$message, $mission->getId(),1);
 
                                 /* Notification to CM*/
                                 $message = 'Vous avez demandé une annulation de la mission. Une action est requise côté client pour l\'annulation définitive de la mission '.$mission->getTitle().'.';
 
-                                $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_cm',$message, $mission->getId());
+                                $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_cm',$message, $mission->getId(),1);
                                 break;
                             }
                             elseif($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT)
                             {
                                 $mission->setStatus(MissionStatus::CANCELLED);
 
-                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus(),$mission->getId());
+                                $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$this->getUser().' has accepted your request for the cancellation of mission '.$mission->getStatus(),$mission->getId(),1);
                                 break;
                             }
 
@@ -328,18 +328,18 @@ class MissionController extends Controller
                     $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
                     /* Notification sent to client */
                     $message = 'CM '.$mission->getUser().'  a validé la fin de la mission. Vous devez terminer la mission pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). ';
-                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $message, $mission->getId());
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $message, $mission->getId(),1);
 
                     /* Notification sent to CM */
                     $message = 'Vous avez validé la fin de la mission. La validation est en cours côté client pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s\'est bien passée ! ';
-                    $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_cm', $message, $mission->getId());
+                    $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_cm', $message, $mission->getId(),1);
 
                     break;
                 }
                 elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT)
                 {
                     $mission->setStatus(MissionStatus::TERMINATED);
-                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),$mission->getId());
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $this->getUser().' has accepted your request for termination of mission '.$mission->getTitle(),$mission->getId(),1);
                     break;
                 }
 
@@ -584,7 +584,7 @@ class MissionController extends Controller
         $last_result = $result;
 
         $this->container->get('knp_snappy.pdf')->generateFromHtml(
-            $this->renderView('b2b/invoice/client_invoice.html.twig',
+            $this->renderView('b2b/invoice/client_quotation.html.twig',
                 array(
                     'mission' => $mission,
                     'missionLog' => $missionLog,

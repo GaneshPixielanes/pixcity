@@ -23,6 +23,18 @@ class ClientInfo
      */
     private $client;
 
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mangopayUserId;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mangopayWalletId;
+
+
     /**
      * @Assert\NotBlank()
      * @Assert\Regex(
@@ -81,6 +93,31 @@ class ClientInfo
 
         return $this;
     }
+
+    public function getMangopayUserId(): ?int
+    {
+        return $this->mangopayUserId;
+    }
+
+    public function setMangopayUserId(int $mangopayUserId): self
+    {
+        $this->mangopayUserId = $mangopayUserId;
+
+        return $this;
+    }
+
+    public function getMangopayWalletId(): ?int
+    {
+        return $this->mangopayWalletId;
+    }
+
+    public function setMangopayWalletId(int $mangopayWalletId): self
+    {
+        $this->mangopayWalletId = $mangopayWalletId;
+
+        return $this;
+    }
+
 
     public function getSiret(): ?string
     {
