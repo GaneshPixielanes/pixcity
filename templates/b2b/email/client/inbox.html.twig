@@ -72,13 +72,13 @@
                         </a>
                     </div>
                     <div class="btn-group mr-3">
-                        <a data-toggle="tooltip" title="{{ ('b2b.label.inbox')| trans }}" data-placement="bottom" href="/client/email/inbox"
+                        <a data-toggle="tooltip" title="{{ ('b2b.label.inbox')| trans }}" data-placement="bottom" href="{{ url('client_email_inbox') }}"
                            class="btn btn-darkblue go-to-inbox">
                             <i class="fas fa-inbox mr-2"></i> {{ ('b2b.label.inbox')| trans }} <span class="badge bg-pink text-white fz-12">{% if receiverMails | length != 0 %}{{ receiverMails | length }}{% endif %}</span>
                         </a>
 
 
-                        <a data-toggle="tooltip" title="{{ ('b2b.label.sent_box')| trans }}" data-placement="bottom" href="/client/email/send-emails"
+                        <a data-toggle="tooltip" title="{{ ('b2b.label.sent_box')| trans }}" data-placement="bottom" href="{{ url('client_email_send_emails') }}"
                            class="btn btn-darkblue go-to-inbox">
                             <i class="fas fa-inbox mr-2"></i> {{ ('b2b.label.sent_box')| trans }} <span class="badge bg-pink text-white fz-12">{% if sendMails | length != 0 %}{{ sendMails | length }}{% endif %}</span>
                         </a>

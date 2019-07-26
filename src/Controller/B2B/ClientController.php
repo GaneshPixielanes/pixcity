@@ -5,6 +5,7 @@ namespace App\Controller\B2B;
 use App\Constant\MissionStatus;
 use App\Controller\B2B\Client\MissionController;
 use App\Entity\Option;
+use App\Entity\Page;
 use App\Form\B2B\ClientType;
 use App\Repository\ClientMissionProposalRepository;
 use App\Repository\MissionPaymentRepository;
@@ -30,7 +31,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class ClientController extends Controller
 {
     /**
-     * @Route("profile",name="profile")
+     * @Route("profil",name="profile")
      */
     public function profile(Request $request,OptionRepository $options,FileUploader $fileUploader, UserPasswordEncoderInterface $passwordEncoder,Filesystem $filesystem)
     {
@@ -71,6 +72,10 @@ class ClientController extends Controller
 
             return $this->redirect('/client/index');
         }
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle("Pix.city Services : profil client");
+        $page->setMetaDescription("Retrouvez dans cet espace votre profil client");
 
         return $this->render('b2b/client/profile.html.twig',[
            'user' => $user,
@@ -103,13 +108,18 @@ class ClientController extends Controller
                 $proposal_unique [$proposal->getId()] = $proposal->getUser()->getId();
             }
         }
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle("Pix.city Services : Accueil client");
+        $page->setMetaDescription("Retrouvez dans cet espace vos missions en cours, vos factures ainsi que vos city-makers préférés.");
 
         return $this->render('b2b/client/index.html.twig',[
             'notifications' => $notifications,
             'missions' => $missions,
             'proposals' => $proposals,
             'proposal_unique' => $proposal_unique,
-            'margin' => $margin
+            'margin' => $margin,
+            'page' => $page
         ]);
 
     }

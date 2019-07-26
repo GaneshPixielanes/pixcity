@@ -1,5 +1,8 @@
 {% extends 'b2b/client/base.html.twig' %}
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
 
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
 {% import 'b2b/shared/macros.html.twig' as macros %}
 {% block title %}Client | Home {% endblock %}
 {% block stylesheets %}

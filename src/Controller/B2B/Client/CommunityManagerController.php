@@ -2,6 +2,7 @@
 
 namespace App\Controller\B2B\Client;
 
+use App\Entity\Page;
 use App\Repository\PackRepository;
 use App\Repository\SkillRepository;
 use App\Repository\UserPacksRepository;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/client/profil-community-manager/", name="b2b_front_community_manager_")
+ * @Route("/freelance/community-manager-bordeaux/", name="b2b_front_community_manager_")
  */
 class CommunityManagerController extends AbstractController
 {
@@ -33,8 +34,15 @@ class CommunityManagerController extends AbstractController
         $session  = new Session();
         $session->set('chosen_pack_url', '/client/pack/'.$pack->getId());
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle($pack->getUser()." : ".$pack->getPackSkill()." local à ".$pack->getUser()->getPixie()->getBilling()->getCity());
+        $page->setMetaDescription('Trouver un community manager ou influenceur local, basé près de chez vous');
+
+
         return $this->render('b2b/client/community_manager/pack_detail.html.twig',[
-            'pack' => $pack
+            'pack' => $pack,
+            'page' => $page
         ]);
     }
 
@@ -51,6 +59,12 @@ class CommunityManagerController extends AbstractController
             return $this->redirect('/client/search');
         }
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle($user.":".$user->getUserSkill()->first()." local à ".$user->getPixie()->getBilling()->getAddress()->getCity());
+        $page->setMetaDescription('Trouver un community manager ou influenceur local, basé près de chez vous');
+
+
         $packs = $packRepo->findBy([
             'user' => $user,
             'active' => null,
@@ -62,7 +76,8 @@ class CommunityManagerController extends AbstractController
         return $this->render('b2b/client/community_manager/index.html.twig', [
             'user' => $user,
             'packs' => $packs,
-            'skills' => $skills
+            'skills' => $skills,
+            'page' => $page
         ]);
     }
 
