@@ -14,6 +14,7 @@ use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\TicketRepository;
 use App\Service\FileUploader;
+use App\Service\Mailer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -184,7 +185,11 @@ class EmailController extends Controller
     /**
      * @Route("/reply", name="reply")
      */
-    public function replyEmail(Request $request,TicketRepository $ticketRepository,MessageRepository $messageRepository){
+    public function replyEmail(Request $request,
+                               TicketRepository $ticketRepository,
+                               MessageRepository $messageRepository,
+                               Mailer $mailer
+    ){
 
 
         $fileName = [];
@@ -244,6 +249,16 @@ class EmailController extends Controller
 
         $files = implode(',',$files);
 
+        // Send mail
+
+        $mailer->send($message->getTicket()->getClient()->getEmail(),
+            'EMAIL FROM '.$this->getUser().': '.$message->getTicket()->getObject(),
+            [
+                'message' => $message->getContent(),
+                'cm' => $message->getTicket()->getCm(),
+                'client' => $message->getTicket()->getClient()
+            ]
+        );
         return JsonResponse::create(['success' => true,'content' => $content,'file' => $message->getAttachment()]);
 
 

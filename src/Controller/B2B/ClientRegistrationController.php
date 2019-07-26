@@ -95,10 +95,10 @@ class ClientRegistrationController extends AbstractController
                     $proposal_unique [$proposal->getId()] = $proposal->getUser()->getId();
                 }
             }
-
-            $mailer->send($client->getEmail(),'Bienvenue sur Pix.city Services !','emails/b2b/client-register.html.twig',[
-                'client' => $client
-            ]);
+//
+//            $mailer->send($client->getEmail(),'Bienvenue sur Pix.city Services !','emails/b2b/client-register.html.twig',[
+//                'client' => $client
+//            ]);
 
             $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
             $this->container->get('security.token_storage')->setToken($token);
