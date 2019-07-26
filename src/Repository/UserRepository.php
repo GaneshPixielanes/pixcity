@@ -28,6 +28,7 @@ class UserRepository extends ServiceEntityRepository
     public function searchUsers($filters = [], $page = 1, $pageSize = 10, $orderBy = [])
     {
         $qb = $this->createQueryBuilder('u')
+            ->leftJoin('u.userPacks','packs')
             ->select(["u"])
         ;
 
@@ -48,6 +49,7 @@ class UserRepository extends ServiceEntityRepository
     public function countUsers($filters = [])
     {
         $qb = $this->createQueryBuilder('u')
+            ->leftJoin('u.userPacks','packs')
             ->select("COUNT(DISTINCT u.id)")
         ;
 
