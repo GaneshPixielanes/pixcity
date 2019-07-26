@@ -131,7 +131,7 @@ class MangoPayService
 
         $Refund->Fees = $this->mangoPayMoney;
         $Refund->Fees->Currency = "EUR";
-        $Refund->Fees->Amount = -0;
+        $Refund->Fees->Amount = 0.00;
 
         $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
         dd($reponse);
