@@ -63,7 +63,6 @@ class Mailer
             }
         }
 
-        // dd($this->mailer->send($message));
         if(!$this->mailer->send($message)){
             $this->logger->error("EMAIL FAIL : to ".$to." - template " . $template . " : " . $message, $params);
         }
