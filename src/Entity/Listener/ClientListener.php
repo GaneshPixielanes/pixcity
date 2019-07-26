@@ -34,7 +34,7 @@ class ClientListener
         {
             // Send mail to the client who just registered
             $this->mailer->send($client->getEmail(), 'Bienvenue sur Pix.city Services !',
-                'b2b/client-register.html.twig', [
+                'emails/b2b/client-register.html.twig', [
                     'client' => $client
                 ]);
         }
