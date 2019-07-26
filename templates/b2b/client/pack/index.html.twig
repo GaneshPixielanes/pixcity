@@ -202,7 +202,7 @@
             </div>
         </div>
     </div>
-
+    {% set slug = pack.title | lower | replace({' ':'-'}) %}
     <!-- Folllow the City Maker modal ends -->
     <!-- Modals Ends-->
 
@@ -284,10 +284,11 @@
         }
 
         var form_data = form.serializeObject();
-
+        console.log(form_data);
         $dropZone[0].dropzone.processQueue();
+        var slug = "{{ pack.title | lower | replace({' ':'-'}) }}";
         $.ajax({
-            url: '/client/pack/'+"{{ pack.id }}",
+            url: '/freelance/pack/'+slug+"/{{ pack.id }}",
             type: 'POST',
             dataType: 'json',
             data: form_data,
