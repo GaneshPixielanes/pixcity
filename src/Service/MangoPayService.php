@@ -108,7 +108,7 @@ class MangoPayService
 
 
     public function refundPayment($transaction,$amount,$refund_amount){
-        dd($amount.' '.$refund_amount);
+        //dd($amount.' '.$refund_amount);
         $PayInId = $transaction[0]->getMangopayTransactionId();
 
         $Refund = $this->mangoPayApi->Refunds;
@@ -118,7 +118,7 @@ class MangoPayService
         $Refund->DebitedFunds->Amount = $amount;
         $Refund->Fees = $this->mangoPayMoney;
         $Refund->Fees->Currency = "EUR";
-        $Refund->Fees->Amount = $amount- $refund_amount;
+        $Refund->Fees->Amount = $amount - $refund_amount;
         dd($Refund);
         $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
 
