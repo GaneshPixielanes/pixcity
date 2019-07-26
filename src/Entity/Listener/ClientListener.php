@@ -34,22 +34,22 @@ class ClientListener
         {
             // Send mail to the client who just registered
             $this->mailer->send($client->getEmail(), 'Bienvenue sur Pix.city Services !',
-                'b2b/client-register.html.twig', [
+                'emails/b2b/client-register.html.twig', [
                     'client' => $client
                 ]);
         }
 
 
 
-        // Send mail to the admin users
-        $adminRepo = $this->em->getRepository(AdminRepository::class)->getManager();
-
-        $admins = $adminRepo->findBy([]);
-
-        foreach($admins as $admin)
-        {
-            $this->mailer->send($admin->getUsername(), 'Registration Successful!', 'Welcome to Pix.City', [
-            ]);
-        }
+//        // Send mail to the admin users
+//        $adminRepo = $this->em->getRepository(AdminRepository::class)->getManager();
+//
+//        $admins = $adminRepo->findBy([]);
+//
+//        foreach($admins as $admin)
+//        {
+//            $this->mailer->send($admin->getUsername(), 'Registration Successful!', 'Welcome to Pix.City', [
+//            ]);
+//        }
     }
 }
