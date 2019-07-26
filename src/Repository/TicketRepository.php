@@ -108,4 +108,18 @@ class TicketRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getclientPropsal($client)
+    {
+        $question = 'Question';
+        return $this->createQueryBuilder('t')
+                ->andWhere('t.client = :id')
+                ->setParameter('id', $client)
+                ->andWhere('t.Object LIKE :word')
+                ->setParameter('word', '%'.$question.'%')
+                ->getQuery()
+                ->getResult();
+    }
+
+
+
 }
