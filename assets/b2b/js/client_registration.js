@@ -9,7 +9,7 @@ $form.validate({
         "client[lastName]":{required: true, maxlength: 30},
         "client[company]":{required: true, maxlength: 50},
         "client[password]":{required: true, maxlength: 30},
-        "client[clientInfo][siret]":{required: true, maxlength: 14, minlength:14, number: true},
+        "client[clientInfo][siret]":{required: true, maxlength: 14, minlength:14, number: true,remote:''},
         "client[clientInfo][address]":{required: true, maxlength: 50},
         "client[clientInfo][postalCode]":{required: true, maxlength: 5, minlength:5, number: true},
         "client[clientInfo][city]":{required: true, maxlength: 50},
@@ -19,8 +19,13 @@ $form.validate({
     },
     messages: {
         "client[email]": {
-            remote: "This e-mail is already in use. Please try another e-mail!"
+            remote: "Cet email est déjà utilisé. Merci d’essayer avec un autre email !"
+        },
+        "client[clientInfo][siret]":{
+            minlength:"Merci d’insérer 14 caractères maximum",
+            maxlength:"Merci d’insérer au moins 14 caractères"
         }
+
     }
 });
 

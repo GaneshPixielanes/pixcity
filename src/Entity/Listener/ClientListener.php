@@ -41,15 +41,15 @@ class ClientListener
 
 
 
-        // Send mail to the admin users
-        $adminRepo = $this->em->getRepository(AdminRepository::class)->getManager();
-
-        $admins = $adminRepo->findBy([]);
-
-        foreach($admins as $admin)
-        {
-            $this->mailer->send($admin->getUsername(), 'Registration Successful!', 'Welcome to Pix.City', [
-            ]);
-        }
+//        // Send mail to the admin users
+//        $adminRepo = $this->em->getRepository(AdminRepository::class)->getManager();
+//
+//        $admins = $adminRepo->findBy([]);
+//
+//        foreach($admins as $admin)
+//        {
+//            $this->mailer->send($admin->getUsername(), 'Registration Successful!', 'Welcome to Pix.City', [
+//            ]);
+//        }
     }
 }
