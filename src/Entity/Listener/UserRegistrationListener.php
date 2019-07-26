@@ -46,7 +46,7 @@ class UserRegistrationListener
             if($user->getB2bCmApproval() == 0)
             {
                 $this->mailer->send($user->getEmail(),
-                    'Votre inscription est validée!',
+                    'Votre inscription a été refusée',
                     'emails/b2b/b2b-cm-declined.html.twig',
                     [
                         'user'=> $user
