@@ -40,14 +40,14 @@ class MissionListener{
                     'emails/b2b/mission-create-accept.html.twig',
                     [
                         'mission' => $mission
-                    ]);
+                    ],null,'services@pix.city');
 
                 $this->mailer->send($mission->getUser()->getEmail(),
                     'DEMARRAGE MISSION',
                     'emails/b2b/mission-create-accept-client.html.twig',
                     [
                         'mission' => $mission
-                    ]);
+                    ],null,'services@pix.city');
             }
             }
 
@@ -59,7 +59,7 @@ class MissionListener{
                     'emails/b2b/mission-cancel-request-cm.html.twig',
                     [
                         'mission' => $mission
-                    ]);
+                    ],null,'services@pix.city');
 
                 /* Mail sent to the Client */
                 $this->mailer->send($mission->getClient()->getEmail(),
@@ -79,7 +79,7 @@ class MissionListener{
                     'emails/b2b/mission-cancel-accept-cm.html.twig',
                     [
                         'mission' => $mission
-                    ]);
+                    ],null,'services@pix.city');
 
                 /* Mail sent to the Client */
                 $this->mailer->send($mission->getClient()->getEmail(),
@@ -99,7 +99,7 @@ class MissionListener{
                     'emails/b2b/mission-terminated-request-cm.html.twig',
                     [
                         'mission' => $mission
-                    ]);
+                    ],null,'services@pix.city');
 
                 /* Mail sent to the Client */
                 $this->mailer->send($mission->getClient()->getEmail(),
@@ -107,7 +107,7 @@ class MissionListener{
                     'emails/b2b/mission-terminated-request-client.html.twig',
                     [
                         'mission' => $mission
-                    ]);
+                    ],null,'services@pix.city');
             }
 
             /* Client has accepted termination */
@@ -119,7 +119,7 @@ class MissionListener{
                     'emails/b2b/mission-terminated-accept-cm.html.twig',
                     [
                         'mission' => $mission
-                    ]);
+                    ],null,'services@pix.city');
 
                 /* Mail sent to the Client */
                 $this->mailer->send($mission->getClient()->getEmail(),
@@ -127,7 +127,7 @@ class MissionListener{
                     'emails/b2b/mission-terminated-accept-client.html.twig',
                     [
                         'mission' => $mission
-                    ]);
+                    ],null,'services@pix.city');
             }
 
 
@@ -141,14 +141,14 @@ class MissionListener{
                 [
                     'message' => $message,
                     'mission' => $mission
-                ]);
+                ],null,'services@pix.city');
 
             $this->mailer->send($mission->getClient()->getEmail(),
                 'DEVIS ET PRE-PAIEMENT',
                 'emails/b2b/mission-create-client.html.twig',
                 [
                     'mission' => $mission
-                ]);
+                ],null,'services@pix.city');
         }
 
 
