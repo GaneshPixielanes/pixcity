@@ -1,0 +1,28 @@
+{% extends 'emails/b2b/base.html.twig' %}
+
+{% block body %}
+    <tr>
+        <td valign="top" style="font-size:1px; line-height:1px;" height="40" class="height20">
+            <!--[if gt mso 14]>&nbsp;<![endif]-->
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" height="" class="text-darkgray text-left" style="font-size: 16px; font-family: 'Montserrat', sans-serif; color: #4A4B4D; font-weight: bold; line-height: 1.6!important;" align="left">
+            Bonjour {{ proposal.pack.user.firstName }}
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" style="font-size:1px; line-height:1px;" height="10" class="">
+            <!--[if gt mso 14]>&nbsp;<![endif]-->
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" height="" class="text-darkgray text-left" style="font-size: 12px; font-family: 'Montserrat', sans-serif; color: #4A4B4D; line-height: 1.6!important;" align="left">
+            NOTIFICATION  : {{ proposal.client }} vous a envoyé une question sur votre espace :"{{ proposal.description }}"      </td>
+    </tr>
+    <tr>
+        <td valign="top" style="font-size:1px; line-height:1px;" height="10" class="">
+            <!--[if gt mso 14]>&nbsp;<![endif]-->
+        </td>
+    </tr>
+{% endblock %}
