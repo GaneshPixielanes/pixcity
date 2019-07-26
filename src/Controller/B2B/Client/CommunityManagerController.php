@@ -13,41 +13,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/freelance/community-manager-bordeaux/", name="b2b_front_community_manager_")
+ * @Route("/freelance/", name="b2b_front_community_manager_")
  */
 class CommunityManagerController extends AbstractController
 {
     /**
-     * @Route("pack-view/{id}",name="pack_view")
-     */
-    public function viewPack($id, UserPacksRepository $userPacksRepo)
-    {
-
-        $pack = $userPacksRepo->find($id);
-
-
-        if(is_null($pack))
-        {
-            return JsonResponse::create(['success' => false, 'response' => '<strong>Pack not found </strong>']);
-        }
-
-        $session  = new Session();
-        $session->set('chosen_pack_url', '/client/pack/'.$pack->getId());
-
-        #SEO
-        $page = new Page();
-        $page->setMetaTitle($pack->getUser()." : ".$pack->getPackSkill()." local à ".$pack->getUser()->getPixie()->getBilling()->getCity());
-        $page->setMetaDescription('Trouver un community manager ou influenceur local, basé près de chez vous');
-
-
-        return $this->render('b2b/client/community_manager/pack_detail.html.twig',[
-            'pack' => $pack,
-            'page' => $page
-        ]);
-    }
-
-    /**
-     * @Route("{name}/{id}", name="view")
+     * @Route("community-manager-bordeaux/{name}/{id}", name="view")
      */
     public function index($id, UserRepository $userRepo, UserPacksRepository $packRepo,SkillRepository $skillRepository)
     {
@@ -80,6 +51,37 @@ class CommunityManagerController extends AbstractController
             'page' => $page
         ]);
     }
+
+    /**
+         * @Route("{slug}/{id}",name="pack_view")
+     */
+    public function viewPack($id, UserPacksRepository $userPacksRepo)
+    {
+
+        $pack = $userPacksRepo->find($id);
+
+
+        if(is_null($pack))
+        {
+            return JsonResponse::create(['success' => false, 'response' => '<strong>Pack not found </strong>']);
+        }
+
+        $session  = new Session();
+        $session->set('chosen_pack_url', '/client/pack/'.$pack->getId());
+
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle($pack->getUser()." : ".$pack->getPackSkill()." local à ".$pack->getUser()->getPixie()->getBilling()->getAddress()->getCity());
+        $page->setMetaDescription('Trouver un community manager ou influenceur local, basé près de chez vous');
+
+
+        return $this->render('b2b/client/community_manager/pack_detail.html.twig',[
+            'pack' => $pack,
+            'page' => $page
+        ]);
+    }
+
+
 
 
 }
