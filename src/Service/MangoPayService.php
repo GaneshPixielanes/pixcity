@@ -120,7 +120,7 @@ class MangoPayService
 
 
     public function refundPayment($transaction,$amount,$refund_amount){
-
+        dd($amount.' '.$refund_amount);
         $PayInId = $transaction[0]->getMangopayTransactionId();
 
         $Refund = $this->mangoPayApi->Refunds;
