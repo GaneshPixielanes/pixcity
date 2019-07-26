@@ -140,7 +140,7 @@ class MissionController extends Controller
                     {
 
                         $status = MissionStatus::CANCELLED;
-                        dd($first_result);
+
                         $refund_amount = $first_result['client_price'] - ($first_result['client_price'] * (2/100));
 
                         $mission->getUserMissionPayment()->setAdjustment($refund_amount);
