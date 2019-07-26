@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommunityManagerController extends AbstractController
 {
     /**
-     * @Route("community-manager-bordeaux/{name}/{id}", name="view")
+     * @Route("community-manager-{city}/{name}/{id}", name="view")
      */
     public function index($id, UserRepository $userRepo, UserPacksRepository $packRepo,SkillRepository $skillRepository)
     {
