@@ -142,7 +142,7 @@ class MissionController extends Controller
                         $status = MissionStatus::CANCELLED;
 
                         $refund_amount = $first_result['client_total'] - ($first_result['client_price'] * 0.02);
-                        echo print_r($refund_amount.'<br>'.$first_result);exit;
+                        dd($first_result);
                         $mission->getUserMissionPayment()->setAdjustment($refund_amount);
 
                         $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$refund_amount);
