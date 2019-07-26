@@ -43,18 +43,19 @@ class NotificationController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $notification = $notificationsRepository->find($request->get('id'));
-        $notification->setUnread(0);
+        $notification->setUnread(1);
 
         $em->persist($notification);
         $em->flush();
 
-        $missionlog = $missionLogRepository->find($notification->getNotifyBy());
+        $missionlog = $missionLogRepository->find($notification->getLogId());
 
         $missions = $missionLogRepository->findBy(['mission' => $missionlog->getMission()]);
 
         foreach($missions as $key => $mission){
             $mission->setIsActive(0);
             $em->persist($mission);
+
         }
 
         $missionlog->setIsActive(1);

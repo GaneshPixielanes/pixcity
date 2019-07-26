@@ -134,7 +134,8 @@ class MissionController extends Controller
                                    MangoPayService $mangoPayService,
                                    UserMissionRepository $missionRepo,
                                    MissionPaymentRepository $missionPaymentRepository,
-     ClientTransactionRepository $clientTransactionRepository
+                                   ClientTransactionRepository $clientTransactionRepository,
+                                   ClientInfoRepository $clientInfoRepository
     )
     {
         $options = $this->getDoctrine()->getRepository(Option::class);
@@ -166,7 +167,8 @@ class MissionController extends Controller
         }
 
         $userMissionTblId = $missionRepo->findOneBy(['id'=>$id]);
-        $tansClientId = $clientTransactionRepository->findOneBy(['user'=>$userMissionTblId->getClient()]);
+        $tansClientId = $clientInfoRepository->findOneBy(['client'=>$userMissionTblId->getClient()]);
+        //$tansClientId = $clientTransactionRepository->findOneBy(['user'=>$userMissionTblId->getClient()]);
         $mangoUserGet = $mangoPayService->getUser($tansClientId->getMangopayUserId());
 
         if(isset($mangoUserGet) == null){
@@ -181,13 +183,13 @@ class MissionController extends Controller
             $mangoUser->CountryOfResidence = "FR";
             $mangoUser->Email = $this->getUser()->getEmail();
             $mangoUser = $mangoPayService->createUser($mangoUser);
+            //Create a wallet
+            $wallet = $mangoPayService->getWallet($mangoUser->Id);
 
         }else{
             $mangoUser = $mangoUserGet;
+            $wallet = $mangoPayService->getWalletId($tansClientId->getMangopayWalletId());
         }
-
-        //Create a wallet
-        $wallet = $mangoPayService->getWallet($mangoUser->Id);
 
         //Create Transaction
         $transaction->setUser($mission->getClient());
@@ -197,9 +199,11 @@ class MissionController extends Controller
         $transaction->setPaymentStatus(false);
         $transaction->setMission($mission);
 
+
         $em = $this->getDoctrine()->getManager();
 
         $em->persist($transaction);
+
         $em->flush();
 
         //Create Payin
