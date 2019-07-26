@@ -129,7 +129,7 @@ class MissionListener{
                         'mission' => $mission
                     ]);
             }
-        }
+
 
         if(empty($missionBeforeUpdate))
         {
