@@ -62,7 +62,7 @@ class CommunityManagerController extends AbstractController
         #SEO
         $page = new Page();
         $page->setMetaTitle($user.":".$user->getUserSkill()->first()." local à ".$user->getPixie()->getBilling()->getAddress()->getCity());
-        $page->setMetaDescription('Trouver un community manager ou influenceur local, basé près de chez vous');
+        $page->setMetaDescription('Retrouvez toutes les offres de '.$user.' pour des missions de '.$user->getUserSkill()->first().' près de chez vous à '.$user->getPixie()->getBilling()->getAddress()->getCity());
 
 
         $packs = $packRepo->findBy([
