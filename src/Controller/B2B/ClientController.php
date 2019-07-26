@@ -80,7 +80,8 @@ class ClientController extends Controller
         return $this->render('b2b/client/profile.html.twig',[
            'user' => $user,
             'tax' => $tax[0],
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'page' => $page
         ]);
     }
 
