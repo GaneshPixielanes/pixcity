@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
-
-    <meta charset="utf-8" />
+    <title>{% block meta_title %}{% if page.metaTitle is defined %}{{ page.metaTitle }}{% else %}Pix City{% endif %}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% if page.metaDescription is defined %}{{ page.metaDescription }}{% endif %}{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
     <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Fonts -->
@@ -14,7 +14,6 @@
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
     <!-- Site CSS -->
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
-
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
 
@@ -130,16 +129,16 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {% if route == 'b2b_client_mission_list'%}active{% endif %}" href="/client/mission/list" role="tab" aria-controls="myMissions">
+                            <a class="nav-link {% if route == 'b2b_client_mission_list'%}active{% endif %}" href="{{ url('b2b_client_mission_list') }}" role="tab" aria-controls="myMissions">
                                 <i class="fas fa-briefcase"></i>Mes missions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="/client/transaction" role="tab" aria-controls="billing">
+                            <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="{{ url('client_transaction_index') }}" role="tab" aria-controls="billing">
                                 <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if route == 'client_email_inbox'%}active{% endif %}{% if route == 'client_email_send_emails'%}active{% endif %}" href="/client/email/inbox" role="tab" aria-controls="billing">
-                                <i class="fas fa-envelope"></i>Titre de l’email</a>
+                            <a class="nav-link {% if route == 'client_email_inbox'%}active{% endif %}{% if route == 'client_email_send_emails'%}active{% endif %}" href="{{ url('client_email_inbox') }}" role="tab" aria-controls="billing">
+                                <i class="fas fa-envelope"></i>Email</a>
                         </li>
                     </ul>
                     <footer class="text-center p-2 text-pink fz-12">
@@ -432,7 +431,7 @@
                             <h4>A Propos De Nous</h4>
                             {{ menu('footer-1', 'footerMenu') | raw }}
                             {{ menu('footer-2', 'footerMenu') | raw }}
-                            {{ menu('footer-3', 'footerMenu') | raw }}
+{#                            {{ menu('footer-3', 'footerMenu') | raw }}#}
                             <ul>
                                 <li><a href="{{ path('front_faq_index') }}">FAQ</a></li>
                             </ul>
@@ -515,7 +514,7 @@
             });
 
             $("#profile-redirect").on('click',function () {
-                window.location.href = "/client/profile";
+                window.location.href = "{{ url('b2b_client_main_profile') }}";
             });
 
             /* Skills Pack Buttons */

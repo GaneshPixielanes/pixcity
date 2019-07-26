@@ -6,6 +6,7 @@ namespace App\Controller\B2B\Client;
 use App\Constant\MissionStatus;
 use App\Entity\ClientTransaction;
 use App\Entity\Option;
+use App\Entity\Page;
 use App\Entity\Royalties;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTransactionRepository;
@@ -39,7 +40,7 @@ class MissionController extends Controller
 {
 
     /**
-     * @Route("/list", name="list")
+     * @Route("", name="list")
      */
     public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepository)
     {
@@ -50,13 +51,19 @@ class MissionController extends Controller
         $missions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
         $missions['created'] = $missionRepo->findBy(['status' => MissionStatus::CREATED, 'client' => $this->getUser()],['id' => 'DESC']);
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle("Pix.city Services : liste des missions");
+        $page->setMetaDescription("Retrouvez dans cet espace vos missions en cours, annulées ou terminées");
+
         return $this->render('b2b/client/mission/index.html.twig', [
             'missions' => $missions,
             'margin' => $margin,
             'notifications' => $notificationsRepository->findBy([
                'unread' => 1,
                'client' => $this->getUser()
-            ])
+            ]),
+            'page' => $page
         ]);
     }
 

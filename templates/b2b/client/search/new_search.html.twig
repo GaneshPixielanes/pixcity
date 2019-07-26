@@ -1,5 +1,7 @@
 {% extends 'b2b/client/base.html.twig' %}
-
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
 {% import 'b2b/shared/macros.html.twig' as macros %}
 {% block title %}Client | Home {% endblock %}
 {% block stylesheets %}
@@ -156,7 +158,7 @@
                                         {% endif %}
                                         <div class="row">
                                             <div class="col-md-12 mt-3">
-                                                <a href="{{ url('b2b_front_community_manager_view',{'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
+                                                <a href="{{ url('b2b_front_community_manager_view',{'city':user.pixie.billing.address.city |lower,'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
                                             </div>
                                         </div>
                                     </div>

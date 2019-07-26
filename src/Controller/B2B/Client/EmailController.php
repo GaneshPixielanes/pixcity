@@ -6,8 +6,10 @@ use App\Constant\MissionStatus;
 use App\Entity\AutoMail;
 use App\Entity\ClientMissionProposal;
 use App\Entity\Message;
+use App\Entity\Page;
 use App\Entity\Ticket;
 use App\Form\B2B\TicketType;
+use App\Repository\ClientMissionProposalRepository;
 use App\Repository\ClientRepository;
 use App\Repository\MessageRepository;
 use App\Repository\NotificationsRepository;
@@ -15,6 +17,7 @@ use App\Repository\TicketRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
+use App\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -182,7 +185,7 @@ class EmailController extends Controller
     /**
      * @Route("/reply", name="reply")
      */
-    public function replyEmail(Request $request,TicketRepository $ticketRepository,MessageRepository $messageRepository){
+    public function replyEmail(Request $request,TicketRepository $ticketRepository,MessageRepository $messageRepository, Mailer $mailer){
 
         $fileName = [];
 
@@ -202,8 +205,6 @@ class EmailController extends Controller
             if ($file->move($uploadDir, $fileExtension)) {
                 $fileName[] = $fileExtension;
             }
-
-
 
         }
 
@@ -234,13 +235,27 @@ class EmailController extends Controller
         $em->persist($message);
         $em->flush();
 
-        $files = [];
+        $proposal_ticket = $ticketRepository->getclientPropsal($tickit->getClient()->getId());
 
-        foreach (explode(',',$message->getAttachment()) as $file){
-            $files[$file] =  "/uploads/attachments/".$message->getTicket()->getId().'/'.$file;
+        foreach ($proposal_ticket as $object) {
+
+            if($object->getObject() == $tickit->getObject()){
+
+//                if(count($messageRepository->getMessagesCountByclient($tickit->getId())) < 4 ){
+
+                    $mailer->send($tickit->getCm()->getEmail(),
+                        $tickit->getObject(),
+                        'emails/b2b/internal_email.html.twig',
+                        [
+                            'tickit' => $tickit,
+                            'content' => $message->getContent()
+                        ]);
+
+
+//                }
+
+            }
         }
-
-        $files = implode(',',$files);
 
         return JsonResponse::create(['success' => true,'file' => $message->getAttachment()]);
 
@@ -269,9 +284,9 @@ class EmailController extends Controller
 
 
     /**
-     * @Route("/inbox", name="inbox")
+     * @Route("", name="inbox")
      */
-    public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository, UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo)
+    public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository, UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo,ClientMissionProposalRepository $clientMissionProposalRepository)
     {
 
         $user = $this->getUser();
@@ -354,6 +369,8 @@ class EmailController extends Controller
 
             }
 
+
+
             $message->setAttachment(implode(',',$fileName));
             $message->setFilname(implode(',',$fileOrgName));
             $message->setAutoMail('no');
@@ -364,10 +381,17 @@ class EmailController extends Controller
             $em->persist($message);
             $em->flush();
 
+
+
             return $this->redirectToRoute('client_email_inbox');
 
 
         }
+
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle("Pix.city Services : email client");
+        $page->setMetaDescription("Retrouvez dans cet espace tous vos échanges avec les city-makers");
 
 
         return $this->render('b2b/email/client/inbox.html.twig',[
@@ -376,12 +400,13 @@ class EmailController extends Controller
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails,
             'missions' => $missionRepo->findOngoingMissions($this->getUser(),'client'),
-            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1])
+            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1]),
+            'page' => $page
         ]);
     }
 
     /**
-     * @Route("/send-emails", name="send_emails")
+     * @Route("/emails-envoi", name="send_emails")
      */
     public function emailsSend(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository,NotificationsRepository $notificationsRepo)
     {
@@ -478,13 +503,19 @@ class EmailController extends Controller
             return $this->redirectToRoute('client_email_send_emails');
 
         }
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle("Pix.city Services : email envoi client");
+        $page->setMetaDescription("Retrouvez dans cet espace tous vos emails envoyés");
+
 
         return $this->render('b2b/email/client/inbox.html.twig',[
             'form' => $form->createView(),
             'mails' => $mails,
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails,
-            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1])
+            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1]),
+            'page' => $page
         ]);
     }
 

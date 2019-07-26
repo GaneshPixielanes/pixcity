@@ -3,6 +3,7 @@
 namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
+use App\Entity\Page;
 use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
@@ -13,13 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * @Route("/community-manager/", name="b2b_community_manager_")
+ * @Route("/city-maker/profil", name="b2b_community_manager_")
  * @Security("has_role('ROLE_CM')")
  */
-class BtobController extends AbstractController{
+class CityMakerController extends AbstractController{
 
     /**
-     * @Route("profile", name="index")
+     * @Route("", name="index")
      */
     public function index(NotificationsRepository $notificationsRepository,
                           UserPacksRepository $packRepo,
@@ -45,11 +46,17 @@ class BtobController extends AbstractController{
         #Missions listed by the user
         $missions = $missionRepo->findBy(['user' => $this->getUser()],['id' => 'DESC']);
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : profil city-maker');
+        $page->setMetaDescription('Retrouvez dans cet espace votre profil city-maker');
+
         return $this->render('b2b/index.html.twig',[
             'notifications' => $notifications,
             'packs' => $packs,
             'missions' => $missions,
-            'tax' =>  $optionRepo->findBy(['slug' => 'margin'])[0]
+            'tax' =>  $optionRepo->findBy(['slug' => 'margin'])[0],
+            'page' => $page
         ]);
     }
 

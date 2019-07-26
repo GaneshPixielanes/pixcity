@@ -6,6 +6,7 @@ use App\Entity\AutoMail;
 use App\Entity\ClientMissionProposal;
 use App\Entity\ClientMissionProposalMedia;
 use App\Entity\Message;
+use App\Entity\Page;
 use App\Entity\Ticket;
 use App\Form\B2B\ClientMissionProposalType;
 use App\Repository\NotificationsRepository;
@@ -19,13 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * @Route("client/pack", name="b2b_client_pack_")
+ * @Route("freelance/pack", name="b2b_client_pack_")
  * @Security("has_role('ROLE_USER')")
  */
 class PackController extends AbstractController
 {
     /**
-     * @Route("/{id}", name="select")
+     * @Route("/{slug}/{id}", name="select")
      */
     public function index($id, UserPacksRepository $packRepo, Request $request, Filesystem $filesystem, NotificationsRepository $notificationsRepository)
     {
@@ -100,10 +101,15 @@ class PackController extends AbstractController
 
             return JsonResponse::create(['success' => true]);
         }
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle($pack->getTitle());
+        $page->setMetaDescription(substr($pack->getDescription(),0,160));
 
         return $this->render('b2b/client/pack/index.html.twig', [
             'pack' => $pack,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'page' => $page
         ]);
     }
 

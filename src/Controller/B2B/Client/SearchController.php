@@ -3,6 +3,7 @@
 namespace App\Controller\B2B\Client;
 
 use App\Controller\Front\SearchPageController;
+use App\Entity\Page;
 use App\Form\B2B\CitymakerSearchType;
 use App\Repository\RegionRepository;
 use App\Repository\SkillRepository;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/client/search", name="b2b_client_search_")
+ * @Route("/freelance/search", name="b2b_client_search_")
  */
 class SearchController extends SearchPageController
 {
@@ -39,11 +40,17 @@ class SearchController extends SearchPageController
         $regions = $regionRepo->findAll();
         $skills = $skillRepo->findAll();
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : Recherchez votre community manager ou influenceur local freelance');
+        $page->setMetaDescription('Trouver un community manager ou influenceur local, basé près de chez vous');
+
         return $this->render('b2b/client/search/new_search.html.twig', [
             'users' => $users,
             'regions' => $regions,
             'skills' => $skills,
-            'filters' => $filters
+            'filters' => $filters,
+            'page' => $page
         ]);
     }
 }
