@@ -41,7 +41,7 @@ class MissionLogListener{
                 'emails/b2b/mission-edit-request-cm.html.twig',
                 [
                     'mission' => $missionLog->getMission()
-                ]);
+                ],null,'services@pix.city');
 
             /* Mail sent to Client */
             $this->mailer->send($missionLog->getMission()->getClient()->getEmail(),
@@ -49,7 +49,7 @@ class MissionLogListener{
                 'emails/b2b/mission-edit-request-client.html.twig',
                 [
                     'mission' => $missionLog->getMission()
-                ]);
+                ],null,'services@pix.city');
 
         }
         /* CM approved the change */
@@ -61,7 +61,7 @@ class MissionLogListener{
                 'emails/b2b/mission-edit-accept-cm.html.twig',
                 [
                     'mission' => $missionLog->getMission()
-                ]);
+                ],null,'services@pix.city');
 
             /* Mail sent to Client */
             $this->mailer->send($missionLog->getMission()->getClient()->getEmail(),
@@ -69,7 +69,7 @@ class MissionLogListener{
                 'emails/b2b/mission-edit-accept-client.html.twig',
                 [
                     'mission' => $missionLog->getMission()
-                ]);
+                ],null,'services@pix.city');
 
         }
 

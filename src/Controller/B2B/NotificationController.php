@@ -37,7 +37,7 @@ class NotificationController extends AbstractController
     }
 
     /**
-     * @Route("accept-edited-mission", name="accept_edited_mission")
+     * @Route("/accept-edited-mission", name="accept_edited_mission")
      */
     public function acceptEditedMission(Request $request,NotificationsRepository $notificationsRepository,MissionLogRepository $missionLogRepository){
 
