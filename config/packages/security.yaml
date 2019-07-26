@@ -63,7 +63,7 @@ security:
             logout:
                 path: '/client/logout'
                 target: '/'
-                invalidate_session: false
+                invalidate_session: true
 
 
         main:

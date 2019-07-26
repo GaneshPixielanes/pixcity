@@ -30,10 +30,7 @@ class ClientListener
 
         $clientBeforeUpdate = $uow->getOriginalEntityData($client);
                     // Send mail to the client who just registered
-            $this->mailer->send($client->getEmail(), 'Bienvenue sur Pix.city Services !',
-                'emails/b2b/client-register.html.twig', [
-                    'client' => $client
-                ]);
+
         if(empty($clientBeforeUpdate))
         {
             // Send mail to the client who just registered
