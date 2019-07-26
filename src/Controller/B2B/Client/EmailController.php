@@ -17,6 +17,7 @@ use App\Repository\TicketRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
+use App\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -184,7 +185,7 @@ class EmailController extends Controller
     /**
      * @Route("/reply", name="reply")
      */
-    public function replyEmail(Request $request,TicketRepository $ticketRepository,MessageRepository $messageRepository){
+    public function replyEmail(Request $request,TicketRepository $ticketRepository,MessageRepository $messageRepository, Mailer $mailer){
 
         $fileName = [];
 
@@ -240,9 +241,9 @@ class EmailController extends Controller
 
             if($object->getObject() == $tickit->getObject()){
 
-                if($messageRepository->getMessagesCountByclient($tickit->getId()) < 4 ){
+                if(count($messageRepository->getMessagesCountByclient($tickit->getId())) < 4 ){
 
-                    $this->mailer->send($tickit->getCm()->getEmail(),
+                    $mailer->send($tickit->getCm()->getEmail(),
                         $tickit->getObject(),
                         'emails/b2b/internal_email.html.twig',
                         [
