@@ -130,7 +130,7 @@ services:
     # ------------------------------------------------------
     # Entities listeners
     client_registration_listener:
-      class: App\Entity\Listener\ClientRegistrationListener
+      class: App\Entity\Listener\ClientListener
       tags:
       - { name: doctrine.orm.entity_listener }
     # ------------------------------------------------------

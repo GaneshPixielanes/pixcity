@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
+ * @ORM\EntityListeners({"App\Entity\Listener\ClientListener"})
  * @ORM\Table(name="pxl_b2b_client")
  * * @UniqueEntity(
  *     fields={"email"},

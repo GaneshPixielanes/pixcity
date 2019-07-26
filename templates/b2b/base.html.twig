@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
-
-    <meta charset="utf-8" />
+    <title>{% block meta_title %}{% if page.metaTitle is defined %}{{ page.metaTitle }}{% else %}Pix City{% endif %}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% if page.metaDescription is defined %}{{ page.metaDescription }}{% endif %}{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
     <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Fonts -->
@@ -178,7 +178,8 @@
             $(document).on('click', '.close-preview-edit',
                 function () {
                     $(this).parents('[class*="edition-container"]').fadeOut()
-                    $(this).parents('[class*="edition-container"]').siblings('.dash-right').fadeIn()
+                    $(this).parents('[class*="edition-container"]').siblings('.dash-right').fadeIn();
+                    $('#pack-form').html('');
                 });
             $(document).on('click',
                 '.preview-pack, .save-changes, .close-pack-preview, .close-mission-preview, .edit-the-mission, .preview-mission',
@@ -336,7 +337,7 @@
                 console.log(id);
 
                 $.ajax({
-                    url:"/b2b/email/view/"+id,
+                    url:"/city-maker/email-envoi/view/"+id,
                     type:'GET',
                     dataType:'html',
                     success: function(data){

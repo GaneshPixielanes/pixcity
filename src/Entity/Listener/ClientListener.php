@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 
-class ClientRegistrationListener
+class ClientListener
 {
     private $mailer;
     private $em;
@@ -22,11 +22,24 @@ class ClientRegistrationListener
         $this->em = $em;
     }
 
-    public function preFlush(Client $client, PreFlushEventArgs $eventArgs)
+    public function preFlush(Client $client, PreFlushEventArgs $event)
     {
-        // Send mail to the client who just registered
-        $this->mailer->send($client->getEmail(), 'Registration Successful!', 'Welcome to Pix.City', [
-        ]);
+
+        $em = $event->getEntityManager();
+        $uow = $em->getUnitOfWork();
+
+        $clientBeforeUpdate = $uow->getOriginalEntityData($client);
+
+        if(empty($clientBeforeUpdate))
+        {
+            // Send mail to the client who just registered
+            $this->mailer->send($client->getEmail(), 'Bienvenue sur Pix.city Services !',
+                'b2b/client-register.html.twig', [
+                    'client' => $client
+                ]);
+        }
+
+
 
         // Send mail to the admin users
         $adminRepo = $this->em->getRepository(AdminRepository::class)->getManager();

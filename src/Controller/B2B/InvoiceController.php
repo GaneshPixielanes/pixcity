@@ -3,6 +3,7 @@
 namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
+use App\Entity\Page;
 use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\OptionRepository;
@@ -13,12 +14,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 /**
- * @Route("/community-manager/invoice/", name="b2b_community_manager_invoice_")
+ * @Route("/city-maker/factures", name="b2b_community_manager_invoice_")
  */
 class InvoiceController extends Controller
 {
     /**
-     * @Route("list", name="list")
+     * @Route("", name="list")
      */
     public function index(UserMissionRepository $missionRepo, OptionRepository $optionsRepo, NotificationsRepository $notificationsRepo)
     {
@@ -33,18 +34,24 @@ class InvoiceController extends Controller
            'status' => MissionStatus::TERMINATED
         ]);
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : liste des factures');
+        $page->setMetaDescription('Retrouvez dans cet espace toutes les factures de vos missions avec vos clients');
+
         return $this->render('b2b/invoice/index.html.twig', [
             'missions' => $missions,
             'tax' => $optionsRepo->findOneBy(['slug' => 'margin']),
             'notifications' => $notificationsRepo->findBy([
                 'unread' => 1,
                 'user' => $this->getUser()
-            ])
+            ]),
+            'page' => $page
         ]);
     }
 
     /**
-     * @Route("generate/{id}", name="generate")
+     * @Route("/generate/{id}", name="generate")
      */
         public function generate($id, UserMissionRepository $missionRepo)
         {
@@ -74,7 +81,7 @@ class InvoiceController extends Controller
     }
 
     /**
-     * @Route("preview/{id}",name="preview")
+     * @Route("/preview/{id}",name="preview")
      */
     public function preview($id, UserMissionRepository $missionRepo, Request $request)
     {
