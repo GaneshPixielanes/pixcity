@@ -513,7 +513,8 @@ class EmailController extends Controller
             'mails' => $mails,
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails,
-            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1])
+            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1]),
+            'page' => $page
         ]);
     }
 
