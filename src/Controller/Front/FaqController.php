@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/front/faq", name="front_faq_")
+ * @Route("/faq", name="front_faq_")
  */
 class FaqController extends AbstractController
 {

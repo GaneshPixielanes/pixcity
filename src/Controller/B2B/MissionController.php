@@ -8,6 +8,7 @@ use App\Entity\ClientMissionProposal;
 use App\Entity\MissionDocument;
 use App\Entity\MissionLog;
 use App\Entity\Option;
+use App\Entity\Page;
 use App\Entity\UserMission;
 use App\Form\B2B\MissionLogType;
 use App\Form\B2B\MissionType;
@@ -35,7 +36,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 /**
- * @Route("/community-manager/mission/", name="b2b_mission_")
+ * @Route("/city-maker/mission", name="b2b_mission_")
  * @Security("has_role('ROLE_CM')")
  */
 class MissionController extends Controller
@@ -45,7 +46,7 @@ class MissionController extends Controller
         $this->knpSnappy = $knpSnappy;
     }
     /**
-     * @Route("list", name="list")
+     * @Route("", name="list")
      */
     public function index(UserMissionRepository $userMissionRepo, OptionRepository $optionsRepo, NotificationsRepository $notificationsRepo)
     {
@@ -59,18 +60,24 @@ class MissionController extends Controller
         $missions['terminated'] = $userMissionRepo->findBy(['status' => MissionStatus::TERMINATED, 'user' => $this->getUser()],['id' => 'DESC']);
         $missions['drafts'] = $userMissionRepo->findBy(['status' => 'created', 'user' => $this->getUser()],['id' => 'DESC']);
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : liste des missions');
+        $page->setMetaDescription('Retrouvez dans cet espace vos missions en cours, annulées ou terminées');
+
         return $this->render('b2b/mission/index.html.twig', [
             'missions' => $missions,
             'tax' => $optionsRepo->findOneBy(['slug' => 'margin']),
             'notifications' => $notificationsRepo->findBy([
                 'unread' => 1,
                 'user' => $this->getUser()
-            ])
+            ]),
+            'page' => $page
         ]);
     }
 
     /**
-     * @Route("create", name="create")
+     * @Route("/create", name="create")
      */
     public function create(Request $request,
                            Filesystem $filesystem,
@@ -233,121 +240,6 @@ class MissionController extends Controller
             ]);
     }
 
-    /**
-     * @Route("edit/{id}",name="edit")
-     */
-    public function edit($id,
-                         Request $request,
-                         UserMissionRepository $missionRepo,
-                        OptionRepository $optionRepo,
-                         MissionPaymentRepository $missionPaymentRepository,
-                         Filesystem $filesystem,
-                        NotificationsRepository $notificationsRepository
-                        )
-    {
-        $mission = $missionRepo->findOneBy([
-            'id' => $id,
-            'user' => $this->getUser()
-            ]);
-        if(is_null($mission))
-        {
-            return $this->redirectToRoute('b2b_community_manager_index');
-        }
-
-        $missionLog = new MissionLog();
-        $margin = $optionRepo->findOneBy([
-            'slug' => 'margin'
-        ])->getValue();
-
-        $tax = $optionRepo->findOneBy(['slug' => 'tax']);
-
-        $form = $this->createForm(MissionLogType::class, $missionLog);
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted())
-        {
-
-            $em = $this->getDoctrine()->getManager();
-
-            $missionLog->setBriefFiles(json_encode($request->get('document')));
-            $missionLog->setIsActive(0);
-            $missionLog->setMission($mission);
-            $missionLog->setCreatedAt(new \DateTime());
-            $missionLog->setCreatedBy($this->getUser()->getId());
-
-            foreach($mission->getDocuments() as $document)
-            {
-                $mission->removeDocument($document);
-            }
-
-            foreach($request->get('document') as $key => $document)
-            {
-                $missionDocument = new MissionDocument();
-
-                $missionDocument->setName($document);
-                $missionDocument->setOriginalName($request->get('documentName')[$key]);
-                $missionDocument->setCreatedAt(new \DateTime());
-
-                $mission->addDocument($missionDocument);
-            }
-            $mission->setMissionAgreedClient(1);
-            $em->persist($missionLog);
-            $em->persist($mission);
-            $em->flush();
-
-            $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
-            $price = $missionLog->getUserBasePrice();
-
-
-            $tax = $tax->getValue();
-
-//            $transactionFee = 0;
-//            $total =  $clientPrice + ($clientPrice * ($tax/100)) + $transactionFee;
-            $result = $missionPaymentRepository->getPrices($price, $margin, $tax, $cityMakerType);
-
-            $filesystem->mkdir('uploads/missions/temp/'.$mission->getId(),0777);
-
-            $filename = 'PX-'.$mission->getId().'-'.$missionLog->getId().".pdf";
-
-            $clientInvoicePath = "uploads/missions/temp/".$mission->getId().'/'.$filename;
-
-            $last_result = $result;
-
-            $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                $this->renderView('b2b/invoice/client_quotation.html.twig',
-                    array(
-                        'mission' => $mission,
-                        'missionLog' => $missionLog,
-                        'last_result' => $last_result
-                    )
-                ), $clientInvoicePath
-            );
-
-            $missionLog->setQuotationfile($filename);
-
-            $em->persist($missionLog);
-            $em->flush();
-
-            /* Notificaton sent to the client informing about the edit*/
-            $message = 'CM '.$mission->getUser().'  a édité la mission '.$mission->getTitle().'. Vous devez valider cette nouvelle version pour que le city-maker puisse continuer la mission';
-//            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'Vous avez édité la mission '.$mission->getId().'. La nouvelle version de cette mission est en cours de validation côté client.');
-            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', $message, $mission->getId(),$missionLog->getId());
-
-            /* Notification sent to the CM verifying that his edit request has been sent */
-            $message = 'Vous avez édité la mission '.$mission->getTitle().'. La nouvelle version de cette mission est en cours de validation côté client.';
-            $notificationsRepository->insert($mission->getUser(),null,'edit_mission_cm', $message, $mission->getId());
-
-            return new JsonResponse(['success' => true]);
-        }
-        return $this->render('b2b/mission/edit-form.html.twig',
-        [
-            'form' => $form->createView(),
-            'mission' => $mission,
-            'missionLog' => $mission,
-            'margin' => $margin
-        ]);
-    }
 
     private function _resetClientPermission($id)
     {
@@ -491,16 +383,7 @@ class MissionController extends Controller
         ]);
     }
 
-    /**
-     * @Route("upload", name="_upload")
-     */
-    public function upload(Request $request, FileUploader $fileUploader)
-    {
-        $file = $request->files->get('file');
-        $fileName = $fileUploader->upload($file, UserMission::tempFolder(), true);
 
-        return JsonResponse::create(['success' => true, 'fileName' => $fileName,'originalName' => $file->getClientOriginalName()]);
-    }//End of upload
 
 
     /**
@@ -740,7 +623,7 @@ class MissionController extends Controller
      * @param $id
      * @param UserMissionRepository $missionRepository
      *
-     * @Route("download-invoice/{id}",name="invoice_download")
+     * @Route("/download-invoice/{id}",name="invoice_download")
      */
     public function downloadInvoice($id, UserMissionRepository $missionRepository)
     {

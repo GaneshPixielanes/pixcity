@@ -5,6 +5,7 @@ namespace App\Controller\B2B;
 use App\Entity\AutoMail;
 use App\Entity\ClientMissionProposal;
 use App\Entity\Message;
+use App\Entity\Page;
 use App\Entity\Ticket;
 use App\Form\B2B\TicketType;
 use App\Repository\ClientRepository;
@@ -23,7 +24,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/b2b/email", name="b2b_email_")
+ * @Route("/city-maker/email-envoi", name="b2b_email_")
  * @Security("has_role('ROLE_CM')")
  */
 
@@ -165,12 +166,18 @@ class EmailController extends Controller
 
         $nowDate = new \DateTime();
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : email city-maker');
+        $page->setMetaDescription('Retrouvez dans cet espace tous vos échanges avec vos clients');
+
         return $this->render('b2b/email/cm/_view.html.twig',[
             'tickit_data' => $tickit_data,
             'tickits' => $tickits,
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails,
-            'nowDate' => $nowDate->format('Y-m-d h:i')
+            'nowDate' => $nowDate->format('Y-m-d h:i'),
+            'page' => $page
         ]);
     }
 
@@ -246,18 +253,25 @@ class EmailController extends Controller
     /**
      * @Route("/send", name="sent")
      */
-    public function sendEmail(Request $request,TicketRepository $ticketRepository)
+    public function sendEmail(Request $request,TicketRepository $ticketRepo)
     {
-        $mails = $ticketRepository->findBy(['cm' => $this->getUser()]);
+        $mails = $ticketRepo->findBy(['cm' => $this->getUser()]);
+        $user = $this->getUser();
 
         $sendMails = $ticketRepo->getAllSenderCM($user->getId());
 
         $receiverMails = $ticketRepo->getAllReceiverCM($user->getId());
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : email city-maker');
+        $page->setMetaDescription('Retrouvez dans cet espace tous vos échanges avec vos clients');
+
         return $this->render('b2b/email/cm/view.html.twig',[
             'mails' => $mails,
             'sendMails' => $sendMails,
-            'receiverMails' => $receiverMails
+            'receiverMails' => $receiverMails,
+            'page' => $page
         ]);
     }
 
@@ -353,6 +367,7 @@ class EmailController extends Controller
             $em->persist($message);
             $em->flush();
 
+
             return $this->redirectToRoute('b2b_email_send_emails');
 
 
@@ -366,6 +381,11 @@ class EmailController extends Controller
 
         $tax = $optionRepository->findBy(['slug' => 'tax']);
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : email city-maker');
+        $page->setMetaDescription('Retrouvez dans cet espace tous vos échanges avec vos clients');
+
         return $this->render('b2b/email/cm/inbox.html.twig',[
             'form' => $form->createView(),
             'mails' => $mails,
@@ -375,7 +395,8 @@ class EmailController extends Controller
                 'unread' => 1,
                 'user' => $this->getUser()
             ]),
-            'tax' => $tax[0]
+            'tax' => $tax[0],
+            'page' => $page
         ]);
     }
 
@@ -484,6 +505,11 @@ class EmailController extends Controller
 
         $tax = $optionRepository->findBy(['slug' => 'tax']);
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : email city-maker');
+        $page->setMetaDescription('Retrouvez dans cet espace tous vos emails envoyés');
+
         return $this->render('b2b/email/cm/inbox.html.twig',[
             'form' => $form->createView(),
             'mails' => $mails,
@@ -493,7 +519,8 @@ class EmailController extends Controller
                 'unread' => 1,
                 'user' => $this->getUser()
             ]),
-            'tax' => $tax[0]
+            'tax' => $tax[0],
+            'page' => $page
         ]);
     }
 

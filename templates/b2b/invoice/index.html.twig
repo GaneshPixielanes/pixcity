@@ -1,5 +1,8 @@
 {% extends 'b2b/page.html.twig' %}
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
 
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
 {% block content %}
 
     <div class="tab-pane active" id="billing" role="tabpanel">
@@ -11,7 +14,7 @@
 
             </div>
 {#            <div class="col-md-7 ml-auto mt-2 mt-lg-0">#}
-{#                <div class="row">#}
+{#                <div class="frow">#}
 {#                    <div class="offset-md-6 col-md-4">#}
 {#                        {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}#}
 {#                            <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"#}
@@ -140,8 +143,8 @@
             // var invoice = $('embed#invoice-display').parent();
            // $('#invoice-display').remove();
            // $('#invoice-preview-body').load(url);
-           $.ajax('/community-manager/invoice/preview/'+id,{
 
+           $.ajax('/city-maker/factures/preview/'+id,{
               success:function (result) {
                 // JSON.parse(result);
                 // invoice.append(`<!--<embed src="`+result.url+`" width="100%" height="100%" />-->`);

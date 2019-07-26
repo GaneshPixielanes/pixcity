@@ -1,3 +1,8 @@
+<style type="text/css">
+    a[disabled="disabled"] {
+        pointer-events: none;
+    }
+</style>
 <div class="d-flex w-100">
     <div class="col-sm-6 p-0">
         <!-- Client Mission prview contents -->
@@ -133,11 +138,19 @@
                         <p class="fz-10 mb-4">* Ce paiement est assimilé à un cantonnement du montant de la mission. Le paiement ne sera déclenché au city-maker que lorsque la mission sera terminée. Si elle est annulée, l’argent de ce compte de cantonnement vous sera restitué”</p>
                         <div class="col-sm-12">
                             <div class="d-flex align-items-center justify-content-end position-relative">
-                                <button type="button" class="btn btn-white-cancel text-normalgray mr-4" data-toggle="modal" data-target="#cancelMissionPayment">Annuler</button>
-{#                                <button type="button" class="btn btn-darkblue disabled confirm-payment">Payer 149.00€</button>#}
-{#                                <a href="{{ url("b2b_client_mission_process_mission_request", {'id': mission.id}) }}" class="btn btn-darkblue">Payer {{ last_result['client_total'] |round(2, 'floor') }} €</a>#}
 
-                                 <button type="button" class="btn btn-darkblue" data-toggle="modal" data-target="#cgaMissionPayment">Payer {{ last_result['client_total'] |round(2, 'floor') }} €</button>
+                                <div class="custom-control custom-checkbox " style="margin-right: 66px;">
+                                    <input type="checkbox" class="custom-control-input check-all-emails float-left" id="selectAll">
+                                    <label class="custom-control-label text-darkblue float-left" for="selectAll"></label>
+                                    J'accept <a href="https://docs.google.com/document/d/1UKKQBA3rl-LGjtMfJJvjTHtaDo9U1Yc2nTxFjqn4oXM/edit#heading=h.mgkbkicnug0t">les GGV de Pix.city Services</a>
+                                </div>
+
+                                <button type="button"
+                                        class="btn btn-white-cancel text-normalgray mr-4"
+                                        data-toggle="modal" data-target="#cancelMissionPayment">Annuler</button>
+
+{#                                <button type="button" class="btn btn-darkblue disabled confirm-payment">Payer 149.00€</button>#}
+                                <a href="{{ url("b2b_client_mission_process_mission_request", {'id': mission.id}) }}" class="btn btn-darkblue disabled" id="term-condition">Payer {{ last_result['client_total'] |round(2, 'floor') }} €</a>
 
                             </div>
                         </div>
@@ -150,27 +163,17 @@
     </div>
 </div>
 
-<!-- Mission edition confirmation modal -->
-<div class="modal fade alert-modal mission-edition-confirmation-modal" id="missionEditionConfirmation" tabindex="-1" role="dialog" aria-labelledby="missionEditionConfirmation" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fz-16">Editer la mission</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Attention, les informations que vous avez modifiés vont générer un nouveau devis
-                    à votre client.</p>
-                <p>Voulez-vous continuer ?
-                    <a href="javascript:;" id="quatation-link" class="d-block" download>Voir le nouveau devis.</a></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
-                <button type="button" class="btn btn-pink mission-log-update">ENVOYER DEVIS</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Mission edition confirmation modal ends -->
+<script>
+    $(document).ready(function(){
+        $("#selectAll").on('click',function () {
+            if($(this).prop("checked") == true){
+                $("#term-condition").removeClass('disabled');
+            }
+            else if($(this).prop("checked") == false){
+                $("#term-condition").addClass('disabled');
+            }
+            console.log($(this).prop("checked"));
+        });
+
+    });
+</script>

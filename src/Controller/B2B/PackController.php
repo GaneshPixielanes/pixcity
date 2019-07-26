@@ -26,7 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Validator\Constraints\Json;
 
 /**
- * @Route("/b2b/pack", name="b2b_pack_")
+ * @Route("/city-maker/pack", name="b2b_pack_")
  * @Security("has_role('ROLE_PIXIE')")
  */
 class PackController extends Controller
@@ -34,7 +34,7 @@ class PackController extends Controller
 
 
     /**
-     * @Route("/list", name="list")
+     * @Route("", name="list")
      */
     public function index(UserPacksRepository $packRepo,OptionRepository $optionRepo, NotificationsRepository $notificationsRepo)
     {
@@ -42,13 +42,19 @@ class PackController extends Controller
 
         $packs = $packRepo->findByUser($user);
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : liste des packs    ');
+        $page->setMetaDescription('Retrouvez dans cet espace tous vos packs');
+
         return $this->render('b2b/pack/index.html.twig', [
             'packs' => $packs,
             'tax' =>  $optionRepo->findBy(['slug' => 'margin'])[0],
             'notifications' => $notificationsRepo->findBy([
                 'unread' => 1,
                 'user' => $this->getUser()
-                ])
+                ]),
+            'page' => $page
         ]);
     }
 
@@ -161,147 +167,9 @@ class PackController extends Controller
     }
 
 
-    /**
-     * @Route("/edit/{id}",name="edit")
-     */
-    public function edit($id, Request $request,UserPacksRepository $packRepository,Filesystem $filesystem,OptionRepository $optionRepository)
-    {
-
-        if($this->getUser()->getB2bCmApproval() != 1)
-        {
-            return $this->redirectToRoute('front_homepage_index');
-        }
-        $user = $this->getUser();
-
-        $pack = $packRepository->findByUserPack($user,$id);
-        $regions = $user->getUserRegion();
-        if($user->getB2bCmApproval() == 0 || empty($pack)){
-            return $this->redirectToRoute('b2b_pack_list');
-        }
-
-        $tax = $optionRepository->findBy(['slug' => 'tax']);
-        $margin = $optionRepository->findOneBy(['slug' => 'margin']);
-
-        $form = $this->createForm(PackType::class, $pack, ['regions' => $regions]);
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted())
-        {
-            if($user->getB2bCmApproval() == 0 or $pack === null){
-
-                $this->addFlash(
-                    'error',
-                    'You cant create or edit the pack!'
-                );
-                return $this->redirectToRoute('b2b_pack_list');
-            }
-
-            $em = $this->getDoctrine()->getManager();
-
-            if($request->get('banner')){
-                $pack->setBannerImage($request->get('banner'));
-            }
-//            $base_price = $request->get('pack')['userBasePrice'];
-//            $tax = $tax[0]->getValue();
-//            $margin = $base_price * $tax / 100;
-//
-//            $total_value = $margin + $base_price;
-
-            $base_price = $request->get('pack')['userBasePrice'];
-            $tax = $tax[0]->getValue();
-//            $margin = $base_price * $tax / 100;
-            $margin = $margin->getValue();
-
-            $client_price = (100 * $base_price)/(100 - $margin);
-
-            $total_value = $margin + $base_price;
-            $pack->setMarginPercentage($tax);
-            $pack->setMarginValue($client_price - $base_price);
-            $pack->setTotalPrice($client_price);
-
-            $em->persist($pack);
-            $em->flush();
-
-            foreach($pack->getUserPackMedia() as $media)
-            {
-                $file = $media->getName();
-                if($filesystem->exists('uploads/pack/temp/'.$file))
-                {
-                    if(!$filesystem->exists('uploads/pack/'.$pack->getId().'/'.$file))
-                    {
-
-                        $filesystem->copy('uploads/pack/temp/'.$file,'uploads/pack/'.$pack->getId().'/'.$file);
-
-                    }
-                }
-            }
 
 
-//            if($request->get('cm_images')){
-//
-//                foreach ($request->get('cm_images') as $key => $item){
-//
-//                    $image = explode('/',$item);
-//
-//
-//
-//                    if($filesystem->exists('uploads/community_media/'.$user->getId().'/'.$image[4]))
-//                    {
-//                        if(!$filesystem->exists('uploads/pack/'.$pack->getId().'/'.$image[4])){
-//
-//                            $mediaEntity = new UserPackMedia();
-//                            $mediaEntity->setName($image[4]);
-//                            $mediaEntity->setUserPack($pack);
-//
-//                            $em->persist($mediaEntity);
-//                            $em->flush();
-//
-//                            $filesystem->copy('uploads/community_media/'.$user->getId().'/'.$image[4],'uploads/pack/'.$pack->getId().'/'.$image[4]);
-//
-//
-//                        }
-//
-//                    }
-//
-//                }
-//
-//            }
-            return new JsonResponse(['success' => true,'url' => $this->generateUrl('b2b_community_manager_index')]);
-        }
 
-        $page = new Page();
-        $page->setName("Mes Cards en attente");
-        $page->setMetaTitle("Mes Cards en attente");
-
-        $page->setIndexed(false);
-
-        $images = $user->getCommunityMedia();
-
-        return $this->render('b2b/pack/form_backup.html.twig',[
-            'form' => $form->createView(),
-            'pack' => $pack,
-            'page' => $page,
-            'user' => $user,
-            'images' => $images,
-            'tax' => $tax[0]
-        ]);
-    }
-
-    /**
-     * @Route("/upload", name="_upload");
-     */
-    public function upload(Request $request, FileUploader $fileUploader)
-    {
-        $user = $this->getUser();
-
-        $file = $request->files->get('file');
-
-        $fileName = $fileUploader->upload($file, 'pack/banner/', true);
-
-
-        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
-    }
 
 
     /**
@@ -325,64 +193,6 @@ class PackController extends Controller
 
     }
 
-
-    /**
-     * @Route("/fileuploadhandler", name="fileuploadhandler")
-     */
-    public function fileUploadHandler(Request $request) {
-
-        $user = $this->getUser();
-
-        $output = array('uploaded' => false);
-
-        $file = $request->files->get('file');
-
-        $fileName = md5(uniqid()).'.'.$file->guessExtension();
-
-        $uploadDir = $this->get('kernel')->getRootDir() . '/../public/uploads/pack/temp/';
-
-        if (!file_exists($uploadDir) && !is_dir($uploadDir)) {
-            mkdir($uploadDir, 0775, true);
-        }
-
-        if ($file->move($uploadDir, $fileName)) {
-
-            $output['uploaded'] = true;
-            $output['fileName'] = $fileName;
-        }
-
-        return new JsonResponse($output);
-    }
-
-    /**
-     * @Route("/image-display/{id}",name="display_image")
-     */
-    public function showImages($id,Request $request,UserPacksRepository $userPacksRepository){
-
-        $user = $this->getUser();
-
-        $pack = $userPacksRepository->find($id);
-
-        $result = [];
-
-        if(count($pack->getUserPackMedia())){
-
-            foreach($pack->getUserPackMedia() as $media)
-            {
-                $obj['name'] = $media->getName();
-                $obj['size'] = '1024';
-                $obj['path'] = '/uploads/pack/'.$pack->getid().'/'.$media->getName();
-                $obj['id'] = $user->getId().'/'.$pack->getid();
-                $result[] = $obj;
-            }
-
-        }
-
-        return new JsonResponse($result);
-
-
-
-    }
 
     /**
      * @Route("/image-delete",name="delete_image")
@@ -440,122 +250,6 @@ class PackController extends Controller
         ]);
 
     }
-
-    /**
-     * @Route("/edit-pack/{id}",name="edit_pack")
-     */
-    public function editPack($id = null, UserPacksRepository $packRepo, Request $request, OptionRepository $optionRepository ,Filesystem $filesystem)
-    {
-        $pack = $packRepo->findOneBy([
-            'id' => $id,
-            'user' => $this->getUser()
-        ]);
-        $tax = $optionRepository->findBy(['slug' => 'margin']);
-
-        $user = $this->getUser();
-        $regions = $user->getUserRegion();
-        if(is_null($pack))
-        {
-            return JsonResponse::create(['You are not authorized for this action']);
-        }
-        $form = $this->createForm(PackType::class, $pack,['regions' => $regions]);
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted()) {
-            if ($user->getB2bCmApproval() == 0 or $pack === null) {
-
-                $this->addFlash(
-                    'error',
-                    'You cant create or edit the pack!'
-                );
-                return $this->redirectToRoute('b2b_pack_list');
-            }
-
-            $em = $this->getDoctrine()->getManager();
-
-//            if ($request->get('banner')) {
-//                $pack->setBannerImage($request->get('banner'));
-//            }
-            $base_price = $request->get('pack')['userBasePrice'];
-            $tax = $tax[0]->getValue();
-
-            $margin = $base_price * $tax / 100;
-
-            $total_value = $margin + $base_price;
-            $pack->setMarginPercentage($tax);
-            $pack->setMarginValue($margin);
-            $pack->setTotalPrice($total_value);
-
-            $em->persist($pack);
-            $em->flush();
-
-            $files = explode(',', $request->get('attached_files'));
-
-            if ($files[0] != '') {
-
-                foreach ($files as $file) {
-                    $file = trim($file);
-
-                    $em = $this->getDoctrine()->getManager();
-
-                    if ($filesystem->exists('uploads/pack/temp/' . $file)) {
-                        if (!$filesystem->exists('uploads/pack/' . $pack->getId() . '/' . $file)) {
-                            $mediaEntity = new UserPackMedia();
-                            $mediaEntity->setName($file);
-                            $mediaEntity->setUserPack($pack);
-
-                            $em->persist($mediaEntity);
-                            $em->flush();
-
-                            $filesystem->copy('uploads/pack/temp/' . $file, 'uploads/pack/' . $pack->getId() . '/' . $file);
-
-                        }
-                    }
-
-
-                }
-
-            }
-
-            if ($request->get('cm_images')) {
-
-                foreach ($request->get('cm_images') as $key => $item) {
-
-                    $image = explode('/', $item);
-
-
-                    if ($filesystem->exists('uploads/community_media/' . $user->getId() . '/' . $image[4])) {
-                        if (!$filesystem->exists('uploads/pack/' . $pack->getId() . '/' . $image[4])) {
-
-                            $mediaEntity = new UserPackMedia();
-                            $mediaEntity->setName($image[4]);
-                            $mediaEntity->setUserPack($pack);
-
-                            $em->persist($mediaEntity);
-                            $em->flush();
-
-                            $filesystem->copy('uploads/community_media/' . $user->getId() . '/' . $image[4], 'uploads/pack/' . $pack->getId() . '/' . $image[4]);
-
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-            return new JsonResponse(['success' => true, 'url' => $this->generateUrl('b2b_community_manager_index')]);
-        }
-
-        return $this->render('b2b/pack/form.html.twig',
-            [
-               'form' => $form->createView(),
-               'pack' => $pack
-            ]);
-    }
-
 
     /**
      * @Route("/success", name="success")
