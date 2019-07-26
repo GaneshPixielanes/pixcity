@@ -3,6 +3,7 @@
 namespace App\Controller\B2B;
 
 use App\Entity\Contact;
+use App\Entity\Page;
 use App\Form\B2B\ContactType;
 use App\Repository\RegionRepository;
 use App\Repository\UserRepository;
@@ -12,12 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/prestations-de-service", name="prestations_de_service")
+ * @Route("/freelance", name="prestations_de_service")
  */
 class ServiceController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("", name="index")
      */
     public function index(Request $request,RegionRepository $regionRepo,UserRepository $userRepo)
     {
@@ -30,6 +31,8 @@ class ServiceController extends AbstractController
 
         $page = is_null($request->get('page'))?1:$request->get('page');
 
+
+
         $filters = [
             'regions' => $searchParams['regions'],
             'skills' => $searchParams['skills'],
@@ -41,11 +44,15 @@ class ServiceController extends AbstractController
         $users = $userRepo->searchClients($filters, $limit, $page);
 
         $regions = $regionRepo->findAll();
-
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city services : trouvez votre community manager ou influenceur local freelance');
+        $page->setMetaDescription('Un community manager ou influenceur local, basé près de chez vous, vous accompagne pour gérer la visibilité locale de votre commerce, enseigne et franchise.');
 
         return $this->render('b2b/service/index.html.twig',[
             'regions' => $regions,
-            'users'   => $users
+            'users'   => $users,
+            'page' => $page
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Constant\MissionStatus;
 use App\Entity\AutoMail;
 use App\Entity\ClientMissionProposal;
 use App\Entity\Message;
+use App\Entity\Page;
 use App\Entity\Ticket;
 use App\Form\B2B\TicketType;
 use App\Repository\ClientMissionProposalRepository;
@@ -282,7 +283,7 @@ class EmailController extends Controller
 
 
     /**
-     * @Route("/inbox", name="inbox")
+     * @Route("", name="inbox")
      */
     public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository, UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo,ClientMissionProposalRepository $clientMissionProposalRepository)
     {
@@ -386,6 +387,11 @@ class EmailController extends Controller
 
         }
 
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle("Pix.city Services : email client");
+        $page->setMetaDescription("Retrouvez dans cet espace tous vos échanges avec les city-makers");
+
 
         return $this->render('b2b/email/client/inbox.html.twig',[
             'form' => $form->createView(),
@@ -393,12 +399,13 @@ class EmailController extends Controller
             'sendMails' => $sendMails,
             'receiverMails' => $receiverMails,
             'missions' => $missionRepo->findOngoingMissions($this->getUser(),'client'),
-            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1])
+            'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1]),
+            'page' => $page
         ]);
     }
 
     /**
-     * @Route("/send-emails", name="send_emails")
+     * @Route("/emails-envoi", name="send_emails")
      */
     public function emailsSend(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository,NotificationsRepository $notificationsRepo)
     {
@@ -495,6 +502,11 @@ class EmailController extends Controller
             return $this->redirectToRoute('client_email_send_emails');
 
         }
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle("Pix.city Services : email envoi client");
+        $page->setMetaDescription("Retrouvez dans cet espace tous vos emails envoyés");
+
 
         return $this->render('b2b/email/client/inbox.html.twig',[
             'form' => $form->createView(),

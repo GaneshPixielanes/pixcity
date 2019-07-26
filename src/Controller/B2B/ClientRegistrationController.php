@@ -51,8 +51,7 @@ class ClientRegistrationController extends AbstractController
 
         $form->handleRequest($request);
 
-
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
             $em = $this->getDoctrine()->getManager();
             $client->setRoles(["ROLE_USER"]);
