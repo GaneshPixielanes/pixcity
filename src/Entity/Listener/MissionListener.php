@@ -49,6 +49,7 @@ class MissionListener{
                         'mission' => $mission
                     ]);
             }
+            }
 
             if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
             {
@@ -102,7 +103,7 @@ class MissionListener{
 
                 /* Mail sent to the Client */
                 $this->mailer->send($mission->getClient()->getEmail(),
-                    "MISSION ANNULEE",
+                    "MISSION TERMINEE",
                     'emails/b2b/mission-terminated-request-client.html.twig',
                     [
                         'mission' => $mission
@@ -122,7 +123,7 @@ class MissionListener{
 
                 /* Mail sent to the Client */
                 $this->mailer->send($mission->getClient()->getEmail(),
-                    "MISSION TERMINEE COTE CLIENT",
+                    "MISSION TERMINEE ACCEPTEE",
                     'emails/b2b/mission-terminated-accept-client.html.twig',
                     [
                         'mission' => $mission
@@ -147,7 +148,7 @@ class MissionListener{
                 'emails/b2b/mission-create-client.html.twig',
                 [
                     'mission' => $mission
-                ]);            
+                ]);
         }
 
 

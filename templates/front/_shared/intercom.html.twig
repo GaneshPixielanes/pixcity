@@ -38,8 +38,13 @@ var device = getPlatformType();
 </script>
 {% if app.user is not null %}
 
+<<<<<<< HEAD
 {%if app.user.pixie is defined and app.user.pixie is not null %}
 	{% if app.user.viewMode == 'pixie' %}
+=======
+{%if app.user.pixie is not null %}
+	{% if app.user.videwMode is defined and app.user.viewMode == 'pixie' %}
+>>>>>>> f8e4e8d97dc0f58f21810e62fa2d2a1a74bda227
 		{% set user_type = 'city maker' %}
 	{% else %}
 	{% set user_type = 'voyager' %}
