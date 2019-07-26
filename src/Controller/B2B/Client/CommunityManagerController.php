@@ -33,7 +33,7 @@ class CommunityManagerController extends AbstractController
         $session  = new Session();
         $session->set('chosen_pack_url', '/client/pack/'.$pack->getId());
 
-        return $response = $this->render('b2b/client/community_manager/_view.html.twig',[
+        return $this->render('b2b/client/community_manager/pack_detail.html.twig',[
             'pack' => $pack
         ]);
     }

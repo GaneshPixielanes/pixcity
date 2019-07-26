@@ -302,16 +302,17 @@
             /* pack preview/edit invoke */
             $(document).on('click', '.pack-item a', function (e) {
                 e.preventDefault();
-
                 var id = $(this).attr('data-id');
-                $.ajax('/client/profil-community-manager/pack-view/'+id,{
-                    type: 'GET',
-                    success: function (result) {
-                        $('#preview-details').html(result);
-                        $('.pack-preview-container').fadeIn();
-                        $('body').addClass('overflow-hidden');
-                    }
-                });
+                window.location.replace("/client/profil-community-manager/pack-view/"+id);
+
+                // $.ajax('/client/profil-community-manager/pack-view/'+id,{
+                //     type: 'GET',
+                //     success: function (result) {
+                //         $('#preview-details').html(result);
+                //         $('.pack-preview-container').fadeIn();
+                //         $('body').addClass('overflow-hidden');
+                //     }
+                // });
 
             });
             $(document).on('click', '.close-preview-edit', function (e) {
