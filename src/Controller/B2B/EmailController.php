@@ -253,6 +253,7 @@ class EmailController extends Controller
 
         $mailer->send($message->getTicket()->getClient()->getEmail(),
             'EMAIL FROM '.$this->getUser().': '.$message->getTicket()->getObject(),
+            'emails/b2b/email-cm-contacted-client.html.twig',
             [
                 'message' => $message->getContent(),
                 'cm' => $message->getTicket()->getCm(),
