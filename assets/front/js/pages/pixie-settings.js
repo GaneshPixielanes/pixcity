@@ -1,5 +1,3 @@
-
-
 const firstError = require('../components/first-error') ;
 require('../components/avatar-upload') ;
 require('../components/address') ;
