@@ -128,7 +128,7 @@ class MangoPayService
         $Refund->DebitedFunds = $this->mangoPayMoney;
         $Refund->DebitedFunds->Currency = "EUR";
         $Refund->DebitedFunds->Amount = $amount;
-        $Refund->Fees = $this->mangoPayMoney;
+//        $Refund->Fees = $this->mangoPayMoney;
         $Refund->Fees->Currency = "EUR";
         $Refund->Fees->Amount = $amount - $refund_amount;
         dd($Refund);
