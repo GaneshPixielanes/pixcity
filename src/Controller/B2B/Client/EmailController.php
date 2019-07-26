@@ -9,6 +9,7 @@ use App\Entity\Message;
 use App\Entity\Page;
 use App\Entity\Ticket;
 use App\Form\B2B\TicketType;
+use App\Repository\ClientMissionProposalRepository;
 use App\Repository\ClientRepository;
 use App\Repository\MessageRepository;
 use App\Repository\NotificationsRepository;
@@ -272,7 +273,7 @@ class EmailController extends Controller
     /**
      * @Route("", name="inbox")
      */
-    public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository, UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo)
+    public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository, UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo,ClientMissionProposalRepository $clientMissionProposalRepository)
     {
 
         $user = $this->getUser();
@@ -355,6 +356,8 @@ class EmailController extends Controller
 
             }
 
+
+
             $message->setAttachment(implode(',',$fileName));
             $message->setFilname(implode(',',$fileOrgName));
             $message->setAutoMail('no');
@@ -364,6 +367,9 @@ class EmailController extends Controller
 
             $em->persist($message);
             $em->flush();
+
+            $proposal = $clientMissionProposalRepository->findOneBy(['client' => $user->getId]);
+            dd($proposal);
 
             return $this->redirectToRoute('client_email_inbox');
 
