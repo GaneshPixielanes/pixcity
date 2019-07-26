@@ -13,7 +13,7 @@
     <!-- Header -->
     <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main internal-nav mission-creation-top-nav">
         <div class="container">
-            <a class="navbar-brand" href="javascript:;"><img src="/assets/images/services-home-banner-logo.svg"
+            <a class="navbar-brand" href="{{ url('b2b_community_manager_index') }}"><img src="/assets/images/services-home-banner-logo.svg"
                                                              alt="Pix.City"></a>
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
                     data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false"
@@ -258,7 +258,7 @@
 
                 <div class="row">
                     <div class="col-md-12 text-center mb-4">
-                        <a href="javascript:;" id="toStep4" class="btn btn-pink btn-pill mx-auto">Créer la
+                        <a href="javascript:;" class="btn btn-pink btn-pill mx-auto disabled" id="toStep4">Créer la
                             mission</a>
                     </div>
                 </div>
@@ -296,14 +296,41 @@
             </div>
         </section>
     </div>
+    <!-- CGPUV modal -->
+    <div class="modal fade alert-modal confirm-mission-creation-modal" id="confirmMissionCreationModal" tabindex="-1" role="dialog" aria-labelledby="removePackConfirmation" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fz-16">Annuler La Mission</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
 
+                        Vous avez demandé une annulation de la mission.<br/>
+                        Une action est requise côté client pour l'annulation définitive de la mission.<br/>
+                        Une fois validée, le compte du client sera re- crédité du montant de la mission.<br/>
+                        Si vous avez des questions, consultez notre <a href="{{ url('front_faq_index') }}">FAQ</a>.<br/>
+
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    {#                <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>#}
+                    <button type="button" class="btn btn-pink" id="confirmMissionCancel" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal ends-->
     <div id="api-box" data-api-route="{{ url('b2b_mission_create') }}"
-         data-document-upload="{{ url('b2b_mission__upload') }}"
+         data-document-upload="{{ url('api_city_maker_mission_upload') }}"
     data-date="{{ "now" | date('d/m/Y') }}"
     data-profile-image="{{ app.user.avatar }}" data-first-name="{{ app.user }}"
     data-margin="{{ margin }}" data-cm-name="{{ app.user.firstname }}"></div>
 
-    <div id="dropzone-routes" data-upload-route="{{ url('b2b_mission__upload') }}" data-display-route="/api/pack/images/17"></div>
+    <div id="dropzone-routes" data-upload-route="{{ url('api_city_maker_mission_upload') }}" data-display-route="/api/pack/images/17"></div>
     {{ form_end(form,{'render_rest':false}) }}
 {% endblock %}
 
