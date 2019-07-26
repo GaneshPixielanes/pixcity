@@ -8,6 +8,7 @@ use App\Entity\ClientTransaction;
 use App\Entity\Option;
 use App\Entity\Page;
 use App\Entity\Royalties;
+use App\Repository\ClientInfoRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionPaymentRepository;
