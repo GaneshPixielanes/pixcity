@@ -23,6 +23,7 @@ class MangoPayService
         $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
         $this->mangoPayMoney = new MangoPay\Money();
+        $this->mangoPayRefund = new MangoPay\Refund();
     }
 
     public function createUser(MangoPay\UserNatural $userNatural)
@@ -111,7 +112,7 @@ class MangoPayService
         //dd($amount.' '.$refund_amount);
         $PayInId = $transaction[0]->getMangopayTransactionId();
 
-        $Refund = $this->mangoPayApi->Refunds;
+        $Refund = $this->mangoPayRefund;
         $Refund->AuthorId = $transaction[0]->getMangopayUserId();
         $Refund->DebitedFunds = $this->mangoPayMoney;
         $Refund->DebitedFunds->Currency = "EUR";
@@ -122,7 +123,7 @@ class MangoPayService
         $Refund->Fees->Amount = $refund_amount;
 
         $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
-
+        dd($reponse);
         return $reponse->ResultMessage;
     }
 
