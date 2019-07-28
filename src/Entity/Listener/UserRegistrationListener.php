@@ -38,7 +38,7 @@ class UserRegistrationListener
                     'emails/b2b/b2b-cm-approved.html.twig',
                     [
                         'user'=> $user
-                    ]);
+                    ],null,'services@pix.city');
 
             }
 
@@ -50,7 +50,7 @@ class UserRegistrationListener
                     'emails/b2b/b2b-cm-declined.html.twig',
                     [
                         'user'=> $user
-                    ]);
+                    ],null,'services@pix.city');
             }
         }
     }
