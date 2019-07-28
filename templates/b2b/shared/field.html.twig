@@ -516,10 +516,16 @@
 {% endblock %}
 
 {% block _client_email_widget %}
+
     <div class="row">
         <div class="col-md-12 mb-3">
             <label>VOTRE EMAIL</label>
-            <input type="email" class="form-control bg-lightgray" placeholder="email@domain.com" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
+            {% if form.vars.value is empty %}
+                <input type="email" class="form-control bg-lightgray" placeholder="email@domain.com" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" >
+            {% else %}
+                <input type="email" class="form-control bg-lightgray" placeholder="email@domain.com" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" readonly="readonly">
+
+            {% endif %}
         </div>
     </div>
 {% endblock %}
