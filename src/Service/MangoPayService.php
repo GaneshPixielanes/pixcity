@@ -146,9 +146,14 @@ class MangoPayService
         //dd($Refund);
 
         $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
+<<<<<<< HEAD
         //dd($reponse);
         
         //return $reponse->ResultMessage;
+=======
+
+        return $reponse->ResultMessage;
+>>>>>>> 2990df46e4f1e7973bc994fb49dbc124446a9ca0
     }
 
 }
