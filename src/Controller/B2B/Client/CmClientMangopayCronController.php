@@ -62,7 +62,7 @@ class CmClientMangopayCronController extends Controller
 
         foreach ($userRepositoryTbl as $key => $value)
         {
-            if($value->getMangopayUserId() == null){
+            if($value->getMangopayUserId() == null && $value->getFirstname() != null && $value->getLastname() != null && $value->getEmail() != null){
                 // Create a mango pay user
                 $mangoUser = new UserNatural();
 
@@ -102,7 +102,7 @@ class CmClientMangopayCronController extends Controller
 
         foreach ($clientRepositoryTbl as $key => $value)
         {
-            if($value->getClientInfo()->getMangopayUserId() == null){
+            if($value->getClientInfo()->getMangopayUserId() == null && $value->getFirstname() != null && $value->getLastname() != null && $value->getEmail() != null){
                 // Create a mango pay user
                 $mangoUser = new UserNatural();
 
