@@ -144,7 +144,7 @@
         <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
         <div class="d-flex align-items-center">
             <div class="input-group w-10">
-                <input name="{{ form.vars.full_name }}" type="number" class="form-control fz-16 font-weight-bold bg-lightwhite"
+                <input name="{{ form.vars.full_name }}" type="number" class="form-control fz-16 font-weight-bold bg-lightwhite only-numeric"
                        placeholder="120" aria-label="Pack price" aria-describedby="pack-price" value="{{ form.vars.value }}" data-bind="cm-base-price">
                 <input type="hidden" class="cm-base-price" data-bind="cm-client-price" data-bind-callback="calculateClientPrice" />
                 <div class="input-group-append">
