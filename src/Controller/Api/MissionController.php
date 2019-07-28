@@ -145,7 +145,7 @@ class MissionController extends Controller
 
                         $mission->getUserMissionPayment()->setAdjustment($refund_amount);
 
-                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$refund_amount);
+//                        $response = $mangoPayService->refundPayment($transaction,$first_result['client_total'],$refund_amount);
 
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());
 
@@ -175,7 +175,7 @@ class MissionController extends Controller
 
                             $calculate_refund  = $refund_percentage;
 
-                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
+//                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
 
                         }
 
