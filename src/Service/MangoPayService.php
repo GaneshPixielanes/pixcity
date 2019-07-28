@@ -122,7 +122,7 @@ class MangoPayService
         $Refund->Fees->Amount = $refund_amount;
 
         $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
-        dd($reponse);
+
         return $reponse->ResultMessage;
     }
 
