@@ -291,7 +291,7 @@ class ClientController extends Controller
         $zip = new \ZipArchive();
 
         // The name of the Zip documents.
-        $zipName = 'm_'.$id.'.zip';
+        $zipName = 'public/uploads/m_'.$id.'.zip';
 
         $zip->open($zipName,  \ZipArchive::CREATE);
         foreach ($files as $file) {
