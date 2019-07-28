@@ -283,7 +283,7 @@ class ClientController extends Controller
         $files = [];
 
         foreach ($documents as $document) {
-            array_push($files,  "uploads/missions/temp/".$document->getName());
+            array_push($files,  "public/uploads/missions/temp/".$document->getName());
         }
 
 
