@@ -20,21 +20,9 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientId = 'azimforexprod';
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-        $this->mangoPayApi->Config->TemporaryFolder = realpath('uploads/mangopay');
-        // $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
+        $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-        $this->mangoPayMoney = new MangoPay\Money(); 
-
-/*
-         $this->mangoPayApi = new MangoPay\MangoPayApi();
-        $this->mangoPayApi->Config->ClientId = 'pixprod';
-        $this->mangoPayApi->Config->ClientPassword = 'jXrK3iMTKzi6Yfb6DOCJbhhFRWCNV7kxr3PBVhomKscbm8cYzZ';
-//        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay";
-//        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-        $this->mangoPayApi->Config->BaseUrl = 'https://api.mangopay.com';
         $this->mangoPayMoney = new MangoPay\Money();
-        */
     }
 
     public function createUser(MangoPay\UserNatural $userNatural)
@@ -121,39 +109,21 @@ class MangoPayService
 
     public function refundPayment($transaction,$amount,$refund_amount){
         //dd($amount.' '.$refund_amount);
-        $refund_amount_custom=$refund_amount;
-        $debited_amount=$amount;
-
         $PayInId = $transaction[0]->getMangopayTransactionId();
 
         $Refund = $this->mangoPayApi->Refunds;
         $Refund->AuthorId = $transaction[0]->getMangopayUserId();
-
-        $Refund->Tag="Mission-7";
-
         $Refund->DebitedFunds = $this->mangoPayMoney;
         $Refund->DebitedFunds->Currency = "EUR";
-        $Refund->DebitedFunds->Amount = $refund_amount_custom*100;
+        $Refund->DebitedFunds->Amount = $amount;
 
-        $Refund->Fees =$this->mangoPayMoney;
+        $Refund->Fees = $this->mangoPayMoney;
         $Refund->Fees->Currency = "EUR";
-        $Refund->Fees->Amount = ($amount-$refund_amount_custom)*100;
-        //dd($this->mangoPayMoney);
-        
-
-        
-
-        //dd($Refund);
+        $Refund->Fees->Amount = $refund_amount;
 
         $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
-<<<<<<< HEAD
-        //dd($reponse);
-        
-        //return $reponse->ResultMessage;
-=======
 
         return $reponse->ResultMessage;
->>>>>>> 2990df46e4f1e7973bc994fb49dbc124446a9ca0
     }
 
 }
