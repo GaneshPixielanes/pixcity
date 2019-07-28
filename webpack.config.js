@@ -82,6 +82,7 @@ Encore
 
     .addEntry('b2b/js/app', './assets/b2b/js/app.js')
     .addEntry('b2b/js/client_registration', './assets/b2b/js/client_registration.js')
+    .addEntry('b2b/js/client_profile', './assets/b2b/js/client_profile.js')
     // .addEntry('b2b/js/mission', './assets/b2b/js/mission.js')
     // .addEntry('b2b/js/pack', './assets/b2b/js/pack.js')
 
