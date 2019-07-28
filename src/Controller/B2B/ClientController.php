@@ -270,7 +270,7 @@ class ClientController extends Controller
 
 
     /**
-     * @Route("invoices/download/{id}", name="download_invoices")
+     * @Route("brief-file/download/{id}", name="brief_file_invoices")
      */
     public function zipDownloadDocumentsAction($id, UserMissionRepository $userMissionRepository)
     {

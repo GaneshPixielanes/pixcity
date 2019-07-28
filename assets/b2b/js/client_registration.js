@@ -9,7 +9,7 @@ $form.validate({
         "client[lastName]":{required: true, maxlength: 30},
         "client[company]":{required: true, maxlength: 50},
         "client[password]":{required: true, maxlength: 30},
-        "client[clientInfo][siret]":{required: true, maxlength: 14, minlength:14, number: true,remote:''},
+        "client[clientInfo][siret]":{required: true, maxlength: 14, minlength:14, number: true},
         "client[clientInfo][address]":{required: true, maxlength: 50},
         "client[clientInfo][postalCode]":{required: true, maxlength: 5, minlength:5, number: true},
         "client[clientInfo][city]":{required: true, maxlength: 50},
