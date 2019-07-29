@@ -53,21 +53,21 @@ class MissionListener{
 
             if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
             {
-                /* Mail sent to the CM */
-                $this->mailer->send($mission->getUser()->getEmail(),
-                    "DEMANDE D'ANNULATION MISSION",
-                    'emails/b2b/mission-cancel-request-cm.html.twig',
-                    [
-                        'mission' => $mission
-                    ],null,'services@pix.city');
-
-                /* Mail sent to the Client */
-                $this->mailer->send($mission->getClient()->getEmail(),
-                    "VALIDATION ANNULATION MISSION",
-                    'emails/b2b/mission-cancel-request-client.html.twig',
-                    [
-                        'mission' => $mission
-                    ]);
+//                /* Mail sent to the CM */
+//                $this->mailer->send($mission->getUser()->getEmail(),
+//                    "DEMANDE D'ANNULATION MISSION",
+//                    'emails/b2b/mission-cancel-request-cm.html.twig',
+//                    [
+//                        'mission' => $mission
+//                    ],null,'services@pix.city');
+//
+//                /* Mail sent to the Client */
+//                $this->mailer->send($mission->getClient()->getEmail(),
+//                    "VALIDATION ANNULATION MISSION",
+//                    'emails/b2b/mission-cancel-request-client.html.twig',
+//                    [
+//                        'mission' => $mission
+//                    ]);
             }
 
             /* Client has accepted cancellation */

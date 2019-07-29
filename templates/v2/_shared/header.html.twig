@@ -61,7 +61,7 @@
 											{% if app.user.getB2bCmApproval() != "0" %}
 											{% if app.user.getB2bCmApproval() == "2" or app.user.getB2bCmApproval() == null %}
 												{% if app.user.getCmUpgradeB2bDate()  != null %}
-													<a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_manager_thank_you') }}">
+													<a class="dropdown-item user-link p-3 d-flex" href="/city-maker/compte/parametres">
 														<div class="col-3 pl-0">
 															<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
 														</div>

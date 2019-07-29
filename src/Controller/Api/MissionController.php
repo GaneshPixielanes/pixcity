@@ -204,7 +204,7 @@ class MissionController extends Controller
         $mission->setStatus($status);
 
         $entityManager->persist($mission);
-        $entityManager->flush();
+//        $entityManager->flush();
 
 
         $transaction[0]->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
@@ -219,7 +219,7 @@ class MissionController extends Controller
         $transaction[0]->getMission()->setMissionBasePrice($last_result['cm_price']);
 
         $entityManager->persist($transaction[0]);
-        $entityManager->flush();
+//        $entityManager->flush();
 
 //        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
@@ -275,9 +275,9 @@ class MissionController extends Controller
                 $royalties->setStatus('pending');
                 $royalties->setBankDetails(json_encode('no_response'));
                 $entityManager->persist($royalties);
-                $entityManager->flush();
 
             }
+        $entityManager->flush();
 
           if($mission->getStatus() == 'terminated'){
               $this->addFlash('mission_change_setting', 'Toutes nos félicitations! La mission est terminée');
