@@ -144,6 +144,10 @@ controllers_services:
     resource: ../src/Controller/B2B/ServiceController.php
     type: annotation
 
+controllers_download:
+    resource: ../src/Controller/B2B/DownloadController.php
+    type: annotation
+
 controllers_front_regions:
     resource: ../src/Controller/Front/V2/RegionController.php
     type: annotation

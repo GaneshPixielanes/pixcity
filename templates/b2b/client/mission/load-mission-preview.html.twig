@@ -81,7 +81,7 @@
                 <div class="mission-invoice d-flex align-items-center ml-4">
                     <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-20 mr-2"></i></p>
                     <p class="mb-0 text-darkgray">
-                        <a href="/invoices/{{ mission.id }}/PX-{{ mission.id }}-{{ mission.activelog.id }}-client.pdf" class="d-block fz-12 text-inprogress" download>Voir le Factures</a>
+                        <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getClientInvoice() }}/client" class="d-block fz-12 text-inprogress">Voir le Factures</a>
                     </p>
                 </div>
             {% else %}
@@ -94,7 +94,7 @@
                 <div class="mission-invoice d-flex align-items-center ml-4">
                     <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice fz-20 mr-2"></i></p>
                     <p class="mb-0 text-darkgray">
-                        <a href="/uploads/missions/temp/{{ mission.id }}/{{ mission.missionLogs.last.quotationfile }}" class="d-block fz-12 text-inprogress" download="">Voir le devis</a>
+                        <a href="/client/download/quatation/{{ mission.id }}/{{ mission.getQuatationPdf() }}" class="d-block fz-12 text-inprogress">Voir le devis</a>
                     </p>
                 </div>
             {% endif %}
