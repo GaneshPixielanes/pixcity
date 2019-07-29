@@ -124,7 +124,7 @@
                         <div class="col-md-6 p-0">
                             <div class="p-5 subscription-info sticky-top">
                                 <h5 class="font-weight-bold" id="send-text">Contactez-moi</h5>
-                                <div class="d-none alert bg-error text-white mb-3 d-flex align-items-center fz-12">
+                                <div class="hide-on-submit alert bg-error text-white mb-3 d-flex align-items-center fz-12">
                                     <i class="far fa-exclamation-circle fz-20 mr-3"></i>  “Échangez avec {{ pack.user.firstname }} en remplissant les champs ci-dessous. Il vous répondra via votre espace client dès qu’il le pourra ou choisira de clore la discussion. Vous devrez alors contacter un autre city-maker”
                                 </div>
                                 <h6 class="edit fz-16">Décrivez votre projet à {{ pack.user.firstname }}</h6>
@@ -303,6 +303,7 @@
         $("#drp-class").addClass('d-none');
         $("#char-count-p").addClass('d-none');
         $("#send-text").text('Message envoyé');
+        $('.hide-on-submit').addClass('d-none');
         return false;
 
     });
