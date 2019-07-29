@@ -283,7 +283,7 @@ class ClientController extends Controller
         $files = [];
 
         foreach ($documents as $document) {
-            array_push($files,  "uploads/missions/temp/".$document->getName());
+            array_push($files,  "public/uploads/missions/temp/".$document->getName());
         }
 
 
@@ -291,7 +291,7 @@ class ClientController extends Controller
         $zip = new \ZipArchive();
 
         // The name of the Zip documents.
-        $zipName = 'public/uploads/m_'.$id.'.zip';
+        $zipName = 'm_'.$id.'.zip';
 
         $zip->open($zipName,  \ZipArchive::CREATE);
         foreach ($files as $file) {
