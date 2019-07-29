@@ -139,6 +139,7 @@ class MissionController extends Controller
                                    ClientInfoRepository $clientInfoRepository
     )
     {
+        $em = $this->getDoctrine()->getManager();
         $options = $this->getDoctrine()->getRepository(Option::class);
 
         $tax = $options->findOneBy(['slug' => 'tax']);
@@ -170,9 +171,8 @@ class MissionController extends Controller
         $userMissionTblId = $missionRepo->findOneBy(['id'=>$id]);
         $tansClientId = $clientInfoRepository->findOneBy(['client'=>$userMissionTblId->getClient()]);
         //$tansClientId = $clientTransactionRepository->findOneBy(['user'=>$userMissionTblId->getClient()]);
-        $mangoUserGet = $mangoPayService->getUser($tansClientId->getMangopayUserId());
-
-        if(isset($mangoUserGet) == null){
+        $mangopayid = $tansClientId->getMangopayUserId();
+        if(isset($mangopayid) == null){
             // Create a mango pay user
             $mangoUser = new UserNatural();
 
@@ -186,9 +186,14 @@ class MissionController extends Controller
             $mangoUser = $mangoPayService->createUser($mangoUser);
             //Create a wallet
             $wallet = $mangoPayService->getWallet($mangoUser->Id);
+            $tansClientId->setMangopayUserId($mangoUser->Id);
+            $tansClientId->setMangopayWalletId($wallet->Id);
+            $em->persist($tansClientId);
 
-        }else{
-            $mangoUser = $mangoUserGet;
+            $em->flush();
+        }
+        else{
+            $mangoUser = $mangoPayService->getUser($tansClientId->getMangopayUserId());
             $wallet = $mangoPayService->getWalletId($tansClientId->getMangopayWalletId());
         }
 
@@ -199,9 +204,6 @@ class MissionController extends Controller
         $transaction->setMangopayWalletId($wallet->Id);
         $transaction->setPaymentStatus(false);
         $transaction->setMission($mission);
-
-
-        $em = $this->getDoctrine()->getManager();
 
         $em->persist($transaction);
 
