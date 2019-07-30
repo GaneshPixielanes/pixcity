@@ -122,7 +122,7 @@ class DownloadController extends Controller
         $response->headers->set('Content-Type','text/plain');
 
         $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT
             );
 
         return $response;
