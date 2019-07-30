@@ -702,4 +702,25 @@ class UserMission
     {
         $this->missionRegions = $missionRegions;
     }
+
+    public function getQuatationPdf(){
+
+        return base64_encode("uploads/missions/temp/".$this->getId().'/'.$this->getMissionLogs()->last()->getQuotationfile());
+    }
+
+    public function getClientInvoice(){
+
+        return base64_encode("invoices/".$this->getId().'/PX-'.$this->getId().'-'.$this->getActiveLog()->getId().'-client.pdf');
+    }
+
+    public function getCityMakerInvoice(){
+
+        return base64_encode("invoices/".$this->getId().'/PX-'.$this->getId().'-'.$this->getActiveLog()->getId().'-cm.pdf');
+    }
+
+    public function getPcsInvoice(){
+        return base64_encode("invoices/".$this->getId().'/PX-'.$this->getId().'-'.$this->getActiveLog()->getId().'-pcs.pdf');
+    }
+
+
 }

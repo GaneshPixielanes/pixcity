@@ -187,7 +187,7 @@ class EmailController extends Controller
      */
     public function replyEmail(Request $request,TicketRepository $ticketRepository,MessageRepository $messageRepository, Mailer $mailer){
 
-        $fileName = [];
+        $fileName = [];$fileOrgName = [];
 
         $files = $request->files;
 
@@ -204,6 +204,7 @@ class EmailController extends Controller
 
             if ($file->move($uploadDir, $fileExtension)) {
                 $fileName[] = $fileExtension;
+                $fileOrgName [] = $file->getClientOriginalName();
             }
 
         }
@@ -229,6 +230,7 @@ class EmailController extends Controller
         $message->setStatus(1);
         $message->setAutoMail('no');
         $message->setAttachment(implode(',',$fileName));
+        $message->setFilname(implode(',',$fileOrgName));
         $message->setCreatedAt(new \DateTime('now'));
         $message->setUpdatedAt(new \DateTime('now'));
 
@@ -487,7 +489,7 @@ class EmailController extends Controller
             $fileName = [];$fileOrgName = [];
 
             $files = $request->files->get('ticket')['messages']['attachment'];
-
+            dd($files);
             foreach ($files as $file){
 
                 $fileExtension = md5(uniqid()).'.'.$file->guessExtension();

@@ -47,7 +47,7 @@
                                 <div class="d-flex align-items-center">
 {#                                    <a href="javascript:;" class="btn btn-darkblue fz-10 check-the-quote">VOIR LE DEVIS</a>#}
                                      <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}"><i class="fas fa-eye fz-16"></i></a>
-                                     <a href="/invoices/{{ mission.id }}/PX-{{ mission.id }}-{{ mission.activelog.id }}-client.pdf" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none" download><i class="fas fa-download fz-16"></i></a>
+                                     <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getClientInvoice() }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
 
                                     {#                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>#}
                                 </div>

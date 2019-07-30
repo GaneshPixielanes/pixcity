@@ -192,7 +192,7 @@ class EmailController extends Controller
     ){
 
 
-        $fileName = [];
+        $fileName = [];$fileOrgName = [];
 
         $files = $request->files;
 
@@ -209,6 +209,7 @@ class EmailController extends Controller
 
             if ($file->move($uploadDir, $fileExtension)) {
                 $fileName[] = $fileExtension;
+                $fileOrgName [] = $file->getClientOriginalName();
             }
 
 
@@ -235,6 +236,7 @@ class EmailController extends Controller
         $message->setStatus(1);
         $message->setAutoMail('no');
         $message->setAttachment(implode(',',$fileName));
+        $message->setFilname(implode(',',$fileOrgName));
         $message->setCreatedAt(new \DateTime('now'));
         $message->setUpdatedAt(new \DateTime('now'));
 
