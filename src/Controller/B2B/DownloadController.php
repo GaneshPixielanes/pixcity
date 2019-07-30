@@ -71,10 +71,7 @@ class DownloadController extends Controller
 
             return $this->downloadFile($file_path);
 
-
         }
-
-
 
     }
 
@@ -111,11 +108,7 @@ class DownloadController extends Controller
 
         }
 
-
-
     }
-
-
 
 
     /**
@@ -237,72 +230,6 @@ class DownloadController extends Controller
 
         return new JsonResponse(['success' => true, 'message' => 'generation of new invoices is done,please check the file path '.$path]);
 
-
-    }
-
-
-    /**
-     * @Route("/re-generate-invoice/{id}", name="re_generate_invoice")
-     */
-    public function reGenerateInvoiceDownload($id,UserMissionRepository $missionRepository,Filesystem $filesystem)
-    {
-
-        $mission = $missionRepository->activePrices($id);
-
-        $datetime = new \DateTime(strtotime('d-m-Y-h:i:s'));
-
-        $time_folder = $datetime->format('d-m-Y-h-i-s');
-
-        $path = 'invoices/regenerations/'.$mission->getId().'/'.$time_folder;
-
-        $filesystem->mkdir($path,0777);
-
-        $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
-
-        $clientInvoicePath = $path.'/'.$client_filename;
-
-        if(!$filesystem->exists($clientInvoicePath)){
-
-            $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                $this->renderView('b2b/invoice/client_invoice.html.twig',
-                    array(
-                        'mission' => $mission
-                    )
-                ), $clientInvoicePath
-            );
-
-        }
-
-        $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
-
-        $cmInvoicePath = $path.'/'.$cm_filename;
-
-        if(!$filesystem->exists($cmInvoicePath)){
-
-            $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                $this->renderView('b2b/invoice/cm_invoice.html.twig',
-                    array(
-                        'mission' => $mission
-                    )
-                ), $cmInvoicePath
-            );
-
-        }
-
-
-        $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
-
-        $pcsInvoicePath = $path.'/'.$pcs_filename;
-
-        $this->container->get('knp_snappy.pdf')->generateFromHtml(
-            $this->renderView('b2b/invoice/pcs_invoice.html.twig',
-                array(
-                    'mission' => $mission
-                )
-            ), $pcsInvoicePath
-        );
-
-        return new JsonResponse(['success' => true, 'message' => 'generation of new invoices is done,please check the file path '.$path]);
 
     }
 
