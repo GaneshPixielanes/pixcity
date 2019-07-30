@@ -52,12 +52,12 @@
                                 Client
                             </div>
                             <div class="text-blue fz-30 font-weight-bold">
-                                {{ app.user.company }}
+                                {{ mission.client.company }}
                             </div>
                             <div class="text-darkblue fz-16">
-                                {{ app.user.ClientInfo.address}}<br>
-                                {{ app.user.ClientInfo.city~','~app.user.ClientInfo.postalCode }}<br>
-                                {{ app.user.email }}
+                                {{ mission.client.ClientInfo.address}}<br>
+                                {{ mission.client.ClientInfo.city~','~mission.client.ClientInfo.postalCode }}<br>
+                                {{ mission.client.email }}
                             </div>
                         </div>
                         <div class="invoice-number text-right text-darkblue font-weight-bold">

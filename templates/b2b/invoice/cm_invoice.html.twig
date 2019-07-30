@@ -48,14 +48,14 @@
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div class="invoice-client-details">
                             <div class="text-normal-gray fz-14">
-                                {{ app.user.firstname }}
+                                {{ mission.client.firstname }}
                             </div>
                             <div class="text-blue fz-30 font-weight-bold">
                                 Client Name
                             </div>
                             <div class="text-darkblue fz-16">
-                                {{ app.user.ClientInfo.address }}, <br>
-                                {{ app.user.ClientInfo.postalCode }}
+                                {{ mission.client.ClientInfo.address }}, <br>
+                                {{ mission.client.ClientInfo.postalCode }}
                             </div>
                         </div>
                         <div class="invoice-number text-right text-darkblue font-weight-bold">
