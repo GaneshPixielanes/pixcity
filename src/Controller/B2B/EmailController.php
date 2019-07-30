@@ -419,7 +419,13 @@ class EmailController extends Controller
     /**
      * @Route("/send-emails", name="send_emails")
      */
-    public function emailsSend(Request $request,ClientRepository $clientRepository,FileUploader $fileUploader,TicketRepository $ticketRepository,NotificationsRepository $notificationsRepository,OptionRepository $optionRepository)
+    public function emailsSend(Request $request,
+                               ClientRepository $clientRepository,
+                               FileUploader $fileUploader,
+                               TicketRepository $ticketRepository,
+                               NotificationsRepository $notificationsRepository,
+                               OptionRepository $optionRepository,
+                               Mailer $mailer)
     {
         $user = $this->getUser();
 
@@ -466,7 +472,7 @@ class EmailController extends Controller
             $ticket->setUpdatedAt(new \DateTime('now'));
 
             $em->persist($ticket);
-            $em->flush();
+//            $em->flush();
 
             $message = new Message();
             $message->setTicket($ticket);
@@ -507,6 +513,7 @@ class EmailController extends Controller
 
             $em->persist($message);
             $em->flush();
+
 
             return $this->redirectToRoute('b2b_email_send_emails');
 

@@ -286,7 +286,13 @@ class EmailController extends Controller
     /**
      * @Route("", name="inbox")
      */
-    public function inboxEmail(Request $request,TicketRepository $ticketRepository,UserRepository $userRepository, UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo,ClientMissionProposalRepository $clientMissionProposalRepository)
+    public function inboxEmail(Request $request,
+                               TicketRepository $ticketRepository,
+                               UserRepository $userRepository,
+                               UserMissionRepository $missionRepo,
+                               NotificationsRepository $notificationsRepo,
+                               ClientMissionProposalRepository $clientMissionProposalRepository,
+                                Mailer $mailer)
     {
 
         $user = $this->getUser();
@@ -382,7 +388,19 @@ class EmailController extends Controller
             $em->flush();
 
 
-
+            // Send mail to the Client
+            $mailTitle = 'Question sur le pack : "'.trim($ticket->getObject()).'"';
+            $mailer->send($ticket->getClient()->getEmail(),
+                $mailTitle,
+                'emails/b2b/email-cm-contacted-client-1.html.twig',
+                [
+                    'client' => $ticket->getClient(),
+                    'message' => $message->getContent(),
+                    'cityMaker' => $ticket->getCm()
+                ],
+                null,
+                'services@pix.city'
+            );
             return $this->redirectToRoute('client_email_inbox');
 
 
