@@ -66,7 +66,7 @@ class CityMakerMissionController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted())
+        if($form->isSubmitted() && $form->isValid())
         {
 
             $em = $this->getDoctrine()->getManager();
@@ -95,7 +95,6 @@ class CityMakerMissionController extends Controller
             $mission->setMissionAgreedClient(1);
             $em->persist($missionLog);
             $em->persist($mission);
-            $em->flush();
 
             $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
             $price = $missionLog->getUserBasePrice();
