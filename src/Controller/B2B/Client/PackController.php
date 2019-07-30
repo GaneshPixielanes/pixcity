@@ -25,6 +25,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class PackController extends AbstractController
 {
+
+    /**
+     * @Route("/proposal/upload", name="_upload")
+     */
+    public function upload(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+
+        $fileName = $fileUploader->upload($file, ClientMissionProposalMedia::tempFolder(), true);
+
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }//End of upload
+
     /**
      * @Route("/{slug}/{id}", name="select")
      */
@@ -113,15 +126,4 @@ class PackController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/proposal/upload", name="_upload")
-     */
-    public function upload(Request $request, FileUploader $fileUploader)
-    {
-        $file = $request->files->get('file');
-
-        $fileName = $fileUploader->upload($file, ClientMissionProposalMedia::tempFolder(), true);
-
-        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
-    }//End of upload
 }

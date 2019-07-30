@@ -5,6 +5,7 @@ ROLE_PIXIE: City-maker
 ROLE_USER: Utilisateur
 
 label:
+    contactus: Contact us
     faqs: FAQs
     faqsNew: FAQs Create
     messageList: Message list

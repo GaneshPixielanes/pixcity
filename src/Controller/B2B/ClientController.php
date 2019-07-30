@@ -283,8 +283,9 @@ class ClientController extends Controller
         $files = [];
 
         foreach ($documents as $document) {
-            array_push($files,  "public/uploads/missions/temp/".$document->getName());
+            array_push($files,  $this->get('kernel')->getProjectDir()."/public/uploads/missions/temp/".$document->getName());
         }
+
 
 
         // Create new Zip Archive.

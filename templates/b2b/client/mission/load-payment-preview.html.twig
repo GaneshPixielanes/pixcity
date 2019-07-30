@@ -51,7 +51,7 @@
                     <div class="financial-infos-container preview col-sm-12 mt-2 mb-4 pb-4">
                         <h5 class="text-darkblue mb-0"> Montant TTC de la mission</h5>
                         <p class="font-weight-light">Le prix de la prestation a été fixé à <strong class="font-weight-bold">{{ last_result['client_total'] |round(2, 'floor') }} € TTC</strong> par {{ mission.user.firstname~' '~mission.user.lastname }}</p>
-                        <a href="/uploads/missions/temp/{{ mission.id }}/{{ mission.activelog.quotationfile }}" class="btn btn-darkblue btn-block fz-14 lh2-5" download>Télécharger le  Devis PX-{{ mission.id }}-{{ mission.activelog.id }} <span class="float-right"><i class="fas fa-download fz-16"></i></span></a>
+                        <a href="/client/download/quatation/{{ mission.id }}/{{ mission.getQuatationPdf() }}" class="btn btn-darkblue btn-block fz-14 lh2-5">Télécharger le  Devis PX-{{ mission.id }}-{{ mission.activelog.id }} <span class="float-right"><i class="fas fa-download fz-16"></i></span></a>
                     </div>
 
                     <div class="city-maker-container preview col-sm-12 mt-2 mb-4 pb-4">
@@ -142,7 +142,7 @@
                                 <div class="custom-control custom-checkbox " style="margin-right: 66px;">
                                     <input type="checkbox" class="custom-control-input check-all-emails float-left" id="selectAll">
                                     <label class="custom-control-label text-darkblue float-left" for="selectAll"></label>
-                                    J'accept <a href="https://docs.google.com/document/d/1UKKQBA3rl-LGjtMfJJvjTHtaDo9U1Yc2nTxFjqn4oXM/edit#heading=h.mgkbkicnug0t">les GGV de Pix.city Services</a>
+                                    J’accepte <a href="https://docs.google.com/document/d/1UKKQBA3rl-LGjtMfJJvjTHtaDo9U1Yc2nTxFjqn4oXM/edit#heading=h.mgkbkicnug0t" target="_blank">les GGV de Pix.city Services</a>
                                 </div>
 
                                 <button type="button"
