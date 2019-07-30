@@ -107,7 +107,7 @@ class DownloadController extends Controller
                 ), $clientInvoicePath
             );
 
-            $this->downloadFile($clientInvoicePath);
+            return $this->downloadFile($clientInvoicePath);
 
         }
 
