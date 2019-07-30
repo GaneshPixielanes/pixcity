@@ -66,7 +66,7 @@ class CityMakerMissionController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
 
             $em = $this->getDoctrine()->getManager();
