@@ -206,7 +206,7 @@
                 url: '{{ path('b2b_notification_accept_edited_mission') }}',
                 data: {id: id,notifyLogId:notifyLogId},
                 success: function(data){
-                    $(".user-price").text(data.client_price+' €');
+                    $(".user-price").text(parseFloat(data.client_price).toFixed(2)+' €');
                     console.log('success: ' + data);
                     $('.to-validate-quote-toast').toast('show').css({
                         'z-index': '1050'
