@@ -76,6 +76,8 @@ class CityMakerMissionController extends Controller
             $missionLog->setMission($mission);
             $missionLog->setCreatedAt(new \DateTime());
             $missionLog->setCreatedBy($this->getUser()->getId());
+            $em->persist($missionLog);
+            $em->flush();
 
             foreach($mission->getDocuments() as $document)
             {
