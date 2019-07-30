@@ -40,18 +40,13 @@
                 </ul>
                 <footer class="text-center p-2 text-pink fz-11">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <a href="{{ url('front_faq_index') }}" class="d-block fz-16 text-darkblue text-center" target="_blank">
                                 <i class="far fa-question-circle"></i>
                                 <p>FAQ</p>
                             </a>
                         </div>
-                        <div class="col-md-6">
-{#                            <a href="http://blog.pix.city/simple-blog/" target="_blank" class="d-block fz-16 text-darkblue text-center">#}
-{#                                <i class="fas fa-blog"></i>#}
-{#                                <p>Blog</p>#}
-{#                            </a>#}
-                        </div>
+
                     </div>
                     <a href="{{ url('front_homepage_index') }}" class="text-pink"><i class="fas fa-cog"></i>Retourner sur Pix.city</a>
                 </footer>
@@ -109,10 +104,7 @@
 
 
         $(document).ready(function () {
-            // Adding a new pack
-            $('.add-package-to-list > a').on('click', function () {
-                // $('#pack-form').load('/api/pack/create');
-            });
+
 
             // Deleting a pack
             $('.delete-pack').on('click', function () {
