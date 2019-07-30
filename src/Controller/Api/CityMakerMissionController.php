@@ -54,7 +54,7 @@ class CityMakerMissionController extends Controller
         {
             return $this->redirectToRoute('b2b_community_manager_index');
         }
-
+        // Log the data
         $missionLog = new MissionLog();
         $margin = $optionRepo->findOneBy([
             'slug' => 'margin'
@@ -93,8 +93,6 @@ class CityMakerMissionController extends Controller
                 $mission->addDocument($missionDocument);
             }
             $mission->setMissionAgreedClient(1);
-            $em->persist($missionLog);
-            $em->persist($mission);
 
             $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
             $price = $missionLog->getUserBasePrice();
@@ -126,6 +124,7 @@ class CityMakerMissionController extends Controller
 
             $missionLog->setQuotationfile($filename);
 
+            $em->persist($mission);
             $em->persist($missionLog);
             $em->flush();
 
