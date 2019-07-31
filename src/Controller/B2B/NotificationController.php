@@ -8,6 +8,7 @@ use App\Repository\MissionLogRepository;
 use App\Repository\MissionPaymentRepository;
 use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
+use App\Service\Mailer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
