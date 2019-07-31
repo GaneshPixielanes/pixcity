@@ -39,7 +39,7 @@ class NotificationController extends AbstractController
     /**
      * @Route("/accept-edited-mission", name="accept_edited_mission")
      */
-    public function acceptEditedMission(Request $request,NotificationsRepository $notificationsRepository,MissionLogRepository $missionLogRepository){
+    public function acceptEditedMission(Request $request,NotificationsRepository $notificationsRepository,MissionLogRepository $missionLogRepository, Mailer $mailer){
 
         $em = $this->getDoctrine()->getManager();
         $notification = $notificationsRepository->find($request->get('id'));
@@ -73,6 +73,25 @@ class NotificationController extends AbstractController
         $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', $missionlog->getMission()->getClient().' a validé la nouvelle version de votre mission.',$missionlog->getMission()->getId());
         #32 need to send
         $notificationsRepository->insert(null,$missionlog->getMission()->getClient(),'mission_accepted_edit_client', 'Vous avez accepté la nouvelle version de la mission. Le city-maker va être averti via une notification sur son espace et va pouvoir reprendre la mission.',0);
+
+        ##########################Email starts#######################
+        /* Mail sent to CM */
+        $mailer->send($missionlog->getMission()->getUser()->getEmail(),
+            'EDITION DE MISSION VALIDEE',
+            'emails/b2b/mission-edit-accept-cm.html.twig',
+            [
+                'mission' => $missionlog->getMission()
+            ],null,'services@pix.city');
+
+        /* Mail sent to Client */
+        $mailer->send($missionlog->getMission()->getClient()->getEmail(),
+            'MISSION MODIFIEE',
+            'emails/b2b/mission-edit-accept-client.html.twig',
+            [
+                'mission' => $missionlog->getMission()
+            ],null,'services@pix.city');
+
+        ##########################Email ends##########################
 
         $options = $this->getDoctrine()->getRepository(Option::class);
         $margin = $options->findOneBy(['slug' => 'margin']);
