@@ -58,27 +58,27 @@ class CommunityManagerController extends AbstractController
     public function viewPack($id, UserPacksRepository $userPacksRepo)
     {
 
-        $pack = $userPacksRepo->find($id);
+        $pack = $userPacksRepo->findBy(['id' => $id,'active' => null,'deleted' => null]);
 
 
-        if(is_null($pack))
+        if(empty($pack))
         {
-            return JsonResponse::create(['success' => false, 'response' => '<strong>Pack not found </strong>']);
+            return $this->redirect('/freelance/search');
         }
 
-        $slug = $this->createSlug($pack->getTitle());
+        $slug = $this->createSlug($pack[0]->getTitle());
 
         $session  = new Session();
-        $session->set('chosen_pack_url', '/freelance/pack/'.$slug.'/'.$pack->getId());
+        $session->set('chosen_pack_url', '/freelance/pack/'.$slug.'/'.$pack[0]->getId());
 
         #SEO
         $page = new Page();
-        $page->setMetaTitle($pack->getTitle());
-        $page->setMetaDescription(substr($pack->getDescription(),0,160));
+        $page->setMetaTitle($pack[0]->getTitle());
+        $page->setMetaDescription(substr($pack[0]->getDescription(),0,160));
 
 
         return $this->render('b2b/client/community_manager/pack_detail.html.twig',[
-            'pack' => $pack,
+            'pack' => $pack[0],
             'page' => $page
         ]);
     }
