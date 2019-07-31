@@ -12,6 +12,7 @@ use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
+use App\Service\Mailer;
 use App\Service\MangoPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -72,7 +73,8 @@ class MissionController extends Controller
                                  Filesystem $filesystem,
                                  ClientTransactionRepository $clientTransactionRepository,
                                  MissionPaymentRepository $missionPaymentRepository,
-                                 MangoPayService $mangoPayService)
+                                 MangoPayService $mangoPayService,
+                                 Mailer $mailer)
     {
 
         $mission = $missionRepo->activePrices($id);
@@ -178,6 +180,21 @@ class MissionController extends Controller
 //                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
 
                         }
+                        /* Mail sent to the CM */
+                        $mailer->send($mission->getUser()->getEmail(),
+                            "MISSION TERMINEE",
+                            'emails/b2b/mission-terminated-accept-cm.html.twig',
+                            [
+                                'mission' => $mission
+                            ],null,'services@pix.city');
+
+                        /* Mail sent to the Client */
+                        $mailer->send($mission->getClient()->getEmail(),
+                            "MISSION TERMINEE ACCEPTEE",
+                            'emails/b2b/mission-terminated-accept-client.html.twig',
+                            [
+                                'mission' => $mission
+                            ],null,'services@pix.city');
 
                         $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. Vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s'est bien passée ! ",$mission->getId());
                         $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. Votre paiement sera donc déclenché sous 48H via notre partenaire Mango Pay. A très bientôt pour une nouvelle mission sur Pix.City Services. ',$mission->getId());
