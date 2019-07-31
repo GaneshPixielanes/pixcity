@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block meta_title %}{% if page.metaTitle is defined %}{{ page.metaTitle }}{% else %}Pix City{% endif %}{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}{% if page.metaDescription is defined %}{{ page.metaDescription }}{% endif %}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{% if page.metaDescription is defined %}{{ page.metaDescription | raw }}{% endif %}{% endblock %}">
     <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
     <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
