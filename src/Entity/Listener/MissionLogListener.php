@@ -33,6 +33,7 @@ class MissionLogListener{
 
         if($missionLog->getIsActive() == 0 && empty($missionLogBeforeUpdate))
         {
+
             /* A new mission log has been added/mission is edited */
 
             /* Mail sent to CM */
