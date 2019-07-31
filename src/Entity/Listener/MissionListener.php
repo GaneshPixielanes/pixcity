@@ -108,7 +108,7 @@ class MissionListener{
 //                    [
 //                        'mission' => $mission
 //                    ],null,'services@pix.city');
-//            }
+            }
 
             /* Client has accepted termination */
             if($mission->getStatus() == MissionStatus::TERMINATED)
