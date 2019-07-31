@@ -119,7 +119,7 @@
             $('body').on('click', "#confirmPackDelete",function () {
 
                 var id = $(this).attr('data-id');
-                $.ajax('/b2b/pack/delete-pack/'+id,{
+                $.ajax('/city-maker/pack/delete-pack/'+id,{
                     success: function (result) {
                         $('.package-list-item[data-id="'+id+'"]').remove();
                         $('.total-packs-available').html($('.package-item').length);

@@ -89,7 +89,7 @@ class PackController extends Controller
 
         $form->handleRequest($request);
 
-        $tax = $optionRepository->findBy(['slug' => 'tax']);
+        $tax = $optionRepository->findBy(['slug' => 'margin']);
 
         if($form->isSubmitted()) {
 
@@ -98,7 +98,8 @@ class PackController extends Controller
             $tax = $tax[0]->getValue();
             $margin = $base_price * $tax / 100;
 
-            $total_value = $margin + $base_price;
+//            $total_value = $margin + $base_price;
+            $total_value = (100 * $base_price)/(100 - $tax);
             $pack->setUser($user);
             $pack->setMarginPercentage($tax);
             $pack->setMarginValue($margin);
@@ -167,7 +168,7 @@ class PackController extends Controller
 //            }
             $base_price = $request->get('pack')['userBasePrice'];
             $tax = $tax[0]->getValue();
-            $margin = $base_price * $tax / 100;
+            $margin = $base_price * ($tax / 100);
 //            $total_value = $margin + $base_price;
             $total_value = (100 * $base_price)/(100 - $tax);
 
