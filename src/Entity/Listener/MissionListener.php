@@ -94,21 +94,21 @@ class MissionListener{
             if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED)
             {
                 /* Mail sent to the CM */
-                $this->mailer->send($mission->getUser()->getEmail(),
-                    "MISSION TERMINEE",
-                    'emails/b2b/mission-terminated-request-cm.html.twig',
-                    [
-                        'mission' => $mission
-                    ],null,'services@pix.city');
-
-                /* Mail sent to the Client */
-                $this->mailer->send($mission->getClient()->getEmail(),
-                    "MISSION TERMINEE",
-                    'emails/b2b/mission-terminated-request-client.html.twig',
-                    [
-                        'mission' => $mission
-                    ],null,'services@pix.city');
-            }
+//                $this->mailer->send($mission->getUser()->getEmail(),
+//                    "MISSION TERMINEE",
+//                    'emails/b2b/mission-terminated-request-cm.html.twig',
+//                    [
+//                        'mission' => $mission
+//                    ],null,'services@pix.city');
+//
+//                /* Mail sent to the Client */
+//                $this->mailer->send($mission->getClient()->getEmail(),
+//                    "MISSION TERMINEE",
+//                    'emails/b2b/mission-terminated-request-client.html.twig',
+//                    [
+//                        'mission' => $mission
+//                    ],null,'services@pix.city');
+//            }
 
             /* Client has accepted termination */
             if($mission->getStatus() == MissionStatus::TERMINATED)
