@@ -206,7 +206,7 @@ class DownloadController extends Controller
 
             $pcsInvoicePath_old = $path.'/'.$pcs_filename_old;
 
-            $filesystem->rename($cmInvoicePath, $pcsInvoicePath_old);
+            $filesystem->rename($pcsInvoicePath, $pcsInvoicePath_old);
 
             $this->container->get('knp_snappy.pdf')->generateFromHtml(
                 $this->renderView('b2b/invoice/pcs_invoice.html.twig',
