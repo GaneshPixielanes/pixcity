@@ -302,21 +302,7 @@ class MissionController extends Controller
         {
             case 'cancel': if($mission->getStatus() == MissionStatus::CREATED|| $mission->getStatus() == MissionStatus::ONGOING || $mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED)
                             {
-                                /* Mail sent to the CM */
-                                $mailer->send($mission->getUser()->getEmail(),
-                                    "DEMANDE D'ANNULATION MISSION",
-                                    'emails/b2b/mission-cancel-request-cm.html.twig',
-                                    [
-                                        'mission' => $mission
-                                    ],null,'services@pix.city');
 
-                                /* Mail sent to the Client */
-                                $mailer->send($mission->getClient()->getEmail(),
-                                    "VALIDATION ANNULATION MISSION",
-                                    'emails/b2b/mission-cancel-request-client.html.twig',
-                                    [
-                                        'mission' => $mission
-                                    ]);
                                 $mission->setStatus(MissionStatus::CANCEL_REQUEST_INITIATED);
                                 $mission->setCancelledBy($request->get('cancelledBy'));
                                 $mission->setCancelReason($request->get('reason'));
