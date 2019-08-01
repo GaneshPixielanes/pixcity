@@ -99,8 +99,9 @@
                aria-expanded="false"
                id="packOptions"></i>
             <div class="dropdown-menu" aria-labelledby="packOptions" >
-                <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i
-                            class="far fa-paper-plane mr-2"></i>
+                {% set slug = pack.title | lower | replace({' ':'-', '/':'-'}) %}
+                <a class="dropdown-item text-darkgray fz-12" href="javascript:;" data-sharer="facebook" data-title="{{  pack.title }}" data-url="{{ url('b2b_front_community_manager_pack_view',{'slug':slug,'id':pack.id}) }}"><i
+                            class="far fa-paper-plane mr-2" ></i>
                     Partager</a>
                 <a class="dropdown-item text-pink fz-12 delete-pack" href="javascript:;" data-toggle="modal"
                    data-target="#removePackConfirmation" data-id="{{ pack.id }}"><i class="far fa-times-circle mr-2"></i>
