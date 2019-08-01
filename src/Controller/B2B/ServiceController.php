@@ -27,7 +27,7 @@ class ServiceController extends AbstractController
         $searchParams['skills'] = null;
         $searchParams['text'] = null;
 
-        $limit = 20;
+        $limit = 7;
 
         $page = is_null($request->get('page'))?1:$request->get('page');
 
