@@ -139,7 +139,7 @@
                                 </div>
                                 <div class="custom-file">
                                     {{ form_row(form.messages.attachment,{'attr' : {'class' : 'custom-file-input','aria-describedby':'inputGroupFileAddon01'}}) }}
-                                    <label class="custom-file-label mb-0 fz-14" for="ticket_messages_attachment">{{ ('b2b.label.attachment')| trans }}</label>
+                                    <label class="custom-file-label mb-0 fz-14" for="ticket_messages_attachment" id="fileList">{{ ('b2b.label.attachment')| trans }}</label>
                                 </div>
                             </div>
                             {#                                <small>Max. 32MB</small>#}
@@ -223,10 +223,30 @@
             placeholderText:'Ecrivez votre texte',
         });
 
-        $(document).ready(function () {
-            $('#refresh').on('click',function () {
-                location.reload();
-            });
+        $('#refresh').on('click',function () {
+            location.reload();
+        });
+
+        $("#ticket_messages_attachment").on('change',function () {
+            readURL(this);
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+
+                var output = document.getElementById('fileList');
+                $("#fileList").text(' ');
+
+                for (var i = 0; i < input.files.length; ++i) {
+                    output.innerHTML += input.files.item(i).name + '-';
+                }
+
+            }
+        }
+
+        $(".cancel-compose").on('click',function () {
+            $("#ticket_messages_attachment").val(null);
+            $("#fileList").text("{{ ('b2b.label.attachment')| trans }}");
         });
 
     </script>
