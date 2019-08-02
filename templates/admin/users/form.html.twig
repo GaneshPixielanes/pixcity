@@ -286,7 +286,7 @@
                 var data = new FormData();
                 data.append('file',$(this)[0].files[0]);
                 data.append('id',{{ user.id }});
-                $.ajax('{{ url('front_pixie_account_mangopaykyc') }}',{
+                $.ajax('{{ url('admin_users_mangopaykyc') }}',{
                     method: 'POST',
                     processData: false,
                     cacheable:false,
@@ -306,7 +306,7 @@
                 var data = new FormData();
                 data.append('file',$(this)[0].files[0]);
                 data.append('id',{{ user.id }});
-                $.ajax('{{ url('front_pixie_account_mangopayKycAddr') }}',{
+                $.ajax('{{ url('admin_users_mangopayKycAddr') }}',{
                     method: 'POST',
                     processData: false,
                     cacheable:false,
