@@ -47,7 +47,6 @@ class PackController extends AbstractController
         if($request->getSession()->has('chosen_pack_url')){
             $request->getSession()->remove('chosen_pack_url');
         }
-
         $pack = $packRepo->find($id);
         $proposal = new ClientMissionProposal();
 
@@ -59,7 +58,7 @@ class PackController extends AbstractController
         $form = $this->createForm(ClientMissionProposalType::class, $proposal);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
             $entityManager = $this->getDoctrine()->getManager();
 
@@ -68,7 +67,7 @@ class PackController extends AbstractController
             $proposal->setClient($this->getUser());
 
             $entityManager->persist($proposal);
-            $entityManager->flush();
+//            $entityManager->flush();
 
             foreach($proposal->getMedias() as $media)
             {
@@ -94,7 +93,7 @@ class PackController extends AbstractController
             $ticket->setUpdatedAt(new \DateTime('now'));
 
             $entityManager->persist($ticket);
-            $entityManager->flush();
+//            $entityManager->flush();
 
             $content = "Bonjour ".$proposal->getPack()->getUser()->getFirstname()."<br>"."NOTIFICATION  : ".$proposal->getClient()."vous a envoyé une question sur votre espace : ".$proposal->getDescription();
 

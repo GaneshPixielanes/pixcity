@@ -125,6 +125,7 @@ class UserRepository extends ServiceEntityRepository
 
     public function searchClients($filters = [], $limit = 12, $page = 1)
     {
+        // /dd($filters);
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
@@ -153,7 +154,7 @@ class UserRepository extends ServiceEntityRepository
 //            ->leftJoin('u.cards', 'cards')
 //            ->leftJoin('u.links', 'c')
 //            ->leftJoin('u.favoriteCategories', 'category')
-            ->innerJoin('u.pixie', 'p')
+            //->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
@@ -251,7 +252,7 @@ class UserRepository extends ServiceEntityRepository
         if($filters) {
             if (isset($filters["text"])) {
 //                $qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :searchText")->setParameter("searchText", "%".$filters["text"]."%");
-                $qb = $qb->orWhere("packs.title LIKE :packText OR packs.description LIKE :packText OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+                $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText) AND packs.active = 1) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
             }
 
             if (isset($filters["regions"])) {
