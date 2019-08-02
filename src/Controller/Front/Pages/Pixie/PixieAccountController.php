@@ -314,9 +314,9 @@ class PixieAccountController extends Controller
         $pixieBilling = $user->getPixie()->getBilling();
 //        dd($pixieBilling->getAddress()-);
         if(
-           $pixieBilling->getBillingIban() == 'FR3330002005500000157841Z25' &&
-           $pixieBilling->getBillingBic() == 'CRLYFRPP' &&
-           strtoupper($pixieBilling->getAddress()->getAddress()) == "27 RUE ARAGO"
+            $pixieBilling->getBillingIban() == 'FR3330002005500000157841Z25' &&
+            $pixieBilling->getBillingBic() == 'CRLYFRPP' &&
+            strtoupper($pixieBilling->getAddress()->getAddress()) == "27 RUE ARAGO"
         )
         {
             $isWrongData = true;
@@ -375,9 +375,9 @@ class PixieAccountController extends Controller
         // The created card will be associated with the project
         // All new address will be stored as a card here
         $card = new Card();
-        
+
         $form = $this->createForm(CardType::class, $card);
-        
+
         $form->handleRequest($request);
 
         // Form validation check
@@ -545,22 +545,24 @@ class PixieAccountController extends Controller
 
 
     }
-//    /**
-//     * @Route("upload/mangopaykyc", name="mangopaykyc")
-//     */
-//    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
-//    {
-//        $file = $request->files->get('file');
-//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr1/'.$request->get('id'), true);
-//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
-//    }
-//    /**
-//     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
-//     */
-//    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
-//    {
-//        $file = $request->files->get('file');
-//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr2/'.$request->get('id'), true);
-//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
-//    }
+
+
+    /**
+     * @Route("upload/mangopaykyc", name="mangopaykyc")
+     */
+    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr1/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+    /**
+     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
+     */
+    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr2/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
 }
