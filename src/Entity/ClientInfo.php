@@ -34,7 +34,28 @@ class ClientInfo
      */
     private $mangopayWalletId;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $mangopayCreatedAt;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mangopayKycFile;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mangopayKycAddr;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mangopayKycStatus;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $mangopayKycCreated;
     /**
      * @Assert\NotBlank()
      * @Assert\Regex(
@@ -118,6 +139,77 @@ class ClientInfo
         return $this;
     }
 
+    public function getMangopayCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->mangopayCreatedAt;
+    }
+
+    public function setMangopayCreatedAt(?\DateTimeInterface $mangopayCreatedAt): self
+    {
+        $this->mangopayCreatedAt = $mangopayCreatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMangopayKycFile()
+    {
+        return $this->mangopayKycFile;
+    }
+
+    /**
+     * @param mixed $mangopayKycFile
+     */
+    public function setMangopayKycFile($mangopayKycFile)
+    {
+        $this->mangopayKycFile = $mangopayKycFile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMangopayKycAddr()
+    {
+        return $this->mangopayKycAddr;
+    }
+
+    /**
+     * @param mixed $mangopayKycAddr
+     */
+    public function setMangopayKycAddr($mangopayKycAddr)
+    {
+        $this->mangopayKycAddr = $mangopayKycAddr;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMangopayKycStatus()
+    {
+        return $this->mangopayKycStatus;
+    }
+
+    /**
+     * @param mixed $mangopayKycStatus
+     */
+    public function setMangopayKycStatus($mangopayKycStatus)
+    {
+        $this->mangopayKycStatus = $mangopayKycStatus;
+    }
+
+    public function getMangopayKycCreated(): ?\DateTimeInterface
+    {
+        return $this->mangopayKycCreated;
+    }
+
+    public function setMangopayKycCreated(?\DateTimeInterface $mangopayKycCreated): self
+    {
+        $this->mangopayKycCreated = $mangopayKycCreated;
+
+        return $this;
+    }
 
     public function getSiret(): ?string
     {

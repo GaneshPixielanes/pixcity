@@ -25,7 +25,7 @@ class ContactusController extends AbstractController
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 return $this->render('admin/b2b/contactus/index.html.twig', [
-                    'contact_lists' => $contactRepository->findAll(),
+                    'contact_lists' => $contactRepository->findBy(array(),array('id'=>'DESC')),
                 ]);
             }
             else{

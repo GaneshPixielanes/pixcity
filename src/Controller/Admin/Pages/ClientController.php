@@ -102,6 +102,9 @@ class ClientController extends AbstractController
                         $password = $passwordEncoder->encodePassword($client, $client->getPlainPassword());
                         $client->setPassword($password);
                     }
+                    if($client->getClientInfo()->getMangopayUserId() == null){
+                        $client->getClientInfo()->setMangopayKycStatus('PENDING');
+                    }
 //                    $uploadedFile = $form['profilePhoto']->getData();
 //
 //                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
@@ -160,6 +163,24 @@ class ClientController extends AbstractController
     {
         $file = $request->files->get('file');
         $fileName = $fileUploader->upload($file, 'clients/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+    /**
+     * @Route("upload/mangopaykyc", name="mangopaykyc")
+     */
+    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'mangopay_kyc/client/addr1/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+    /**
+     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
+     */
+    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'mangopay_kyc/client/addr2/'.$request->get('id'), true);
         return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
     }
 }
