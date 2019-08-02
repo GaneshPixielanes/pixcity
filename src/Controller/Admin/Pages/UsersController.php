@@ -9,6 +9,8 @@ use App\Entity\UserMedia;
 use App\Form\Admin\UserType;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
+use App\Service\MangoPayService;
+use MangoPay\UserNatural;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -177,7 +179,7 @@ class UsersController extends Controller
      * @Route("/{id}/edit", requirements={"id": "\d+"}, name="edit")
      * @Method({"GET", "POST"})
      */
-    public function edit(Request $request, User $editedUser, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader,AuthorizationCheckerInterface $authChecker)
+    public function edit(Request $request, User $editedUser, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader,AuthorizationCheckerInterface $authChecker,MangoPayService $mangoPayService)
     {
 
         //-------------------------------------------------------
@@ -233,21 +235,33 @@ class UsersController extends Controller
                         $editedUser->getPixie()->getBilling()->setRib($previousRib);
                 }
             }
-            /*if($user->getViewMode() == ViewMode::B2B) {
+            if($user->getViewMode() == ViewMode::B2B) {
                 if ($authChecker->isGranted('ROLE_B2C')) {
-                    if ($editedUser->getB2bCmApproval() == 0) {
-                       // $editedUser->setCmUpgradeB2bDate(null);
-                        $editedUser->setB2bCmApproval(0);
-                        $editedUser->setRoles(['ROLE_USER', 'ROLE_PIXIE']);
-                    }
-                    else
-                    {
-                        $editedUser->setRoles(['ROLE_USER','ROLE_PIXIE','ROLE_CM']);
-                        //$editedUser->setCmUpgradeB2bDate(new \DateTime());
+                    if($editedUser->getB2bCmApproval() == 1) {
+                        // Create a mango pay user
+                        if($editedUser->getMangopayUserId == null){
+                            $mangoUser = new UserNatural();
+
+                            $mangoUser->PersonType = "NATURAL";
+                            $mangoUser->FirstName = $editedUser->getFirstname();
+                            $mangoUser->LastName = $editedUser->getLastname();
+                            $mangoUser->Birthday = 1409735187;
+                            $mangoUser->Nationality = "FR";
+                            $mangoUser->CountryOfResidence = "FR";
+                            $mangoUser->Email = $editedUser->getEmail();
+                            $mangoUser = $mangoPayService->createUser($mangoUser);
+                            //Create a wallet
+                            $wallet = $mangoPayService->getWallet($mangoUser->Id);
+
+                            $editedUser->setMangopayUserId($mangoUser->Id);
+                            $editedUser->setMangopayWalletId($wallet->Id);
+                            $editedUser->setMangopayCreatedAt(new \DateTime());
+                            $editedUser->setMangopayKycStatus('PENDING');
+                        }
                     }
                 }
 
-            }*/
+            }
 
 
             // Save the user
