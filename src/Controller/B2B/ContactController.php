@@ -73,9 +73,9 @@ class ContactController extends AbstractController
             $this->addFlash('contact_send', 'Votre message a bien été envoyé');
 
 
-            return $this->redirect('prestations-de-service');
+            return $this->redirect('freelance');
         }
 
-        return $this->redirect('prestations-de-service');
+        return $this->redirect('freelance');
     }
 }
