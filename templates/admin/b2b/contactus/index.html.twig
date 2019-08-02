@@ -25,6 +25,7 @@
                             <th>Created Date Time</th>
                         </tr>
                     </thead>
+                    <tbody>
                     {% for contact_list in contact_lists %}
                         <tr>
                             <td>{{ contact_list.id }}</td>
@@ -44,8 +45,6 @@
                             <td colspan="4">no records found</td>
                         </tr>
                     {% endfor %}
-                    <tbody>
-
                     </tbody>
                 </table>
             </div>
