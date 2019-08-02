@@ -480,8 +480,6 @@ class PixieAccountController extends Controller
             mkdir($uploadDir, 0775, true);
         }
 
-
-
         if ($file->move($uploadDir, $fileName)) {
             $em = $this->getDoctrine()->getManager();
 
@@ -547,5 +545,22 @@ class PixieAccountController extends Controller
 
 
     }
-
+    /**
+     * @Route("upload/mangopaykyc", name="mangopaykyc")
+     */
+    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr1/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+    /**
+     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
+     */
+    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr2/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
 }
