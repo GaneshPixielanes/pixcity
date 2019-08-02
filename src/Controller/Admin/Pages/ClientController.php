@@ -35,7 +35,7 @@ class ClientController extends AbstractController
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 $em= $this->getDoctrine()->getManager();
-                $query = $em->createQuery('SELECT pbc, COUNT(pbum.client) as missionCount FROM App:Client pbc LEFT JOIN App:UserMission pbum WITH pbum.client = pbc.id WHERE pbc.deleted IS Null GROUP BY pbc.id');
+                $query = $em->createQuery('SELECT pbc, COUNT(pbum.client) as missionCount FROM App:Client pbc LEFT JOIN App:UserMission pbum WITH pbum.client = pbc.id WHERE pbc.deleted IS Null GROUP BY pbc.id ORDER BY pbc.id DESC');
                 $result =  $query->getResult();
 
                 return $this->render('admin/b2b/client/index.html.twig', [
