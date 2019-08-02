@@ -27,7 +27,7 @@ class ServiceController extends AbstractController
         $searchParams['skills'] = null;
         $searchParams['text'] = null;
 
-        $limit = 7;
+        $limit = 5;
 
         $page = is_null($request->get('page'))?1:$request->get('page');
 
@@ -41,7 +41,7 @@ class ServiceController extends AbstractController
             'page' => $page
         ];
 
-        $users = $userRepo->searchClients($filters, $limit, $page);
+        $users = $userRepo->searchClients($filters, 7, 1);
 
         $regions = $regionRepo->findAll();
         #SEO
