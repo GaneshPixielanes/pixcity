@@ -8,6 +8,7 @@
                     {#                {% if app.user.notifications | length > 0 %}#}
                     {#                <h5 class="modal-title font-weight-bold">Notifications</h5>#}
                     {#                {% endif %}#}
+                    <h5 class="modal-title font-weight-bold">Notifications</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -15,9 +16,9 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            {#                        {% if app.user.notifications | length == 0 %}#}
-                            <h5 class="modal-title font-weight-bold">Notifications</h5>
-                            {#                        {% endif %}#}
+                            {% if app.user.notifications|length == 0 %}
+                                <p>Vous n’avez pas de notifications</p>
+                            {% endif %}
                             {% for notification in app.user.notifications|sort|reverse %}
                                 <a href="javascript:;" class="notification-card card p-3 text-darkblue text-decoration-none mb-2 unread">
                                     <div class="row">
