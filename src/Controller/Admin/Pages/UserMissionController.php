@@ -34,7 +34,7 @@ class UserMissionController extends AbstractController
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 return $this->render('admin/b2b/user_mission/index.html.twig', [
-                    'user_missions' => $userMissionRepository->findBy(['deleted'=>0]),
+                    'user_missions' => $userMissionRepository->findBy(['deleted'=>0],['id'=>'DESC']),
                 ]);
             }
             else{
