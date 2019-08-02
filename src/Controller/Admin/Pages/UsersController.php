@@ -239,7 +239,7 @@ class UsersController extends Controller
                 if ($authChecker->isGranted('ROLE_B2C')) {
                     if($editedUser->getB2bCmApproval() == 1) {
                         // Create a mango pay user
-                        if($editedUser->getMangopayUserId == null){
+                        if($editedUser->getMangopayUserId() == null){
                             $mangoUser = new UserNatural();
 
                             $mangoUser->PersonType = "NATURAL";
