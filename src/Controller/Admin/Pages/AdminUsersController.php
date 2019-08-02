@@ -192,7 +192,7 @@ class AdminUsersController extends Controller
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 return $this->render('admin/b2b/invoices/index.html.twig', [
-                    'user_missions' => $userMissionRepository->findBy(['status'=>'terminated']),
+                    'user_missions' => $userMissionRepository->findBy(['status'=>'terminated'],['id'=>'DESC']),
                 ]);
             }
             else{
