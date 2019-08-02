@@ -109,22 +109,42 @@ class MangoPayService
 
 
     public function refundPayment($transaction,$amount,$refund_amount){
-        //dd($amount.' '.$refund_amount);
+
         $PayInId = $transaction[0]->getMangopayTransactionId();
 
-        $Refund = $this->mangoPayRefund;
+        $Refund = new \MangoPay\Refund();
         $Refund->AuthorId = $transaction[0]->getMangopayUserId();
-        $Refund->DebitedFunds = $this->mangoPayMoney;
+
+        $Refund->DebitedFunds = new \MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
         $Refund->DebitedFunds->Amount = $amount;
 
-        $Refund->Fees = $this->mangoPayMoney;
+        $Refund->Fees = new \MangoPay\Money();
         $Refund->Fees->Currency = "EUR";
-        $Refund->Fees->Amount = $refund_amount;
+        $Refund->Fees->Amount =  - $refund_amount;
 
         $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
-
         return $reponse->ResultMessage;
     }
 
+    public function kycCreate($mangopayUserId, $filename)
+    {
+        //create the doc
+        $KycDocument = new \MangoPay\KycDocument();
+        $KycDocument->Type = "IDENTITY_PROOF";
+        $result = $this->mangoPayApi->Users->CreateKycDocument($mangopayUserId, $KycDocument);
+        $KycDocumentId = $result->Id;
+
+        //add a page to this doc
+
+        $result2 = $this->mangoPayApi->Users->CreateKycPageFromFile($mangopayUserId, $KycDocumentId, $filename);
+
+        //return $result2;
+        //submit the doc for validation
+        $KycDocument = new MangoPay\KycDocument();
+        $KycDocument->Id = $KycDocumentId;
+        $KycDocument->Status = "VALIDATION_ASKED";
+        $result3 = $this->mangoPayApi->Users->UpdateKycDocument($mangopayUserId, $KycDocument);
+        return $result3;
+    }
 }
