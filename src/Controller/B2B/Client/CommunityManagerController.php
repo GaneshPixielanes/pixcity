@@ -24,6 +24,11 @@ class CommunityManagerController extends AbstractController
     {
 
         $user = $userRepo->find($id);
+
+        if($user->getB2bCmApproval() != 1)
+        {
+            return $this->redirectToRoute('b2b_client_search_index');
+        }
         // Check if the user exists
         if(is_null($user) && !in_array('ROLE_CM', $user->getRoles()))
         {
