@@ -41,7 +41,7 @@ class ServiceController extends AbstractController
             'page' => $page
         ];
 
-        $users = $userRepo->searchClients($filters, 7, 1);
+        $users = $userRepo->searchClients($filters, $limit, 1);
 
         $regions = $regionRepo->findAll();
         #SEO
