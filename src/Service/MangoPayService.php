@@ -73,11 +73,12 @@ class MangoPayService
         return $this->mangoPayApi->Wallets->Get($user);
     }
 
-    public function getPayIn($mangoUser, $wallet, $amount, $transaction)
+    public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission)
     {
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
+        $payIn->Tag =$mission;
         $payIn->PaymentType = MangoPay\PayInPaymentType::Card;
         $payIn->PaymentDetails = new MangoPay\PayInPaymentDetailsCard();
         $payIn->PaymentDetails->CardType = "CB_VISA_MASTERCARD";
