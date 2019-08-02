@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * @Route("/client/", name="b2b_client_main_")
@@ -35,6 +36,7 @@ class ClientController extends Controller
      */
     public function profile(Request $request,OptionRepository $options,FileUploader $fileUploader, UserPasswordEncoderInterface $passwordEncoder,Filesystem $filesystem)
     {
+
         $user = $this->getUser();
 
         $form = $this->createForm(ClientType::class,$user,['type' => 'edit']);

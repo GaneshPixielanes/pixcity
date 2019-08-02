@@ -96,14 +96,14 @@ class PackController extends Controller
             $em = $this->getDoctrine()->getManager();
             $base_price = $request->get('pack')['userBasePrice'];
             $tax = $tax[0]->getValue();
-            $margin = $base_price * $tax / 100;
 
 //            $total_value = $margin + $base_price;
             $total_value = (100 * $base_price)/(100 - $tax);
             $pack->setUser($user);
             $pack->setMarginPercentage($tax);
-            $pack->setMarginValue($margin);
+            $pack->setMarginValue($total_value - $base_price);
             $pack->setTotalPrice($total_value);
+//            $pack->setActive(1);
 
             $em->persist($pack);
 
@@ -168,13 +168,14 @@ class PackController extends Controller
 //            }
             $base_price = $request->get('pack')['userBasePrice'];
             $tax = $tax[0]->getValue();
-            $margin = $base_price * ($tax / 100);
+//            $margin = $base_price * ($tax / 100);
 //            $total_value = $margin + $base_price;
             $total_value = (100 * $base_price)/(100 - $tax);
 
             $pack->setMarginPercentage($tax);
-            $pack->setMarginValue($margin);
+            $pack->setMarginValue($total_value - $base_price);
             $pack->setTotalPrice($total_value);
+//            $pack->setActive(1);
 
             $em->persist($pack);
             $em->flush();
