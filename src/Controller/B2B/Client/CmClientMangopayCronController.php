@@ -256,6 +256,7 @@ class CmClientMangopayCronController extends Controller
                 'missingRecords' => $docRejected
             ]);
         }
+        return JsonResponse::create(['success' => true]);
     }
 
     /**
@@ -279,5 +280,18 @@ class CmClientMangopayCronController extends Controller
                 'missingRecords' => $docRejected
             ]);
         }
+        return JsonResponse::create(['success' => true]);
+    }
+    /**
+     * @param MangoPayService $mangoPayService
+     * @Route("/process-cron-getall_user/", name="process_getall_user")
+     */
+    public function cronGetAll(MangoPayService $mangoPayService)
+    {
+        $Page=1;
+        $Per_Page=25;
+        $mangopayTbl = $mangoPayService->getAllUsers();
+       // dump($mangopayTbl);
+        return JsonResponse::create(['success' => $mangopayTbl]);
     }
 }
