@@ -5,15 +5,18 @@ namespace App\Controller\Admin\Pages;
 use App\Constant\ViewMode;
 use App\Entity\Client;
 use App\Form\ClientType;
+use App\Repository\ClientInfoRepository;
 use App\Repository\ClientRepository;
 use App\Service\FileUploader;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -90,8 +93,9 @@ class ClientController extends AbstractController
      */
     public function edit(Request $request, Client $client, UserPasswordEncoderInterface $passwordEncoder,AuthorizationCheckerInterface $authChecker): Response
     {
-
+        $date = new \DateTime();
         $user = $this->getUser();
+        $mangoPayFilePrevName = $client->getClientInfo()->getMangopayKycFile();
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 $form = $this->createForm(ClientType::class, $client);
@@ -102,9 +106,18 @@ class ClientController extends AbstractController
                         $password = $passwordEncoder->encodePassword($client, $client->getPlainPassword());
                         $client->setPassword($password);
                     }
-                    if($client->getClientInfo()->getMangopayUserId() == null){
+                    if($client->getClientInfo()->getMangopayKycFile() == null){
                         $client->getClientInfo()->setMangopayKycStatus('PENDING');
                     }
+                    /*******FILE RENAME START************/
+//                    if($mangoPayFilePrevName != null){
+//                        $mangopayKycFileName = 'uploads/mangopay_kyc/client/'.$client->getId().'/addr1/'.$mangoPayFilePrevName;
+//                        $ext = pathinfo('uploads/mangopay_kyc/client/'.$client->getId().'/addr1/'.$mangoPayFilePrevName,PATHINFO_EXTENSION);
+//                        rename($mangopayKycFileName,preg_replace('/\\.[^.\\s]{3,4}$/', '', $mangopayKycFileName).'_'.$date->format('Ymd').'.'.$ext);
+//                        $client->getClientInfo()->setMangopayKycStatus('WAITING_FOR_SUBMISSION');
+//                        $client->getClientInfo()->setMangopayKycCreated(new \DateTime());
+//                    }
+                    /*******FILE RENAME END************/
 //                    $uploadedFile = $form['profilePhoto']->getData();
 //
 //                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
@@ -165,22 +178,50 @@ class ClientController extends AbstractController
         $fileName = $fileUploader->upload($file, 'clients/'.$request->get('id'), true);
         return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
     }
-    /**
-     * @Route("upload/mangopaykyc", name="mangopaykyc")
-     */
-    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
-    {
-        $file = $request->files->get('file');
-        $fileName = $fileUploader->upload($file, 'mangopay_kyc/client/addr1/'.$request->get('id'), true);
-        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
-    }
-    /**
-     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
-     */
-    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
-    {
-        $file = $request->files->get('file');
-        $fileName = $fileUploader->upload($file, 'mangopay_kyc/client/addr2/'.$request->get('id'), true);
-        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
-    }
+//    /**
+//     * @Route("upload/mangopaykyc", name="mangopaykyc")
+//     */
+//    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
+//    {
+//        $file = $request->files->get('file');
+//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/client/'.$request->get('id').'/addr1/', true);
+//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+//    }
+//    /**
+//     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
+//     */
+//    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
+//    {
+//        $file = $request->files->get('file');
+//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/client/'.$request->get('id').'/addr2/', true);
+//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+//    }
+//    /**
+//     * @Route("download/{id}/{fldName}",name="download")
+//     */
+//    public function download($id,$fldName, ClientInfoRepository $clientInfoRepository)
+//    {
+//        $userTbl = $clientInfoRepository->find($id);
+//        $folderName = $fldName;
+//        $kycFile = '';
+//        if($folderName == 'addr1'){
+//            $kycFile = $userTbl->getMangopayKycFile();
+//        }else{
+//            $kycFile = $userTbl->getMangopayKycAddr();
+//        }
+//
+//        $date = new \DateTime();
+//        $response = new BinaryFileResponse('uploads/mangopay_kyc/client/'.$userTbl->getId().'/'.$folderName.'/'.$kycFile);
+//        //  $ext = pathinfo('uploads/mangopay_kyc/cm/'.$userTbl->getId().'/addr1/'.$userTbl->getMangopayKycFile(),PATHINFO_EXTENSION);
+//
+//        $response->headers->set('Content-Type','text/plain');
+//        $response->setContentDisposition(
+//            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+//            //$kycFile.'_'.$date->format('Ymd').'.'.$ext
+//            $kycFile
+//        );
+//
+//        return $response;
+//
+//    }
 }
