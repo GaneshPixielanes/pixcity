@@ -15,6 +15,8 @@ use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use App\Service\Mailer;
+use App\Service\MangoPayService;
+use MangoPay\UserNatural;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -42,7 +44,8 @@ class ClientRegistrationController extends AbstractController
                           FileUploader $fileUploader,
                           Filesystem $filesystem,
                           OptionRepository $optionRepository,
-                          Mailer $mailer)
+                          Mailer $mailer,
+                          MangoPayService $mangoPayService)
     {
 
 
@@ -71,6 +74,25 @@ class ClientRegistrationController extends AbstractController
                 $client->setProfilePhoto($file);
             }
             $client->setDeleted(null);
+
+         /*   // Create a mango pay user
+            $mangoUser = new UserNatural();
+
+            $mangoUser->PersonType = "NATURAL";
+            $mangoUser->FirstName = $client->getFirstName();
+            $mangoUser->LastName = $client->getLastName();
+            $mangoUser->Birthday = 1409735187;
+            $mangoUser->Nationality = "FR";
+            $mangoUser->CountryOfResidence = "FR";
+            $mangoUser->Email = $client->getEmail();
+            $mangoUser = $mangoPayService->createUser($mangoUser);
+            //Create a wallet
+            $wallet = $mangoPayService->getWallet($mangoUser->Id);
+
+            $client->getClientInfo()->setMangopayUserId($mangoUser->Id);
+            $client->getClientInfo()->setMangopayWalletId($wallet->Id);
+            $client->getClientInfo()->setMangopayCreatedAt(new \DateTime());
+*/
             $em->persist($client);
             $em->flush();
 
