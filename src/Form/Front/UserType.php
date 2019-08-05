@@ -12,11 +12,14 @@ use App\Form\Shared\UserLinkType;
 use App\Form\Shared\UserOptinType;
 use App\Form\Shared\UserPixieType;
 use App\Form\Shared\UserMediaType;
+use function Complex\add;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -164,7 +167,10 @@ class UserType extends AbstractType
                     'required' => true,
                     'constraints' => array(new Valid()),
                     'type' => $options["type"]
-                ));
+                ))
+                //->add('mangopayKycFile',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 1'))
+                //->add('mangopayKycAddr',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 2'))
+            ;
 
         }
 
