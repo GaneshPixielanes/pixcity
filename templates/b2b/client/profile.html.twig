@@ -133,6 +133,30 @@
                                                         {{ form_errors(form.clientInfo.business) }}
 
                                                     </div>
+                                                    {#<div class="row">#}
+                                                        {#<div class="col-md-5 input-container">#}
+                                                            {#Adresse Preuve 1:#}
+                                                            {#{% if form.vars.data.clientInfo.mangopayKycFile  %}#}
+                                                                {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/client/addr1/'~form.vars.data.clientInfo.id~'/'~form.vars.data.clientInfo.mangopayKycFile}}" width="20%">#}
+                                                            {#{% endif %}#}
+
+                                                            {#<div class="upload-zone ">#}
+                                                                {#<input type="file" id="mangopayKycFile"  class="filestyle" data-icon="false"/>#}
+                                                                {#<input type="hidden" name="client[clientInfo][mangopayKycFile]" value="{{ form.vars.data.clientInfo.mangopayKycFile }}"/>#}
+                                                            {#</div>#}
+                                                        {#</div>#}
+                                                        {#<div class="col-md-7 input-container">#}
+                                                            {#Adresse Preuve 2:#}
+                                                            {#{% if form.vars.data.clientInfo.mangopayKycAddr  %}#}
+                                                                {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/client/addr2/'~form.vars.data.clientInfo.id~'/'~form.vars.data.clientInfo.mangopayKycAddr}}" width="20%">#}
+                                                            {#{% endif %}#}
+                                                            {#<div class="upload-zone ">#}
+                                                                {#<input type="file" id="mangopayKycAddr"  class="filestyle" data-icon="false"/>#}
+                                                                {#<input type="hidden" name="client[clientInfo][mangopayKycAddr]" value="{{ form.vars.data.clientInfo.mangopayKycAddr }}"/>#}
+                                                            {#</div>#}
+
+                                                        {#</div>#}
+                                                    {#</div>#}
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -215,7 +239,50 @@
             }).fail(function (xhr, status, error) {
 
             });
-
         });
+
+        {#$(document).ready( function () {#}
+            {#$('#mangopayKycFile').change(function()#}
+            {#{#}
+                {#var data = new FormData();#}
+                {#data.append('file',$(this)[0].files[0]);#}
+                {#data.append('id',{{ user.id }});#}
+                {#$.ajax('{{ url('b2b_client_main_mangopaykyc') }}',{#}
+                    {#method: 'POST',#}
+                    {#processData: false,#}
+                    {#cacheable:false,#}
+                    {#data:data,#}
+                    {#contentType: false,#}
+                    {#success: function(result)#}
+                    {#{#}
+                        {#if(result.success == true)#}
+                        {#{#}
+                            {#$('[name="client[clientInfo][mangopayKycFile]"').val(result.fileName);#}
+                        {#}#}
+                    {#}#}
+                {#});#}
+            {#});#}
+            {#$('#mangopayKycAddr').change(function()#}
+            {#{#}
+                {#var data = new FormData();#}
+                {#data.append('file',$(this)[0].files[0]);#}
+                {#data.append('id',{{ user.id }});#}
+                {#$.ajax('{{ url('b2b_client_main_mangopayKycAddr') }}',{#}
+                    {#method: 'POST',#}
+                    {#processData: false,#}
+                    {#cacheable:false,#}
+                    {#data:data,#}
+                    {#contentType: false,#}
+                    {#success: function(result)#}
+                    {#{#}
+                        {#if(result.success == true)#}
+                        {#{#}
+                            {#$('[name="client[clientInfo][mangopayKycAddr]"').val(result.fileName);#}
+                        {#}#}
+                    {#}#}
+                {#});#}
+            {#});#}
+
+        {#});#}
     </script>
 {% endblock %}

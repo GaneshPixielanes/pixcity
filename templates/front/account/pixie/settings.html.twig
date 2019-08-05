@@ -574,6 +574,30 @@
                                     {{ form_widget(form.pixie.billing.address.country) }}
                                 </div>
                             </div>
+                            {#<div class="row">#}
+                                {#<div class="col-md-5 input-container">#}
+                                    {#Adresse Preuve 1:#}
+                                        {#{% if form.vars.data.mangopayKycFile  %}#}
+                                            {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/cm/addr1/'~form.vars.data.id~'/'~form.vars.data.mangopayKycFile}}" width="20%">#}
+                                        {#{% endif %}#}
+
+                                        {#<div class="upload-zone ">#}
+                                            {#<input type="file" id="mangopayKycFile"  class="filestyle" data-icon="false"/>#}
+                                            {#<input type="hidden" name="user[mangopayKycFile]" value="{{ form.vars.data.mangopayKycFile }}"/>#}
+                                        {#</div>#}
+                                {#</div>#}
+                                {#<div class="col-md-7 input-container">#}
+                                    {#Adresse Preuve 2:#}
+                                    {#{% if form.vars.data.mangopayKycAddr  %}#}
+                                        {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/cm/addr2/'~form.vars.data.id~'/'~form.vars.data.mangopayKycAddr}}" width="20%">#}
+                                    {#{% endif %}#}
+                                        {#<div class="upload-zone ">#}
+                                            {#<input type="file" id="mangopayKycAddr"  class="filestyle" data-icon="false"/>#}
+                                            {#<input type="hidden" name="user[mangopayKycAddr]" value="{{ form.vars.data.mangopayKycAddr }}"/>#}
+                                        {#</div>#}
+
+                                {#</div>#}
+                            {#</div>#}
                         </div>
 
                         {{ form_row(form.pixie.billing.tva) }}
@@ -967,6 +991,46 @@
                     $(this).find('.skill').attr( 'checked', true );
                 }
             });
+            {#$('#mangopayKycFile').change(function()#}
+            {#{#}
+                {#var data = new FormData();#}
+                {#data.append('file',$(this)[0].files[0]);#}
+                {#data.append('id',{{ user.id }});#}
+                {#$.ajax('{{ url('front_pixie_account_mangopaykyc') }}',{#}
+                    {#method: 'POST',#}
+                    {#processData: false,#}
+                    {#cacheable:false,#}
+                    {#data:data,#}
+                    {#contentType: false,#}
+                    {#success: function(result)#}
+                    {#{#}
+                        {#if(result.success == true)#}
+                        {#{#}
+                            {#$('[name="user[mangopayKycFile]"').val(result.fileName);#}
+                        {#}#}
+                    {#}#}
+                {#});#}
+            {#});#}
+            {#$('#mangopayKycAddr').change(function()#}
+            {#{#}
+                {#var data = new FormData();#}
+                {#data.append('file',$(this)[0].files[0]);#}
+                {#data.append('id',{{ user.id }});#}
+                {#$.ajax('{{ url('front_pixie_account_mangopayKycAddr') }}',{#}
+                    {#method: 'POST',#}
+                    {#processData: false,#}
+                    {#cacheable:false,#}
+                    {#data:data,#}
+                    {#contentType: false,#}
+                    {#success: function(result)#}
+                    {#{#}
+                        {#if(result.success == true)#}
+                        {#{#}
+                            {#$('[name="user[mangopayKycAddr]"').val(result.fileName);#}
+                        {#}#}
+                    {#}#}
+                {#});#}
+            {#});#}
         });
     </script>
 {% endblock %}
