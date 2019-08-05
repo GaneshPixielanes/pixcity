@@ -85,6 +85,26 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>Mangopay User Id</th>
+                        <td>{{ user.mangopayUserId ? user.mangopayUserId : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mangopay Wallet Id</th>
+                        <td>{{ user.mangopayWalletId ? user.mangopayWalletId : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mangopay Kyc Status</th>
+                        <td>{{ user.mangopayKycStatus ? user.mangopayKycStatus|replace({'_': ' '}) : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mangopay User and Wallet crée le</th>
+                        <td>{{ user.mangopayCreatedAt ? user.mangopayCreatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mangopay Kyc Submission crée le</th>
+                        <td>{{ user.mangopayKycCreated ? user.mangopayKycCreated|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                    </tr>
+                    <tr>
                         <th>Profil crée le</th>
                         <td>{{ user.createdAt ? user.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
