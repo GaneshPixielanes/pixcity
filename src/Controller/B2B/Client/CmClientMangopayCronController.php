@@ -4,6 +4,7 @@ namespace App\Controller\B2B\Client;
 
 
 use App\Constant\MissionStatus;
+use App\Entity\Client;
 use App\Entity\ClientTransaction;
 use App\Entity\Option;
 use App\Entity\Royalties;
@@ -81,6 +82,7 @@ class CmClientMangopayCronController extends Controller
                 $value->setMangopayUserId($mangoUser->Id);
                 $value->setMangopayWalletId($wallet->Id);
                 $value->setMangopayCreatedAt(new \DateTime());
+                $value->setMangopayKycStatus("PENDING");
                 $em = $this->getDoctrine()->getManager();
 
                 $em->persist($value);
@@ -132,6 +134,7 @@ class CmClientMangopayCronController extends Controller
                 $value->getClientInfo()->setMangopayUserId($mangoUser->Id);
                 $value->getClientInfo()->setMangopayWalletId($wallet->Id);
                 $value->getClientInfo()->setMangopayCreatedAt(new \DateTime());
+                $value->getClientInfo()->setMangopayKycStatus("PENDING");
                 $em = $this->getDoctrine()->getManager();
 
                 $em->persist($value);
@@ -162,12 +165,31 @@ class CmClientMangopayCronController extends Controller
         $filename = 'uploads/clients/29ad0366a8e95b78fe740f95bc6fd383.jpeg';
         foreach ($clientRepositoryTbl as $key => $value)
         {
-           // $filename = 'uploads/mangopay_kyc/client/addr1/'.$value->getId().'/'.$value->getClientInfo()->getMangopayKycFile();
-            //$filename1 = 'uploads/mangopay_kyc/client/addr2/'.$value->getId().'/'.$value->getClientInfo()->getMangopayKycAddr();
-            $mangoPayService->kycCreate($value->getClientInfo()->getMangopayUserId(),$filename);
-           // $mangoPayService->kycCreate($value->getClientInfo()->getMangopayUserId(),$filename1);
-           // dd('success');
-           // exit('success');
+            if($value->getClientInfo()->getMangopayUserId() != null){
+               // $filename = 'uploads/mangopay_kyc/client/'.$value->getId().'/addr1/'.$value->getClientInfo()->getMangopayKycFile();
+                //$filename1 = 'uploads/mangopay_kyc/client/'.$value->getId().'/addr2/'.$value->getClientInfo()->getMangopayKycAddr();
+                $res = $mangoPayService->kycCreate($value->getClientInfo()->getMangopayUserId(),$filename);
+               // $mangoPayService->kycCreate($value->getClientInfo()->getMangopayUserId(),$filename1);
+                if(isset($res) != null ){
+                    foreach($res as $v){
+                        if(isset($v->Status) != null) {
+                            if ($v->Status == "VALIDATION_ASKED") {
+                                $value->getClientInfo()->setMangopayKycStatus("UNDER_VERIFICATION");
+                            }
+                            if($v->Status == "SUCCEEDED") {
+                                $value->getClientInfo()->setMangopayKycStatus("SUCCESS");
+                            }
+                            if($v->Status == "REFUSED") {
+                                $value->getClientInfo()->setMangopayKycStatus("REJECT");
+                            }
+                            $em = $this->getDoctrine()->getManager();
+
+                            $em->persist($value);
+                            $em->flush();
+                        }
+                    }
+                }
+            }
         }
         return JsonResponse::create(['success' => true]);
     }
@@ -182,13 +204,80 @@ class CmClientMangopayCronController extends Controller
         $filename = 'uploads/clients/29ad0366a8e95b78fe740f95bc6fd383.jpeg';
         foreach ($userRepositoryTbl as $key => $value)
         {
-          //  $filename = 'uploads/mangopay_kyc/cm/addr1/'.$value->getId().'/'.$value->getMangopayKycFile();
-            //$filename1 = 'uploads/mangopay_kyc/cm/addr2/'.$value->getId().'/'.$value->getMangopayKycAddr();
+            if($value->getMangopayUserId() != null) {
+                //  $filename = 'uploads/mangopay_kyc/cm/'.$value->getId().'/addr1/'.$value->getMangopayKycFile();
+                //$filename1 = 'uploads/mangopay_kyc/cm/'.$value->getId().'/addr2/'.$value->getMangopayKycAddr();
 
-            $mangoPayService->kycCreate($value->getMangopayUserId(),$filename);
-            //$mangoPayService->kycCreate($value->getMangopayUserId(),$filename1);
+                $res = $mangoPayService->kycCreate($value->getMangopayUserId(), $filename);
+                //$mangoPayService->kycCreate($value->getMangopayUserId(),$filename1);
+
+                if(isset($res) != null ){
+                    foreach($res as $v){
+                        if(isset($v->Status) != null) {
+                            if ($v->Status == "VALIDATION_ASKED") {
+                                $value->setMangopayKycStatus("UNDER_VERIFICATION");
+                            }
+                            if($v->Status == "SUCCEEDED") {
+                                $value->setMangopayKycStatus("SUCCESS");
+                            }
+                            if($v->Status == "REFUSED") {
+                                $value->setMangopayKycStatus("REJECT");
+                            }
+                            $em = $this->getDoctrine()->getManager();
+
+                            $em->persist($value);
+                            $em->flush();
+                        }
+                    }
+                }
+            }
         }
         return JsonResponse::create(['success' => true]);
     }
 
+    /**
+     * @param MangoPayService $mangoPayService
+     * @param ClientRepository $clientRepository
+     * @Route("/process-cron-client-kycstatus/", name="process_client_kycstatus")
+     */
+    public function cronClientKycStatus(MangoPayService $mangoPayService, ClientRepository $clientRepository,
+                                        Mailer $mailer)
+    {
+        $clientRepositoryTbl = $clientRepository->findBy(array(), array('id' => 'DESC'), 20);
+        $docRejected= array();
+        foreach ($clientRepositoryTbl as $key => $value) {
+            if ($value->getClientInfo()->getMangopayUserId() != null && $value->getClientInfo()->getMangopayKycStatus() == "REJECT") {
+                $docRejected[] = $value;
+            }
+        }
+        if(isset($docRejected) != null) {
+            // Send missing information email
+            $mailer->send("rakesh@pix.city", 'Document is Rejected by Mangopay ', 'emails/mangopay-client-error-report.html.twig', [
+                'missingRecords' => $docRejected
+            ]);
+        }
+    }
+
+    /**
+     * @param MangoPayService $mangoPayService
+     * @param ClientRepository $clientRepository
+     * @Route("/process-cron-cm-kycstatus/", name="process_cm_kycstatus")
+     */
+    public function cronCmKycStatus(MangoPayService $mangoPayService, UserRepository $userRepository,
+                                        Mailer $mailer)
+    {
+        $userRepositoryTbl = $userRepository->findBy(array(), array('id' => 'DESC'), 20);
+        $docRejected= array();
+        foreach ($userRepositoryTbl as $key => $value) {
+            if ($value->getMangopayUserId() != null && $value->getMangopayKycStatus() == "REJECT") {
+                $docRejected[] = $value;
+            }
+        }
+        if(isset($docRejected) != null) {
+            // Send missing information email
+            $mailer->send("rakesh@pix.city", 'Document is Rejected by Mangopay ', 'emails/mangopay-cm-error-report.html.twig', [
+                'missingRecords' => $docRejected
+            ]);
+        }
+    }
 }
