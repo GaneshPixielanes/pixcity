@@ -1,0 +1,31 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+    <p>Bonjour Rakesh,</p>
+    <p>The following CM list records is missing to create Mangopay account</p>
+    <table class="table-striped" width="100%">
+        <thead>
+            <tr>
+                <th>CM ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Contact Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in missingRecords %}
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.firstname ? row.firstname ~' '~ row.lastname : 'N/A' }}</td>
+                    <td>{{ row.email ? row.email : 'N/A' }}</td>
+                    <td>{{ row.phone ? row.phone : 'N/A' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>
+        À tout de suite sur Pix.City !
+    </p>
+
+{% endblock %}
