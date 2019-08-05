@@ -153,4 +153,7 @@ class MangoPayService
             return $this->mangoPayApi->Users->GetKycDocuments($mangopayUserId);
         }
     }
+    public function getAllUsers($Page=null,$Per_Page=null){
+        return $this->mangoPayApi->Users->GetAll($Page,$Per_Page);
+    }
 }
