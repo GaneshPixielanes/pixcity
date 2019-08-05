@@ -130,22 +130,27 @@ class MangoPayService
 
     public function kycCreate($mangopayUserId, $filename)
     {
-        //create the doc
-        $KycDocument = new \MangoPay\KycDocument();
-        $KycDocument->Type = "IDENTITY_PROOF";
-        $result = $this->mangoPayApi->Users->CreateKycDocument($mangopayUserId, $KycDocument);
-        $KycDocumentId = $result->Id;
+        if($this->mangoPayApi->Users->GetKycDocuments($mangopayUserId) == null){
+            //create the doc
+            $KycDocument = new \MangoPay\KycDocument();
+            $KycDocument->Type = "IDENTITY_PROOF";
+            $result = $this->mangoPayApi->Users->CreateKycDocument($mangopayUserId, $KycDocument);
+            $KycDocumentId = $result->Id;
 
-        //add a page to this doc
+            //add a page to this doc
 
-        $result2 = $this->mangoPayApi->Users->CreateKycPageFromFile($mangopayUserId, $KycDocumentId, $filename);
+            $result2 = $this->mangoPayApi->Users->CreateKycPageFromFile($mangopayUserId, $KycDocumentId, $filename);
 
-        //return $result2;
-        //submit the doc for validation
-        $KycDocument = new MangoPay\KycDocument();
-        $KycDocument->Id = $KycDocumentId;
-        $KycDocument->Status = "VALIDATION_ASKED";
-        $result3 = $this->mangoPayApi->Users->UpdateKycDocument($mangopayUserId, $KycDocument);
-        return $result3;
+            //return $result2;
+            //submit the doc for validation
+            $KycDocument = new MangoPay\KycDocument();
+            $KycDocument->Id = $KycDocumentId;
+            $KycDocument->Status = "VALIDATION_ASKED";
+            $result3 = $this->mangoPayApi->Users->UpdateKycDocument($mangopayUserId, $KycDocument);
+            return $result3;
+
+        }else{
+            return $this->mangoPayApi->Users->GetKycDocuments($mangopayUserId);
+        }
     }
 }
