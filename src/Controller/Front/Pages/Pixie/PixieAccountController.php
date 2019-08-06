@@ -314,9 +314,9 @@ class PixieAccountController extends Controller
         $pixieBilling = $user->getPixie()->getBilling();
 //        dd($pixieBilling->getAddress()-);
         if(
-           $pixieBilling->getBillingIban() == 'FR3330002005500000157841Z25' &&
-           $pixieBilling->getBillingBic() == 'CRLYFRPP' &&
-           strtoupper($pixieBilling->getAddress()->getAddress()) == "27 RUE ARAGO"
+            $pixieBilling->getBillingIban() == 'FR3330002005500000157841Z25' &&
+            $pixieBilling->getBillingBic() == 'CRLYFRPP' &&
+            strtoupper($pixieBilling->getAddress()->getAddress()) == "27 RUE ARAGO"
         )
         {
             $isWrongData = true;
@@ -546,6 +546,10 @@ class PixieAccountController extends Controller
 
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0f607f915a841b86485d39a18d399695466a420c
     /**
      * @Route("upload/mangopaykyc", name="mangopaykyc")
      */
@@ -564,5 +568,9 @@ class PixieAccountController extends Controller
         $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr2/'.$request->get('id'), true);
         return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
     }
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> 0f607f915a841b86485d39a18d399695466a420c

@@ -210,7 +210,7 @@ class MissionController extends Controller
         $em->flush();
 
         //Create Payin
-        $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId());
+        $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId());
 
         return $this->redirect($result);
     }

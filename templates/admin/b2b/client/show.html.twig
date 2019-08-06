@@ -67,7 +67,7 @@
                     </tr>
                     <tr>
                         <th>Type société</th>
-                        <td>{{ client.clientInfo ? client.clientInfo.business : 'N/A' }}</td>
+                        <td>{{ client.clientInfo.business ? client.clientInfo.business : 'N/A' }}</td>
                     </tr>
                     {#<tr>#}
                         {#<th>Email</th>#}
@@ -75,15 +75,15 @@
                     {#</tr>#}
                     <tr>
                         <th>Adresse</th>
-                        <td>{{ client.clientInfo ? client.clientInfo.address : 'N/A' }}</td>
+                        <td>{{ client.clientInfo.address ? client.clientInfo.address : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Postal Code</th>
-                        <td>{{ client.clientInfo ? client.clientInfo.postalCode : 'N/A' }}</td>
+                        <td>{{ client.clientInfo.postalCode ? client.clientInfo.postalCode : 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Ville</th>
-                        <td>{{ client.clientInfo ? client.clientInfo.city : 'N/A' }}</td>
+                        <td>{{ client.clientInfo.city ? client.clientInfo.city : 'N/A' }}</td>
                     </tr>
                     {#<tr>#}
                         {#<th>Company Type</th>#}
@@ -91,7 +91,27 @@
                     {#</tr>#}
                     <tr>
                         <th>Date création société</th>
-                        <td>{{ client.clientInfo ? client.clientInfo.companyCreationDate|date('d-M-Y H:i:s') : 'N/A'  }}</td>
+                        <td>{{ client.clientInfo.companyCreationDate ? client.clientInfo.companyCreationDate|date('d-M-Y H:i:s') : 'N/A'  }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mangopay User Id</th>
+                        <td>{{ client.clientInfo.mangopayUserId ? client.clientInfo.mangopayUserId : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mangopay Wallet Id</th>
+                        <td>{{ client.clientInfo.mangopayWalletId ? client.clientInfo.mangopayWalletId : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mangopay Kyc Status</th>
+                        <td>{{ client.clientInfo.mangopayKycStatus ? client.clientInfo.mangopayKycStatus|replace({'_': ' '}) : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mangopay User and Wallet crée le</th>
+                        <td>{{ client.clientInfo.mangopayCreatedAt ? client.clientInfo.mangopayCreatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mangopay Kyc Submission crée le</th>
+                        <td>{{ client.clientInfo.mangopayKycCreated ? client.clientInfo.mangopayKycCreated|date('d-M-Y H:i:s') : 'N/A' }}</td>
                     </tr>
                 </tbody>
             </table>

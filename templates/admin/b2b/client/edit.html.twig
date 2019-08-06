@@ -57,46 +57,46 @@
             });
 
 
-                $('#mangopayKycFile').change(function()
-                {
-                    var data = new FormData();
-                    data.append('file',$(this)[0].files[0]);
-                    data.append('id',{{ client.id }});
-                    $.ajax('{{ url('admin_client_mangopaykyc') }}',{
-                        method: 'POST',
-                        processData: false,
-                        cacheable:false,
-                        data:data,
-                        contentType: false,
-                        success: function(result)
-                        {
-                            if(result.success == true)
-                            {
-                                $('[name="client[clientInfo][mangopayKycFile]"').val(result.fileName);
-                            }
-                        }
-                    });
-                });
-                $('#mangopayKycAddr').change(function()
-                {
-                    var data = new FormData();
-                    data.append('file',$(this)[0].files[0]);
-                    data.append('id',{{ client.id }});
-                    $.ajax('{{ url('admin_client_mangopayKycAddr') }}',{
-                        method: 'POST',
-                        processData: false,
-                        cacheable:false,
-                        data:data,
-                        contentType: false,
-                        success: function(result)
-                        {
-                            if(result.success == true)
-                            {
-                                $('[name="client[clientInfo][mangopayKycAddr]"').val(result.fileName);
-                            }
-                        }
-                    });
-                });
+                {#$('#mangopayKycFile').change(function()#}
+                {#{#}
+                    {#var data = new FormData();#}
+                    {#data.append('file',$(this)[0].files[0]);#}
+                    {#data.append('id',{{ client.id }});#}
+                    {#$.ajax('{{ url('admin_client_mangopaykyc') }}',{#}
+                        {#method: 'POST',#}
+                        {#processData: false,#}
+                        {#cacheable:false,#}
+                        {#data:data,#}
+                        {#contentType: false,#}
+                        {#success: function(result)#}
+                        {#{#}
+                            {#if(result.success == true)#}
+                            {#{#}
+                                {#$('[name="client[clientInfo][mangopayKycFile]"').val(result.fileName);#}
+                            {#}#}
+                        {#}#}
+                    {#});#}
+                {#});#}
+                {#$('#mangopayKycAddr').change(function()#}
+                {#{#}
+                    {#var data = new FormData();#}
+                    {#data.append('file',$(this)[0].files[0]);#}
+                    {#data.append('id',{{ client.id }});#}
+                    {#$.ajax('{{ url('admin_client_mangopayKycAddr') }}',{#}
+                        {#method: 'POST',#}
+                        {#processData: false,#}
+                        {#cacheable:false,#}
+                        {#data:data,#}
+                        {#contentType: false,#}
+                        {#success: function(result)#}
+                        {#{#}
+                            {#if(result.success == true)#}
+                            {#{#}
+                                {#$('[name="client[clientInfo][mangopayKycAddr]"').val(result.fileName);#}
+                            {#}#}
+                        {#}#}
+                    {#});#}
+                {#});#}
         });
     </script>
 {% endblock %}

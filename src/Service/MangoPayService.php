@@ -73,11 +73,12 @@ class MangoPayService
         return $this->mangoPayApi->Wallets->Get($user);
     }
 
-    public function getPayIn($mangoUser, $wallet, $amount, $transaction)
+    public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission)
     {
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
+        $payIn->Tag =$mission;
         $payIn->PaymentType = MangoPay\PayInPaymentType::Card;
         $payIn->PaymentDetails = new MangoPay\PayInPaymentDetailsCard();
         $payIn->PaymentDetails->CardType = "CB_VISA_MASTERCARD";
@@ -109,22 +110,50 @@ class MangoPayService
 
 
     public function refundPayment($transaction,$amount,$refund_amount){
-        //dd($amount.' '.$refund_amount);
+
         $PayInId = $transaction[0]->getMangopayTransactionId();
 
-        $Refund = $this->mangoPayRefund;
+        $Refund = new \MangoPay\Refund();
         $Refund->AuthorId = $transaction[0]->getMangopayUserId();
-        $Refund->DebitedFunds = $this->mangoPayMoney;
+
+        $Refund->DebitedFunds = new \MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
         $Refund->DebitedFunds->Amount = $amount;
 
-        $Refund->Fees = $this->mangoPayMoney;
+        $Refund->Fees = new \MangoPay\Money();
         $Refund->Fees->Currency = "EUR";
-        $Refund->Fees->Amount = $refund_amount;
+        $Refund->Fees->Amount =  - $refund_amount;
 
         $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
-
         return $reponse->ResultMessage;
     }
 
+    public function kycCreate($mangopayUserId, $filename)
+    {
+        if($this->mangoPayApi->Users->GetKycDocuments($mangopayUserId) == null){
+            //create the doc
+            $KycDocument = new \MangoPay\KycDocument();
+            $KycDocument->Type = "IDENTITY_PROOF";
+            $result = $this->mangoPayApi->Users->CreateKycDocument($mangopayUserId, $KycDocument);
+            $KycDocumentId = $result->Id;
+
+            //add a page to this doc
+
+            $result2 = $this->mangoPayApi->Users->CreateKycPageFromFile($mangopayUserId, $KycDocumentId, $filename);
+
+            //return $result2;
+            //submit the doc for validation
+            $KycDocument = new MangoPay\KycDocument();
+            $KycDocument->Id = $KycDocumentId;
+            $KycDocument->Status = "VALIDATION_ASKED";
+            $result3 = $this->mangoPayApi->Users->UpdateKycDocument($mangopayUserId, $KycDocument);
+            return $result3;
+
+        }else{
+            return $this->mangoPayApi->Users->GetKycDocuments($mangopayUserId);
+        }
+    }
+    public function getAllUsers($Page=null,$Per_Page=null){
+        return $this->mangoPayApi->Users->GetAll($Page,$Per_Page);
+    }
 }

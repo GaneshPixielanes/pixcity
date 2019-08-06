@@ -32,8 +32,8 @@ class ClientInfoType extends AbstractType
                 'label'=>false,
                 'widget' => 'single_text'
             ])
-            ->add('mangopayKycFile',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 1'))
-            ->add('mangopayKycAddr',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 2'))
+           // ->add('mangopayKycFile',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 1'))
+           // ->add('mangopayKycAddr',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 2'))
 
         ;
     }

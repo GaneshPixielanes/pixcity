@@ -313,5 +313,24 @@ class ClientController extends Controller
     }
 
 
+//    /**
+//     * @Route("upload/mangopaykyc", name="mangopaykyc")
+//     */
+//    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
+//    {
+//        $file = $request->files->get('file');
+//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/client/addr1/'.$request->get('id'), true);
+//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+//    }
+//    /**
+//     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
+//     */
+//    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
+//    {
+//        $file = $request->files->get('file');
+//        dd($request->get('id'));
+//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/client/addr2/'.$request->get('id'), true);
+//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+//    }
 
 }
