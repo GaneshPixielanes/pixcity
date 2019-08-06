@@ -145,7 +145,7 @@
 
                                             {% for pack in user.userPacks  %}
                                                 {% if loop.index <= 3 %}
-                                                    {% if pack.deleted == 0 or pack.deleted == null %}
+                                                    {% if pack.deleted == '0' or pack.deleted == null %}
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
