@@ -127,11 +127,11 @@ class UserRepository extends ServiceEntityRepository
     {
         // /dd($filters);
         $qb = $this->createQueryBuilder('u')
+            ->orWhere('u.b2b_cm_approval != 1')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
-            ->orWhere('u.b2b_cm_approval != 1')
             ->orderBy('u.id','DESC')
             ->groupBy('u.id')
 
@@ -149,6 +149,7 @@ class UserRepository extends ServiceEntityRepository
     public function searchCommunityManagerCount($filters = [], $limit, $page)
     {
         $qb = $this->createQueryBuilder('u')
+            ->orWhere('u.b2b_cm_approval != 1')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->select('COUNT(DISTINCT u.id)')
@@ -159,7 +160,7 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
-            ->orWhere('u.b2b_cm_approval != 1')
+
 
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
@@ -264,7 +265,6 @@ class UserRepository extends ServiceEntityRepository
             if (isset($filters["regions"])) {
                 if(trim($filters["regions"][0]) != '')
                 {
-
                     $qb = $qb->orWhere("r.id IN (:regions) OR r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
                 }
             }
