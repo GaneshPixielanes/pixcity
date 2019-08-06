@@ -29,7 +29,7 @@ class SearchController extends SearchPageController
             'regions' => $searchParams['regions'],
             'skills' => $searchParams['skills'],
             'text' => $searchParams['text'],
-            'roles' => 'ROLE_CM',
+            'roles' => '',
             'page' => $page
         ];
         $users = $userRepo->searchClients($filters, $limit, $page);
