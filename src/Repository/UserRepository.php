@@ -158,6 +158,7 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
+            ->where('u.b2b_cm_approval != 0')
 
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
