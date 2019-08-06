@@ -32,7 +32,7 @@ class CommunityManagerController extends AbstractController
         // Check if the user exists
         if(is_null($user) && !in_array('ROLE_CM', $user->getRoles()))
         {
-            return $this->redirect('/client/search');
+            return $this->redirect('/freelance/search');
         }
 
         #SEO
