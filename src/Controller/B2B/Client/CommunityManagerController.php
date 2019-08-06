@@ -44,7 +44,7 @@ class CommunityManagerController extends AbstractController
         $packs = $packRepo->findBy([
             'user' => $user,
             'active' => null,
-            'deleted' => null
+            'deleted' => '0'
         ]);
 
         $skills = $skillRepository->findAll();
