@@ -145,16 +145,16 @@
 
                                             {% for pack in user.userPacks  %}
                                                 {% if loop.index <= 3 %}
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
-                                                                <div class="work-title font-weight-bold fz-14">{{ pack.packSkill.name }}</div>
-                                                                <div class="work-amount font-weight-bold fz-16">
-                                                                    {#                                                                    <span class="d-block fz-12 font-weight-light">À partir de</span>#}
-                                                                    {{ pack.totalPrice }}€</div>
+                                                    {% if pack.deleted == 0 or pack.deleted == null %}
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
+                                                                    <div class="work-title font-weight-bold fz-14">{{ pack.packSkill.name }}</div>
+                                                                    <div class="work-amount font-weight-bold fz-16">{{ pack.totalPrice }} €</div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endfor %}
 
