@@ -131,6 +131,7 @@ class UserRepository extends ServiceEntityRepository
             ->leftJoin('u.userSkills','s')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
+            ->where('u.b2b_cm_approval != 1')
             ->orderBy('u.id','DESC')
             ->groupBy('u.id')
 
@@ -158,7 +159,7 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
-            ->where('u.b2b_cm_approval != 0')
+            ->where('u.b2b_cm_approval != 1')
 
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
