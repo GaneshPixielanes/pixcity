@@ -44,6 +44,15 @@ class CommunityManagerController extends AbstractController
         $page->setMetaDescription('Retrouvez toutes les offres de '.$user.' pour des missions de '.$user->getUserSkill()->first().' près de chez vous à '.$user->getPixie()->getBilling()->getAddress()->getCity());
 
 
+<<<<<<< HEAD
+=======
+        $packs = $packRepo->findBy([
+            'user' => $user,
+            'active' => null,
+            'deleted' => '0'
+        ]);
+
+>>>>>>> f97d21f028f3688f4fee92db7f861df86aff5138
         $skills = $skillRepository->findAll();
 
         return $this->render('b2b/client/community_manager/index.html.twig', [
