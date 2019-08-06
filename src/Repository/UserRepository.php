@@ -149,7 +149,7 @@ class UserRepository extends ServiceEntityRepository
     public function searchCommunityManagerCount($filters = [], $limit, $page)
     {
         $qb = $this->createQueryBuilder('u')
-            ->orWhere('u.b2bCmApproval != 1')
+            ->orWhere('u.b2b_cm_approval != 1')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->select('COUNT(DISTINCT u.id)')
