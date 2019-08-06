@@ -24,8 +24,11 @@ class CommunityManagerController extends AbstractController
     {
 
         $user = $userRepo->find($id);
-
-        if($user->getB2bCmApproval() != 1)
+        $packs = $packRepo->findBy([
+            'user' => $user,
+            'deleted' => null
+        ]);
+        if($user->getB2bCmApproval() != 1 || count($packs) == 0)
         {
             return $this->redirectToRoute('b2b_client_search_index');
         }
@@ -40,12 +43,6 @@ class CommunityManagerController extends AbstractController
         $page->setMetaTitle($user.":".$user->getUserSkill()->first()." local à ".$user->getPixie()->getBilling()->getAddress()->getCity());
         $page->setMetaDescription('Retrouvez toutes les offres de '.$user.' pour des missions de '.$user->getUserSkill()->first().' près de chez vous à '.$user->getPixie()->getBilling()->getAddress()->getCity());
 
-
-        $packs = $packRepo->findBy([
-            'user' => $user,
-            'active' => null,
-            'deleted' => null
-        ]);
 
         $skills = $skillRepository->findAll();
 
