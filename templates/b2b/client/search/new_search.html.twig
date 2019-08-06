@@ -117,7 +117,6 @@
                     <div class="card-columns">
 
                         {% for user in users %}
-                            {% if user.b2bCmApproval != 1 %}
                             {% if user.userPacks is defined and user.userPacks is not empty %}
                                 <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
                                     <div class="cm-card-container">
@@ -166,7 +165,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            {% endif %}
                             {% endif %}
 
                         {% endfor %}
