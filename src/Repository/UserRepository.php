@@ -251,33 +251,45 @@ class UserRepository extends ServiceEntityRepository
     private function _applyFilters($qb, $filters){
         if($filters) {
             if (isset($filters["text"])) {
-//                $qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :searchText")->setParameter("searchText", "%".$filters["text"]."%");
-                $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText) AND packs.active = 1) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+                if(trim($filters["text"]) != ''){
+
+                    //$qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :searchText")->setParameter("searchText", "%".$filters["text"]."%");
+                    $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText) AND packs.active = 1) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+                }
+
             }
 
             if (isset($filters["regions"])) {
                 if(trim($filters["regions"][0]) != '')
                 {
+
                     $qb = $qb->orWhere("r.id IN (:regions) OR r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
                 }
             }
 
             if (isset($filters["categories"])) {
+
                 $qb = $qb->andWhere("category.id IN (:categories) OR category.slug IN (:categories)")->setParameter("categories", $filters["categories"]);
             }
 
             if (isset($filters["pixies"])) {
+
                 $qb = $qb->andWhere("u.id IN (:pixies)")->setParameter("pixies", $filters["pixies"]);
             }
 
             if (isset($filters["pixie"])) {
+
                 $qb = $qb->andWhere("u.id = :pixie")->setParameter("pixie", $filters["pixie"]);
             }
 
             if(isset($filters['roles']))
             {
-                $qb = $qb->andWhere("u.roles LIKE :roles")->setParameter("roles", '%'.$filters["roles"].'%');
+                if(trim($filters["roles"]) != ''){
+                    $qb = $qb->andWhere("u.roles LIKE :roles")->setParameter("roles", '%'.$filters["roles"].'%');
+                }
+
             }
+
             if(isset($filters['skills']))
             {
                 if(trim($filters["skills"][0]) != '')
