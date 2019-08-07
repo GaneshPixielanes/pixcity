@@ -127,7 +127,6 @@ class UserRepository extends ServiceEntityRepository
     {
         // /dd($filters);
         $qb = $this->createQueryBuilder('u')
-            ->orWhere('u.b2b_cm_approval = 2 OR u.b2b_cm_approval is NULL')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->innerJoin('u.userPacks','packs')
@@ -135,7 +134,7 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id','DESC')
 
             ->groupBy('u.id')
-
+            ->where('u.b2b_cm_approval = 2 OR u.b2b_cm_approval is NULL')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters)
@@ -150,7 +149,6 @@ class UserRepository extends ServiceEntityRepository
     public function searchCommunityManagerCount($filters = [], $limit, $page)
     {
         $qb = $this->createQueryBuilder('u')
-            ->orWhere('u.b2b_cm_approval = 2 OR u.b2b_cm_approval is NULL')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->select('COUNT(DISTINCT u.id)')
@@ -161,7 +159,7 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
-
+            ->where('u.b2b_cm_approval = 2 OR u.b2b_cm_approval is NULL')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters);
