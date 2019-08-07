@@ -134,10 +134,10 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id','DESC')
 
             ->groupBy('u.id')
-            ->andWhere('u.b2b_cm_approval = 2 OR u.b2b_cm_approval is NULL')
+            ->where('u.b2b_cm_approval = 1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
-        $qb = $this->_applyFilters($qb, $filters)
+        $qb = $this->_applyFiltersClients($qb, $filters)
 
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
@@ -149,7 +149,6 @@ class UserRepository extends ServiceEntityRepository
     public function searchCommunityManagerCount($filters = [], $limit, $page)
     {
         $qb = $this->createQueryBuilder('u')
-            ->andWhere('u.b2b_cm_approval = 2 OR u.b2b_cm_approval is NULL')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->select('COUNT(DISTINCT u.id)')
@@ -160,11 +159,60 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
-
+            ->where('u.b2b_cm_approval = 1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
-        $qb = $this->_applyFilters($qb, $filters);
+        $qb = $this->_applyFiltersClients($qb, $filters);
         $qb = $qb->getQuery()->getSingleScalarResult();
+
+        return $qb;
+    }
+
+
+
+    private function _applyFiltersClients($qb, $filters){
+        if($filters) {
+            if (isset($filters["text"])) {
+                if(trim($filters["text"]) != ''){
+                    if(isset($filters['skills']) and isset($filters["regions"])){
+                        $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText) AND packs.active = 1) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+
+                    }else{
+                        $qb = $qb->andWhere("((packs.title LIKE :packText OR packs.description LIKE :packText) AND packs.active = 1) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+
+                    }
+                }
+            }
+
+            if (isset($filters["regions"])) {
+
+                if(trim($filters["regions"][0]) != '')
+                {
+                    if(isset($filters['skills']) and isset($filters["text"])){
+                        $qb = $qb->orWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                    }else{
+                        $qb = $qb->andWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                    }
+
+                }
+
+            }
+
+
+            if(isset($filters['skills']))
+            {
+                if(trim($filters["skills"][0]) != '')
+                {
+                    if(isset($filters["regions"]) or isset($filters["text"])){
+                        $qb = $qb->orWhere('s.id IN (:skills)')->setParameter("skills",$filters['skills']);
+                    }else{
+                        $qb = $qb->andWhere('s.id IN (:skills)')->setParameter("skills",$filters['skills']);
+                    }
+
+                }
+            }
+
+        }
 
         return $qb;
     }

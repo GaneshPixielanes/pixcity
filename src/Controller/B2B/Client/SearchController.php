@@ -32,7 +32,7 @@ class SearchController extends SearchPageController
                 'regions' => $searchParams['regions'],
                 'skills' => $searchParams['skills'],
                 'text' => $searchParams['text'],
-                'roles' => 'ROLE_CM',
+//                'roles' => 'ROLE_CM',
                 'page' => $page
             ];
         }
@@ -42,7 +42,7 @@ class SearchController extends SearchPageController
                 'regions' => $searchParams['regions'],
                 'skills' => $searchParams['skills'],
                 //'text' => $searchParams['text'],
-                'roles' => 'ROLE_CM',
+//                'roles' => 'ROLE_CM',
                 'page' => $page
             ];
         }
