@@ -108,7 +108,7 @@
                 <img src="../images/footer-logo-main.svg">
                 <p>Retrouvez ci-dessous les profils de nos influenceurs locaux.</p>
                 <p>Naviguez et choisissez le city-maker qui vous plait puis rentrez en contact avec lui en cliquant sur son profil. Echangez ensemble en ligne, mettez-vous d’accord et signez un devis pour que la mission commence. C’est parti !</p>
-                <p><img src="../images/play-circle-white.svg"> <a href="/freelance">Découvrir Pix.city Services</a></p>
+                <p><img src="/images/play-circle-white.svg"> <a href="/freelance">Découvrir Pix.city Services</a></p>
             </div>
             <h1 class="fz-32 font-weight-light mb-4">{{ filters['cm_count'] }} City-Makers sont présents sur Pix.City Services</h1>
             <!-- CM Masonry columns Starts -->
@@ -117,54 +117,57 @@
                     <div class="card-columns">
 
                         {% for user in users %}
-                            {% if user.userPacks is defined and user.userPacks is not empty and user.userPacks | length > 0 %}
-                                <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
-                                    <div class="cm-card-container">
-                                        <div class="row">
-                                            <div class="col-md-12 mt-n5 cm-image">
-                                                <img class="img-fluid shadow-lg" src="{{ user.getAvatarUrl() }}" alt="">
+                            {% if user.getB2bCmApproval == "2" or user.getB2bCmApproval == null %}
+                                {% if user.userPacks is defined and user.userPacks is not empty and user.userPacks | length > 0 %}
+                                    <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
+                                        <div class="cm-card-container">
+                                            <div class="row">
+                                                <div class="col-md-12 mt-n5 cm-image">
+                                                    <img class="img-fluid shadow-lg" src="{{ user.getAvatarUrl() }}" alt="">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12 mt-n3 mb-5">
-                                                <ul class="d-flex justify-content-center align-items-center cm-packages">
-                                                    {% for skill in user.userSkill %}
-                                                        <li><i class="fas {{ skill.icon }} fz-22"></i></li>
-                                                    {% endfor %}
-                                                </ul>
+                                            <div class="row">
+                                                <div class="col-md-12 mt-n3 mb-5">
+                                                    <ul class="d-flex justify-content-center align-items-center cm-packages">
+                                                        {% for skill in user.userSkill %}
+                                                            <li><i class="fas {{ skill.icon }} fz-22"></i></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h4 class="title text-center fz-28 font-weight-bold">{{ user }}</h4>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h4 class="title text-center fz-28 font-weight-bold">{{ user }}</h4>
 
-                                                <p class="region text-center fz-16 text-pink">{{ user.userRegion.first.name }}</p>
+                                                    <p class="region text-center fz-16 text-pink">{{ user.userRegion.first.name }}</p>
+                                                </div>
                                             </div>
-                                        </div>
 
 
-                                            {% for pack in user.userPacks  %}
-                                                {% if loop.index <= 3 %}
-                                                    {% if pack.deleted == '0' %}
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
-                                                                    <div class="work-title font-weight-bold fz-14">{{ pack.packSkill.name }}</div>
-                                                                    <div class="work-amount font-weight-bold fz-16">{{ pack.totalPrice }} €</div>
+                                                {% for pack in user.userPacks  %}
+                                                    {% if loop.index <= 3 %}
+                                                        {% if pack.deleted == '0' or  pack.deleted == null %}
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
+                                                                        <div class="work-title font-weight-bold fz-14">{{ pack.packSkill.name }}</div>
+                                                                        <div class="work-amount font-weight-bold fz-16">{{ pack.totalPrice }} €</div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        {% endif %}
                                                     {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
+                                                {% endfor %}
 
-                                        <div class="row">
-                                            <div class="col-md-12 mt-3">
-                                                <a href="{{ url('b2b_front_community_manager_view',{'city':user.pixie.billing.address.city |lower,'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
+                                            <div class="row">
+                                                <div class="col-md-12 mt-3">
+                                                    <a href="{{ url('b2b_front_community_manager_view',{'city':user.pixie.billing.address.city |lower,'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% endif %}
+
                             {% endif %}
 
                         {% endfor %}
