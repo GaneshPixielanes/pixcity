@@ -158,7 +158,7 @@ class UserRepository extends ServiceEntityRepository
             //->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
-            ->where('u.b2b_cm_approval = 1')
+            ->andWhere('u.b2b_cm_approval = 1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters);
