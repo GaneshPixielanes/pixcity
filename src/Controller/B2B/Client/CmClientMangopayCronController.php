@@ -50,109 +50,109 @@ class CmClientMangopayCronController extends Controller
     }
 
 
-    /**
-     * @param MangoPayService $mangoPayService
-     * @param UserRepository $userRepository
-     * @Route("/process-cron-cm/", name="process_cm")
-     */
-    public function cronCitymakerProcess(
-                                   MangoPayService $mangoPayService,
-                                   UserRepository $userRepository,
-                                   Mailer $mailer
-    )
-    {
-        $userRepositoryTbl = $userRepository->findBy(array(), array('id' => 'DESC'),5);
-        $missingCm = array();
-        foreach ($userRepositoryTbl as $key => $value)
-        {
-            if($value->getMangopayUserId() == null && $value->getFirstname() != null && $value->getLastname() != null && $value->getEmail() != null){
-                // Create a mango pay user
-                $mangoUser = new UserNatural();
-
-                $mangoUser->PersonType = "NATURAL";
-                $mangoUser->FirstName = $value->getFirstname();
-                $mangoUser->LastName = $value->getLastname();
-                $mangoUser->Birthday = 1409735187;
-                $mangoUser->Nationality = "FR";
-                $mangoUser->CountryOfResidence = "FR";
-                $mangoUser->Email = $value->getEmail();
-                $mangoUser = $mangoPayService->createUser($mangoUser);
-                //Create a wallet
-                $wallet = $mangoPayService->getWallet($mangoUser->Id);
-                $value->setMangopayUserId($mangoUser->Id);
-                $value->setMangopayWalletId($wallet->Id);
-                $value->setMangopayCreatedAt(new \DateTime());
-                $value->setMangopayKycStatus("PENDING");
-                $em = $this->getDoctrine()->getManager();
-
-                $em->persist($value);
-                $em->flush();
-            }
-            if($value->getMangopayUserId() == null || $value->getFirstname() == null || $value->getLastname() == null || $value->getEmail() || null){
-                $missingCm[] = $value;
-            }
-        }
-        if(isset($missingCm) != null){
-            // Send missing information email
-            $mailer->send("rakesh@pix.city", 'Issue in creating Mangopay user and wallet ', 'emails/mangopay-client-error-report.html.twig', [
-                'missingRecords' => $missingCm
-            ]);
-        }
-        return JsonResponse::create(['success' => true]);
-    }
-    /**
-     * @param MangoPayService $mangoPayService
-     * @param UserMissionRepository $missionRepo@
-     * @Route("/process-cron-client/", name="process_client")
-     */
-    public function cronClientProcess(
-                                   MangoPayService $mangoPayService,
-                                   ClientRepository $clientRepository,
-                                   Mailer $mailer
-    )
-    {
-
-        $clientRepositoryTbl = $clientRepository->findBy(array(), array('id' => 'DESC'),5);
-
-        $missingClients = array();
-        foreach ($clientRepositoryTbl as $key => $value)
-        {
-            if($value->getClientInfo()->getMangopayUserId() == null && $value->getFirstName() != null && $value->getLastName() != null && $value->getEmail() != null){
-                // Create a mango pay user
-                $mangoUser = new UserNatural();
-
-                $mangoUser->PersonType = "NATURAL";
-                $mangoUser->FirstName = $value->getFirstName();
-                $mangoUser->LastName = $value->getLastName();
-                $mangoUser->Birthday = 1409735187;
-                $mangoUser->Nationality = "FR";
-                $mangoUser->CountryOfResidence = "FR";
-                $mangoUser->Email = $value->getEmail();
-                $mangoUser = $mangoPayService->createUser($mangoUser);
-                //Create a wallet
-                $wallet = $mangoPayService->getWallet($mangoUser->Id);
-                $value->getClientInfo()->setMangopayUserId($mangoUser->Id);
-                $value->getClientInfo()->setMangopayWalletId($wallet->Id);
-                $value->getClientInfo()->setMangopayCreatedAt(new \DateTime());
-                $value->getClientInfo()->setMangopayKycStatus("PENDING");
-                $em = $this->getDoctrine()->getManager();
-
-                $em->persist($value);
-                $em->flush();
-            }
-            if($value->getClientInfo()->getMangopayUserId() == null || $value->getFirstName() == null || $value->getLastName() == null || $value->getEmail() == null){
-                $missingClients[] = $value;
-            }
-        }
-        if(isset($missingCm) != null) {
-            // Send missing information email
-            $mailer->send("rakesh@pix.city", 'Issue in creating Mangopay user and wallet ', 'emails/mangopay-client-error-report.html.twig', [
-                'missingRecords' => $missingClients
-            ]);
-        }
-
-        return JsonResponse::create(['success' => true]);
-    }
+//    /**
+//     * @param MangoPayService $mangoPayService
+//     * @param UserRepository $userRepository
+//     * @Route("/process-cron-cm/", name="process_cm")
+//     */
+//    public function cronCitymakerProcess(
+//                                   MangoPayService $mangoPayService,
+//                                   UserRepository $userRepository,
+//                                   Mailer $mailer
+//    )
+//    {
+//        $userRepositoryTbl = $userRepository->findBy(array(), array('id' => 'DESC'),5);
+//        $missingCm = array();
+//        foreach ($userRepositoryTbl as $key => $value)
+//        {
+//            if($value->getMangopayUserId() == null && $value->getFirstname() != null && $value->getLastname() != null && $value->getEmail() != null){
+//                // Create a mango pay user
+//                $mangoUser = new UserNatural();
+//
+//                $mangoUser->PersonType = "NATURAL";
+//                $mangoUser->FirstName = $value->getFirstname();
+//                $mangoUser->LastName = $value->getLastname();
+//                $mangoUser->Birthday = 1409735187;
+//                $mangoUser->Nationality = "FR";
+//                $mangoUser->CountryOfResidence = "FR";
+//                $mangoUser->Email = $value->getEmail();
+//                $mangoUser = $mangoPayService->createUser($mangoUser);
+//                //Create a wallet
+//                $wallet = $mangoPayService->getWallet($mangoUser->Id);
+//                $value->setMangopayUserId($mangoUser->Id);
+//                $value->setMangopayWalletId($wallet->Id);
+//                $value->setMangopayCreatedAt(new \DateTime());
+//                $value->setMangopayKycStatus("PENDING");
+//                $em = $this->getDoctrine()->getManager();
+//
+//                $em->persist($value);
+//                $em->flush();
+//            }
+//            if($value->getMangopayUserId() == null || $value->getFirstname() == null || $value->getLastname() == null || $value->getEmail() || null){
+//                $missingCm[] = $value;
+//            }
+//        }
+//        if(isset($missingCm) != null){
+//            // Send missing information email
+//            $mailer->send("rakesh@pix.city", 'Issue in creating Mangopay user and wallet ', 'emails/mangopay-client-error-report.html.twig', [
+//                'missingRecords' => $missingCm
+//            ]);
+//        }
+//        return JsonResponse::create(['success' => true]);
+//    }
+//    /**
+//     * @param MangoPayService $mangoPayService
+//     * @param UserMissionRepository $missionRepo@
+//     * @Route("/process-cron-client/", name="process_client")
+//     */
+//    public function cronClientProcess(
+//                                   MangoPayService $mangoPayService,
+//                                   ClientRepository $clientRepository,
+//                                   Mailer $mailer
+//    )
+//    {
+//
+//        $clientRepositoryTbl = $clientRepository->findBy(array(), array('id' => 'DESC'),5);
+//
+//        $missingClients = array();
+//        foreach ($clientRepositoryTbl as $key => $value)
+//        {
+//            if($value->getClientInfo()->getMangopayUserId() == null && $value->getFirstName() != null && $value->getLastName() != null && $value->getEmail() != null){
+//                // Create a mango pay user
+//                $mangoUser = new UserNatural();
+//
+//                $mangoUser->PersonType = "NATURAL";
+//                $mangoUser->FirstName = $value->getFirstName();
+//                $mangoUser->LastName = $value->getLastName();
+//                $mangoUser->Birthday = 1409735187;
+//                $mangoUser->Nationality = "FR";
+//                $mangoUser->CountryOfResidence = "FR";
+//                $mangoUser->Email = $value->getEmail();
+//                $mangoUser = $mangoPayService->createUser($mangoUser);
+//                //Create a wallet
+//                $wallet = $mangoPayService->getWallet($mangoUser->Id);
+//                $value->getClientInfo()->setMangopayUserId($mangoUser->Id);
+//                $value->getClientInfo()->setMangopayWalletId($wallet->Id);
+//                $value->getClientInfo()->setMangopayCreatedAt(new \DateTime());
+//                $value->getClientInfo()->setMangopayKycStatus("PENDING");
+//                $em = $this->getDoctrine()->getManager();
+//
+//                $em->persist($value);
+//                $em->flush();
+//            }
+//            if($value->getClientInfo()->getMangopayUserId() == null || $value->getFirstName() == null || $value->getLastName() == null || $value->getEmail() == null){
+//                $missingClients[] = $value;
+//            }
+//        }
+//        if(isset($missingCm) != null) {
+//            // Send missing information email
+//            $mailer->send("rakesh@pix.city", 'Issue in creating Mangopay user and wallet ', 'emails/mangopay-client-error-report.html.twig', [
+//                'missingRecords' => $missingClients
+//            ]);
+//        }
+//
+//        return JsonResponse::create(['success' => true]);
+//    }
     /**
      * @param MangoPayService $mangoPayService
      * @param ClientRepository $clientRepository
@@ -243,18 +243,20 @@ class CmClientMangopayCronController extends Controller
     public function cronClientKycStatus(MangoPayService $mangoPayService, ClientRepository $clientRepository,
                                         Mailer $mailer)
     {
-        $clientRepositoryTbl = $clientRepository->findBy(array(), array('id' => 'DESC'), 20);
+        $clientRepositoryTbl = $clientRepository->findBy(array(), array('id' => 'DESC'), 5);
         $docRejected= array();
-        foreach ($clientRepositoryTbl as $key => $value) {
-            if ($value->getClientInfo()->getMangopayUserId() != null && $value->getClientInfo()->getMangopayKycStatus() == "REJECT") {
-                $docRejected[] = $value;
+        if($clientRepositoryTbl != null) {
+            foreach ($clientRepositoryTbl as $key => $value) {
+                if ($value->getClientInfo()->getMangopayUserId() != null && $value->getClientInfo()->getMangopayKycStatus() == "REJECT") {
+                    $docRejected[] = $value;
+                }
             }
-        }
-        if(isset($docRejected) != null) {
-            // Send missing information email
-            $mailer->send("rakesh@pix.city", 'Document is Rejected by Mangopay ', 'emails/mangopay-client-error-report.html.twig', [
-                'missingRecords' => $docRejected
-            ]);
+            if ($docRejected != null || $docRejected != "") {
+                // Send missing information email
+                $mailer->send("rakesh@pix.city", 'Document is Rejected by Mangopay ', 'emails/mangopay-client-error-report.html.twig', [
+                    'missingRecords' => $docRejected
+                ]);
+            }
         }
         return JsonResponse::create(['success' => true]);
     }
@@ -267,18 +269,22 @@ class CmClientMangopayCronController extends Controller
     public function cronCmKycStatus(MangoPayService $mangoPayService, UserRepository $userRepository,
                                         Mailer $mailer)
     {
-        $userRepositoryTbl = $userRepository->findBy(array(), array('id' => 'DESC'), 20);
+        $userRepositoryTbl = $userRepository->findBy(array("mangopayKycStatus" => "REJECT"), array('id' => 'DESC'), 5);
         $docRejected= array();
-        foreach ($userRepositoryTbl as $key => $value) {
-            if ($value->getMangopayUserId() != null && $value->getMangopayKycStatus() == "REJECT") {
-                $docRejected[] = $value;
+        if($userRepositoryTbl != null){
+            foreach ($userRepositoryTbl as $key => $value) {
+                if ($value->getMangopayUserId() != null) {
+                    $docRejected[] = $value;
+                }else{
+                    $docRejected[] = '';
+                }
             }
-        }
-        if(isset($docRejected) != null) {
-            // Send missing information email
-            $mailer->send("rakesh@pix.city", 'Document is Rejected by Mangopay ', 'emails/mangopay-cm-error-report.html.twig', [
-                'missingRecords' => $docRejected
-            ]);
+            if($docRejected != null || $docRejected != "") {
+                // Send missing information email
+                $mailer->send("rakesh@pix.city", 'Document is Rejected by Mangopay ', 'emails/mangopay-cm-error-report.html.twig', [
+                    'missingRecords' => $docRejected
+                ]);
+            }
         }
         return JsonResponse::create(['success' => true]);
     }
