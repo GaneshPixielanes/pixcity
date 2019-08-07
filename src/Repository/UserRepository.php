@@ -151,11 +151,13 @@ class UserRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
+            ->select('COUNT(DISTINCT u.id)')
+//            ->leftJoin('u.cards', 'cards')
+//            ->leftJoin('u.links', 'c')
+//            ->leftJoin('u.favoriteCategories', 'category')
+            //->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
-            ->orderBy('u.id','DESC')
-
-            ->groupBy('u.id')
             ->where('u.b2b_cm_approval = 1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
