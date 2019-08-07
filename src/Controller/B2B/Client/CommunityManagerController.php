@@ -43,7 +43,7 @@ class CommunityManagerController extends AbstractController
         $page->setMetaTitle($user.":".$user->getUserSkill()->first()." local à ".$user->getPixie()->getBilling()->getAddress()->getCity());
         $page->setMetaDescription('Retrouvez toutes les offres de '.$user.' pour des missions de '.$user->getUserSkill()->first().' près de chez vous à '.$user->getPixie()->getBilling()->getAddress()->getCity());
 
-<<<<<<< HEAD
+
 
 
         $packs = $packRepo->findBy([
