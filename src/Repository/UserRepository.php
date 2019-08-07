@@ -156,7 +156,6 @@ class UserRepository extends ServiceEntityRepository
 //            ->leftJoin('u.links', 'c')
 //            ->leftJoin('u.favoriteCategories', 'category')
             //->innerJoin('u.pixie', 'p')
-            ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
             ->where('u.b2b_cm_approval = 1')
