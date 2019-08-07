@@ -161,8 +161,10 @@
 
                                             <div class="row">
                                                 <div class="col-md-12 mt-3">
-                                                    <a href="{{ url('b2b_front_community_manager_view',{'city':user.pixie.billing.address.city |lower,'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
-                                                </div>
+                                                    {% if user.pixie.billing is defined  %}
+                                                        <a href="{{ url('b2b_front_community_manager_view',{'city':user.pixie.billing.address.city |lower,'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
+                                                    {% endif %}
+                                                        </div>
                                             </div>
                                         </div>
                                     </div>
