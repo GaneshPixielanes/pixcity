@@ -132,8 +132,9 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
             ->orderBy('u.id','DESC')
-            ->groupBy('u.id')
 
+            ->groupBy('u.id')
+            ->andWhere('u.b2b_cm_approval = 2 OR u.b2b_cm_approval is NULL')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFilters($qb, $filters)
@@ -148,6 +149,7 @@ class UserRepository extends ServiceEntityRepository
     public function searchCommunityManagerCount($filters = [], $limit, $page)
     {
         $qb = $this->createQueryBuilder('u')
+            ->andWhere('u.b2b_cm_approval = 2 OR u.b2b_cm_approval is NULL')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->select('COUNT(DISTINCT u.id)')

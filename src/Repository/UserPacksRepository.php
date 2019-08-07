@@ -40,7 +40,7 @@ class UserPacksRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
             ->andWhere('u.user = :user')->setParameter('user',$user)
             ->orderBy('u.id','DESC')
-            ->andWhere('u.deleted IS NULL')
+            ->andWhere('u.deleted IS NULL OR u.deleted = 0')
             ->getQuery()
             ->getResult();
     }

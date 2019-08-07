@@ -25,13 +25,14 @@ class CommunityManagerController extends AbstractController
 
         $user = $userRepo->find($id);
 
-        if($user->getB2bCmApproval() != 1)
-        {
-            return $this->redirectToRoute('b2b_client_search_index');
-        }
+//        if($user->getB2bCmApproval() != 1)
+//        {
+//            return $this->redirectToRoute('b2b_client_search_index');
+//        }
         // Check if the user exists
         if(is_null($user) && !in_array('ROLE_CM', $user->getRoles()))
         {
+
             return $this->redirect('/freelance/search');
         }
 
@@ -40,12 +41,7 @@ class CommunityManagerController extends AbstractController
         $page->setMetaTitle($user.":".$user->getUserSkill()->first()." local à ".$user->getPixie()->getBilling()->getAddress()->getCity());
         $page->setMetaDescription('Retrouvez toutes les offres de '.$user.' pour des missions de '.$user->getUserSkill()->first().' près de chez vous à '.$user->getPixie()->getBilling()->getAddress()->getCity());
 
-
-        $packs = $packRepo->findBy([
-            'user' => $user,
-            'active' => null,
-            'deleted' => null
-        ]);
+        $packs = $packRepo->findByUser($user);
 
         $skills = $skillRepository->findAll();
 
@@ -64,7 +60,6 @@ class CommunityManagerController extends AbstractController
     {
 
         $pack = $userPacksRepo->findBy(['id' => $id,'active' => null,'deleted' => null]);
-
 
         if(empty($pack))
         {
