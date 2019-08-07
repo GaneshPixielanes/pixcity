@@ -55,6 +55,8 @@ class SearchController extends SearchPageController
         $regions = $regionRepo->findAll();
         $skills = $skillRepo->findAll();
 
+        $text = $searchParams['text'];
+
         #SEO
         $page = new Page();
         $page->setMetaTitle('Pix.city Services : Recherchez votre community manager ou influenceur local freelance');
@@ -65,7 +67,8 @@ class SearchController extends SearchPageController
             'regions' => $regions,
             'skills' => $skills,
             'filters' => $filters,
-            'page' => $page
+            'page' => $page,
+            'text' => $text
         ]);
     }
 }
