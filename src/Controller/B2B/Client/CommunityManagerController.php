@@ -24,22 +24,13 @@ class CommunityManagerController extends AbstractController
     {
 
         $user = $userRepo->find($id);
-<<<<<<< HEAD
-        $packs = $packRepo->findBy([
-            'user' => $user,
-            'deleted' => null
-        ]);
-        if($user->getB2bCmApproval() != 1 || count($packs) == 0)
-        {
-            return $this->redirectToRoute('b2b_client_search_index');
-        }
-=======
+
 
 //        if($user->getB2bCmApproval() != 1)
 //        {
 //            return $this->redirectToRoute('b2b_client_search_index');
 //        }
->>>>>>> 6a785260af604d9d4e0783e91505f1fb626b7103
+
         // Check if the user exists
         if(is_null($user) && !in_array('ROLE_CM', $user->getRoles()))
         {
