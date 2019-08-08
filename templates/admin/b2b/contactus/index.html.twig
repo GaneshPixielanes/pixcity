@@ -41,7 +41,7 @@
                             </td>
                         </tr>
                         <!-- Modal Start-->
-                        <div class="modal fade" id="myModal{{ contact_list.id }}" role="dialog">
+                        <div class="modal fade" id="myModal{{ contact_list.id }}" role="dialog" tabindex='-1'>
                             <div class="modal-dialog">
 
                                 <!-- Modal content-->
@@ -51,7 +51,11 @@
                                         <h4 class="modal-title">View In Details</h4>
                                     </div>
                                     <div class="modal-body">
+<<<<<<< HEAD
                                         <label>Message</label> : <p>{{ contact_list.message|nl2br }}</p>
+=======
+                                        <label>Message</label> : <p>{{ contact_list.message | nl2br  }}</p>
+>>>>>>> 31966baa368ed460334b11126887ffdf7acb2c8c
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
