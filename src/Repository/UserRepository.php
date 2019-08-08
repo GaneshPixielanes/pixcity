@@ -134,7 +134,9 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id','DESC')
 
             ->groupBy('u.id')
-            ->where('u.b2b_cm_approval = :approval')
+            ->andWhere('packs.deleted = :activePacks')
+            ->setParameter('activePacks','0')
+            ->andWhere('u.b2b_cm_approval = :approval')
             ->setParameter('approval', '1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
@@ -158,9 +160,10 @@ class UserRepository extends ServiceEntityRepository
 //            ->leftJoin('u.favoriteCategories', 'category')
             //->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks','packs')
-
+            ->andWhere('packs.deleted = :activePacks')
+            ->setParameter('activePacks','0')
             ->leftJoin('u.userRegion', 'r')
-            ->where('u.b2b_cm_approval = :approval')
+            ->andWhere('u.b2b_cm_approval = :approval')
             ->setParameter('approval', '1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
