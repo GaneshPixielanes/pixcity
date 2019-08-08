@@ -134,7 +134,8 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id','DESC')
 
             ->groupBy('u.id')
-            ->where('u.b2b_cm_approval = 1')
+            ->where('u.b2b_cm_approval = :approval')
+            ->setParameter('approval', '1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters)
@@ -160,7 +161,7 @@ class UserRepository extends ServiceEntityRepository
 
             ->leftJoin('u.userRegion', 'r')
             ->where('u.b2b_cm_approval = :approval')
-            ->setParameter('approval', 1)
+            ->setParameter('approval', '1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters);
