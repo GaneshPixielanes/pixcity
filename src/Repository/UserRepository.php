@@ -135,8 +135,7 @@ class UserRepository extends ServiceEntityRepository
 
             ->groupBy('u.id')
             ->andWhere('packs.deleted IS NULL OR packs.deleted = 0')
-            ->andWhere('u.b2b_cm_approval = :approval')
-            ->setParameter('approval', '1')
+            ->andWhere('u.b2b_cm_approval = 1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters)
@@ -161,8 +160,7 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.userPacks','packs')
             ->andWhere('packs.deleted IS NULL OR packs.deleted = 0')
             ->leftJoin('u.userRegion', 'r')
-            ->andWhere('u.b2b_cm_approval = :approval')
-            ->setParameter('approval', '1')
+            ->andWhere('u.b2b_cm_approval = 1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters);
