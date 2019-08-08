@@ -37,7 +37,9 @@ class FaqController extends AbstractController
 
             'faqsCm3' => $faqsRepository->findBy(['category'=>'CM', 'subcategory'=>3]),
             'faqsCm4' => $faqsRepository->findBy(['category'=>'CM', 'subcategory'=>4]),
-            'page' => $page
+            'page' => $page,
+            'cmCount' => $faqsRepository->findBy(['category'=>'CM']),
+            'clientCount'=>$faqsRepository->findBy(['category'=>'CLIENT'])
         ]);
     }
 }
