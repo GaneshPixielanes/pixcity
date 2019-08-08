@@ -116,7 +116,7 @@
                     <div class="col-md-12 client-wall-members profiles-slider">
                         <div class="slick-profiles-slider px-5">
                             {% for proposal in proposals %}
-                                {% if proposal_unique[proposal.id] is defined %}
+                                {% if proposal_unique[proposal.id] is defined and proposal.user.b2bCmApproval == '1' %}
                                     <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
                                         <div class="cm-card-container">
                                             <div class="row">
@@ -137,15 +137,13 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h4 class="title text-center fz-16 font-weight-bold mb-0">{{ proposal.user.firstname~' '~proposal.user.lastname }}</h4>
-                                                    {% for region in proposal.user.userRegion %}
-                                                        <p class="region text-center fz-14">{{ region.name }}</p>
-                                                    {% endfor %}
+                                                        <p class="region text-center fz-14">{{ proposal.user.userRegion.first.name }}</p>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     {% for pack in proposal.user.userPacks|slice(0, 3) %}
-                                                        {% if pack.deleted == '0' %}
+                                                        {% if pack.deleted == '0' or pack.deleted == null %}
                                                         <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
                                                             <div class="work-title fz-10">Pack {{ pack.packSkill.name }}</div>
                                                             <div class="work-amount fz-10">{{ pack.userBasePrice }}€</div>
