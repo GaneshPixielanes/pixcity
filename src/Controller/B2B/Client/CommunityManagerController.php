@@ -87,7 +87,7 @@ class CommunityManagerController extends AbstractController
         #SEO
         $page = new Page();
         $page->setMetaTitle($pack->getTitle());
-        $page->setMetaDescription(substr($pack->getDescription(),0,160));
+        $page->setMetaDescription(strip_tags(substr($pack->getDescription(),0,160)));
 
 
         return $this->render('b2b/client/community_manager/pack_detail.html.twig',[
