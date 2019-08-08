@@ -134,8 +134,7 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id','DESC')
 
             ->groupBy('u.id')
-            ->andWhere('packs.deleted IS NULL OR packs.deleted = 0')
-            ->andWhere('u.b2b_cm_approval = 1')
+
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters)
@@ -158,9 +157,9 @@ class UserRepository extends ServiceEntityRepository
 //            ->leftJoin('u.favoriteCategories', 'category')
             //->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks','packs')
-            ->andWhere('packs.deleted IS NULL OR packs.deleted = 0')
+
             ->leftJoin('u.userRegion', 'r')
-            ->andWhere('u.b2b_cm_approval = 1')
+
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters);
@@ -177,10 +176,12 @@ class UserRepository extends ServiceEntityRepository
                 if(trim($filters["text"]) != ''){
                     if(isset($filters['skills']) and isset($filters["regions"])){
                         $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
-
+                        $qb = $qb->orWhere('packs.deleted IS NULL OR packs.deleted = 0');
+                        $qb = $qb->orWhere('u.b2b_cm_approval = 1');
                     }else{
                         $qb = $qb->andWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
-
+                        $qb = $qb->andWhere('packs.deleted IS NULL OR packs.deleted = 0');
+                        $qb = $qb->andWhere('u.b2b_cm_approval = 1');
                     }
                 }
             }
@@ -191,8 +192,12 @@ class UserRepository extends ServiceEntityRepository
                 {
                     if(isset($filters['skills']) and isset($filters["text"])){
                         $qb = $qb->orWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                        $qb = $qb->orWhere('packs.deleted IS NULL OR packs.deleted = 0');
+                        $qb = $qb->orWhere('u.b2b_cm_approval = 1');
                     }else{
                         $qb = $qb->andWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                        $qb = $qb->andWhere('packs.deleted IS NULL OR packs.deleted = 0');
+                        $qb = $qb->andWhere('u.b2b_cm_approval = 1');
                     }
 
                 }
@@ -206,9 +211,12 @@ class UserRepository extends ServiceEntityRepository
                 {
                     if(isset($filters["regions"]) or isset($filters["text"])){
                         $qb = $qb->orWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
+                        $qb = $qb->orWhere('packs.deleted IS NULL OR packs.deleted = 0');
+                        $qb = $qb->orWhere('u.b2b_cm_approval = 1');
                     }else{
                         $qb = $qb->andWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
-
+                        $qb = $qb->andWhere('packs.deleted IS NULL OR packs.deleted = 0');
+                        $qb = $qb->andWhere('u.b2b_cm_approval = 1');
                     }
 
                 }
