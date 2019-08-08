@@ -120,12 +120,11 @@ class UserRepository extends ServiceEntityRepository
     }
 
     //---------------------------------------
-    // Client
+    // CITY MAKER SEARCH
     //---------------------------------------
 
     public function searchClients($filters = [], $limit = 12, $page = 1)
     {
-        // /dd($filters);
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
@@ -134,10 +133,7 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id','DESC')
             ->groupBy('u.id');
 
-        $qb = $this->_applyFiltersClients($qb, $filters)
-
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
+        $qb = $this->_applyFiltersClients($qb, $filters)->setFirstResult($limit * ($page - 1))->setMaxResults($limit);
         $qb = $qb->getQuery()->getResult();
 
         return $qb;
@@ -205,7 +201,7 @@ class UserRepository extends ServiceEntityRepository
 
         }
 
-
+        $qb->andwhere('packs.deleted IS NULL OR packs.deleted = 0');
         $qb->andWhere('u.b2b_cm_approval = :approval')->setParameter('approval', '1');
 
         return $qb;
