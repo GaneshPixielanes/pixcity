@@ -113,20 +113,20 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 mb-3 d-block d-sm-none">
-                    {% set slug = pack.title | lower | replace({' ':'-'}) %}
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a href="{{ url('b2b_client_pack_select',{'slug':slug,'id':pack.id}) }}"
-                           class="btn btn-pink btn-block">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
-                    {% else %}
+{#            <div class="row">#}
+{#                <div class="col-12 mb-3 d-block d-sm-none">#}
+{#                    {% set slug = pack.title | lower | replace({' ':'-'}) %}#}
+{#                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
+{#                        <a href="{{ url('b2b_client_pack_select',{'slug':slug,'id':pack.id}) }}"#}
+{#                           class="btn btn-pink btn-block">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>#}
+{#                    {% else %}#}
 
-                        <a href="/connexion"
-                           class="btn btn-pink btn-block">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
+{#                        <a href="/connexion"#}
+{#                           class="btn btn-pink btn-block">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>#}
 
-                    {% endif %}
-                </div>
-            </div>
+{#                    {% endif %}#}
+{#                </div>#}
+{#            </div>#}
             <nav class="col-sm-12 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
                 <div class="container-fluid align-items-center justify-content-end">
                     <div class="d-flex user-infos flex-grow-1 justify-content-start align-items-center">
@@ -138,7 +138,7 @@
                             <p class="mb-0 fz-12 text-darkblue experte-level">Expert Pix.City</p>
                             <p class="mb-0 text-darkgray user-name">@{{ pack.user.firstname }}</p>
                         </div>
-                        <div class=" mr-3">
+                        <div class="d-none d-sm-block mr-3">
                             <p class="mb-0 fz-12 text-normalgray">Région</p>
                             <p class="mb-0 text-darkgray user-region">{{ pack.user.userRegion.first.name | upper }}</p>
                         </div>
@@ -147,19 +147,17 @@
                             <p class="mb-0 text-darkgray user-price">{{ pack.totalPrice }}€</p>
                         </div>
                     </div>
-                    <div class="d-none d-sm-block">
-                        <div class="preview-cta d-flex align-items-center">
-                            {% set slug = pack.title | lower | replace({' ':'-'}) %}
-                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                <a href="{{ url('b2b_client_pack_select',{'slug':slug,'id':pack.id}) }}"
-                                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
-                            {% else %}
+                    <div class="preview-cta d-flex align-items-center">
+                        {% set slug = pack.title | lower | replace({' ':'-'}) %}
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <a href="{{ url('b2b_client_pack_select',{'slug':slug,'id':pack.id}) }}"
+                               class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
+                        {% else %}
 
-                                <a href="/connexion"
-                                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
+                            <a href="/connexion"
+                               class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
 
-                            {% endif %}
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </nav>
