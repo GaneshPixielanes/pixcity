@@ -205,7 +205,7 @@ class UserRepository extends ServiceEntityRepository
 
         }
 
-        $qb->andWhere('packs.deleted = :activePacks')->setParameter('activePacks','0');
+
         $qb->andWhere('u.b2b_cm_approval = :approval')->setParameter('approval', '1');
 
         return $qb;
