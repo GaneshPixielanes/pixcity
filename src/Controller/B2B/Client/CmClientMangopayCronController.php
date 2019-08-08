@@ -162,7 +162,7 @@ class CmClientMangopayCronController extends Controller
     {
         $clientRepositoryTbl = $clientRepository->findBy(array(), array('id' => 'DESC'),5);
 
-        $filename = 'uploads/mangopay_kyc/client/addr1/62/6221a61939a729e11a4addace0e80853.png';
+        $filename = '/uploads/mangopay_kyc/client/addr1/62/6221a61939a729e11a4addace0e80853.png';
         foreach ($clientRepositoryTbl as $key => $value)
         {
             if($value->getClientInfo()->getMangopayUserId() != null){
@@ -201,7 +201,7 @@ class CmClientMangopayCronController extends Controller
     public function cronCitymakerKycProcess(MangoPayService $mangoPayService, UserRepository $userRepository)
     {
         $userRepositoryTbl = $userRepository->findBy([],['id'=>'DESC'],5);
-        $filename = 'uploads/mangopay_kyc/client/addr1/62/6221a61939a729e11a4addace0e80853.png';
+        $filename = '/uploads/mangopay_kyc/client/addr1/62/6221a61939a729e11a4addace0e80853.png';
         foreach ($userRepositoryTbl as $key => $value)
         {
             if($value->getMangopayUserId() != null) {
