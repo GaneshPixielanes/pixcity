@@ -134,7 +134,8 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id','DESC')
 
             ->groupBy('u.id')
-            ->where('u.b2b_cm_approval = 1')
+            ->orWhere('packs.deleted IS NULL OR packs.deleted = 0')
+            ->orWhere('u.b2b_cm_approval = 1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters)
@@ -157,10 +158,9 @@ class UserRepository extends ServiceEntityRepository
 //            ->leftJoin('u.favoriteCategories', 'category')
             //->innerJoin('u.pixie', 'p')
             ->innerJoin('u.userPacks','packs')
-
+            ->orWhere('packs.deleted IS NULL OR packs.deleted = 0')
             ->leftJoin('u.userRegion', 'r')
-            ->where('u.b2b_cm_approval = :approval')
-            ->setParameter('approval', 1)
+            ->orWhere('u.b2b_cm_approval = 1')
 //            ->where('u.deleted IS NULL OR u.deleted = 0')
         ;
         $qb = $this->_applyFiltersClients($qb, $filters);
@@ -176,10 +176,10 @@ class UserRepository extends ServiceEntityRepository
             if (isset($filters["text"])) {
                 if(trim($filters["text"]) != ''){
                     if(isset($filters['skills']) and isset($filters["regions"])){
-                        $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText) AND packs.active = 1) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+                        $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
 
                     }else{
-                        $qb = $qb->andWhere("((packs.title LIKE :packText OR packs.description LIKE :packText) AND packs.active = 1) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+                        $qb = $qb->andWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
 
                     }
                 }

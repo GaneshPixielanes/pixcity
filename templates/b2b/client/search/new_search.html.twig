@@ -117,7 +117,6 @@
                     <div class="card-columns">
 
                         {% for user in users %}
-                            {% if user.getB2bCmApproval == "1" %}
                                 {% if user.userPacks is defined and user.userPacks is not empty and user.userPacks | length > 0 %}
                                     <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
                                         <div class="cm-card-container">
@@ -138,8 +137,9 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h4 class="title text-center fz-28 font-weight-bold">{{ user }}</h4>
-
+                                                    {% if user.userRegion.first.name is defined  %}
                                                     <p class="region text-center fz-16 text-pink">{{ user.userRegion.first.name }}</p>
+                                                        {% endif %}
                                                 </div>
                                             </div>
 
@@ -169,8 +169,6 @@
                                         </div>
                                     </div>
                                 {% endif %}
-
-                            {% endif %}
 
                         {% endfor %}
 
