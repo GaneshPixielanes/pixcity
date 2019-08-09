@@ -133,9 +133,7 @@
                                  <div class="row">
                                      <div class="col-md-8 logged-profile-menu-hover">
                                          <a href="javascript:;" class="logged-profile">
-                                             {% set datePath = loginDetails['entity'].createdAt | date('Y/m') %}
-
-                                             <img src="{{ '/uploads/users/'~datePath~'/'~loginDetails['image']}}" class="navbar-brand" alt="{{ loginDetails['entity'] }}">
+                                             <img src="{% if loginDetails['image'] is defined and loginDetails['image'] is not null %}{{ loginDetails['image'] | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="navbar-brand" alt="{{ loginDetails['entity'] }}">
                                          </a>
                                          <div class="logged-dropdown-menu">
                                              <div class="card">

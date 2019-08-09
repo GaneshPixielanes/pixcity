@@ -30,7 +30,7 @@ class LoginListener
 
         if($user instanceof User){
 
-            $this->session->set('login_by',['type' => 'login_cm','entity' => $user,'image' => $user->getAvatar()->getName()]);
+            $this->session->set('login_by',['type' => 'login_cm','entity' => $user,'image' => $user->getAvatarUrl()]);
 
             //----------------------------------------
             // After login actions
