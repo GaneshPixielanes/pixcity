@@ -9,8 +9,10 @@ use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -24,6 +26,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
 {
+
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
     //-----------------------------------------------------------------
     // BY EMAIL
     //-----------------------------------------------------------------
@@ -33,6 +40,7 @@ class LoginController extends Controller
      */
     public function login(Request $request, AuthenticationUtils $authUtils)
     {
+
         //------------------------------------
         // Save action for after login
         //------------------------------------
@@ -42,6 +50,11 @@ class LoginController extends Controller
         // Reset actual values
         $session->remove(SessionName::AFTER_LOGIN_ACTION_NAME);
         $session->remove(SessionName::AFTER_LOGIN_ACTION_NAME);
+
+        if($session->has('login_by')){
+            return $this->redirect('/');
+        }
+
 
         // Retrieve last visited page
         $referer = $request->headers->get("referer");
@@ -334,6 +347,8 @@ class LoginController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($user);
         $entityManager->flush();
+
+        $this->session->remove('login_by');
 
         return $this->redirectToRoute('front_logout');
     }
