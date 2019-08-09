@@ -40,6 +40,7 @@ class LoginController extends Controller
      */
     public function login(Request $request, AuthenticationUtils $authUtils)
     {
+
         //------------------------------------
         // Save action for after login
         //------------------------------------
@@ -49,6 +50,11 @@ class LoginController extends Controller
         // Reset actual values
         $session->remove(SessionName::AFTER_LOGIN_ACTION_NAME);
         $session->remove(SessionName::AFTER_LOGIN_ACTION_NAME);
+
+        if($session->has('login_by')){
+            return $this->redirect('/');
+        }
+
 
         // Retrieve last visited page
         $referer = $request->headers->get("referer");
