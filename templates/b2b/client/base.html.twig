@@ -35,13 +35,8 @@
         <!-- Header -->
         <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
             <div class="container">
-                {% if loginBy == 'login_cm'  %}
-                    <a class="navbar-brand" href="/"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
-                {% elseif loginBy == 'login_client' %}
-                    <a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}"><img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
-                {% else %}
-                    <a class="navbar-brand" href="/"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
-                {% endif %}
+                <a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}"><img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
+
                 <div class="col-3 ml-auto social-mobile">
                     <div class="row">
                         <div class="col-6 social-mobile-btn">

@@ -8,13 +8,8 @@
 			{% set loginBy = 'not-login'   %}
 		{% endif %}
 
-		{% if loginBy == 'login_cm'  %}
-			<a class="navbar-brand" href="/"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
-		{% elseif loginBy == 'login_client' %}
-			<a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}"><img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
-		{% else %}
-			<a class="navbar-brand" href="/"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
-		{% endif %}
+		<a class="navbar-brand" href="/"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
+
 
 
 		<div class="col-3 ml-auto social-mobile">
