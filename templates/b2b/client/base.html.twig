@@ -135,7 +135,7 @@
                                          <a href="javascript:;" class="logged-profile">
                                              {% set datePath = loginDetails['entity'].createdAt | date('Y/m') %}
 
-                                             <img src="{{ '/uploads/users/'~datePath~'/'~loginDetails['image']}}" class="rounded-circle" alt="{{ loginDetails['entity'] }}">
+                                             <img src="{{ '/uploads/users/'~datePath~'/'~loginDetails['image']}}" class="navbar-brand" alt="{{ loginDetails['entity'] }}">
                                          </a>
                                          <div class="logged-dropdown-menu">
                                              <div class="card">
