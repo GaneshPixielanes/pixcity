@@ -2,7 +2,7 @@
 {%  block meta_title %}{{ page.metaTitle }}{% endblock %}
 {%  block meta_description %}{{ page.metaDescription }}{% endblock %}
 {%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
-<meta property="og:image" content="/uploads/pack/banner/{{ pack.bannerImage }}" />
+
 {% import 'b2b/shared/macros.html.twig' as macros %}
 {% block title %}Client | Home {% endblock %}
 {% block stylesheets %}
