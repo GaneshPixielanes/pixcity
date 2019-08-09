@@ -224,7 +224,7 @@ class PackController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $pack = $entityManager->getRepository(UserPacks::class)->find($id);
 
-        $pack = $userPacksRepository->findByUserPack($this->getUser(),$id);
+        //$pack = $userPacksRepository->findByUserPack($this->getUser(),$id);
 
         if($pack === null){
             return new JsonResponse(false);
@@ -238,7 +238,7 @@ class PackController extends Controller
 
         $pack->setDeletedAt(new \DateTime('now'));
         $pack->setActive(0);
-        $pack->setDeleted(0);
+        $pack->setDeleted(1);
         $entityManager->flush();
 
         return $this->redirectToRoute('b2b_pack_list', [
