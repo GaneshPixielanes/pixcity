@@ -30,12 +30,15 @@ class LoginListener
 
         if($user instanceof User){
 
+            $this->session->set('login_by',['type' => 'login_cm','entity' => $user]);
+
             //----------------------------------------
             // After login actions
             //----------------------------------------
 
             $afterLoginAction = $this->session->get(SessionName::AFTER_LOGIN_ACTION_NAME);
             $afterLoginValue = $this->session->get(SessionName::AFTER_LOGIN_ACTION_VALUE);
+
             if($afterLoginAction){
 
                 switch($afterLoginAction){
@@ -89,6 +92,8 @@ class LoginListener
                 $this->em->flush();
 
             }
+        }else{
+            $this->session->set('login_by',['type' => 'login_client','entity' => $user]);
         }
     }
 }
