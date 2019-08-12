@@ -16,6 +16,8 @@
             Waiting for Approval
         {% elseif item[0].b2bCmApproval == 1 %}
             Approved
+        {% elseif item[0].b2bCmApproval == 0 %}
+            Rejected
         {% else %}
             N/A
         {% endif %}
