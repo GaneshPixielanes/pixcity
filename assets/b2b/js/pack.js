@@ -111,7 +111,6 @@ $(document).on('validate', function () {
         ignore: [],
         rules: {
             "pack[title]": { required: true, maxlength: 64, minlength: 5},
-            "pack[description]": { required: true},
             "pack[bannerImage]": { required: true, minlength: 1},
             "pack[userBasePrice]": { required: true, number: true},
             "pack[packSkill]":{required:true}
