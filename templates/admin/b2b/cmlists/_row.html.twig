@@ -3,7 +3,7 @@
     <td>{{ item[0].firstName }}</td>
     <td>{{ item[0].lastName }}</td>
     <td>{{ item[0].email }}</td>
-    <td>{{ item[0].cmUpgradeB2bDate|date('d-M-Y') }}</td>
+    <td>{{ item[0].cmUpgradeB2bDate|localizeddate('medium', 'short') }}</td>
     <td><a href="{{path('admin_user_packs_view', {'id': item[0].id , 'usrtype':'user'})  }}" title="view" > {{ item.userPack }}</a> </td>
     {#<td>#}
         {#<label class="switch">#}

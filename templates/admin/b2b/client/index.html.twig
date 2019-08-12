@@ -39,7 +39,7 @@
                             <td>
                                 <a href="{{path('admin_user_mission_view', {'id': client[0].id , 'usrtype':'client'})  }}" title="view client" >{{ client.missionCount }}</a>
                             </td>
-                            <td>{{ client[0].createdAt ? client[0].createdAt|date('d-M-Y'):'N/A' }}</td>
+                            <td>{{ client[0].createdAt ? client[0].createdAt|localizeddate('medium', 'short'):'N/A' }}</td>
                             <td class="text-right">
                                 <div class="item-actions">
                                     <a href="{{ path('admin_client_show', {'id': client[0].id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>

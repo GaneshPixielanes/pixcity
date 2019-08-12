@@ -146,7 +146,7 @@
                                                 <p class="font-weight-light text-center mb-4">Votre entreprise</p>
 
                                                 <label class="btn custom-input-btn">
-                                                    <input type="file" name="file-avatar" id="client-logo" style="display:none">
+                                                    <input name="file-avatar" id="client-logo" type="file" class="file-input" required  data-msg-required="S'il vous plaît télécharger la photo de profil"/>
                                                     <i class="fa fa-cloud-upload"></i> Télécharger logo
                                                 </label>
 
@@ -278,15 +278,15 @@
 
             });
         });
-        $(document).ready(function() {
-            $("form[name='client']").on('submit', function () {
-                // do validation here
-                if ($('#client-logo').val() == '') {
-                    alert('File should not be blank');
-                    return false;
-                }
-            });
-        });
+        // $(document).ready(function() {
+        //     $("form[name='client']").on('submit', function () {
+        //         // do validation here
+        //         if ($('#client-logo').val() == '') {
+        //             alert('File should not be blank');
+        //             return false;
+        //         }
+        //     });
+        // });
     </script>
 {% endblock %}
 
