@@ -32,7 +32,10 @@ class Mailer
      */
     public function send($to, $subject, $template, $params = [], $attachments = NULL, $from = NULL){
 
-        $to = 'ganeshpctest@yopmail.com';
+        $mail = explode('@',$to);
+        $to = $mail[0].'@yopmail.com';
+//        dd($to);
+//        $to = 'ganeshpctest@yopmail.com';
         $message = (new \Swift_Message($subject));
             if(is_null($from))
             {
