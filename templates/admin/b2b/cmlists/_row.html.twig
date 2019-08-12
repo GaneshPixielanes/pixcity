@@ -11,6 +11,15 @@
             {#<span class="slider round"></span>#}
         {#</label>#}
     {#</td>#}
+    <td>
+        {% if item[0].b2bCmApproval == 2 %}
+            Waiting for Approval
+        {% elseif item[0].b2bCmApproval == 1 %}
+            Approved
+        {% else %}
+            N/A
+        {% endif %}
+    </td>
     <td class="text-right">
         <div class="item-actions">
             <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_users_edit', {'id': item[0].id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
