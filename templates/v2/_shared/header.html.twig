@@ -141,7 +141,7 @@
 								<div class="col-md-8 logged-profile-menu-hover">
 									<a href="javascript:;" class="logged-profile">
 										{% if loginDetails['entity'].profilePhoto is defined and loginDetails['entity'].profilePhoto is not null  %}
-											<img  src="/uploads/clients/{{ loginDetails['entity'].id }}/{{ loginDetails['entity'].profilePhoto }}"  class="rounded-circle"/>
+											<img  src="{{ asset('/uploads/clients/'~loginDetails['entity'].id~'/'~loginDetails['entity'].profilePhoto) | imagine_filter('user_avatar') }}"  class="rounded-circle"/>
 										{% else %}
 											<img src="/uploads/avatars/default-avatar.png" alt=""  class="rounded-circle"/>
 										{% endif %}
@@ -150,14 +150,12 @@
 									<div class="logged-dropdown-menu">
 										<div class="card">
 											<div class="card-body p-0">
-
+												<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CLIENT &nbsp;<i class="fas"></i></a>
 												<a class="dropdown-item" href="{{ path('b2b_client_main_index') }}"><i class="fas fa-home"></i>Accueil</a>
 												<a class="dropdown-item" href="{{ path('b2b_client_mission_list') }}"><i class="fas fa-briefcase"></i>Mes missions</a>
 												<a class="dropdown-item" href="{{ path('client_transaction_index') }}"><i class="fas fa-file-invoice-dollar"></i>Facturation</a>
 												<a class="dropdown-item" href="{{ path('client_email_inbox') }}"><i class="fas fa-envelope"></i>Email</a>
 												<a class="dropdown-item" href="/client/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
-
-
 											</div>
 										</div>
 									</div>
