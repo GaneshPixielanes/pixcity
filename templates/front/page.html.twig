@@ -111,7 +111,7 @@
                         {% endif %}
                     {% endif %}
 
-                    {% if loginBy == 'login_cm' and not is_granted('ROLE_PIXIE') %}
+                    {% if loginBy == 'not-login' or (loginBy == 'login_cm' and not is_granted('ROLE_PIXIE'))  %}
                         <li id="inscription" class="btn ghost transFx fa fa-user-plus">
                             <a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):'/city-maker/inscription/mode' }}">
                             {#<a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):path('front_user_register_mode') }}">#}
