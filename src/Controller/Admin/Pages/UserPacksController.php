@@ -32,7 +32,7 @@ class UserPacksController extends AbstractController
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 return $this->render('admin/b2b/user_packs/index.html.twig', [
-                    'user_packs' => $userPacksRepository->findBy(['deletedAt'=>null]),
+                    'user_packs' => $userPacksRepository->findBy(['deletedAt'=>array(null,0)],['id'=>'DESC']),
                 ]);
             }
             else{
