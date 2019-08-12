@@ -33,7 +33,7 @@
                         <td>{{ user_pack.title }}</td>
                         <td>{{ user_pack.user.firstname ~' '~user_pack.user.lastname }}</td>
                         <td>{{ user_pack.userBasePrice }}</td>
-                        <td>{{ user_pack.createdAt ? user_pack.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                        <td>{{ user_pack.createdAt ? user_pack.createdAt|localizeddate('medium', 'short') : 'N/A' }}</td>
                         <td class="text-right">
                             <div class="item-actions">
                              <a href="{{ path('admin_user_packs_show', {'id': user_pack.id}) }}"class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
