@@ -6,6 +6,10 @@
     <title>{% block meta_title %}{% if page.metaTitle is defined %}{{ page.metaTitle }}{% else %}Pix City{% endif %}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% if page.metaDescription is defined %}{{ page.metaDescription | raw }}{% endif %}{% endblock %}">
     <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
+    {% if pack is defined and pack is not null %}
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content="{{ absolute_url('/uploads/pack/banner/'~pack.bannerImage)  }}" />
+    {% endif %}
     <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Fonts -->

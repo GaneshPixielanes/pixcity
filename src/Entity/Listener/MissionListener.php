@@ -42,7 +42,7 @@ class MissionListener{
                         'mission' => $mission
                     ],null,'services@pix.city');
 
-                $this->mailer->send($mission->getUser()->getEmail(),
+                $this->mailer->send($mission->getClientN()->getEmail(),
                     'DEMARRAGE MISSION',
                     'emails/b2b/mission-create-accept-client.html.twig',
                     [
