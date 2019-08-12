@@ -37,8 +37,8 @@
                                 <td>{{ user_mission.user.firstname ~' '~ user_mission.user.lastname}}</td>
                                 <td>{{ user_mission.client.firstName ~' '~ user_mission.client.lastName}}</td>
                                 <td>{{ user_mission.client.company }}</td>
-                                <td>{{ user_mission.createdAt ? user_mission.createdAt|date('d/m/Y') : '' }}</td>
-                                <td>{{ user_mission.updatedAt ? user_mission.updatedAt|date('d/m/Y') : '' }}</td>
+                                <td>{{ user_mission.createdAt ? user_mission.createdAt|localizeddate('medium', 'short') : '' }}</td>
+                                <td>{{ user_mission.updatedAt ? user_mission.updatedAt|localizeddate('medium', 'short') : '' }}</td>
                                 <td>{{ user_mission.userMissionPayment.clientTotal|number_format(2, '.', ',') }}</td>
                                 <td class="text-right">
                                     <div class="item-actions">
