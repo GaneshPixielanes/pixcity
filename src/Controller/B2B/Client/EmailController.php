@@ -392,7 +392,7 @@ class EmailController extends Controller
 
             // Send mail to the Client
             $mailTitle = 'Question sur le pack : "'.trim($ticket->getObject()).'"';
-            $mailer->send($ticket->getClient()->getEmail(),
+            $mailer->send($ticket->getUser()->getEmail(),
                 $mailTitle,
                 'emails/b2b/email-cm-contacted-client-1.html.twig',
                 [
