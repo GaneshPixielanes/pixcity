@@ -99,7 +99,7 @@
 													{% else %}
 														<a class="dropdown-item user-link-logged p-3 d-flex" href="{{ url('b2b_community_manager_index') }}">
 															<div class="col-9 pl-0">
-																Espace BtoB <img src="/assets/images/footer-logo-main.svg" width="58">
+																Espace <img src="/assets/images/footer-logo-main.svg" width="58"> Services
 															</div>
 															<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
 																<i class="fas fa-arrow-right"></i>
@@ -141,7 +141,7 @@
 								<div class="col-md-8 logged-profile-menu-hover">
 									<a href="javascript:;" class="logged-profile">
 										{% if loginDetails['entity'].profilePhoto is defined and loginDetails['entity'].profilePhoto is not null  %}
-											<img  src="/uploads/clients/{{ loginDetails['entity'].id }}/{{ loginDetails['entity'].profilePhoto }}"  class="rounded-circle"/>
+											<img  src="{{ asset('/uploads/clients/'~loginDetails['entity'].id~'/'~loginDetails['entity'].profilePhoto) | imagine_filter('user_avatar') }}"  class="rounded-circle"/>
 										{% else %}
 											<img src="/uploads/avatars/default-avatar.png" alt=""  class="rounded-circle"/>
 										{% endif %}
@@ -150,14 +150,12 @@
 									<div class="logged-dropdown-menu">
 										<div class="card">
 											<div class="card-body p-0">
-
+												<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CLIENT &nbsp;<i class="fas"></i></a>
 												<a class="dropdown-item" href="{{ path('b2b_client_main_index') }}"><i class="fas fa-home"></i>Accueil</a>
 												<a class="dropdown-item" href="{{ path('b2b_client_mission_list') }}"><i class="fas fa-briefcase"></i>Mes missions</a>
 												<a class="dropdown-item" href="{{ path('client_transaction_index') }}"><i class="fas fa-file-invoice-dollar"></i>Facturation</a>
 												<a class="dropdown-item" href="{{ path('client_email_inbox') }}"><i class="fas fa-envelope"></i>Email</a>
 												<a class="dropdown-item" href="/client/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
-
-
 											</div>
 										</div>
 									</div>

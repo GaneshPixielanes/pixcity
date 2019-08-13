@@ -47,21 +47,21 @@
             });
 
             /* Restrict maxlengths for input and textarea fields */
-            $('body').on("input",'textarea.pack-description, input.pack-title', function () {
-                var maxlength = $(this).attr("maxlength");
-                var currentLength = $(this).val().length;
-
-                $(this).next().find('.inputlength').text(currentLength)
-                if (currentLength >= maxlength) {
-                    //         console.log("You have reached the maximum number of characters.");
-                    $(this).next('.text-textgray').append(
-                        `<span class="text-error ml-2">Vous avez atteint le nombre de caractères maximum autorisé</span>`
-                    );
-                } else if (currentLength < maxlength) {
-                    //         console.log(maxlength - currentLength + " chars left");
-                    $(this).next('.text-textgray').find('.text-error').fadeOut('fast');
-                }
-            });
+            // $('body').on("input",'textarea.pack-description, input.pack-title', function () {
+            //     var maxlength = $(this).attr("maxlength");
+            //     var currentLength = $(this).val().length;
+            //
+            //     $(this).next().find('.inputlength').text(currentLength)
+            //     if (currentLength >= maxlength) {
+            //         //         console.log("You have reached the maximum number of characters.");
+            //         $(this).next('.text-textgray').append(
+            //             `<span class="text-error ml-2">Vous avez atteint le nombre de caractères maximum autorisé</span>`
+            //         );
+            //     } else if (currentLength < maxlength) {
+            //         //         console.log(maxlength - currentLength + " chars left");
+            //         $(this).next('.text-textgray').find('.text-error').fadeOut('fast');
+            //     }
+            // });
 
             /* Filter packages script */
             /* $(document).on('click', '.filter-packages  input[type="checkbox"]', function () {

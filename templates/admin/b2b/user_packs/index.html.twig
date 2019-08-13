@@ -15,7 +15,7 @@
                 </h2>
             </div>
             <div class="body">
-                <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="4">
+                <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="5">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -23,6 +23,7 @@
                         <th>CM  </th>
                         <th>Price </th>
                         <th>Created Date</th>
+                        <th>Pack Status</th>
                         <th>Action </th>
                     </tr>
                 </thead>
@@ -33,7 +34,14 @@
                         <td>{{ user_pack.title }}</td>
                         <td>{{ user_pack.user.firstname ~' '~user_pack.user.lastname }}</td>
                         <td>{{ user_pack.userBasePrice }}</td>
-                        <td>{{ user_pack.createdAt ? user_pack.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                        <td data-order='{{ user_pack.createdAt|date('YmdHi') }}'>{{ user_pack.createdAt ? user_pack.createdAt|localizeddate('medium', 'short') : 'N/A' }}</td>
+                        <td>
+                            {% if user_pack.deleted == 1 %}
+                                Deleted
+                            {% else %}
+                                Active
+                            {% endif %}
+                        </td>
                         <td class="text-right">
                             <div class="item-actions">
                              <a href="{{ path('admin_user_packs_show', {'id': user_pack.id}) }}"class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
@@ -48,7 +56,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="15">no records found</td>
+                        <td colspan="5">no records found</td>
                     </tr>
                 {% endfor %}
                 </tbody>

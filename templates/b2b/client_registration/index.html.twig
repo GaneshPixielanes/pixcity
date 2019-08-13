@@ -145,20 +145,10 @@
                                             <div class="col-md-12 card shadow-sm mb-3 p-3">
                                                 <p class="font-weight-light text-center mb-4">Votre entreprise</p>
 
-                                                <label class="btn custom-input-btn">
-                                                    <input type="file" name="file-avatar" id="client-logo" style="display:none">
-                                                    <i class="fa fa-cloud-upload"></i> Télécharger logo
-                                                </label>
+                                                <input name="file-avatar" id="client-logo" type="file" class="file-input" required  data-msg-required="Merci d'uploader votre logo."/>
+                                                <div class="thumb" style="background-image: url('/uploads/users')"></div>
 
-                                                <div class="user-avatar w-100">
-                                                    <figure class="position-relative m-0 w-100 mb-2">
-                                                        {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
-                                                            <img class="img-fluid" id="url-change" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
-                                                        {% else %}
-                                                            <img class="img-fluid" id="url-change" src="/uploads/avatars/default-avatar.png" alt="" />
-                                                        {% endif %}
 
-                                                </div>
 
                                                 <div class="row">
                                                     <div class="col-md-12 mb-3">
@@ -192,29 +182,29 @@
                                                 </div>
                                             </div>
                                         </div>
-                                            <div class="row">
-                                                <div class="col-md-12 card shadow-sm mb-3 p-3">
-                                                    <p class="font-weight-light text-center">À propos de vous</p>
-                                                    <div class="row">
-                                                        {{ form_widget(form.firstName) }}
-                                                        {{ form_errors(form.firstName) }}
+                                        <div class="row">
+                                            <div class="col-md-12 card shadow-sm mb-3 p-3">
+                                                <p class="font-weight-light text-center">À propos de vous</p>
+                                                <div class="row">
+                                                    {{ form_widget(form.firstName) }}
+                                                    {{ form_errors(form.firstName) }}
 
-                                                        {{ form_widget(form.lastName) }}
-                                                        {{ form_errors(form.lastName) }}
-                                                    </div>
-                                                    {{ form_widget(form.email) }}
-                                                    {{ form_errors(form.email) }}
-
-                                                    {{ form_widget(form.plainPassword) }}
-                                                    {{ form_errors(form.plainPassword) }}
-
+                                                    {{ form_widget(form.lastName) }}
+                                                    {{ form_errors(form.lastName) }}
                                                 </div>
+                                                {{ form_widget(form.email) }}
+                                                {{ form_errors(form.email) }}
+
+                                                {{ form_widget(form.plainPassword) }}
+                                                {{ form_errors(form.plainPassword) }}
+
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12 mb-4 text-center">
-                                                    <button class="btn btn-pink btn-pill mx-auto lh2" type="submit">Créer mon compte</button>
-                                                </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-4 text-center">
+                                                <button class="btn btn-pink btn-pill mx-auto lh2" type="submit">Créer mon compte</button>
                                             </div>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -243,10 +233,10 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-{#    <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/client_registration.js')) }}"></script>#}
+    {#    <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/client_registration.js')) }}"></script>#}
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-{#    <script type="text/javascript" src="{{ asset('build/b2b/js/client_registration.js') }}"></script>#}
-{#    <script type="text/javascript" src="{{ asset('build/b2b/js/client_registration.js') }}"></script>#}
+    {#    <script type="text/javascript" src="{{ asset('build/b2b/js/client_registration.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('build/b2b/js/client_registration.js') }}"></script>
 
     <script>
         /* custom per page scripts */
@@ -261,33 +251,10 @@
         $("#on-login-click").click(function () {
             window.location.href = "/connexion";
         });
-        $(document).on('change', '#client-logo', function () {
-
-            var image = this.files[0];
-            var formData = new FormData();
-            formData.append("file", image);
 
 
-            $.ajax({
-                url: "/client/upload-logo", type: 'POST', data: formData, cache: false, contentType: false, processData: false
-            }).done(function (attachment) {
-
-                $("#client_profilePhoto").val(attachment.file);
-                $("#url-change").attr("src","/uploads/clients/"+attachment.file);
-            }).fail(function (xhr, status, error) {
-
-            });
-        });
-        $(document).ready(function() {
-            $("form[name='client']").on('submit', function () {
-                // do validation here
-                if ($('#client-logo').val() == '') {
-                    alert('File should not be blank');
-                    return false;
-                }
-            });
-        });
     </script>
+
 {% endblock %}
 
 {% block javascripts_footer %}

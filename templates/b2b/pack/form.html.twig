@@ -82,7 +82,7 @@
                 votre prestation !
                 Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez pas à lire
                 notre <a href="{{ url('front_faq_index') }}" target="_blank ">FAQ</a></p>
-            <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder="" id="pack-description" cols="30"
+            <textarea class="form-control bg-lightwhite fz-14 pack-description" placeholder="" id="pack-description" cols="30"
                       rows="10" name="{{ form.description.vars.full_name }}" data-bind="pack-description-preview">
                 {% if form.description.vars.data == '' %}
                 Bonjour,
@@ -101,6 +101,7 @@
 
             {% endif %}
             </textarea>
+            <p class="mb-0 fz-12 text-textgray mt-2">Max. 1200 car.</p>
 {#            <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">256</span>/<span#}
 {#                        class="input-maxlength">1200</span></p>#}
         </div>
@@ -322,6 +323,7 @@
         key:'iTB2xA5C4C1C2uzbtA3mfdhnD5D4H4C2C3A6B5C2B4A4==',
         charCounterMax: 1200,
         language: 'fr',
+        heightMax:200,
         events: {
             contentChanged: function () {
                 $('.pack-description-preview').html(this.html.get());
