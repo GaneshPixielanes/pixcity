@@ -3,6 +3,7 @@
 namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
+use App\Constant\SessionName;
 use App\Entity\Client;
 use App\Entity\Option;
 use App\Entity\UserMission;
@@ -48,6 +49,12 @@ class ClientRegistrationController extends AbstractController
                           MangoPayService $mangoPayService)
     {
 
+        $session = $request->getSession();
+
+
+        if($session->has('login_by')){
+            return $this->redirect('/');
+        }
 
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
