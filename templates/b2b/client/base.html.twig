@@ -127,7 +127,8 @@
                                  <div class="row">
                                      <div class="col-md-8 logged-profile-menu-hover">
                                          <a href="javascript:;" class="logged-profile">
-                                             <img src="{% if loginDetails['image'] is defined and loginDetails['image'] is not null %}{{ loginDetails['image'] | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="navbar-brand" alt="{{ loginDetails['entity'] }}">
+                                             {% set date = loginDetails['entity'].avatar.updatedAt | date('Y/m') %}
+                                             <img src="{% if loginDetails['image'] is defined and loginDetails['image'] is not null %}{{ asset('uploads/users/'~date~'/'~loginDetails['image']) | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="rounded-circle" alt="{{ loginDetails['entity'] }}">
                                          </a>
                                          <div class="logged-dropdown-menu">
                                              <div class="card">
