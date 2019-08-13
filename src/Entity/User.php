@@ -685,7 +685,10 @@ class User implements UserInterface, EquatableInterface
     //--------------------------------------------------------------
 
     public function getSlug(){
-        return 'abc';
+        if($this->getPixie() == null)
+        {
+            return 'abc';
+        }
         $slugify = new Slugify();
         $region = (count($this->getPixie()->getRegions()) > 0)?$this->getPixie()->getRegions()[0]:"";
         return $slugify->slugify($this->firstname." ".$this->lastname." ".$region);
