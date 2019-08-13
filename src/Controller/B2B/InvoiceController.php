@@ -10,6 +10,7 @@ use App\Repository\OptionRepository;
 use App\Repository\UserMissionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,7 +84,7 @@ class InvoiceController extends Controller
     /**
      * @Route("/preview/{id}",name="preview")
      */
-    public function preview($id, UserMissionRepository $missionRepo, Request $request)
+    public function preview($id, UserMissionRepository $missionRepo, Request $request,Filesystem $filesystem)
     {
         $user = $this->getUser();
         $mission = $missionRepo->findOneBy([
@@ -91,9 +92,39 @@ class InvoiceController extends Controller
             'id' => $id,
             'status' => MissionStatus::TERMINATED
         ]);
-        $fileName = $missionRepo->createSlug($mission->getTitle())."-client.pdf";
 
-        return new JsonResponse(['url' => $request->getSchemeAndHttpHost().'/invoices/'.$mission->getId().'/'.$fileName]);
+
+        $fileName = "PX-".$mission->getId()."-".$mission->getActiveLog()->getId()."-cm.pdf";
+
+        $file_path = '/invoices/'.$mission->getId().'/'.$fileName;
+
+        if($filesystem->exists($file_path)){
+
+            return new JsonResponse(['url' => $request->getSchemeAndHttpHost().$file_path]);
+
+        }else{
+
+            $mission = $missionRepo->activePrices($id);
+
+            $filesystem->mkdir('invoices/'.$mission->getId(),0777);
+
+            $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-".$type.".pdf";
+
+            $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
+
+            $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView('b2b/invoice/client_invoice.html.twig',
+                    array(
+                        'mission' => $mission
+                    )
+                ), $clientInvoicePath
+            );
+
+            return new JsonResponse(['url' => $request->getSchemeAndHttpHost().$file_path]);
+
+        }
+
+
 //
 //        if(empty($mission))
 //        {
