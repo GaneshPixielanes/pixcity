@@ -96,7 +96,7 @@ class InvoiceController extends Controller
 
         $fileName = "PX-".$mission->getId()."-".$mission->getActiveLog()->getId()."-cm.pdf";
 
-        $file_path = '/invoices/'.$mission->getId().'/'.$fileName;
+        $file_path = 'invoices/'.$mission->getId().'/'.$fileName;
 
         if($filesystem->exists($file_path)){
 
