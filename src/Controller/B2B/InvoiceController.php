@@ -104,7 +104,7 @@ class InvoiceController extends Controller
 
         }else{
 
-            $mission = $missionRepository->activePrices($id);
+            $mission = $missionRepo->activePrices($id);
 
             $filesystem->mkdir('invoices/'.$mission->getId(),0777);
 
