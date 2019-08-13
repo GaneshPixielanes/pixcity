@@ -108,7 +108,7 @@ class InvoiceController extends Controller
 
             $filesystem->mkdir('invoices/'.$mission->getId(),0777);
 
-            $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-".$type.".pdf";
+            $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
 
             $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
 
