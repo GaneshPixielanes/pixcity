@@ -100,7 +100,7 @@ class InvoiceController extends Controller
 
         if($filesystem->exists($file_path)){
 
-            return new JsonResponse(['url' => $request->getSchemeAndHttpHost().$file_path]);
+            return new JsonResponse(['url' => $request->getSchemeAndHttpHost().'/'.$file_path]);
 
         }else{
 
@@ -120,7 +120,7 @@ class InvoiceController extends Controller
                 ), $clientInvoicePath
             );
 
-            return new JsonResponse(['url' => $request->getSchemeAndHttpHost().$file_path]);
+            return new JsonResponse(['url' => $request->getSchemeAndHttpHost().'/'.$file_path]);
 
         }
 
