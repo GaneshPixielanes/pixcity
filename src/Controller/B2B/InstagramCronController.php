@@ -25,7 +25,7 @@ class InstagramCronController extends Controller
                     WHERE g.type='instagram' AND uig.processed = 0 ORDER BY g.id ASC");
         $query->setMaxResults(2);
         $result =  $query->getResult();
-dd($result);
+
         foreach ($result as &$value)
         {
             $parts = parse_url($value->getUrl());
@@ -37,7 +37,7 @@ dd($result);
                 $this->curlFunction($curl, $filename);
 
                 $profileDataArr = $this->scrape_insta($filename);
-dd($profileDataArr);
+dd($curl);
                 if ($profileDataArr != "") {
                     $full_name = $profileDataArr['entry_data']['ProfilePage'][0]['graphql']['user']['full_name'];
                     $followers = $profileDataArr['entry_data']['ProfilePage'][0]['graphql']['user']['edge_followed_by']['count'];
