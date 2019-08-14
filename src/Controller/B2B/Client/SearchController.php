@@ -23,7 +23,7 @@ class SearchController extends SearchPageController
     public function index(Request $request, UserRepository $userRepo, RegionRepository $regionRepo, SkillRepository $skillRepo)
     {
         $searchParams = $this->getSearchParams($request);
-        $limit = 12;
+        $limit = 6;
         $page = is_null($request->get('page'))?1:$request->get('page');
 
         if($searchParams['text']!="")
