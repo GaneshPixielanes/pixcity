@@ -20,6 +20,7 @@ label:
     title: Titre
     email: Email
     name: Nom
+    platform: Platform
     firstname: Prénom
     lastname: Nom
     role: Rôle
