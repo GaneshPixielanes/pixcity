@@ -24,12 +24,13 @@ class InstagramCronController extends Controller
                     INNER JOIN App:UserInstagramDetailsApi as uig WITH g.user = uig.user
                     WHERE g.type='instagram' AND uig.processed = 0 ORDER BY g.id ASC");
         $query->setMaxResults(2);
-        $result =  $query->getSQL();
-dd($result);
+        $result =  $query->getResult();
+
         foreach ($result as &$value)
         {
             $parts = parse_url($value->getUrl());
             if(isset($parts['path'])) {
+                dd($parts['path']);
                 $userNameId = str_replace("/", "", $parts['path']);
                 $curl = curl_init('https://www.instagram.com/' . trim($userNameId) . '/');
 
