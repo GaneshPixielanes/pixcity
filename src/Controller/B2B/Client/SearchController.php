@@ -50,7 +50,8 @@ class SearchController extends SearchPageController
         $users = $userRepo->searchClients($filters, $limit, $page);
 
         $filters['cm_count'] = $userRepo->searchCommunityManagerCount($filters, $limit, $page);
-        $filters['total_pages'] = ceil($filters['cm_count']/$limit);
+//        $filters['total_pages'] = ceil($filters['cm_count']/$limit);
+        $filters['total_pages'] = $filters['cm_count'];
 
         $regions = $regionRepo->findAll();
         $skills = $skillRepo->findAll();
