@@ -183,7 +183,9 @@
             {#            </div>#}
 
             <!-- Blog pagination -->
-
+            {{ dump(user | length) }}
+            {{ dump(filters['total_pages']) }}
+            {{ dump(filters['page']) }}
             {% if users | length > 11 %}
 
                 {% if filters['total_pages'] != 0 %}

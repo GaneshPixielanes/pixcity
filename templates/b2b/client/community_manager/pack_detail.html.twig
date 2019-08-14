@@ -32,7 +32,28 @@
 {% else %}
     {% set loginBy = 'not-login'   %}
 {% endif %}
+<!-- CM alert modal -->
+<div class="modal fade alert-modal" id="cmErrorModal" tabindex="-1" role="dialog" aria-labelledby="cmErrorModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">Alert</h5>
 
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        Vous devez être connecté en tant que client pour choisir ce pack”
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- CM alert modal ends -->
 <div class="container-fluid bg-dashboard">
     <div class="row">
         <!-- Pack single contents -->
@@ -329,7 +350,9 @@
                             {% else %}
 
                                 <a href="/connexion"
-                                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
+                                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack"
+                                {% if loginBy == 'login_cm' %}data-toggle="modal" data-target="#cmErrorModal" {% endif %}
+                                >CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
 
                             {% endif %}
                         </div>
