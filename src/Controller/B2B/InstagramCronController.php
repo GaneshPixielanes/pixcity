@@ -31,9 +31,8 @@ class InstagramCronController extends Controller
             $parts = parse_url($value->getUrl());
             if(isset($parts['path'])) {
                 $userNameId = str_replace("/", "", $parts['path']);
-                dd($userNameId);
                 $curl = curl_init('https://www.instagram.com/' . trim($userNameId) . '/');
-
+                dd($curl);
                 $filename = "profile_" . trim($userNameId);
                 $this->curlFunction($curl, $filename);
 
