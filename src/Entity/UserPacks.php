@@ -111,6 +111,11 @@ class UserPacks
      */
     private $packRegions;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $agreement;
+
 
 
     public function __construct()
@@ -363,6 +368,18 @@ class UserPacks
     public function addPackRegions(Region $region)
     {
         $this->packRegions[] = $region;
+    }
+
+    public function getAgreement(): ?string
+    {
+        return $this->agreement;
+    }
+
+    public function setAgreement(?string $agreement): self
+    {
+        $this->agreement = $agreement;
+
+        return $this;
     }
 
 }

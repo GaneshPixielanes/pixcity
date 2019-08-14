@@ -104,6 +104,11 @@ class PackController extends Controller
             $pack->setMarginValue($total_value - $base_price);
             $pack->setTotalPrice($total_value);
 //            $pack->setActive(1);
+            $agreement = $this->renderView('b2b/shared/_pack_agreement.html.twig',
+                [
+                    'pack' => $pack
+                ]);
+            $pack->setAgreement($agreement);
 
             $em->persist($pack);
 
