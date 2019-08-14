@@ -24,8 +24,8 @@ class InstagramCronController extends Controller
                     INNER JOIN App:UserInstagramDetailsApi as uig WITH g.user = uig.user
                     WHERE g.type='instagram' AND uig.processed = 0 ORDER BY g.id ASC");
         $query->setMaxResults(2);
-        $result =  $query->getResult();
-
+        $result =  $query->getSQL();
+dd($result);
         foreach ($result as &$value)
         {
             $parts = parse_url($value->getUrl());
