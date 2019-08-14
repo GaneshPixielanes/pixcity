@@ -36,7 +36,7 @@ class InstagramCronController extends Controller
                 $this->curlFunction($curl, $filename);
 
                 $profileDataArr = $this->scrape_insta($filename);
-dd($profileDataArr);
+
                 if ($profileDataArr != "") {
                     $full_name = $profileDataArr['entry_data']['ProfilePage'][0]['graphql']['user']['full_name'];
                     $followers = $profileDataArr['entry_data']['ProfilePage'][0]['graphql']['user']['edge_followed_by']['count'];
@@ -90,6 +90,7 @@ dd($profileDataArr);
     function scrape_insta($filename) {
         $insta_source = file_get_contents($filename.".html");
         $shards = explode('window._sharedData = ', $insta_source);
+        dd($shards[1]);
         if(! isset($shards[1])){
             return "";
         }else {
