@@ -90,7 +90,6 @@ class InstagramCronController extends Controller
     function scrape_insta($filename) {
         $insta_source = file_get_contents($filename.".html");
         $shards = explode('window._sharedData = ', $insta_source);
-        dd($shards[1]);
         if(! isset($shards[1])){
             return "";
         }else {
