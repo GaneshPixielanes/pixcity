@@ -37,7 +37,7 @@ class InstagramCronController extends Controller
                 $this->curlFunction($curl, $filename);
 
                 $profileDataArr = $this->scrape_insta($filename);
-
+dd($profileDataArr);
                 if ($profileDataArr != "") {
                     $full_name = $profileDataArr['entry_data']['ProfilePage'][0]['graphql']['user']['full_name'];
                     $followers = $profileDataArr['entry_data']['ProfilePage'][0]['graphql']['user']['edge_followed_by']['count'];
@@ -50,7 +50,6 @@ class InstagramCronController extends Controller
                     $userInstagram = $userInstagramTbl->findOneBy(['user' => $value->getUser()]);
 
                     if($userInstagram == null){
-                        echo 'abc';
                         $userInstagram = new UserInstagramDetailsApi();
                         $userInstagram->setNoOfPosts($totalPost);
                         $userInstagram->setNoOfFollowers($followers);
@@ -59,7 +58,6 @@ class InstagramCronController extends Controller
                         $userInstagram->setName($full_name);
                         $userInstagram->setProcessed(1);
                     }else{
-                        echo 'def';
                         $userInstagram->setNoOfPosts($totalPost);
                         $userInstagram->setNoOfFollowers($followers);
                         $userInstagram->setNoOfFollowed($following);
