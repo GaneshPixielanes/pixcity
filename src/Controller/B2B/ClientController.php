@@ -20,6 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -31,6 +32,12 @@ use Symfony\Component\HttpFoundation\Cookie;
  */
 class ClientController extends Controller
 {
+
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
     /**
      * @Route("profil",name="profile")
      */
@@ -70,6 +77,12 @@ class ClientController extends Controller
             if($filesystem->exists('uploads/clients/'.$user->getProfilePhoto()) && $user->getProfilePhoto() != ''){
                 $filesystem->copy('uploads/clients/'.$user->getProfilePhoto(),'uploads/clients/'.$user->getId().'/'.$user->getProfilePhoto());
             }
+
+            if($this->session->has('login_by')){
+                $this->session->remove('login_by');
+                $this->session->set('login_by',['type' => 'login_client','entity' => $user]);
+            }
+
 
 
             return $this->redirect('/client/index');
