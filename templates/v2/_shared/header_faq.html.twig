@@ -1,35 +1,47 @@
+{% if app.session.has('login_by')  %}
+	{% set loginDetails = app.session.get('login_by')   %}
+	{% set loginBy = loginDetails['type'] %}
+{% else %}
+	{% set loginBy = 'not-login'   %}
+{% endif %}
 <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
 	<div class="container">
 		<a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}">
 			<img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
+
+
 		<div class="col-3 ml-auto social-mobile">
 			<div class="row">
 				<div class="col-6 social-mobile-btn">
-					<a href="javascript:;" title="Facebook">
+					<a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
 						<i class="fab fa-facebook-f"></i>
 					</a>
 				</div>
 				<div class="col-6 social-mobile-btn">
-					<a href="javascript:;" title="Instagram">
+					<a href="http://instagram.com/pix_city" title="Instagram"  target="_blank">
 						<i class="fab fa-instagram"></i>
 					</a>
 				</div>
 			</div>
 		</div>
+
+
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-			<!-- <span class="navbar-toggler-icon"></span> -->
 			<img src="{{ absolute_url(asset('build/images/menu.svg')) }}" />
 		</button>
-		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 
-            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+
+
+
+		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+			{% if loginBy == 'not-login' %}
 				<div class="col-md-5 ml-auto mt-2 mt-lg-0">
 					<div class="row">
 						<div class="col-md-6">
-							<button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" id="devenir-city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+							<button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit" id="pc-city-maker-lp"><span class="text">Devenir City-Maker </span><i class="fas fa-user-plus"></i></button>
 						</div>
 						<div class="col-md-4">
-							<button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="on-login-click"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
+							<button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="pc-login-page"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
 						</div>
 						<div class="col-md-1 col-6 social-btn">
 							<a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
@@ -43,26 +55,127 @@
 						</div>
 					</div>
 				</div>
-            {% else %}
-				<div class="col-md-5 ml-auto mt-2 mt-lg-0">
-					<div class="row">
-						<div class="offset-md-5 col-md-5">
-							<a class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" href="/client/logout"><span class="text">Déconnexion</span><i class="fas fa-sign-in-alt"></i></a>
-						</div>
-						<div class="col-md-1 col-6 social-btn">
-							<a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
-								<i class="fab fa-facebook-f"></i>
-							</a>
-						</div>
-						<div class="col-md-1 col-6 social-btn">
-							<a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
-								<i class="fab fa-instagram"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-            {% endif %}
+			{% else %}
+				{% if loginBy == 'login_cm' %}
+					<div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
+						<div class="row">
+							<div class="col-md-8 logged-profile-menu-hover">
+								<a href="javascript:;" class="logged-profile">
+									<img src="{% if app.user.getAvatarUrl() is defined and app.user.getAvatarUrl() is not null %}{{ app.user.getAvatarUrl() | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="rounded-circle" alt="{{app.user }}">
+								</a>
+								<div class="logged-dropdown-menu">
+									<div class="card">
+										<div class="card-body p-0">
+											{% if app.user.viewMode == "pixie" %}
+												<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CITY-MAKER <i class="fas fa-retweet"></i></a>
+												<a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
+												<a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i>Cards en attente</a>
+												<a class="dropdown-item" href="{{ path('front_pixie_account_cards_validated') }}"><i class="far fa-check-circle"></i>Cards Validees</a>
+												<a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i>Mes rémunérations</a>
+												<a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
+												<a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
+												{% if app.user.getB2bCmApproval() != "0" %}
+													{% if app.user.getB2bCmApproval() == "2" or app.user.getB2bCmApproval() == null %}
+														{% if app.user.getCmUpgradeB2bDate()  != null %}
+															<a class="dropdown-item user-link p-3 d-flex" href="/city-maker/compte/parametres">
+																<div class="col-3 pl-0">
+																	<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
+																</div>
+																<div class="col-6">
+																	<div class="row">
+																		<div class="col-12">Espace Services</div>
+																		<div class="col-12">
+																			<img src="/assets/images/footer-logo-main.svg" width="58">
+																		</div>
+																	</div>
+																</div>
+																<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+																	<i class="fas fa-arrow-right"></i>
+																</div>
+															</a>
+														{% endif %}
+													{% else %}
+														<a class="dropdown-item user-link-logged p-3 d-flex" href="{{ url('b2b_community_manager_index') }}">
+															<div class="col-9 pl-0">
+																Espace <img src="/assets/images/footer-logo-main.svg" width="58"> Services
+															</div>
+															<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+																<i class="fas fa-arrow-right"></i>
+															</div>
+														</a>
+													{% endif %}
+												{% endif %}
+											{% else %}
 
+												<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE VOYAGEUR <i class="fas fa-retweet"></i></a>
+												<a class="dropdown-item" href="{{ path('front_user_account_cards') }}"><i class="fas fa-cog"></i>Mes Cards</a>
+												<a class="dropdown-item" href="{{ path('front_user_account_agendas') }}"><i class="far fa-calendar-alt"></i>Mes Agendas</a>
+												<a class="dropdown-item" href="{{ path('front_user_account_pixies') }}"><i class="far fa-user"></i>Mes City-makers Favoris</a>
+												<a class="dropdown-item" href="{{ path('front_user_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
+												<a class="dropdown-item" href="{{ path('front_signout') }}"><i class="fas fa-power-off"></i>Deconnexion</a>
+
+											{% endif %}
+
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-md-2 col-6 social-btn logged-social-btn">
+								<a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+									<i class="fab fa-facebook-f"></i>
+								</a>
+							</div>
+							<div class="col-md-2 col-6 social-btn logged-social-btn">
+								<a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+									<i class="fab fa-instagram"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				{% elseif loginBy == 'login_client'  %}
+
+					<div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
+						<div class="row">
+							<div class="col-md-8 logged-profile-menu-hover">
+								<a href="javascript:;" class="logged-profile">
+									{% if loginDetails['entity'].profilePhoto is defined and loginDetails['entity'].profilePhoto is not null  %}
+										<img  src="{{ asset('/uploads/clients/'~loginDetails['entity'].id~'/'~loginDetails['entity'].profilePhoto) | imagine_filter('user_avatar') }}"  class="rounded-circle"/>
+									{% else %}
+										<img src="/uploads/avatars/default-avatar.png" alt=""  class="rounded-circle"/>
+									{% endif %}
+
+								</a>
+								<div class="logged-dropdown-menu">
+									<div class="card">
+										<div class="card-body p-0">
+											<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CLIENT &nbsp;<i class="fas"></i></a>
+											<a class="dropdown-item" href="{{ path('b2b_client_main_index') }}"><i class="fas fa-home"></i>Accueil</a>
+											<a class="dropdown-item" href="{{ path('b2b_client_mission_list') }}"><i class="fas fa-briefcase"></i>Mes missions</a>
+											<a class="dropdown-item" href="{{ path('client_transaction_index') }}"><i class="fas fa-file-invoice-dollar"></i>Facturation</a>
+											<a class="dropdown-item" href="{{ path('client_email_inbox') }}"><i class="fas fa-envelope"></i>Email</a>
+											<a class="dropdown-item" href="/client/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2 col-6 social-btn logged-social-btn">
+								<a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+									<i class="fab fa-facebook-f"></i>
+								</a>
+							</div>
+							<div class="col-md-2 col-6 social-btn logged-social-btn">
+								<a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+									<i class="fab fa-instagram"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+
+
+				{% endif %}
+
+			{% endif %}
 		</div>
 	</div>
 </nav>

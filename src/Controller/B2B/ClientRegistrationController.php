@@ -24,6 +24,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -34,6 +35,11 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 class ClientRegistrationController extends AbstractController
 {
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
     /**
      * @Route("register", name="register")
      */
@@ -103,6 +109,8 @@ class ClientRegistrationController extends AbstractController
             $em->persist($client);
             $em->flush();
 
+            // Set the user session
+            $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
             // Move profile photo to the right directory
             if($filesystem->exists('uploads/clients/'.$client->getProfilePhoto()) && $client->getProfilePhoto() != ''){
                 $filesystem->copy('uploads/clients/'.$client->getProfilePhoto(),'uploads/clients/'.$client->getId().'/'.$client->getProfilePhoto());
@@ -131,7 +139,7 @@ class ClientRegistrationController extends AbstractController
 
             $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
             $this->container->get('security.token_storage')->setToken($token);
-            $this->container->get('session')->set('_security_main', serialize($token));
+            $this->container->get('session')->set('_security_client_area', serialize($token));
 
             return $this->render('b2b/client_registration/thanks-you.html.twig');
 

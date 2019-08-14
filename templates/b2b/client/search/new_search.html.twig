@@ -183,7 +183,9 @@
             {#            </div>#}
 
             <!-- Blog pagination -->
-            {% if users | length > 12 %}
+
+            {% if users | length > 11 %}
+
                 {% if filters['total_pages'] != 0 %}
                     <div class="pagination-container my-5">
                         <div class="container">
@@ -191,13 +193,13 @@
                                 <div class="col-md-12">
                                     <ul class="pagination justify-content-center">
                                         {% if filters['page'] != 1 %}
-                                            <li class="page-item disabled"><a class="page-link" href="/client/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
+                                            <li class="page-item disabled"><a class="page-link" href="/freelance/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
                                         {% endif %}
                                         {% for i in 1..filters['total_pages'] %}
-                                            <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/client/search?page={{ i }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}">{{ i }}</a></li>
+                                            <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/freelance/search?page={{ i }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}">{{ i }}</a></li>
                                         {% endfor %}
                                         {% if filters['page'] != filters['total_pages'] %}
-                                            <li class="page-item"><a class="page-link" href="/client/search?page={{ filters['page']+1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
+                                            <li class="page-item"><a class="page-link" href="/freelance/search?page={{ filters['page']+1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
                                         {% endif %}
                                     </ul>
                                 </div>
