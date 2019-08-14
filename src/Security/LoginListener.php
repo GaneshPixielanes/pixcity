@@ -29,7 +29,7 @@ class LoginListener
         $user = $event->getAuthenticationToken()->getUser();
 
         if($user instanceof User){
-            $this->session->set('login_by',['type' => 'login_cm','entity' => $user,'image' => $user->getAvatar()->getName()]);
+            $this->session->set('login_by',['type' => 'login_cm','entity' => $user,'image' => $user->getAvatar()->getName(),'view_mode' => $user->getViewMode()]);
 
             //----------------------------------------
             // After login actions

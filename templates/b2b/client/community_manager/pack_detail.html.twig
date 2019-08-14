@@ -345,13 +345,13 @@
                             {% set slug = pack.title | lower | replace({' ':'-'}) %}
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                 <a href="{{ url('b2b_client_pack_select',{'slug':slug,'id':pack.id}) }}"
-                                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
+                                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
                             {% else %}
 
                                 <a href="/connexion"
                                    class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack"
                                 {% if loginBy == 'login_cm' %}data-toggle="modal" data-target="#cmErrorModal" {% endif %}
-                                >CHOISIR CE PACK{{ is_granted('IS_AUTHENTICATED_FULLY') }}</a>
+                                >CHOISIR CE PACK</a>
 
                             {% endif %}
                         </div>
