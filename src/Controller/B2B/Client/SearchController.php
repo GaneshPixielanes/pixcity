@@ -23,7 +23,7 @@ class SearchController extends SearchPageController
     public function index(Request $request, UserRepository $userRepo, RegionRepository $regionRepo, SkillRepository $skillRepo)
     {
         $searchParams = $this->getSearchParams($request);
-        $limit = 6;
+        $limit = 12;
         $page = is_null($request->get('page'))?1:$request->get('page');
 
         if($searchParams['text']!="")
@@ -50,8 +50,7 @@ class SearchController extends SearchPageController
         $users = $userRepo->searchClients($filters, $limit, $page);
 
         $filters['cm_count'] = $userRepo->searchCommunityManagerCount($filters, $limit, $page);
-//        $filters['total_pages'] = ceil($filters['cm_count']/$limit);
-        $filters['total_pages'] = $filters['cm_count'];
+        $filters['total_pages'] = ceil($filters['cm_count']/$limit);
 
         $regions = $regionRepo->findAll();
         $skills = $skillRepo->findAll();
