@@ -10,7 +10,7 @@ $(document).on('click','.pack-save-changes', function (e) {
 
 });
 // Edit the pack
-$('body').on('click', '.edit-the-pack, .add-package-to-list > a, .add-package', function () {
+$('body').on('click', '.edit-the-pack, .add-package', function () {
 
     var pack_id = $(this).attr('data-id');
     if ($(this).hasClass('edit-the-pack')) {
@@ -198,5 +198,10 @@ $(document).on('change','#acceptPackAgreement', function () {
     }catch (e) {
         // DO SOMETHING
     }
+});
+
+$(document).on('input','#pack_title', function()
+{
+   $('.pack-title').html($(this).val());
 });
 
