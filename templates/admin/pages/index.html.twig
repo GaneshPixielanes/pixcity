@@ -12,6 +12,7 @@
             <th scope="col">#</th>
             <th scope="col">{{ 'label.slug'|trans }}</th>
             <th scope="col">{{ 'label.name'|trans }}</th>
+            <th scope="col">{{ 'label.platform'|trans }}</th>
             <th scope="col">{{ 'label.created_at'|trans }}</th>
             <th scope="col">{{ 'label.updated_at'|trans }}</th>
             <th scope="col" class="text-center nosort"></th>
@@ -23,6 +24,13 @@
                 <td>{{ item.id }}</td>
                 <td>{{ item.slug }}</td>
                 <td>{{ item.name }}</td>
+                <td>
+                    {% if item.platform == 0 %}
+                        B2C
+                    {% else %}
+                        B2B
+                    {% endif %}
+                </td>
                 <td>{{ item.createdAt|localizeddate('medium', 'short') }}</td>
                 <td>{{ item.updatedAt|localizeddate('medium', 'short') }}</td>
 
