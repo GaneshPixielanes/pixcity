@@ -1,49 +1,3 @@
-<<<<<<< HEAD
-{% extends 'b2b/client/base.html.twig' %}
-{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
-{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
-{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
-
-{% import 'b2b/shared/macros.html.twig' as macros %}
-{% block title %}Client | Home {% endblock %}
-{% block stylesheets %}
-
-{% endblock %}
-{% block newbody %}
-    <style>
-        .mission-preview-container, .mission-pyament-acknowledgement-container, .pack-creation-edition-container, .pack-preview-containe{
-            z-index: 1010!important;
-        }
-    </style>
-    <!-- Pack single contents -->
-    <div class="pack-creation-edition-container col-sm-12 p-0 vh-100 d-block">
-        <!-- <div class="overlay-dashboard"></div> -->
-
-        <div class="col-sm-12 pack-creation-content bg-white p-0 position-fixed w-100">
-            <div
-                    class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
-                <img src="/uploads/pack/banner/{{ pack.bannerImage }}" class="cover-image w-100 h-100" alt="Pack Cover Image">
-            </div>
-            <div class="pack-details p-3">
-                <div class="pack-overview-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
-                    <p class="text-textgray text-12 mb-0">{{ pack.packSkill | upper }}</p>
-                    <h5 class="text-darkgray mb-3">{{ pack.title }}</h5>
-                    <p class="fz-12">
-                        {{ pack.description | raw }}
-                    </p>
-                </div>
-                {% if pack.userPackMedia | length %}
-                <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
-                    <h5 class="text-darkgray mb-0">Photos</h5>
-                    <div class="pack-photos">
-                        <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
-                            {% for media in pack.userPackMedia %}
-                                <li class="pack-photos-list-item d-inline-flex">
-                                    <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" alt="Pack photo 1">
-                                </li>
-                            {% endfor %}
-                        </ul>
-=======
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,7 +54,7 @@
                                 </a>
                             </div>
                         </div>
->>>>>>> 5b14b89ffebf9ae96704e6d7736757619d6a5b1a
+
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                         <!-- <span class="navbar-toggler-icon"></span> -->
