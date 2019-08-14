@@ -8,75 +8,75 @@
 
 {% block body %}
 
+{% embed 'v2/_shared/header_faq.html.twig' %}{% endembed %}
+{#    <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">#}
+{#        <div class="container">#}
+{#            <a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}">#}
+{#                <img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>#}
+{#            <div class="col-3 ml-auto social-mobile">#}
+{#                <div class="row">#}
+{#                    <div class="col-6 social-mobile-btn">#}
+{#                        <a href="javascript:;" title="Facebook">#}
+{#                            <i class="fab fa-facebook-f"></i>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="col-6 social-mobile-btn">#}
+{#                        <a href="javascript:;" title="Instagram">#}
+{#                            <i class="fab fa-instagram"></i>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">#}
+{#                <!-- <span class="navbar-toggler-icon"></span> -->#}
+{#                <img src="{{ absolute_url(asset('build/images/menu.svg')) }}" />#}
+{#            </button>#}
+{#            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">#}
 
-    <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
-        <div class="container">
-            <a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}">
-                <img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
-            <div class="col-3 ml-auto social-mobile">
-                <div class="row">
-                    <div class="col-6 social-mobile-btn">
-                        <a href="javascript:;" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                    </div>
-                    <div class="col-6 social-mobile-btn">
-                        <a href="javascript:;" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                <!-- <span class="navbar-toggler-icon"></span> -->
-                <img src="{{ absolute_url(asset('build/images/menu.svg')) }}" />
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+{#                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}#}
+{#                    <div class="col-md-5 ml-auto mt-2 mt-lg-0">#}
+{#                        <div class="row">#}
+{#                            <div class="col-md-6">#}
+{#                                <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" id="devenir-city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>#}
+{#                            </div>#}
+{#                            <div class="col-md-4">#}
+{#                                <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="on-login-click"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>#}
+{#                            </div>#}
+{#                            <div class="col-md-1 col-6 social-btn">#}
+{#                                <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">#}
+{#                                    <i class="fab fa-facebook-f"></i>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="col-md-1 col-6 social-btn">#}
+{#                                <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">#}
+{#                                    <i class="fab fa-instagram"></i>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% else %}#}
+{#                    <div class="col-md-5 ml-auto mt-2 mt-lg-0">#}
+{#                        <div class="row">#}
+{#                            <div class="offset-md-5 col-md-5">#}
+{#                                <a class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" href="/client/logout"><span class="text">Déconnexion</span><i class="fas fa-sign-in-alt"></i></a>#}
+{#                            </div>#}
+{#                            <div class="col-md-1 col-6 social-btn">#}
+{#                                <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">#}
+{#                                    <i class="fab fa-facebook-f"></i>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="col-md-1 col-6 social-btn">#}
+{#                                <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">#}
+{#                                    <i class="fab fa-instagram"></i>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endif %}#}
 
-                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <div class="col-md-5 ml-auto mt-2 mt-lg-0">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" id="devenir-city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="on-login-click"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
-                            </div>
-                            <div class="col-md-1 col-6 social-btn">
-                                <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                            </div>
-                            <div class="col-md-1 col-6 social-btn">
-                                <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="col-md-5 ml-auto mt-2 mt-lg-0">
-                        <div class="row">
-                            <div class="offset-md-5 col-md-5">
-                                <a class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" href="/client/logout"><span class="text">Déconnexion</span><i class="fas fa-sign-in-alt"></i></a>
-                            </div>
-                            <div class="col-md-1 col-6 social-btn">
-                                <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                            </div>
-                            <div class="col-md-1 col-6 social-btn">
-                                <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-            </div>
-        </div>
-    </nav>
+{#            </div>#}
+{#        </div>#}
+{#    </nav>#}
     {{ form_start(form) }}
     {{ form_row(form._token) }}
     <div class="login-wrap">
