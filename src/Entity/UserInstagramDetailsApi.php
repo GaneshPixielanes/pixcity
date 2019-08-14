@@ -57,6 +57,11 @@ class UserInstagramDetailsApi
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $name;
+    /**
+     * @ORM\Column(type="smallint", nullable=false, options={"default" : 0})
+     */
+    private $processed;
+
 
     public function getId(): ?int
     {
@@ -158,4 +163,17 @@ class UserInstagramDetailsApi
 
         return $this;
     }
+
+    public function getProcessed(): ?int
+    {
+        return $this->processed;
+    }
+
+    public function setProcessed(?int $processed): self
+    {
+        $this->processed = $processed;
+
+        return $this;
+    }
+
 }
