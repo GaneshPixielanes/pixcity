@@ -180,6 +180,7 @@
 {{ parent() }}
 <script>
 
+<<<<<<< HEAD
     $(document).ready(function () {
        $('.preview-invoice').on('click', function () {
             var id =$(this).attr('data-id');
@@ -208,51 +209,63 @@
        });
     });
 
+=======
+>>>>>>> 5ba4ecdc68c03beec735448b64e89725124c15f2
     $(document).on('click',
-                'a.close-invoice-preview, a.preview-invoice, a.validate-quote, a.validate-the-quote, a.check-the-quote',
-                function () {
-                    if ($(this).is('a.preview-invoice')) {
-                        $('.validate-the-quote, .dash-right').fadeOut()
-                        $('.facturation-show-container, .validate-quote').fadeIn();
-                    } else if ($(this).is('a.close-invoice-preview')) {
-                        $('.facturation-show-container').fadeOut();
-                        $('.validate-the-quote, .dash-right').fadeIn()
-                    } else if ($(this).is('a.validate-quote')) {
-                        $('.validate-quote-toast').toast('show').css({
-                            'z-index': '1050'
-                        });
-                    } else if ($(this).is('a.validate-the-quote')) {
-                        $('.facturation-show-container').fadeOut()
-                        $('.dash-right, .validate-quote').fadeIn('fast', function(){
-                            $('.invoice-signed-toast').toast('show').css({
-                                'z-index': '1050'
-                            });
-                        })
-                    } else if ($(this).is('a.check-the-quote')) {
-                        $('.dash-right, .validate-quote').fadeOut();
+        'a.close-invoice-preview, a.preview-invoice, a.validate-quote, a.validate-the-quote, a.check-the-quote',
+        function () {
+            if ($(this).is('a.preview-invoice')) {
+                $('.validate-the-quote, .dash-right').fadeOut()
+                $('.facturation-show-container, .validate-quote').fadeIn();
+            } else if ($(this).is('a.close-invoice-preview')) {
+                $('.facturation-show-container').fadeOut();
+                $('.validate-the-quote, .dash-right').fadeIn()
+            } else if ($(this).is('a.validate-quote')) {
+                $('.validate-quote-toast').toast('show').css({
+                    'z-index': '1050'
+                });
+            } else if ($(this).is('a.validate-the-quote')) {
+                $('.facturation-show-container').fadeOut()
+                $('.dash-right, .validate-quote').fadeIn('fast', function(){
+                    $('.invoice-signed-toast').toast('show').css({
+                        'z-index': '1050'
+                    });
+                })
+            } else if ($(this).is('a.check-the-quote')) {
+                $('.dash-right, .validate-quote').fadeOut();
 
-                        var id = $(this).attr('data-id');
+                var id = $(this).attr('data-id');
 
-                        $.ajax({
-                            url:'/city-maker/factures/preview/'+id,
-                            type:'GET',
-                            dataType:'json',
-                            success: function(data){
-                                console.log(data);
-                                $("#invoice-path").attr('src',data.url);
+                $.ajax({
+                    url:'/city-maker/factures/preview/'+id,
+                    type:'GET',
+                    dataType:'json',
+                    success: function(data){
+                        console.log(data);
+                        $("#invoice-path").attr('src',data.url);
 
-                                $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function () {
-                                    // $('.to-validate-quote-toast').toast('show').css({
-                                    //     'z-index': '1050'
-                                    // });
-                                });
-
-                                return false;
-                            }
+                        $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function () {
+                            // $('.to-validate-quote-toast').toast('show').css({
+                            //     'z-index': '1050'
+                            // });
                         });
 
+                        return false;
+                    }
+                });
 
+
+            }
+        });
+
+
+ </script>
+
+<<<<<<< HEAD
                     }
                 })
 </script>
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> 5ba4ecdc68c03beec735448b64e89725124c15f2
