@@ -139,7 +139,7 @@ class ClientRegistrationController extends AbstractController
 
             $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
             $this->container->get('security.token_storage')->setToken($token);
-            $this->container->get('session')->set('_security_main', serialize($token));
+            $this->container->get('session')->set('_security_client_area', serialize($token));
 
             return $this->render('b2b/client_registration/thanks-you.html.twig');
 

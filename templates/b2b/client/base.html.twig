@@ -133,7 +133,7 @@
                                          <div class="logged-dropdown-menu">
                                              <div class="card">
                                                  <div class="card-body p-0">
-                                                     {% if loginDetails['entity'].viewMode == "pixie" %}
+                                                     {% if loginDetails['view_mode'] == "pixie" %}
                                                          <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CITY-MAKER <i class="fas fa-retweet"></i></a>
                                                          <a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
                                                          <a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i>Cards en attente</a>
