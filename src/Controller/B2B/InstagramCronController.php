@@ -32,12 +32,11 @@ class InstagramCronController extends Controller
             if(isset($parts['path'])) {
                 $userNameId = str_replace("/", "", $parts['path']);
                 $curl = curl_init('https://www.instagram.com/' . trim($userNameId) . '/');
-                dd($curl);
                 $filename = "profile_" . trim($userNameId);
                 $this->curlFunction($curl, $filename);
 
                 $profileDataArr = $this->scrape_insta($filename);
-
+dd($profileDataArr);
                 if ($profileDataArr != "") {
                     $full_name = $profileDataArr['entry_data']['ProfilePage'][0]['graphql']['user']['full_name'];
                     $followers = $profileDataArr['entry_data']['ProfilePage'][0]['graphql']['user']['edge_followed_by']['count'];
