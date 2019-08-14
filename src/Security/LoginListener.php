@@ -91,7 +91,7 @@ class LoginListener
                 $this->em->flush();
 
             }
-        }else{
+        }elseif($user instanceof Client){
             $this->session->set('login_by',['type' => 'login_client','entity' => $user]);
         }
     }
