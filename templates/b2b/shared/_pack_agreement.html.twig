@@ -1,157 +1,207 @@
 <div class="container">
-    <p class="row">
-    <p>
-        Le mandat de facturation est un contrat par lequel une entreprise (en l’espèce Pix.city Services) – appelée mandant – donne l'autorisation à une autre entreprise – appelée mandataire (en l’espèce le city-maker) – d'émettre des factures en son nom et pour son compte.
-    </p>
-    <p>
-        Le mandant est redevable de la TVA selon ses conditions habituelles.
-    </p>
-    <p>
-        Vous trouverez ci-dessous le modèle du mandat de facturation proposé à chaque city-maker dans son espace en ligne.
-    </p>
-    <p>
-    En tant que city-maker vous devez accepter ce mandat de facturation pour que Pix. City services puisse éditer la facture lorsque vous déclarer la mission terminée et que le client a aussi validé cette fin de mission.
-    </p>
-    <hr/>
-    <p>
-        <div class="align-center">
-        MANDAT DE FACTURATION pour les missions liées au pack : <strong class="pack-title">{% if pack.title is defined %}{{ pack.title }}{% endif %}</strong>
-        </div>
-    </p>
-    <p>
+    <div class="row">
         <p>
-            Le présent mandat de facturation est conclu entre :
+            Le mandat de facturation est un contrat par lequel une entreprise (en l’espèce Pix.city Services) – appelée
+            mandant – donne l'autorisation à une autre entreprise – appelée mandataire (en l’espèce le city-maker) –
+            d'émettre des factures en son nom et pour son compte.
         </p>
-        <ul>
-            <li>
-                • La société PIX.CITY Services, SAS, immatriculée au RCS de Paris sous le n° 848 388 591 dont le siège social est situé 8 rue des Pâtures - 75016 PARIS
-            </li>
-        </ul>
-        Et
-        <ul>
-            <li>
-                • Le Freelance, utilisateur du service de Pix.City Services  <strong>{{ app.user }}</strong>, né(e) le <strong>{{ app.user.birthdate | date('d-M-Y') }}</strong> en qualité de <strong>{{ ('label.statusname.' ~ app.user.pixie.billing.status)|trans }}</strong>.
-            </li>
-        </ul>
-    </p>
-    <p>
-        La Société propose d’établir et d’émettre les factures de prestation de services au nom et pour le compte des Freelances afin de simplifier la relation entre les utilisateurs.
-    </p>
-    <p>
-        Le Freelance accepte de confier à la Société, dans le respect des règles applicables, l’établissement et l’émission de toutes ses factures de prestation de services aux Clients.
-    </p>
-    <p>
-        <ol>
-            <li>
-                <u>Définitions :</u>
-                <p>
-                    A l’exception des termes expressément définis ci-dessous, les termes débutant par une lettre majuscule ont le sens qui leur est donné dans les Conditions Générales d’Utilisation et de Vente de la Société préalablement acceptées par le Freelance.
-                </p>
-                <p>
-                    Facture : désigne la facture du Freelance relative à une Mission réalisée pour un Client via le site.
-                </p>
-                <p>
-                    Contenu : désigne tous les messages ou informations (texte, image, vidéos, photographies, commentaires, marques, dénominations sociales, etc.), mis en ligne par un utilisateur sur le Site (ex : le détail du pack pour les city-makers).
-                </p>
-                <p>
-                    Mandataire : désigne la Société.
-                </p>
-                <p>
-                    Mandataire : désigne la Société.
+        <p>
+            Le mandant est redevable de la TVA selon ses conditions habituelles.
+        </p>
+        <p>
+            Vous trouverez ci-dessous le modèle du mandat de facturation proposé à chaque city-maker dans son espace en
+            ligne.
+        </p>
+        <p>
+            En tant que city-maker vous devez accepter ce mandat de facturation pour que Pix. City services puisse éditer la
+            facture lorsque vous déclarer la mission terminée et que le client a aussi validé cette fin de mission.
+        </p>
+        <hr/>
+        <p>
+            <div class="align-center">
+                MANDAT DE FACTURATION pour les missions liées au pack :
+                <strong class="pack-title">{% if pack.title is defined %}{{ pack.title }}{% endif %}</strong>
+            </div>
+        </p>
+        <p>
+            <p>
+                Le présent mandat de facturation est conclu entre :
+            </p>
+            <ul>
+                <li>
+                    • La société PIX.CITY Services, SAS, immatriculée au RCS de Paris sous le n° 848 388 591 dont le siège
+                    social est situé 8 rue des Pâtures - 75016 PARIS
+                </li>
+            </ul>
+            Et
+            <ul>
+                <li>
+                    • Le Freelance, utilisateur du service de Pix.City Services <strong>{{ app.user }}</strong>, né(e) le
+                    <strong>{{ app.user.birthdate | date('d-M-Y') }}</strong> en qualité de
+                    <strong>{{ ('label.statusname.' ~ app.user.pixie.billing.status)|trans }}</strong>.
+                </li>
+            </ul>
+        </p>
+        <p>
+            La Société propose d’établir et d’émettre les factures de prestation de services au nom et pour le compte des
+            Freelances afin de simplifier la relation entre les utilisateurs.
+        </p>
+        <p>
+            Le Freelance accepte de confier à la Société, dans le respect des règles applicables, l’établissement et
+            l’émission de toutes ses factures de prestation de services aux Clients.
+        </p>
+        <p>
+            <ol>
+                <li>
+                    <u>Définitions :</u>
 
-                </p>
-                <p>
-                    Objet du Mandat :
-                </p>
-            </li>
-            <li>
-                <u>Objet du Mandat :</u>
-                <p>
-                    Le Mandant confie au Mandataire qui accepte, le mandat d’établir en son nom et pour son compte, toutes les factures originales, initiales et/ou rectificatives, relatives aux Missions réalisées par le Mandant via le Site pour les Clients.
-                </p>
-                <p>
-                    Ce Mandat est établi conformément à la réglementation en vigueur et en particulier aux dispositions de l’article 1984 du code civil et des articles 242 nonies A-I et 289 I-2 du code général des impôts.
-                </p>
-            </li>
-            <li>
-                <u>Durée du Mandat :</u>
-                <p>
-                    Le Mandat prend effet à la date de son acceptation par le Freelance.
-                </p>
-                <p>
-                    Il est conclu pour une durée indéterminée.
-                </p>
-                <p>
-                    Pendant toute la durée du Mandat, le Mandant s'interdit de s'adresser à un autre mandataire pour l'accomplissement de la même opération s’agissant des Missions réalisées via le Site.
-                </p>
-                <p>
-                    Le Mandant pourra révoquer à tout moment le Mandat, sans motif particulier, par lettre recommandée avec demande d’avis de réception adressée au Mandataire. A cet égard, il est rappelé que la conclusion du présent Mandat est une condition d’utilisation du Site. Par conséquent, sa révocation entraînera la clôture du compte du Freelance.
-                </p>
-                <p>
-                    De même, la clôture du compte du Freelance pour quelque raison que ce soit implique la révocation du présent Mandat.
-                </p>
-            </li>
-            <li>
-                <u>Rémunération :</u>
-                <p>
-                    Le Mandat de facturation s’inscrivant dans le cadre des services fournis par la Société sur le site, sa rémunération est incluse dans la commission payable par le Freelance à la Société.
-                </p>
-            </li>
-            <li>
-                <u>Obligations du Mandataire :</u>
-                <p>
-                    Le Mandataire s’engage à établir les factures au nom et pour le compte du Mandant, conformément aux informations données par ce dernier.
-                </p>
-                <p>
-                    Les Factures seront émises dès que la Mission sera validée par le Client/Porteur de Projet et seront adressées à ce dernier par voie électronique.
-                </p>
-                <p>
-                    Le Mandataire remet également simultanément au Mandant une copie de toutes les Factures qu’il émet en son nom et pour son compte.
-                </p>
-                <p>
-                    Le Mandataire s’engage à ce que les Factures portent la mention « Facture établie par [nom de la Société] au nom et pour le compte de [nom/dénomination du Freelance] ».
-                </p>
-                <p>
-                    Dans l’hypothèse d’une demande de rectification de la Facture de la part du Mandant, le Mandataire s’engage à émettre sans délai une Facture rectificative.
-                </p>
-                <p>
-                    S’agissant de la numérotation des Factures, le Mandataire s’engage à utiliser une séquence de numérotation chronologique et continue, distincte pour chaque Mandant ou la numérotation que le Mandant lui indiquera pour que les Factures s’insèrent dans la séquence utilisée par lui au titre des factures qu’il émet lui-même.
-                </p>
-            </li>
-            <li>
-                <u>Obligations du Mandant :</u>
-                <p>
-                    Le Mandant reconnaît conserver l’entière responsabilité de ses obligations légales et fiscales en matière de facturation au titre des Factures originales initiales et/ou rectificatives émises en son nom et pour son compte par le Mandataire, notamment en ce qui concerne ses obligations de déclaration et de paiement en matière de TVA.
-                </p>
-                <p>
-                    En particulier, le Mandant est seul responsable de déterminer les règles applicables à la facturation et de transmettre les informations requises au Mandataire afin qu’il puisse établir des Factures conformes à la réglementation applicable, ces règles dépendant du lieu où est réputée effectuée la prestation de services.
-                </p>
-                <p>
-                    De même, le Mandant demeure redevable de la TVA due, le cas échéant en application de l’article 283 paragraphe 3 du code général des impôts, lorsque celle-ci est facturée à tort.
-                </p>
-                <p>
-                    Aussi, le Mandant s’engage expressément à :
-                    <ul>
-                        <li>communiquer au Mandataire la liste complète des informations devant figurer sur les Factures telles qu’exigées par la réglementation applicable en vigueur ;</li>
-                        <li>verser au Trésor Public la taxe mentionnée sur les Factures établies en son nom et pour son compte ;</li>
-                        <li>réclamer immédiatement le double de la Facture s’il n’a pas été mis à sa disposition par le Mandataire dans les délais et selon les conditions précisées aux présentes ;</li>
-                        <li>signaler toute modification dans les mentions concernant l’identification de son entreprise.</li>
-                    </ul>
-                <p>
-                    Le Mandant bénéficie d’un délai de 3 jours pour contester les informations contenues dans la Facture émise en son nom et pour son compte et en demander la rectification au Mandataire. A défaut de contestation dans ce délai, la Facture est considérée comme acceptée par le Mandant.
-                </p>
-            </li>
-            <li>
-                <u>Modifications :</u>
-                <p>Tout avenant au présent Mandat devra être conclu dans les mêmes formes par toutes personnes dûment habilitées à cet effet par les parties.</p>
-            </li>
-            <li>
-                <u>Droit applicable et juridiction compétente :</u>
-                <p>
-                    Le présent Mandat est soumis au droit français. Tout litige relatif à leur formation, conclusion, interprétation et/ou exécution relève de la compétence exclusive des juridictions dans le ressort de la Cour d’appel de Paris.
-                </p>
-            </li>
-        </ol>
-    </p>
+                    <p>
+                        A l’exception des termes expressément définis ci-dessous, les termes débutant par une lettre majuscule ont le
+                        sens qui leur est donné dans les Conditions Générales d’Utilisation et de Vente de la Société préalablement
+                        acceptées par le Freelance.
+                    </p>
+                    <p>
+                        Facture : désigne la facture du Freelance relative à une Mission réalisée pour un Client via le site.
+                    </p>
+                    <p>
+                        Contenu : désigne tous les messages ou informations (texte, image, vidéos, photographies, commentaires, marques,
+                        dénominations sociales, etc.), mis en ligne par un utilisateur sur le Site (ex : le détail du pack pour les
+                        city-makers).
+                    </p>
+                    <p>
+                        Mandataire : désigne la Société.
+                    </p>
+                    <p>
+                        Mandataire : désigne la Société.
+
+                    </p>
+                    <p>
+                        Objet du Mandat :
+                    </p>
+                </li>
+                <li>
+                    <u>Objet du Mandat :</u>
+                    <p>
+                        Le Mandant confie au Mandataire qui accepte, le mandat d’établir en son nom et pour son compte, toutes les
+                        factures originales, initiales et/ou rectificatives, relatives aux Missions réalisées par le Mandant via le
+                        Site pour les Clients.
+                    </p>
+                    <p>
+                        Ce Mandat est établi conformément à la réglementation en vigueur et en particulier aux dispositions de
+                        l’article 1984 du code civil et des articles 242 nonies A-I et 289 I-2 du code général des impôts.
+                    </p>
+                </li>
+                <li>
+                    <u>Durée du Mandat :</u>
+                    <p>
+                        Le Mandat prend effet à la date de son acceptation par le Freelance.
+                    </p>
+                    <p>
+                        Il est conclu pour une durée indéterminée.
+                    </p>
+                    <p>
+                        Pendant toute la durée du Mandat, le Mandant s'interdit de s'adresser à un autre mandataire pour
+                        l'accomplissement de la même opération s’agissant des Missions réalisées via le Site.
+                    </p>
+                    <p>
+                        Le Mandant pourra révoquer à tout moment le Mandat, sans motif particulier, par lettre recommandée avec
+                        demande d’avis de réception adressée au Mandataire. A cet égard, il est rappelé que la conclusion du présent
+                        Mandat est une condition d’utilisation du Site. Par conséquent, sa révocation entraînera la clôture du
+                        compte du Freelance.
+                    </p>
+                    <p>
+                        De même, la clôture du compte du Freelance pour quelque raison que ce soit implique la révocation du présent
+                        Mandat.
+                    </p>
+                </li>
+                <li>
+                    <u>Rémunération :</u>
+                    <p>
+                        Le Mandat de facturation s’inscrivant dans le cadre des services fournis par la Société sur le site, sa
+                        rémunération est incluse dans la commission payable par le Freelance à la Société.
+                    </p>
+                </li>
+                <li>
+                    <u>Obligations du Mandataire :</u>
+                    <p>
+                        Le Mandataire s’engage à établir les factures au nom et pour le compte du Mandant, conformément aux
+                        informations données par ce dernier.
+                    </p>
+                    <p>
+                        Les Factures seront émises dès que la Mission sera validée par le Client/Porteur de Projet et seront
+                        adressées à ce dernier par voie électronique.
+                    </p>
+                    <p>
+                        Le Mandataire remet également simultanément au Mandant une copie de toutes les Factures qu’il émet en son
+                        nom et pour son compte.
+                    </p>
+                    <p>
+                        Le Mandataire s’engage à ce que les Factures portent la mention « Facture établie par [nom de la Société] au
+                        nom et pour le compte de [nom/dénomination du Freelance] ».
+                    </p>
+                    <p>
+                        Dans l’hypothèse d’une demande de rectification de la Facture de la part du Mandant, le Mandataire s’engage
+                        à émettre sans délai une Facture rectificative.
+                    </p>
+                    <p>
+                        S’agissant de la numérotation des Factures, le Mandataire s’engage à utiliser une séquence de numérotation
+                        chronologique et continue, distincte pour chaque Mandant ou la numérotation que le Mandant lui indiquera
+                        pour que les Factures s’insèrent dans la séquence utilisée par lui au titre des factures qu’il émet
+                        lui-même.
+                    </p>
+                </li>
+                <li>
+                    <u>Obligations du Mandant :</u>
+                    <p>
+                        Le Mandant reconnaît conserver l’entière responsabilité de ses obligations légales et fiscales en matière de
+                        facturation au titre des Factures originales initiales et/ou rectificatives émises en son nom et pour son
+                        compte par le Mandataire, notamment en ce qui concerne ses obligations de déclaration et de paiement en
+                        matière de TVA.
+                    </p>
+                    <p>
+                        En particulier, le Mandant est seul responsable de déterminer les règles applicables à la facturation et de
+                        transmettre les informations requises au Mandataire afin qu’il puisse établir des Factures conformes à la
+                        réglementation applicable, ces règles dépendant du lieu où est réputée effectuée la prestation de services.
+                    </p>
+                    <p>
+                        De même, le Mandant demeure redevable de la TVA due, le cas échéant en application de l’article 283
+                        paragraphe 3 du code général des impôts, lorsque celle-ci est facturée à tort.
+                    </p>
+                    <p>
+                        Aussi, le Mandant s’engage expressément à :
+                        <ul>
+                            <li>communiquer au Mandataire la liste complète des informations devant figurer sur les Factures telles
+                                qu’exigées par la réglementation applicable en vigueur ;
+                            </li>
+                            <li>verser au Trésor Public la taxe mentionnée sur les Factures établies en son nom et pour son compte ;
+                            </li>
+                            <li>réclamer immédiatement le double de la Facture s’il n’a pas été mis à sa disposition par le Mandataire
+                                dans les délais et selon les conditions précisées aux présentes ;
+                            </li>
+                            <li>signaler toute modification dans les mentions concernant l’identification de son entreprise.</li>
+                        </ul>
+                    </p>
+                    <p>
+                        Le Mandant bénéficie d’un délai de 3 jours pour contester les informations contenues dans la Facture émise
+                        en son nom et pour son compte et en demander la rectification au Mandataire. A défaut de contestation dans
+                        ce délai, la Facture est considérée comme acceptée par le Mandant.
+                    </p>
+                </li>
+                <li>
+                    <u>Modifications :</u>
+                    <p>Tout avenant au présent Mandat devra être conclu dans les mêmes formes par toutes personnes dûment habilitées
+                        à cet effet par les parties.</p>
+                </li>
+                <li>
+                    <u>Droit applicable et juridiction compétente :</u>
+                    <p>
+                        Le présent Mandat est soumis au droit français. Tout litige relatif à leur formation, conclusion,
+                        interprétation et/ou exécution relève de la compétence exclusive des juridictions dans le ressort de la Cour
+                        d’appel de Paris.
+                    </p>
+                </li>
+            </ol>
+        </p>
     </div>
 </div>
+

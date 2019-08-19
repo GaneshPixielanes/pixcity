@@ -119,7 +119,7 @@ class PackController extends Controller
                     array(
                         'pack' => $pack
                     )
-                ), 'upload/pack/'.$pack->getId().'/'.$pack->getTitle().'.pdf'
+                ), 'upload/pack/'.$pack->getId().'/'.$pack->getId().'.pdf'
             );
             foreach($pack->getUserPackMedia() as $media)
             {

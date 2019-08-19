@@ -100,7 +100,8 @@ class InvoiceController extends Controller
 
         if($filesystem->exists($file_path)){
 
-            $result = 'https://docs.google.com/gview?url=https://www.pix.city/invoices/'.$mission->getId().'/'.$fileName.'&embedded=true';
+
+            $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/'.$mission->getId().'/'.$fileName;
 
 
             return new JsonResponse(['url' => $result]);
@@ -123,8 +124,7 @@ class InvoiceController extends Controller
                 ), $clientInvoicePath
             );
 
-            $result = 'https://docs.google.com/gview?url=https://www.pix.city/invoices/'.$mission->getId().'/'.$fileName.'&embedded=true';
-
+            $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/'.$mission->getId().'/'.$fileName;
 
             return new JsonResponse(['url' => $result]);
 
