@@ -24,7 +24,7 @@ class SearchController extends SearchPageController
     {
         $searchParams = $this->getSearchParams($request);
         $limit = 12;
-        $page = is_null($request->get('page'))?1:$request->get('page');
+        $page = is_null($request->get('page'))?1:(int)$request->get('page');
 
         if($searchParams['text']!="")
         {
