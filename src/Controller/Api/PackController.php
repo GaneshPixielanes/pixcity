@@ -113,6 +113,7 @@ class PackController extends Controller
             $em->persist($pack);
 
             $em->flush();
+            $filesystem->mkdir('upload/pack/'.$pack->getId(),0777);
             $this->container->get('knp_snappy.pdf')->generateFromHtml(
                 $this->renderView('b2b/shared/_pack_agreement.html.twig',
                     array(
