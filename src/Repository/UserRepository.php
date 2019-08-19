@@ -150,13 +150,18 @@ class UserRepository extends ServiceEntityRepository
     public function searchCommunityManagerCount($filters = [], $limit, $page)
     {
         $qb = $this->createQueryBuilder('u')
+//            ->leftJoin('u.avatar', 'avatar')
+//            ->leftJoin('u.userSkills','s')
+            ->select('COUNT(DISTINCT u.id)')
+//            ->innerJoin('u.pixie', 'p')
+//            ->innerJoin('u.userPacks', 'd')
+//            ->innerJoin('u.userPacks','packs')
+//            ->leftJoin('u.userRegion', 'r');
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
-            ->select('COUNT(DISTINCT u.id)')
-            ->innerJoin('u.pixie', 'p')
-            ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r');
+//            ->orderBy('u.id','DESC')
 
         $qb = $this->_applyFiltersClients($qb, $filters);
         $qb = $qb->getQuery()->getSingleScalarResult();
