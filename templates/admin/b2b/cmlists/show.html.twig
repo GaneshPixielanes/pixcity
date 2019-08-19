@@ -56,6 +56,28 @@
                         <td>{{ user.cmUpgradeB2bDate ? user.cmUpgradeB2bDate|date('d-M-Y') : 'N/A' }}</td>
                     </tr>
                     <tr>
+                        <th>CM Approval Status</th>
+                        <td>
+                            {% if user.b2bCmApproval == 2 %}
+                                Waiting for Approval
+                            {% elseif user.b2bCmApproval == 1 %}
+                                Approved
+                            {% elseif user.b2bCmApproval == 0 %}
+                                Rejected
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>B2B CM Approval Date</th>
+                        <td>{{ user.cmApprovalDate ? user.cmApprovalDate|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>B2B CM Rejected Date</th>
+                        <td>{{ user.cmRejectedDate ? user.cmRejectedDate|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                    </tr>
+                    <tr>
                         <th>Compétences</th>
                         <td>
                             {% for skill in user.userSkill %}

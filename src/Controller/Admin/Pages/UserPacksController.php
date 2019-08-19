@@ -10,10 +10,12 @@ use App\Service\FileUploader;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -187,5 +189,32 @@ class UserPacksController extends AbstractController
         $file = $request->files->get('file');
         $fileName = $fileUploader->upload($file, 'pack/'.$request->get('id'), true);
         return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+    /**
+     * @Route("download/{id}",name="download")
+     */
+    public function download($id, UserPacksRepository $documentRepo)
+    {
+        $document = $documentRepo->find($id);
+        $packname = $document->getTitle();
+        $date = new \DateTime();
+        $filename = 'upload/pack/'.$document->getId().'/'.$document->getTitle().'.pdf';
+
+        if (file_exists($filename)) {
+            $response = new BinaryFileResponse($filename);
+            // $ext = pathinfo('upload/pack/'.$document->getId().'/'.$document->getTitle(),PATHINFO_EXTENSION);
+
+            $response->headers->set('Content-Type','text/plain');
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                $packname.'_'.$date->format('YmdHis').'.pdf'
+            );
+        }else{
+            $response = "No file found";
+        }
+
+
+        return $response;
+
     }
 }
