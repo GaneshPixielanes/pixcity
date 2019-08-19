@@ -134,7 +134,10 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('RAND()')
             ->groupBy('u.id');
 
-        $qb = $this->_applyFiltersClients($qb, $filters)->setFirstResult($limit * ($page - 1))->setMaxResults($limit);
+        $qb = $this->_applyFilters($qb, $filters)
+
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
         $qb = $qb->getQuery()->getResult();
 
         return $qb;
