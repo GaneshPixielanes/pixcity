@@ -237,6 +237,24 @@ class UsersController extends Controller
                         $editedUser->getPixie()->getBilling()->setRib($previousRib);
                 }
             }
+            /************ACTIVE CODE TO B2B APPROVAL AND REJECT DATE**********************************/
+            if($user->getViewMode() == ViewMode::B2B) {
+                if ($authChecker->isGranted('ROLE_B2C')) {
+                    if ($editedUser->getB2bCmApproval() == 1) {
+                        //ACTIVATED DATE
+                        $editedUser->setCmApprovalDate($date);
+                    }
+                    elseif ($editedUser->getB2bCmApproval() == 0){
+                        //REJECTED DATE
+                        $editedUser->setCmRejectedDate($date);
+                    }
+                    else{
+                        // ON WAITING
+                    }
+                }
+            }
+            /************END CODE TO TO B2B APPROVAL AND REJECT DATE**********************************/
+
             /************ACTIVE CODE TO CREATE MANGOPAY  AND KYC**********************************/
 //            if($user->getViewMode() == ViewMode::B2B) {
 //                if ($authChecker->isGranted('ROLE_B2C')) {
