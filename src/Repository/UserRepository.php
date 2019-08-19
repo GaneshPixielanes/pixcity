@@ -106,7 +106,7 @@ class UserRepository extends ServiceEntityRepository
             ->leftJoin('u.links', 'c')
             ->leftJoin('u.favoriteCategories', 'category')
             ->innerJoin('u.pixie', 'p')
-            ->innerJoin('p.regions', 'r')
+            //    ->innerJoin('p.regions', 'r')
 
             ->where('u.deleted IS NULL OR u.deleted = 0')
             ->andWhere('u.visible = 1')
@@ -130,14 +130,10 @@ class UserRepository extends ServiceEntityRepository
             ->leftJoin('u.userSkills','s')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
-//            ->orderBy('u.id','DESC')
-            ->orderBy('RAND()')
+            ->orderBy('u.id','DESC')
             ->groupBy('u.id');
 
-        $qb = $this->_applyFilters($qb, $filters)
-
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
+        $qb = $this->_applyFiltersClients($qb, $filters)->setFirstResult($limit * ($page - 1))->setMaxResults($limit);
         $qb = $qb->getQuery()->getResult();
 
         return $qb;
@@ -149,8 +145,6 @@ class UserRepository extends ServiceEntityRepository
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->select('COUNT(DISTINCT u.id)')
-            ->innerJoin('u.pixie', 'p')
-            ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r');
 
@@ -303,7 +297,7 @@ class UserRepository extends ServiceEntityRepository
                 if(trim($filters["text"]) != ''){
 
                     //$qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :searchText")->setParameter("searchText", "%".$filters["text"]."%");
-                    $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText) AND packs.active = 1) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+                    $qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
                 }
 
             }
@@ -312,7 +306,8 @@ class UserRepository extends ServiceEntityRepository
                 if(trim($filters["regions"][0]) != '')
                 {
 
-                    $qb = $qb->orWhere("r.id IN (:regions) OR r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                    $qb = $qb->innerJoin('p.regions', 'region')
+                        ->andWhere("region.id IN (:regions) OR region.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
                 }
             }
 
