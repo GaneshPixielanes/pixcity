@@ -198,7 +198,7 @@ class UserPacksController extends AbstractController
         $document = $documentRepo->find($id);
         $packname = $document->getId();
         $date = new \DateTime();
-        $filename = 'upload/packs/'.$document->getId().'/'.$document->getId().'.pdf';
+        $filename = 'uploads/pack/'.$document->getId().'/'.$document->getId().'.pdf';
 
         if (file_exists($filename)) {
             $response = new BinaryFileResponse($filename);
