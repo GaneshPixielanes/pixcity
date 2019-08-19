@@ -375,7 +375,14 @@ class User implements UserInterface, EquatableInterface
      * @ORM\Column(type="integer", nullable=true)
      */
     private $b2b_cm_approval;
-
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $cmApprovalDate;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $cmRejectedDate;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ticket", mappedBy="cm")
      */
@@ -1771,7 +1778,28 @@ class User implements UserInterface, EquatableInterface
 
         return $this;
     }
+    public function getCmApprovalDate(): ?\DateTimeInterface
+    {
+        return $this->cmApprovalDate;
+    }
 
+    public function setCmApprovalDate(?\DateTimeInterface $cmApprovalDate): self
+    {
+        $this->cmApprovalDate = $cmApprovalDate;
+
+        return $this;
+    }
+    public function getCmRejectedDate(): ?\DateTimeInterface
+    {
+        return $this->cmRejectedDate;
+    }
+
+    public function setCmRejectedDate(?\DateTimeInterface $cmRejectedDate): self
+    {
+        $this->cmRejectedDate = $cmRejectedDate;
+
+        return $this;
+    }
     /**
      * @return Collection|Ticket[]
      */
