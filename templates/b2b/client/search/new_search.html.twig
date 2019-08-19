@@ -183,18 +183,16 @@
             {#            </div>#}
 
             <!-- Blog pagination -->
-            {{ dump(users | length) }}
-            {{ dump(filters['total_pages']) }}
-            {{ dump(filters['page']) }}
+
             {% if users | length > 11 %}
 
-                {% if filters['total_pages'] != 0 %}
+{#                {% if filters['total_pages'] != 0 %}#}
                     <div class="pagination-container my-5">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul class="pagination justify-content-center">
-                                        {% if filters['page'] != '1' %}
+                                        {% if filters['page'] != 1 %}
                                             <li class="page-item disabled"><a class="page-link" href="/freelance/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
                                         {% endif %}
                                         {% for i in 1..filters['total_pages'] %}
@@ -209,7 +207,7 @@
                         </div>
                     </div>
                 {% endif %}
-            {% endif %}
+{#            {% endif %}#}
             <!-- Blog pagination -->
         </div>
     </div>
