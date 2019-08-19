@@ -149,6 +149,8 @@ class UserRepository extends ServiceEntityRepository
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->select('COUNT(DISTINCT u.id)')
+            ->innerJoin('u.pixie', 'p')
+            ->innerJoin('u.userPacks', 'd')
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r');
 
