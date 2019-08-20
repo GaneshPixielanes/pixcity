@@ -20,9 +20,13 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientId = 'azimforexprod';
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
+<<<<<<< HEAD
 
         $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
 
+=======
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
+>>>>>>> 8644b8578629dd0d45dd5a57fac6f4402bd9c90a
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
         $this->mangoPayMoney = new MangoPay\Money();
         $this->mangoPayRefund = new MangoPay\Refund();
