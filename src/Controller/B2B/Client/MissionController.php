@@ -188,6 +188,7 @@ class MissionController extends Controller
             $wallet = $mangoPayService->getWallet($mangoUser->Id);
             $tansClientId->setMangopayUserId($mangoUser->Id);
             $tansClientId->setMangopayWalletId($wallet->Id);
+            $tansClientId->setMangopayCreatedAt(new \DateTime());
             $em->persist($tansClientId);
 
             $em->flush();

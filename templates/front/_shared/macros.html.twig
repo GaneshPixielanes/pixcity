@@ -260,7 +260,7 @@
     <div class="col-md-12 card shadow">
         <div class="row">
             <div class="col-md-12">
-                <a href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" class="city-maker-image" target="_blank" title="{{ user.firstName }}">
+                <a href="{{ path('front_pixies_single', {slug: user.slug, id: user.id}) }}" class="city-maker-image" target="_blank" title="{{ user.firstName }}: community manager - influenceur local">
                     <img src="{{ user.getAvatarUrl() | imagine_filter('user_avatar') }}" class="rounded-circle" alt="{{ user.firstName }}  - Community manager et influenceur local {{ user.pixie ? user.pixie.regions[0] : '' }} ">
                 </a>
             </div>
