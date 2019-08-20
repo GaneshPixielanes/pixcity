@@ -47,7 +47,7 @@
         {% block javascripts %}{% endblock %}
         {% embed '/v2/_shared/footer.html.twig' %}{% endembed%}
 
-
+        <!--googleoff: index-->
         {% for message in app.flashes('afterloginaction.add_favorite_pixie') %}
             {% embed "front/_modals/afterlogin-action.html.twig" with {'message': message} %}{% endembed %}
         {% endfor %}
@@ -69,6 +69,7 @@
 
         <!-- v2 modals -->
         {% embed "v2/_shared/modal.html.twig" %}{% endembed %}
+        <!--googleon: index-->
     {#<!-- Scripts -->#}
 
 
