@@ -166,7 +166,7 @@ class CmClientMangopayCronController extends Controller
         foreach ($clientRepositoryTbl as $key => $value)
         {
             if($value->getClientInfo()->getMangopayUserId() != null){
-                $value->getClientInfo()->setMangopayKycFile($filename);
+               // $value->getClientInfo()->setMangopayKycFile($filename);
                 $value->getClientInfo()->setMangopayKycCreated(new \DateTime());
                // $filename = 'uploads/mangopay_kyc/client/'.$value->getId().'/addr1/'.$value->getClientInfo()->getMangopayKycFile();
                 //$filename1 = 'uploads/mangopay_kyc/client/'.$value->getId().'/addr2/'.$value->getClientInfo()->getMangopayKycAddr();
@@ -175,7 +175,7 @@ class CmClientMangopayCronController extends Controller
                 if(isset($res) != null ){
                     foreach($res as $v){
                         if(isset($v->Status) != null) {
-                            if ($v->Status == "VALIDATION_ASKED") {
+                            if ($v->Status == "VALIDATION_ASKED" || $v->Status == "CREATED") {
                                 $value->getClientInfo()->setMangopayKycStatus("UNDER_VERIFICATION");
                             }
                             if($v->Status == "SUCCEEDED") {
@@ -207,7 +207,7 @@ class CmClientMangopayCronController extends Controller
         foreach ($userRepositoryTbl as $key => $value)
         {
             if($value->getMangopayUserId() != null) {
-                $value->setMangopayKycFile($filename);
+               // $value->setMangopayKycFile($filename);
                 $value->setMangopayKycCreated(new \DateTime());
                 //  $filename = 'uploads/mangopay_kyc/cm/'.$value->getId().'/addr1/'.$value->getMangopayKycFile();
                 //$filename1 = 'uploads/mangopay_kyc/cm/'.$value->getId().'/addr2/'.$value->getMangopayKycAddr();
@@ -218,7 +218,7 @@ class CmClientMangopayCronController extends Controller
                 if(isset($res) != null ){
                     foreach($res as $v){
                         if(isset($v->Status) != null) {
-                            if ($v->Status == "VALIDATION_ASKED") {
+                            if ($v->Status == "VALIDATION_ASKED" || $v->Status == "CREATED") {
                                 $value->setMangopayKycStatus("UNDER_VERIFICATION");
                             }
                             if($v->Status == "SUCCEEDED") {
