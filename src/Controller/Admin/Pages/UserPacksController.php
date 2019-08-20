@@ -196,9 +196,9 @@ class UserPacksController extends AbstractController
     public function download($id, UserPacksRepository $documentRepo)
     {
         $document = $documentRepo->find($id);
-        $packname = $document->getTitle();
+        $packname = $document->getId();
         $date = new \DateTime();
-        $filename = 'upload/pack/'.$document->getId().'/'.$document->getTitle().'.pdf';
+        $filename = 'uploads/pack/'.$document->getId().'/'.$document->getId().'.pdf';
 
         if (file_exists($filename)) {
             $response = new BinaryFileResponse($filename);
