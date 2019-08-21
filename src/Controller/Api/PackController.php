@@ -119,7 +119,10 @@ class PackController extends Controller
                     array(
                         'pack' => $pack
                     )
-                ), 'uploads/pack/'.$pack->getId().'/'.$pack->getId().'.pdf'
+                ), 'uploads/pack/'.$pack->getId().'/'.$pack->getId().'.pdf',
+                array(
+                    'encoding' => 'utf-8',
+                )
             );
             foreach($pack->getUserPackMedia() as $media)
             {
