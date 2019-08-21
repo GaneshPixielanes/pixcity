@@ -1,15 +1,16 @@
-
+<div class="social-wrap">
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <div class="col-sm-3">
+            <div class="col-md-12">
+                <div class="brand-footer">
                     {% if page.platform == 0 %}
                         <img src="{{ absolute_url(asset('build/images/footer-logo-main.svg')) }}">
                     {% else %}
-                        <a class="navbar-brand" href="{{ path('front_homepage_index') }}"><img src="/assets/images/services-footer-logo.svg" alt="Pix.City Services"></a>
+                        <a  href="{{ path('front_homepage_index') }}"><img src="/assets/images/services-footer-logo.svg" alt="Pix.City Services"></a>
                     {% endif %}
                 </div>
-                <div class="col-sm-9">
+                <div class="container-propos">
+                    <h4>A Propos De Nous</h4>
                     {% if page.platform == 0 %}
                         {{ menu('footer-1', 'footerMenu') | raw }}
                         {{ menu('footer-2', 'footerMenu') | raw }}
@@ -17,52 +18,23 @@
                         {{ menu('footer-3', 'footerMenu') | raw }}
                     {% endif %}
                 </div>
-            </div>
-            <!--googleoff: all-->
-            <!-- INSTAGRAM FEED -->
-            <div id="feedInstagram" class="col-md-4">
-                <div class="col-md-12">
-                    <div id="headerFeedInstagram">
-                        <a class="linkInstagram" href="{{ options()["instagram-link"] }}" rel="noopener" target="_blank"><i class="fab fa-instagram"></i>Instagram</a><a class="linkInstaProfile" rel="noopener" href="{{ options()["instagram-link"] }}" target="_blank">@pix_city</a>
-                    </div>
-
+                <div class="container-social">
+                    <h4>Pix.city Sur Les Reseaux Sociaux</h4>
                     <ul>
-                    {% for post in instagramFeed() %}
-
-                        <li>
-                            <a href="{{ post.link }}" target="_blank" rel="noopener" title="{{ post.title }}">
-                                <img src="{{ post.image }}" alt="{{ post.title }}">
-                            </a>
-                        </li>
-
-                    {% endfor %}
+                        <li><a href="https://www.facebook.com/pix.city.france/"><i class="fab fa-facebook-square"></i> <span>Facebook</span></a></li>
+                        <li><a href="https://www.linkedin.com/company/pixcityservices/"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a></li>
+                        <li><a href="https://instagram.com/pix_city/"><i class="fab fa-instagram"></i> <span>Instagram</span></a></li>
                     </ul>
-
                 </div>
             </div>
+            <!--googleoff: all-->
             <!--googleon: all-->
         </div>
-        <div class="col-md-12">
-            <hr>
-
-        </div>
-
-        <div id="footerEnd" class="col-md-12">
-
-            <span class="credits">{{ options()["copyright"] }}</span>
-            <ul class="socialMenu">
-                <li class="fab fa-facebook">
-                    <a href="{{ options()["facebook-link"] }}" target="_blank" rel="noopener"></a>
-                </li>
-                <li class="fab fa-linkedin">
-                    <a href="{{ options()["linkedin-link"] }}" target="_blank" rel="noopener"></a>
-                </li>
-                <li class="fab fa-instagram">
-                    <a href="{{ options()["instagram-link"] }}" target="_blank" rel="noopener"></a>
-                </li>
-            </ul>
-        </div>
-
-
     </div>
     <!--/.container-->
+</div>
+<div class="footer-wrap">
+    <div class="container">
+        {{ options()["copyright"] }}
+    </div>
+</div>

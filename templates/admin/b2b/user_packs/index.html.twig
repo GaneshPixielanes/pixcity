@@ -52,7 +52,8 @@
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user_pack.id) }}">
                                     <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
                                 </form>
-                                {% if user_pack.agreement != null %}
+
+                                {% if file_exists(filename~user_pack.id~'/'~user_pack.id~'.pdf') %}
                                     <a href="{{ path('admin_user_packs_download', {'id': user_pack.id}) }}" title="{{ 'action.download'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">save_alt</i></a>
                                 {% endif %}
                             </div>
