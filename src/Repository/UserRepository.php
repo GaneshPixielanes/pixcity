@@ -123,15 +123,24 @@ class UserRepository extends ServiceEntityRepository
     // CITY MAKER SEARCH
     //---------------------------------------
 
-    public function searchClients($filters = [], $limit = 12, $page = 1)
+    public function searchClients($filters = [], $limit = 12, $page = 1, $isRandom = false)
     {
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->innerJoin('u.userPacks','packs')
-            ->leftJoin('u.userRegion', 'r')
-            ->orderBy('u.id','DESC')
-            ->groupBy('u.id');
+            ->leftJoin('u.userRegion', 'r');
+
+        if($isRandom == true)
+        {
+            $qb = $qb->orderBy('RAND()');
+        }
+        else
+        {
+            $qb = $qb->orderBy('u.id','DESC');
+        }
+
+        $qb = $qb->groupBy('u.id');
 
         $qb = $this->_applyFiltersClients($qb, $filters)->setFirstResult($limit * ($page - 1))->setMaxResults($limit);
         $qb = $qb->getQuery()->getResult();
