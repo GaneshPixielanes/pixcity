@@ -37,14 +37,8 @@ var device = getPlatformType();
 
 </script>
 
-{% if app.session.has('login_by')  %}
-	{% set loginDetails = app.session.get('login_by')   %}
-	{% set loginBy = loginDetails['type'] %}
-{% else %}
-	{% set loginBy = 'not-login'   %}
-{% endif %}
 
-{% if app.user is not null %}
+{% if loginBy == 'not-login' %}
 {% if loginBy == 'login_cm' %}
 	{%if app.user.pixie is not null %}
 		{% if app.user.viewMode == 'pixie' %}
@@ -57,13 +51,12 @@ var device = getPlatformType();
 	{% endif %}
 
 {% elseif loginBy == 'login_client' %}
-	{% set user_type = 'client' %}
+	{% set user_type = 'city maker' %}
 {% endif %}
 <script>
-
-
 if(device == "Desktop")
 {
+	console.log("{{ loginBy }}")
 	var APP_ID = "iswx8vq4";
 	var current_user_email = "{{ app.user.email }}";
 	var current_user_name = "{{ app.user.firstName~' '~app.user.lastName }}";
@@ -90,6 +83,7 @@ if(device == "Desktop")
 </script>
 {% else %}
 <script>
+	console.log("{{ loginBy }}");
 if(device == "Desktop")
 {
   window.intercomSettings = {
