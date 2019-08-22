@@ -208,7 +208,10 @@ class UserPacksController extends Controller
                     array(
                         'pack' => $document
                     )
-                ), 'uploads/pack/'.$document->getId().'/'.$document->getId().'.pdf'
+                ), 'uploads/pack/'.$document->getId().'/'.$document->getId().'.pdf',
+                [
+                    'encoding' => 'utf-8'
+                ]
             );
 
 
