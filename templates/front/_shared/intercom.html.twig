@@ -36,14 +36,15 @@ function getPlatformType() {
 var device = getPlatformType();
 
 </script>
+
+
 {% if app.session.has('login_by')  %}
 	{% set loginDetails = app.session.get('login_by')   %}
 	{% set loginBy = loginDetails['type'] %}
 {% else %}
 	{% set loginBy = 'not-login'   %}
 {% endif %}
-
-{% if loginBy == 'not-login' %}
+{% if loginBy != 'not-login' %}
 {% if loginBy == 'login_cm' %}
 	{%if app.user.pixie is not null %}
 		{% if app.user.viewMode == 'pixie' %}
