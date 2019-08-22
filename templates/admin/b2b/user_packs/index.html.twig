@@ -55,6 +55,8 @@
 
                                 {% if file_exists(filename~user_pack.id~'/'~user_pack.id~'.pdf') %}
                                     <a href="{{ path('admin_user_packs_download', {'id': user_pack.id}) }}" title="{{ 'action.download'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">save_alt</i></a>
+                                {% else %}
+                                    <a href="{{ path('admin_user_packs_download', {'id': user_pack.id}) }}" title="{{ 'action.download'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">refresh</i></a>
                                 {% endif %}
                             </div>
                         </td>

@@ -10,6 +10,7 @@ use App\Service\FileUploader;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * @Route("/admin/user/packs", name="admin_user_packs_")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class UserPacksController extends AbstractController
+class UserPacksController extends Controller
 {
     /**
      * @Route("/", name="index", methods={"GET"})
@@ -201,19 +202,25 @@ class UserPacksController extends AbstractController
         $packname = $document->getId();
         $date = new \DateTime();
         $filename = 'uploads/pack/'.$document->getId().'/'.$document->getId().'.pdf';
-
-        if (file_exists($filename)) {
-            $response = new BinaryFileResponse($filename);
-            // $ext = pathinfo('upload/pack/'.$document->getId().'/'.$document->getTitle(),PATHINFO_EXTENSION);
-
-            $response->headers->set('Content-Type','text/plain');
-            $response->setContentDisposition(
-                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                $packname.'_'.$date->format('YmdHis').'.pdf'
+        if (!file_exists($filename)) {
+            $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView('b2b/shared/_pack_agreement.html.twig',
+                    array(
+                        'pack' => $document
+                    )
+                ), 'uploads/pack/'.$document->getId().'/'.$document->getId().'.pdf'
             );
-        }else{
-            $response = "No file found";
+
+
         }
+        $response = new BinaryFileResponse($filename);
+        // $ext = pathinfo('upload/pack/'.$document->getId().'/'.$document->getTitle(),PATHINFO_EXTENSION);
+
+        $response->headers->set('Content-Type','text/plain');
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $packname.'_'.$date->format('YmdHis').'.pdf'
+        );
 
 
         return $response;
