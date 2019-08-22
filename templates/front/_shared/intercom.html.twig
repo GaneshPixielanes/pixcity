@@ -60,9 +60,10 @@ var device = getPlatformType();
 	{% set user_type = 'city maker' %}
 {% endif %}
 <script>
+
 if(device == "Desktop")
 {
-	console.log("{{ loginBy }}")
+
 	var APP_ID = "iswx8vq4";
 	var current_user_email = "{{ app.user.email }}";
 	var current_user_name = "{{ app.user.firstName~' '~app.user.lastName }}";
@@ -89,7 +90,7 @@ if(device == "Desktop")
 </script>
 {% else %}
 <script>
-	console.log("{{ loginBy }}");
+
 if(device == "Desktop")
 {
   window.intercomSettings = {
