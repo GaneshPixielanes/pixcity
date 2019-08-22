@@ -471,7 +471,9 @@
 <body>
 {% block body %}{% endblock %}
 
-{% block javascripts %}{% endblock %}
-{% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+{% block javascripts %}
+    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+{% endblock %}
+
 </body>
 </html>
