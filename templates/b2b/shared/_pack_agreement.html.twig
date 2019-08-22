@@ -36,9 +36,9 @@
             Et
             <ul>
                 <li>
-                    • Le Freelance, utilisateur du service de Pix.City Services <strong>{{ pack.user }}</strong>, né(e) le
-                    <strong>{{ pack.user.birthdate | date('d-M-Y') }}</strong> en qualité de
-                    <strong>{{ ('label.statusname.' ~ pack.user.pixie.billing.status)|trans }}</strong>.
+                    • Le Freelance, utilisateur du service de Pix.City Services <strong>{% if pack.user is defined %}{{ pack.user }}{% else %}{{ app.user }}{% endif %}</strong>, né(e) le
+                    <strong>{% if pack.user is defined %}{{ pack.user.birthdate | date('d-M-Y') }}{% else %}{{ app.user.birthdate | date('d-M-Y') }}{% endif %}</strong> en qualité de
+                    <strong>{% if pack.user is defined %}{{ ('label.statusname.' ~ pack.user.pixie.billing.status)|trans }}{% else %}{{ ('label.statusname.' ~ app.user.pixie.billing.status)|trans }}{% endif %}</strong>.
                 </li>
             </ul>
         </p>
