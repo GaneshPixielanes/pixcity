@@ -79,7 +79,24 @@
 													{% if app.user.getB2bCmApproval() != "0" %}
 													{% if app.user.getB2bCmApproval() == "2" or app.user.getB2bCmApproval() == null %}
 														{% if app.user.getCmUpgradeB2bDate()  != null %}
-															<a class="dropdown-item user-link p-3 d-flex" href="/city-maker/compte/parametres">
+															<a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_manager_thank_you') }}">
+																<div class="col-3 pl-0">
+																	<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
+																</div>
+																<div class="col-6">
+																	<div class="row">
+																		<div class="col-12">Espace Services</div>
+																		<div class="col-12">
+																			<img src="/assets/images/footer-logo-main.svg" width="58">
+																		</div>
+																	</div>
+																</div>
+																<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+																	<i class="fas fa-arrow-right"></i>
+																</div>
+															</a>
+														{% else %}
+															<a class="dropdown-item user-link p-3 d-flex" href="/city-maker/compte/community/manager">
 																<div class="col-3 pl-0">
 																	<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
 																</div>
