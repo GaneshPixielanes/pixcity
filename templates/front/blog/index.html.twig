@@ -1,0 +1,156 @@
+{#{% extends 'b2b/base.html.twig' %}#}
+{% extends 'b2b/client/base.html.twig' %}
+{% block meta_title %}{{ blogAll[0].metaTitle }}{% endblock %}
+{% block meta_description %}{{ blogAll[0].metaDesc }}{% endblock %}
+{% block body_class %}{{ parent() }} home bgPictos{% endblock %}
+ {% block stylesheets %}
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
+ {% endblock %}
+{% block newbody %}
+    {#{% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}#}
+    <div class="blog-main-page">
+        <!-- Blog main-banner -->
+        <div class="row">
+            <div class="container">
+                {% for blog in blogHeaderByPosition %}
+                <div class="blog-main-banner mb-4">
+                    <div class="row">
+                        <div class="col-md-7 blog-banner-image">
+                            <img src="{{ absolute_url('/uploads/blog_image/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" style="width: 729px; height: 273px;">
+                        </div>
+                        <div class="col-md-5 d-flex align-items-center blog-banner-content">
+                            <div class="content pr-3">
+                                <h2 class="font-weight-bold">{{ blog.title }}</h2>
+                                <p>{{ blog.description| truncate(200, true)|raw }}</p>
+                                <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" class="btn">En savoir +</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Blog main-banner -->
+
+        <!-- Blog list container -->
+        <div class="blog-list-container">
+            <div class="row">
+                <div class="container">
+                    <div class="row">
+                        {% for blog in blogAll|slice(0, 3) %}
+                        <div class="col-md-4 d-flex align-items-strech mb-4">
+                            <div class="card blog-list-card">
+                                <img src="{{ absolute_url('/uploads/blog_image/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" class="card-img-top">
+                                <div class="card-body text-center">
+                                    <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
+                                    <h5 class="card-title">{{ blog.title }}</h5>
+                                    <p class="card-text">{{ blog.description | truncate(255, true)|raw}}</p>
+                                </div>
+                                <div class="card-footer text-center mb-3">
+                                    <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Blog list container -->
+        <!-- Blog Advertizement -->
+        <div class="blog-adv-container mb-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 blog-adv">
+                        {% for blog in blogAll|slice(3,4) %}
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-5 blog-adv-image" style="background-image: url({{ '/uploads/blog_image/'~blog.bannerImage }});"></div>
+                                <div class="col-md-7 blog-adv-content">
+                                    <div class="card-body">
+                                        <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
+                                        <h5 class="card-title">{{ blog.title }}</h5>
+                                        <p class="card-text">{{ blog.description | truncate(350, true)|raw }}</p>
+                                    </div>
+                                    <div class="card-footer mb-3">
+                                        <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-4 blog-adv-cta">
+                        <div class="card blog-adv-cta-image" style="background-image: url({{ '/assets/images/blog-adv-image.jpg' }});">
+                            <div class="blog-adv-cta-content">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <h4 class="title mb-5">
+                                            OPTIMISEZ LE RÉFÉRENCEMENT & LA VISIBILITÉ DE VOTRE ACTIVITÉ AVEC NOS CITY-MAKERS.
+                                        </h4>
+                                        <a href="/freelance" class="btn btn-white font-weight-bold lh2-5">TROUVER UN CITY-MAKER</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Blog Advertizement -->
+
+        <!-- Blog list container -->
+        <div class="blog-list-container">
+            <div class="row">
+                <div class="container">
+                    <div class="row">
+                        {% for blog in blogPosts %}
+                        <div class="col-md-4 d-flex align-items-strech mb-4">
+                            <div class="card blog-list-card">
+                                <img src="{{ absolute_url('/uploads/blog_image/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" class="card-img-top">
+                                <div class="card-body text-center">
+                                    <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
+                                    <h5 class="card-title">{{ blog.title }}</h5>
+                                    <p class="card-text">{{ blog.description | truncate(255, true)| raw}}</p>
+                                </div>
+                                <div class="card-footer text-center mb-3">
+                                    <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Blog list container -->
+        <!-- Blog pagination -->
+        {% if filters['cm_count'] > 6 %}
+        <div class="pagination-container my-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="pagination justify-content-center">
+                            <ul class="pagination justify-content-center">
+                                {% if filters['page'] != 1 %}
+                                    <li class="page-item"><a class="page-link" href="/blog?page={{ filters['page']-1 }} }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
+                                {% endif %}
+                                {% for i in 1..filters['total_pages'] %}
+                                    <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/blog?page={{ i }}">{{ i }}</a></li>
+                                {% endfor %}
+                                {% if filters['page'] != filters['total_pages'] %}
+                                    <li class="page-item"><a class="page-link" href="/blog?page={{ filters['page']+1 }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- Blog pagination -->
+    </div>
+    {#{% embed '/v2/_shared/footer_faq.html.twig' %}{% endembed%}#}
+{% endblock %}

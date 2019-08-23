@@ -1,0 +1,86 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.blogpost'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.blogpost'|trans }}
+                </h2>
+                <a href="{{ path('admin_blog_post_index') }}" class="btn btn-green">back to list</a>
+
+                <a href="{{ path('admin_blog_post_edit', {'id': blog_post.id}) }}" class="btn btn-green">edit</a>
+
+                {{ include('admin/b2b/blog_post/_delete_form.html.twig') }}
+            </div>
+            <div class="body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Title</th>
+                            <td>{{ blog_post.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ blog_post.description|raw }}</td>
+                        </tr>
+                        <tr>
+                            <th>Content</th>
+                            <td>{{ blog_post.content|raw }}</td>
+                        </tr>
+                        <tr>
+                            <th>BannerImage</th>
+                            <td>
+                                <img src="{{ absolute_url('/uploads/blog_image/'~blog_post.bannerImage) }}" alt="{{ blog_post.imageAlt }}" width="20%">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>ImageAlt</th>
+                            <td>{{ blog_post.imageAlt }}</td>
+                        </tr>
+                        <tr>
+                            <th>MetaTitle</th>
+                            <td>{{ blog_post.metaTitle }}</td>
+                        </tr>
+                        <tr>
+                            <th>MetaDesc</th>
+                            <td>{{ blog_post.metaDesc }}</td>
+                        </tr>
+                        <tr>
+                            <th>PostStatus</th>
+                            <td>{{ blog_post.postStatus ? 'Active' : 'Draft' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Position</th>
+                            <td>{{ blog_post.position }}</td>
+                        </tr>
+                        <tr>
+                            <th>Slug</th>
+                            <td>{{ blog_post.slug }}</td>
+                        </tr>
+                        <tr>
+                            <th>CreatedAt</th>
+                            <td>{{ blog_post.createdAt ? blog_post.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>UpdatedAt</th>
+                            <td>{{ blog_post.updatedAt ? blog_post.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Deleted</th>
+                            <td>{{ blog_post.deleted }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

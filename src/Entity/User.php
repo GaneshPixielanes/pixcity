@@ -814,7 +814,7 @@ class User implements UserInterface, EquatableInterface
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime("now");
     }
 
     /**

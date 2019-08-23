@@ -1,0 +1,52 @@
+{% extends 'b2b/base.html.twig' %}
+
+{% block body_class %}{{ parent() }} home bgPictos{% endblock %}
+{% block meta_title %}{{ blogSingle.metaTitle }}{% endblock %}
+{% block meta_description %}{{ blogSingle.metaDesc }}{% endblock %}
+ {% block stylesheets %}
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
+ {% endblock %}
+{% block body %}
+    {% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}
+    <div class="blog-post-page">
+        <!-- Blog post banner -->
+        <div class="d-flex align-items-center justified-content-center mb-5 blog-post-banner" style="background-image: url({{ '/uploads/blog_image/'~blogSingle.bannerImage }});">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 d-flex align-items-center justified-content-center">
+                        <h1 class="title font-weight-bold"><span>{{ blogSingle.title }}</span></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Blog post banner -->
+        <!-- Blog post content -->
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="blog-author">
+                            <div class="author-block mb-3">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-4 col-4 author-image">
+                                        <img src="https://www.pix.city/media/cache/user_avatar_large/uploads/users/34069693903b46a549d8b409f98581bf.jpeg" class="rounded-circle" alt="Julien Wolff">
+                                    </div>
+                                    <div class="col-md-8 col-8 font-weight-bold author-name">
+                                        {{ blogSingle.createdBy }} <span>Founder</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 blog-post-content mb-5">
+                       {{ blogSingle.content|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Blog post content -->
+    </div>
+    {% embed '/v2/_shared/footer_faq.html.twig' %}{% endembed%}
+{% endblock %}

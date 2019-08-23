@@ -1,0 +1,64 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.blogpost'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.blogpost'|trans }}
+                </h2>
+                <a href="{{ path('admin_blog_post_new') }}" class="btn btn-green">Create new</a>
+            </div>
+            <div class="body">
+                <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="7">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>PostStatus</th>
+                            <th>Position</th>
+                            <th>Slug</th>
+                            <th>CreatedAt</th>
+                            <th>UpdatedAt</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for blog_post in blog_posts %}
+                        <tr>
+                            <td>{{ blog_post.id }}</td>
+                            <td>{{ blog_post.title }}</td>
+                            <td>{{ blog_post.postStatus == 1 ? 'Active' : 'Draft'  }}</td>
+                            <td>{{ blog_post.position }}</td>
+                            <td>{{ blog_post.slug }}</td>
+                            <td>{{ blog_post.createdAt ? blog_post.createdAt|localizeddate('medium', 'short'):'N/A' }}</td>
+                            <td>{{ blog_post.updatedAt ? blog_post.updatedAt|localizeddate('medium', 'short'):'N/A' }}</td>
+
+                            <td>
+                                <a href="{{ path('admin_blog_post_show', {'id': blog_post.id}) }}"  class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
+                                <a href="{{ path('admin_blog_post_edit', {'id': blog_post.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">edit</i></a>
+                                <form method="post" class="delete-form" action="{{ path('admin_blog_post_delete', {'id': blog_post.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ blog_post.id) }}">
+                                    <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

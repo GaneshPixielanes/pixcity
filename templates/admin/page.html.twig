@@ -177,6 +177,26 @@
                                 <span>{{ 'label.contactus'|trans }}</span>
                             </a>
                         </li>
+                        <li class="{{ route starts with 'admin_blog_' ? 'active' }}">
+                            <a href="javascript:void(0);" class="menu-toggle waves-blue-grey">
+                                <i class="material-icons">view_carousel</i>
+                                <span>{{ 'label.blog'|trans }}</span>
+                            </a>
+                            <ul class="ml-menu">
+                                <li>
+                                    <a href="{{ url('admin_blog_category_index') }}" class="waves-blue-grey">
+
+                                        <span>{{ 'label.blogcategory'|trans }}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('admin_blog_post_index') }}" class="waves-blue-grey">
+
+                                        <span>{{ 'label.blogpost'|trans }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     {#{% endif %}#}
                     <!-- B2B menus ends -->
                     {% else %}
