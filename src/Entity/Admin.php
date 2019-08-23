@@ -101,15 +101,28 @@ class Admin implements UserInterface
      * @ORM\Column(type="string", length=50)
      */
     private $viewMode = "";
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\BlogCategory", mappedBy="definedBy")
+     */
+    private $blogCategorys;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\BlogPost", mappedBy="createdBy")
+     */
+    private $blogPosts;
 
 
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->packs = new ArrayCollection();
+        $this->blogCategorys = new ArrayCollection();
+        $this->blogPosts = new ArrayCollection();
     }
-
+    public function __toString() {
+        return $this->getFirstname()." ".$this->getLastname();
+    }
 
 
 
@@ -401,5 +414,66 @@ class Admin implements UserInterface
     {
         $this->viewMode = isset($viewMode)?$viewMode:ViewMode::B2C;
     }
+    /**
+     * @return Collection|BlogPost[]
+     */
+    public function getBlogPosts(): Collection
+    {
+        return $this->blogPosts;
+    }
 
+    public function addBlogPost(BlogPost $blogPost): self
+    {
+        if (!$this->blogPosts->contains($blogPost)) {
+            $this->blogPosts[] = $blogPost;
+            $blogPost->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogPost(BlogPost $blogPost): self
+    {
+        if ($this->blogPosts->contains($blogPost)) {
+            $this->blogPosts->removeElement($blogPost);
+            // set the owning side to null (unless already changed)
+            if ($blogPost->getCreatedBy() === $this) {
+                $blogPost->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection|BlogCategory[]
+     */
+    public function getBlogCategorys(): Collection
+    {
+        return $this->blogCategorys;
+    }
+
+    public function addBlogCategory(BlogCategory $blogCategory): self
+    {
+        if (!$this->blogCategorys->contains($blogCategory)) {
+            $this->blogCategorys[] = $blogCategory;
+            $blogCategory->setDefinedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogCategory(BlogCategory $blogCategory): self
+    {
+        if ($this->blogCategorys->contains($blogCategory)) {
+            $this->blogCategorys->removeElement($blogCategory);
+            // set the owning side to null (unless already changed)
+            if ($blogCategory->getDefinedBy() === $this) {
+                $blogCategory->getDefinedBy(null);
+            }
+        }
+
+        return $this;
+    }
 }

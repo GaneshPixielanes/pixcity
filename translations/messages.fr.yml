@@ -235,6 +235,11 @@ label:
     startDate: Start Date
     endDate: End Date
     categoriesdataextractions: Category based extraction
+    blog: Blog
+    blogcategory: Blog Category
+    blogpost: Blog Posts
+    blogCategoryNew: New
+    blogCategory: Blog Category
 
 title:
     our_regions: Nos <span>%count%</span> régions
