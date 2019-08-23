@@ -1,5 +1,5 @@
-{% extends 'b2b/base.html.twig' %}
-
+{#{% extends 'b2b/base.html.twig' %}#}
+{% extends 'b2b/client/base.html.twig' %}
 {% block body_class %}{{ parent() }} home bgPictos{% endblock %}
 {% block meta_title %}{{ blogSingle.metaTitle }}{% endblock %}
 {% block meta_description %}{{ blogSingle.metaDesc }}{% endblock %}
@@ -8,8 +8,8 @@
      <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
      <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
  {% endblock %}
-{% block body %}
-    {% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}
+{% block newbody %}
+    {#{% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}#}
     <div class="blog-post-page">
         <!-- Blog post banner -->
         <div class="d-flex align-items-center justified-content-center mb-5 blog-post-banner" style="background-image: url({{ '/uploads/blog_image/'~blogSingle.bannerImage }});">
@@ -48,5 +48,5 @@
         </div>
         <!-- Blog post content -->
     </div>
-    {% embed '/v2/_shared/footer_faq.html.twig' %}{% endembed%}
+    {#{% embed '/v2/_shared/footer_faq.html.twig' %}{% endembed%}#}
 {% endblock %}
