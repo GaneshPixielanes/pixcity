@@ -2,7 +2,6 @@
 
 namespace App\Controller\Front;
 
-use App\Entity\Page;
 use App\Repository\BlogPostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +28,7 @@ class BlogController extends AbstractController
 
         return $this->render('front/blog/index.html.twig', [
             'blogHeaderByPosition' => $blogPostRepository->bannerHeader(),
-            'blogAll' => $blogPostRepository->findBy(array('postStatus'=>1),['id'=>'DESC'],4),
+            'blogAll' => $blogPostRepository->findBy(array('postStatus'=>1,'position'=>0),['id'=>'DESC'],4),
             'blogPosts' => $blogPosts,
             'filters' => $filters
         ]);

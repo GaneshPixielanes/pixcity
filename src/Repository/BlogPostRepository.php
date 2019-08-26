@@ -55,6 +55,7 @@ class BlogPostRepository extends ServiceEntityRepository
             ->leftJoin('u.createdBy','createdBy')
             ->where('u.deleted IS NULL')
             ->andWhere('u.postStatus = 1')
+            ->andWhere('u.position != 1')
         ;
 
         if($isRandom == true)

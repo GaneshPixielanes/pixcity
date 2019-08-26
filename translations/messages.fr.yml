@@ -240,6 +240,8 @@ label:
     blogpost: Blog Posts
     blogCategoryNew: New
     blogCategory: Blog Category
+    blogpostNew: New
+    blogPostNew: New
 
 title:
     our_regions: Nos <span>%count%</span> régions

@@ -18,13 +18,13 @@
                 <div class="blog-main-banner mb-4">
                     <div class="row">
                         <div class="col-md-7 blog-banner-image">
-                            <img src="{{ absolute_url('/uploads/blog_image/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" style="width: 729px; height: 273px;">
+                            <img src="{{ absolute_url('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" style="width: 729px; height: 273px;">
                         </div>
                         <div class="col-md-5 d-flex align-items-center blog-banner-content">
                             <div class="content pr-3">
                                 <h2 class="font-weight-bold">{{ blog.title }}</h2>
                                 <p>{{ blog.description| truncate(200, true)|raw }}</p>
-                                <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" class="btn">En savoir +</a>
+                                <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" target="_blank" class="btn">En savoir +</a>
                             </div>
                         </div>
                     </div>
@@ -42,14 +42,14 @@
                         {% for blog in blogAll|slice(0, 3) %}
                         <div class="col-md-4 d-flex align-items-strech mb-4">
                             <div class="card blog-list-card">
-                                <img src="{{ absolute_url('/uploads/blog_image/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" class="card-img-top">
+                                <img src="{{ absolute_url('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" class="card-img-top">
                                 <div class="card-body text-center">
                                     <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
                                     <h5 class="card-title">{{ blog.title }}</h5>
                                     <p class="card-text">{{ blog.description | truncate(255, true)|raw}}</p>
                                 </div>
                                 <div class="card-footer text-center mb-3">
-                                    <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
+                                    <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                         {% for blog in blogAll|slice(3,4) %}
                         <div class="card">
                             <div class="row">
-                                <div class="col-md-5 blog-adv-image" style="background-image: url({{ '/uploads/blog_image/'~blog.bannerImage }});"></div>
+                                <div class="col-md-5 blog-adv-image" style="background-image: url({{ '/uploads/blog_images/'~blog.id~'/'~blog.bannerImage }});"></div>
                                 <div class="col-md-7 blog-adv-content">
                                     <div class="card-body">
                                         <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
@@ -75,7 +75,7 @@
                                         <p class="card-text">{{ blog.description | truncate(350, true)|raw }}</p>
                                     </div>
                                     <div class="card-footer mb-3">
-                                        <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
+                                        <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
                                     </div>
                                 </div>
                             </div>
@@ -109,14 +109,14 @@
                         {% for blog in blogPosts %}
                         <div class="col-md-4 d-flex align-items-strech mb-4">
                             <div class="card blog-list-card">
-                                <img src="{{ absolute_url('/uploads/blog_image/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" class="card-img-top">
+                                <img src="{{ absolute_url('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" class="card-img-top">
                                 <div class="card-body text-center">
                                     <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
                                     <h5 class="card-title">{{ blog.title }}</h5>
                                     <p class="card-text">{{ blog.description | truncate(255, true)| raw}}</p>
                                 </div>
                                 <div class="card-footer text-center mb-3">
-                                    <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
+                                    <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
                                 </div>
                             </div>
                         </div>

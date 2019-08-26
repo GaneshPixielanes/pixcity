@@ -37,7 +37,7 @@
                         <tr>
                             <th>BannerImage</th>
                             <td>
-                                <img src="{{ absolute_url('/uploads/blog_image/'~blog_post.bannerImage) }}" alt="{{ blog_post.imageAlt }}" width="20%">
+                                <img src="{{ absolute_url('/uploads/blog_images/'~blog_post.id~'/'~blog_post.bannerImage) }}" alt="{{ blog_post.imageAlt }}" width="20%">
                             </td>
                         </tr>
                         <tr>

@@ -44,7 +44,7 @@ class BlogPostController extends AbstractController
     /**
      * @Route("/new", name="post_new", methods={"GET","POST"})
      */
-    public function new(Request $request,AuthorizationCheckerInterface $authChecker): Response
+    public function new(Request $request, AuthorizationCheckerInterface $authChecker): Response
     {
         $user = $this->getUser();
         if($user->getViewMode() == ViewMode::B2B){
@@ -57,21 +57,29 @@ class BlogPostController extends AbstractController
                     $slugStrChange = str_replace(' ','-',$blogPost->getSlug());
                     $blogPost->setSlug($slugStrChange);
                     $blogPost->setCreatedBy($this->getUser());
+
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($blogPost);
+                    $entityManager->flush();
+
+                    $blogPostEdit = $this->getDoctrine()
+                        ->getRepository(BlogPost::class)
+                        ->find($blogPost->getId());
+
                     $uploadedFile = $form['bannerImage']->getData();
+
                     if ($uploadedFile) {
-                        $destination = $this->getParameter('kernel.project_dir').'/public/uploads/blog_image';
+                        $destination = $this->getParameter('kernel.project_dir').'/public/uploads/blog_images/'.$blogPost->getId().'/';
                         $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
                         $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
                         $uploadedFile->move(
                             $destination,
                             $newFilename
                         );
-                        $blogPost->setBannerImage($newFilename);
+                        $blogPostEdit->setBannerImage($newFilename);
                     }
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->persist($blogPost);
+                    $entityManager->persist($blogPostEdit);
                     $entityManager->flush();
-
                     return $this->redirectToRoute('admin_blog_post_index');
                 }
 
@@ -129,7 +137,7 @@ class BlogPostController extends AbstractController
                     $blogPost->setCreatedBy($this->getUser());
                     $uploadedFile = $form['bannerImage']->getData();
                     if ($uploadedFile) {
-                        $destination = $this->getParameter('kernel.project_dir').'/public/uploads/blog_image';
+                        $destination = $this->getParameter('kernel.project_dir').'/public/uploads/blog_images/'.$blogPost->getId().'/';
                         $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
                         $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
                         $uploadedFile->move(
