@@ -1,5 +1,5 @@
-{#{% extends 'b2b/base.html.twig' %}#}
-{% extends 'b2b/client/base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
+{#{% extends 'b2b/client/base.html.twig' %}#}
 {% block meta_title %}{{ blogAll[0].metaTitle }}{% endblock %}
 {% block meta_description %}{{ blogAll[0].metaDesc }}{% endblock %}
 {% block body_class %}{{ parent() }} home bgPictos{% endblock %}
@@ -8,8 +8,8 @@
      <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
      <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
  {% endblock %}
-{% block newbody %}
-    {#{% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}#}
+{% block body %}
+    {% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}
     <div class="blog-main-page">
         <!-- Blog main-banner -->
         <div class="row">
@@ -18,13 +18,13 @@
                 <div class="blog-main-banner mb-4">
                     <div class="row">
                         <div class="col-md-7 blog-banner-image">
-                            <img src="{{ absolute_url('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" style="width: 729px; height: 273px;">
+                            <img src="{{ asset('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage)| imagine_filter('bg_hp_region') }}" alt="{{ blog.imageAlt }}" style="width: 729px; height: 273px;">
                         </div>
                         <div class="col-md-5 d-flex align-items-center blog-banner-content">
                             <div class="content pr-3">
                                 <h2 class="font-weight-bold">{{ blog.title }}</h2>
                                 <p>{{ blog.description| truncate(200, true)|raw }}</p>
-                                <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" target="_blank" class="btn">En savoir +</a>
+                                <a href="{{ path('front_blog_single', {slug: blog.slug, id:blog.id}) }}" title="{{ blog.title }}" target="_blank" class="btn">En savoir +</a>
                             </div>
                         </div>
                     </div>
@@ -42,14 +42,14 @@
                         {% for blog in blogAll|slice(0, 3) %}
                         <div class="col-md-4 d-flex align-items-strech mb-4">
                             <div class="card blog-list-card">
-                                <img src="{{ absolute_url('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" class="card-img-top">
+                                <img src="{{ asset('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage) | imagine_filter('bg_card_item')}}" alt="{{ blog.imageAlt }}" class="card-img-top">
                                 <div class="card-body text-center">
                                     <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
                                     <h5 class="card-title">{{ blog.title }}</h5>
                                     <p class="card-text">{{ blog.description | truncate(255, true)|raw}}</p>
                                 </div>
                                 <div class="card-footer text-center mb-3">
-                                    <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
+                                    <a href="{{ path('front_blog_single', {slug: blog.slug, id:blog.id}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                         {% for blog in blogAll|slice(3,4) %}
                         <div class="card">
                             <div class="row">
-                                <div class="col-md-5 blog-adv-image" style="background-image: url({{ '/uploads/blog_images/'~blog.id~'/'~blog.bannerImage }});"></div>
+                                <div class="col-md-5 blog-adv-image" style="background-image: url({{ asset('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage )| imagine_filter('bg_card_item')}});"></div>
                                 <div class="col-md-7 blog-adv-content">
                                     <div class="card-body">
                                         <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
@@ -75,7 +75,7 @@
                                         <p class="card-text">{{ blog.description | truncate(350, true)|raw }}</p>
                                     </div>
                                     <div class="card-footer mb-3">
-                                        <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
+                                        <a href="{{ path('front_blog_single', {slug: blog.slug, id:blog.id}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
                                     </div>
                                 </div>
                             </div>
@@ -109,14 +109,14 @@
                         {% for blog in blogPosts %}
                         <div class="col-md-4 d-flex align-items-strech mb-4">
                             <div class="card blog-list-card">
-                                <img src="{{ absolute_url('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage) }}" alt="{{ blog.imageAlt }}" class="card-img-top">
+                                <img src="{{ asset('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage)| imagine_filter('bg_card_item' )}}" alt="{{ blog.imageAlt }}" class="card-img-top">
                                 <div class="card-body text-center">
                                     <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
                                     <h5 class="card-title">{{ blog.title }}</h5>
                                     <p class="card-text">{{ blog.description | truncate(255, true)| raw}}</p>
                                 </div>
                                 <div class="card-footer text-center mb-3">
-                                    <a href="{{ path('front_blog_single', {slug: blog.slug}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
+                                    <a href="{{ path('front_blog_single', {slug: blog.slug, id:blog.id}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
                                 </div>
                             </div>
                         </div>
@@ -152,5 +152,5 @@
         {% endif %}
         <!-- Blog pagination -->
     </div>
-    {#{% embed '/v2/_shared/footer_faq.html.twig' %}{% endembed%}#}
+    {% embed '/v2/_shared/footer_faq.html.twig' %}{% endembed%}
 {% endblock %}

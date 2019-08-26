@@ -1,22 +1,22 @@
-{#{% extends 'b2b/base.html.twig' %}#}
-{% extends 'b2b/client/base.html.twig' %}
+{% extends 'b2b/base.html.twig' %}
+{#{% extends 'b2b/client/base.html.twig' %}#}
 {% block body_class %}{{ parent() }} home bgPictos{% endblock %}
-{% block meta_title %}{{ blogSingle.metaTitle }}{% endblock %}
-{% block meta_description %}{{ blogSingle.metaDesc }}{% endblock %}
+{% block meta_title %}{{ blogSingle[0].metaTitle }}{% endblock %}
+{% block meta_description %}{{ blogSingle[0].metaDesc }}{% endblock %}
  {% block stylesheets %}
      <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
      <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
      <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
  {% endblock %}
-{% block newbody %}
-    {#{% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}#}
+{% block body %}
+    {% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}
     <div class="blog-post-page">
         <!-- Blog post banner -->
-        <div class="d-flex align-items-center justified-content-center mb-5 blog-post-banner" style="background-image: url({{ '/uploads/blog_images/'~blogSingle.id~'/'~blogSingle.bannerImage }});">
+        <div class="d-flex align-items-center justified-content-center mb-5 blog-post-banner" style="background-image: url({{ asset('/uploads/blog_images/'~blogSingle[0].id~'/'~blogSingle[0].bannerImage) | imagine_filter('bg_hp_region') }});">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 d-flex align-items-center justified-content-center">
-                        <h1 class="title font-weight-bold"><span>{{ blogSingle.title }}</span></h1>
+                        <h1 class="title font-weight-bold"><span>{{ blogSingle[0].title }}</span></h1>
                     </div>
                 </div>
             </div>
@@ -34,19 +34,19 @@
                                         <img src="https://www.pix.city/media/cache/user_avatar_large/uploads/users/34069693903b46a549d8b409f98581bf.jpeg" class="rounded-circle" alt="Julien Wolff">
                                     </div>
                                     <div class="col-md-8 col-8 font-weight-bold author-name">
-                                        {{ blogSingle.createdBy }} <span>Founder</span>
+                                        {{ blogSingle[0].createdBy }} <span>Founder</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-8 blog-post-content mb-5">
-                       {{ blogSingle.content|raw }}
+                       {{ blogSingle[0].content|raw }}
                     </div>
                 </div>
             </div>
         </div>
         <!-- Blog post content -->
     </div>
-    {#{% embed '/v2/_shared/footer_faq.html.twig' %}{% endembed%}#}
+    {% embed '/v2/_shared/footer_faq.html.twig' %}{% endembed%}
 {% endblock %}

@@ -34,12 +34,12 @@ class BlogController extends AbstractController
         ]);
     }
     /**
-     * @Route("/{slug}/", name="single")
+     * @Route("/{slug}/{id}", name="single")
      */
     public function single(BlogPostRepository $blogPostRepository,Request $request)
     {
 
-        $blogSingle = $blogPostRepository->findBlogBySlug($request->attributes->get("slug"));
+        $blogSingle = $blogPostRepository->findBy(['id'=>$request->attributes->get("id")]);
 
         return $this->render('front/blog/blogPost.html.twig', [
             'blogSingle' => $blogSingle,
