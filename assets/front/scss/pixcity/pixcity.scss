@@ -5082,8 +5082,8 @@ footer .brand img {
 }
 
 .footerMenu li {
-    line-height: 17px;
-    margin: 10px 0;
+    //line-height: 17px;
+    //margin: 10px 0;
     float: left;
     width: 100%;
 }
@@ -5095,7 +5095,7 @@ footer a:hover {
 }
 
 .footerMenu li a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 #feedInstagram {
