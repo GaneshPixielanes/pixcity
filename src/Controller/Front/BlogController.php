@@ -17,7 +17,7 @@ class BlogController extends AbstractController
      */
     public function index(BlogPostRepository $blogPostRepository,Request $request)
     {
-        $limit = 6;
+        $limit = 12;
         $page = is_null($request->get('page'))?1:(int)$request->get('page');
 
         $filters = [];

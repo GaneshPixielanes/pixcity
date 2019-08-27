@@ -35,70 +35,70 @@
         <!-- Blog main-banner -->
 
         <!-- Blog list container -->
-        <div class="blog-list-container">
-            <div class="row">
-                <div class="container">
-                    <div class="row">
-                        {% for blog in blogAll|slice(0, 3) %}
-                        <div class="col-md-4 d-flex align-items-strech mb-4">
-                            <div class="card blog-list-card">
-                                <img src="{{ asset('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage) | imagine_filter('bg_card_item')}}" alt="{{ blog.imageAlt }}" class="card-img-top">
-                                <div class="card-body text-center">
-                                    <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
-                                    <h5 class="card-title">{{ blog.title }}</h5>
-                                    <p class="card-text">{{ blog.description | truncate(255, true)|raw}}</p>
-                                </div>
-                                <div class="card-footer text-center mb-3">
-                                    <a href="{{ path('front_blog_single', {slug: blog.slug, id:blog.id}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Blog list container -->
-        <!-- Blog Advertizement -->
-        <div class="blog-adv-container mb-4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 blog-adv">
-                        {% for blog in blogAll|slice(3,4) %}
-                        <div class="card">
-                            <div class="row">
-                                <div class="col-md-5 blog-adv-image" style="background-image: url({{ asset('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage )| imagine_filter('bg_card_item')}});"></div>
-                                <div class="col-md-7 blog-adv-content">
-                                    <div class="card-body">
-                                        <div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>
-                                        <h5 class="card-title">{{ blog.title }}</h5>
-                                        <p class="card-text">{{ blog.description | truncate(350, true)|raw }}</p>
-                                    </div>
-                                    <div class="card-footer mb-3">
-                                        <a href="{{ path('front_blog_single', {slug: blog.slug, id:blog.id}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <div class="col-md-4 blog-adv-cta">
-                        <div class="card blog-adv-cta-image" style="background-image: url({{ '/assets/images/blog-adv-image.jpg' }});">
-                            <div class="blog-adv-cta-content">
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <h4 class="title mb-5">
-                                            OPTIMISEZ LE RÉFÉRENCEMENT & LA VISIBILITÉ DE VOTRE ACTIVITÉ AVEC NOS CITY-MAKERS.
-                                        </h4>
-                                        <a href="/freelance" class="btn btn-white font-weight-bold lh2-5">TROUVER UN CITY-MAKER</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {#<div class="blog-list-container">#}
+            {#<div class="row">#}
+                {#<div class="container">#}
+                    {#<div class="row">#}
+                        {#{% for blog in blogAll|slice(0, 3) %}#}
+                        {#<div class="col-md-4 d-flex align-items-strech mb-4">#}
+                            {#<div class="card blog-list-card">#}
+                                {#<img src="{{ asset('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage) | imagine_filter('bg_card_item')}}" alt="{{ blog.imageAlt }}" class="card-img-top">#}
+                                {#<div class="card-body text-center">#}
+                                    {#<div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>#}
+                                    {#<h5 class="card-title">{{ blog.title }}</h5>#}
+                                    {#<p class="card-text">{{ blog.description | truncate(255, true)|raw}}</p>#}
+                                {#</div>#}
+                                {#<div class="card-footer text-center mb-3">#}
+                                    {#<a href="{{ path('front_blog_single', {slug: blog.slug, id:blog.id}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>#}
+                                {#</div>#}
+                            {#</div>#}
+                        {#</div>#}
+                        {#{% endfor %}#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
+        {#<!-- Blog list container -->#}
+        {#<!-- Blog Advertizement -->#}
+        {#<div class="blog-adv-container mb-4">#}
+            {#<div class="container">#}
+                {#<div class="row">#}
+                    {#<div class="col-md-8 blog-adv">#}
+                        {#{% for blog in blogAll|slice(3,4) %}#}
+                        {#<div class="card">#}
+                            {#<div class="row">#}
+                                {#<div class="col-md-5 blog-adv-image" style="background-image: url({{ asset('/uploads/blog_images/'~blog.id~'/'~blog.bannerImage )| imagine_filter('bg_card_item')}});"></div>#}
+                                {#<div class="col-md-7 blog-adv-content">#}
+                                    {#<div class="card-body">#}
+                                        {#<div class="date">{{ blog.createdAt|localizeddate('medium', 'none') }}</div>#}
+                                        {#<h5 class="card-title">{{ blog.title }}</h5>#}
+                                        {#<p class="card-text">{{ blog.description | truncate(350, true)|raw }}</p>#}
+                                    {#</div>#}
+                                    {#<div class="card-footer mb-3">#}
+                                        {#<a href="{{ path('front_blog_single', {slug: blog.slug, id:blog.id}) }}" title="{{ blog.title }}" target="_blank" class="btn btn-outline-darkblue btn-pill">Lire l'article</a>#}
+                                    {#</div>#}
+                                {#</div>#}
+                            {#</div>#}
+                        {#</div>#}
+                        {#{% endfor %}#}
+                    {#</div>#}
+                    {#<div class="col-md-4 blog-adv-cta">#}
+                        {#<div class="card blog-adv-cta-image" style="background-image: url({{ '/assets/images/blog-adv-image.jpg' }});">#}
+                            {#<div class="blog-adv-cta-content">#}
+                                {#<div class="row">#}
+                                    {#<div class="col-md-12 text-center">#}
+                                        {#<h4 class="title mb-5">#}
+                                            {#OPTIMISEZ LE RÉFÉRENCEMENT & LA VISIBILITÉ DE VOTRE ACTIVITÉ AVEC NOS CITY-MAKERS.#}
+                                        {#</h4>#}
+                                        {#<a href="/freelance" class="btn btn-white font-weight-bold lh2-5">TROUVER UN CITY-MAKER</a>#}
+                                    {#</div>#}
+                                {#</div>#}
+                            {#</div>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
         <!-- Blog Advertizement -->
 
         <!-- Blog list container -->
@@ -127,7 +127,7 @@
         </div>
         <!-- Blog list container -->
         <!-- Blog pagination -->
-        {% if filters['cm_count'] > 6 %}
+        {% if filters['cm_count'] > 12 %}
         <div class="pagination-container my-5">
             <div class="container">
                 <div class="row">
