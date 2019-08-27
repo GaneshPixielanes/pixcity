@@ -12,7 +12,7 @@
     {% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}
     <div class="blog-post-page">
         <!-- Blog post banner -->
-        <div class="d-flex align-items-center justified-content-center mb-5 blog-post-banner" style="background-image: url({{ asset('/uploads/blog_images/'~blogSingle[0].id~'/'~blogSingle[0].bannerImage) | imagine_filter('bg_hp_region') }});">
+        <div class="d-flex align-items-center justified-content-center mb-5 blog-post-banner" style="min-height: 350px!important;background-image: url({{ asset('/uploads/blog_images/'~blogSingle[0].id~'/'~blogSingle[0].bannerImage) | imagine_filter('bg_card_item') }});">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 d-flex align-items-center justified-content-center">

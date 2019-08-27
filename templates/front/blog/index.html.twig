@@ -127,28 +127,46 @@
         </div>
         <!-- Blog list container -->
         <!-- Blog pagination -->
-        {% if filters['cm_count'] > 12 %}
-        <div class="pagination-container my-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul class="pagination justify-content-center">
+        {% if filters['cm_count'] > 1 %}
+            {# Number of page around current page+1 #}
+            {% set nearbyPagesLimit = 3 %}
+            <div class="pagination-container my-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
                             <ul class="pagination justify-content-center">
-                                {% if filters['page'] != 1 %}
-                                    <li class="page-item"><a class="page-link" href="/blog?page={{ filters['page']-1 }} }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
-                                {% endif %}
-                                {% for i in 1..filters['total_pages'] %}
-                                    <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/blog?page={{ i }}">{{ i }}</a></li>
-                                {% endfor %}
-                                {% if filters['page'] != filters['total_pages'] %}
-                                    <li class="page-item"><a class="page-link" href="/blog?page={{ filters['page']+1 }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
-                                {% endif %}
+                                <ul class="pagination justify-content-center">
+                                    {% if filters['page'] != 1 %}
+                                        <li class="page-item"><a class="page-link" href="/blog?page={{ filters['page']-1 }} }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
+                                    {% endif %}
+                                    {% for i in 1..filters['total_pages'] %}
+                                        {% if 0 == (filters['page'] - nearbyPagesLimit) - loop.index %} {# dot before #}
+                                            {#<li class="disabled"><a href="#">...</a></li>#}
+                                        {% elseif 0 == (filters['page'] + nearbyPagesLimit) - loop.index %} {# dot after #}
+                                            <li class="disabled"><a href="#">...</a></li>
+                                        {% elseif 0 < (filters['page'] - nearbyPagesLimit) - loop.index %} {# hide all before #}
+                                        {% elseif 0 > (filters['page'] + nearbyPagesLimit) - loop.index %} {# hide all after #}
+                                        {% else %}
+                                            <li  class="page-item {% if filters['page'] == loop.index  %}active{% endif %}">
+                                                <a class="page-link" href="/blog?page={{ i }}">{{ loop.index }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {#<li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/blog?page={{ i }}">{{ i }}</a></li>#}
+                                    {% endfor %}
+                                    {% if filters['page'] != filters['total_pages']  and (filters['page'] + nearbyPagesLimit) < filters['total_pages'] %}
+                                        <li class="page-item">
+                                            <a  class="page-link" href="/blog?page={{ filters['total_pages'] }}">{{ filters['total_pages'] }}</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if filters['page'] != filters['total_pages'] %}
+                                        <li class="page-item"><a class="page-link" href="/blog?page={{ filters['page']+1 }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
+                                    {% endif %}
+                                </ul>
                             </ul>
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         {% endif %}
         <!-- Blog pagination -->
     </div>
