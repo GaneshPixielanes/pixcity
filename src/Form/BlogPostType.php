@@ -39,8 +39,8 @@ class BlogPostType extends AbstractType
             ->add('metaDesc')
             ->add('postStatus', ChoiceType::class,[
                 'choices' => [
-                    'Active' => '1',
-                    'Draft'=> '0'
+                    'Draft'=> '0',
+                    'Publish' => '1'
                 ]
             ])
             ->add('position')
