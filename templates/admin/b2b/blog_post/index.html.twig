@@ -34,7 +34,7 @@
                         <tr>
                             <td>{{ blog_post.id }}</td>
                             <td>{{ blog_post.title }}</td>
-                            <td>{{ blog_post.postStatus == 1 ? 'Active' : 'Draft'  }}</td>
+                            <td>{{ blog_post.postStatus == 1 ? 'Published' : 'Draft'  }}</td>
                             <td>{{ blog_post.position }}</td>
                             <td>{{ blog_post.slug }}</td>
                             <td>{{ blog_post.createdAt ? blog_post.createdAt|localizeddate('medium', 'short'):'N/A' }}</td>
