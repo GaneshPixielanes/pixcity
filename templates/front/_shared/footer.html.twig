@@ -16,6 +16,14 @@
                         {{ menu('footer-2', 'footerMenu') | raw }}
                     {% else %}
                         {{ menu('footer-3', 'footerMenu') | raw }}
+                        <ul>
+                            {#<li>#}
+                                {#<a href="https://www.pix.city/services">Pix.city Services</a>#}
+                            {#</li>#}
+                            <li>
+                                <a href="{{ path('front_faq_index') }}">FAQ de Pix.City Services</a>
+                            </li>
+                        </ul>
                     {% endif %}
                 </div>
                 <div class="container-social">
