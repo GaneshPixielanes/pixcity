@@ -43,6 +43,10 @@
 </div>
 <div class="footer-wrap">
     <div class="container">
-        {{ options()["copyright"] }}
+        {% if page.platform == 0 %}
+            {{ options()["copyright"] }}
+        {% else %}
+            © 2019 Pix City Services
+        {% endif %}
     </div>
 </div>
