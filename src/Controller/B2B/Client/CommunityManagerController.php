@@ -30,7 +30,7 @@ class CommunityManagerController extends AbstractController
 //            return $this->redirectToRoute('b2b_client_search_index');
 //        }
         // Check if the user exists
-        if(is_null($user) && !in_array('ROLE_CM', $user->getRoles()))
+        if(is_null($user) || !in_array('ROLE_CM', $user->getRoles()) || $user->getActive() != 1 || $user->getVisible() != 1)
         {
 
             return $this->redirect('/freelance/search');
