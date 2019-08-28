@@ -79,12 +79,13 @@ class ClientRegistrationController extends AbstractController
                 $client->setPassword($password);
             }
 
-            $file = $request->files->get('client')['profilePhoto'];
+            $file = $request->files->get('file-avatar');
+            $fileUploader->upload($file,'clients', false);
 
             if(!is_null($file))
             {
                 // Update client with the name of the profile pic
-                $client->setProfilePhoto($file);
+                $client->setProfilePhoto($file->getClientOriginalName());
             }
             $client->setDeleted(null);
 
@@ -109,6 +110,7 @@ class ClientRegistrationController extends AbstractController
             $em->persist($client);
             $em->flush();
 
+//            $file->m
             // Set the user session
             $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
             // Move profile photo to the right directory
