@@ -7,6 +7,7 @@ use KMS\FroalaEditorBundle\Form\Type\FroalaEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,11 +31,18 @@ class BlogPostType extends AbstractType
                 ],
                 'toolbarStickyOffset' =>  70
             ))
-            ->add('bannerImage', FileType::class, [
-                'mapped' => false,
-                'required' => false,
-            ])
-            ->add('imageAlt')
+            ->add('bannerImage'
+//                ,
+//                FileType::class, [
+//                'mapped' => false,
+//                'required' => false,
+//            ]
+            )
+            ->add('headImage')
+            ->add('bannerAlt')
+            ->add('headAlt', TextType::class,array(
+                'label' => 'Post Card Atl'
+            ))
             ->add('metaTitle')
             ->add('metaDesc')
             ->add('postStatus', ChoiceType::class,[

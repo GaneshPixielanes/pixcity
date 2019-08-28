@@ -22,4 +22,14 @@
             </div>
         </div>
     </div>
+    {% embed "front/_modals/image-crop.html.twig" %}{% endembed %}
+
+    <div id="api-routes"
+         data-upload-route="{{ path('admin_blog_ajax_upload') }}"
+    ></div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/admin/js/pages/cards.js') }}"></script>
 {% endblock %}

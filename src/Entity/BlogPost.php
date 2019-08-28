@@ -50,11 +50,19 @@ class BlogPost
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $bannerImage;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $headImage;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $imageAlt;
+    private $bannerAlt;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $headAlt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -174,14 +182,39 @@ class BlogPost
         return $this;
     }
 
-    public function getImageAlt(): ?string
+    public function getHeadImage(): ?string
     {
-        return $this->imageAlt;
+        return $this->headImage;
     }
 
-    public function setImageAlt(?string $imageAlt): self
+    public function setHeadImage(?string $headImage): self
     {
-        $this->imageAlt = $imageAlt;
+        $this->headImage = $headImage;
+
+        return $this;
+    }
+
+    public function getBannerAlt(): ?string
+    {
+        return $this->bannerAlt;
+    }
+
+    public function setBannerAlt(?string $bannerAlt): self
+    {
+        $this->bannerAlt = $bannerAlt;
+
+        return $this;
+    }
+
+
+    public function getHeadAlt(): ?string
+    {
+        return $this->headAlt;
+    }
+
+    public function setHeadAlt(?string $headAlt): self
+    {
+        $this->headAlt = $headAlt;
 
         return $this;
     }

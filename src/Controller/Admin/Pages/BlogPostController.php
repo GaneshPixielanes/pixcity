@@ -6,9 +6,12 @@ use App\Constant\ViewMode;
 use App\Entity\BlogPost;
 use App\Form\BlogPostType;
 use App\Repository\BlogPostRepository;
+use App\Service\FileUploader;
 use Gedmo\Sluggable\Util\Urlizer;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,24 +65,27 @@ class BlogPostController extends AbstractController
                     $entityManager->persist($blogPost);
                     $entityManager->flush();
 
-                    $blogPostEdit = $this->getDoctrine()
-                        ->getRepository(BlogPost::class)
-                        ->find($blogPost->getId());
-
-                    $uploadedFile = $form['bannerImage']->getData();
+                    $uploadedFile = $blogPost->getBannerImage();
 
                     if ($uploadedFile) {
-                        $destination = $this->getParameter('kernel.project_dir').'/public/uploads/blog_images/'.$blogPost->getId().'/';
-                        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
-                        $uploadedFile->move(
-                            $destination,
-                            $newFilename
-                        );
-                        $blogPostEdit->setBannerImage($newFilename);
+                        $srcPath = 'uploads/blog_images/'.$uploadedFile;
+                        $path = 'uploads/blog_images/'.$blogPost->getId().'/';
+                        if (!file_exists($path)) {
+                            mkdir($path, 0700);
+                        }
+
+                        rename($srcPath, 'uploads/blog_images/'.$blogPost->getId().'/' . pathinfo($uploadedFile, PATHINFO_BASENAME));
                     }
-                    $entityManager->persist($blogPostEdit);
-                    $entityManager->flush();
+                    $headFile = $blogPost->getHeadImage();
+                    if ($headFile) {
+                        $srcPath = 'uploads/blog_images/'.$headFile;
+                        $path = 'uploads/blog_images/'.$blogPost->getId().'/';
+                        if (!file_exists($path)) {
+                            mkdir($path, 0700);
+                        }
+                        rename($srcPath, 'uploads/blog_images/'.$blogPost->getId().'/' . pathinfo($headFile, PATHINFO_BASENAME));
+                    }
+
                     return $this->redirectToRoute('admin_blog_post_index');
                 }
 
@@ -135,16 +141,26 @@ class BlogPostController extends AbstractController
                     $slugStrChange = str_replace(' ','-',$blogPost->getSlug());
                     $blogPost->setSlug($slugStrChange);
                     $blogPost->setCreatedBy($this->getUser());
-                    $uploadedFile = $form['bannerImage']->getData();
+                    $uploadedFile = $blogPost->getBannerImage();
+
                     if ($uploadedFile) {
-                        $destination = $this->getParameter('kernel.project_dir').'/public/uploads/blog_images/'.$blogPost->getId().'/';
-                        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $newFilename = Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
-                        $uploadedFile->move(
-                            $destination,
-                            $newFilename
-                        );
-                        $blogPost->setBannerImage($newFilename);
+                        $srcPath = 'uploads/blog_images/'.$uploadedFile;
+                        $path = 'uploads/blog_images/'.$blogPost->getId().'/';
+                        if (!file_exists($path)) {
+                            mkdir($path, 0700);
+                        }
+
+                        rename($srcPath, 'uploads/blog_images/'.$blogPost->getId().'/' . pathinfo($uploadedFile, PATHINFO_BASENAME));
+                    }
+                    $headFile = $blogPost->getHeadImage();
+                    if ($headFile) {
+                        $srcPath = 'uploads/blog_images/'.$headFile;
+                        $path = 'uploads/blog_images/'.$blogPost->getId().'/';
+                        if (!file_exists($path)) {
+                            mkdir($path, 0700);
+                        }
+
+                        rename($srcPath, 'uploads/blog_images/'.$blogPost->getId().'/' . pathinfo($headFile, PATHINFO_BASENAME));
                     }
                     $this->getDoctrine()->getManager()->flush();
 
@@ -191,5 +207,30 @@ class BlogPostController extends AbstractController
         else{
             return $this->render('admin/errorpage/index.html.twig');
         }
+    }
+    /**
+     * @Route("/upload", name="ajax_upload")
+     * @Method({"POST"})
+     */
+    public function upload(Request $request, FileUploader $fileUploader)
+    {
+        //$file = $request->files->get('file');
+        //$fileName = $fileUploader->upload($file, 'blog_images/'.$request->get('id'), true);
+        $fileName = '';
+        foreach ($request->files as $uploadedFile) {
+            if($uploadedFile->isValid()) {
+                $fileName = $fileUploader->upload($uploadedFile, 'blog_images/', true);
+            }
+        }
+
+
+        if($fileName){
+            $response = new JsonResponse(['success' => true, 'name' =>$fileName, 'url'=>'/uploads/blog_images/'.$fileName]);
+        }
+        else{
+            $response = new JsonResponse(['error' => true], 400);
+        }
+
+        return $response;
     }
 }
