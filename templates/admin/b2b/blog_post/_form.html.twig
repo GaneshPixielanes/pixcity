@@ -1,4 +1,73 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {#{{ form_widget(form) }}#}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.content) }}
+<div class="row">
+    <div class="col-md-3">
+
+        <h3>Post Card</h3>
+    <div class="card-thumb">
+
+        <ul class="repeater-container card-template-attachments-collection">
+
+            <img class="thumb" src="{% if form.headImage.vars.value.id is defined %}{{ form.headImage.vars.value.getUrl() }}{% endif %}" width="100%">
+            <li class="field">{{ form_row(form.headImage) }}</li>
+
+            <li class="align-center">
+
+                    <div class="upload-zone">
+                        <input name="file" type="file" class="file-input" data-type="thumb" />
+                        <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                            <i class="material-icons">add</i>
+                        </a>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+            </li>
+        </ul>
+
+    </div>
+    </div>
+
+    <div class="col-sm-6">
+
+        <h3>{{ 'label.masterhead'|trans }}</h3>
+    <div class="card-thumb">
+
+        <ul class="repeater-container card-template-attachments-collection">
+
+            <img class="thumb" src="{% if form.bannerImage.vars.value.id is defined %}{{ form.bannerImage.vars.value.getUrl() }}{% endif %}" width="100%">
+            <li class="field">{{ form_widget(form.bannerImage) }}</li>
+
+            <li class="align-center">
+
+                    <div class="upload-zone">
+                        <input name="file" type="file" class="file-input" data-type="masterhead" />
+                        <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                            <i class="material-icons">add</i>
+                        </a>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+            </li>
+        </ul>
+
+    </div>
+    </div>
+    </div>
+
+    {{ form_row(form.headAlt) }}
+    {{ form_row(form.bannerAlt) }}
+    {{ form_row(form.slug) }}
+    {{ form_row(form.position) }}
+    {{ form_row(form.metaTitle) }}
+    {{ form_row(form.metaDesc) }}
+    {{ form_row(form.postStatus) }}
+    {{ form_row(form.category) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
