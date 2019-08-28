@@ -79,42 +79,43 @@ class ClientRegistrationController extends AbstractController
                 $client->setPassword($password);
             }
 
-            $file = $request->files->get('client')['profilePhoto'];
+            $file = $request->files->get('file-avatar');
+            $fileName = $fileUploader->upload($file,'clients', true);
 
             if(!is_null($file))
             {
                 // Update client with the name of the profile pic
-                $client->setProfilePhoto($file);
+                $client->setProfilePhoto($fileName);
             }
             $client->setDeleted(null);
 
-         /*   // Create a mango pay user
-            $mangoUser = new UserNatural();
+            /*   // Create a mango pay user
+               $mangoUser = new UserNatural();
 
-            $mangoUser->PersonType = "NATURAL";
-            $mangoUser->FirstName = $client->getFirstName();
-            $mangoUser->LastName = $client->getLastName();
-            $mangoUser->Birthday = 1409735187;
-            $mangoUser->Nationality = "FR";
-            $mangoUser->CountryOfResidence = "FR";
-            $mangoUser->Email = $client->getEmail();
-            $mangoUser = $mangoPayService->createUser($mangoUser);
-            //Create a wallet
-            $wallet = $mangoPayService->getWallet($mangoUser->Id);
+               $mangoUser->PersonType = "NATURAL";
+               $mangoUser->FirstName = $client->getFirstName();
+               $mangoUser->LastName = $client->getLastName();
+               $mangoUser->Birthday = 1409735187;
+               $mangoUser->Nationality = "FR";
+               $mangoUser->CountryOfResidence = "FR";
+               $mangoUser->Email = $client->getEmail();
+               $mangoUser = $mangoPayService->createUser($mangoUser);
+               //Create a wallet
+               $wallet = $mangoPayService->getWallet($mangoUser->Id);
 
-            $client->getClientInfo()->setMangopayUserId($mangoUser->Id);
-            $client->getClientInfo()->setMangopayWalletId($wallet->Id);
-            $client->getClientInfo()->setMangopayCreatedAt(new \DateTime());
-*/
+               $client->getClientInfo()->setMangopayUserId($mangoUser->Id);
+               $client->getClientInfo()->setMangopayWalletId($wallet->Id);
+               $client->getClientInfo()->setMangopayCreatedAt(new \DateTime());
+   */
             $em->persist($client);
             $em->flush();
 
+//            $file->m
             // Set the user session
             $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
             // Move profile photo to the right directory
-            if($filesystem->exists('uploads/clients/'.$client->getProfilePhoto()) && $client->getProfilePhoto() != ''){
-                $filesystem->copy('uploads/clients/'.$client->getProfilePhoto(),'uploads/clients/'.$client->getId().'/'.$client->getProfilePhoto());
-            }
+            $filesystem->copy('uploads/clients/'.$client->getProfilePhoto(),'uploads/clients/'.$client->getId().'/'.$client->getProfilePhoto());
+
 
             // Get client notifications
             $notifications = $notificationRepo->findBy(['client'=>$this->getUser(), 'unread' => 1],['id' => 'DESC']);
@@ -169,7 +170,7 @@ class ClientRegistrationController extends AbstractController
         $session  = new Session();
 
         if($session->has('chosen_pack_url')){
-          return $this->redirect($session->get('chosen_pack_url'));
+            return $this->redirect($session->get('chosen_pack_url'));
         }else{
             return $this->redirectToRoute('b2b_client_main_index');
         }

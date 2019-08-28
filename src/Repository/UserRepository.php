@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Constant\UserLevel;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -129,7 +130,8 @@ class UserRepository extends ServiceEntityRepository
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
             ->innerJoin('u.userPacks','packs')
-            ->leftJoin('u.userRegion', 'r');
+            ->leftJoin('u.userRegion', 'r')
+            ->andWhere('u.visible = 1 AND u.active = 1 AND u.roles LIKE :role')->setParameter('role','%ROLE_CM%');
 
         if($isRandom == true)
         {
@@ -155,7 +157,8 @@ class UserRepository extends ServiceEntityRepository
             ->leftJoin('u.userSkills','s')
             ->select('COUNT(DISTINCT u.id)')
             ->innerJoin('u.userPacks','packs')
-            ->leftJoin('u.userRegion', 'r');
+            ->leftJoin('u.userRegion', 'r')
+            ->andWhere('u.visible = 1 AND u.active = 1 AND u.roles LIKE :role')->setParameter('role','%ROLE_CM%');
 
         $qb = $this->_applyFiltersClients($qb, $filters);
         $qb = $qb->getQuery()->getSingleScalarResult();
@@ -369,6 +372,39 @@ class UserRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    public function calculateLevel($id)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('COUNT(DISTINCT c.id) as cards')
+            ->leftJoin('u.cards','c')
+            ->andWhere('u.id = :user')->setParameter('user',$id)
+            ->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if($qb == UserLevel::LEVEL_1)
+        {
+            return 1;
+        }
+        elseif ($qb > UserLevel::LEVEL_1 && $qb <= UserLevel::LEVEL_2)
+        {
+            return 2;
+        }
+        elseif($qb > UserLevel::LEVEL_2 && $qb <= UserLevel::LEVEL_3)
+        {
+            return 3;
+        }
+        elseif($qb > UserLevel::LEVEL_3 && $qb <= UserLevel::LEVEL_4)
+        {
+            return 4;
+        }
+        else
+        {
+            return 5;
+        }
+
+        return false;
+    }
 
 
 
