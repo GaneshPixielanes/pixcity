@@ -144,13 +144,14 @@ class BlogPostController extends AbstractController
                     $uploadedFile = $blogPost->getBannerImage();
 
                     if ($uploadedFile) {
-                        $srcPath = 'uploads/blog_images/'.$uploadedFile;
-                        $path = 'uploads/blog_images/'.$blogPost->getId().'/';
-                        if (!file_exists($path)) {
-                            mkdir($path, 0700);
+                        $srcPathBann = 'uploads/blog_images/'.$uploadedFile;
+                        $paths = 'uploads/blog_images/'.$blogPost->getId().'/';
+                        if (!file_exists($paths)) {
+                            mkdir($paths, 0700);
                         }
-
-                        rename($srcPath, 'uploads/blog_images/'.$blogPost->getId().'/' . pathinfo($uploadedFile, PATHINFO_BASENAME));
+                        if (file_exists($srcPathBann)) {
+                            rename($srcPathBann, 'uploads/blog_images/' . $blogPost->getId() . '/' . pathinfo($uploadedFile, PATHINFO_BASENAME));
+                        }
                     }
                     $headFile = $blogPost->getHeadImage();
                     if ($headFile) {
@@ -159,8 +160,9 @@ class BlogPostController extends AbstractController
                         if (!file_exists($path)) {
                             mkdir($path, 0700);
                         }
-
-                        rename($srcPath, 'uploads/blog_images/'.$blogPost->getId().'/' . pathinfo($headFile, PATHINFO_BASENAME));
+                        if (file_exists($srcPath)) {
+                            rename($srcPath, 'uploads/blog_images/' . $blogPost->getId() . '/' . pathinfo($headFile, PATHINFO_BASENAME));
+                        }
                     }
                     $this->getDoctrine()->getManager()->flush();
 
