@@ -13,9 +13,6 @@
     <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Fonts -->
-
-    
-
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/fonts/fontawesome/css/all.min.css') }}" />
     <!-- Plugin CSS -->
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
@@ -589,9 +586,9 @@
                         </div>
                         <div class="container-propos">
                             <h4>A Propos De Nous</h4>
-                            {#{{ menu('footer-1', 'footerMenu') | raw }}
-                            {{ menu('footer-2', 'footerMenu') | raw }}#}
-                            {{ menu('footer-3', 'footerMenu') | raw }}
+                            {{ menu('footer-1', 'footerMenu') | raw }}
+                            {{ menu('footer-2', 'footerMenu') | raw }}
+{#                            {{ menu('footer-3', 'footerMenu') | raw }}#}
                             <ul>
                                 <li><a href="{{ path('front_faq_index') }}">FAQ de Pix.City Services</a></li>
                             </ul>
@@ -643,6 +640,8 @@
             </div>
         </div>
 
+    <!-- Alert about cookie useage -->
+    {% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
         <!-- Footer ends -->
 
 
@@ -656,6 +655,8 @@
     <script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+    <script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
 
 
     <script>
@@ -1168,10 +1169,6 @@
 
     {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
 
-    <!-- Alert about cookie useage -->
-    {% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
-    <script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
 </body>
 </html>
