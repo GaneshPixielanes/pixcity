@@ -77,6 +77,7 @@ Encore
     .addEntry('js/bootstrap-select', './assets/v2/js/bootstrap-select.min.js')
     // .addEntry('js/lazy', './assets/v2/js/jquery.lazy.min.js')
     .addEntry('js/dropzone', './assets/v2/js/dropzone.js')
+    .addEntry('js/cookiealert', './assets/v2/js/cookiealert.js')
 
     // B2B
 
@@ -102,6 +103,7 @@ Encore
     .addStyleEntry('css/lightgallery', './assets/v2/node_modules/lightgallery/src/css/lightgallery.css')
     .addStyleEntry('css/style', './assets/v2/css/style.css')
     .addStyleEntry('css/main', './assets/v2/css/main.scss')
+    .addStyleEntry('css/cookiealert', './assets/v2/css/cookiealert.css')
     // .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
     // .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
     // .addStyleEntry('css/simple-sidebar', './assets/v2/css/simple-sidebar.css')

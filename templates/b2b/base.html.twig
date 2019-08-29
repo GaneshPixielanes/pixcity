@@ -15,465 +15,415 @@
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/cookiealert.css')) }}">
 
-    {% block stylesheets %}{% endblock %}
     <!-- Scripts -->
     <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
     <!-- <script src="js/app.js"></script> -->
     <script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
+    {% block stylesheets %}{% endblock %}
 
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
-
-    <script>
-        /* custom per page scripts */
-
-        $(document).ready(function () {
-            $(document).on('click','.close-preview', function () {
-                // $('.close').trigger('click');
-                $('.alert-modal').modal('hide');
-                $('.close-preview-edit').trigger('click');
-            });
-            /* Skills Pack Buttons */
-            $('body').on('click','a.skills-pack',function(){
-                // e.preventDefault();
-                $(this).parent('li').siblings().find('a').removeClass('active');
-                $(this).addClass('active');
-                $(this).parent('li').find('input[type="radio"]').prop('checked',true);
-                $(this).parent('li').find('input[type="radio"]').attr('checked','checked');
-            });
-
-            /* Restrict maxlengths for input and textarea fields */
-            // $('body').on("input",'textarea.pack-description, input.pack-title', function () {
-            //     var maxlength = $(this).attr("maxlength");
-            //     var currentLength = $(this).val().length;
-            //
-            //     $(this).next().find('.inputlength').text(currentLength)
-            //     if (currentLength >= maxlength) {
-            //         //         console.log("You have reached the maximum number of characters.");
-            //         $(this).next('.text-textgray').append(
-            //             `<span class="text-error ml-2">Vous avez atteint le nombre de caractères maximum autorisé</span>`
-            //         );
-            //     } else if (currentLength < maxlength) {
-            //         //         console.log(maxlength - currentLength + " chars left");
-            //         $(this).next('.text-textgray').find('.text-error').fadeOut('fast');
-            //     }
-            // });
-
-            /* Filter packages script */
-            /* $(document).on('click', '.filter-packages  input[type="checkbox"]', function () {
-                $(this).parents('.content-top-header').next().find('.package-list-item')
-                    .removeClass('d-flex').fadeOut('fast');
-
-                var $packlist = $(this).parents('.content-top-header').next().find(
-                    '.package-list-item'),
-                    filter = [];
-                $(this).parents('.filter-packages').find('input[type="checkbox"]:checked')
-                    .each(function () {
-                        var packtype = $(this).val();
-                        filter.push('.' + packtype);
-                    })
-                if (filter.length == 0) {
-                    $packlist.addClass('d-flex').fadeIn();
-                    $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.length);
-                } else {
-                    $packlist.filter(filter.join(',')).addClass('d-flex').fadeIn();
-                    $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.filter(filter.join(',')).length);
-                }
-            }) */
-            function filterPackages(thisObj) {
-                $(thisObj).parents('.content-top-header').next().find('.package-list-item')
-                    .removeClass('d-flex').fadeOut('fast');
-
-                var $packlist = $(thisObj).parents('.content-top-header').next().find(
-                    '.package-list-item'),
-                    filter = [];
-                $(thisObj).parents('.filter-packages').find('input[type="checkbox"]:checked')
-                    .each(function () {
-                        var packtype = $(this).val();
-                        filter.push('.' + packtype);
-                    })
-                console.log(filter);
-                if (filter.length == 0) {
-                    $packlist.addClass('d-flex').fadeIn();
-                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
-                        .length);
-                } else {
-                    $(thisObj).parents('.content-top-header').next().find(
-                        '.package-list-item').filter(filter.join(',')).addClass('d-flex').fadeIn();
-                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
-                        .filter(filter.join(',')).length);
-                }
-            }
-
-            $('.filter-packages input[type="checkbox"]').click(function () {
-                filterPackages($(this))
-            });
-            /* $('.filter-packages label input[type="radio"]').click(function () {
-                // fetch the class of the clicked item
-                var activeFilter = $(this).attr('value'),
-                    availablePacksList = $(this).parents('.tab-pane-content').find(
-                        '.available-packages-list'),
-                    availablePacks = availablePacksList.children('li.' + activeFilter).length;
-                // reset the active class on all the buttons
-                $('.filter-packages label').removeClass('active');
-                // update the active state on our clicked button
-                $(this).parent().addClass('active');
-                // $('.add-package-to-list').addClass(activeFilter);
-                if (activeFilter == 'all') {
-                    // show all our items
-                    availablePacksList.children('li.package-list-item').addClass('d-flex').show();
-                } else {
-                    // hide all elements that don't share activeFilter
-                    availablePacksList.children('li:not(.' + activeFilter + ')').removeClass('d-flex')
-                        .hide();
-                    // show all elements that do share activeFilter
-                    availablePacksList.children('li.add-package-to-list, li.' + activeFilter).addClass(
-                        'd-flex').show();
-                    $(this).parents('.tab-pane-content').find('.total-packs-available').text(
-                        availablePacks);
-                }
-                return false;
-            }); */
-            /* Filter packages script ends */
-
-            /* Images drop zone */
-            /* $('.dropzone .dz-default').html(`<div class="row"><div class="col-md-12 mb-4 upload-area"><div class="area-label text-center p-4"><i class="fas fa-cloud-upload-alt"></i><p>Déposez vos images ici</p><a href="javascript:;">Depuis votre navigateur</a></div></div></div>`); */
-
-
-            /* Show only two notifications on load */
-            $('.alert-notifications .alert').not(':lt(2)').removeClass('d-flex').hide();
-            if($('.alert-notifications .alert').length > 2 ){
-                $('.alert-notifications .show-less').hide();
-                $('.alert-notifications .show-more').show();
-            }
-            /* Show only two notifications on load ends */
-            /* Show all/less notifications on click */
-            $(document).on('click', '.show-more a, .show-less a', function(){
-                if($(this).is('.show-less a')) {
-                    $(this).parent('.show-less').hide()
-                    $(this).parent('.show-less').siblings('.show-more').fadeIn()
-                    $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').removeClass('d-flex').slideUp();
-                } else if ($(this).is('.show-more a')) {
-                    $(this).parent('.show-more').hide()
-                    $(this).parent('.show-more').siblings('.show-less').fadeIn()
-                    $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').addClass('d-flex').slideDown();
-                }
-            })
-            /* Show all/less notifications on click ends */
-
-            /* pack/mission creation/preview/edit invoke */
-            $(document).on('click', '.add-package, .preview-edit-mission, .edit-the-pack', function () {
-                if ($(this).is('.add-package, .edit-the-pack')) {
-                    $('.dash-right').fadeOut()
-                    $('.pack-creation-edition-container').fadeIn()
-                } else if ($(this).is('.preview-edit-mission')) {
-                    $('.dash-right').fadeOut();
-
-
-                }
-            });
-            $(document).on('click', '.close-preview-edit',
-                function () {
-                    $(this).parents('[class*="edition-container"]').fadeOut()
-                    $(this).parents('[class*="edition-container"]').siblings('.dash-right').fadeIn();
-                    $('#pack-form').html('');
-                });
-            $(document).on('click',
-                '.preview-pack, .save-changes, .close-pack-preview, .close-mission-preview, .edit-the-mission, .preview-mission',
-                function (e) {
-                    if ($(this).hasClass('preview-pack')) {
-                        $(this).addClass('d-none');
-                        $(this).next().add($(this).parent('.preview-cta').prev()).removeClass('d-none')
-                        $('.pack-creation-content .edit').hide();
-                        $('.pack-creation-content .preview').show();
-                        $('.preview-pack-toast').toast('show').css({
-                            'z-index': '1050'
-                        });
-                    } else if ($(this).is('.preview-mission')) {
-                        $('.mission-edition-content .edit').fadeOut();
-                        $('.mission-edition-content .preview').fadeIn();
-                        $(this).parent('.preview-cta')
-                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.cancel-edition, .edit-image'))
-                            .addClass('d-none')
-                        $(this).parent('.preview-cta').siblings('.client-infos, .mission-cta')
-                            .addClass('d-flex')
-                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.close-preview-edit'))
-                            .fadeIn();
-                    } else if ($(this).is('.edit-the-mission')) {
-                        $('.mission-edition-content .preview').fadeOut();
-                        $('.mission-edition-content .edit').fadeIn();
-                        $(this).parent('.mission-cta')
-                            .add($(this).parent('.mission-cta').siblings('.client-infos'))
-                            .removeClass('d-flex')
-                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.close-preview-edit'))
-                            .fadeOut();
-                        $(this).parent('.mission-cta').siblings('.preview-cta')
-                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.cancel-edition, .edit-image'))
-                            .removeClass('d-none')
-                    } else if ($(this).hasClass('save-changes')) {
-                        $('.save-changes-toast').toast('show').css({
-                            'z-index': '1050'
-                        });
-                        // setTimeout(function () {
-                        //     window.location = 'cm-dashboard-tab-mypacks-felicitations.html';
-                        // }, 5000);
-                        // window.location.replace('')
-                    } else if ($(this).hasClass('close-pack-preview')) {
-                        $(this).
-                        add($(this).parent('.d-flex').prev())
-
-                            .addClass('d-none')
-                        $(this).prev().removeClass('d-none');
-                        $('.pack-creation-content .preview').hide();
-                        $('.pack-creation-content .edit').show();
-                    }
-                });
-            $(document).on('input change focus', '.pack-creation-content input, .pack-creation-content textarea, .mission-edition-content input, .mission-edition-content textarea', function(){
-                $(this).parents('.pack-creation-content, .mission-edition-content').find('.save-changes')
-            });
-            /* pack/mission creation/preview/edit invoke ends */
-
-            /* Cancel mission Starts */
-            $(document).on('click', 'a.close-cancel-mission, a.cancel-mission-activate', function(){
-                if ($(this).is('a.cancel-mission-activate')) {
-                    $('.cancel-mission-container').fadeIn();
-                } else if ($(this).is('a.close-cancel-mission')) {
-                    $('.cancel-mission-container').fadeOut();
-                }
-            })
-            /* Cancel mission Ends */
-            /* toasts initialization */
-            $('.toast').toast();
-            $(document).on('hidden.bs.toast', function () {
-                $('.toast').css({
-                    'z-index': ''
-                })
-            });
-            /* toasts ends */
-
-            window.onhashchange = function () {
-                var url = document.location.toString();
-                if (!url.match('#')) {
-                    // $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
-                    window.location = url;
-                } else {
-                    console.log('nothing to doo...')
-                }
-            }
-
-            /* Email datatable initialization */
-            var emailDataTable = $('#emailTable').DataTable({
-                dom: `<"d-flex align-items-center sticky-top px-3 pb-3 bg-dashboard"
-
-                            <"flex-grow-1 mx-2"f>
-                            i
-                            <"ml-2"p>
-                            ><"p-3"rt>`,
-                order:[
-                    [0, 'ASC']
-                ],
-                pageLength: 25,
-                pagingType: "simple",
-
-                language: {
-                    info: "_START__END_ sur  _TOTAL_ emails",
-                    search: "{{ ('b2b.label.search') | trans }}",
-                    select: {
-                        rows: {
-                            _: "%d emails selected",
-                            0: "",
-                            1: "%d email selected"
-                        }
-                    },
-                    emptyTable:"{{ ('b2b.label.emptyTable') | trans }}",
-                    searchPlaceholder: "{{ ('b2b.label.search_email') | trans }}",
-                    buttons: {
-                        selectAll: "Select all items",
-                        selectNone: "Select none"
-                    },
-                    paginate: {
-                        first:"{{ ('b2b.label.first') | trans }}",
-                        previous:"{{ ('b2b.label.last') | trans }}",
-                        next:"{{ ('b2b.label.previous') | trans }}",
-                        last:"{{ ('b2b.label.next') | trans }}"
-                    },
-                },
-                // oLanguage: {
-                //     sInfo: "_START_ to _END_ of _TOTAL_ emails"
-                // },
-
-            });
-            /* Email datatable initialization ends */
-            /* Compose email invoke */
-            $(document).on('click', '.compose-email, .cancel-compose, .back-to-inbox, .email-table tbody tr.odd td.view-message, .email-table tbody tr:nth-child(3) td.view-message, .email-table tbody tr.even td.view-message', function(){
-                if($(this).is('.compose-email')) {
-                    $('.inbox-body, .view-email-container').fadeOut('fast',function(){
-                        $('.compose-email-container').slideDown()
-                    })
-                } else if($(this).is('.cancel-compose')) {
-                    $('.compose-email-container').fadeOut()
-                    $('.inbox-body').slideDown(function(){
-                        $(this).parents('.simplebar-content').animate({
-                            scrollTop: 0
-                        }, '200');
-                    })
-                } else if($(this).is('.back-to-inbox')) {
-                    $('.view-email-container').fadeOut()
-                    $('.inbox-body, .email-options').slideDown(function(){
-                        $(this).parents('.simplebar-content').animate({
-                            scrollTop: 0
-                        }, '200');
-                    })
-                }
-            })
-
-
-
-            $('#emailTable tbody').on( 'click', 'tr', function (e) {
-                var id = emailDataTable.row( this ).data()[0];
-                console.log(id);
-
-                $.ajax({
-                    url:"/city-maker/email-envoi/view/"+id,
-                    type:'GET',
-                    dataType:'html',
-                    success: function(data){
-                        $("#preview-inbox").html(data);
-                        $('.inbox-body, .email-options').fadeOut('fast', function(){
-                            $('.view-email-container.small-email').fadeIn('fast')
-                        });
-                        e.stopImmediatePropagation();
-                        return false;
-                    }
-                });
-            });
-
-
-            /* $(document).on('click', '.email-table tbody tr td.select-checkbox', function(){
-                if($('.email-table tbody tr').hasClass('selected')) {
-                    $('.selected-email-options').removeClass('d-none')
-                } else {
-                    $('.selected-email-options').addClass('d-none')
-                }
-            }) */
-            /* Compose email invoke ends */
-            /* Email selections */
-            $(document).on('change', 'input.check-all-emails', function(){
-                if (this.checked) {
-                    emailDataTable.rows({page: 'current'}).select();
-                    $('input.check-all-emails').removeClass('half-checked')
-                } else {
-                    emailDataTable.rows({page: 'current'}).deselect();
-                    $('input.check-all-emails').removeClass('half-checked')
-                    // $('input.check-all-emails').prop('checked', false)
-                }
-            })
-            $(document).on('click', '.select-all-emails, .select-none, .select-read, .select-unread', function(){
-                if($(this).is('.select-all-emails')) {
-                    emailDataTable.rows({page: 'current'}).select();
-                    $('input.check-all-emails').prop('checked', true).removeClass('half-checked')
-                } else if ($(this).is('.select-none')){
-                    emailDataTable.rows({page: 'current'}).deselect();
-                    $('input.check-all-emails').prop('checked', false)
-                    $('input.check-all-emails').removeClass('half-checked')
-                } else if ($(this).is('.select-read')){
-                    emailDataTable.rows(':not(.unread)',{page: 'current'}).select();
-                    emailDataTable.rows('.unread',{page: 'current'}).deselect();
-                    toggleChkAll()
-                } else if ($(this).is('.select-unread')){
-                    emailDataTable.rows('.unread', {page: 'current'}).select();
-                    emailDataTable.rows(':not(.unread)', {page: 'current'}).deselect();
-                    toggleChkAll()
-                }
-            })
-            emailDataTable.on('select deselect', function(e, dt, type, indexes){
-                toggleChkAll()
-            })
-            function toggleChkAll(){
-                if($(".email-table tbody tr.selected").length == $(".email-table tbody tr").length) {
-                    $('.selected-email-options').removeClass('d-none')
-                    $('input.check-all-emails').prop('checked', true).removeClass('half-checked')
-                } else if ($('.email-table tbody tr').hasClass('selected')) {
-                    $('.selected-email-options').removeClass('d-none')
-                    $('input.check-all-emails').prop('checked', true).addClass('half-checked')
-                } else {
-                    $('.selected-email-options').addClass('d-none')
-                    $('input.check-all-emails').prop('checked', false).removeClass('half-checked')
-                }
-            }
-            /* Email selections ends */
-            /* Custom file input show file name in file type input */
-            bsCustomFileInput.init()
-            /* Custom file input show file name in file type input ends */
-        });
-
-
-/*
- * Translated default messages for the jQuery validation plugin.
- * Locale: FR (French; français)
- */
-// $.extend( $.validator.messages, {
-//     required: "Ce champ est obligatoire.",
-//     remote: "Veuillez corriger ce champ.",
-//     email: "Veuillez fournir une adresse électronique valide.",
-//     url: "Veuillez fournir une adresse URL valide.",
-//     date: "Veuillez fournir une date valide.",
-//     dateISO: "Veuillez fournir une date valide (ISO).",
-//     number: "Veuillez fournir un numéro valide.",
-//     digits: "Veuillez fournir seulement des chiffres.",
-//     creditcard: "Veuillez fournir un numéro de carte de crédit valide.",
-//     equalTo: "Veuillez fournir encore la même valeur.",
-//     notEqualTo: "Veuillez fournir une valeur différente, les valeurs ne doivent pas être identiques.",
-//     extension: "Veuillez fournir une valeur avec une extension valide.",
-//     maxlength: $.validator.format( "Veuillez fournir au plus {0} caractères." ),
-//     minlength: $.validator.format( "Veuillez fournir au moins {0} caractères." ),
-//     rangelength: $.validator.format( "Veuillez fournir une valeur qui contient entre {0} et {1} caractères." ),
-//     range: $.validator.format( "Veuillez fournir une valeur entre {0} et {1}." ),
-//     max: $.validator.format( "Veuillez fournir une valeur inférieure ou égale à {0}." ),
-//     min: $.validator.format( "Veuillez fournir une valeur supérieure ou égale à {0}." ),
-//     step: $.validator.format( "Veuillez fournir une valeur multiple de {0}." ),
-//     maxWords: $.validator.format( "Veuillez fournir au plus {0} mots." ),
-//     minWords: $.validator.format( "Veuillez fournir au moins {0} mots." ),
-//     rangeWords: $.validator.format( "Veuillez fournir entre {0} et {1} mots." ),
-//     letterswithbasicpunc: "Veuillez fournir seulement des lettres et des signes de ponctuation.",
-//     alphanumeric: "Veuillez fournir seulement des lettres, nombres, espaces et soulignages.",
-//     lettersonly: "Veuillez fournir seulement des lettres.",
-//     nowhitespace: "Veuillez ne pas inscrire d'espaces blancs.",
-//     ziprange: "Veuillez fournir un code postal entre 902xx-xxxx et 905-xx-xxxx.",
-//     integer: "Veuillez fournir un nombre non décimal qui est positif ou négatif.",
-//     vinUS: "Veuillez fournir un numéro d'identification du véhicule (VIN).",
-//     dateITA: "Veuillez fournir une date valide.",
-//     time: "Veuillez fournir une heure valide entre 00:00 et 23:59.",
-//     phoneUS: "Veuillez fournir un numéro de téléphone valide.",
-//     phoneUK: "Veuillez fournir un numéro de téléphone valide.",
-//     mobileUK: "Veuillez fournir un numéro de téléphone mobile valide.",
-//     strippedminlength: $.validator.format( "Veuillez fournir au moins {0} caractères." ),
-//     email2: "Veuillez fournir une adresse électronique valide.",
-//     url2: "Veuillez fournir une adresse URL valide.",
-//     creditcardtypes: "Veuillez fournir un numéro de carte de crédit valide.",
-//     ipv4: "Veuillez fournir une adresse IP v4 valide.",
-//     ipv6: "Veuillez fournir une adresse IP v6 valide.",
-//     require_from_group: $.validator.format( "Veuillez fournir au moins {0} de ces champs." ),
-//     nifES: "Veuillez fournir un numéro NIF valide.",
-//     nieES: "Veuillez fournir un numéro NIE valide.",
-//     cifES: "Veuillez fournir un numéro CIF valide.",
-//     postalCodeCA: "Veuillez fournir un code postal valide."
-// } );
-
-
-    </script>
 </head>
 
 <body>
 {% block body %}{% endblock %}
 
+
+<!-- Alert about cookie useage -->
+{% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
 {% block javascripts %}
     {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
 {% endblock %}
 
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+<script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
+<script>
+    /* custom per page scripts */
+
+    $(document).ready(function () {
+        $(document).on('click','.close-preview', function () {
+            // $('.close').trigger('click');
+            $('.alert-modal').modal('hide');
+            $('.close-preview-edit').trigger('click');
+        });
+        /* Skills Pack Buttons */
+        $('body').on('click','a.skills-pack',function(){
+            // e.preventDefault();
+            $(this).parent('li').siblings().find('a').removeClass('active');
+            $(this).addClass('active');
+            $(this).parent('li').find('input[type="radio"]').prop('checked',true);
+            $(this).parent('li').find('input[type="radio"]').attr('checked','checked');
+        });
+
+        /* Restrict maxlengths for input and textarea fields */
+        // $('body').on("input",'textarea.pack-description, input.pack-title', function () {
+        //     var maxlength = $(this).attr("maxlength");
+        //     var currentLength = $(this).val().length;
+        //
+        //     $(this).next().find('.inputlength').text(currentLength)
+        //     if (currentLength >= maxlength) {
+        //         //         console.log("You have reached the maximum number of characters.");
+        //         $(this).next('.text-textgray').append(
+        //             `<span class="text-error ml-2">Vous avez atteint le nombre de caractères maximum autorisé</span>`
+        //         );
+        //     } else if (currentLength < maxlength) {
+        //         //         console.log(maxlength - currentLength + " chars left");
+        //         $(this).next('.text-textgray').find('.text-error').fadeOut('fast');
+        //     }
+        // });
+
+        /* Filter packages script */
+        /* $(document).on('click', '.filter-packages  input[type="checkbox"]', function () {
+            $(this).parents('.content-top-header').next().find('.package-list-item')
+                .removeClass('d-flex').fadeOut('fast');
+
+            var $packlist = $(this).parents('.content-top-header').next().find(
+                '.package-list-item'),
+                filter = [];
+            $(this).parents('.filter-packages').find('input[type="checkbox"]:checked')
+                .each(function () {
+                    var packtype = $(this).val();
+                    filter.push('.' + packtype);
+                })
+            if (filter.length == 0) {
+                $packlist.addClass('d-flex').fadeIn();
+                $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.length);
+            } else {
+                $packlist.filter(filter.join(',')).addClass('d-flex').fadeIn();
+                $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.filter(filter.join(',')).length);
+            }
+        }) */
+        function filterPackages(thisObj) {
+            $(thisObj).parents('.content-top-header').next().find('.package-list-item')
+                .removeClass('d-flex').fadeOut('fast');
+
+            var $packlist = $(thisObj).parents('.content-top-header').next().find(
+                '.package-list-item'),
+                filter = [];
+            $(thisObj).parents('.filter-packages').find('input[type="checkbox"]:checked')
+                .each(function () {
+                    var packtype = $(this).val();
+                    filter.push('.' + packtype);
+                })
+            console.log(filter);
+            if (filter.length == 0) {
+                $packlist.addClass('d-flex').fadeIn();
+                $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                    .length);
+            } else {
+                $(thisObj).parents('.content-top-header').next().find(
+                    '.package-list-item').filter(filter.join(',')).addClass('d-flex').fadeIn();
+                $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                    .filter(filter.join(',')).length);
+            }
+        }
+
+        $('.filter-packages input[type="checkbox"]').click(function () {
+            filterPackages($(this))
+        });
+        /* $('.filter-packages label input[type="radio"]').click(function () {
+            // fetch the class of the clicked item
+            var activeFilter = $(this).attr('value'),
+                availablePacksList = $(this).parents('.tab-pane-content').find(
+                    '.available-packages-list'),
+                availablePacks = availablePacksList.children('li.' + activeFilter).length;
+            // reset the active class on all the buttons
+            $('.filter-packages label').removeClass('active');
+            // update the active state on our clicked button
+            $(this).parent().addClass('active');
+            // $('.add-package-to-list').addClass(activeFilter);
+            if (activeFilter == 'all') {
+                // show all our items
+                availablePacksList.children('li.package-list-item').addClass('d-flex').show();
+            } else {
+                // hide all elements that don't share activeFilter
+                availablePacksList.children('li:not(.' + activeFilter + ')').removeClass('d-flex')
+                    .hide();
+                // show all elements that do share activeFilter
+                availablePacksList.children('li.add-package-to-list, li.' + activeFilter).addClass(
+                    'd-flex').show();
+                $(this).parents('.tab-pane-content').find('.total-packs-available').text(
+                    availablePacks);
+            }
+            return false;
+        }); */
+        /* Filter packages script ends */
+
+        /* Images drop zone */
+        /* $('.dropzone .dz-default').html(`<div class="row"><div class="col-md-12 mb-4 upload-area"><div class="area-label text-center p-4"><i class="fas fa-cloud-upload-alt"></i><p>Déposez vos images ici</p><a href="javascript:;">Depuis votre navigateur</a></div></div></div>`); */
+
+
+        /* Show only two notifications on load */
+        $('.alert-notifications .alert').not(':lt(2)').removeClass('d-flex').hide();
+        if($('.alert-notifications .alert').length > 2 ){
+            $('.alert-notifications .show-less').hide();
+            $('.alert-notifications .show-more').show();
+        }
+        /* Show only two notifications on load ends */
+        /* Show all/less notifications on click */
+        $(document).on('click', '.show-more a, .show-less a', function(){
+            if($(this).is('.show-less a')) {
+                $(this).parent('.show-less').hide()
+                $(this).parent('.show-less').siblings('.show-more').fadeIn()
+                $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').removeClass('d-flex').slideUp();
+            } else if ($(this).is('.show-more a')) {
+                $(this).parent('.show-more').hide()
+                $(this).parent('.show-more').siblings('.show-less').fadeIn()
+                $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').addClass('d-flex').slideDown();
+            }
+        })
+        /* Show all/less notifications on click ends */
+
+        /* pack/mission creation/preview/edit invoke */
+        $(document).on('click', '.add-package, .preview-edit-mission, .edit-the-pack', function () {
+            if ($(this).is('.add-package, .edit-the-pack')) {
+                $('.dash-right').fadeOut()
+                $('.pack-creation-edition-container').fadeIn()
+            } else if ($(this).is('.preview-edit-mission')) {
+                $('.dash-right').fadeOut();
+
+
+            }
+        });
+        $(document).on('click', '.close-preview-edit',
+            function () {
+                $(this).parents('[class*="edition-container"]').fadeOut()
+                $(this).parents('[class*="edition-container"]').siblings('.dash-right').fadeIn();
+                $('#pack-form').html('');
+            });
+        $(document).on('click',
+            '.preview-pack, .save-changes, .close-pack-preview, .close-mission-preview, .edit-the-mission, .preview-mission',
+            function (e) {
+                if ($(this).hasClass('preview-pack')) {
+                    $(this).addClass('d-none');
+                    $(this).next().add($(this).parent('.preview-cta').prev()).removeClass('d-none')
+                    $('.pack-creation-content .edit').hide();
+                    $('.pack-creation-content .preview').show();
+                    $('.preview-pack-toast').toast('show').css({
+                        'z-index': '1050'
+                    });
+                } else if ($(this).is('.preview-mission')) {
+                    $('.mission-edition-content .edit').fadeOut();
+                    $('.mission-edition-content .preview').fadeIn();
+                    $(this).parent('.preview-cta')
+                        .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.cancel-edition, .edit-image'))
+                        .addClass('d-none')
+                    $(this).parent('.preview-cta').siblings('.client-infos, .mission-cta')
+                        .addClass('d-flex')
+                        .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.close-preview-edit'))
+                        .fadeIn();
+                } else if ($(this).is('.edit-the-mission')) {
+                    $('.mission-edition-content .preview').fadeOut();
+                    $('.mission-edition-content .edit').fadeIn();
+                    $(this).parent('.mission-cta')
+                        .add($(this).parent('.mission-cta').siblings('.client-infos'))
+                        .removeClass('d-flex')
+                        .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.close-preview-edit'))
+                        .fadeOut();
+                    $(this).parent('.mission-cta').siblings('.preview-cta')
+                        .add($(this).parents('.bottom-info-status').siblings('.cover-image-container').find('.cancel-edition, .edit-image'))
+                        .removeClass('d-none')
+                } else if ($(this).hasClass('save-changes')) {
+                    $('.save-changes-toast').toast('show').css({
+                        'z-index': '1050'
+                    });
+                    // setTimeout(function () {
+                    //     window.location = 'cm-dashboard-tab-mypacks-felicitations.html';
+                    // }, 5000);
+                    // window.location.replace('')
+                } else if ($(this).hasClass('close-pack-preview')) {
+                    $(this).
+                    add($(this).parent('.d-flex').prev())
+
+                        .addClass('d-none')
+                    $(this).prev().removeClass('d-none');
+                    $('.pack-creation-content .preview').hide();
+                    $('.pack-creation-content .edit').show();
+                }
+            });
+        $(document).on('input change focus', '.pack-creation-content input, .pack-creation-content textarea, .mission-edition-content input, .mission-edition-content textarea', function(){
+            $(this).parents('.pack-creation-content, .mission-edition-content').find('.save-changes')
+        });
+        /* pack/mission creation/preview/edit invoke ends */
+
+        /* Cancel mission Starts */
+        $(document).on('click', 'a.close-cancel-mission, a.cancel-mission-activate', function(){
+            if ($(this).is('a.cancel-mission-activate')) {
+                $('.cancel-mission-container').fadeIn();
+            } else if ($(this).is('a.close-cancel-mission')) {
+                $('.cancel-mission-container').fadeOut();
+            }
+        })
+        /* Cancel mission Ends */
+        /* toasts initialization */
+        $('.toast').toast();
+        $(document).on('hidden.bs.toast', function () {
+            $('.toast').css({
+                'z-index': ''
+            })
+        });
+        /* toasts ends */
+
+        window.onhashchange = function () {
+            var url = document.location.toString();
+            if (!url.match('#')) {
+                // $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+                window.location = url;
+            } else {
+                console.log('nothing to doo...')
+            }
+        }
+
+        /* Email datatable initialization */
+        var emailDataTable = $('#emailTable').DataTable({
+            dom: `<"d-flex align-items-center sticky-top px-3 pb-3 bg-dashboard"
+
+                            <"flex-grow-1 mx-2"f>
+                            i
+                            <"ml-2"p>
+                            ><"p-3"rt>`,
+            order:[
+                [0, 'ASC']
+            ],
+            pageLength: 25,
+            pagingType: "simple",
+
+            language: {
+                info: "_START__END_ sur  _TOTAL_ emails",
+                search: "{{ ('b2b.label.search') | trans }}",
+                select: {
+                    rows: {
+                        _: "%d emails selected",
+                        0: "",
+                        1: "%d email selected"
+                    }
+                },
+                emptyTable:"{{ ('b2b.label.emptyTable') | trans }}",
+                searchPlaceholder: "{{ ('b2b.label.search_email') | trans }}",
+                buttons: {
+                    selectAll: "Select all items",
+                    selectNone: "Select none"
+                },
+                paginate: {
+                    first:"{{ ('b2b.label.first') | trans }}",
+                    previous:"{{ ('b2b.label.last') | trans }}",
+                    next:"{{ ('b2b.label.previous') | trans }}",
+                    last:"{{ ('b2b.label.next') | trans }}"
+                },
+            },
+            // oLanguage: {
+            //     sInfo: "_START_ to _END_ of _TOTAL_ emails"
+            // },
+
+        });
+        /* Email datatable initialization ends */
+        /* Compose email invoke */
+        $(document).on('click', '.compose-email, .cancel-compose, .back-to-inbox, .email-table tbody tr.odd td.view-message, .email-table tbody tr:nth-child(3) td.view-message, .email-table tbody tr.even td.view-message', function(){
+            if($(this).is('.compose-email')) {
+                $('.inbox-body, .view-email-container').fadeOut('fast',function(){
+                    $('.compose-email-container').slideDown()
+                })
+            } else if($(this).is('.cancel-compose')) {
+                $('.compose-email-container').fadeOut()
+                $('.inbox-body').slideDown(function(){
+                    $(this).parents('.simplebar-content').animate({
+                        scrollTop: 0
+                    }, '200');
+                })
+            } else if($(this).is('.back-to-inbox')) {
+                $('.view-email-container').fadeOut()
+                $('.inbox-body, .email-options').slideDown(function(){
+                    $(this).parents('.simplebar-content').animate({
+                        scrollTop: 0
+                    }, '200');
+                })
+            }
+        })
+
+
+
+        $('#emailTable tbody').on( 'click', 'tr', function (e) {
+            var id = emailDataTable.row( this ).data()[0];
+            console.log(id);
+
+            $.ajax({
+                url:"/city-maker/email-envoi/view/"+id,
+                type:'GET',
+                dataType:'html',
+                success: function(data){
+                    $("#preview-inbox").html(data);
+                    $('.inbox-body, .email-options').fadeOut('fast', function(){
+                        $('.view-email-container.small-email').fadeIn('fast')
+                    });
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            });
+        });
+
+
+        /* $(document).on('click', '.email-table tbody tr td.select-checkbox', function(){
+            if($('.email-table tbody tr').hasClass('selected')) {
+                $('.selected-email-options').removeClass('d-none')
+            } else {
+                $('.selected-email-options').addClass('d-none')
+            }
+        }) */
+        /* Compose email invoke ends */
+        /* Email selections */
+        $(document).on('change', 'input.check-all-emails', function(){
+            if (this.checked) {
+                emailDataTable.rows({page: 'current'}).select();
+                $('input.check-all-emails').removeClass('half-checked')
+            } else {
+                emailDataTable.rows({page: 'current'}).deselect();
+                $('input.check-all-emails').removeClass('half-checked')
+                // $('input.check-all-emails').prop('checked', false)
+            }
+        })
+        $(document).on('click', '.select-all-emails, .select-none, .select-read, .select-unread', function(){
+            if($(this).is('.select-all-emails')) {
+                emailDataTable.rows({page: 'current'}).select();
+                $('input.check-all-emails').prop('checked', true).removeClass('half-checked')
+            } else if ($(this).is('.select-none')){
+                emailDataTable.rows({page: 'current'}).deselect();
+                $('input.check-all-emails').prop('checked', false)
+                $('input.check-all-emails').removeClass('half-checked')
+            } else if ($(this).is('.select-read')){
+                emailDataTable.rows(':not(.unread)',{page: 'current'}).select();
+                emailDataTable.rows('.unread',{page: 'current'}).deselect();
+                toggleChkAll()
+            } else if ($(this).is('.select-unread')){
+                emailDataTable.rows('.unread', {page: 'current'}).select();
+                emailDataTable.rows(':not(.unread)', {page: 'current'}).deselect();
+                toggleChkAll()
+            }
+        })
+        emailDataTable.on('select deselect', function(e, dt, type, indexes){
+            toggleChkAll()
+        })
+        function toggleChkAll(){
+            if($(".email-table tbody tr.selected").length == $(".email-table tbody tr").length) {
+                $('.selected-email-options').removeClass('d-none')
+                $('input.check-all-emails').prop('checked', true).removeClass('half-checked')
+            } else if ($('.email-table tbody tr').hasClass('selected')) {
+                $('.selected-email-options').removeClass('d-none')
+                $('input.check-all-emails').prop('checked', true).addClass('half-checked')
+            } else {
+                $('.selected-email-options').addClass('d-none')
+                $('input.check-all-emails').prop('checked', false).removeClass('half-checked')
+            }
+        }
+        /* Email selections ends */
+        /* Custom file input show file name in file type input */
+        bsCustomFileInput.init()
+        /* Custom file input show file name in file type input ends */
+    });
+</script>
 </body>
 </html>
