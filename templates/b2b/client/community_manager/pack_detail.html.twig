@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/cookiealert.css')) }}">
 
 
     {% block stylesheets %}{% endblock %}
@@ -721,5 +722,11 @@
     });
 </script>
 {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+
+<!-- Alert about cookie useage -->
+{% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+<script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
 </body>
 </html>

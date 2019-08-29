@@ -39,6 +39,7 @@
         {% endif %} 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ absolute_url(asset('build/front/css/app.css')) }}">
+            <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/cookiealert.css')) }}">
         {% endblock %}
 
 
@@ -92,5 +93,10 @@
         {% block javascripts_footer %}{% endblock %}
                 <!-- Intercom messenger -->
         {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+        <!-- Alert about cookie useage -->
+        {% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+        <script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
     </body>
 </html>

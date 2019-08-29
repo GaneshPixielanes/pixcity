@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
     <!-- Site CSS -->
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/cookiealert.css')) }}">
 
 
 
@@ -137,7 +138,7 @@
                                                          <a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
                                                          <a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i>Cards en attente</a>
                                                          <a class="dropdown-item" href="{{ path('front_pixie_account_cards_validated') }}"><i class="far fa-check-circle"></i>Cards Validees</a>
-                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i>Mes rémunérations</a>
+                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i>Mes gains</a>
                                                          <a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
                                                          <a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
                                                          {% if loginDetails['entity'].getB2bCmApproval() != "0" %}
@@ -1164,5 +1165,10 @@
 
     {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
 
+    <!-- Alert about cookie useage -->
+    {% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+    <script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
 </body>
 </html>

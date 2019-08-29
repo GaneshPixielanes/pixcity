@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ absolute_url('/assets/css/dropdown.css') }}" type="text/css" />
     <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/main.css')) }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/cookiealert.css')) }}">
 
     <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
     <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_style.min.css' rel='stylesheet' type='text/css' />
@@ -73,11 +74,13 @@
 
                 <!--googleon: index-->
     {#<!-- Scripts -->#}
-
+        {% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
 
         <script src="{{ absolute_url(asset('build/js/custom.js')) }}"></script>
         <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/js/froala_editor.min.js'></script>
         <script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
         <script src="https://cdn.jsdelivr.net/combine/npm/lightgallery,npm/lg-thumbnail"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+        <script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
     </body>
 </html>
