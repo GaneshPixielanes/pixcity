@@ -48,6 +48,9 @@
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ blog_post.id) }}">
                                     <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
                                 </form>
+                                <a href="{{ path('front_blog_single', {slug: blog_post.slug, id:blog_post.id}) }}" title="{{ blog_post.title }}" target="_blank" rel="noopener" class="btn btn-circle bg-green waves-effect waves-circle waves-float">
+                                    <i class="material-icons">open_in_new</i>
+                                </a>
                             </td>
                         </tr>
                     {% else %}
