@@ -43,7 +43,7 @@
                             <td>
                                 {#<a href="{{ path('admin_blog_post_show', {'id': blog_post.id}) }}"  class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>#}
                                 <a href="{{ path('admin_blog_post_edit', {'id': blog_post.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">edit</i></a>
-                                <form method="post" class="delete-form" action="{{ path('admin_blog_post_delete', {'id': blog_post.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <form method="post" class="delete-form" action="{{ path('admin_blog_post_delete', {'id': blog_post.id}) }}" >
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ blog_post.id) }}">
                                     <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
