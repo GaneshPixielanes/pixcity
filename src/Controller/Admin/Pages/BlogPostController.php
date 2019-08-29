@@ -147,9 +147,7 @@ class BlogPostController extends AbstractController
                         $srcPathBann = 'uploads/blog_images/'.$uploadedFile;
                         $paths = 'uploads/blog_images/'.$blogPost->getId().'/';
                         if (!file_exists($paths)) {
-                            $oldmask = umask(0);
-                            mkdir($paths, 0777);
-                            umask($oldmask);
+                            mkdir($paths, 7777);
                         }
                         if (file_exists($srcPathBann)) {
                             rename($srcPathBann, 'uploads/blog_images/' . $blogPost->getId() . '/' . pathinfo($uploadedFile, PATHINFO_BASENAME));
@@ -160,9 +158,7 @@ class BlogPostController extends AbstractController
                         $srcPath = 'uploads/blog_images/'.$headFile;
                         $path = 'uploads/blog_images/'.$blogPost->getId().'/';
                         if (!file_exists($path)) {
-                            $oldmask = umask(0);
-                            mkdir($path, 0777);
-                            umask($oldmask);
+                            mkdir($path, 7777);
                         }
                         if (file_exists($srcPath)) {
                             rename($srcPath, 'uploads/blog_images/' . $blogPost->getId() . '/' . pathinfo($headFile, PATHINFO_BASENAME));
