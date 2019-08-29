@@ -51,7 +51,12 @@ class BlogPostType extends AbstractType
                     'Publish' => '1'
                 ]
             ])
-            ->add('position')
+            ->add('position', ChoiceType::class,[
+                'choices' => [
+                    '0'=> '0',
+                    '1' => '1'
+                ]
+            ])
             ->add('slug')
             //->add('createdAt')
             //->add('updatedAt')
