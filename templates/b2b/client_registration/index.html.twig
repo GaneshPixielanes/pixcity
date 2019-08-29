@@ -266,6 +266,7 @@
            if($('#client-logo').val() == '')
            {
                $('.logo-error').remove();
+               $("html, body").animate({ scrollTop: 0 }, "slow");
                $('#client-logo-select').after('<label for="" class="error logo-error">Merci d\'uploader votre logo.</label>');
                return false;
            }
