@@ -72,7 +72,8 @@ class CardType extends AbstractType
                     'toolbarStickyOffset' =>  70,
                     'toolbarSticky' => true,
                     'imageUploadFolder' => 'uploads/img'.$optionUploadFolder,
-                    'imageUploadPath' => 'uploads/img'.$optionUploadFolder
+                    'imageUploadPath' => 'uploads/img'.$optionUploadFolder,
+                    'fontFamily' => ['Monsterrat'],
                 ));
             }
             else
