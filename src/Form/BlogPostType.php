@@ -22,14 +22,16 @@ class BlogPostType extends AbstractType
                 'attr' => [
                     'rowClass' => 'type-froala'
                 ],
-                'toolbarStickyOffset' =>  70
+                'toolbarStickyOffset' =>  70,
+                'fontFamily' => ['Monsterrat'],
             ))
             ->add('content', FroalaEditorType::class, array(
                 'label' => 'label.content',
                 'attr' => [
                     'rowClass' => 'type-froala'
                 ],
-                'toolbarStickyOffset' =>  70
+                'toolbarStickyOffset' =>  70,
+                'fontFamily' => ['Monsterrat'],
             ))
             ->add('bannerImage'
 //                ,
