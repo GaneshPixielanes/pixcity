@@ -11,9 +11,9 @@
 
         <ul class="repeater-container card-template-attachments-collection">
 
-            {% if form.vars.data.headImage  %}
-                <img class="" src="{{ asset('/uploads/blog_images/'~form.vars.data.id~'/'~form.vars.data.headImage) | imagine_filter('bg_card_item' )}}" width="100%">
-            {% endif %}
+            {#{% if form.vars.data.headImage  %}#}
+                {#<img class="" src="{{ asset('/uploads/blog_images/'~form.vars.data.id~'/'~form.vars.data.headImage) | imagine_filter('bg_card_item' )}}" width="100%">#}
+            {#{% endif %}#}
             <img class="thumb" src="{% if form.headImage.vars.value.id is defined %}{{ form.headImage.vars.value.getUrl() }}{% endif %}" width="100%">
             <li class="field">{{ form_row(form.headImage) }}</li>
 
@@ -41,9 +41,9 @@
     <div class="card-thumb">
 
         <ul class="repeater-container card-template-attachments-collection">
-            {% if form.vars.data.bannerImage  %}
-                <img class="" src="{{ asset('/uploads/blog_images/'~form.vars.data.id~'/'~form.vars.data.bannerImage) | imagine_filter('bg_card_item' ) }}" width="100%">
-            {% endif %}
+            {#{% if form.vars.data.bannerImage  %}#}
+                {#<img class="" src="{{ asset('/uploads/blog_images/'~form.vars.data.id~'/'~form.vars.data.bannerImage) | imagine_filter('bg_card_item' ) }}" width="100%">#}
+            {#{% endif %}#}
             <img class="thumb" src="{% if form.bannerImage.vars.value.id is defined %}{{ form.bannerImage.vars.value.getUrl() }}{% endif %}" width="100%">
             <li class="field">{{ form_widget(form.bannerImage) }}</li>
 
