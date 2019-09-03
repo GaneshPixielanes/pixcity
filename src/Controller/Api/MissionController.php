@@ -176,7 +176,7 @@ class MissionController extends Controller
 
                             $calculate_refund  = $refund_percentage;
 
-//                            $response = $mangoPayService->refundPayment($transaction,$first_result['client_price'],$calculate_refund);
+                            $response = $mangoPayService->refundPayment($transaction,$result['price'],$calculate_refund);
 
                         }
 
