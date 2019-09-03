@@ -27,7 +27,8 @@ class UserMissionType extends AbstractType
                 'attr' => [
                     'rowClass' => 'type-froala'
                 ],
-                'toolbarStickyOffset' =>  70
+                'toolbarStickyOffset' =>  70,
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('title',TextType::class,array('label'=>'Titre mission'))
             ->add('bannerImage',HiddenType::class,array('data_class'=> null, 'label' => 'Image bannière'))

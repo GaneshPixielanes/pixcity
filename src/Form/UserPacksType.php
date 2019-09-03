@@ -30,7 +30,8 @@ class UserPacksType extends AbstractType
                 'attr' => [
                     'rowClass' => 'type-froala'
                 ],
-                'toolbarStickyOffset' =>  70
+                'toolbarStickyOffset' =>  70,
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('bannerImage',HiddenType::class,array('data_class'=> null, 'label' => 'Image bannière'))
             ->add('userBasePrice')
