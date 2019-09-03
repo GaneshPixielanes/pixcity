@@ -36,7 +36,7 @@ class PageType extends AbstractType
                     'rowClass' => 'type-froala'
                 ],
                 'toolbarStickyOffset' =>  70,
-                'fontFamily' => ['Monsterrat'],
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('indexed', SwitchType::class, array('label' => 'label.indexed', 'required' => false))
             ->add('platform', ChoiceType::class, [

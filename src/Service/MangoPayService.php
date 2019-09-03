@@ -111,23 +111,31 @@ class MangoPayService
     }
 
 
-    public function refundPayment($transaction,$amount,$refund_amount){
+    public function refundPayment($transaction,int $amount,int $refund_amount){
+
+        $displayPrice = $amount * 100;
+        $percentage = (2 / 100) * $displayPrice;
+        $fees = (int) $percentage;
+
+        $debitedFund = $refund_amount * 100;
 
         $PayInId = $transaction[0]->getMangopayTransactionId();
 
         $Refund = new \MangoPay\Refund();
+
         $Refund->AuthorId = $transaction[0]->getMangopayUserId();
 
         $Refund->DebitedFunds = new \MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
-        $Refund->DebitedFunds->Amount = $amount;
+        $Refund->DebitedFunds->Amount = $debitedFund;
 
         $Refund->Fees = new \MangoPay\Money();
         $Refund->Fees->Currency = "EUR";
-        $Refund->Fees->Amount =  - $refund_amount;
+        $Refund->Fees->Amount = $fees;
 
-        $reponse = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
-        return $reponse->ResultMessage;
+        $response = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
+
+        return $response->ResultMessage;
     }
 
     public function kycCreate($mangopayUserId, $filename)
