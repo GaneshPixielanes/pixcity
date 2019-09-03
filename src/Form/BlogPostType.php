@@ -23,7 +23,7 @@ class BlogPostType extends AbstractType
                     'rowClass' => 'type-froala'
                 ],
                 'toolbarStickyOffset' =>  70,
-                'fontFamily' => ['Monsterrat'],
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('content', FroalaEditorType::class, array(
                 'label' => 'label.content',
@@ -31,7 +31,7 @@ class BlogPostType extends AbstractType
                     'rowClass' => 'type-froala'
                 ],
                 'toolbarStickyOffset' =>  70,
-                'fontFamily' => ['Monsterrat'],
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('bannerImage'
 //                ,

@@ -28,7 +28,7 @@ class FaqsType extends AbstractType
                     'rowClass' => 'type-froala'
                 ],
                 'toolbarStickyOffset' =>  70,
-                'fontFamily' => ['Monsterrat'],
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('subcategory', ChoiceType::class, [
                 'choices' => [
