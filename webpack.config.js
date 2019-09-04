@@ -45,6 +45,7 @@ Encore
     .addEntry('admin/js/pages/walls', './assets/admin/js/pages/walls.js')
     .addEntry('admin/js/pages/pagecategory', './assets/admin/js/pages/pagecategory.js')
     .addEntry('admin/js/pages/transactions', './assets/admin/js/pages/transactions.js')
+    .addEntry('admin/js/pages/email', './assets/admin/js/pages/email.js')
 
     .addEntry('admin/js/shared/address', './assets/admin/js/shared/address.js')
 
@@ -78,7 +79,10 @@ Encore
     // .addEntry('js/lazy', './assets/v2/js/jquery.lazy.min.js')
     .addEntry('js/dropzone', './assets/v2/js/dropzone.js')
     .addEntry('js/cookiealert', './assets/v2/js/cookiealert.js')
-
+    .addEntry('js/scroll', './assets/front/js/pages/scroll-jax.js')
+    .addEntry('js/scrollMapCount', './assets/front/js/pages/scroll-map-count.js')
+    .addEntry('js/scrollTopCard', './assets/front/js/pages/scroll-top-cards.js')
+    .addEntry('js/scrollBecomeCityMaker', './assets/front/js/pages/become-city-mker.js')
     // B2B
 
     .addEntry('b2b/js/app', './assets/b2b/js/app.js')
