@@ -345,6 +345,13 @@
                                     <span>Instagram Crawler</span>
                                 </a>
                             </li>
+
+                            <li class="{{ route starts with 'admin_email' ? 'active' }}">
+                                <a href="{{ path('admin_email_list') }}" class="waves-blue-grey">
+                                    <i class="material-icons">email</i>
+                                    <span>E-mail</span>
+                                </a>
+                            </li>
                         {% endif %}
                     {% endif %}
                 </ul>
