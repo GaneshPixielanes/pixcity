@@ -1,0 +1,29 @@
+{% extends 'admin/email/emails.html.twig' %}
+
+{% block breadcrumb %}
+    <li class="active">E-mail</li>
+{% endblock %}
+
+{% block inner %}
+
+    <table class="table table-striped table-middle-aligned datatable-ajax" data-defaultsortby="5" data-ajax="{{ path('admin_email_ajax') }}" style="width:100%; border-collapse: collapse;">
+        <thead>
+        <tr>
+            <th scope="col">Subject</th>
+            <th scope="col">Slug</th>
+            <th scope="col">Sent To</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="text-center nosort"></th>
+        </tr>
+        </thead>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{#    <script src="{{ asset('build/admin/js/pages/users-list.js') }}"></script>#}
+    <script src="{{ asset('build/admin/js/pages/email.js') }}"></script>
+
+{% endblock %}
