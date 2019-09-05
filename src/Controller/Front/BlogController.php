@@ -39,7 +39,7 @@ class BlogController extends AbstractController
     public function single(BlogPostRepository $blogPostRepository,Request $request)
     {
 
-        $blogSingle = $blogPostRepository->findBy(['id'=>$request->attributes->get("id")]);
+        $blogSingle = $blogPostRepository->findBy(['id'=>$request->attributes->get("id"),'postStatus'=>1]);
 
         return $this->render('front/blog/blogPost.html.twig', [
             'blogSingle' => $blogSingle,
