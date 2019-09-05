@@ -47,11 +47,13 @@ class BlogPostController extends AbstractController
     /**
      * @Route("/new", name="post_new", methods={"GET","POST"})
      */
-    public function new(Request $request, AuthorizationCheckerInterface $authChecker): Response
+    public function new(Request $request, AuthorizationCheckerInterface $authChecker, BlogPostRepository $blogPostRepository): Response
     {
+
         $user = $this->getUser();
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
+                $entityManager = $this->getDoctrine()->getManager();
                 $blogPost = new BlogPost();
                 $form = $this->createForm(BlogPostType::class, $blogPost);
                 $form->handleRequest($request);
@@ -60,8 +62,15 @@ class BlogPostController extends AbstractController
                     $slugStrChange = str_replace(' ','-',$blogPost->getSlug());
                     $blogPost->setSlug($slugStrChange);
                     $blogPost->setCreatedBy($this->getUser());
+                    if($blogPost->getPosition() == 1){
+                        $blogPostSearch = $blogPostRepository->findBy(array('position'=>1));
+                        foreach ($blogPostSearch as $blog){
+                            $blog->setPosition(0);
+                            $entityManager->persist($blog);
+                        }
+                    }
 
-                    $entityManager = $this->getDoctrine()->getManager();
+
                     $entityManager->persist($blogPost);
                     $entityManager->flush();
 
@@ -128,12 +137,12 @@ class BlogPostController extends AbstractController
     /**
      * @Route("/{id}/edit", name="post_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, BlogPost $blogPost,AuthorizationCheckerInterface $authChecker): Response
+    public function edit(Request $request, BlogPost $blogPost,AuthorizationCheckerInterface $authChecker, BlogPostRepository $blogPostRepository): Response
     {
         $user = $this->getUser();
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
-
+                $entityManager = $this->getDoctrine()->getManager();
                 $form = $this->createForm(BlogPostType::class, $blogPost);
                 $form->handleRequest($request);
 
@@ -141,6 +150,15 @@ class BlogPostController extends AbstractController
                     $slugStrChange = str_replace(' ','-',$blogPost->getSlug());
                     $blogPost->setSlug($slugStrChange);
                     $blogPost->setCreatedBy($this->getUser());
+
+                    if($blogPost->getPosition() == 1){
+                        $blogPostSearch = $blogPostRepository->findBy(array('position'=>1));
+                        foreach ($blogPostSearch as $blog){
+                            $blog->setPosition(0);
+                            $entityManager->persist($blog);
+                        }
+                    }
+
                     $uploadedFile = $blogPost->getBannerImage();
 
                     if ($uploadedFile) {
@@ -165,6 +183,9 @@ class BlogPostController extends AbstractController
                         }
                     }
                     $this->getDoctrine()->getManager()->flush();
+
+
+                    $entityManager->flush();
 
                     return $this->redirectToRoute('admin_blog_post_index');
                 }
