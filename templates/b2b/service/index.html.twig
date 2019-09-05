@@ -1,4 +1,5 @@
 {% extends 'b2b/client/base.html.twig' %}
+{% import "b2b/shared/macros.html.twig" as macro %}
 {%  block meta_title %}{{ page.metaTitle }}{% endblock %}
 {%  block meta_description %}{{ page.metaDescription }}{% endblock %}
 
@@ -131,55 +132,7 @@
                             <div class="card-columns">
                                 {% for user in users %}
                                     {% if user.userPacks is defined and user.userPacks is not empty %}
-                                        <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
-                                            <div class="cm-card-container">
-                                                <div class="row">
-                                                    <div class="col-md-12 mt-n5 cm-image">
-                                                        <img class="img-fluid shadow-lg" src="{{ user.getAvatarUrl() }}" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12 mt-n3 mb-5">
-                                                        <ul class="d-flex justify-content-center align-items-center cm-packages">
-                                                            {% for skill in user.userSkill %}
-                                                                <li><i class="fas {{ skill.icon }} fz-22"></i></li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h4 class="title text-center fz-28 font-weight-bold">{{ user }}</h4>
-{#                                                        <p class="region text-center fz-16 text-pink">{{ user.userRegion.first.name }}</p>#}
-                                                    </div>
-                                                </div>
-                                                {% if user.userPacks is defined and user.userPacks is not empty %}
-                                                    {% for pack in user.userPacks  %}
-                                                        {% if loop.index <= 3 %}
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
-                                                                        <div class="work-title font-weight-bold fz-14">{{ pack.packSkill.name }}</div>
-                                                                        <div class="work-amount font-weight-bold fz-16">
-{#                                                                            <span class="d-block fz-12 font-weight-light">À partir de</span>#}
-                                                                            {{ pack.totalPrice }} €</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                {% endif %}
-                                                <div class="row">
-                                                    <div class="col-md-12 mt-3">
-                                                        {% if user.pixie.billing.address.city is defined %}
-                                                            <a href="{{ url('b2b_front_community_manager_view',{'city':user.pixie.billing.address.city | lower,'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
-                                                        {% else %}
-                                                            <a href="{{ url('b2b_front_community_manager_view',{'city':'test-city' | lower,'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {{ macro.cityMaker(user) }}
                                     {% endif %}
 
                                 {% endfor %}
