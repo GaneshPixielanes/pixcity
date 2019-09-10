@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!-- saved from url=(0025)http://pixielanes.in/new/ -->
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127340360-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ google_analytics_id }}');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block meta_title %}Pix.City{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Vous vous êtes forcément déjà posé cette question. Et si un local, un vrai, vous le disait ? Venez échanger avec nos Pixies et partager des bons plans de leur région.{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
+    {% if card.masterhead.getUrl() is defined and card.masterhead.getUrl()|imagine_filter('bg_header_slider') is not empty %}
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content="{{ card.masterhead.getUrl() | imagine_filter('bg_header_slider') }}" />
+        {% if card.masterhead.getUrl() is defined and card.masterhead.getUrl()|imagine_filter('bg_header_slider') is not empty %}
+            <meta property="og:type" content="article" />
+            <meta property="og:image" content="{{ card.masterhead.getUrl() | imagine_filter('bg_header_slider') }}" />
+            {% for sliderImage in card.medias %}
+                <meta property="og:image" content="{{ sliderImage.getUrl() | imagine_filter('bg_header_slider') }}" />
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" href="{{ asset('icons/favicon.ico') }}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    {#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
+    {#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/pretty-checkbox.css')) }}" />#}
+    {#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/slick.css')) }}" />#}
+    {#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/slick-theme.css')) }}" />#}
+    {#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/simplebar.css')) }}" />#}
+    {#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/bootstrap-select.css')) }}" />#}
+    {#    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_editor.min.css' rel='stylesheet' type='text/css' />#}
+    {#    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_style.min.css' rel='stylesheet' type='text/css' />#}
+    {#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/lightgallery.css')) }}">#}
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
+
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/style.css')) }}">
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% if not is_granted('IS_AUTHENTICATED_FULLY') %}logged-out{% else %}logged-in{% endif %} {% endblock %}">
+<nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main py-0 internal-nav">
+    <div class="container">
+        <a class="navbar-brand" href="javascript:;"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
+        <!-- <div class="col-3 ml-auto social-mobile">
+                <div class="row">
+                    <div class="col-6 social-mobile-btn">
+                        <a href="javascript:;" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                    <div class="col-6 social-mobile-btn">
+                        <a href="javascript:;" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div> -->
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
+                data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <!-- <span class="navbar-toggler-icon"></span> -->
+            <img src="{{ asset('build/images/menu.svg') }}">
+        </button>
+        <div class="col-1 text-center close-inetrnal-nav-mobile">
+            <a href="javascript:;">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <div class="col-md-12 ml-auto mt-2 mt-lg-0">
+                <!-- <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-rollover btn-outline-gray btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
+                        </div>
+                        <div class="col-md-1 col-6 social-btn">
+                            <a href="javascript:;" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-1 col-6 social-btn">
+                            <a href="javascript:;" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div> -->
+                <div class="row">
+                    <div class="col-md-1 internal-pages-nav">
+                        <ul class="d-flex">
+                            <li class="col px-0">
+                                <a href="{{ path('front_pixie_account_homepage') }}" class="active">Accueil</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-9 internal-pages-nav">
+                        <ul class="d-flex">
+                            <li class="col px-0">
+                                <a href="{{ path('front_pixie_account_cards_projects') }}">Demande de cards</a>
+                            </li>
+                            <li class="col px-0">
+                                <a href="{{ path('front_pixie_account_cards_status') }}">Cards en attente</a>
+                            </li>
+                            <li class="col px-0">
+                                <a href="{{ path('front_pixie_account_cards_validated') }}">Cards validées</a>
+                            </li>
+                            <li class="col px-0">
+                                <a href="{{ path('front_pixie_account_cards_payments') }}">Mes rémunérations</a>
+                            </li>
+                            <li class="col px-0">
+                                <a href="{{ path('front_pixie_account_settings') }}">Paramètres</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2 header-account-role mt-2">
+                        <div class="row">
+                            <div class="col-4 pr-0 text-right">
+                                <img src="{{ asset('build/images/badge-voyager.svg') }}" alt="Voyager" />
+                            </div>
+                            <div class="col-7">niveau <span>{{ ('label.level.level_' ~app.user.level )|trans }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1 text-center close-inetrnal-nav">
+            <a href="javascript:;">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+<!-- Header -->
+<div class="home-page collections-page">
+
+    {% block body %}{% endblock %}
+    {% embed '/v2/_shared/footer.html.twig' %}{% endembed%}
+</div>
+{#<!-- Scripts -->#}
+<script src="{{ absolute_url(asset('build/js/custom.js')) }}"></script>
+
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/fr.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/lightgallery,npm/lg-thumbnail"></script>
+
+
+<script src="{{ absolute_url(asset('build/js/simplebar.js')) }}"></script>
+<script src="{{ absolute_url(asset('build/js/slick.js')) }}"></script>
+<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/js/froala_editor.min.js'></script>
+{% block javascripts %}{% endblock %}
+
+</body>
+</html>

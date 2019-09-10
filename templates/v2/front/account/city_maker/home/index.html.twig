@@ -267,7 +267,7 @@
                                     <td class="{% if app.user.level == 1 %}bg-pink{% endif %}">-</td>
                                     <td class="{% if app.user.level == 1 %}bg-pink{% endif %}">-</td>
                                     <td class="{% if app.user.level == 1 %}bg-pink{% endif %}">-</td>
-                                    <td class="{% if app.user.level == 1 %}bg-pink{% endif %}">{% if app.user.level == 1 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto">PROPOSER UNE CARD</a>{% else %}-{% endif %}</td>
+                                    <td class="{% if app.user.level == 1 %}bg-pink{% endif %}">{% if app.user.level == 1 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>{% else %}-{% endif %}</td>
                                 </tr>
                                 <tr class="{% if app.user.level == 2 %}active-level{% endif %}">
                                     <td class="level-index">2</td>
@@ -300,7 +300,7 @@
                                             <table class="table mb-0">
                                                 <tr>
                                                     <td class="d-flex align-items-center p-0">
-                                                        {% if app.user.level == 2 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto">PROPOSER UNE CARD</a>{% endif %}
+                                                        {% if app.user.level == 2 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>{% endif %}
                                                     </td>
                                                 </tr>
                                             </table>
@@ -353,7 +353,7 @@
                                         <table class="table mb-0">
                                             <tr>
                                                 <td class="d-flex align-items-center p-0">
-                                                    {% if app.user.level == 2 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto">PROPOSER UNE CARD</a>{% endif %}
+                                                    {% if app.user.level == 2 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>{% endif %}
                                                 </td>
                                             </tr>
                                         </table>
@@ -390,7 +390,7 @@
                                         <table class="table mb-0">
                                             <tr>
                                                 <td class="d-flex align-items-center p-0">
-                                                    {% if app.user.level == 4 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto">PROPOSER UNE CARD</a>{% endif %}
+                                                    {% if app.user.level == 4 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>{% endif %}
                                                 </td>
                                             </tr>
                                         </table>
@@ -427,7 +427,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="d-flex align-items-center p-0">
-                                                            <a href="javascript:;" class="btn btn-white-bordered ml-auto">PROPOSER UNE CARD</a>
+                                                            <a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -504,6 +504,10 @@
                 autoplaySpeed: 3000
             });
             $('[data-toggle="tooltip"]').tooltip();
+
+            $('.intercom-pop').on('click', function () {
+               Intercom('show');
+            });
         });
     </script>
 {% endblock %}
