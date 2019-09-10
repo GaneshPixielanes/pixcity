@@ -226,6 +226,7 @@ label:
     optin_cards_published_from_favorites_regions: Dernières Cards publiées dans mes régions favorites
     optin_cards_month: Les Cards les plus populaires du mois
     optin_my_pixies_activity: L’activité de mes City-makers favoris
+    optin_b2b_mails: B2B Mails
     cardname: Titre de la card
     mandatory: Obligatoire
     contract: Contrat
@@ -242,6 +243,13 @@ label:
     blogCategory: Blog Category
     blogpostNew: New
     blogPostNew: New
+    level:
+        level_1: VOYAGER
+        level_2: EXPLORER
+        level_3: ADVENTURER
+        level_4: RANGER
+        level_5: NOMAD
+    user_level: Niveau
 
 title:
     our_regions: Nos <span>%count%</span> régions
@@ -379,4 +387,5 @@ b2b:
         to_days_end: jours
         reply : Répondre
         emptyTable : Vous n’avez pas d’emails
+
 

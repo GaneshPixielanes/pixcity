@@ -261,3 +261,8 @@
     </li>
 
 {% endblock %}
+
+{% block _user_level_widget %}
+    <input type="text" id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" required="required" class="form-control" value="{{ ('label.level.level_'~form.vars.value) | trans }}" aria-invalid="false" readonly>
+{% endblock %}
+
