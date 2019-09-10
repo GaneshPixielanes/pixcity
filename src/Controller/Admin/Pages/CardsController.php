@@ -10,6 +10,7 @@ use App\Form\Admin\CardsFiltersType;
 use App\Form\Shared\CardType;
 use App\Repository\CardRepository;
 use App\Repository\ContentDraftRepository;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use App\Service\Mailer;
 use Doctrine\ORM\Query;
@@ -112,7 +113,12 @@ class CardsController extends Controller
      * @Route("/{id}/edit", requirements={"id": "\d+"}, name="edit")
      * @Method({"GET", "POST"})
      */
-    public function edit(Request $request, Card $card, Mailer $mailer, ContentDraftRepository $contentDraftRepo)
+    public function edit(Request $request,
+                         Card $card,
+                         Mailer $mailer,
+                         ContentDraftRepository $contentDraftRepo,
+                         UserRepository $userRepo
+    )
     {
 
         $form = $this->createForm(CardType::class, $card, ["type"=>"edit"]);
@@ -126,6 +132,14 @@ class CardsController extends Controller
 
             if($form->get('status')->getData() == 'validated')
             {
+                #Get the user of the corresponding card
+                $user = $card->getPixie();
+
+                #Calculate the user's level
+                $level = $userRepo->calculateLevel($user->getId());
+
+                #Update the user level
+                $user->setLevel($level);
                 $card->setPublishedAt(new \DateTime());
             }
 

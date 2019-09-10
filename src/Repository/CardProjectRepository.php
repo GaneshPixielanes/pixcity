@@ -79,6 +79,10 @@ class CardProjectRepository extends ServiceEntityRepository
                 $qb = $qb->andWhere('project.deliveryDate <= :deliveryDate')->setParameter('deliveryDate',$filters['delivery_date'])
                          ->andWhere('project.deliveryDate >= :now')->setParameter('now', $now);
             }
+            if(isset($filters['priceGreaterThanZero']))
+            {
+                $qb = $qb->andWhere('project.price > 0');
+            }
         }
 
         return $qb;
