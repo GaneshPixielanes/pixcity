@@ -427,6 +427,11 @@ class User implements UserInterface, EquatableInterface
      */
     private $mangopayKycCreated;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $level;
+
     //--------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------
@@ -1939,6 +1944,18 @@ class User implements UserInterface, EquatableInterface
     public function setMangopayKycCreated(?\DateTimeInterface $mangopayKycCreated): self
     {
         $this->mangopayKycCreated = $mangopayKycCreated;
+
+        return $this;
+    }
+
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(?int $level): self
+    {
+        $this->level = $level;
 
         return $this;
     }

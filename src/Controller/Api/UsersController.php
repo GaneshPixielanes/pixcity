@@ -9,6 +9,7 @@ use App\Repository\CardRepository;
 use App\Repository\UserRepository;
 use App\Service\GoogleCalendar;
 use DateTime;
+use Matrix\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -355,5 +356,33 @@ class UsersController extends Controller
         $entityManager->flush();
 
         return JsonResponse::fromJsonString(json_encode(['success' => true]));
+    }
+
+    /**
+     * @Route("/update-user-level",name="update_user_level")
+     */
+    public function updateUserLevel(UserRepository $userRepo)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $users = $userRepo->findBy([
+            'visible' => 1
+        ]);
+        try{
+            foreach($users as $user)
+            {
+                $level = $userRepo->calculateLevel($user->getId());
+
+                $user->setLevel($level);
+                $entityManager->persist($user);
+                $entityManager->flush();
+            }
+        }catch (Exception $e)
+        {
+            return new JsonResponse(['success' => false, 'message' => 'Something went wrong']);
+
+        }
+
+
+        return new JsonResponse(['success' => true, 'message' => count($users).' users have been updated']);
     }
 }
