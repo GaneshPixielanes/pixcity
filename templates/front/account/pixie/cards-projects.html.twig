@@ -49,7 +49,7 @@
                             <a href="#" class="voirDemande open-project-infos" data-id="{{ project.id }}" data-contract="{{ path('front_pixie_card_creation_contract', {id: project.id}) }}">Voir la demande</a>
                             
                         </td>
-                        <td class="remuneration"><i class="fa fa-euro-sign hom"></i>{{ project.price }}</td>
+                        <td class="remuneration">{% if project.price == 0 %}&nbsp; /{% else %}<i class="fa fa-euro-sign hom"></i>{{ project.price }}{% endif %}</td>
                         <td class="dateLimite {% if project.isLate %}warning{% endif %}">{{ project.deliveryDate | localizeddate('short', 'none') }}</td>
                         <td class="statutCard">
                             {% if project.status == 'pixie_accepted' and project.card %}

@@ -27,15 +27,17 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
 		<link rel="icon" href="{{ asset('icons/favicon.ico') }}" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/pretty-checkbox.css')) }}" />
-    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/slick.css')) }}" />
-    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/slick-theme.css')) }}" />
-    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/simplebar.css')) }}" />
-    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/bootstrap-select.css')) }}" />
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
-    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_style.min.css' rel='stylesheet' type='text/css' />
-    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/lightgallery.css')) }}">
+{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
+{#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/pretty-checkbox.css')) }}" />#}
+{#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/slick.css')) }}" />#}
+{#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/slick-theme.css')) }}" />#}
+{#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/simplebar.css')) }}" />#}
+{#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/bootstrap-select.css')) }}" />#}
+{#    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_editor.min.css' rel='stylesheet' type='text/css' />#}
+{#    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_style.min.css' rel='stylesheet' type='text/css' />#}
+{#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/lightgallery.css')) }}">#}
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
+
     <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/style.css')) }}">
 
     {% block stylesheets %}{% endblock %}

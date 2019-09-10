@@ -328,7 +328,8 @@ class PixieAccountController extends Controller
         $filters = [
             "pixie" => $this->getUser()->getId(),
             "status" => [CardProjectStatus::VALIDATED],
-            "no_transaction" => true
+            "no_transaction" => true,
+            "priceGreaterThanZero" => true
         ];
         $unpayedProjects = $projectsRepo->search($filters, 1, 100);
 
@@ -350,8 +351,8 @@ class PixieAccountController extends Controller
         // Create the page
 
         $page = new Page();
-        $page->setName("Mes rémunérations");
-        $page->setMetaTitle("Mes rémunérations");
+        $page->setName("Mes gains");
+        $page->setMetaTitle("Mes gains");
         $page->setIndexed(false);
 
         return $this->render('front/account/pixie/cards-payments.html.twig', array(
@@ -564,5 +565,15 @@ class PixieAccountController extends Controller
         $file = $request->files->get('file');
         $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr2/'.$request->get('id'), true);
         return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+
+    /**
+     * @Route("/accueil", name="homepage")
+     */
+    public function homepage()
+    {
+        return $this->render('v2/front/account/city_maker/home/index.html.twig',[
+            
+        ]);
     }
 }

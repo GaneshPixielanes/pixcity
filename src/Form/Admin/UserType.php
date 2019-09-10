@@ -38,6 +38,7 @@ class UserType extends AbstractType
         $builder
             ->add('active', SwitchType::class, array('label' => 'label.active', 'required' => false))
             ->add('visible', SwitchType::class, array('label' => 'label.visible', 'required' => false))
+            ->add('level',TextType::class, array('label' => 'label.user_level', 'required' => false,'attr'=>array('readonly'=>1)))
             ->add('avatar', UserMediaType::class, array('label' => 'label.avatar', 'required' => true))
             ->add('email', EmailType::class, array('label' => 'label.email'))
             ->add('firstname', TextType::class, array('label' => 'label.firstname'))
