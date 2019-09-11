@@ -5,6 +5,7 @@ namespace App\Controller\Front\V2;
 use App\Controller\Front\SearchPageController;
 use App\Repository\CardCategoryRepository;
 use App\Repository\CardRepository;
+use App\Repository\OptionRepository;
 use App\Repository\PageCategoryRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,9 +26,11 @@ class RegionController extends SearchPageController
         PageCategoryRepository $pagesCategoryRepo,
         UserRepository $usersRepo,
         CardRepository $cardsRepo,
-        CardCategoryRepository $categoriesRepo
+        CardCategoryRepository $categoriesRepo,
+        OptionRepository $optionRepository
     )
     {
+        $testAccounts = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
         $searchParams = $this->getSearchParams($request);
         $isCardFavoritedFirstTime = false;
 
@@ -46,19 +49,39 @@ class RegionController extends SearchPageController
 
         $regionId = $page->getRegion()->getId();
         $regionName = $page->getRegion()->getName();
-
-        $totalPixies = $usersRepo->countPixieByRegion($regionId);
-        $totalCards = $cardsRepo->countCardsByRegion($regionId);
-
-        $pixies = $usersRepo->findRandomPixies($regionId);
-
-
         $searchParams["regions"] = [$page->getRegion()->getSlug()];
 
-        $cards = $cardsRepo->search($searchParams, 1, 10, $searchParams["orderby"]);
+        $loggedUser = $this->getUser();
+        if($loggedUser){
+            if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
+                $totalPixies = $usersRepo->countPixieByRegion($regionId);
+                $totalCards = $cardsRepo->countCardsByRegion($regionId);
+                $pixies = $usersRepo->findRandomPixies($regionId);
+                $newestCards = $cardsRepo->search(["regions" => [$regionId]], 1, 10, "newest");
+                $cards = $cardsRepo->search($searchParams, 1, 10, $searchParams["orderby"]);
+                $mostPopularCards = $cardsRepo->search(["regions" => [$regionId], 1, 10, "popular"]);
+                $categories = $categoriesRepo->findCategoriesByRegion($page->getRegion());
+            }
+            else{
+                $totalPixies = $usersRepo->countPixieByRegion($regionId,$testAccounts->getValue());
+                $totalCards = $cardsRepo->countCardsByRegion($regionId,$testAccounts->getValue());
+                $pixies = $usersRepo->findRandomPixies($regionId,$testAccounts->getValue());
+                $newestCards = $cardsRepo->search(["regions" => [$regionId]], 1, 10, "newest",$testAccounts->getValue());
+                $cards = $cardsRepo->search($searchParams, 1, 10, $searchParams["orderby"],$testAccounts->getValue());
+                $mostPopularCards = $cardsRepo->search(["regions" => [$regionId]], 1, 10, "popular",$testAccounts->getValue());
+                $categories = $categoriesRepo->findCategoriesByRegion($page->getRegion(),$testAccounts->getValue());
+            }
+        }
+        else{
+            $totalPixies = $usersRepo->countPixieByRegion($regionId,$testAccounts->getValue());
+            $totalCards = $cardsRepo->countCardsByRegion($regionId,$testAccounts->getValue());
+            $pixies = $usersRepo->findRandomPixies($regionId,$testAccounts->getValue());
+            $newestCards = $cardsRepo->search(["regions" => [$regionId]], 1, 10, "newest",$testAccounts->getValue());
+            $cards = $cardsRepo->search($searchParams, 1, 10, $searchParams["orderby"],$testAccounts->getValue());
+            $mostPopularCards = $cardsRepo->search(["regions" => [$regionId]], 1, 10, "popular",$testAccounts->getValue());
+            $categories = $categoriesRepo->findCategoriesByRegion($page->getRegion(),$testAccounts->getValue());
+        }
 
-        $newestCards = $cardsRepo->search(["regions" => [$regionId]], 1, 10, "newest");
-        $mostPopularCards = $cardsRepo->search(["regions" => [$regionId], 1, 10, "popular"]);
 
         // $categories = $categoriesRepo->findAllActive();
         $user = $this->getUser();
@@ -70,7 +93,6 @@ class RegionController extends SearchPageController
             }
         }
 
-        $categories = $categoriesRepo->findCategoriesByRegion($page->getRegion());
         return $this->render('v2/front/region/index.html.twig', [
             'page' => $page,
             'filters' => $searchParams,

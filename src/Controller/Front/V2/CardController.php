@@ -6,6 +6,7 @@ use App\Entity\Card;
 use App\Entity\Page;
 use App\Repository\CardCategoryRepository;
 use App\Repository\CardRepository;
+use App\Repository\OptionRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,8 +89,9 @@ class CardController extends Controller
     /**
      * @Route("/load-cards",name="load_cards");
      */
-    public function loadCards(Request $request,CardRepository $cardRepository)
+    public function loadCards(Request $request,CardRepository $cardRepository,OptionRepository $optionRepository)
     {
+        $testAccounts = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
 			// echo $request->get('categories');exit;
         $filters = [];
 
@@ -109,9 +111,19 @@ class CardController extends Controller
         {
             $filters['pixie'] = $request->get('cityMaker');
         }
-            
-      $cards = $cardRepository->search($filters,$request->get('page'),10,'newest');
-
+        $loggedUser = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        if($loggedUser){
+            if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
+                $cards = $cardRepository->search($filters, $request->get('page'), 10, 'newest');
+            }
+            else{
+                $cards = $cardRepository->search($filters, $request->get('page'), 10, 'newest',$testAccounts->getValue());
+            }
+        }
+        else{
+            $cards = $cardRepository->search($filters, $request->get('page'), 10, 'newest',$testAccounts->getValue());
+        }
 
       return $this->render('v2/_shared/cards.html.twig', [
             'cards' => $cards,
