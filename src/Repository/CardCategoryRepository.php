@@ -31,16 +31,24 @@ class CardCategoryRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllActiveWithCards()
+    public function findAllActiveWithCards($userEmail=null)
     {
-      return $this->createQueryBuilder('c')
+        $qb = $this->createQueryBuilder('c')
           ->select(["c",'count(ca) AS cardCount'])
           ->join('c.cards','ca')
+          ->leftJoin("ca.pixie", "uid")
           ->andWhere('c.hidden = false')
           ->andWhere('ca.status = :status')->setParameter('status',CardStatus::VALIDATED)
           ->orderBy('c.position', 'ASC')
-          ->groupBy('c.id')
-          ->getQuery()
+          ->groupBy('c.id');
+
+        if($userEmail != null){
+            $qb = $qb->andWhere("uid.email NOT IN (".$userEmail.")");
+        }
+//        if($userEmail == null){
+//            $qb = $qb->andWhere("uid.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");
+//        }
+        return $qb->getQuery()
           ->useResultCache(true, 0, "findAllCardCategoriesActive")
           ->getResult()
       ;
@@ -61,32 +69,39 @@ class CardCategoryRepository extends ServiceEntityRepository
       ;
     }
 
-    public function findCategoriesByRegion($region)
+    public function findCategoriesByRegion($region,$userEmail=null)
     {
-      return $this->createQueryBuilder('c')
+      $qb = $this->createQueryBuilder('c')
           ->select(["c, ca",'count(ca) AS cardCount'])
           ->join('c.cards','ca')
           ->join('ca.region','r')
+          ->leftJoin('ca.pixie','uid')
           ->andWhere('ca.region = :region')
           ->andWhere('c.hidden = false')
           ->andWhere('ca.status = :status')
           ->setParameter('region',$region->getId())
-          ->setParameter('status',CardStatus::VALIDATED)
+          ->setParameter('status',CardStatus::VALIDATED);
+
+        if($userEmail != null){
+            $qb = $qb->andWhere("uid.email NOT IN (".$userEmail.")");
+        }
+        $qb = $qb
           ->orderBy('c.id')
           ->orderBy('c.position', 'ASC')
           ->groupBy('c.id')
           ->getQuery()
-          ->getResult()
-      ;
+          ->getResult();
+        return $qb;
     }
 
-    public function findCategoriesBySearchParam($filters)
+    public function findCategoriesBySearchParam($filters,$userEmail=null)
     {
       // dd($search);
       $result = $this->createQueryBuilder('c')
           ->select(["c, ca",'count(ca) AS cardCount'])
           ->join('c.cards','ca')
           ->join('ca.region','r')
+          ->leftJoin("ca.pixie", "uid")
           ->andWhere('ca.name LIKE :search OR r.name LIKE :search OR c.name IN (:search) OR ca.content LIKE :content')
           ->andWhere('ca.status = :status')
           ->setParameter('status',CardStatus::VALIDATED)
@@ -96,6 +111,12 @@ class CardCategoryRepository extends ServiceEntityRepository
 					{
 						$result = $result->andWhere('r.slug IN (:region)')->setParameter('region',$filters['regions']);
 					}
+        if($userEmail != null){
+            $result = $result->andWhere("uid.email NOT IN (".$userEmail.")");
+        }
+//        if($userEmail == null){
+//            $result = $result->andWhere("uid.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");
+//        }
      $result = $result->orderBy('c.id')
           ->orderBy('c.position', 'ASC')
           ->groupBy('c.id')

@@ -41,6 +41,7 @@ class CardCollectionType extends AbstractType
                 ],
                 'toolbarStickyOffset' =>  70,
                 'required' => false,
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('user', TypeaheadType::class, array(
                 'label' => 'label.user',
