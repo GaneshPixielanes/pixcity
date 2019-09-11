@@ -36,7 +36,9 @@
     {#    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_editor.min.css' rel='stylesheet' type='text/css' />#}
     {#    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/css/froala_style.min.css' rel='stylesheet' type='text/css' />#}
     {#    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/lightgallery.css')) }}">#}
+
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/dropdown.css') }}" />
 
     <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/style.css')) }}">
 
@@ -45,7 +47,7 @@
 <body class="{% block body_class %}{% if not is_granted('IS_AUTHENTICATED_FULLY') %}logged-out{% else %}logged-in{% endif %} {% endblock %}">
 <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main py-0 internal-nav">
     <div class="container">
-        <a class="navbar-brand" href="javascript:;"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
+        <a class="navbar-brand" href="/"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
         <!-- <div class="col-3 ml-auto social-mobile">
                 <div class="row">
                     <div class="col-6 social-mobile-btn">
@@ -67,7 +69,7 @@
             <img src="{{ asset('build/images/menu.svg') }}">
         </button>
         <div class="col-1 text-center close-inetrnal-nav-mobile">
-            <a href="javascript:;">
+            <a href="/">
                 <i class="fas fa-times"></i>
             </a>
         </div>
@@ -141,7 +143,7 @@
             </div>
         </div>
         <div class="col-1 text-center close-inetrnal-nav">
-            <a href="javascript:;">
+            <a href="/">
                 <i class="fas fa-times"></i>
             </a>
         </div>
