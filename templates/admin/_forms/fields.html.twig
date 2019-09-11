@@ -263,7 +263,7 @@
 {% endblock %}
 
 {% block _user_level_widget %}
-    <input  class="form-control" value="{{ ('label.level.level_'~form.vars.value) | trans }}" aria-invalid="false" readonly>
-    <input type="hidden" id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" required="required" class="form-control" value="{{ form.vars.value }}" aria-invalid="false" readonly>
+    <input  class="form-control" value="{% if form.vars.value == 0 or form.vars.value == null %}N/A{% else %}{{ ('label.level.level_'~form.vars.value) | trans }}{% endif %}" aria-invalid="false" readonly>
+    <input type="hidden" id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" required="required" class="form-control" value="{{ form.vars.value }}" aria-invalid="false">
 {% endblock %}
 
