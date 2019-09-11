@@ -52,9 +52,11 @@
                     </div> -->
                     <div class="internal-pages-nav">
                         <ul class="d-flex">
+                            {% if app.user.level >= 1 %}
                             <li class="col px-0">
                                 <a href="{{ path('front_pixie_account_homepage') }}" class="{{ route starts with 'front_pixie_account_homepage' ? 'active' }}">Accueil</a>
                             </li>
+                            {% endif %}
                             <li class="col px-0">
                                 <a href="{{ path('front_pixie_account_cards_projects') }}" class="{{ route starts with 'front_pixie_account_cards_projects' ? 'active' }}">Demande de cards</a>
                             </li>
