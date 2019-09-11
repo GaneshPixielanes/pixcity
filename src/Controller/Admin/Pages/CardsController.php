@@ -138,6 +138,18 @@ class CardsController extends Controller
                 #Calculate the user's level
                 $level = $userRepo->calculateLevel($user->getId());
 
+                #If the level is about to be updated, send email
+                if($level > $user->getLevel())
+                {
+                    $mailer->send($user->getEmail(),'Congratulations! Your level has been updated',
+                        'emails/cm-level-update.html.twig'
+                        ,[
+                            'firstName'=>$card->getProject()->getPixie()->getFirstname(),
+                            'city' => $card->getAddress()->getCity(),
+                            'region' => $card->getProject()->getRegion()->getName()
+                        ], NULL, NULL);
+
+                }
                 #Update the user level
                 $user->setLevel($level);
                 $card->setPublishedAt(new \DateTime());
