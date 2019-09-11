@@ -131,10 +131,21 @@ class UsersController extends Controller
      * @Route("/new", name="new")
      * @Method({"GET", "POST"})
      */
-    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader)
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader,AuthorizationCheckerInterface $authChecker)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $userLogged = $this->getUser();
+        $roleSet = 'b2c';
+        if($userLogged->getViewMode() == ViewMode::B2B) {
+            if ($authChecker->isGranted('ROLE_B2C')) {
+                $roleSet = 'b2b';
+            }
+        }else{
+            $roleSet = 'b2c';
+        }
+
+
+        $form = $this->createForm(UserType::class, $user,["type"=>"editFromAdmin","roleSet"=>$roleSet]);
 
         //-------------------------------------------------------
         // User it's not a Pixie, remove the datas
@@ -159,6 +170,27 @@ class UsersController extends Controller
                     $user->getPixie()->getBilling()->setRib($fileName);
                 }
             }
+            /************ACTIVE CODE TO B2B APPROVAL AND REJECT DATE**********************************/
+            $date = new \DateTime();
+            if($userLogged->getViewMode() == ViewMode::B2B) {
+                if ($authChecker->isGranted('ROLE_B2C')) {
+                    if ($user->getB2bCmApproval() == 1) {
+                        //ACTIVATED DATE
+                        $user->setCmApprovalDate($date);
+                        $user->setCmUpgradeB2bDate($date);
+                    }
+                    elseif ($user->getB2bCmApproval() == 0){
+                        //REJECTED DATE
+                        $user->setCmRejectedDate($date);
+                        $user->setCmUpgradeB2bDate($date);
+                    }
+                    else{
+                        // ON WAITING
+                        $user->setCmUpgradeB2bDate($date);
+                    }
+                }
+            }
+            /************END CODE TO TO B2B APPROVAL AND REJECT DATE**********************************/
 
             // Save the user
             $entityManager = $this->getDoctrine()->getManager();
