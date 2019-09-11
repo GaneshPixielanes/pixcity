@@ -7,6 +7,7 @@ use App\Entity\Card;
 use App\Entity\Page;
 use App\Repository\CardRepository;
 use App\Repository\CardCategoryRepository;
+use App\Repository\OptionRepository;
 use App\Repository\PageCategoryRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -128,13 +129,16 @@ class CitymakerController extends SearchPageController
     public function index(
         Request $request,
         UserRepository $usersRepo,
-        PageCategoryRepository $pagesCategoryRepo
+        PageCategoryRepository $pagesCategoryRepo,
+        OptionRepository $optionRepository
     ){
-        //ini_set('memory_limit','1024M');
+
+        ini_set('memory_limit','1024M');
+        $testAccounts = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
         $searchParams = $this->getSearchParams($request);
 
         $pageCategory = null;
-
+        $loggedUser = $this->getUser();
         if($request->attributes->get("slug") && $request->attributes->get("slug") !== "france") {
             $filters = [
                 "regions" => [$request->attributes->get("slug")],
@@ -142,7 +146,17 @@ class CitymakerController extends SearchPageController
                 "text" => $searchParams["text"]
             ];
 
-            $pixies = $usersRepo->searchPixies($filters);
+            if($loggedUser){
+                if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
+                    $pixies = $usersRepo->searchPixies($filters);
+                }
+                else{
+                    $pixies = $usersRepo->searchPixies($filters,$testAccounts->getValue());
+                }
+            }
+            else{
+                $pixies = $usersRepo->searchPixies($filters,$testAccounts->getValue());
+            }
             $pageCategory = $pagesCategoryRepo->findOneBySlug($request->attributes->get("slug"));
         }
         else{
@@ -152,8 +166,18 @@ class CitymakerController extends SearchPageController
                 "text" => $searchParams["text"]
             ];
 
-            $pixies = $usersRepo->searchPixies($filters);
-        }   
+            if($loggedUser){
+                if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
+                    $pixies = $usersRepo->searchPixies($filters);
+                }
+                else{
+                    $pixies = $usersRepo->searchPixies($filters,$testAccounts->getValue());
+                }
+            }
+            else{
+                $pixies = $usersRepo->searchPixies($filters,$testAccounts->getValue());
+            }
+        }
         $this->_groupPixiesByRegions($pixies);
 
 
