@@ -21,6 +21,7 @@ use App\Repository\CardCategoryRepository;
 use App\Repository\CardProjectRepository;
 use App\Repository\CardRepository;
 use App\Repository\CommunityMediaRepository;
+use App\Repository\OptionRepository;
 use App\Repository\RegionRepository;
 use App\Repository\TransactionRepository;
 use App\Service\FileUploader;
@@ -570,10 +571,16 @@ class PixieAccountController extends Controller
     /**
      * @Route("/accueil", name="homepage")
      */
-    public function homepage()
+    public function homepage(OptionRepository $optionRepository)
     {
+        $user = $this->getUser();
+        $url = $optionRepository->findOneBy(['slug'=>'cm-winning-blog-url']);
+        if($user->getLevel() == null || $user->getLevel() == 0)
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
         return $this->render('v2/front/account/city_maker/home/index.html.twig',[
-            
+           'url' => $url->getValue()
         ]);
     }
 }
