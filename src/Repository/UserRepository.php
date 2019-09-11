@@ -98,7 +98,7 @@ class UserRepository extends ServiceEntityRepository
     // Pixies
     //---------------------------------------
 
-    public function searchPixies($filters = [])
+    public function searchPixies($filters = [],$userEmail=null)
     {
         $qb = $this->createQueryBuilder('u')
             ->select(["u", "avatar", "c", "p",  "category"])
@@ -112,7 +112,13 @@ class UserRepository extends ServiceEntityRepository
             ->where('u.deleted IS NULL OR u.deleted = 0')
             ->andWhere('u.visible = 1')
         ;
+        if($userEmail != null){
+            $qb = $qb->andWhere("u.email NOT IN (".$userEmail.")");
+        }
 
+//        if($userEmail == null){
+//            $qb = $qb->andWhere("u.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");
+//        }
         $qb = $this->_applyFilters($qb, $filters);
 
         $qb = $qb->getQuery()->getResult();
@@ -124,7 +130,7 @@ class UserRepository extends ServiceEntityRepository
     // CITY MAKER SEARCH
     //---------------------------------------
 
-    public function searchClients($filters = [], $limit = 12, $page = 1, $isRandom = false)
+    public function searchClients($filters = [], $limit = 12, $page = 1, $isRandom = false,$userEmail=null,$loggedType=null)
     {
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
@@ -133,6 +139,15 @@ class UserRepository extends ServiceEntityRepository
             ->leftJoin('u.userRegion', 'r')
             ->andWhere('u.visible = 1 AND u.active = 1 AND u.roles LIKE :role')->setParameter('role','%ROLE_CM%');
 
+        if($userEmail != null && $loggedType == 'login_client'){
+            $qb = $qb->andWhere("u.email IN (".$userEmail.")");
+        }
+        if($userEmail != null && $loggedType == 'login_cm'){
+            $qb = $qb->andWhere("u.email IN (".$userEmail.")");
+        }
+        if($userEmail != null && $loggedType == null){
+            $qb = $qb->andWhere("u.email NOT IN (".$userEmail.")");
+        }
         if($isRandom == true)
         {
             $qb = $qb->orderBy('RAND()');
@@ -150,7 +165,7 @@ class UserRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function searchCommunityManagerCount($filters = [], $limit, $page)
+    public function searchCommunityManagerCount($filters = [], $limit, $page,$userEmail=null,$loggedType=null)
     {
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
@@ -159,7 +174,15 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin('u.userPacks','packs')
             ->leftJoin('u.userRegion', 'r')
             ->andWhere('u.visible = 1 AND u.active = 1 AND u.roles LIKE :role')->setParameter('role','%ROLE_CM%');
-
+        if($userEmail != null && $loggedType == 'login_client'){
+            $qb = $qb->andWhere("u.email IN (".$userEmail.")");
+        }
+        if($userEmail != null && $loggedType == 'login_cm'){
+            $qb = $qb->andWhere("u.email IN (".$userEmail.")");
+        }
+        if($userEmail != null && $loggedType == null){
+            $qb = $qb->andWhere("u.email NOT IN (".$userEmail.")");
+        }
         $qb = $this->_applyFiltersClients($qb, $filters);
         $qb = $qb->getQuery()->getSingleScalarResult();
 
@@ -244,39 +267,51 @@ class UserRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function findByPixieRegion($regionId)
+    public function findByPixieRegion($regionId,$userEmail=null)
     {
-        return $this->createQueryBuilder('u')
+        $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->innerJoin('u.pixie', 'p')
             ->innerJoin('p.regions', 'r')
             ->where('r.id = :region OR r.slug = :region')
             ->andWhere('u.deleted IS NULL OR u.deleted = 0')
             ->andWhere('u.visible = 1')
-            ->setParameter('region', $regionId)
+            ;
+        if($userEmail != null){
+            $qb = $qb->andWhere("u.email NOT IN (".$userEmail.")");
+        }
+        $qb = $qb->setParameter('region', $regionId)
             ->getQuery()
             ->getResult()
             ;
+        return $qb;
     }
 
 
 
-    public function countPixieByRegion($regionId)
+    public function countPixieByRegion($regionId,$userEmail=null)
     {
-        return $this->createQueryBuilder('u')
+        $qb = $this->createQueryBuilder('u')
             ->select('COUNT(u.id)')
             ->innerJoin('u.pixie', 'p')
             ->innerJoin('p.regions', 'r')
             ->where('r.id = :region')->setParameter('region', $regionId)
             ->andWhere('u.deleted IS NULL OR u.deleted = 0')
-            ->andWhere('u.visible = 1')
-            ->getQuery()
+            ->andWhere('u.visible = 1');
+        if($userEmail != null){
+            $qb = $qb->andWhere("u.email NOT IN (".$userEmail.")");
+        }
+//        if($userEmail == null){
+//            $qb = $qb->andWhere("u.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");
+//        }
+        $qb = $qb->getQuery()
             ->useResultCache(true, 0, "countPixieByRegion_".$regionId)
             ->getSingleScalarResult()
             ;
+        return $qb;
     }
 
-    public function findRandomPixies($regionId = null)
+    public function findRandomPixies($regionId = null,$userEmail=null)
     {
         $qb = $this->createQueryBuilder('u')
             ->select(["u", "c", "p", "r", "RAND() as HIDDEN rand"])
@@ -292,7 +327,12 @@ class UserRepository extends ServiceEntityRepository
         if($regionId){
             $qb = $qb->andWhere("r.id = :region")->setParameter("region", $regionId);
         }
-
+        if($userEmail != null){
+            $qb = $qb->andWhere("u.email NOT IN (".$userEmail.")");
+        }
+//        if($userEmail == null){
+//            $qb = $qb->andWhere("u.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");
+//        }
         return $qb
             ->groupBy('u.id')
             ->orderBy('rand')
