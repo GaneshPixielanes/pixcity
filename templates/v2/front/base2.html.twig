@@ -121,7 +121,17 @@
                     <div class="col-md-2 header-account-role mt-2">
                         <div class="row">
                             <div class="col-4 pr-0 text-right">
+                                {% if app.user.level == 1 %}
                                 <img src="{{ asset('build/images/badge-voyager.svg') }}" alt="Voyager" />
+                                {% elseif app.user.level == 2 %}
+                                <img src="{{ asset('build/images/badge-explorer.svg') }}" alt="Voyager" />
+                                {% elseif app.user.level == 3%}
+                                <img src="{{ asset('build/images/badge-adventurer.svg') }}" alt="Voyager" />
+                                {% elseif app.user.level == 4%}
+                                <img src="{{ asset('build/images/badge-ranger.svg') }}" alt="Voyager" />
+                                {% elseif app.user.level == 5 %}
+                                <img src="{{ asset('build/images/badge-nomad.svg') }}" alt="Voyager" />
+                                {% endif %}
                             </div>
                             <div class="col-7">niveau <span>{{ ('label.level.level_' ~app.user.level )|trans }}</span>
                             </div>

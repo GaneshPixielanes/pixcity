@@ -108,6 +108,7 @@ Encore
     .addStyleEntry('css/style', './assets/v2/css/style.css')
     .addStyleEntry('css/main', './assets/v2/css/main.scss')
     .addStyleEntry('css/cookiealert', './assets/v2/css/cookiealert.css')
+    .addStyleEntry('css/header', './assets/front/internal-page-styles.css')
     // .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
     // .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
     // .addStyleEntry('css/simple-sidebar', './assets/v2/css/simple-sidebar.css')
