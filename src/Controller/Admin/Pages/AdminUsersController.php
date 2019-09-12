@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Pages;
 
 use App\Controller\B2B\Client\MissionController;
+use App\Entity\Option;
 use App\Entity\User;
 use App\Entity\UserMission;
 use App\Form\Admin\AdminType;
@@ -292,8 +293,16 @@ class AdminUsersController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             //$entityManager->remove($userMission);
             $users = $entityManager->getRepository(User::class)->find($user->getId());
-           // $users->setDeleted(1);
-           // $users->setDeletedAt(new \DateTime());
+            $testAccounts = $entityManager->getRepository(Option::class)->findOneBy(['slug'=>'dev-cm-email']);
+            if(strpos($testAccounts->getValue(),$users->getEmail()) !== false) { //in
+                $emailStore = explode('@',$users->getEmail());
+                $emailRename = $emailStore[0].'_'.strtotime("now").'del@'.$emailStore[1];
+                $users->setEmail($emailRename);
+                $users->setVisible(0);
+                $users->setActive(0);
+                $users->setDeleted(1);
+                $users->setDeletedAt(new \DateTime());
+            }
             $users->setCmUpgradeB2bDate(null);
             $users->setB2bCmApproval(null);
             $users->setRoles(['ROLE_USER', 'ROLE_PIXIE']);
