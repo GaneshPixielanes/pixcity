@@ -71,7 +71,7 @@ class SearchController extends SearchPageController
                 $cards = $cardRepository->search($filters, $start, $limit, 'newest',$testAccounts->getValue());
                 #Get the cards count
                 $cardCount = $cardRepository->countSearchResult($filters,$testAccounts->getValue());
-                $categories = $categoryRepo->findCategoriesBySearchParam($filters.$testAccounts->getValue());
+                $categories = $categoryRepo->findCategoriesBySearchParam($filters,$testAccounts->getValue());
                 $pixies = $userRepo->findRandomPixies('',$testAccounts->getValue());
             }
         }
