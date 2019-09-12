@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Pages;
 
 use App\Constant\ViewMode;
 use App\Entity\Client;
+use App\Entity\Option;
 use App\Form\ClientType;
 use App\Repository\ClientInfoRepository;
 use App\Repository\ClientRepository;
@@ -161,6 +162,12 @@ class ClientController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
            // $entityManager->remove($client);
             $clients = $entityManager->getRepository(Client::class)->find($client->getId());
+            $testAccounts = $entityManager->getRepository(Option::class)->findOneBy(['slug'=>'dev-client-email']);
+            if(strpos($testAccounts->getValue(),$clients->getEmail()) !== false) { //in
+                $emailStore = explode('@', $clients->getEmail());
+                $emailRename = $emailStore[0] . '_' . strtotime("now") . 'del@' . $emailStore[1];
+                $clients->setEmail($emailRename);
+            }
             $clients->setDeleted(1);
             $clients->setDeletedAt(new \DateTime());
             $entityManager->flush();
