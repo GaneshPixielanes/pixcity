@@ -112,7 +112,7 @@ class CardCategoryRepository extends ServiceEntityRepository
 						$result = $result->andWhere('r.slug IN (:region)')->setParameter('region',$filters['regions']);
 					}
         if($userEmail != null){
-            $result = $result->andWhere("uid.email NOT IN (".$userEmail.")");
+            $result = $result->andWhere("uid.email NOT IN (".$userEmail.") AND uid.visible = 1");
         }
 //        if($userEmail == null){
 //            $result = $result->andWhere("uid.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");
