@@ -212,7 +212,7 @@ class UserRepository extends ServiceEntityRepository
 
                 if(trim($filters["regions"][0]) != '')
                 {
-                    if(isset($filters['skills']) or isset($filters["text"])){
+                    if((isset($filters['skills']) && $filters['skills'][0]  != '') or isset($filters["text"])){
                         $qb = $qb->orWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
                     }else{
                         $qb = $qb->andWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
@@ -227,7 +227,7 @@ class UserRepository extends ServiceEntityRepository
             {
                 if(trim($filters["skills"][0]) != '')
                 {
-                    if(isset($filters["regions"]) or isset($filters["text"])){
+                    if((isset($filters["regions"]) && $filters['regions'][0]  != '') or isset($filters["text"])){
                         $qb = $qb->orWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
                     }else{
                         $qb = $qb->andWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
