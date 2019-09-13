@@ -125,7 +125,7 @@ class CardRepository extends ServiceEntityRepository
 //            $qb = $qb->andWhere("p.email IN ('ganesh@pix.city','bsingh@pix.cityy')");
 //        }
         if($userEmail != null){
-            $qb = $qb->andWhere("p.email NOT IN (".$userEmail.")");
+            $qb = $qb->andWhere("p.email NOT IN (".$userEmail.") AND p.visible = 1");
         }
         /*
         $qb = $qb
