@@ -83,7 +83,7 @@ class CardCategoryRepository extends ServiceEntityRepository
           ->setParameter('status',CardStatus::VALIDATED);
 
         if($userEmail != null){
-            $qb = $qb->andWhere("uid.email NOT IN (".$userEmail.")");
+            $qb = $qb->andWhere("uid.email NOT IN (".$userEmail.") AND uid.visible = 1");
         }
         $qb = $qb
           ->orderBy('c.id')
