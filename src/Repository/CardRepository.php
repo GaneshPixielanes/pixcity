@@ -183,7 +183,7 @@ class CardRepository extends ServiceEntityRepository
             ->andWhere('c.status = :status')->setParameter('status', CardStatus::VALIDATED)
             ;
         if($userEmail != null){
-            $qb = $qb->andWhere("p.email NOT IN (".$userEmail.")");
+            $qb = $qb->andWhere("p.email NOT IN (".$userEmail.") AND p.visible = 1");
         }
 //        if($userEmail == null){
 //            $qb = $qb->andWhere("p.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");
