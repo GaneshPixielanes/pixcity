@@ -8,7 +8,7 @@
 <ul class="repeater-container user-profilePhoto">
     <li class="align-center">
         {% if form.vars.data.profilePhoto  %}
-            <img class="thumb" src="{{ '/uploads/clients/'~form.vars.data.id~'/'~form.vars.data.profilePhoto}}" width="20%">
+            <img class="thumb" src="{{ asset('/uploads/clients/'~form.vars.data.id~'/'~form.vars.data.profilePhoto) | imagine_filter('bg_card_item' )}}" width="20%">
         {% endif %}
 
         {#<div class="upload-zone">#}
