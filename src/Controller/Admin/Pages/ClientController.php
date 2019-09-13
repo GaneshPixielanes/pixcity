@@ -39,7 +39,7 @@ class ClientController extends AbstractController
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 $em= $this->getDoctrine()->getManager();
-                $query = $em->createQuery('SELECT pbc, COUNT(pbum.client) as missionCount FROM App:Client pbc LEFT JOIN App:UserMission pbum WITH pbum.client = pbc.id WHERE pbc.deleted IS Null GROUP BY pbc.id ORDER BY pbc.id DESC');
+                $query = $em->createQuery('SELECT pbc, COUNT(pbum.client) as missionCount FROM App:Client pbc LEFT JOIN App:UserMission pbum WITH pbum.client = pbc.id WHERE pbc.deleted IS Null OR pbc.deleted = 0 GROUP BY pbc.id ORDER BY pbc.id DESC');
                 $result =  $query->getResult();
 
                 return $this->render('admin/b2b/client/index.html.twig', [
@@ -59,17 +59,54 @@ class ClientController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $profilePhoto = $form['profilePhoto']->getData();
+            if ($profilePhoto) {
+                $originalFilename = pathinfo($profilePhoto->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$profilePhoto->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $profilePhoto->move(
+                        'uploads/clients/',
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $client->setProfilePhoto($newFilename);
+            }
+
+
+        if($client->getPlainPassword()) {
+                $password = $passwordEncoder->encodePassword($client, $client->getPlainPassword());
+                $client->setPassword($password);
+                $client->setRoles(['ROLE_USER']);
+            }
+            if($client->getClientInfo()->getMangopayKycFile() == null){
+                $client->getClientInfo()->setMangopayKycStatus('PENDING');
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($client);
             $entityManager->flush();
 
+            $uploadedFile = $client->getProfilePhoto();
+
+            if ($uploadedFile) {
+                $srcPath = 'uploads/clients/'.$uploadedFile;
+                $path = 'uploads/clients/'.$client->getId().'/';
+                if (!file_exists($path)) {
+                    mkdir($path, 0700);
+                }
+
+                rename($srcPath, 'uploads/clients/'.$client->getId().'/' . pathinfo($uploadedFile, PATHINFO_BASENAME));
+            }
             return $this->redirectToRoute('admin_client_index');
         }
 
@@ -109,6 +146,22 @@ class ClientController extends AbstractController
                     }
                     if($client->getClientInfo()->getMangopayKycFile() == null){
                         $client->getClientInfo()->setMangopayKycStatus('PENDING');
+                    }
+                    $profilePhoto = $form['profilePhoto']->getData();
+                    if ($profilePhoto) {
+                        $originalFilename = pathinfo($profilePhoto->getClientOriginalName(), PATHINFO_FILENAME);
+                        $newFilename = $originalFilename.'-'.uniqid().'.'.$profilePhoto->guessExtension();
+
+                        // Move the file to the directory where brochures are stored
+                        try {
+                            $profilePhoto->move(
+                                'uploads/clients/'.$client->getId().'/',
+                                $newFilename
+                            );
+                        } catch (FileException $e) {
+                            // ... handle exception if something happens during file upload
+                        }
+                        $client->setProfilePhoto($newFilename);
                     }
                     /*******FILE RENAME START************/
 //                    if($mangoPayFilePrevName != null){
