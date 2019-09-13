@@ -45,7 +45,17 @@ class ClientType extends AbstractType
 //            ))
             //->add('createdAt')
             //->add('updatedAt')
-            ->add('profilePhoto',HiddenType::class,array('data_class'=> null, 'label' => 'Profile Photo'))
+            ->add('profilePhoto', FileType::class, [
+                'label' => 'ProfilePhoto',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // everytime you edit the Product details
+                'required' => false,
+
+            ])
             //->add('lastLoggedinAt')
             ->add('clientInfo', ClientInfoType::class,[
                 'constraints' => array(new Valid())
