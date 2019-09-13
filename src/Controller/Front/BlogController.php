@@ -2,6 +2,7 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Page;
 use App\Repository\BlogPostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,11 @@ class BlogController extends AbstractController
      */
     public function index(BlogPostRepository $blogPostRepository,Request $request)
     {
+        #SEO
+        $pages = new Page();
+        $pages->setMetaTitle("Le blog de Pix.City Services");
+        $pages->setMetaDescription("Tout savoir sur la visibilité locale sur internet : conseils, case studies, bonnes pratiques, interviews Focus sur Instagram, Facebook et Google My Business.");
+
         $limit = 6;
         $page = is_null($request->get('page'))?1:(int)$request->get('page');
 
@@ -30,7 +36,8 @@ class BlogController extends AbstractController
             'blogHeaderByPosition' => $blogPostRepository->bannerHeader(),
             'blogAll' => $blogPostRepository->findBy(array('postStatus'=>1,'position'=>0),['id'=>'DESC'],4),
             'blogPosts' => $blogPosts,
-            'filters' => $filters
+            'filters' => $filters,
+            'pages'=>$pages
         ]);
     }
     /**
