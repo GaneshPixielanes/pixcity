@@ -54,7 +54,6 @@ class UserPacksType extends AbstractType
             //->add('marginPercentage')
             ->add('user',EntityType::class, array(
                 'class' => User::class,
-                'choice_label' => 'firstname',
                 'label'=>'CM'
             ))
            // ->add('packSkill')
