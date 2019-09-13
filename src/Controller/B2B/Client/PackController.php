@@ -108,6 +108,7 @@ class PackController extends AbstractController
             $entityManager->flush();
 
 
+
             #Send notification
 //            $notificationsRepository->insert($pack->getUser(),null,'mission_request', $this->getUser()->getFirstName().' has sent a mission request',0);
 
