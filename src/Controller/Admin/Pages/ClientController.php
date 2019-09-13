@@ -218,7 +218,7 @@ class ClientController extends AbstractController
             $testAccounts = $entityManager->getRepository(Option::class)->findOneBy(['slug'=>'dev-client-email']);
             if(strpos($testAccounts->getValue(),$clients->getEmail()) !== false) { //in
                 $emailStore = explode('@', $clients->getEmail());
-                $emailRename = $emailStore[0] . '_' . strtotime("now") . 'del@' . $emailStore[1];
+                $emailRename = $emailStore[0] . '_deleted_' . strtotime("now") . '@' . $emailStore[1];
                 $clients->setEmail($emailRename);
             }
             $clients->setDeleted(1);

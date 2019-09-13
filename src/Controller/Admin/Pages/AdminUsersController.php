@@ -296,7 +296,7 @@ class AdminUsersController extends Controller
             $testAccounts = $entityManager->getRepository(Option::class)->findOneBy(['slug'=>'dev-cm-email']);
             if(strpos($testAccounts->getValue(),$users->getEmail()) !== false) { //in
                 $emailStore = explode('@',$users->getEmail());
-                $emailRename = $emailStore[0].'_'.strtotime("now").'del@'.$emailStore[1];
+                $emailRename = $emailStore[0].'_deleted_'.strtotime("now").'@'.$emailStore[1];
                 $users->setEmail($emailRename);
                 $users->setVisible(0);
                 $users->setActive(0);
