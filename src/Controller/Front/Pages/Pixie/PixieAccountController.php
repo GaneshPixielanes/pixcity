@@ -4,6 +4,7 @@ namespace App\Controller\Front\Pages\Pixie;
 
 
 use App\Constant\CardProjectStatus;
+use App\Constant\CardStatus;
 use App\Constant\CompanyStatus;
 use App\Constant\TransactionStatus;
 use App\Entity\Card;
@@ -218,6 +219,11 @@ class PixieAccountController extends Controller
             }
 
         }
+        #Get the number of valid cards
+        $cardCount = $cardsRepo->count([
+            'pixie' => $this->getUser(),
+            'status' => CardStatus::VALIDATED
+        ]);
 
         //-----------------------------------------------
         // Create the page
@@ -232,7 +238,8 @@ class PixieAccountController extends Controller
             'errors' => $errors,
             'bandDetailsEditable' => $bankDetailsEditable,
             'user' => $user,
-            'card' => $card
+            'card' => $card,
+            'cardCount' => $cardCount
         ));
 
     }
