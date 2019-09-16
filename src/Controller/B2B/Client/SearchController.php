@@ -29,7 +29,7 @@ class SearchController extends SearchPageController
         $testAccountsAsClient = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
         $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
         $searchParams = $this->getSearchParams($request);
-        $limit = 12;
+        $limit = 4;
         $page = is_null($request->get('page'))?1:(int)$request->get('page');
 
         if($searchParams['text']!="")
