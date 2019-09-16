@@ -130,7 +130,7 @@ class UserRepository extends ServiceEntityRepository
     // CITY MAKER SEARCH
     //---------------------------------------
 
-    public function searchClients($filters = [], $limit = 12, $page = 1, $isRandom = false,$userEmail=null,$loggedType=null)
+    public function searchClients($filters = [], $limit = 4, $page = 1, $isRandom = false,$userEmail=null,$loggedType=null)
     {
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
