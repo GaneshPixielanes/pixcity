@@ -193,24 +193,29 @@ class UserRepository extends ServiceEntityRepository
 
     private function _applyFiltersClients($qb, $filters){
         if($filters) {
-            if (isset($filters["text"])) {
-                if(trim($filters["text"]) != ''){
+//            if (isset($filters["text"])) {
+//                if(trim($filters["text"]) != ''){
+//
+//                    if(isset($filters['skills']) or isset($filters["regions"])){
+//
+//                        $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+//
+//                    }else{
+//
+//                        $qb = $qb->andWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+//
+//                    }
+//                }
+//            }
 
-                    if(isset($filters['skills']) or isset($filters["regions"])){
-
-                        $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
-
-                    }else{
-
-                        $qb = $qb->andWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
-
-                    }
-                }
+            if(!isset($filters["text"]) || trim($filters["text"]) == '')
+            {
+                $filters["text"] = "__NO_KEYWORD_FOUND__";
             }
 
             if(isset($filters["regions"]) && trim($filters["regions"][0]) != '' && isset($filters["skills"]) && trim($filters["skills"][0]) != "")
             {
-                $qb = $qb->andwhere("u.b2b_cm_approval = 1 AND (r.slug IN (:regions) OR s.id IN (:skills) OR packs.packSkill in (:skills))")->setParameter("regions", $filters["regions"])->setParameter("skills",$filters['skills']);;
+                $qb = $qb->andwhere("u.b2b_cm_approval = 1 AND (r.slug IN (:regions) OR s.id IN (:skills) OR packs.packSkill in (:skills) OR ((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText)")->setParameter("regions", $filters["regions"])->setParameter("skills",$filters['skills'])->setParameter('packText','%'.$filters['text'].'%');
             }
             else
             {
@@ -219,9 +224,11 @@ class UserRepository extends ServiceEntityRepository
                     if(trim($filters["regions"][0]) != '')
                     {
                         if((isset($filters['skills']) && $filters['skills'][0]  != '') or isset($filters["text"])){
-                            $qb = $qb->orWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+//                            $qb = $qb->orWhere("r.slug IN (:regions) ")->setParameter("regions", $filters["regions"]);
+                            $qb = $qb->andWhere("(r.slug IN (:regions) OR ((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText)")->setParameter("regions", $filters["regions"])->setParameter('packText','%'.$filters['text'].'%');
+
                         }else{
-                            $qb = $qb->andWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+//                            $qb = $qb->andWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
                         }
 
                     }
@@ -234,9 +241,10 @@ class UserRepository extends ServiceEntityRepository
                     if(trim($filters["skills"][0]) != '')
                     {
                         if((isset($filters["regions"]) && $filters['regions'][0]  != '') or isset($filters["text"])){
-                            $qb = $qb->orWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
+//                            $qb = $qb->orWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
+                            $qb = $qb->andWhere('(s.id IN (:skills) OR packs.packSkill in (:skills)  OR ((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, \' \', u.lastname) LIKE :packText)')->setParameter("skills",$filters['skills'])->setParameter('packText','%'.$filters['text'].'%');
                         }else{
-                            $qb = $qb->andWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
+//                            $qb = $qb->andWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
 
                         }
 
