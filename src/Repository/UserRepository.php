@@ -198,7 +198,7 @@ class UserRepository extends ServiceEntityRepository
 
                     if(isset($filters['skills']) or isset($filters["regions"])){
 
-                        $qb = $qb->expr()->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+                        $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
 
                     }else{
 
@@ -208,32 +208,39 @@ class UserRepository extends ServiceEntityRepository
                 }
             }
 
-            if (isset($filters["regions"])) {
+            if(isset($filters["regions"]) && trim($filters["regions"][0]) != '' && isset($filters["skills"]) && trim($filters["skills"][0]) != "")
+            {
+                $qb = $qb->andwhere("u.b2b_cm_approval = 1 AND (r.slug IN (:regions) OR s.id IN (:skills) OR packs.packSkill in (:skills))")->setParameter("regions", $filters["regions"])->setParameter("skills",$filters['skills']);;
+            }
+            else
+            {
+                if (isset($filters["regions"])) {
 
-                if(trim($filters["regions"][0]) != '')
-                {
-                    if((isset($filters['skills']) && $filters['skills'][0]  != '') or isset($filters["text"])){
-                        $qb = $qb->expr()->orWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
-                    }else{
-                        $qb = $qb->andWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                    if(trim($filters["regions"][0]) != '')
+                    {
+                        if((isset($filters['skills']) && $filters['skills'][0]  != '') or isset($filters["text"])){
+                            $qb = $qb->orWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                        }else{
+                            $qb = $qb->andWhere("r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+                        }
+
                     }
 
                 }
 
-            }
 
-
-            if(isset($filters['skills']))
-            {
-                if(trim($filters["skills"][0]) != '')
+                if(isset($filters['skills']))
                 {
-                    if((isset($filters["regions"]) && $filters['regions'][0]  != '') or isset($filters["text"])){
-                        $qb = $qb->orWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
-                    }else{
-                        $qb = $qb->andWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
+                    if(trim($filters["skills"][0]) != '')
+                    {
+                        if((isset($filters["regions"]) && $filters['regions'][0]  != '') or isset($filters["text"])){
+                            $qb = $qb->orWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
+                        }else{
+                            $qb = $qb->andWhere('s.id IN (:skills) OR packs.packSkill in (:skills)')->setParameter("skills",$filters['skills']);
+
+                        }
 
                     }
-
                 }
             }
 
@@ -244,6 +251,7 @@ class UserRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
 
     public function searchPixiesFilters($filters = [])
     {
