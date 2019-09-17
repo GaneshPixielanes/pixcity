@@ -10,6 +10,7 @@ use App\Entity\UserInstagramDetailsApi;
 use App\Entity\InstagramTrends;
 use App\Repository\InstagramTrendsRepository;
 use App\Repository\CardRepository;
+use App\Repository\OptionRepository;
 use App\Repository\RegionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
@@ -581,15 +582,18 @@ class MapsController extends AbstractController
     /**
      * @Route("/find-all-card/{slug}/{category}",defaults={"slug"=null, "category" = null},name="_find_all_card")
      */
-    public function findAllCard(CardRepository $cardRepo, Request $request)
+    public function findAllCard(CardRepository $cardRepo, Request $request,
+                                OptionRepository $optionRepository)
     {
+        $testAccounts = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
         $slug = $request->get('slug');
         $category = $request->get('category');
 
         $em = $this->getDoctrine()->getManager();
-
+        $loggedUser = $this->getUser();
         $result = $em->getRepository(Card::class)->createQuerybuilder('c')
                 ->select(["a.latitude, a.longitude, c.id, t.icon"])
+                ->leftJoin('c.pixie','p')
                 ->join('c.address','a')
                 ->join('c.categories','t')
                 ->join('c.region','r');
@@ -601,7 +605,16 @@ class MapsController extends AbstractController
         {
           $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
         }
-
+        if($loggedUser) {
+            if (strpos($testAccounts->getValue(), $loggedUser->getEmail()) !== false) { //in
+                $result = $result;
+            }
+            else{
+                $result = $result->andWhere("p.email NOT IN (".$testAccounts->getValue().") AND p.visible = 1");
+            }
+        }else{
+            $result = $result->andWhere("p.email NOT IN (".$testAccounts->getValue().") AND p.visible = 1");
+        }
 
         $result = $result->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
                   ->getQuery()
