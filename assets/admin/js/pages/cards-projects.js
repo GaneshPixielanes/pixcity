@@ -5,7 +5,6 @@ jQuery(document).ready(function() {
     var routeUpload = $("#api-routes").attr("data-upload-route");
     var routeSaveTemplate = $("#api-routes").attr("data-savetemplate-route");
     var routeLoadTemplate = $("#api-routes").attr("data-loadtemplate-route");
-    var priceFlag = false;
 
     //---------------------------------------------
     // Nested selects
@@ -129,7 +128,7 @@ jQuery(document).ready(function() {
             $(".upload-zone").removeClass("uploading");
         }).fail(function(xhr, status, error) {
             $container.removeClass("uploading");
-            swal({icon: "error", text: "Votre fichier n'a pas pu ï¿½tre envoyï¿½"});
+            swal({icon: "error", text: "Votre fichier n'a pas pu être envoyé"});
             $(input).val("");
         });
     });
@@ -160,7 +159,7 @@ jQuery(document).ready(function() {
     $("#save-as-template").click(function(){
 
         swal({
-            text: 'Nom du nouveau modï¿½le',
+            text: 'Nom du nouveau modèle',
             content: "input",
             button: {
                 text: "Sauvegarder",
@@ -174,7 +173,7 @@ jQuery(document).ready(function() {
                     url: routeSaveTemplate,
                     data: $("form[name='card_project']").serialize() + '&templateName=' + name,
                     success: function (data) {
-                        swal("Modï¿½le de Card", "Le template de card ï¿½ bien ï¿½tï¿½ crï¿½ï¿½", "success");
+                        swal("Modèle de Card", "Le template de card à bien été créé", "success");
                     }
                 });
             }
@@ -197,7 +196,7 @@ jQuery(document).ready(function() {
 
             swal({
                 title: "Attention",
-                text: "Le contenu du formulaire sera remplacï¿½ par celui du modï¿½le.",
+                text: "Le contenu du formulaire sera remplacé par celui du modèle.",
                 icon: "warning",
                 buttons: [
                     'Annuler',
@@ -215,8 +214,8 @@ jQuery(document).ready(function() {
                         },
                         success: function(data){
                             swal({
-                                title: 'Succï¿½s',
-                                text: 'Le modï¿½le a bien ï¿½tï¿½ chargï¿½',
+                                title: 'Succès',
+                                text: 'Le modèle a bien été chargé',
                                 icon: 'success'
                             });
 
@@ -228,7 +227,7 @@ jQuery(document).ready(function() {
 
 
                 } else {
-                    swal("Opï¿½ration annulï¿½e", "Le modï¿½le n'a pas ï¿½tï¿½ chargï¿½", "error");
+                    swal("Opération annulée", "Le modèle n'a pas été chargé", "error");
                 }
             })
         }
@@ -236,21 +235,7 @@ jQuery(document).ready(function() {
 
     });
 
-    $('#card_project_price').on('input',function () {
-       if(priceFlag == false)
-       {
-           $('#priceConfirmationModal').modal('show');
-       }
-    });
 
-    $('#allowPayment').on('click', function () {
-       priceFlag = true;
-    });
-
-    $('#disallowPayment').on('click', function () {
-       priceFlag = false;
-       $('#card_project_price').val(0);
-    });
 });
 
 $(document).ready(function()
@@ -258,6 +243,7 @@ $(document).ready(function()
     var isSaved = true;
 
     $('body').on('keypress','input, .fr-view', function () {
+        console.log('triggered');
         isSaved = false;
     });
 
@@ -275,47 +261,47 @@ $(document).ready(function()
     });
 });
 
-// $(document).ready(function()
-// {
-//     var interview = $('#card_project_isInterview').val();
-//     var mode = $('#mode').val();
-//
-//     if(interview == '0' || interview == null)
-//     {
-//         console.log('matched');
-//         $('.type-froala').fadeOut();
-//         $('#card_project_price').val('0');
-//     }
-//
-//     $('#card_project_isInterview').on('change',function () {
-//         $('.type-froala').fadeToggle();
-//         if($(this).val() == 1)
-//         {
-//             $('#card_project_price').val('10');
-//
-//             if(mode != '')
-//             {
-//                 console.log(mode);
-//                 $('#card_project_region').attr('disabled','disabled');
-//                 $('#card_project_department').attr('disabled','disabled');
-//                 $('#card_project_pixie').attr('disabled','disabled');
-//                 $('#card_project_name').attr('disabled','disabled');
-//                 $('input[type="checkbox"]').attr('disabled','disabled');
-//
-//             }
-//         }
-//         else
-//         {
-//             $('#card_project_price').val('0');
-//         }
-//     });
-//
-//
-//     $('form').on('submit',function(){
-//         $('#card_project_region').removeAttr('disabled');
-//         $('#card_project_department').removeAttr('disabled');
-//         $('#card_project_pixie').removeAttr('disabled');
-//         $('#card_project_name').removeAttr('disabled');
-//         $('input[type="checkbox"]').removeAttr('disabled');
-//     });
-// });
+$(document).ready(function()
+{
+    var interview = $('#card_project_isInterview').val();
+    var mode = $('#mode').val();
+
+    if(interview == '0' || interview == null)
+    {
+        console.log('matched');
+        $('.type-froala').fadeOut();
+        $('#card_project_price').val('0');
+    }
+
+    $('#card_project_isInterview').on('change',function () {
+        $('.type-froala').fadeToggle();
+        if($(this).val() == 1)
+        {
+            $('#card_project_price').val('10');
+
+            if(mode != '')
+            {
+                console.log(mode);
+                $('#card_project_region').attr('disabled','disabled');
+                $('#card_project_department').attr('disabled','disabled');
+                $('#card_project_pixie').attr('disabled','disabled');
+                $('#card_project_name').attr('disabled','disabled');
+                $('input[type="checkbox"]').attr('disabled','disabled');
+
+            }
+        }
+        else
+        {
+            $('#card_project_price').val('0');
+        }
+    });
+
+    
+    $('form').on('submit',function(){
+        $('#card_project_region').removeAttr('disabled');
+        $('#card_project_department').removeAttr('disabled');
+        $('#card_project_pixie').removeAttr('disabled');
+        $('#card_project_name').removeAttr('disabled');
+        $('input[type="checkbox"]').removeAttr('disabled');
+    });
+});

@@ -255,7 +255,7 @@ jQuery(document).ready(function() {
     // Remove an item from the collection
     $(document).on('click', '#card-medias-list .delete-item', function(e) {
         e.preventDefault();
-        // $(this).parents("li").siblings().find(".media-bundle").prevObject[0].remove();
+        $(this).parents("li").siblings().find(".media-bundle").prevObject[0].remove();
         $(this).parents("li").fadeOut(300, function() { $(this).remove(); updatePhotoCounter(); });
     });
 
