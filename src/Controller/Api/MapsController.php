@@ -597,14 +597,6 @@ class MapsController extends AbstractController
                 ->join('c.address','a')
                 ->join('c.categories','t')
                 ->join('c.region','r');
-        if(null !== $request->get('category') && 'all' !== $request->get('category'))
-        {
-          $result= $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
-        }
-        if(!is_null($slug) && 'na' !== $slug && '' !== trim($slug))
-        {
-          $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
-        }
         if($loggedUser) {
             if (strpos($testAccounts->getValue(), $loggedUser->getEmail()) !== false) { //in
                 $result = $result;
@@ -614,6 +606,14 @@ class MapsController extends AbstractController
             }
         }else{
             $result = $result->andWhere("p.email NOT IN (".$testAccounts->getValue().") AND p.visible = 1");
+        }
+        if(null !== $request->get('category') && 'all' !== $request->get('category'))
+        {
+          $result= $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
+        }
+        if(!is_null($slug) && 'na' !== $slug && '' !== trim($slug))
+        {
+          $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
         }
 
         $result = $result->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
