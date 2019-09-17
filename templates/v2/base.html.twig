@@ -16,7 +16,7 @@
 
     <title>{% block meta_title %}{% if page.metaTitle is defined %}{{ page.metaTitle }}{% else %}Pix City{% endif %}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% if page.metaDescription is defined %}{{ page.metaDescription }}{% endif %}{% endblock %}">
-    <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}{% if metaRobot is defined %}{{ metaRobot }}{% else %} index,follow {% endif %}{% endblock %}">
     {% if card.masterhead.getUrl() is defined and card.masterhead.getUrl()|imagine_filter('bg_header_slider') is not empty %}
     <meta property="og:type" content="article" />
     <meta property="og:image" content="{{ card.masterhead.getUrl() | imagine_filter('bg_header_slider') }}" />
