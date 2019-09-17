@@ -12,7 +12,7 @@
                     <div class="col-md-12 py-4 filter-container">
                         <div class="row">
                             <div class="col-md-4 col-6">
-                                <h4 class="font-weight-light fz-16 title">Filter</h4>
+                                <h4 class="font-weight-light fz-16 title">&nbsp;</h4>
                             </div>
                             <div class="col-md-8 col-6 text-right reload">
                                 <a href="/freelance/search" class="fz-12 text-normalgray">
@@ -136,13 +136,13 @@
                                 <div class="col-md-12">
                                     <ul class="pagination justify-content-center">
                                         {% if filters['page'] != 1 %}
-                                            <li class="page-item"><a class="page-link" href="/freelance/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
+                                            <li class="page-item"><a class="page-link" href="/freelance/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}&search={{ text }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
                                         {% endif %}
                                         {% for i in 1..filters['total_pages'] %}
-                                            <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/freelance/search?page={{ i }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}">{{ i }}</a></li>
+                                            <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/freelance/search?page={{ i }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}&search={{ text }}">{{ i }}</a></li>
                                         {% endfor %}
                                         {% if filters['page'] != filters['total_pages'] %}
-                                            <li class="page-item"><a class="page-link" href="/freelance/search?page={{ filters['page']+1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
+                                            <li class="page-item"><a class="page-link" href="/freelance/search?page={{ filters['page']+1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}&search={{ text }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
                                         {% endif %}
                                     </ul>
                                 </div>
