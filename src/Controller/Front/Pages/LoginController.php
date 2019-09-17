@@ -365,33 +365,64 @@ class LoginController extends Controller
     /**
      * @Route("/{id}/auto-login", name="auto_login")
      */
-    public function autoLogin(User $user){
+    public function autoLogin($id,UserRepository $userRepository,Request $request){
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->container->get('security.token_storage')->setToken($token);
-        $this->container->get('session')->set('_security_main_area', serialize($token));
+        $id = base64_decode($id);
 
-        $this->session->set('login_by',['type' => 'login_cm','entity' => $user,'image' => $user->getAvatar()->getName(),'view_mode' => $user->getViewMode()]);
+        $user = $userRepository->find($id);
 
-        return $this->redirect('/');
+        $referer_url = explode('/',$request->server->get('HTTP_REFERER'));
+
+        if(count($referer_url) > 1 && $referer_url[3] == 'admin'){
+
+            $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+            $this->container->get('security.token_storage')->setToken($token);
+            $this->container->get('session')->set('_security_main_area', serialize($token));
+
+            $this->session->set('login_by',['type' => 'login_cm','entity' => $user,'image' => $user->getAvatar()->getName(),'view_mode' => $user->getViewMode()]);
+
+            return $this->redirect('/');
+
+        }else{
+
+            return $this->redirect('/');
+        }
+
 
     }
 
     /**
      * @Route("/{id}/auto-login-client", name="auto_login_client")
      */
-    public function clientAutoLogin(Client $client,Request $request){
+    public function clientAutoLogin($id,ClientRepository $clientRepository,Request $request){
 
-        $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
+        $id = base64_decode($id);
 
-        $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
+        $client = $clientRepository->find($id);
 
-        $this->container->get('security.token_storage')->setToken($token);
-        $this->container->get('session')->set('_security_client_area', serialize($token));
-        $event = new InteractiveLoginEvent($request, $token);
-        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+        $referer_url = explode('/',$request->server->get('HTTP_REFERER'));
 
-        return $this->redirect('/');
+        if(count($referer_url) > 1 && $referer_url[3] == 'admin'){
+
+            $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
+
+            $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
+
+            $this->container->get('security.token_storage')->setToken($token);
+            $this->container->get('session')->set('_security_client_area', serialize($token));
+            $event = new InteractiveLoginEvent($request, $token);
+            $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+
+            return $this->redirect('/');
+
+        }else{
+
+            return $this->redirect('/');
+
+        }
+
+
+
 
     }
 
