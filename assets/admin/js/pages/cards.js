@@ -115,10 +115,6 @@ jQuery(document).ready(function() {
                 callback = addMasterhead;
                 crop = 1600/600;
                 break;
-            case "blogcard":
-                callback = addThumb;
-                crop = 420/270;
-                break;
         }
 
         onFileSelection(this, callback, crop);

@@ -43,7 +43,7 @@ class CardCategoryRepository extends ServiceEntityRepository
           ->groupBy('c.id');
 
         if($userEmail != null){
-            $qb = $qb->andWhere("uid.email NOT IN (".$userEmail.") AND uid.visible = 1");
+            $qb = $qb->andWhere("uid.email NOT IN (".$userEmail.") AND uid.visible = 1 ");
         }
 //        if($userEmail == null){
 //            $qb = $qb->andWhere("uid.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");

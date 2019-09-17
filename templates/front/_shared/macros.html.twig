@@ -224,7 +224,9 @@
             </div>
         </span>
             {% endif %}
-            <a class="cardsIco cta-favorite-card {% if app.user is not null and app.user.hasFavorite(card) %} active {% endif %} " data-id="{{ card.id }}" title="" data-toggle="tooltip" data-placement="top" data-container="body" data-original-title=" Enregistrer la card"></a>
+            {% if app.user | instant %}
+                <a class="cardsIco cta-favorite-card {% if app.user is not null and app.user.hasFavorite(card) %} active {% endif %} " data-id="{{ card.id }}" title="" data-toggle="tooltip" data-placement="top" data-container="body" data-original-title=" Enregistrer la card"></a>
+            {% endif %}
             <div class="alignBottom">
                 {% if editable != true %}
                     <a class="cardTitle" href="{{ absolute_url(path('front_card_single', {slug: card.slug})) }}" title="{{ card.name }}">{{ card.name }}</a>
@@ -273,9 +275,11 @@
         <div class="row">
             <div class="col-md-12 d-flex justify-content-between my-2">
                 <span data-toggle="tooltip" data-placement="bottom" data-container="body" title="Suivre le City Maker">
+                    {% if app.user | instant %}
                     <a href="javascript:;" class="col-md-3 city-maker-cta cta-follow-city-maker {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" {% if app.user is  null %} data-toggle="modal" data-target="#followCityMakerModal" {% endif %} data-id="{{ user.id }}">
                         <i class="far fa-user-circle"></i>
                     </a>
+                    {% endif %}
                 </span>
                 <span>
                     <a href="{{ user.getInstagram() }}" target="_blank" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Consultez le profil Instagram de notre City Maker!">

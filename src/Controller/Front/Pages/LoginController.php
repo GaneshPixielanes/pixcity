@@ -4,7 +4,9 @@ namespace App\Controller\Front\Pages;
 
 use App\Constant\AfterLoginAction;
 use App\Constant\SessionName;
+use App\Entity\Client;
 use App\Entity\Page;
+use App\Entity\User;
 use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
@@ -16,10 +18,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+
 /**
  * @Route("/connexion", name="front_")
  */
@@ -338,10 +343,13 @@ class LoginController extends Controller
         // $response->send();
 
         $user = $this->getUser();
-        if($user->getPixie())
-        {
-            $user->setViewMode('pixie');
+        if($user instanceof User){
+            if($user->getPixie())
+            {
+                $user->setViewMode('pixie');
+            }
         }
+
 
         // Save the user
         $entityManager = $this->getDoctrine()->getManager();
@@ -351,6 +359,40 @@ class LoginController extends Controller
         $this->session->remove('login_by');
 
         return $this->redirectToRoute('front_logout');
+    }
+
+
+    /**
+     * @Route("/{id}/auto-login", name="auto_login")
+     */
+    public function autoLogin(User $user){
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->container->get('security.token_storage')->setToken($token);
+        $this->container->get('session')->set('_security_main_area', serialize($token));
+
+        $this->session->set('login_by',['type' => 'login_cm','entity' => $user,'image' => $user->getAvatar()->getName(),'view_mode' => $user->getViewMode()]);
+
+        return $this->redirect('/');
+
+    }
+
+    /**
+     * @Route("/{id}/auto-login-client", name="auto_login_client")
+     */
+    public function clientAutoLogin(Client $client,Request $request){
+
+        $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
+
+        $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
+
+        $this->container->get('security.token_storage')->setToken($token);
+        $this->container->get('session')->set('_security_client_area', serialize($token));
+        $event = new InteractiveLoginEvent($request, $token);
+        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+
+        return $this->redirect('/');
+
     }
 
     /**
