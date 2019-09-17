@@ -52,9 +52,11 @@ class CitymakerController extends SearchPageController
         UserRepository $usersRepo,
         PageCategoryRepository $pagesCategoriesRepo,
         CardRepository $cardsRepo,
-        CardCategoryRepository $categoryRepo
+        CardCategoryRepository $categoryRepo,
+        OptionRepository $optionRepository
     )
     {
+        $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
         $user = $usersRepo->searchUserById($request->attributes->get("id"));
         if(!$user->getActive() || !$user->getVisible())
         {
@@ -107,8 +109,13 @@ class CitymakerController extends SearchPageController
 
         $page->setMetaTitle($metaTitle);
         $page->setMetaDescription("Découvrez le profil de ".$user->getFirstname()." ".$user->getLastname().", city-maker sur Pix.city. ");
-
         $page->setIndexed(true);
+        $metaRobot = '';
+        if(strpos($testAccountsAsCm->getValue(),$user->getEmail()) !== false) {
+            $metaRobot = 'NOINDEX, NOFOLLOW';
+        }else{
+            $metaRobot = 'index,follow';
+        }
         $categories = $categoryRepo->findCategoriesByCityMaker($request->attributes->get("id"));
         return $this->render('v2/front/citymaker/index.html.twig', [
             'page' => $page,
@@ -119,7 +126,8 @@ class CitymakerController extends SearchPageController
             'totalLikes' => $totalLikes,
             'cardsPerCategory' => $cardsPerCategory,
             'cardsPerRegion' => $cardsPerRegion,
-            'categories'=>$categories
+            'categories'=>$categories,
+            'metaRobot' =>$metaRobot
         ]);
     }
 
