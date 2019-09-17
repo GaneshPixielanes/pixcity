@@ -24,7 +24,7 @@
     </td>
     <td class="text-right">
         <div class="item-actions">
-            <a title="{{ 'action.edit'|trans }}" href="{{ path('front_auto_login', {'id': item[0].id}) }}" target="_blank" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+            <a title="{{ 'action.edit'|trans }}" href="{{ path('front_auto_login', {'id': item[0].getEncryptedId}) }}" target="_blank" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
                 <i class="material-icons">A</i>
             </a>
             <a title="{{ 'action.edit'|trans }}" href="{{ path('admin_users_edit', {'id': item[0].id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">

@@ -43,7 +43,7 @@
                             <td data-order='{{ client[0].createdAt|date('YmdHi') }}'>{{ client[0].createdAt ? client[0].createdAt|localizeddate('medium', 'short'):'N/A' }}</td>
                             <td class="text-right">
                                 <div class="item-actions">
-                                    <a title="{{ 'action.edit'|trans }}" href="{{ path('front_auto_login_client', {'id': client[0].id}) }}" target="_blank" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
+                                    <a title="{{ 'action.edit'|trans }}" href="{{ path('front_auto_login_client', {'id': client[0].getEncryptedId }) }}" target="_blank" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
                                         <i class="material-icons">A</i>
                                     </a>
                                     | <a href="{{ path('admin_client_show', {'id': client[0].id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>

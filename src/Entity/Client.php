@@ -525,5 +525,10 @@ class Client implements UserInterface
     }
 
 
+    public function getEncryptedId(){
+
+        return base64_encode($this->getId());
+    }
+
 
 }

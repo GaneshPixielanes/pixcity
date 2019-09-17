@@ -1960,4 +1960,9 @@ class User implements UserInterface, EquatableInterface
         return $this;
     }
 
+    public function getEncryptedId(){
+
+        return base64_encode($this->getId());
+    }
+
 }
