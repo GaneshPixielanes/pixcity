@@ -59,11 +59,11 @@ class SearchController extends SearchPageController
 
         if($loggedUser){
             if(strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false){ //in
-                $users = $userRepo->searchClients($filters, $limit, $page,'', $testAccountsAsCm->getValue(),$loggedType);
-                $filters['cm_count'] = $userRepo->searchCommunityManagerCount($filters, $limit, $page,$testAccountsAsCm->getValue(),$loggedType);
+                $users = $userRepo->searchClients($filters, $limit, $page,'');
+                $filters['cm_count'] = $userRepo->searchCommunityManagerCount($filters, $limit, $page);
             }elseif(strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false){ //in
-                $users = $userRepo->searchClients($filters, $limit, $page,'', $testAccountsAsCm->getValue(),$loggedType);
-                $filters['cm_count'] = $userRepo->searchCommunityManagerCount($filters, $limit, $page,$testAccountsAsCm->getValue(),$loggedType);
+                $users = $userRepo->searchClients($filters, $limit, $page,'');
+                $filters['cm_count'] = $userRepo->searchCommunityManagerCount($filters, $limit, $page);
             }
             else{
                 $users = $userRepo->searchClients($filters, $limit, $page,'', $testAccountsAsCm->getValue());
