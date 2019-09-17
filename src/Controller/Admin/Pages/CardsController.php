@@ -152,6 +152,8 @@ class CardsController extends Controller
                 }
                 #Update the user level
                 $user->setLevel($level);
+                #Log card's level
+                $card->setLevel($level);
                 $card->setPublishedAt(new \DateTime());
             }
 
@@ -186,6 +188,8 @@ class CardsController extends Controller
                         ]
                     );
                 }
+//            $clear_cache=shell_exec("fixweb clear_cache");
+//            $clear_cache=shell_exec("chmod -R 777 /home/pixcity/production/var/www/private/var/cache");
 
             return $this->redirectToRoute('admin_cards_list');
         }
