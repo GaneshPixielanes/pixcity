@@ -14,6 +14,17 @@
         {{ form_row(form.email) }}
         {{ form_row(form.firstname) }}
         {{ form_row(form.lastname) }}
+        {{ form_row(form.linkedinProfile) }}
+        {{ form_row(form.profilePhoto) }}
+        <br/>
+        <ul class="repeater-container user-profilePhoto">
+            <li class="align-center">
+                {% if form.vars.data.profilePhoto  %}
+                    <img class="thumb" src="{{ asset('/uploads/admin/'~form.vars.data.id~'/'~form.vars.data.profilePhoto) | imagine_filter('bg_card_item' )}}" width="20%">
+                {% endif %}
+            </li>
+        </ul>
+        <br/>
         {{ form_row(form.roles) }}
         {{ form_row(form.plainPassword.first) }}
         {{ form_row(form.plainPassword.second) }}
