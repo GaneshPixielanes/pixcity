@@ -430,7 +430,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $level;
+    private $level = 1;
 
     //--------------------------------------------------------------
     // Constructor
