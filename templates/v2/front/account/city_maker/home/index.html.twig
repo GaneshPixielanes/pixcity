@@ -479,11 +479,9 @@
                                         Mettez votre savoir faire de
                                         community-manager au service de votre région avec Pix.City Services
                                     {% elseif app.user.level > 1 and app.user.b2bCmApproval != 1 %}
-                                        Mettez votre savoir faire de
-                                        community-manager au service de votre région avec Pix.City Services
+                                        Mets tes compétences professionnelles au service de ta région sur Pix.City Services
                                     {% elseif app.user.level > 1 and app.user.b2bCmApproval == 1 %}
-                                        Met â jour ton profil, créée tes afin que les clients pulssent te contracter facilement, ton profil les intéresse
-                                    {% endif %}
+                                        Met à jour ton profil, crée tes packs afin que des clients puissent te contacter facilement. Ton profil les intéresse!                                    {% endif %}
                                     </h4>
                                     {% if app.user.level == 1 %}
                                         <p class="fz-16 font-weight-light">
@@ -496,21 +494,24 @@
                                         </p>
 
                                     {% elseif app.user.level > 1 and app.user.b2bCmApproval != 1 %}
-                                    <p class="fz-16 font-weight-light">Vous avez un compte Instagram actif, vous souhaitez
-                                        mettre vos compétences de community manager, d’influenceur local, de photographe (ou
-                                        autre) auprès d’acteurs locaux.. </p>
+                                    <p class="fz-16 font-weight-light">Tu as un compte instagram actif, tu souhaites proposer tes compétences de community-manager, influenceur, photographe (et bien plus encore!) auprès d’acteurs locaux?</p>
                                     <br>
                                     <p class="fz-16 font-weight-light">
-                                        Publiez une première card sur Pix.city et vous aurez alors l’occasion de vous inscrire et d’être sélectionné pour devenir le community manager incontournable de boutiques……. pour Pix.City Services !
+                                        Inscris-toi et tu seras peut être choisi(e) et contacté(e) par un commerce local ou une marque afin de l’accompagner à la conquête du digital!
                                     </p>
+                                        <a href="/city-maker/compte/parametres" class="btn btn-pink btn-pill lh2">Devenir City-Maker Services</a>
 
                                         {% elseif app.user.level > 1 and app.user.b2bCmApproval == 1 %}
 
-                                            <p class="fz-16 font-weight-light">Tu souhaites dévéloper ta clientéle pour réaliser des presentations de community management, influencer, photographe... Pix.City Serviceste propose un espace vitrine ou tu pourras mettre en avant tout ton saviour-faire et renontrer facilement de nouveaux clients.</p>
+                                            <p class="fz-16 font-weight-light">
+                                                Tu souhaites développer ta clientèle pour réaliser des prestations de community-management, influence, photographe… Pix.City Services te propose une espace vitrine où tu pourras mettre en avant tout ton savoir-faire et rencontrer facilement de nouveaux clients.
+                                            </p>
                                             <br>
-                                            <p class="fz-16 font-weight-light">De nombreux clients sont proches toi et n'ont qu'une envie... Traveiller avec toi !</p>
+                                            <p class="fz-16 font-weight-light">
+                                                De nombreux clients sont proches de chez toi et n’ont qu’une envie… Travailler avec toi!
+                                            </p>
 
-                                            <a href="{{ url('front_pixie_register_mode') }}" class="btn btn-pink btn-pill lh2">ACCEDER A MON ESPACE</a>
+                                            <a href="/city-maker/profil" class="btn btn-pink btn-pill lh2">ACCEDER A MON ESPACE</a>
                                     {% endif %}
 
                                 </div>
