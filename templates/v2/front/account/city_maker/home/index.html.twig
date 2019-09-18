@@ -15,7 +15,7 @@
                         <div class="profile-image-text">
                             <div>
                                 <p>ici mes photos & infos visibles qui accompagnent mes cards</p>
-                                <a href="javascript:;" class="btn btn-outline-white btn-block lh2">MON PROFIL CITY-MAKER</a>
+                                <a href="/city-maker/compte/parametres" class="btn btn-outline-white btn-block lh2">MON PROFIL CITY-MAKER</a>
                             </div>
                         </div>
                     </div>
@@ -34,8 +34,8 @@
                             <div class="profile-slide">
                                 <div
                                         class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
-                                    <img src="{{ asset('build/images/badge-explorer.svg') }}" class="badge-image">
-                                    <h3 class="image-title"><span>Niveau</span> Explorer</h3>
+                                    <img src="{{ asset('build/images/badge-voyager.svg') }}" class="badge-image">
+                                    <h3 class="image-title"><span>Niveau</span> Voyager</h3>
                                     <h4>DEVIENS CITY-MAKER et partage ta 1ère adresse sur Pix.City</h4>
                                     <p>(lieu, activité, restaurant, boutique…). Après validation, selon tes aptitudes et ton ambition, grimpe les niveaux suivants avec de nouvelles missions et lots à gagner !</p>
                                 </div>
@@ -43,21 +43,19 @@
                                     <a href="javascript:;" class="btn btn-block btn-outline-black lh2 intercom-pop">COMMENCER</a>
                                 </div>
                             </div>
-                            <div class="profile-slide slide-background"
-                                 style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
-                                <div
-                                        class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
-                                    <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
-                                    <img src="{{ asset('build/images/slider-logo.png') }}" />
-                                    <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                                <div class="profile-slide slide-background"
+                                     style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
+                                    <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                        <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
+                                        <img src="{{ asset('build/images/slider-logo.png') }}" />
+                                        <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                                    </div>
+                                    <div class="cta">
+                                        <a href="#service-content" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
+                                    </div>
                                 </div>
-                                <div class="cta">
-                                    <a href="#level-description" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
-                                </div>
-                            </div>
                             <div class="profile-slide">
-                                <div
-                                        class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
                                     <img src="{{ asset('build/images/euro-profile-slide.png') }}" class="mb-3" />
                                     <h4>En augmentant ton #pixlevel, franchis les étapes et accède à des gains de plus en plus gros!</h4>
                                     <p>5 niveaux sont à franchir!</p>
@@ -80,18 +78,30 @@
                                     <a href="javascript:;" class="btn btn-block btn-outline-black lh2 intercom-pop">COMMENCER</a>
                                 </div>
                             </div>
-                            <div class="profile-slide slide-background"
-                                 style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
-                                <div
-                                        class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
-                                    <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
-                                    <img src="{{ asset('build/images/slider-logo.png') }}" />
-                                    <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                            {% if app.user.b2bCmApproval != 1 %}
+                                <div class="profile-slide slide-background"
+                                     style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
+                                    <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                        <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
+                                        <img src="{{ asset('build/images/slider-logo.png') }}" />
+                                        <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                                    </div>
+                                    <div class="cta">
+                                        <a href="#service-content" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
+                                    </div>
                                 </div>
-                                <div class="cta">
-                                    <a href="#level-description"" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
+                            {% endif %}
+                                <div class="profile-slide">
+                                    <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                        <img src="{{ asset('build/images/euro-profile-slide.png') }}" class="mb-3" />
+                                        <h4>En augmentant ton #pixlevel, franchis les étapes et accède à des gains de plus en plus gros!</h4>
+                                        <p>5 niveaux sont à franchir!</p>
+                                        <p>Et si tu relevais le défi?</p>
+                                    </div>
+                                    <div class="cta">
+                                        <a href="#level-description" class="btn btn-block btn-outline-black lh2">NIVEAUX &amp; RÉMUNÉRATIONS</a>
+                                    </div>
                                 </div>
-                            </div>
                             {% elseif app.user.level == 3 %}
                                 <div class="profile-slide">
                                     <div
@@ -105,16 +115,28 @@
                                         <a href="javascript:;" class="btn btn-block btn-outline-black lh2 intercom-pop">COMMENCER</a>
                                     </div>
                                 </div>
-                                <div class="profile-slide slide-background"
-                                     style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
-                                    <div
-                                            class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
-                                        <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
-                                        <img src="{{ asset('build/images/slider-logo.png') }}" />
-                                        <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                                {% if app.user.b2bCmApproval != 1 %}
+                                    <div class="profile-slide slide-background"
+                                         style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
+                                        <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                            <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
+                                            <img src="{{ asset('build/images/slider-logo.png') }}" />
+                                            <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                                        </div>
+                                        <div class="cta">
+                                            <a href="#service-content" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="profile-slide">
+                                    <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                        <img src="{{ asset('build/images/euro-profile-slide.png') }}" class="mb-3" />
+                                        <h4>En augmentant ton #pixlevel, franchis les étapes et accède à des gains de plus en plus gros!</h4>
+                                        <p>5 niveaux sont à franchir!</p>
+                                        <p>Et si tu relevais le défi?</p>
                                     </div>
                                     <div class="cta">
-                                        <a href="#level-description"" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
+                                        <a href="#level-description" class="btn btn-block btn-outline-black lh2">NIVEAUX &amp; RÉMUNÉRATIONS</a>
                                     </div>
                                 </div>
                              {% elseif app.user.level == 4 %}
@@ -130,22 +152,33 @@
                                          <a href="javascript:;" class="btn btn-block btn-outline-black lh2 intercom-pop">COMMENCER</a>
                                      </div>
                                  </div>
-                                 <div class="profile-slide slide-background"
-                                      style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
-                                     <div
-                                             class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
-                                         <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
-                                         <img src="{{ asset('build/images/slider-logo.png') }}" />
-                                         <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                                 {% if app.user.b2bCmApproval != 1 %}
+                                     <div class="profile-slide slide-background"
+                                          style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
+                                         <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                             <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
+                                             <img src="{{ asset('build/images/slider-logo.png') }}" />
+                                             <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                                         </div>
+                                         <div class="cta">
+                                             <a href="#service-content" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
+                                         </div>
+                                     </div>
+                                 {% endif %}
+                                 <div class="profile-slide">
+                                     <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                         <img src="{{ asset('build/images/euro-profile-slide.png') }}" class="mb-3" />
+                                         <h4>En augmentant ton #pixlevel, franchis les étapes et accède à des gains de plus en plus gros!</h4>
+                                         <p>5 niveaux sont à franchir!</p>
+                                         <p>Et si tu relevais le défi?</p>
                                      </div>
                                      <div class="cta">
-                                         <a href="#level-description"" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
+                                         <a href="#level-description" class="btn btn-block btn-outline-black lh2">NIVEAUX &amp; RÉMUNÉRATIONS</a>
                                      </div>
                                  </div>
                             {% else %}
                                 <div class="profile-slide">
-                                    <div
-                                            class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                    <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
                                         <img src="{{ asset('build/images/badge-nomad.svg') }}" class="badge-image">
                                         <h3 class="image-title"><span>Niveau</span> Nomad</h3>
                                         <h4>DEVIENS CITY-MAKER et partage ta 1ère adresse sur Pix.City</h4>
@@ -155,16 +188,28 @@
                                         <a href="javascript:;" class="btn btn-block btn-outline-black lh2 intercom-pop">COMMENCER</a>
                                     </div>
                                 </div>
-                                <div class="profile-slide slide-background"
-                                     style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
-                                    <div
-                                            class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
-                                        <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
-                                        <img src="{{ asset('buid/images/slider-logo.png') }}" />
-                                        <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                                {% if app.user.b2bCmApproval != 1 %}
+                                    <div class="profile-slide slide-background"
+                                         style="background-image: url({{ asset('build/images/bg-slider-back.jpg') }});">
+                                        <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                            <h3>Propose ton savoir-faire de Community Manager ou Influenceur avec</h3>
+                                            <img src="{{ asset('build/images/slider-logo.png') }}" />
+                                            <p>Ta légitimité de local intéresse pour concevoir & manager la visibilité et le référencement digital de nombreux acteurs de ta région. Inscris-toi et tu deviendras peut-être LE ou LA community manager ou influenceur local incontournable de ta région.</p>
+                                        </div>
+                                        <div class="cta">
+                                            <a href="#service-content" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="profile-slide">
+                                    <div class="slide-main d-flex flex-column justify-content-center align-items-center text-center">
+                                        <img src="{{ asset('build/images/euro-profile-slide.png') }}" class="mb-3" />
+                                        <h4>En augmentant ton #pixlevel, franchis les étapes et accède à des gains de plus en plus gros!</h4>
+                                        <p>5 niveaux sont à franchir!</p>
+                                        <p>Et si tu relevais le défi?</p>
                                     </div>
                                     <div class="cta">
-                                        <a href="#level-description"" class="btn btn-block btn-outline-black lh2">DEVENIR CM.LOCAL</a>
+                                        <a href="#level-description" class="btn btn-block btn-outline-black lh2">NIVEAUX &amp; RÉMUNÉRATIONS</a>
                                     </div>
                                 </div>
                             {% endif %}
@@ -408,48 +453,50 @@
             <div class="col-md-12 services-wrap">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-12 d-flex align-items-center service-content">
+                        <div class="col-md-12 d-flex align-items-center service-content" id="service-content">
                             <div class="row">
                                 <div class="col-md-5"></div>
                                 <div class="col-md-7">
                                     <img src="{{ asset('build/images/felicitation-logo.svg') }}">
                                     <h4 class="font-weight-bold text-darkblue fz-20 my-3">
                                     {% if app.user.level == 1 %}
-                                        Met tes compétences professionalles au service de ta Région sur Pix.City Services
-                                    {% elseif app.user.level == 2 %}
                                         Mettez votre savoir faire de
                                         community-manager au service de votre région avec Pix.City Services
-                                    {% else %}
+                                    {% elseif app.user.level > 1 and app.user.b2bCmApproval != 1 %}
+                                        Mettez votre savoir faire de
+                                        community-manager au service de votre région avec Pix.City Services
+                                    {% elseif app.user.level > 1 and app.user.b2bCmApproval == 1 %}
                                         Met â jour ton profil, créée tes afin que les clients pulssent te contracter facilement, ton profil les intéresse
                                     {% endif %}
                                     </h4>
                                     {% if app.user.level == 1 %}
                                         <p class="fz-16 font-weight-light">
-                                            Tu as un compte Instagram acif, tu souhaites proposer tes compétences de community-manager, influencer, photographer (et bien plus encore ! ) auprés d'acteurs locaux?
-                                        </p>
+                                            Vous avez un compte Instagram actif, vous souhaitez
+                                            mettre vos compétences de community manager, d’influenceur local, de photographe (ou
+                                            autre) auprès d’acteurs locaux..                                         </p>
                                         <br/>
                                         <p class="fz-16 font-weight-light">
-                                            Soumets une card et deveins exploer ! Tu pourras alors t'inscrire et tu seras peut être choisi(e) et contacté par un commerce local ou une marque afin de l'accompagner sur la  conquête digital
+                                            Publiez une première card sur Pix.city et vous aurez alors l’occasion de vous inscrire et d’être sélectionné pour devenir le community manager incontournable de boutiques……. pour Pix.City Services !
                                         </p>
-                                    {% elseif app.user.level == 2 %}
+
+                                    {% elseif app.user.level > 1 and app.user.b2bCmApproval != 1 %}
                                     <p class="fz-16 font-weight-light">Vous avez un compte Instagram actif, vous souhaitez
                                         mettre vos compétences de community manager, d’influenceur local, de photographe (ou
                                         autre) auprès d’acteurs locaux.. </p>
                                     <br>
-                                    <p class="fz-16 font-weight-light">Inscrivez-vous et vous serez peut-être sélectionné(e)
-                                        pour devenir le community manager incontournable de boutiques, restaurants et
-                                        commerces près de chez vous. Vous deviendrez alors un city-maker services !</p>
-                                        Services</a>
-                                        {% else %}
+                                    <p class="fz-16 font-weight-light">
+                                        Publiez une première card sur Pix.city et vous aurez alors l’occasion de vous inscrire et d’être sélectionné pour devenir le community manager incontournable de boutiques……. pour Pix.City Services !
+                                    </p>
+
+                                        {% elseif app.user.level > 1 and app.user.b2bCmApproval == 1 %}
 
                                             <p class="fz-16 font-weight-light">Tu souhaites dévéloper ta clientéle pour réaliser des presentations de community management, influencer, photographe... Pix.City Serviceste propose un espace vitrine ou tu pourras mettre en avant tout ton saviour-faire et renontrer facilement de nouveaux clients.</p>
                                             <br>
                                             <p class="fz-16 font-weight-light">De nombreux clients sont proches toi et n'ont qu'une envie... Traveiller avec toi !</p>
 
+                                            <a href="{{ url('front_pixie_register_mode') }}" class="btn btn-pink btn-pill lh2">ACCEDER A MON ESPACE</a>
                                     {% endif %}
 
-                                    <a href="{{ url('front_pixie_register_mode') }}" class="btn btn-pink btn-pill lh2">Devenir City-maker
-                                        Services</a>
                                 </div>
                             </div>
                         </div>
