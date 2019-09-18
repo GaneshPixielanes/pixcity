@@ -202,6 +202,11 @@ class Card
      */
     private $publishedAt;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $level;
+
 
     //--------------------------------------------------------------
     // Getters and setters
@@ -825,6 +830,18 @@ class Card
     {
       $cacheDriver = $this->getTable()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
       $cacheDriver->deleteByPrefix('findCardBySlug_');
+    }
+
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(?int $level): self
+    {
+        $this->level = $level;
+
+        return $this;
     }
 
 }
