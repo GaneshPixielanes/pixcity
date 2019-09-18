@@ -588,7 +588,7 @@
                             <h4>A Propos De Nous</h4>
                             {#{{ menu('footer-1', 'footerMenu') | raw }}#}
                             {#{{ menu('footer-2', 'footerMenu') | raw }}#}
-                            {{ menu('footer-3', 'footerMenu') | raw }}
+{#                            {{ menu('footer-3', 'footerMenu') | raw }}#}
                             <ul>
                                 <li><a href="{{ path('front_faq_index') }}">FAQ de Pix.City Services</a></li>
                             </ul>
@@ -1163,7 +1163,7 @@
 
     {% block javascripts %}{% endblock %}
 
-    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+{#    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}#}
 
     <!-- Alert about cookie useage -->
     {% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
