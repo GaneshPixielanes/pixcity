@@ -40,7 +40,15 @@ class Admin implements UserInterface
      * @ORM\Column(type="string", length=50)
      */
     private $lastname;
-
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profilePhoto;
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $linkedinProfile;
     /**
      * @Assert\NotBlank()
      * @Assert\Email()
@@ -250,6 +258,30 @@ class Admin implements UserInterface
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
+    }
+
+    public function getProfilePhoto(): ?string
+    {
+        return $this->profilePhoto;
+    }
+
+    public function setProfilePhoto(?string $profilePhoto): self
+    {
+        $this->profilePhoto = $profilePhoto;
+
+        return $this;
+    }
+
+    public function getLinkedinProfile(): ?string
+    {
+        return $this->linkedinProfile;
+    }
+
+    public function setLinkedinProfile(?string $linkedinProfile): self
+    {
+        $this->linkedinProfile = $linkedinProfile;
+
+        return $this;
     }
 
     /**

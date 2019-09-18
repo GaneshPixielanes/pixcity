@@ -45,11 +45,38 @@ class BlogController extends AbstractController
      */
     public function single(BlogPostRepository $blogPostRepository,Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $postId = $request->attributes->get("id");
 
         $blogSingle = $blogPostRepository->findBy(['id'=>$request->attributes->get("id"),'postStatus'=>1]);
 
+        $queryPrev = $em->createQuery('SELECT g
+                                FROM App:BlogPost AS g
+                                WHERE g.postStatus = 1 AND g.deleted IS NULL AND g.id  < ' . $postId . '
+                                ORDER BY g.id DESC ');
+        $queryPrev->setMaxResults(1);
+        $blogSinglePrev = $queryPrev->getResult();
+
+        if(count($blogSinglePrev)){
+            $prevNextType['prev'] = "prev";
+            $prevNextType['previd'] = $blogSinglePrev;
+        }
+
+        $queryNxt = $em->createQuery('SELECT g
+                                FROM App:BlogPost AS g
+                                WHERE g.postStatus = 1 AND g.deleted IS NULL AND g.id  > ' . $postId . '
+                                ORDER BY g.id ASC ');
+        $queryNxt->setMaxResults(1);
+        $blogSingleNxt = $queryNxt->getResult();
+
+        if(count($blogSingleNxt)){
+            $prevNextType['next'] = "next";
+            $prevNextType['nextid'] = $blogSingleNxt;
+        }
+
         return $this->render('front/blog/blogPost.html.twig', [
             'blogSingle' => $blogSingle,
+            'prevNextType' => $prevNextType,
         ]);
     }
 }
