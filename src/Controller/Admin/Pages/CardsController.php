@@ -135,28 +135,29 @@ class CardsController extends Controller
                 #Get the user of the corresponding card
                 $user = $card->getPixie();
 
-                #Calculate the user's level
-                $level = $userRepo->calculateLevel($user->getId());
 
-                #If the level is about to be updated, send email
-                if($level > $user->getLevel())
-                {
-                    $mailer->send($user->getEmail(),'Congratulations! Your level has been updated',
-                        'emails/cm-level-update.html.twig'
-                        ,[
-                            'firstName'=>$card->getProject()->getPixie()->getFirstname(),
-                            'city' => $card->getAddress()->getCity(),
-                            'region' => $card->getProject()->getRegion()->getName()
-                        ], NULL, NULL);
-
-                }
-                #Update the user level
-                $user->setLevel($level);
-                #Log card's level
-                $card->setLevel($level);
                 $card->setPublishedAt(new \DateTime());
             }
 
+            $this->getDoctrine()->getManager()->flush();
+            #Calculate the user's level
+            $level = $userRepo->calculateLevel($user->getId());
+            #If the level is about to be updated, send email
+            if($level > $user->getLevel())
+            {
+                $mailer->send($user->getEmail(),'Congratulations! Your level has been updated',
+                    'emails/cm-level-update.html.twig'
+                    ,[
+                        'firstName'=>$card->getProject()->getPixie()->getFirstname(),
+                        'city' => $card->getAddress()->getCity(),
+                        'region' => $card->getProject()->getRegion()->getName()
+                    ], NULL, NULL);
+
+            }
+            #Update the user level
+            $user->setLevel($level);
+            #Log card's level
+            $card->setLevel($level);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'flash.update.success');
 
