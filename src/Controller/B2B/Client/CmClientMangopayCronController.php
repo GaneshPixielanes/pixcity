@@ -215,14 +215,14 @@ class CmClientMangopayCronController extends Controller
 
                 $res = $mangoPayService->kycCreate($value->getMangopayUserId(), $filename);
                 //$mangoPayService->kycCreate($value->getMangopayUserId(),$filename1);
-                dd($res);
+
                 if(isset($res) != null ){
                     foreach($res as $v){
                         if(isset($v->Status) != null) {
                             if ($v->Status == "VALIDATION_ASKED" || $v->Status == "CREATED") {
                                 $value->setMangopayKycStatus("UNDER_VERIFICATION");
                             }
-                            if($v->Status == "SUCCEEDED") {
+                            if($v->Status == "SUCCEEDED" || $v->Status == "VALIDATED") {
                                 $value->setMangopayKycStatus("SUCCESS");
                             }
                             if($v->Status == "REFUSED") {
