@@ -300,7 +300,11 @@
     <script src="{{ asset('build/admin/js/pages/users.js') }}"></script>
     <script src="{{ asset('build/admin/js/shared/address.js') }}"></script>
     <script type="text/javascript">
-        {#$(document).ready(function(){#}
+        $(document).ready(function(){
+            $("label[for=user_roles_2], input#user_roles_2").addClass("only-pixie");
+            // $('#user_roles_1').click(function() {
+            //     $("label[for=user_roles_2], input#user_roles_2").toggle(this.checked);
+            // });
             {#$('#mangopayKycFile').change(function()#}
             {#{#}
                 {#var data = new FormData();#}
@@ -341,7 +345,7 @@
                     {#}#}
                     {#});#}
                 {#});#}
-            {#});#}
+            });
     </script>
 {% endblock %}
 

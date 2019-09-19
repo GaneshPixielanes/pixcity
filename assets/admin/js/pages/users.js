@@ -26,9 +26,11 @@ jQuery(document).ready(function() {
     function checkUserRole(){
         if(isPixie()){
             $(".only-pixie").fadeIn();
+            $("label[for=user_roles_2], input#user_roles_2").fadeIn();
         }
         else{
             $(".only-pixie").fadeOut();
+            $("label[for=user_roles_2], input#user_roles_2").fadeOut();
         }
 
         checkPixieStatus();
