@@ -115,6 +115,10 @@ jQuery(document).ready(function() {
                 callback = addMasterhead;
                 crop = 1600/600;
                 break;
+            case "blogcard":
+                callback = addBlogcard;
+                crop = 420/270;
+                break;
         }
 
         onFileSelection(this, callback, crop);
@@ -185,6 +189,12 @@ jQuery(document).ready(function() {
     }
 
     function addMasterhead($container, attachment){
+        $collection = $container.parents(".card-template-attachments-collection");
+        $collection.find(".thumb").attr("src", attachment.url);
+        $collection.find(".field input").val(attachment.name);
+    }
+
+    function addBlogcard($container, attachment){
         $collection = $container.parents(".card-template-attachments-collection");
         $collection.find(".thumb").attr("src", attachment.url);
         $collection.find(".field input").val(attachment.name);
