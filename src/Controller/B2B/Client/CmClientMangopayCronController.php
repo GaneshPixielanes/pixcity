@@ -61,7 +61,7 @@ class CmClientMangopayCronController extends Controller
                                    Mailer $mailer
     )
     {
-        $userRepositoryTbl = $userRepository->findBy(array(), array('id' => 'DESC'),2);
+        $userRepositoryTbl = $userRepository->findBy(['active'=> 1, 'visible'=> 1], array('id' => 'DESC'),2);
         $missingCm = array();
         foreach ($userRepositoryTbl as $key => $value)
         {
@@ -160,7 +160,7 @@ class CmClientMangopayCronController extends Controller
      */
     public function cronClientKycProcess(MangoPayService $mangoPayService, ClientRepository $clientRepository)
     {
-        $clientRepositoryTbl = $clientRepository->findBy(array(), array('id' => 'DESC'),5);
+        $clientRepositoryTbl = $clientRepository->findBy(['deleted'=>null], array('id' => 'DESC'),2);
 
         $filename = 'uploads/mangopay_kyc/client/addr1/62/6221a61939a729e11a4addace0e80853.png';
         foreach ($clientRepositoryTbl as $key => $value)
@@ -202,7 +202,8 @@ class CmClientMangopayCronController extends Controller
      */
     public function cronCitymakerKycProcess(MangoPayService $mangoPayService, UserRepository $userRepository)
     {
-        $userRepositoryTbl = $userRepository->findBy([],['id'=>'DESC'],5);
+        $userRepositoryTbl = $userRepository->findBy(['active'=> 1, 'visible'=> 1],['id'=>'DESC'],2);
+
         $filename = 'uploads/mangopay_kyc/client/addr1/62/6221a61939a729e11a4addace0e80853.png';
         foreach ($userRepositoryTbl as $key => $value)
         {
@@ -247,7 +248,8 @@ class CmClientMangopayCronController extends Controller
     public function cronClientKycStatus(MangoPayService $mangoPayService, ClientRepository $clientRepository,
                                         Mailer $mailer)
     {
-        $clientRepositoryTbl = $clientRepository->findBy(array(), array('id' => 'DESC'), 5);
+        $clientRepositoryTbl = $clientRepository->findBy(['deleted'=>null], array('id' => 'DESC'), 2);
+
         $docRejected= array();
         if($clientRepositoryTbl != null) {
             foreach ($clientRepositoryTbl as $key => $value) {
