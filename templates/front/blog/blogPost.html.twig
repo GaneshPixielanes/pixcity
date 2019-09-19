@@ -36,7 +36,7 @@
                                                 <img src="{{ asset('/uploads/admin/'~blogSingle[0].createdBy.id~'/'~blogSingle[0].createdBy.profilePhoto)| imagine_filter('user_avatar' )}}" class="rounded-circle" alt="{{ blogSingle[0].createdBy }}">
                                             </a>
                                         {% else %}
-                                            <img src="https://www.pix.city/media/cache/user_avatar_large/uploads/users/34069693903b46a549d8b409f98581bf.jpeg" class="rounded-circle" alt="Julien Wolff">
+                                            <img src="{{ asset('/img/blog_avatar.png')| imagine_filter('user_avatar' )}}" class="rounded-circle" alt="blog avatar">
                                         {% endif %}
                                     </div>
                                     <div class="col-md-8 col-8 font-weight-bold author-name">
@@ -49,17 +49,17 @@
                         </div>
                     </div>
                     <div class="col-md-8 blog-post-content mb-5">
-                        <button class="btn btn-outline-primary" data-sharer="facebook" data-hashtag="{{ blogSingle[0].title }}" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-facebook-square"></i> <span>Share on Facebook</span></button>
-                        <button class="btn btn-outline-primary" data-sharer="twitter" data-title="{{ blogSingle[0].title }}" data-hashtags="awesome, sharer.js" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-twitter"></i> <span>Share on Twitter</span></button>
-                        <button class="btn btn-outline-primary" data-sharer="linkedin" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-linkedin"></i> <span>Share on Linkedin</span></button>
+                        <button class="btn btn-outline-primary" data-sharer="facebook" data-hashtag="{{ blogSingle[0].title }}" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-facebook-square"></i></button>
+                        <button class="btn btn-outline-primary" data-sharer="twitter" data-title="{{ blogSingle[0].title }}" data-hashtags="awesome, sharer.js" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-twitter"></i></button>
+                        <button class="btn btn-outline-primary" data-sharer="linkedin" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-linkedin"></i></button>
                         <hr> <br/>
                         <br/>
                        {{ blogSingle[0].content|raw }}
                         <br/>
                         <br/>
-                        <button class="btn btn-outline-primary" data-sharer="facebook" data-hashtag="{{ blogSingle[0].title }}" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-facebook-square"></i> <span>Share on Facebook</span></button>
-                        <button class="btn btn-outline-primary" data-sharer="twitter" data-title="{{ blogSingle[0].title }}" data-hashtags="awesome, sharer.js" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-twitter"></i> <span>Share on Twitter</span></button>
-                        <button class="btn btn-outline-primary" data-sharer="linkedin" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-linkedin"></i> <span>Share on Linkedin</span></button>
+                        <button class="btn btn-outline-primary" data-sharer="facebook" data-hashtag="{{ blogSingle[0].title }}" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-facebook-square"></i></button>
+                        <button class="btn btn-outline-primary" data-sharer="twitter" data-title="{{ blogSingle[0].title }}" data-hashtags="awesome, sharer.js" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-twitter"></i></button>
+                        <button class="btn btn-outline-primary" data-sharer="linkedin" data-url="{{ absolute_url(path('front_card_single', {slug: blogSingle[0].slug,id:blogSingle[0].id})) }}"><i class="fab fa-linkedin"></i></button>
                         <br/>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
         <div class="col-sm-4">
             {% if prevNextType['prev'] is defined %}
                 <div class="text-center mb-3">
-                    <a href="{{ path('front_blog_single', {slug: prevNextType['previd'][0].slug, id:prevNextType['previd'][0].id}) }}" title="{{ prevNextType['previd'][0].title }}" class="btn btn-outline-darkblue btn-pill"><i class="fa fa-chevron-left" aria-hidden="true"> </i> Previous
+                    <a href="{{ path('front_blog_single', {slug: prevNextType['previd'][0].slug, id:prevNextType['previd'][0].id}) }}" title="{{ prevNextType['previd'][0].title }}" class="btn btn-outline-darkblue btn-pill"><i class="fa fa-chevron-left" aria-hidden="true"> </i> Précédent
                         </a>
                 </div>
             {% endif %}
@@ -79,13 +79,13 @@
         <div class="col-sm-4">
             <div class="text-center mb-3">
                 <a href="/blog" title=""  class="btn btn-outline-darkblue btn-pill"><i class="fa fa-home" aria-hidden="true"></i>
-                     Revenir sur la Home</a>
+                     Revenir à l'accueil</a>
             </div>
         </div>
         <div class="col-sm-4">
             {% if prevNextType['next'] is defined %}
                 <div class="text-center mb-3">
-                    <a href="{{ path('front_blog_single', {slug: prevNextType['nextid'][0].slug, id:prevNextType['nextid'][0].id}) }}" title="{{ prevNextType['nextid'][0].title }}" class="btn btn-outline-darkblue btn-pill">Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                    <a href="{{ path('front_blog_single', {slug: prevNextType['nextid'][0].slug, id:prevNextType['nextid'][0].id}) }}" title="{{ prevNextType['nextid'][0].title }}" class="btn btn-outline-darkblue btn-pill">Suivant <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
                 </div>
             {% endif %}
         </div>
