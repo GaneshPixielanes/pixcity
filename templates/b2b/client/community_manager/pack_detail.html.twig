@@ -234,7 +234,8 @@
                 <div class="pack-details p-3">
                     <div class="pack-overview-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
                         <p class="text-textgray text-12 mb-0">{{ pack.packSkill | upper }}</p>
-                        <h5 class="text-darkgray mb-3">Shooting photo de votre établissement (plats et locaux) </h5>
+{#                        <h5 class="text-darkgray mb-3">Shooting photo de votre établissement (plats et locaux) </h5>#}
+                        <h5 class="text-darkgray mb-3">{{ pack.title | raw }}</h5>
                         <p class="fz-12">
                             {{ pack.description | raw }}
                         </p>
