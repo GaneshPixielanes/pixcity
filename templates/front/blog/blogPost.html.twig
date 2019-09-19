@@ -33,10 +33,10 @@
                                     <div class="col-md-4 col-4 author-image">
                                         {% if blogSingle[0].createdBy.profilePhoto %}
                                             <a href="{{ blogSingle[0].createdBy.linkedinProfile }}" target="_blank">
-                                                <img src="{{ asset('/uploads/admin/'~blogSingle[0].createdBy.id~'/'~blogSingle[0].createdBy.profilePhoto)| imagine_filter('user_avatar' )}}" class="rounded-circle" alt="{{ blogSingle[0].createdBy }}">
+                                                <img src="{{ asset('/uploads/admin/'~blogSingle[0].createdBy.id~'/'~blogSingle[0].createdBy.profilePhoto)| imagine_filter('instagram_thumb' )}}" class="rounded-circle" alt="{{ blogSingle[0].createdBy }}"  style="margin-left: 37px;!important;">
                                             </a>
                                         {% else %}
-                                            <img src="{{ asset('/img/blog_avatar.png')| imagine_filter('user_avatar' )}}" class="rounded-circle" alt="blog avatar">
+                                            <img src="{{ asset('/img/blog_avatar.png')| imagine_filter('instagram_thumb' )}}" class="rounded-circle" style="margin-left: 37px;!important;" alt="blog avatar">
                                         {% endif %}
                                     </div>
                                     <div class="col-md-8 col-8 font-weight-bold author-name">
