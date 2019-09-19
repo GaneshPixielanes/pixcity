@@ -45,7 +45,8 @@ class AdminType extends AbstractType
                 'expanded' => true, // render check-boxes
                 'choices'  => array(
                     'label.administrator' => 'ROLE_ADMIN',
-                    'label.moderator' => 'ROLE_MODERATOR'
+                    'label.moderator' => 'ROLE_MODERATOR',
+                    'label.b2c' => 'ROLE_B2C'
                 ),
             ))->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
