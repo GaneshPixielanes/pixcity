@@ -21,6 +21,7 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
+
         $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
 
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
@@ -75,8 +76,9 @@ class MangoPayService
         return $this->mangoPayApi->Wallets->Get($user);
     }
 
-    public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission)
+    public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission,$fee)
     {
+
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
@@ -89,7 +91,7 @@ class MangoPayService
         $payIn->DebitedFunds->Amount = $amount;
         $payIn->Fees = new MangoPay\Money();
         $payIn->Fees->Currency = "EUR";
-        $payIn->Fees->Amount = 0;
+        $payIn->Fees->Amount = $fee;
         $payIn->ExecutionType = MangoPay\PayInExecutionType::Web;
         $payIn->ExecutionDetails = new MangoPay\PayInExecutionDetailsWeb();
         $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
@@ -113,8 +115,8 @@ class MangoPayService
 
     public function refundPayment($transaction,int $amount,int $refund_amount){
 
-        $displayPrice = $amount * 100;
-        $percentage = (2 / 100) * $displayPrice;
+        $basePrice = $amount * 100;
+        $percentage = (2 / 100) * $basePrice;
         $fees = (int) $percentage;
 
         $debitedFund = $refund_amount * 100;
@@ -136,6 +138,31 @@ class MangoPayService
         $response = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
 
         return $response->ResultMessage;
+    }
+
+    public function refundPaymentWithFee($transaction,int $amount,int $refund_amount){
+
+        $fees = $refund_amount * 100;
+
+        $debitedFund = $amount * 100;
+
+        $PayInId = $transaction[0]->getMangopayTransactionId();
+
+        $Refund = new \MangoPay\Refund();
+
+        $Refund->AuthorId = $transaction[0]->getMangopayUserId();
+
+        $Refund->DebitedFunds = new \MangoPay\Money();
+        $Refund->DebitedFunds->Currency = "EUR";
+        $Refund->DebitedFunds->Amount = $debitedFund;
+
+        $Refund->Fees = new \MangoPay\Money();
+        $Refund->Fees->Currency = "EUR";
+        $Refund->Fees->Amount = $fees;
+
+        $response = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
+
+        return $response->Id;
     }
 
     public function kycCreate($mangopayUserId, $filename)
