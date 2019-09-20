@@ -25,7 +25,7 @@ class CitymakerController extends SearchPageController
         foreach($pixies as $user){
 
             $userRegion = $user->getPixie()->getRegions();
-
+dd($userRegion);
             $found = false;
             foreach($this->regions as &$region){
                 if($userRegion[0]->getId() === $region['infos']->getId()){
@@ -42,7 +42,6 @@ class CitymakerController extends SearchPageController
             }
 
         }
-        dd($region);
     }
     
     /**
