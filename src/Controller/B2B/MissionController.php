@@ -116,7 +116,7 @@ class MissionController extends Controller
         if($form->isSubmitted())
         {
             $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
-            $price = $mission->getMissionBasePrice();
+            $price = round($mission->getMissionBasePrice());
 
             $margin = $margin->getValue();
             $tax = $tax->getValue();

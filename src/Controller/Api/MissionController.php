@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
+use App\Entity\ClientTransaction;
 use App\Entity\Option;
 use App\Entity\Royalties;
 use App\Repository\ClientTransactionRepository;
@@ -81,11 +82,14 @@ class MissionController extends Controller
 
         $status = '';
 
+        $clientTransaction = new ClientTransaction();
+
         $transaction = $mission->getClientTransactions();
 
         $options = $this->getDoctrine()->getRepository(Option::class);
 
         $tax = $options->findOneBy(['slug' => 'tax']);
+
         $margin = $options->findOneBy(['slug' => 'margin']);
 
         $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
@@ -97,13 +101,13 @@ class MissionController extends Controller
         $result = [];
 
 
-
         $result['price'] = $last_result['client_price'];
         $result['tax'] = $last_result['client_tax'];
         $result['total'] = $result['price'] + $result['tax'];
         $result['advance_payment'] = $first_result['client_total'];
         $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
         $result['refund_amount'] = $result['advance_payment'] - $result['total'];
+        $result['fess'] = $first_result['pcs_total'] - $last_result['pcs_total'];
 
         if(is_null($mission) || $mission->getClient()->getId() != $this->getUser()->getId())
         {
@@ -147,7 +151,14 @@ class MissionController extends Controller
 
                         $mission->getUserMissionPayment()->setAdjustment($refund_amount);
 
-                        $response = $mangoPayService->refundPayment($transaction,$result['price'],$first_result['client_total']);
+                        $fees = (2 / 100) * $result['price'];
+
+                        $clientTransaction->setTransactionType('Refund-Full');
+                        $clientTransaction->setAmount($result['price']);
+                        $clientTransaction->setTotalAmount($first_result['client_total']);
+                        $clientTransaction->setFee($fees);
+
+//                        $response = $mangoPayService->refundPayment($transaction,$result['price'],$first_result['client_total']);
 
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());
 
@@ -168,16 +179,20 @@ class MissionController extends Controller
             case 'terminate':
                     if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
+
+
+                        $clientTransaction->setAmount($result['refund_amount']);
+                        $clientTransaction->setTotalAmount($first_result['client_total']);
+                        $clientTransaction->setFee($result['fess']);
+
                         $status = MissionStatus::TERMINATED;
 
                         if($result['need_to_pay'] < 0){
 
-                            $refund_percentage = $first_result['client_price'] - $last_result['client_price'];
+                            $clientTransaction->setTransactionType('Refund Partial');
 
-                            $calculate_refund  = $refund_percentage;
-
-                            $response = $mangoPayService->refundPayment($transaction,$result['price'],$calculate_refund);
-
+                            $response = $mangoPayService->refundPaymentWithFee($transaction,round($result['refund_amount']),round($result['fess']));
+                            $clientTransaction->setMangopayTransactionId($response);
                         }
 
 
@@ -220,7 +235,15 @@ class MissionController extends Controller
         $transaction[0]->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
         $transaction[0]->getMission()->setMissionBasePrice($last_result['cm_price']);
 
+        $clientTransaction->setUser($mission->getClient());
+        $clientTransaction->setMangopayUserId($transaction[0]->getMangopayUserId());
+        $clientTransaction->setMangopayWalletId($transaction[0]->getMangopayWalletId());
+        $clientTransaction->setPaymentStatus(true);
+        $clientTransaction->setMission($mission);
+
+
         $entityManager->persist($transaction[0]);
+        $entityManager->persist($clientTransaction);
 //        $entityManager->flush();
 
 //        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
