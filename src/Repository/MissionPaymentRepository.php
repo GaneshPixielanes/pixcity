@@ -30,7 +30,7 @@ class MissionPaymentRepository extends ServiceEntityRepository
             $result['cm_total'] = $price;
 
             /* Get client price details*/
-            $result['client_price'] = (100 * $price)/(100 - $margin);
+            $result['client_price'] = round((100 * $price)/(100 - $margin));
             $result['client_tax'] = 0;
             $result['client_total'] = $result['client_price'];
 
@@ -51,7 +51,7 @@ class MissionPaymentRepository extends ServiceEntityRepository
             $result['cm_tax'] = $result['cm_total'] - $price;
 
             /* Get client price details*/
-            $result['client_price'] = $price/(100 - $margin) * 100;
+            $result['client_price'] = round($price/(100 - $margin) * 100);
             $result['client_tax'] = $result['client_price'] * $tax/100;
             $result['client_total'] = $result['client_price'] + $result['client_tax'];
 

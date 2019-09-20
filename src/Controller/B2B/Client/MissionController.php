@@ -160,13 +160,43 @@ class MissionController extends Controller
         $result['advance_payment'] = $first_result['client_total'];
         $result['need_to_pay'] = $result['total'] -  $result['advance_payment'];
 
-        $amount = 0;
+        $amount = 0;$fee = 0;
 
         if($mission->getStatus() == MissionStatus::CREATED){
+
             $amount = $result['total'];
+
+            $margin = $last_result['client_price'] - $last_result['cm_price'];
+
         }elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING){
+
+            $margin = $last_result['cm_price'] - $first_result['cm_price'];
+
             $amount = $result['need_to_pay'];
+
         }
+
+
+        if($result['tax'] != 0){
+
+            $tax_value = $tax->getValue() / 100 * $margin;
+
+            if($result['need_to_pay'] != 0){
+
+                $fee = $amount - ($margin + $tax_value);
+
+            }else{
+
+                $fee = $margin + $tax_value;
+
+            }
+
+        }else{
+
+            $fee = $margin;
+        }
+
+
 
         $userMissionTblId = $missionRepo->findOneBy(['id'=>$id]);
         $tansClientId = $clientInfoRepository->findOneBy(['client'=>$userMissionTblId->getClient()]);
@@ -205,13 +235,21 @@ class MissionController extends Controller
         $transaction->setMangopayWalletId($wallet->Id);
         $transaction->setPaymentStatus(false);
         $transaction->setMission($mission);
+        if($result['need_to_pay'] != 0){
+            $transaction->setTransactionType('PayIn-Excess');
+        }else{
+            $transaction->setTransactionType('PayIn');
+        }
 
+        $transaction->setTotalAmount($amount);
+        $transaction->setFee($fee);
         $em->persist($transaction);
 
         $em->flush();
 
+
         //Create Payin
-        $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId());
+        $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId(),$fee * 100);
 
         return $this->redirect($result);
     }
