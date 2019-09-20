@@ -28,7 +28,6 @@ class CitymakerController extends SearchPageController
 
             $found = false;
             foreach($this->regions as &$region){
-                dd($region);
                 if($userRegion[0]->getId() === $region['infos']->getId()){
                     $region['pixies'][] = $user;
                     $found = true;
