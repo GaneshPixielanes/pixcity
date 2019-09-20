@@ -27,6 +27,7 @@ class AdminType extends AbstractType
             ->add('email', EmailType::class, array('label' => 'label.email'))
             ->add('firstname', TextType::class, array('label' => 'label.firstname'))
             ->add('lastname', TextType::class, array('label' => 'label.lastname'))
+            ->add('position', TextType::class, array('label' => 'Title / Position'))
             ->add('profilePhoto', FileType::class, [
                 'label' => 'ProfilePhoto',
 

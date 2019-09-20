@@ -40,9 +40,15 @@
                                         {% endif %}
                                     </div>
                                     <div class="col-md-8 col-8 font-weight-bold author-name">
-                                        <a href="{{ blogSingle[0].createdBy.linkedinProfile }}" target="_blank">
-                                            {{ blogSingle[0].createdBy }} <span>Founder</span>
+                                        {% if blogSingle[0].createdBy.linkedinProfile == null %}
+                                        <a href="https://www.linkedin.com/company/pixielanes/about/" target="_blank">
+                                            {{ blogSingle[0].createdBy }} <span>{{blogSingle[0].createdBy.position}}</span>
                                         </a>
+                                        {% else %}
+                                        <a href="{{ blogSingle[0].createdBy.linkedinProfile }}" target="_blank">
+                                            {{ blogSingle[0].createdBy }} <span>{{blogSingle[0].createdBy.position}}</span>
+                                        </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
