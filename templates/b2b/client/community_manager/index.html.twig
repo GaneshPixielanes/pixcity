@@ -176,8 +176,32 @@
             </div>
         </div>
     </div>
+    <!-- Alert Modal Ends-->
+    <!-- Confirm with Check Modal Starts-->
+    <div class="modal fade confirm-check-modal" id="confirmCheckModal" tabindex="-1" role="dialog" aria-labelledby="followCityMakerModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Conditions générales d’utilisation Pix.city Services
+                        <span>Dernière étape ! Lisez bien nos conditions d’utilisation et vous pourrez soumettre votre candidature</span>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
-
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                    <button type="button" class="btn btn-pink">SUPPRIMER L’IMAGE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Confirm with Check Modal Ends-->
+    <!-- Modals Ends-->
+    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
 {#    {% include 'b2b/shared/modals.html.twig' %}#}
 
 {% endblock %}

@@ -54,7 +54,22 @@ class AdminUsersController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $profilePhoto = $form['profilePhoto']->getData();
+            if ($profilePhoto) {
+                $originalFilename = pathinfo($profilePhoto->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$profilePhoto->guessExtension();
 
+                // Move the file to the directory where brochures are stored
+                try {
+                    $profilePhoto->move(
+                        'uploads/admin/',
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $admin->setProfilePhoto($newFilename);
+            }
             // 3) Encode the password (you could also do this via Doctrine listener)
             $password = $passwordEncoder->encodePassword($admin, $admin->getPlainPassword());
             $admin->setPassword($password);
@@ -63,6 +78,18 @@ class AdminUsersController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($admin);
             $entityManager->flush();
+
+            $uploadedFile = $admin->getProfilePhoto();
+
+            if ($uploadedFile) {
+                $srcPath = 'uploads/clients/'.$uploadedFile;
+                $path = 'uploads/clients/'.$admin->getId().'/';
+                if (!file_exists($path)) {
+                    mkdir($path, 0700);
+                }
+
+                rename($srcPath, 'uploads/admin/'.$admin->getId().'/' . pathinfo($uploadedFile, PATHINFO_BASENAME));
+            }
 
             $this->addFlash('success', 'flash.add.success');
 
@@ -91,7 +118,22 @@ class AdminUsersController extends Controller
                 $password = $passwordEncoder->encodePassword($admin, $admin->getPlainPassword());
                 $admin->setPassword($password);
             }
+            $profilePhoto = $form['profilePhoto']->getData();
+            if ($profilePhoto) {
+                $originalFilename = pathinfo($profilePhoto->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$profilePhoto->guessExtension();
 
+                // Move the file to the directory where brochures are stored
+                try {
+                    $profilePhoto->move(
+                        'uploads/admin/'.$admin->getId().'/',
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $admin->setProfilePhoto($newFilename);
+            }
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'flash.update.success');
             return $this->redirectToRoute('admin_admins_list');

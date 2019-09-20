@@ -130,7 +130,7 @@ class UserRepository extends ServiceEntityRepository
     // CITY MAKER SEARCH
     //---------------------------------------
 
-    public function searchClients($filters = [], $limit = 4, $page = 1, $isRandom = false,$userEmail=null,$loggedType=null)
+    public function searchClients($filters = [], $limit = 12, $page = 1, $isRandom = false,$userEmail=null,$loggedType=null)
     {
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
@@ -193,20 +193,20 @@ class UserRepository extends ServiceEntityRepository
 
     private function _applyFiltersClients($qb, $filters){
         if($filters) {
-//            if (isset($filters["text"])) {
-//                if(trim($filters["text"]) != ''){
-//
-//                    if(isset($filters['skills']) or isset($filters["regions"])){
-//
-//                        $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
-//
-//                    }else{
-//
-//                        $qb = $qb->andWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
-//
-//                    }
-//                }
-//            }
+            if (isset($filters["text"])) {
+                if(trim($filters["text"]) != ''){
+
+                    if(isset($filters['skills']) or isset($filters["regions"])){
+
+                        $qb = $qb->orWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+
+                    }else{
+
+                        $qb = $qb->andWhere("((packs.title LIKE :packText OR packs.description LIKE :packText)) OR CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+
+                    }
+                }
+            }
 
             if(!isset($filters["text"]) || trim($filters["text"]) == '')
             {
@@ -442,15 +442,15 @@ class UserRepository extends ServiceEntityRepository
         {
             return 1;
         }
-        elseif ($qb > UserLevel::LEVEL_1 && $qb <= UserLevel::LEVEL_2)
+        elseif ($qb > UserLevel::LEVEL_1 && $qb < UserLevel::LEVEL_2)
         {
             return 2;
         }
-        elseif($qb > UserLevel::LEVEL_2 && $qb <= UserLevel::LEVEL_3)
+        elseif($qb >= UserLevel::LEVEL_2 && $qb < UserLevel::LEVEL_3)
         {
             return 3;
         }
-        elseif($qb > UserLevel::LEVEL_3 && $qb <= UserLevel::LEVEL_4)
+        elseif($qb >= UserLevel::LEVEL_3 && $qb < UserLevel::LEVEL_4)
         {
             return 4;
         }
