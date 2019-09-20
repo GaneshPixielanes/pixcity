@@ -42,6 +42,7 @@ class CitymakerController extends SearchPageController
             }
 
         }
+        dd($region);
     }
     
     /**
