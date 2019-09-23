@@ -34,11 +34,14 @@ class HomepageController extends Controller
                                      OptionRepository $optionRepository
     ){
         $testAccounts = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $testClientAccounts = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
         //dd($testAccounts->getValue());
-        $loggedUser = $this->getUser();
+       // $loggedUser = $this->getUser();
+        $loggedUserSession = $this->get('session')->get('login_by');
+        $loggedUser = $loggedUserSession['entity'];
         $em = $this->getDoctrine()->getManager();
         if($loggedUser){
-            if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
+            if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false || strpos($testClientAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
                 $regions = $pagesCategoriesRepo->findAllActive([],$testAccounts->getValue());
                 // Get the count of cards
 

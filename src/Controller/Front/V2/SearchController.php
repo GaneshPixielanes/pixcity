@@ -26,7 +26,10 @@ class SearchController extends SearchPageController
     UserRepository $userRepo,
     CardCategoryRepository $categoryRepo,OptionRepository $optionRepository)
     {
-        $testAccounts = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $testAccountsAsClient = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
+        $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $loggedUserSession = $this->get('session')->get('login_by');
+        $loggedUser = $loggedUserSession['entity'];
         $filters = [
                     'name' => trim($request->get("search")),
                     'text' => trim($request->get("search")),
@@ -56,9 +59,9 @@ class SearchController extends SearchPageController
         $start = $request->get('start')?$request->get('start'):0;
         $limit = $request->get('limit')?$request->get('limit'):10;
 
-        $loggedUser = $this->getUser();
+       // $loggedUser = $this->getUser();
         if($loggedUser){
-            if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
+            if(strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false){ //in
                 #Get all cards w.r.t search filters
                 $cards = $cardRepository->search($filters, $start, $limit, 'newest');
                 #Get the cards count
@@ -68,20 +71,20 @@ class SearchController extends SearchPageController
             }
             else{
                 #Get all cards w.r.t search filters
-                $cards = $cardRepository->search($filters, $start, $limit, 'newest',$testAccounts->getValue());
+                $cards = $cardRepository->search($filters, $start, $limit, 'newest',$testAccountsAsCm->getValue());
                 #Get the cards count
-                $cardCount = $cardRepository->countSearchResult($filters,$testAccounts->getValue());
-                $categories = $categoryRepo->findCategoriesBySearchParam($filters,$testAccounts->getValue());
-                $pixies = $userRepo->findRandomPixies('',$testAccounts->getValue());
+                $cardCount = $cardRepository->countSearchResult($filters,$testAccountsAsCm->getValue());
+                $categories = $categoryRepo->findCategoriesBySearchParam($filters,$testAccountsAsCm->getValue());
+                $pixies = $userRepo->findRandomPixies('',$testAccountsAsCm->getValue());
             }
         }
         else{
             #Get all cards w.r.t search filters
-            $cards = $cardRepository->search($filters, $start, $limit, 'newest',$testAccounts->getValue());
+            $cards = $cardRepository->search($filters, $start, $limit, 'newest',$testAccountsAsCm->getValue());
             #Get the cards count
-            $cardCount = $cardRepository->countSearchResult($filters,$testAccounts->getValue());
-            $categories = $categoryRepo->findCategoriesBySearchParam($filters,$testAccounts->getValue());
-            $pixies = $userRepo->findRandomPixies('',$testAccounts->getValue());
+            $cardCount = $cardRepository->countSearchResult($filters,$testAccountsAsCm->getValue());
+            $categories = $categoryRepo->findCategoriesBySearchParam($filters,$testAccountsAsCm->getValue());
+            $pixies = $userRepo->findRandomPixies('',$testAccountsAsCm->getValue());
         }
 
         if(!isset($page)) {

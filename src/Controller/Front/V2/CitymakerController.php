@@ -144,11 +144,15 @@ class CitymakerController extends SearchPageController
     ){
 
         ini_set('memory_limit','1024M');
-        $testAccounts = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $testAccountsAsClient = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
+        $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $loggedUserSession = $this->get('session')->get('login_by');
+        $loggedUser = $loggedUserSession['entity'];
+
         $searchParams = $this->getSearchParams($request);
 
         $pageCategory = null;
-        $loggedUser = $this->getUser();
+        //$loggedUser = $this->getUser();
         if($request->attributes->get("slug") && $request->attributes->get("slug") !== "france") {
             $filters = [
                 "regions" => [$request->attributes->get("slug")],
@@ -157,15 +161,15 @@ class CitymakerController extends SearchPageController
             ];
 
             if($loggedUser){
-                if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
+                if(strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false){ //in
                     $pixies = $usersRepo->searchPixies($filters);
                 }
                 else{
-                    $pixies = $usersRepo->searchPixies($filters,$testAccounts->getValue());
+                    $pixies = $usersRepo->searchPixies($filters,$testAccountsAsCm->getValue());
                 }
             }
             else{
-                $pixies = $usersRepo->searchPixies($filters,$testAccounts->getValue());
+                $pixies = $usersRepo->searchPixies($filters,$testAccountsAsCm->getValue());
             }
             $pageCategory = $pagesCategoryRepo->findOneBySlug($request->attributes->get("slug"));
         }
@@ -177,15 +181,15 @@ class CitymakerController extends SearchPageController
             ];
 
             if($loggedUser){
-                if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
+                if(strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false){ //in
                     $pixies = $usersRepo->searchPixies($filters);
                 }
                 else{
-                    $pixies = $usersRepo->searchPixies($filters,$testAccounts->getValue());
+                    $pixies = $usersRepo->searchPixies($filters,$testAccountsAsCm->getValue());
                 }
             }
             else{
-                $pixies = $usersRepo->searchPixies($filters,$testAccounts->getValue());
+                $pixies = $usersRepo->searchPixies($filters,$testAccountsAsCm->getValue());
             }
         }
         $this->_groupPixiesByRegions($pixies);
