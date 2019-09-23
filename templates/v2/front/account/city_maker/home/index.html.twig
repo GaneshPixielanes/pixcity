@@ -22,7 +22,7 @@
                     <div class="profile-banner-container d-flex align-items-center justify-content-center">
                         <div>
                             <img src="{{ asset('build/images/hello.svg') }}" />
-                            <h2>Aurélie, bienvenue sur votre espace perso</h2>
+                            <h2>{{ app.user.firstname }}, bienvenue sur votre espace perso</h2>
                         </div>
                         <div class="cta">
                             <a href="{{ url }}" class="btn btn-block btn-pink lh2">VOIR CONCOURS DU MOIS</a>
@@ -253,7 +253,7 @@
                                     <th scope="col" class="index-nos"></th>
                                     <th scope="col" class="badge-img"></th>
                                     <th width="15%" scope="col" class="text-pink level-name" valign="bottom">VOTRE NIVEAU</th>
-                                    <th width="13%" scope="col" class="no-of-cards"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="NOMBRE DU CARDS EN LIGNE" data-content="Une Card est un mini article que tu rédiges pour parler d’une adresse locale qui te tient à cœur, elle est validée et mise en ligne par l’équipe Rédaction de Pix.City"><i class="fas fa-info"></i></a>NOMBRE DU CARDS EN LIGNE</th>
+                                    <th width="13%" scope="col" class="no-of-cards"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="NOMBRE DE CARDS EN LIGNE" data-content="Une Card est un mini article que tu rédiges pour parler d’une adresse locale qui te tient à cœur, elle est validée et mise en ligne par l’équipe Rédaction de Pix.City"><i class="fas fa-info"></i></a>NOMBRE DU CARDS EN LIGNE</th>
                                     <th width="10%" scope="col"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="ACCESS A PIX.CITY" data-content="Une fois la 1ere CARD publiée, tu deviens EXPLORER ce qui te permet d’accéder à la plateforme Pix.City Services afin d’y proposer tes services pour réaliser des prestations rémunérées en tant que PHOTOGRAPHE, COMMUNITY MANAGER, INFLUENCEUR…"><i class="fas fa-info"></i></a>ACCESS A <img
                                                 src="{{ asset('build/images/slider-logo.png') }}" /></th>
                                     <th width="16%" scope="col" class="level-sponser"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="PARRAINAGE" data-content="Gagne de l’argent en parrainant de nouveaux CITY-MAKERS. Envoie un mail à redaction@pix.city"><i class="fas fa-info"></i></a>PARRAINAGE</th>
@@ -276,11 +276,23 @@
                                         </svg>
                                     </td>
                                     <td class="level-name text-uppercase {% if app.user.level == 1 %}bg-pink{% endif %}">Voyager</td>
-                                    <td class="font-weight-bold {% if app.user.level == 1 %}bg-pink{% endif %}">0</td>
-                                    <td class="{% if app.user.level == 1 %}bg-pink{% endif %}">-</td>
-                                    <td class="{% if app.user.level == 1 %}bg-pink{% endif %}">-</td>
-                                    <td class="{% if app.user.level == 1 %}bg-pink{% endif %}">-</td>
-                                    <td class="{% if app.user.level == 1 %}bg-pink{% endif %}">{% if app.user.level == 1 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>{% else %}-{% endif %}</td>
+                                    {% if app.user.level == 1 %}
+                                        <td colspan="5" class="bg-pink rounded-right border-0">
+                                            <table class="table mb-0">
+                                                <tr>
+                                                    <td class="d-flex align-items-center p-0">
+                                                        <a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    {% else %}
+                                    <td class="font-weight-bold">0</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    {% endif %}
                                 </tr>
                                 <tr class="{% if app.user.level == 2 %}active-level{% endif %}">
                                     <td class="level-index">2</td>
@@ -502,7 +514,7 @@
                                         <a href="/city-maker/compte/parametres" class="btn btn-pink btn-pill lh2">Devenir City-Maker Services</a>
 
                                         {% elseif app.user.level > 1 and app.user.b2bCmApproval == 1 %}
-
+                                            LES NIVEAUX CITY-MAKERS
                                             <p class="fz-16 font-weight-light">
                                                 Tu souhaites développer ta clientèle pour réaliser des prestations de community-management, influence, photographe… Pix.City Services te propose une espace vitrine où tu pourras mettre en avant tout ton savoir-faire et rencontrer facilement de nouveaux clients.
                                             </p>

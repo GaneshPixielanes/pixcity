@@ -14,6 +14,7 @@
         <div class="row">
             <div class="text-center col-md-4 col-md-offset-4">
                 <p style="color:#484848 !important; padding-top:20px; font-size:20px;"><strong>Mes gains</strong></p>
+
             </div>
 
             <div class="askRoyal col-md-4 text-right">
@@ -43,8 +44,7 @@
                         </button>
                         <div class="col-sm-12">
                             <p>
-                                Pour pouvoir demander le paiement de vos cards, vous devez compléter les informations de votre société dans les <a href="{{ path('front_pixie_account_settings') }}">paramètres de votre compte</a>.
-                            </p>
+                                Pour pouvoir demander le paiement de vos gains, vous devez compléter les informations de votre société dans les paramètres de votre compte.                            </p>
                         </div>
                     {% endif %}
                     {% endif %}
@@ -57,6 +57,7 @@
                 <strong> Vérifiez vos infos personnelles avant de cliquer sur demander le paiement (onglet paramètres : infos bancaires et adresse postale en priorité). Merci et à bientôt pour une nouvelle collaboration ;)</strong>
             </div>
         {% endif %}
+
         {% if unpayedProjects | length > 0 %}
             <table class="table">
                 <thead>
