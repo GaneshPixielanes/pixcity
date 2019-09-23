@@ -1,125 +1,125 @@
 .internal-nav {
-  background: #fff;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  padding: 0;
-  margin: 0;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-  position: fixed;
-  right: 0;
-  left: 0;
-  top: 0;
-  z-index: 1030;
-  display: flex;
-  align-items: center;
+    background: #fff;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 1030;
+    display: flex;
+    align-items: center;
 }
 
 .internal-nav .container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
 }
 
 .internal-nav .navbar-brand {
-  display: flex;
-  padding-top: .313rem;
-  padding-bottom: .313rem;
-  margin-right: 1rem;
-  font-size: 1.25rem;
-  line-height: inherit;
+    display: flex;
+    padding-top: .313rem;
+    padding-bottom: .313rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
 }
 
 .internal-nav .navbar-brand > img {
-  width: 154px;
+    width: 154px;
 }
 
 .internal-nav .close-internal-nav {
-  text-align: center;
+    text-align: center;
 }
 
 .internal-nav .close-internal-nav a i {
-  font-size: 22px;
-  color: #b4aeb0;
+    font-size: 22px;
+    color: #b4aeb0;
 }
 
 .internal-nav .close-internal-nav-mobile {
-  display: none;
-  position: relative;
-  margin-top: 4px;
-  text-align: center;
+    display: none;
+    position: relative;
+    margin-top: 4px;
+    text-align: center;
 }
 
 .internal-nav .internal-pages-nav {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .internal-nav .internal-pages-nav ul {
-  margin-bottom: 10px;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flex;
-  display: -o-flex;
-  display: flex;
+    margin-bottom: 10px;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
 }
 
 .internal-nav .internal-pages-nav ul li {
-  width: 24%;
-  display: inline-block;
-  text-align: center;
-  padding-left: 0;
-  padding-right: 0;
+    width: 24%;
+    display: inline-block;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .internal-nav .internal-pages-nav ul li a {
-  display: block;
-  font-size: 15px;
-  color: #b4aeb0;
-  text-align: center;
-  border: 0;
-  padding: 18px 0;
-  text-decoration: none;
-  position: relative;
+    display: block;
+    font-size: 15px;
+    color: #b4aeb0;
+    text-align: center;
+    border: 0;
+    padding: 18px 0;
+    text-decoration: none;
+    position: relative;
 }
 
 .internal-nav .internal-pages-nav ul li a:before {
-  content: '';
-  position: absolute;
-  background: #ed5485;
-  height: 3px;
-  width: 0;
-  left: 0;
-  bottom: -15px;
-  transition: .2s;
+    content: '';
+    position: absolute;
+    background: #ed5485;
+    height: 3px;
+    width: 0;
+    left: 0;
+    bottom: -15px;
+    transition: .2s;
 }
 
 .internal-nav .internal-pages-nav ul li a:hover, .internal-nav .internal-pages-nav ul li a.active {
-  color: #ed5485;
+    color: #ed5485;
 }
 
 .internal-nav .internal-pages-nav ul li a:hover:before, .internal-nav .internal-pages-nav ul li a.active:before {
-  content: '';
-  position: absolute;
-  background: #ed5485;
-  height: 3px;
-  width: 100%;
-  left: 0;
-  bottom: -15px;
-  transition: .2s;
+    content: '';
+    position: absolute;
+    background: #ed5485;
+    height: 3px;
+    width: 100%;
+    left: 0;
+    bottom: -15px;
+    transition: .2s;
 }
 
 @media (min-width: 992px) {
-  .nav-bar-main-internal .navbar-toggler {
-    display: none;
-    margin-left: auto !important;
-  }
+    .nav-bar-main-internal .navbar-toggler {
+        display: none;
+        margin-left: auto !important;
+    }
 
-  .internal-nav .navbar-collapse {
-    display: flex !important;
-    flex-basis: auto;
-    flex-grow: 1;
-    align-items: center;
-  }
+    .internal-nav .navbar-collapse {
+        display: flex !important;
+        flex-basis: auto;
+        flex-grow: 1;
+        align-items: center;
+    }
 }
