@@ -180,6 +180,11 @@ class UserMission
      */
     private $missionRegions;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isTvaApplicable;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
@@ -720,6 +725,18 @@ class UserMission
 
     public function getPcsInvoice(){
         return base64_encode("invoices/".$this->getId().'/PX-'.$this->getId().'-'.$this->getActiveLog()->getId().'-pcs.pdf');
+    }
+
+    public function getIsTvaApplicable(): ?bool
+    {
+        return $this->isTvaApplicable;
+    }
+
+    public function setIsTvaApplicable(?bool $isTvaApplicable): self
+    {
+        $this->isTvaApplicable = $isTvaApplicable;
+
+        return $this;
     }
 
 

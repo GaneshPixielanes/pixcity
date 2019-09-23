@@ -97,7 +97,7 @@ class MissionController extends Controller
         $proposals = $clientMissionProposalRepo->findBy(['user' => $this->getUser()]);
         if(count($proposals) == 0)
         {
-            return $this->redirect('/community-manager/mission/list');
+            return $this->redirect('/city-maker/mission/list');
         }
 
         $options = $this->getDoctrine()->getRepository(Option::class);
@@ -144,6 +144,16 @@ class MissionController extends Controller
 //            $mission->getUserMissionPayment()->setTaxValue($total - $clientPrice); // Tax charged
 //            $mission->getUserMissionPayment()->setTotal($total); // Total
             $mission->setStatus(MissionStatus::CREATED);
+
+            #Set if tax is applicable or not
+            if($cityMakerType == CompanyStatus::COMPANY)
+            {
+                $mission->setIsTvaApplicable(1);
+            }
+            else
+            {
+                $mission->setIsTvaApplicable(0);
+            }
 //            $mission->setCreatedAt(new \DateTime('Y-m-d H:i:s'));
             $documents = [];
 
