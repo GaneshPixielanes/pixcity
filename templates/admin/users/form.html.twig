@@ -109,9 +109,12 @@
                 <div class="row m-t-15">
                     <div class="col-xs-12 form-line">
                         <div class="form-group">
+                            <fieldset id="checkArray">
+                                <p class="regionfield" style="display: none; color: red;">Select one region field</p>
                             {{ form_label(form.pixie.regions) }}
                             {{ form_widget(form.pixie.regions) }}
                             {{ form_errors(form.pixie.regions) }}
+                            </fieldset>
                         </div>
                     </div>
                 </div>
@@ -280,7 +283,7 @@
         </div>
         <div class="flex-row-space-between">
             <a href="{{ path('admin_users_list') }}" class="btn btn-lg bg-grey m-t-15 waves-effect">Annuler</a>
-            <button type="submit" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
+            <button type="submit" id="btn-save" class="btn btn-lg bg-pink m-t-15 waves-effect">Enregistrer</button>
         </div>
 
 
@@ -302,6 +305,34 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $("label[for=user_roles_2], input#user_roles_2").addClass("only-pixie");
+            $form = $('form[name="user"]');
+
+            // Limit the number of selected regions
+
+            $('[name="user[pixie][regions][]"]').on('change', function (evt) {
+                if ($('[name="user[pixie][regions][]"]:checked').length > 2) {
+                    this.checked = false;
+                }
+
+                $('[name="user[pixie][regions][]"]:checked').each(function () {
+                    $('[data-original-title="'+$(this+" option:selected").text()+'"]').addClass('active');
+                });
+            });
+            $("#btn-save").click(function (e) {
+                e.preventDefault();
+                var formIsValid = '';
+                if ($('[name="user[pixie][regions][]"]:checked').length == 0) {
+                    formIsValid ='';
+                    $('.regionfield').css("display", "block");
+                }else{
+                    formIsValid = $form.valid();
+                    $('.regionfield').css("display", "none");
+                }
+
+                if (formIsValid) {
+                    $form.submit();
+                }
+            });
             // $('#user_roles_1').click(function() {
             //     $("label[for=user_roles_2], input#user_roles_2").toggle(this.checked);
             // });
