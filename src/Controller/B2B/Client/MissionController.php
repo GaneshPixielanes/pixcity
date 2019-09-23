@@ -3,6 +3,7 @@
 namespace App\Controller\B2B\Client;
 
 
+use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientTransaction;
 use App\Entity\Option;
@@ -148,7 +149,15 @@ class MissionController extends Controller
         $transaction = new ClientTransaction();
         $mission = $missionRepo->activePrices($id);
 
-        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+
+        if($mission->getIsTvaApplicable() == 1)
+        {
+            $cityMakerType = CompanyStatus::COMPANY;
+        }
+        else
+        {
+            $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+        }
 
         $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
