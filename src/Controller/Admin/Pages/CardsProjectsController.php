@@ -102,6 +102,7 @@ class CardsProjectsController extends Controller
 
                 $mailer->send($form->getData()->getPixie()->getEmail(), 'Ta première card a été créée', 'emails/pixie-card-assigned-first-time.html.twig', [
                     'firstName' => $form->getData()->getPixie()->getFirstname(),
+                    'card' => $project->getName()
                 ]);
             }
 
