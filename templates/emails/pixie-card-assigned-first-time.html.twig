@@ -3,7 +3,34 @@
 {% block body %}
     <p>Bonjour {{ firstName }},</p>
     <p>
-    Ton premier sujet nous convient parfaitement, tu peux désormais voir ta demande de CARD dans ton espace CITY MAKER sur le site, dans MES DEMANDES.
+        Merci ! Nous venons de t'ouvrir {{ card }}
+    </p>
+    <p>
+        Une fois cette card validée et mise en ligne par notre équipe, tu peux envoyer toutes tes autres idées à redaction@pix.city. Si tu peux nous fournir à chaque fois:
+    </p>
+    <p>
+        Le nom du lieu<br/>
+        Le nom du lieu<br/>
+        Un date de rendu (cela nous permet de te réserver les CARDS)<br/>
+    </p>
+    <p>
+        NOTA: n'oublie pas , il te faudra 8 photos pour réaliser une CARD ;)
+    </p>
+    <p>
+        Voici quelques éléments importants et règles pour collaborer sur notre site:
+    </p>
+    <p>
+        - Les 5 règles d'or éditoriales sur Pix.City<br/>
+        - Les 5 règles d'or des photos sur Pix.City
+    </p>
+    <p>
+        - Voici 2 exemples de CARDS :<br/>
+        > Exemple CARD restaurant<br/>
+        > Exemple CARD Nature
+    </p>
+    <p>
+        Merci encore,<br/>
+        A très vite
     </p>
     <p>
         <a href="{{ url('front_pixie_account_cards_projects') }}" style="background-color: #30b996; color: #FFF; padding: 10px 20px; display: inline-block; text-decoration: none; border-radius: 4px;">[Aller dans mon espace]</a><br>
@@ -13,6 +40,8 @@
         <a href="mailto:redaction@pix.city">J’ai des questions</a>
 
     </p>
-    Bonne rédaction !
+    <p>
+        La Team Pix.City
+    </p>
 
 {% endblock %}
