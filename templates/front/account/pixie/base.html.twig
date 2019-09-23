@@ -95,106 +95,106 @@
     </nav>
     <!-- Header -->
     {# Uncomment below code #}
-    <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main-internal py-0 internal-nav">
-        <div class="container">
-            <a class="navbar-brand" href="javascript:;"><img src="http://pixielanes.in/new/images/header-logo-main.svg" alt="Pix.City"></a>
-            <!-- <div class="col-3 ml-auto social-mobile">
-                <div class="row">
-                    <div class="col-6 social-mobile-btn">
-                        <a href="javascript:;" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                    </div>
-                    <div class="col-6 social-mobile-btn">
-                        <a href="javascript:;" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-            </div> -->
-            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                <!-- <span class="navbar-toggler-icon"></span> -->
-                <img src="http://pixielanes.in/new/images/menu.svg" />
-            </button>
-            <div class="col-md-1 text-center close-inetrnal-nav-mobile">
-                <a href="javascript:;">
-                    <i class="fa fa-times"></i>
-                </a>
-            </div>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <div class="col-md-12 d-flex">
-                    <!-- <div class="row">
-                        <div class="col-md-6">
-                            <button class="btn btn-rollover btn-outline-gray btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
-                        </div>
-                        <div class="col-md-1 col-6 social-btn">
-                            <a href="javascript:;" title="Facebook">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                        </div>
-                        <div class="col-md-1 col-6 social-btn">
-                            <a href="javascript:;" title="Instagram">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </div>
-                    </div> -->
-                    <div class="col-md-1 internal-pages-nav">
-                        <ul class="d-flex">
-                            <li class="col-md-12">
-                                <a href="{{ path('front_pixie_account_homepage') }}">Accueil</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-9 internal-pages-nav">
-                        <ul class="d-flex">
-                            <li class="col">
-                                <a href="{{ path('front_pixie_account_cards_projects') }}">Demande de cards</a>
-                            </li>
-                            <li class="col">
-                                <a href="{{ path('front_pixie_account_cards_status') }}">Cards en attente</a>
-                            </li>
-                            <li class="col">
-                                <a href="{{ path('front_pixie_account_cards_validated') }}">Cards validées</a>
-                            </li>
-                            <li class="col">
-                                <a href="{{ path('front_pixie_account_cards_payments') }}">Mes gains</a>
-                            </li>
-                            <li class="col">
-                                <a href="{{ path('front_pixie_account_settings') }}">Paramètres</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-2 header-account-role mt-2">
-                        <div class="row">
-                            <div class="col-4 pr-0 text-right">
-                                {% if app.user.level == 1 %}
-                                    <img src="{{ asset('build/images/badge-voyager.svg') }}" alt="Voyager" />
-                                {% elseif app.user.level == 2 %}
-                                    <img src="{{ asset('build/images/badge-explorer.svg') }}" alt="Voyager" />
-                                {% elseif app.user.level == 3%}
-                                    <img src="{{ asset('build/images/badge-adventurer.svg') }}" alt="Voyager" />
-                                {% elseif app.user.level == 4%}
-                                    <img src="{{ asset('build/images/badge-ranger.svg') }}" alt="Voyager" />
-                                {% elseif app.user.level == 5 %}
-                                    <img src="{{ asset('build/images/badge-nomad.svg') }}" alt="Voyager" />
-                                {% endif %}
-                            </div>
-                            <div class="col-7">niveau <span>{{ ('label.level.level_' ~app.user.level )|trans }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-1 text-center close-internal-nav">
-                <a href="javascript:;">
-                    <i class="fas fa-times"></i>
-                </a>
-            </div>
-        </div>
-    </nav>
+{#    <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main-internal py-0 internal-nav">#}
+{#        <div class="container">#}
+{#            <a class="navbar-brand" href="javascript:;"><img src="http://pixielanes.in/new/images/header-logo-main.svg" alt="Pix.City"></a>#}
+{#            <!-- <div class="col-3 ml-auto social-mobile">#}
+{#                <div class="row">#}
+{#                    <div class="col-6 social-mobile-btn">#}
+{#                        <a href="javascript:;" title="Facebook">#}
+{#                            <i class="fab fa-facebook-f"></i>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="col-6 social-mobile-btn">#}
+{#                        <a href="javascript:;" title="Instagram">#}
+{#                            <i class="fab fa-instagram"></i>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div> -->#}
+{#            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">#}
+{#                <!-- <span class="navbar-toggler-icon"></span> -->#}
+{#                <img src="http://pixielanes.in/new/images/menu.svg" />#}
+{#            </button>#}
+{#            <div class="col-md-1 text-center close-inetrnal-nav-mobile">#}
+{#                <a href="javascript:;">#}
+{#                    <i class="fa fa-times"></i>#}
+{#                </a>#}
+{#            </div>#}
+{#            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">#}
+{#                <div class="col-md-12 d-flex">#}
+{#                    <!-- <div class="row">#}
+{#                        <div class="col-md-6">#}
+{#                            <button class="btn btn-rollover btn-outline-gray btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>#}
+{#                        </div>#}
+{#                        <div class="col-md-4">#}
+{#                            <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>#}
+{#                        </div>#}
+{#                        <div class="col-md-1 col-6 social-btn">#}
+{#                            <a href="javascript:;" title="Facebook">#}
+{#                                <i class="fab fa-facebook-f"></i>#}
+{#                            </a>#}
+{#                        </div>#}
+{#                        <div class="col-md-1 col-6 social-btn">#}
+{#                            <a href="javascript:;" title="Instagram">#}
+{#                                <i class="fab fa-instagram"></i>#}
+{#                            </a>#}
+{#                        </div>#}
+{#                    </div> -->#}
+{#                    <div class="col-md-1 internal-pages-nav">#}
+{#                        <ul class="d-flex">#}
+{#                            <li class="col-md-12">#}
+{#                                <a href="{{ path('front_pixie_account_homepage') }}">Accueil</a>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                    <div class="col-md-9 internal-pages-nav">#}
+{#                        <ul class="d-flex">#}
+{#                            <li class="col">#}
+{#                                <a href="{{ path('front_pixie_account_cards_projects') }}">Demande de cards</a>#}
+{#                            </li>#}
+{#                            <li class="col">#}
+{#                                <a href="{{ path('front_pixie_account_cards_status') }}">Cards en attente</a>#}
+{#                            </li>#}
+{#                            <li class="col">#}
+{#                                <a href="{{ path('front_pixie_account_cards_validated') }}">Cards validées</a>#}
+{#                            </li>#}
+{#                            <li class="col">#}
+{#                                <a href="{{ path('front_pixie_account_cards_payments') }}">Mes gains</a>#}
+{#                            </li>#}
+{#                            <li class="col">#}
+{#                                <a href="{{ path('front_pixie_account_settings') }}">Paramètres</a>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                    <div class="col-md-2 header-account-role mt-2">#}
+{#                        <div class="row">#}
+{#                            <div class="col-4 pr-0 text-right">#}
+{#                                {% if app.user.level == 1 %}#}
+{#                                    <img src="{{ asset('build/images/badge-voyager.svg') }}" alt="Voyager" />#}
+{#                                {% elseif app.user.level == 2 %}#}
+{#                                    <img src="{{ asset('build/images/badge-explorer.svg') }}" alt="Voyager" />#}
+{#                                {% elseif app.user.level == 3%}#}
+{#                                    <img src="{{ asset('build/images/badge-adventurer.svg') }}" alt="Voyager" />#}
+{#                                {% elseif app.user.level == 4%}#}
+{#                                    <img src="{{ asset('build/images/badge-ranger.svg') }}" alt="Voyager" />#}
+{#                                {% elseif app.user.level == 5 %}#}
+{#                                    <img src="{{ asset('build/images/badge-nomad.svg') }}" alt="Voyager" />#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                            <div class="col-7">niveau <span>{{ ('label.level.level_' ~app.user.level )|trans }}</span>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-1 text-center close-internal-nav">#}
+{#                <a href="javascript:;">#}
+{#                    <i class="fas fa-times"></i>#}
+{#                </a>#}
+{#            </div>#}
+{#        </div>#}
+{#    </nav>#}
 
 
     {# Uncomment above code #}
