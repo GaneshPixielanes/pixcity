@@ -37,7 +37,8 @@ class PageCategoryType extends AbstractType
                 'attr' => [
                     'rowClass' => 'type-froala'
                 ],
-                'toolbarStickyOffset' =>  70
+                'toolbarStickyOffset' =>  70,
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('indexed', SwitchType::class, array('label' => 'label.indexed', 'required' => false))
             ->add('hidden', SwitchType::class, array('label' => 'label.hidden', 'required' => false))
