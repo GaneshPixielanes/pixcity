@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Constant\CompanyStatus;
 use App\Entity\MissionDocument;
 use App\Entity\MissionLog;
 use App\Entity\UserMission;
@@ -96,7 +97,14 @@ class CityMakerMissionController extends Controller
             }
             $mission->setMissionAgreedClient(1);
 
-            $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
+            if($mission->getIsTvaApplicable() == 1)
+            {
+                $cityMakerType = CompanyStatus::COMPANY;
+            }
+            else
+            {
+                $cityMakerType = $this->getUser()->getPixie()->getBilling()->getStatus();
+            }
             $price = $missionLog->getUserBasePrice();
 
 
