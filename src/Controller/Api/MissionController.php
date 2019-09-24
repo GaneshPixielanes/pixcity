@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
 use App\Entity\ClientTransaction;
@@ -92,7 +93,14 @@ class MissionController extends Controller
 
         $margin = $options->findOneBy(['slug' => 'margin']);
 
-        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+        if($mission->getIsTvaApplicable() != NULL)
+        {
+            $cityMakerType = CompanyStatus::COMPANY;
+        }
+        else
+        {
+            $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+        }
 
         $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
@@ -160,6 +168,7 @@ class MissionController extends Controller
                             $fee = $margin_value;
                         }
 
+
                         $client_paid = $last_result['client_total'];
 
                         $fee_percentage = (2 / 100) * $client_paid;
@@ -205,7 +214,7 @@ class MissionController extends Controller
 
                             $clientTransaction->setTransactionType('Refund Partial');
 
-                            $response = $mangoPayService->refundPaymentWithFee($transaction,round($result['refund_amount']),round($result['fess']));
+                            $response = $mangoPayService->refundPaymentWithFee($transaction,$result['refund_amount'] + $result['fess'],$result['fess']);
                             $clientTransaction->setMangopayTransactionId($response);
 
                         }

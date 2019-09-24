@@ -264,6 +264,14 @@ class MissionController extends Controller
     }
 
     /**
+     * @Route("/mission-payin-process", name="mission_payin_process")
+     */
+    public function customPayinForm(){
+
+        return $this->render('b2b/client/transaction/payin.html.twig');
+    }
+
+    /**
      * @Route("/mission-accept-process/{id}", name="mission_accept_process")
      */
     public function missionAcceptProcess($id, ClientTransactionRepository $transactionRepo,
