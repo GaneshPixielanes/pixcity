@@ -55,6 +55,11 @@ jQuery(document).ready(function() {
             $("#user_pixie_billing_firstname, #user_pixie_billing_lastname").parents(".form-row").show();
             $("#user_pixie_billing_tva").prop("required", false).parents(".form-row").find("label").first().removeClass("oblig");
         }
+
+        if($("#user_pixie_billing_status").val() == 'microentrepreneur')
+        {
+            $("#user_pixie_billing_tva").parents(".form-row");
+        }
     }
 
     $("#user_pixie_billing_status").change(checkPixieStatus);
