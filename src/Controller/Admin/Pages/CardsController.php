@@ -15,12 +15,14 @@ use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use App\Service\Mailer;
 use Doctrine\ORM\Query;
+use Gedmo\Translatable\TranslatableListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin/cards", name="admin_cards_")
@@ -118,7 +120,8 @@ class CardsController extends Controller
                          Card $card,
                          Mailer $mailer,
                          ContentDraftRepository $contentDraftRepo,
-                         UserRepository $userRepo
+                         UserRepository $userRepo,
+                         TranslatorInterface $translator
     )
     {
 
@@ -154,7 +157,7 @@ class CardsController extends Controller
                         'firstName'=>$card->getProject()->getPixie()->getFirstname(),
                         'city' => $card->getAddress()->getCity(),
                         'region' => $card->getProject()->getRegion()->getName(),
-                        'level' => $userLevel
+                        'level' => $translator->trans($userLevel)
                     ], NULL, NULL);
 
             }
