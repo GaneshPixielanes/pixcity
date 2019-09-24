@@ -254,10 +254,10 @@
                                     <th scope="col" class="badge-img"></th>
                                     <th width="15%" scope="col" class="text-pink level-name" valign="bottom">VOTRE NIVEAU</th>
                                     <th width="13%" scope="col" class="no-of-cards"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="NOMBRE DE CARDS EN LIGNE" data-content="Une Card est un mini article que tu rédiges pour parler d’une adresse locale qui te tient à cœur, elle est validée et mise en ligne par l’équipe Rédaction de Pix.City"><i class="fas fa-info"></i></a>NOMBRE DE CARDS EN LIGNE</th>
-                                    <th width="10%" scope="col"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="ACCESS A PIX.CITY" data-content="Une fois la 1ere CARD publiée, tu deviens EXPLORER ce qui te permet d’accéder à la plateforme Pix.City Services afin d’y proposer tes services pour réaliser des prestations rémunérées en tant que PHOTOGRAPHE, COMMUNITY MANAGER, INFLUENCEUR…"><i class="fas fa-info"></i></a>ACCESS A <img
+                                    <th width="10%" scope="col"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="ACCES A PIX.CITY" data-content="Une fois la 1ere CARD publiée, tu deviens EXPLORER ce qui te permet d’accéder à la plateforme Pix.City Services afin d’y proposer tes services pour réaliser des prestations rémunérées en tant que PHOTOGRAPHE, COMMUNITY MANAGER, INFLUENCEUR…"><i class="fas fa-info"></i></a>ACCES A <img
                                                 src="{{ asset('build/images/slider-logo.png') }}" /></th>
                                     <th width="16%" scope="col" class="level-sponser"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="PARRAINAGE" data-content="Gagne de l’argent en parrainant de nouveaux CITY-MAKERS. Envoie un mail à redaction@pix.city"><i class="fas fa-info"></i></a>PARRAINAGE</th>
-                                    <th width="21%" scope="col" class="level-quizzes"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="JEUX CONCOURS" data-content="Chaque mois, Pix.City organise des challenges pour chaque niveaux de CITY-MAKERS. Tu recevras tous les mois les modalités du concours du mois et les lots à gagner"><i class="fas fa-info"></i></a>JEUX CONCOURS</th>
+                                    <th width="21%" scope="col" class="level-quizzes"><a href="javascript:;" data-toggle="popover" data-trigger="focus" data-container="body" title="JEUX CONCOURS" data-content="Chaque mois, Pix. City organise des challenges pour chaque niveau de city-makers. Tu recevras tous les mois les modalités du concours du mois et les lots à gagner"><i class="fas fa-info"></i></a>JEUX CONCOURS</th>
                                     <th width="17%" scope="col" class=""><a href="javascript:;"data-toggle="popover" data-trigger="focus" data-container="body" title="CITY MAKER DU MOIS" data-content="Tu es actif(ve) sur Pix.City, nous te mettrons alors en avant sur notre site Web et les voyageurs pourront découvrir plus facilement ton univers, tes cards, tes réseaux sociaux, ton blog…"><i class="fas fa-info"></i></a>CITY MAKER DU MOIS</th>
                                 </tr>
                                 </thead>
@@ -449,7 +449,7 @@
                                     </td>
                                     <td>OUI</td>
                                     <td class="fz-10">15&euro;/filleul atteignant le level <span class="text-uppercase">Adventurer</span></td>
-                                    <td>3 Lots a gagner/mois <span class="d-block text-textgray font-weight-normal">(valeur : 100&euro;-200&euro;)</span></td>
+                                    <td>3 Lots à gagner/mois <span class="d-block text-textgray font-weight-normal">(valeur : 100&euro;-200&euro;)</span></td>
                                     <td>Mise en avant sur la Home de Pix.City</td>
                                     {% endif %}
                                 </tr>
@@ -475,7 +475,7 @@
                                         </td>
                                         <td class="bg-pink">OUI</td>
                                         <td class="fz-10 bg-pink">15&euro;/filleul atteignant le level <span class="text-uppercase">Adventurer</span></td>
-                                        <td class="bg-pink">1 Lot a gagner/mois <span class="d-block text-textgray font-weight-normal text-white">(valeur : 200&euro;-500&euro;)</span></td>
+                                        <td class="bg-pink">1 Lot à gagner/mois <span class="d-block text-textgray font-weight-normal text-white">(valeur : 200&euro;-500&euro;)</span></td>
                                         <td class="bg-pink rounded-right border-0">
                                             <table class="table mb-0">
                                                 <tbody>
@@ -524,7 +524,7 @@
                                     {% elseif app.user.level > 1 and app.user.b2bCmApproval != 1 %}
                                         Mets tes compétences professionnelles au service de ta région sur Pix.City Services
                                     {% elseif app.user.level > 1 and app.user.b2bCmApproval == 1 %}
-                                        Met à jour ton profil, crée tes packs afin que des clients puissent te contacter facilement. Ton profil les intéresse!                                    {% endif %}
+                                        Mets à jour ton profil, crée tes packs afin que des clients puissent te contacter facilement. Ton profil les intéresse!                                    {% endif %}
                                     </h4>
                                     {% if app.user.level == 1 %}
                                         <p class="fz-16 font-weight-light">
@@ -545,9 +545,9 @@
                                         <a href="/city-maker/compte/parametres" class="btn btn-pink btn-pill lh2">Devenir City-Maker Services</a>
 
                                         {% elseif app.user.level > 1 and app.user.b2bCmApproval == 1 %}
-                                            LES NIVEAUX CITY-MAKERS
+
                                             <p class="fz-16 font-weight-light">
-                                                Tu souhaites développer ta clientèle pour réaliser des prestations de community-management, influence, photographe… Pix.City Services te propose une espace vitrine où tu pourras mettre en avant tout ton savoir-faire et rencontrer facilement de nouveaux clients.
+                                                Tu souhaites développer ta clientèle pour réaliser des prestations de community-management, influence, photographe… Pix.City Services te propose un espace vitrine où tu pourras mettre en avant tout ton savoir-faire et rencontrer facilement de nouveaux clients.
                                             </p>
                                             <br>
                                             <p class="fz-16 font-weight-light">
