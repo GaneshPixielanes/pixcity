@@ -7,6 +7,9 @@
     <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
     <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% if blogSingle is defined %}
+    <meta property="og:image" content="url({{ asset('/uploads/blog_images/'~blogSingle[0].id~'/'~blogSingle[0].bannerImage) | imagine_filter('bg_header_slider') }})" />
+    {% endif %}
     <!-- Fonts -->
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/fonts/fontawesome/css/all.min.css') }}" />
     <!-- Plugin CSS -->

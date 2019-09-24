@@ -3,6 +3,7 @@
 {% block body_class %}{{ parent() }} home bgPictos{% endblock %}
 {% block meta_title %}{{ blogSingle[0].metaTitle }}{% endblock %}
 {% block meta_description %}{{ blogSingle[0].metaDesc }}{% endblock %}
+
  {% block stylesheets %}
      <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
      <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
@@ -77,7 +78,7 @@
         <div class="col-sm-4">
             {% if prevNextType['prev'] is defined %}
                 <div class="text-center mb-3">
-                    <a href="{{ path('front_blog_single', {slug: prevNextType['previd'][0].slug, id:prevNextType['previd'][0].id}) }}" title="{{ prevNextType['previd'][0].title }}" class="btn btn-outline-darkblue btn-pill"><i class="fa fa-chevron-left" aria-hidden="true"> </i> Précédent
+                    <a href="{{ path('front_blog_single', {slug: prevNextType['previd'][0].slug, id:prevNextType['previd'][0].id}) }}" title="{{ prevNextType['previd'][0].title }}" class="btn btn-outline-darkblue btn-pill"><i class="fa fa-chevron-left" aria-hidden="true"> </i>  {{ 'label.blog_prev'|trans }}
                         </a>
                 </div>
             {% endif %}
@@ -85,13 +86,13 @@
         <div class="col-sm-4">
             <div class="text-center mb-3">
                 <a href="/blog" title=""  class="btn btn-outline-darkblue btn-pill"><i class="fa fa-home" aria-hidden="true"></i>
-                     Revenir à l'accueil</a>
+                     {{ 'label.blog_home'|trans }}</a>
             </div>
         </div>
         <div class="col-sm-4">
             {% if prevNextType['next'] is defined %}
                 <div class="text-center mb-3">
-                    <a href="{{ path('front_blog_single', {slug: prevNextType['nextid'][0].slug, id:prevNextType['nextid'][0].id}) }}" title="{{ prevNextType['nextid'][0].title }}" class="btn btn-outline-darkblue btn-pill">Suivant <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                    <a href="{{ path('front_blog_single', {slug: prevNextType['nextid'][0].slug, id:prevNextType['nextid'][0].id}) }}" title="{{ prevNextType['nextid'][0].title }}" class="btn btn-outline-darkblue btn-pill">{{ 'label.blog_next'|trans }} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
                 </div>
             {% endif %}
         </div>

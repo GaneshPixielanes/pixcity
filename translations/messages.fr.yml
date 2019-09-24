@@ -80,6 +80,9 @@ label:
     category: Category
     subcategory: Subcategory
     invoices: Invoices
+    blog_home: Revenir à l'accueil
+    blog_prev: Précédent
+    blog_next: Suivant
     network:
         facebook: Facebook
         twitter: Twitter
