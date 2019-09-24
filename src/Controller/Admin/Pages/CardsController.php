@@ -151,7 +151,7 @@ class CardsController extends Controller
             {
                 $levels = UserLevel::getList();
                 $userLevel = array_search('LEVEL_'.$level,$levels);
-                $mailer->send($user->getEmail(),'Congratulations! Your level has been updated',
+                $mailer->send($user->getEmail(),'Félicitations! Tu franchis un niveau sur Pix.city!',
                     'emails/cm-level-update.html.twig'
                     ,[
                         'firstName'=>$card->getProject()->getPixie()->getFirstname(),
