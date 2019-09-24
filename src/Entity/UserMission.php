@@ -181,7 +181,7 @@ class UserMission
     private $missionRegions;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $isTvaApplicable;
 
@@ -727,12 +727,12 @@ class UserMission
         return base64_encode("invoices/".$this->getId().'/PX-'.$this->getId().'-'.$this->getActiveLog()->getId().'-pcs.pdf');
     }
 
-    public function getIsTvaApplicable(): ?bool
+    public function getIsTvaApplicable(): ?string
     {
         return $this->isTvaApplicable;
     }
 
-    public function setIsTvaApplicable(?bool $isTvaApplicable): self
+    public function setIsTvaApplicable(?string $isTvaApplicable): self
     {
         $this->isTvaApplicable = $isTvaApplicable;
 

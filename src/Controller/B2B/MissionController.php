@@ -148,11 +148,15 @@ class MissionController extends Controller
             #Set if tax is applicable or not
             if($cityMakerType == CompanyStatus::COMPANY)
             {
-                $mission->setIsTvaApplicable(1);
+                $mission->setIsTvaApplicable(CompanyStatus::COMPANY);
+            }
+            elseif($cityMakerType == CompanyStatus::MICRO_ENTREPRENEUR && $this->getUser()->getPixie()->getBilling()->getTva() != NULL)
+            {
+                $mission->setIsTvaApplicable(CompanyStatus::MICRO_ENTREPRENEUR);
             }
             else
             {
-                $mission->setIsTvaApplicable(0);
+                $mission->setIsTvaApplicable(NULL);
             }
 //            $mission->setCreatedAt(new \DateTime('Y-m-d H:i:s'));
             $documents = [];
