@@ -626,8 +626,12 @@ class MapsController extends AbstractController
     /**
     * @Route("/all-cards",name="_all_card")
     */
-    public function allCards(Request $request, CardRepository $cardRepo)
+    public function allCards(Request $request, CardRepository $cardRepo, OptionRepository $optionRepository)
     {
+        $testAccountsAsClient = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
+        $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $loggedUserSession = $this->get('session')->get('login_by');
+        $loggedUser = $loggedUserSession['entity'];
        # Get the corresponding filters
         
        $filters['regions'] = $request->get('regions');
@@ -639,8 +643,18 @@ class MapsController extends AbstractController
        }
 
        # Get the markers w.r.t the filters
+        if($loggedUser){
+            if(strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false) { //in
+                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters)));
+            }
+            else{
+                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters,  $testAccountsAsCm->getValue())));
+            }
+        }
+        else{
+            return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters, $testAccountsAsCm->getValue())));
+        }
 
-       return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters)));
     }
 
     /**

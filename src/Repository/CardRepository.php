@@ -249,17 +249,20 @@ class CardRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findAllCardsValidated($filters = [])
+    public function findAllCardsValidated($filters = [],$userEmail=null)
     {
         $qb = $this->_buildQuery();
         $qb = $this->_applyFilters($qb, $filters);
 
-        $result = $qb->select(["address.latitude, address.longitude, c.id, category.icon"])
+        $qb = $qb->select(["address.latitude, address.longitude, c.id, category.icon"])
                  ->andWhere('c.status = :status')
                  ->setParameter('status',CardStatus::VALIDATED)
-                 ->getQuery()
-                 ->getResult();
-
+                 ;
+        if($userEmail != null){
+            $qb = $qb->andWhere("p.email NOT IN (".$userEmail.") AND p.visible = 1");
+        }
+        $result = $qb->getQuery()
+                    ->getResult();
         return $result;         
     }
 
