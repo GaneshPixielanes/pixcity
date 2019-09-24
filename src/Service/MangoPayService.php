@@ -82,7 +82,7 @@ class MangoPayService
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
-        $payIn->Tag =$mission;
+        $payIn->Tag = "Mission-id ".$mission;
         $payIn->PaymentType = MangoPay\PayInPaymentType::Card;
         $payIn->PaymentDetails = new MangoPay\PayInPaymentDetailsCard();
         $payIn->PaymentDetails->CardType = "CB_VISA_MASTERCARD";
@@ -113,27 +113,26 @@ class MangoPayService
     }
 
 
-    public function refundPayment($transaction,int $amount,int $refund_amount){
+    public function refundPayment($transaction,$amount,$fees){
 
-        $basePrice = $amount * 100;
-        $percentage = (2 / 100) * $basePrice;
-        $fees = (int) $percentage;
+        $fees = $fees * 100;
 
-        $debitedFund = $refund_amount * 100;
+        $debitedFund = $amount * 100;
 
         $PayInId = $transaction[0]->getMangopayTransactionId();
 
         $Refund = new \MangoPay\Refund();
 
         $Refund->AuthorId = $transaction[0]->getMangopayUserId();
-
+        $Refund->Tag = "Mission-id ".$transaction[0]->getMission()->getId();
         $Refund->DebitedFunds = new \MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
         $Refund->DebitedFunds->Amount = $debitedFund;
 
         $Refund->Fees = new \MangoPay\Money();
         $Refund->Fees->Currency = "EUR";
-        $Refund->Fees->Amount = $fees;
+
+        $Refund->Fees->Amount = - $fees;
 
         $response = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
 
