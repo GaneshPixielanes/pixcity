@@ -150,7 +150,7 @@ class MissionController extends Controller
         $mission = $missionRepo->activePrices($id);
 
 
-        if($mission->getIsTvaApplicable() == 1)
+        if($mission->getIsTvaApplicable() != NULL)
         {
             $cityMakerType = CompanyStatus::COMPANY;
         }
