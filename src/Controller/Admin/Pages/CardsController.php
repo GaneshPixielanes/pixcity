@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Pages;
 
 use App\Constant\CardStatus;
+use App\Constant\UserLevel;
 use App\Entity\Card;
 use App\Entity\CardMedia;
 use App\Entity\ContentDraft;
@@ -145,12 +146,15 @@ class CardsController extends Controller
             #If the level is about to be updated, send email
             if($level > $user->getLevel())
             {
+                $levels = UserLevel::getList();
+                $userLevel = array_search('LEVEL_'.$level,$levels);
                 $mailer->send($user->getEmail(),'Congratulations! Your level has been updated',
                     'emails/cm-level-update.html.twig'
                     ,[
                         'firstName'=>$card->getProject()->getPixie()->getFirstname(),
                         'city' => $card->getAddress()->getCity(),
-                        'region' => $card->getProject()->getRegion()->getName()
+                        'region' => $card->getProject()->getRegion()->getName(),
+                        'level' => $userLevel
                     ], NULL, NULL);
 
             }
