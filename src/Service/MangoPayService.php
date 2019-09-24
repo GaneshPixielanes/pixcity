@@ -20,7 +20,7 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientId = 'azimforexprod';
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-        $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
         $this->mangoPayMoney = new MangoPay\Money();
         $this->mangoPayRefund = new MangoPay\Refund();
@@ -93,10 +93,11 @@ class MangoPayService
         $payIn->ExecutionDetails = new MangoPay\PayInExecutionDetailsWeb();
         $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
         $payIn->ExecutionDetails->Culture = "EN";
-
+        $payIn->ExecutionDetails->TemplateURLOptions = new MangoPay\PayInTemplateURLOptions();
+        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/mission-payin-process';
         $result =  $this->mangoPayApi->PayIns->Create($payIn);
 
-        return $result->ExecutionDetails->RedirectURL;
+        return $result->ExecutionDetails->TemplateURL;
     }
 
 
@@ -135,7 +136,7 @@ class MangoPayService
         return $response->ResultMessage;
     }
 
-    public function refundPaymentWithFee($transaction,int $amount,int $refund_amount){
+    public function refundPaymentWithFee($transaction,$amount,$refund_amount){
 
         $fees = $refund_amount * 100;
 
