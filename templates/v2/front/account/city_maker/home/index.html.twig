@@ -277,7 +277,11 @@
                                     </td>
                                     <td class="level-name text-uppercase {% if app.user.level == 1 %}bg-pink{% endif %}">Voyager</td>
                                     {% if app.user.level == 1 %}
-                                        <td colspan="5" class="bg-pink rounded-right border-0">
+                                        <td class="bg-pink">-</td>
+                                        <td class="bg-pink">-</td>
+                                        <td class="bg-pink">-</td>
+                                        <td class="bg-pink">-</td>
+                                        <td class="bg-pink rounded-right border-0">
                                             <table class="table mb-0">
                                                 <tr>
                                                     <td class="d-flex align-items-center p-0">
@@ -321,6 +325,10 @@
                                     </td>
                                     <td class="{% if app.user.level == 2 %}bg-pink{% endif %} level-name text-uppercase border-0">Explorer</td>
                                     {% if app.user.level == 2 %}
+                                        <td class="font-weight-bold bg-pink">1</td>
+                                        <td class="font-weight-bold bg-pink">OUI</td>
+                                        <td class="font-weight-bold bg-pink">-</td>
+                                        <td class="font-weight-bold bg-pink">-</td>
                                         <td colspan="5" class="{% if app.user.level == 2 %}bg-pink{% endif %} rounded-right border-0">
                                             <table class="table mb-0">
                                                 <tr>
@@ -374,11 +382,17 @@
                                     </td>
                                     <td class="level-name text-uppercase {% if app.user.level == 3 %}bg-pink{% endif %}">Adventurer</td>
                                     {% if app.user.level == 3 %}
-                                    <td colspan="5" class="{% if app.user.level == 3 %}bg-pink{% endif %} rounded-right border-0">
+                                    <td class="bg-pink">
+                                        5
+                                    </td>
+                                    <td class="bg-pink">OUI</td>
+                                    <td class="fz-10 bg-pink">10&euro;/filleul atteignant le level <span class="text-uppercase" >Adventurer</span></td>
+                                    <td class="bg-pink">5 Lots a gagner/mois <span class="d-block text-textgray font-weight-normal text-white">(valeur : 50&euro;-100&euro;)</span></td>
+                                    <td class="bg-pink rounded-right border-0">
                                         <table class="table mb-0">
                                             <tr>
                                                 <td class="d-flex align-items-center p-0">
-                                                    {% if app.user.level == 3 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>{% endif %}
+                                                    <a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD &nbsp;<i class="fas fa-info-circle" data-toggle="tooltip" title="Mise en avant sur la Home de Pix.City"></i></a>
                                                 </td>
                                             </tr>
                                         </table>
@@ -411,11 +425,17 @@
                                     </td>
                                     <td class="level-name text-uppercase {% if app.user.level == 4 %}bg-pink{% endif %} ">Ranger</td>
                                     {% if app.user.level == 4 %}
-                                    <td colspan="5" class="{% if app.user.level == 4 %}bg-pink{% endif %} rounded-right border-0">
+                                    <td class="bg-pink">
+                                        10
+                                    </td>
+                                    <td class="bg-pink">OUI</td>
+                                    <td class="fz-10 bg-pink">15&euro;/filleul atteignant le level <span class="text-uppercase">Adventurer</span></td>
+                                    <td class="bg-pink">3 Lots a gagner/mois <span class="d-block text-textgray font-weight-normal text-white">(valeur : 100&euro;-200&euro;)</span></td>
+                                    <td class="bg-pink rounded-right border-0">
                                         <table class="table mb-0">
                                             <tr>
                                                 <td class="d-flex align-items-center p-0">
-                                                    {% if app.user.level == 4 %}<a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>{% endif %}
+                                                    <a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD &nbsp;<i class="fas fa-info-circle" data-toggle="tooltip" title="Mise en avant sur la Home de Pix.City"></i></a>
                                                 </td>
                                             </tr>
                                         </table>
@@ -447,12 +467,18 @@
                                     </td>
                                     <td class="{% if app.user.level == 5 %}bg-pink{% endif %} level-name text-uppercase">Nomad</td>
                                     {% if app.user.level == 5 %}
-                                        <td colspan="5" class="bg-pink rounded-right border-0">
+                                        <td class="bg-pink">
+                                            15
+                                        </td>
+                                        <td class="bg-pink">OUI</td>
+                                        <td class="fz-10 bg-pink">15&euro;/filleul atteignant le level <span class="text-uppercase">Adventurer</span></td>
+                                        <td class="bg-pink">1 Lot a gagner/mois <span class="d-block text-textgray font-weight-normal text-white">(valeur : 200&euro;-500&euro;)</span></td>
+                                        <td class="bg-pink rounded-right border-0">
                                             <table class="table mb-0">
                                                 <tbody>
                                                     <tr>
                                                         <td class="d-flex align-items-center p-0">
-                                                            <a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD</a>
+                                                            <a href="javascript:;" class="btn btn-white-bordered ml-auto intercom-pop">PROPOSER UNE CARD&nbsp;<i class="fas fa-info-circle" data-toggle="tooltip" title="Mise en avant sur la Home de Pix.City + 30&euro; de"></i></a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -460,7 +486,7 @@
                                         </td>
                                     {% else %}
                                     <td class="">
-                                        20
+                                        15
                                     </td>
                                     <td>OUI</td>
                                     <td class="fz-10">20&euro;/filleul atteignant le level <span class="text-uppercase">Adventurer</span></td>
