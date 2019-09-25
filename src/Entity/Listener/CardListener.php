@@ -40,7 +40,12 @@ class CardListener
                 $project->setStatus(CardProjectStatus::VALIDATED);
             }
 
-            if(!empty($project) && (!empty($projectBeforeUpdate) && $projectBeforeUpdate["status"] !== $card->getStatus())  && $projectBeforeUpdate['level']== $card->getLevel()){
+            if(!empty($project) &&
+                (!empty($projectBeforeUpdate) &&
+                    $projectBeforeUpdate["status"] !== $card->getStatus())  &&
+                $projectBeforeUpdate['level'] == $card->getLevel() &&
+                count($card->getPixie()->getCards()) > 1
+            ){
 
                 //--------------------------------
                 // Send email on card validation
