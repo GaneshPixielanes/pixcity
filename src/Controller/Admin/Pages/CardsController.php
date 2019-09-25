@@ -151,6 +151,10 @@ class CardsController extends Controller
             {
                 $levels = UserLevel::getList();
                 $userLevel = array_search('LEVEL_'.$level,$levels);
+                if($level > 2)
+                {
+
+
                 $mailer->send($user->getEmail(),'Félicitations! Tu franchis un niveau sur Pix.city!',
                     'emails/cm-level-update.html.twig'
                     ,[
@@ -159,6 +163,7 @@ class CardsController extends Controller
                         'region' => $card->getProject()->getRegion()->getName(),
                         'level' => $translator->trans($userLevel)
                     ], NULL, NULL);
+                }
 
             }
             #Update the user level
