@@ -155,9 +155,9 @@ class MissionController extends Controller
 
                         $status = MissionStatus::CANCELLED;
 
-                        $margin_value = $last_result['client_price'] - $last_result['cm_price'];
+                        $margin_value = $first_result['client_price'] - $first_result['cm_price'];
 
-                        if($result['tax'] != 0){
+                        if($first_result['client_tax'] != 0){
 
                             $tax_value = $tax->getValue() / 100 * $margin_value;
 
@@ -169,7 +169,7 @@ class MissionController extends Controller
                         }
 
 
-                        $client_paid = $last_result['client_total'];
+                        $client_paid = $first_result['client_total'];
 
                         $fee_percentage = (2 / 100) * $client_paid;
 
