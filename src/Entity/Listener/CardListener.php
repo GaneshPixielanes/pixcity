@@ -64,7 +64,7 @@ class CardListener
 ////                    $card->getThumb()->getUrl()
 ////                ]);
 //            }
-//        }
+        }
 
         if(CardStatus::REFUSED === $card->getStatus()){
             $project = $card->getProject();
