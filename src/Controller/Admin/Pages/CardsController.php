@@ -149,6 +149,10 @@ class CardsController extends Controller
             #If the level is about to be updated, send email
             if($level > $user->getLevel())
             {
+                #Update the user level
+                $user->setLevel($level);
+                #Log card's level
+                $card->setLevel($level);
                 $levels = UserLevel::getList();
                 $userLevel = array_search('LEVEL_'.$level,$levels);
                 if($level > 2)
@@ -166,10 +170,7 @@ class CardsController extends Controller
                 }
 
             }
-            #Update the user level
-            $user->setLevel($level);
-            #Log card's level
-            $card->setLevel($level);
+
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'flash.update.success');
 
