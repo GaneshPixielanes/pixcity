@@ -133,11 +133,11 @@ class CardsController extends Controller
             if(empty($card->getSlug())){
                 $card->generateSlug();
             }
-
+            #Get the user of the corresponding card
+            $user = $card->getPixie();
             if($form->get('status')->getData() == 'validated')
             {
-                #Get the user of the corresponding card
-                $user = $card->getPixie();
+
 
 
                 $card->setPublishedAt(new \DateTime());
