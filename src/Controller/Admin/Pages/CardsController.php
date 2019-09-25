@@ -147,6 +147,23 @@ class CardsController extends Controller
             #Calculate the user's level
             $level = $userRepo->calculateLevel($user->getId());
             #If the level is about to be updated, send email
+            if($level == $user->getLevel() && $card->getStatus() == CardStatus::VALIDATED)
+            {
+                $project = $card->getProject();
+                $mailer->send($project->getPixie()->getEmail(), 'Bravo ta card a été mise en ligne!', 'emails/pixie-card-validated-success.html.twig', [
+                    'firstName' => $project->getPixie()->getFirstname(),
+                    'cardName' => $project->getName(),
+                    'regionName' => str_replace([' ','-'],'',$project->getRegion()->getName()),
+                    'slug' => $card->getSlug(),
+                    'card' => $card,
+                    'cityName' => str_replace([' ','-'],'',$card->getAddress()->getCity()),
+                    'bannerUrl' =>$card->getMasterhead()->getUrl(),
+                    'thumbUrl' => $card->getThumb()->getUrl()
+                ], [
+                    $card->getMasterhead()->getUrl(),
+                    $card->getThumb()->getUrl()
+                ]);
+            }
             if($level > $user->getLevel())
             {
                 #Update the user level
@@ -170,6 +187,7 @@ class CardsController extends Controller
                 }
 
             }
+
 
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'flash.update.success');
