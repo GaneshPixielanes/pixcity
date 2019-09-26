@@ -149,14 +149,10 @@ class MissionController extends Controller
         $transaction = new ClientTransaction();
         $mission = $missionRepo->activePrices($id);
 
-
+        $cityMakerType = '';
         if($mission->getIsTvaApplicable() != NULL)
         {
             $cityMakerType = CompanyStatus::COMPANY;
-        }
-        else
-        {
-            $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
         }
 
         $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);

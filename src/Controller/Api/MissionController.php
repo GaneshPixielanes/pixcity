@@ -93,15 +93,13 @@ class MissionController extends Controller
 
         $margin = $options->findOneBy(['slug' => 'margin']);
 
+        $cityMakerType = "";
+
         if($mission->getIsTvaApplicable() != NULL)
         {
             $cityMakerType = CompanyStatus::COMPANY;
         }
-        else
-        {
-            $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
-        }
-
+        
         $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
         $last_result  = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
