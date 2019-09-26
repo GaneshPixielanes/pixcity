@@ -216,9 +216,9 @@
             $(document).on('keyup','#pack_userBasePrice',function () {
                 var basePrice = $(this).val();
                 var clientPrice = (100 * basePrice)/(100 - tax);
-                $('#clientPrice').html(clientPrice.toFixed(2)+"€");
+                $('#clientPrice').html(Math.round(clientPrice.toFixed(2))+"€");
                 $('.user-price').html('');
-                $('#user-price').html(clientPrice.toFixed(2)+"€");
+                $('#user-price').html(Math.round(clientPrice.toFixed(2))+"€");
 
             });
         })
