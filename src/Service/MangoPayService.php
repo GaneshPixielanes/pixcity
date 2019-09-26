@@ -27,6 +27,13 @@ class MangoPayService
         $this->mangoPayMoney = new MangoPay\Money();
         $this->mangoPayRefund = new MangoPay\Refund();
     }
+    public function uploadClientLogo(){
+        $clientLogoUpload = new MangoPay\ClientLogoUpload();
+        $clientLogoUpload->File = "/assets/images/services-home-banner-logo.svg";
+
+        $Result = $clientLogoUpload->Clients->UploadLogo($clientLogoUpload);
+        return $Result;
+    }
 
     public function createUser(MangoPay\UserNatural $userNatural)
     {

@@ -269,8 +269,9 @@ class MissionController extends Controller
     /**
      * @Route("/mission-payin-process/{id}", name="mission_payin_process")
      */
-    public function customPayinForm($id){
-
+    public function customPayinForm($id,MangoPayService $mangoPayService){
+       $kk =  $mangoPayService->uploadClientLogo();
+        dd($kk);
         return $this->render('b2b/client/transaction/payin.html.twig');
     }
 
