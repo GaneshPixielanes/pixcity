@@ -125,11 +125,15 @@ jQuery(document).ready(function() {
         if($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() === "company")
         {
             return true;
-        }else if($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() == "microentrepreneur" && $('#microentreprenuer_type').val() == "with_tva");
+        }
+        else if($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() == "microentrepreneur" && $('#microentreprenuer_type').val() == "with_tva")
         {
             return true;
         }
-        return false;
+        else
+        {
+            return false;
+        }
     }
 
     function checkPixieCountry() {
