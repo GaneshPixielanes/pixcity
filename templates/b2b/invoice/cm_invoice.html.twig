@@ -130,12 +130,12 @@
                         <tr>
 
                             <td ></td>
-                            {% if mission.userMissionPayment.cmTotal - mission.userMissionPayment.userBasePrice == 0 %}
+                            {% if mission.isTvaApplicable is null %}
                                 <td >TAX 0%</td>
                                 <td></td>
                                 <td>0</td>
                             {% else %}
-                                <td >TAX 20%</td>
+                                <td >TAX {{tax}}%</td>
                                 <td>{{ mission.userMissionPayment.cmTax }}</td>
                                 <td></td>
                             {% endif %}

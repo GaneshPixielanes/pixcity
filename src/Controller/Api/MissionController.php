@@ -287,7 +287,8 @@ class MissionController extends Controller
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/client_invoice.html.twig',
                         array(
-                            'mission' => $mission
+                            'mission' => $mission,
+                            'tax' => $tax->getValue()
                         )
                     ), $clientInvoicePath
                 );
@@ -299,7 +300,8 @@ class MissionController extends Controller
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/cm_invoice.html.twig',
                         array(
-                            'mission' => $mission
+                            'mission' => $mission,
+                            'tax' => $tax->getValue()
                         )
                     ), $cmInvoicePath
                 );
