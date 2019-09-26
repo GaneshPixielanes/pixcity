@@ -549,7 +549,7 @@
                             <div class="col-xs-12">
                                 {{ form_row(form.pixie.billing.status) }}
 
-                                <div class="col-sm-6 form-row form-group type-choice {% if app.user.pixie.billing.status != 'microentrepreneur' %}hidden{% endif %} ">
+                                <div class="col-sm-6 form-row form-group type-choice  "  {% if app.user.pixie.billing.status != 'microentrepreneur' %}style="display:none"{% endif %}>
                                     <label>
                                         <label class="form-label oblig required oblig" for="user_pixie_billing_status">Microentreprenuer Type</label></label><div class="input-container ">
                                         <div class="dropdown-container">
