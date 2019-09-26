@@ -16,7 +16,7 @@ class PriceExtension extends AbstractExtension
 
     public function calculateClientPrice($price, $margin)
     {
-        return $price/(100 - $margin) * 100;
+        return round($price/(100 - $margin) * 100);
     }
 
     public function jsonDecode($string)
