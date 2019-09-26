@@ -635,8 +635,8 @@
                             console.log(result.data.title.length);
                             var basePrice = result.data.price;
                             var clientPrice = (100 * basePrice)/(100 - {{ margin }});
-                            $('.mission-price').html(clientPrice.toFixed(2)+'€');
-                            $('.cm-client-price').html(clientPrice.toFixed(2)+'€');
+                            $('.mission-price').html(Math.round(clientPrice.toFixed(2))+'€');
+                            $('.cm-client-price').html(Math.round(clientPrice.toFixed(2))+'€');
                             $('#selected-pack-skill').html(result.data.skill);
                             $('#mission-images-display').html('');
                             $.each(result.data.images, function(key, value)
