@@ -133,11 +133,11 @@ class CardsController extends Controller
             if(empty($card->getSlug())){
                 $card->generateSlug();
             }
-
+            #Get the user of the corresponding card
+            $user = $card->getPixie();
             if($form->get('status')->getData() == 'validated')
             {
-                #Get the user of the corresponding card
-                $user = $card->getPixie();
+
 
 
                 $card->setPublishedAt(new \DateTime());
@@ -147,10 +147,35 @@ class CardsController extends Controller
             #Calculate the user's level
             $level = $userRepo->calculateLevel($user->getId());
             #If the level is about to be updated, send email
+            if($level == $user->getLevel() && $card->getStatus() == CardStatus::VALIDATED)
+            {
+                $project = $card->getProject();
+                $mailer->send($project->getPixie()->getEmail(), 'Bravo ta card a été mise en ligne!', 'emails/pixie-card-validated-success.html.twig', [
+                    'firstName' => $project->getPixie()->getFirstname(),
+                    'cardName' => $project->getName(),
+                    'regionName' => str_replace([' ','-'],'',$project->getRegion()->getName()),
+                    'slug' => $card->getSlug(),
+                    'card' => $card,
+                    'cityName' => str_replace([' ','-'],'',$card->getAddress()->getCity()),
+                    'bannerUrl' =>$card->getMasterhead()->getUrl(),
+                    'thumbUrl' => $card->getThumb()->getUrl()
+                ], [
+                    $card->getMasterhead()->getUrl(),
+                    $card->getThumb()->getUrl()
+                ]);
+            }
             if($level > $user->getLevel())
             {
+                #Update the user level
+                $user->setLevel($level);
+                #Log card's level
+                $card->setLevel($level);
                 $levels = UserLevel::getList();
                 $userLevel = array_search('LEVEL_'.$level,$levels);
+                if($level > 2)
+                {
+
+
                 $mailer->send($user->getEmail(),'Félicitations! Tu franchis un niveau sur Pix.city!',
                     'emails/cm-level-update.html.twig'
                     ,[
@@ -159,12 +184,11 @@ class CardsController extends Controller
                         'region' => $card->getProject()->getRegion()->getName(),
                         'level' => $translator->trans($userLevel)
                     ], NULL, NULL);
+                }
 
             }
-            #Update the user level
-            $user->setLevel($level);
-            #Log card's level
-            $card->setLevel($level);
+
+
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'flash.update.success');
 

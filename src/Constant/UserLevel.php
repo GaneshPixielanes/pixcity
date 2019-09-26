@@ -7,9 +7,9 @@ namespace App\Constant;
 class UserLevel
 {
     const LEVEL_1 = 0;
-    const LEVEL_2 = 5;
+    const LEVEL_2 = 2;
     const LEVEL_3 = 10;
-    const LEVEL_4 = 20;
+    const LEVEL_4 = 15;
     const LEVEL_5 = '';
 
     public function getList()

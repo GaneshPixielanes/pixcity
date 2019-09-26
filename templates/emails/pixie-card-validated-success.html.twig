@@ -2,34 +2,32 @@
 
 {% block body %}
 
-<p>Bonjour {{ firstName }},</p>
-<p>
-Merci encore pour ta dernière card. Comme elle est canon, elle sera en ligne dans quelques minutes sur Pix.City et tu vas pouvoir la partager sur Instagram (et tes autres réseaux !).
-</p>
+ <p>Bonjour {{ firstName }},</p>
+
+ <p>
+  Merci encore pour ta dernière card. Comme elle est canon, elle sera en ligne dans quelques minutes sur Pix.City et tu vas pouvoir la partager sur Instagram (et tes autres réseaux !).
+
+ </p>
 <p>
  Tu peux la consulter <a href="{{ url('front_homepage_index')~slug~'.html' }}">ici</a> !
 
 </p>
 <p>
- Si ça te tente, pourquoi ne pas faire un post sur ton insta ?  Nous pourrions ainsi te reposter et parler de toi!</p>
- <p>
-Nous te proposons de publier ces deux photos que tu as publiées dans ta CARD. 
-Pense à nous faire un petit coucou dans ton post en ajoutant <strong><a href="https://www.instagram.com/pix_city/?hl=fr">@pix_city</a></strong> ;)
-</p>
- <p>
-  <img src="{{ url('front_homepage_index') }}/{{ thumbUrl }}" style="height:250px;width:250px"/>
- </p>
- <img src="{{ url('front_homepage_index') }}/{{ bannerUrl }}" style="height:250px;width:450px"/>
- </p>
-</p>
-<p>
-#pixcity #pixcity{{ cityName }} #pixcity{{ regionName }}
-</p>
-<p>
-Merci,
-</p>
- <p>
-  La Team Pix.City
- </p>
+ Si ça te tente, pourquoi ne pas faire un post sur ton insta ? Nous pourrions ainsi te reposter et parler de toi!
 
+</p>
+<p>
+ Nous te proposons de publier ces deux photos que tu as publiées dans ta CARD. Pense à nous faire un petit coucou dans ton post en ajoutant @pix_city ;)
+
+</p>
+<p>
+ #pixcity #pixcity{{ cityName }} #pixcity{{ regionName }}
+
+</p>
+<p>
+ Merci,
+<br/>
+ L’équipe Pix.City
+
+</p>
 {% endblock %}

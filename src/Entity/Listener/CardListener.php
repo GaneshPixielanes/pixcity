@@ -40,25 +40,30 @@ class CardListener
                 $project->setStatus(CardProjectStatus::VALIDATED);
             }
 
-            if(!empty($project) && (!empty($projectBeforeUpdate) && $projectBeforeUpdate["status"] !== $card->getStatus())  && $projectBeforeUpdate['level']== $card->getLevel()){
-
-                //--------------------------------
-                // Send email on card validation
-
-                $this->mailer->send($project->getPixie()->getEmail(), 'Bravo ta card a été mise en ligne!', 'emails/pixie-card-validated-success.html.twig', [
-                    'firstName' => $project->getPixie()->getFirstname(),
-                    'cardName' => $project->getName(),
-                    'regionName' => str_replace([' ','-'],'',$project->getRegion()->getName()),
-                    'slug' => $card->getSlug(),
-                    'card' => $card,
-                    'cityName' => str_replace([' ','-'],'',$card->getAddress()->getCity()),
-                    'bannerUrl' =>$card->getMasterhead()->getUrl(),
-                    'thumbUrl' => $card->getThumb()->getUrl()
-                ], [
-                    $card->getMasterhead()->getUrl(),
-                    $card->getThumb()->getUrl()
-                ]);
-            }
+//            if(!empty($project) &&
+//                (!empty($projectBeforeUpdate) &&
+//                    $projectBeforeUpdate["status"] !== $card->getStatus())  &&
+//                $projectBeforeUpdate['level'] == $card->getLevel() &&
+//                count($card->getPixie()->getCards()) > 1
+//            ){
+//
+//                //--------------------------------
+//                // Send email on card validation
+//
+////                $this->mailer->send($project->getPixie()->getEmail(), 'Bravo ta card a été mise en ligne!', 'emails/pixie-card-validated-success.html.twig', [
+////                    'firstName' => $project->getPixie()->getFirstname(),
+////                    'cardName' => $project->getName(),
+////                    'regionName' => str_replace([' ','-'],'',$project->getRegion()->getName()),
+////                    'slug' => $card->getSlug(),
+////                    'card' => $card,
+////                    'cityName' => str_replace([' ','-'],'',$card->getAddress()->getCity()),
+////                    'bannerUrl' =>$card->getMasterhead()->getUrl(),
+////                    'thumbUrl' => $card->getThumb()->getUrl()
+////                ], [
+////                    $card->getMasterhead()->getUrl(),
+////                    $card->getThumb()->getUrl()
+////                ]);
+//            }
         }
 
         if(CardStatus::REFUSED === $card->getStatus()){
