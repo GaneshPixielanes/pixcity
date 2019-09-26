@@ -21,7 +21,7 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
-        $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
 
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
         $this->mangoPayMoney = new MangoPay\Money();
@@ -95,9 +95,8 @@ class MangoPayService
         $payIn->ExecutionDetails = new MangoPay\PayInExecutionDetailsWeb();
         $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
         $payIn->ExecutionDetails->Culture = "EN";
-        //for customise payment logo
-        $payIn->ExecutionDetails->TemplateURLOptions = new MangoPay\PayInTemplateURLOptions();
-        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/'.$transaction;
+//        $payIn->ExecutionDetails->TemplateURLOptions = new MangoPay\PayInTemplateURLOptions();
+//        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/'.$transaction;
         $result =  $this->mangoPayApi->PayIns->Create($payIn);
 
         return $result->ExecutionDetails->RedirectURL;
