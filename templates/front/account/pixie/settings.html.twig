@@ -548,6 +548,19 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 {{ form_row(form.pixie.billing.status) }}
+
+                                <div class="col-sm-6 form-row form-group type-choice {% if app.user.pixie.billing.status != 'microentrepreneur' %}hidden{% endif %} ">
+                                    <label>
+                                        <label class="form-label oblig required oblig" for="user_pixie_billing_status">Microentreprenuer Type</label></label><div class="input-container ">
+                                        <div class="dropdown-container">
+                                            <div class="dropdown">
+                                                <select id="microentreprenuer_type" class="form-control" aria-invalid="false">
+                                                    <option value="with_tva" {% if app.user.pixie.billing.tva != '' %}selected="selected" {% endif %}>Micro-entreprise (assujetti à la TVA)</option>
+                                                    <option value="without_tva" {% if app.user.pixie.billing.tva == '' %}selected="selected" {% endif %}>Micro-entreprise (non assujetti à la TVA)</option></select>
+                                            </div>
+                                        </div></div>
+
+                                </div>
                             </div>
                         </div>
 
@@ -793,8 +806,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button type="submit" class="btn btn-pill btn-pink pull-right" id="submitCMDetails">Soumettre ma candidature</button>
+                        {% if app.user.pixie.billing.status == 'individualregistration'%}
+                            <a href=":javascript;" data-toggle="modal" data-target="#individualAlertModal" class="btn btn-pill btn-pink pull-right">Soumettre ma candidature</a>
 
+                        {% else %}
+                        <button type="submit" class="btn btn-pill btn-pink pull-right" id="submitCMDetails">Soumettre ma candidature</button>
+                        {% endif %}
                         <a href="{{ path('front_pixie_account_settings') }}" class="btn cancelModif pull-right">Annuler la modification</a>
                     </div>
                 </div>
@@ -835,7 +852,25 @@
          data-upload-route="{{ path('front_user_ajax_upload_avatar') }}"
     ></div>
             <input type="hidden" id="hit_url" value="{{ check_url }}">
+            <!-- Modal -->
+            <div id="individualAlertModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Info</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                “Vous devez changer votre statut “En cours d’immatriculation” vers un statut “Société” ou “Micro-entreprise” pour pouvoir devenir City-maker services”
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
 {% endblock %}
 
