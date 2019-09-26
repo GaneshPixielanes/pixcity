@@ -12,7 +12,10 @@
 
     <div id="contract" class="container">
 
-        <h1>Contrat de cession de droits de propriété intellectuelle</h1>
+        <h1>
+            CONTRAT DE CESSION DE DROITS<br/>
+            DE PROPRIÉTÉ INTELLECTUELLE
+        </h1>
 
         <p>
             <strong>ENTRE LES SOUSSIGNÉS :</strong>
@@ -36,6 +39,9 @@
             {% endif %}
 
             <br>en qualité de micro-entrepreneur ou d’autoentrepreneur
+            {% if user.pixie.billing.tva != '' %}
+            <br>Numéro de TVA : {{ user.pixie.billing.tva }}
+            {% endif %}
         </p>
 
         {% elseif contract.status == 'individualregistration' %}
@@ -67,31 +73,57 @@
             <br>D'une part,
             <br>Et
             <br>
-            <br>La société PIXIELANES, Société au capital de {{ contract.price }} euros, immatriculée en France sous le numéro de RCS 833 698 962 à Compiègne, dont le siège social est situé au 10 rue des Pervenches, 60560 ORRY LA VILLE, FRANCE
-            <br>
-            <br>Dont le numéro de TVA intracommunautaire est : FR10833698962
-            <br>
-            <br>Prise en la personne de son représentant légal domicilié audit siège en cette qualité, Mathias CHAUMON
-            <br>
-            <br>Ci-dessous dénommée « la Société »,
-            <br>D'autre part,
+            <br>La société PIXIELANES, Société au capital de {{ contract.price }} euros, immatriculée en France
+                sous le numéro de RCS 833 698 962 à Compiègne, dont le siège social est situé
+                au 10 rue des Pervenches, 60560 ORRY LA VILLE, FRANCE
+            <br/> Dont le numéro de TVA intracommunautaire est : FR10833698962
+            <br/>Prise en la personne de son représentant légal domicilié audit siège en cette qualité, Mathias CHAUMON
+        </p>
+        <p>
+            <strong>Ci-dessous dénommée « la Société »,</strong>
+            <br/>D'autre part,
+        </p>
+        <h1>ETANT PRÉALABLEMENT RAPPELÉ QUE :</h1>
+
+        <p>
+            La “société” PIXIELANES édite le site pix.city, guide d'hôtels, de restaurants et d’activités,
+            permettant le cas échéant leur réservation en ligne. Ce site fait également l’objet de
+            déclinaisons sur les réseaux sociaux, et notamment Instagram sous le compte « Pix.city / Pix_City».
+            Ce guide requiert la publication de contenus textes / photos et vidéos (ci-après dénommés « Cards »)
+            réalisés par des instagrammeurs locaux choisis à raison de leur connaissance et de leur expérience des
+            lieux ou services décrits dans les Cards, et ci-après dénommés les “Prestataires”.
+        </p>
+        <p>
+            Le Prestataire est inscrit sur le site Pix.City, et a accepté les conditions générales d'utilisation
+            figurant à l'adresse <a href="https://www.pix.city/p/conditions-generales-dutilisation" target="_blank">https://www.pix.city/p/conditions-generales-dutilisation</a>
+        </p>
+        <p>
+            La société PIXIELANES édite aussi le site <a href="www.pix.city/services" target="_blank">www.pix.city/services</a>
+            qui met en relation des influenceurs locaux et des community managers avec des commerçants,
+            boutiques qui ont besoin de faire gérer leur visibilité locale digitale. Ce site est ouvert aux
+            prestataires qui collaborent sur <a href="www.pix.city" target="_blank">www.pix.city</a> mais qui
+            doivent au préalable avoir rempli certaines conditions détaillées ci dessous pour y accéder.
+        </p>
+        <p>
+            Le Prestataire inscrit sur Pix.City Services, aacepte les conditions générales d'utilisation figurant à
+            l'adresse  <a href="https://www.pix.city/p/conditions-generales-dutilisation-et-de-vente-services" target="_blank">https://www.pix.city/p/conditions-generales-dutilisation-et-de-vente-services</a>
         </p>
 
-        <h1>Etant préalablement rappelé que :</h1>
+        <p>
+            La Société contracte aux termes des présentes, aux fins d’acquérir les droits d'exploitation sur le contenu et les photos, sous condition de sélection du Prestataire,
+            conformément aux conditions générales d'utilisation, et dans les conditions ci­ après définies.
+        </p>
 
-        <p>La “société” PIXIELANES édite le site pix.city, guide d'hôtels, de restaurants et d’activités, permettant le cas échéant leur réservation en ligne. Ce site fait également l’objet de déclinaisons sur les réseaux sociaux, et notamment Instagram sous le compte « Pix.city / Pix_City». Ce guide requiert la publication de contenus textes / photos et vidéos (ci-après dénommés « Cards ») réalisés par des instagrammeurs locaux choisis à raison de leur connaissance et de leur expérience des lieux ou services décrits dans les Cards, et ci-après dénommés les “Prestataires”.</p>
+        <p>
+            IL A ETE CONVENU CE QUI SUIT :
+        </p>
 
-        <p>Le Prestataire est inscrit sur le site Pix.City, et a accepté les conditions générales d'utilisation figurant à l'adresse https://www.Pix.City.fr/cgu/</p>
-
-        <p>La Société contracte aux termes des présentes, aux fins d’acquérir les droits d'exploitation sur le contenu et les photos, sous condition de sélection du Prestataire, conformément aux conditions générales d'utilisation, et dans les conditions ci­ après définies.</p>
-
-        <h1>Il a ete convenu ce qui suit :</h1>
 
         <h3>Article 1 ­ Objet</h3>
 
         <p>Le Prestataire déclare bénéficier de sa pleine capacité juridique et / ou des pouvoirs nécessaires à signer le présent contrat de cession de droit.</p>
 
-        <p>Si le Prestataire est sélectionné conformément aux conditions générales d’utilisation, et que ses Cards sont conformes aux prescriptions édictées par la Société, le prestataire accepte de céder à la Société les droits d'exploitation ci­après définis, et ce exclusivement au(x) oeuvre(s) ci­après, dénommées également «Card » ci-dessous.</p>
+        <p>Si le Prestataire est sélectionné conformément aux conditions générales d’utilisation, et que ses Cards sont conformes aux prescriptions édictées par la Société, le prestataire accepte de céder à la Société les droits d'exploitation ci­-après définis, et ce exclusivement au(x) oeuvre(s) ci­-après, dénommées également «Card » ci-dessous.</p>
 
         <h1>{{ contract.card_project_name }}</h1>
 
@@ -101,11 +133,15 @@
 
         <p>Un document partagé permettra aux Prestataires de voir les titres des Cards déjà rédigés dans la région, ville, département, territoire concerné, et correspondant à un hôtel, restaurant ou service de loisirs. Le Prestataire s’engage à ne fournir de Card dont l’objet n’a pas d’ores et déjà été traité dans le document partagé. Le Prestataire reconnait et accepte que la Société n’acceptera que les Cards relatives à de nouveaux établissements ou services. En cas de doublon, seule la Card reçue en premier par la Société fera l’objet d’un contrat de cession, la date figurant sur les serveurs de la Société faisant foi.</p>
 
-        <p>Le prestataire s’engage à communiquer à Pix.City les Restaurants / Activités / Hôtels sur lesquels il souhaite rédiger (ou par le biais d’une interview audio) préalablement avant rédaction pour acceptation par l’équipe éditoriale afin d’éviter les doublons sus-mentionnés.</p>
+        <p>Un formulaire en ligne permettra au Prestataire de proposer les titres des Cards qu’il souhaite rédiger dans la région, ville, département, territoire concerné, et correspondant à un hôtel, restaurant ou service de loisirs. Le Prestataire s’engage à ne fournir de Card dont l’objet n’a pas d’ores et déjà été traité sur le site www.pix.city. Le Prestataire reconnaît et accepte que la Société n’acceptera que les Cards relatives à de nouveaux établissements ou service. En cas de doublon, seule la Card reçue en premier par la Société fera l’objet d’un contrat de cession, la date figurant sur les serveurs de la Société faisant foi. </p>
 
         <p>La présente cession comporte ainsi pour la Société, le droit de diffuser, d'exploiter, de faire exploiter les Cards ci­-dessus décrites selon les modalités suivantes, et/ou le droit de céder les droits suivants :</p>
 
-        <p>Le droit de reproduction de diffusion, d’adaptation et de reproduction :</p>
+        <p>Le prestataire s’engage à communiquer à Pix.City les Restaurants / Activités / Lieux sur lesquels il souhaite rédiger (ou par le biais d’une interview audio) préalablement avant rédaction pour acceptation par l’équipe éditoriale afin d’éviter les doublons sus-mentionnés.</p>
+
+        <p>La présente cession comporte ainsi pour la Société, le droit de diffuser, d'exploiter, de faire exploiter les Cards ci­-dessus décrites selon les modalités suivantes, et/ou le droit de céder les droits suivants :</p>
+
+        <p><strong><u> Le droit de reproduction de diffusion, d’adaptation et de reproduction :</u></strong></p>
 
         <p>Le droit de faire exploiter ou d’exploiter les Cards, en tout ou partie, sur le site pix.city, et/ou sur les comptes de réseaux sociaux actuels et futurs de la Société.</p>
 
@@ -119,27 +155,28 @@
 
         <p>Le droit de faire établir ou faire établir toute copie, en tel nombre qu’il plaira à la Société, tous originaux, doubles, copies sur tous supports des œuvres vidéos.</p>
 
-        <p>Le droit de communiquer au public, en intégralité ou par extrait, des œuvres vidéos.</p>
+        <p>Le droit de communiquer au public, en intégralité ou par extrait, des œuvres vidéos. </p>
 
         <p>Le droit de retoucher et/ou de modifier le fichier numérique de l’œuvre, notamment pour inclure des corrections de couleurs, la mise en valeur ou la préservation de détails et toutes corrections rendues nécessaires par la saisie numérique, sous réserve du droit moral de l’auteur.</p>
 
         <p>Le droit d'adapter les Cards aux règles d'optimisation du référencement naturel sur Internet, y compris de substituer certains mots par d’autres approchant, de manière à permettre une apparition des Cards optimisées sur les principaux moteurs de recherche, le droit d'intégrer les Cards au sein d'une œuvre multimédia ;</p>
 
-        <p>Le droit de compilation, d’extraction, de traduction en toutes langues des Cards à destination de tous pays et de représentation des Cards ainsi traduites.</p>
+        <p>Le droit de compilation, d’extraction, de traduction en toutes langues des Cards à destination de tous pays et de représentation des Cards ainsi traduites.
+        </p>
 
         <p>Le droit de communiquer ou de faire communiquer, de mettre à la disposition du public les Cards reproduites, leurs adaptations, traductions en toutes langues et en tous pays, par tous procédés de diffusion, notamment par les réseaux numériques, électroniques ou optométriques, en particulier sur les réseaux internet et mobile, par tout moyen de télécommunication, notamment par voie hertzienne, par satellite, par télédiffusion et par tout moyen de câblodistribution, ou par tout autre procédé analogue ou à venir et sur tout support, digitaux (mobile, smartphones, tablettes, écrans de télévisions, lunettes, écrans automobiles  ou tout autre support digitaux existant ou à venir, ou par voie de presse, ou par représentation publique (exposition, conférence, autre).</p>
 
-        <p>Le droit de diffusion de toute ou partie des œuvres vidéo au public, dans le monde entier, en toute langue, par tout mode ou procédé, soit directement, soit par l’intermédiaire de tout tiers, en tout ou partie, à des fins commerciales publicitaires, promotionnelles, professionnelles, d'information ou artistique, et/ou dans toute manifestation publique, festival, cinéma, payant ou non, salon et autres lieux publics ou accessibles au public, dans le cadre commercial ou non commercial,</p>
+        <p>Le droit de diffusion de toute ou partie des œuvres vidéo au public, dans le monde entier, en toute langue, par tout mode ou procédé, soit directement, soit par l’intermédiaire de tout tiers, en tout ou partie, à des fins commerciales publicitaires, promotionnelles, professionnelles, d'information ou artistique, et/ou dans toute manifestation publique, festival, cinéma, payant ou non, salon et autres lieux publics ou accessibles au public, dans le cadre commercial ou non commercial, </p>
 
         <p>Le droit d’utiliser des extraits des vidéos, de faire éditer graphiquement des éléments de vidéos sous forme d’extraits, d’ouvrages, de photographies, qui pourront être diffusés dans le cadre du site, des comptes de réseaux sociaux de la société, ou à titre promotionnel sur tout support, numérique, par voie de presse, ou sur tout support papier.</p>
 
         <p>Le droit de fabriquer, faire fabriquer, commercialiser, faire commercialiser, distribuer ou faire distribuer tout produit dérivé de tout ou partie des Cards, notamment tout objet qui incorpore dans sa forme, son contenu, sa présentation, sa décoration etc. tout ou partie de l’œuvre, et notamment sous forme de cartes postale, poster, livre, vêtement, objet, sous réserve de détermination d’un droit proportionnel aux éventuelles recettes. Ce droit proportionnel ne s’appliquera pas en cas d’utilisation de ces supports à des fins publicitaires ou promotionnelles au bénéfice de la Société, ou lorsque l’exploitation fait partie du champ des exceptions prévues par l’article L 131-4 du Code de la propriété intellectuelle.</p>
 
-        <p>Le Prestataire garantit que les photographies contenues dans la Card sont originales, ne contreviennent pas à la réglementation applicable ni aux droits des tiers, et respectent le guide des bonnes pratiques disponible à partir du compte pix.city du Prestataire.</p>
+        <p>Le Prestataire garantit que les photographies contenues dans la Card sont originales, ne contreviennent pas à la réglementation applicable ni aux droits des tiers, et respectent le guide des bonnes pratiques disponible à partir du compte pix.city du Prestataire. </p>
 
-        <p>La cession des droits de propriété intellectuelle sur les Cards dans les conditions sus-mentionnées est réalisée à titre exclusif, mais le Prestataire conserve la possibilité de diffuser sur son ou ses comptes de réseau social tout ou partie de l’œuvre cédée dans le cadre des présentes.</p>
+        <p>La cession des droits de propriété intellectuelle sur les Cards dans les conditions sus-mentionnées est réalisée à titre exclusif, mais le Prestataire conserve la possibilité de diffuser sur son ou ses comptes de réseau social tout ou partie de l’œuvre cédée dans le cadre des présentes. </p>
 
-        <p>En outre, le Prestataire s’engage en tout état de cause à diffuser cette Card sur son site Internet ou son blog  s’il en édite un dont le thème est en relation avec la ville, les loisirs ou les services de restauration et d’hébergement objet de la Card, en mentionnant la marque « Pix.city ».</p>
+        <p>En outre, le Prestataire s’engage en tout état de cause à diffuser cette Card sur son site Internet ou son blog  s’il en édite un dont le thème est en relation avec la ville, les loisirs ou les services de restauration et d’hébergement objet de la Card, en mentionnant la marque « Pix.city ».</p>
 
         <p>Le droit de paternité : Le nom ou le pseudo de réseaux sociaux du Prestataire pourra être indiqué sur la Card ou à côté des photographies de la Card à la demande du Prestataire.</p>
 
@@ -151,30 +188,58 @@
 
         <p>Le prestataire reconnait et accepte que la Société pourra librement décider de cesser l’exploitation de son guide de réservation, ou de faire évoluer son service et/ou les modalités d’apparition des Cards au sein du Service.</p>
 
-        <h3>Article 3 ­ Exclusivité, confidentialité</h3>
+        <h3>Article 3 ­ Exclusivité, confidentialité </h3>
 
-        <p>Le Prestataire s'engage à ne pas céder à quelque tiers que ce soit les droits d'exploitation afférents à ce Contenu pendant la durée des présentes et de leur éventuelle reconduction.
+        <p>Le Prestataire s'engage à ne pas céder à quelque tiers que ce soit les droits d'exploitation afférents à ce Contenu pendant la durée des présentes et de leur éventuelle reconduction. </p>
 
-        <p>Le Prestataire s'engage par ailleurs à informer préalablement la Société de tout projet de cession d'autres droits d'exploitation sur ledit Contenu à quelque tiers que ce soit.
+        <p>Le Prestataire s'engage par ailleurs à informer préalablement la Société de tout projet de cession d'autres droits d'exploitation sur ledit Contenu à quelque tiers que ce soit.</p>
 
-        <p>Le Prestataire s’engage à conserver la stricte confidentialité concernant l’ensemble des informations liées à la conclusion ou l’exécution du présent contrat ou à la Société ou les clients de la Société. Cette obligation perdurera pendant une durée de 10 ans à compter de la résiliation du contrat. Le Prestataire se porte fort du respect de cette obligation par l’ensemble de ses préposés éventuels.
+        <p>Le Prestataire s’engage à conserver la stricte confidentialité concernant l’ensemble des informations liées à la conclusion ou l’exécution du présent contrat ou à la Société ou les clients de la Société. Cette obligation perdurera pendant une durée de 10 ans à compter de la résiliation du contrat. Le Prestataire se porte fort du respect de cette obligation par l’ensemble de ses préposés éventuels.</p>
 
-        <p>Le Prestataire peut communiquer les URL du site Internet de la Société (ou de l'application mobile) ou des comptes de réseaux sociaux pour lesquels il a été amené à rédiger la Card.
+        <p>Le Prestataire peut communiquer les URL du site Internet de la Société (ou de l'application mobile) ou des comptes de réseaux sociaux pour lesquels il a été amené à rédiger la Card. </P>
 
-        <h3>Article 4 ­ Rémunération du Prestataire</h3>
+
+        <h3>Article 4 ­: Contrepartie et Rémunération du Prestataire</h3>
+
+        <p>Conformément aux dispositions de l'article L.131­4 du Code de la Propriété Intellectuelle, les parties conviennent que le Prestataire, en contrepartie du contenu livré et reconnu conforme à la commande, aura accès à un système de gratifications et d’accès à de nouvelles offres du groupe Pix.city.</p>
+
+        <p>Pour cela 5 niveaux ont été mis en place pour qualifier les prestataires en fonction de leurs actions. Chaque niveau donne accès à des gratifications et offres supplémentaires détaillées ci-dessous</p>
 
         <p>
-            Conformément aux dispositions de l'article L.131­4 du Code de la Propriété Intellectuelle, les parties conviennent que le Prestataire, en contrepartie des Contenus livrés et reconnus conformes à la commande, percevra la rémunération suivante :
-            Le versement de la somme de 50 euros HT suite à la validation des 5 premières cards par la Société.
-            Cette somme sera créditée sur le compte Pix.City du Prestataire dans les 30 jours suivants la réception conforme des cinq premières cards.
+            Les 5 niveaux sont les suivants :
+            <ol>
+                <li>
+                    <u>Voyager :</u> Le prestataire est nouveau sur le site Pix.City et doit proposer via le formulaire en ligne un projet de card (www.pix.city) qui doit être accepté par la Rédaction. Ce niveau ne donne aucune gratification ni accès à aucune offre complémentaire.
+                </li>
+                <li>
+                    <u>Explorer :</u> Une fois sa première card validée et publiée sur le site www.pix.city, le prestataire a accès à l’offre de Pix.City Services (www.pix.city/services) pour y proposer ses services de community manager et d’influenceur local à destination des commerçants (si sa candidature est retenue après soumission sur le lien Espace Services désormais visible en bas de son espace city-maker connecté). Il peut toujours proposer d'autres cards à publier s’il le souhaite. Il n’a pas encore accès au système de gratification et/ou nouvelles offres de Pix.city.
+                </li>
+                <li>
+                    <u>Adventurer :</u> Ce statut correspond à 5 cards validées et publiées sur le site www.pix.city. Le prestataire a accès à l’offre de Pix.City Services (www.pix.city/services) pour y proposer ses services de community manager et d’influenceur local à destination des commerçants (si sa candidature est retenue après soumission sur le lien Espace Services désormais visible en bas de son espace city-maker connecté). Il a aussi accès à un système de gratification par parrainage (10 euros si son filleul atteint le niveau adventurer), jeux concours (lots à gagner entre 50 à 100 euros)  et mise en avant de son profil sur la home de Pix.City. Il peut toujours proposer d'autres cards à publier s’il le souhaite.
+                </li>
+                <li>
+                    <u>Ranger:</u> Ce statut correspond à 10 cards validées et publiées sur le site www.pix.city. Le prestataire a accès à l’offre de Pix.City Services (www.pix.city/services) pour y proposer ses services de community manager et d’influenceur local à destination des commerçants (si sa candidature est retenue après soumission sur le lien Espace Services désormais visible en bas de son espace city-maker connecté).Il a aussi accès à un système de gratification par parrainage (15 euros si son filleul atteint le niveau adventurer), jeux concours (lots à gagner entre 100 à 200 euros)  et mise en avant de son profil sur la home de Pix.City. Il peut toujours proposer d'autres cards à publier s’il le souhaite.
+                </li>
+                <li>
+                    <u>Nomad :</u> Ce statut correspond à 20 cards validées et publiées sur le site www.pix.city. Le prestataire a accès à l’offre de Pix.City Services (www.pix.city/services) pour y proposer ses services de community manager et d’influenceur local à destination des commerçants (si sa candidature est retenue après soumission).Il a aussi accès à un système de gratification par parrainage (20 euros si son filleul atteint le niveau adventurer), jeux concours (lots à gagner entre 200 à 500 euros) et mise en avant de son profil sur la home de Pix.City.Il peut toujours proposer d'autres cards à publier s’il le souhaite.
+                </li>
+            </ol>
+        </p>
+        <p>
+            Le règlement des jeux concours sera accessible sur chaque espace “city-maker” du prestataire en cliquant sur l’onglet “voir le concours du mois”.
+        </p>
+        <p>
+            Si le lot est un cadeau / lot / bon d’achat , il sera envoyé au prestataire suivant les règles éditées au sein des règles du concours, disponible sur le blog de Pix.city à l’adresse suivante : <a href="www.pix.city/blog" target="_blank">www.pix.city/blog.</a>
         </p>
 
-        <p>Par la suite, chaque card sera rémunérée 10 euros HT (dix euros HT) suite à la validation de la card par la société.</p>
+        <p>Le prestataire recevra par mail le résultat du cadeau pour le concours en cours et connaîtra les modalités d’expédition du cadeau obtenu. Il en sera de même si les conditions de déclenchement d’un paiement lié à une offre de parrainage est atteinte. </p>
 
-        <p>La somme des revenus sera créditée sur le compte Pix.City du Prestataire dans les 30 jours suivants la fin du mois.</p>
+        <p>La participation au système de gratification est indépendant de la participation du prestataire à l’offre Pix.city Services. Celui ci n’est donc en aucun cas obligé de participer à cette offre. Les missions réalisées dans le cadre de l’offre Pix.City Services sont rémunérées directement sur la plateforme de Pix.city Services de manière indépendante au système de gratification proposé ci-dessus par les clients achetant des prestations auprès des prestataires (city-makers).</p>
 
-        <p>Le Prestataire pourra ensuite la retirer à sa convenance dès lors que son encours de compte aura atteint le seuil minimal de retrait, soit la somme de vingt (20) euros.</p>
-        <p>Si le Prestataire ne rédigeait plus de Cards sélectionnées pendant un an sur le Service, le prix sera versé quel que soit son montant, dans un délai maximum de 30 jours, sur demande adressée par mail à Pix.City : contract@pix.city</p>
+        <p>Les cards déjà réalisées et étant inscrite dans l’onglet Rémunération mais non encore payées peuvent faire l’objet d’une demande de paiement par mail à redaction@pix.city jusqu’au 30/10/19</p>
+
+        <p>Les niveaux seront automatiquement modifiés dans le dahsboard du prestataire city-maker dès lors qu’un nouveau niveau est atteint. </p>
+
 
         <h3>Article 5 ­ Garanties données par le Prestataire</h3>
 
@@ -194,7 +259,7 @@
 
         <p>Le Prestataire garantit la Société contre toute action en contrefaçon et/ou en parasitisme qui résulteraient des droits cédés sur le Contenu.</p>
 
-        <p>Le Prestataire garantit que son Contenu est conforme à la législation française et toute autre législation applicable, notamment au regard de la langue utilisée, en ce compris les dispositions relatives à la diffamation et l'injure, à la vie privée et au droit à l'image, à l'autorité de la justice, à la protection morale de la jeunesse, au respect de la présomption d'innocence, à l'atteinte aux bonnes mœurs ou à la contrefaçon.</p>
+        <p>Le Prestataire garantit que son Contenu est conforme à la législation française et toute autre législation applicable, notamment au regard de la langue utilisée, en ce compris les dispositions relatives à la diffamation et l'injure, à la vie privée et au droit à l'image, à l'autorité de la justice, à la protection morale de la jeunesse, au respect de la présomption d'innocence, à l'atteinte aux bonnes mœurs ou à la contrefaçon. </p>
 
         <p>Il garantit en particulier que son œuvre ne comporte aucun emprunt ­ même partiel ­ à une autre œuvre, emprunt qui serait de nature à engager la responsabilité de la Société.</p>
 
@@ -204,16 +269,22 @@
 
         <p>Le Prestataire garantit à la Société être titulaire des droits et détenir toute autorisation requise à la cession des droits objets des présentes, et s’engage à indemniser la Société de tous frais, condamnation ou préjudice, nés de toute action ou réclamation de tout tiers liée à la propriété ou à l’utilisation de droits d’auteur, de droits voisins ou de droits de la personnalité, que le Prestataire aurait dû détenir ou obtenir en application des présentes.</p>
 
+        <p>Le statut devra être mis à jour si le prestataire réunit les conditions pour participer à l’offre Pix. City Services, en choisissant parmi les 3 premiers statuts nommés ci-dessus.</p>
+
         <p>En conséquence de cette garantie, l'auteur s'engage expressément, en cas de condamnations prononcées à l'encontre de la Société par toutes juridictions ­ notamment civiles ou pénales ­ de régler ou rembourser l'intégralité des sommes qui pourraient être réclamées à la Société, quelles que soient leur nature (dommages et intérêts, frais de dépense, frais de publication, dépens, indemnité due sur le fondement de l'article 700 du Nouveau Code de Procédure Civile, etc.).</p>
 
+        <p>Sans préjudice de ce qui précède, et dans l’éventualité où l’exploitation par la Société des Cards fournis par le Prestataire, ainsi que des droits y afférents - serait compromise ou empêchée à la suite de toute réclamation ou action en justice exercée par un tiers, le Prestataire s’engage à son choix et à ses frais : </p>
+
         <p>
-            Sans préjudice de ce qui précède, et dans l’éventualité où l’exploitation par la Société des Cards fournis par le Prestataire, ainsi que des droits y afférents - serait compromise ou empêchée à la suite de toute réclamation ou action en justice exercée par un tiers, le Prestataire s’engage à son choix et à ses frais :
-            à apporter les modifications nécessaires de sorte que les Cards fournies par ses soins ne comportent plus d’élément litigieux ;
-            soit, à acquérir les droits et autorisations nécessaires à leur utilisation
+            <ul>
+                <li>à apporter les modifications nécessaires de sorte que les Cards fournies par ses soins ne comportent plus d’élément litigieux ;</li>
+                <li> soit, à acquérir les droits et autorisations nécessaires à leur utilisation</li>
+
+            </ul>
         </p>
-
-        <p>La présente garantie restera en vigueur postérieurement à l'expiration ou la résiliation du Contrat pour une durée égale à la durée de protection légale des droits de propriété intellectuelle afférents aux Créations, conformément aux législations et réglementations applicables.</p>
-
+        <p>
+            La présente garantie restera en vigueur postérieurement à l'expiration ou la résiliation du Contrat pour une durée égale à la durée de protection légale des droits de propriété intellectuelle afférents aux Créations, conformément aux législations et réglementations applicables.
+        </p>
         <h3>Article 6 ­ Clause résolutoire</h3>
 
         <p>En cas de violation des obligations essentielles du présent contrat, et quinze jours après l'envoi d'une lettre recommandée avec accusé de réception restée sans effet, la présente convention sera résiliée de plein droit sans qu'il soit besoin d'une formalité judiciaire quelconque, aux torts et griefs de la partie défaillante, si bon semble à l'autre partie, sous réserve de tous dommages et intérêts éventuels.</p>
@@ -241,12 +312,9 @@
         <p>Le présent contrat est soumis au droit français.</p>
 
         <p>Pour tout litige né de l'interprétation ou de l'exécution du présent contrat, il est fait attribution expresse de juridiction aux tribunaux compétents du ressort de la Cour d’Appel de Paris.</p>
-
-        <p>&nbsp;</p>
-
         <p><strong>Le  {{ contract.date | date('d/m/Y') }}</strong></p>
 
-        <p>&nbsp;</p>
+
 
     </div>
     <!--/.wrapper-->
