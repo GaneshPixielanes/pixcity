@@ -7,6 +7,20 @@ require('../components/cropper') ;
 
 
 jQuery(document).ready(function() {
+    $('#microentreprenuer_type').on('change', function()
+    {
+        if($(this).val() == 'without_tva')
+        {
+            $('#user_pixie_billing_tva').val('');
+        }
+        checkPixieStatus();
+
+    });
+
+    if($('#user_pixie_billing_status').val() == 'company' || $('#user_pixie_billing_status').val() == 'microentrepreneur')
+    {
+        $("#user_pixie_billing_status option[value='individualregistration']").remove();
+    }
     //---------------------------------------------
     // Refresh Froala on tab change (dispatch a window resize event)
     //---------------------------------------------
@@ -51,14 +65,28 @@ jQuery(document).ready(function() {
             $("#user_pixie_billing_tva").prop("required", true).parents(".form-row").find("label").first().addClass("oblig");
         }
         else {
+
             $("#user_pixie_billing_companyName, #user_pixie_billing_rcs").parents(".form-row").hide();
             $("#user_pixie_billing_firstname, #user_pixie_billing_lastname").parents(".form-row").show();
             $("#user_pixie_billing_tva").prop("required", false).parents(".form-row").find("label").first().removeClass("oblig");
         }
-
-        if($("#user_pixie_billing_status").val() == 'microentrepreneur')
+        if($('#user_pixie_billing_status').val() != 'microentrepreneur')
         {
-            $("#user_pixie_billing_tva").parents(".form-row");
+            $('#microentreprenuer_type').parents('.form-row').hide();
+        }
+        else
+        {
+            $('#microentreprenuer_type').parents('.form-row').show();
+        }
+        if($("#microentreprenuer_type").val() == 'with_tva' || isPixieStatusCompany())
+        {
+            $("#user_pixie_billing_tva").parents(".form-row").show();
+            $("#user_pixie_billing_tva").prop("required", "required").parents(".form-row").find("label").first().addClass("oblig");
+        }
+        else
+        {
+            $("#user_pixie_billing_tva").parents(".form-row").hide();
+            $("#user_pixie_billing_tva").prop("required", false).parents(".form-row").find("label").first().removeClass("oblig")
         }
     }
 
@@ -94,7 +122,18 @@ jQuery(document).ready(function() {
     //---------------------------------------------
 
     function isPixieTva() {
-        return ($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() === "company");
+        if($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() === "company")
+        {
+            return true;
+        }
+        else if($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() == "microentrepreneur" && $('#microentreprenuer_type').val() == "with_tva")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     function checkPixieCountry() {
@@ -316,6 +355,6 @@ $(document).ready(function () {
 
     });
 
-    // $('.nav-tabs')
+
 });
 

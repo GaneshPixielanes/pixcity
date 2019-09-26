@@ -28,6 +28,7 @@ class MangoPayService
         $this->mangoPayRefund = new MangoPay\Refund();
     }
 
+
     public function createUser(MangoPay\UserNatural $userNatural)
     {
         return $this->mangoPayApi->Users->Create($userNatural);
