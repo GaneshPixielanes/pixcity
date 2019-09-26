@@ -186,6 +186,7 @@ class MissionController extends Controller
         }
 
 
+
         if($result['tax'] != 0){
 
             $tax_value = $tax->getValue() / 100 * $margin;
@@ -202,9 +203,14 @@ class MissionController extends Controller
 
         }else{
 
-            $fee = $margin;
-        }
+            if($result['need_to_pay'] != 0){
+                $fee = $amount - $margin;
+            }else{
+                $fee = $margin;
+            }
 
+
+        }
 
 
         $userMissionTblId = $missionRepo->findOneBy(['id'=>$id]);

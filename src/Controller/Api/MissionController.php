@@ -108,14 +108,17 @@ class MissionController extends Controller
 
         $result = [];
 
-
         $result['price'] = $last_result['client_price'];
         $result['tax'] = $last_result['client_tax'];
         $result['total'] = $result['price'] + $result['tax'];
         $result['advance_payment'] = $first_result['client_total'];
         $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
-        $result['refund_amount'] = $result['advance_payment'] - $result['total'];
-        $result['fess'] = $first_result['pcs_total'] - $last_result['pcs_total'];
+        $result['refund_amount'] = $last_result['pcs_total'];
+        $result['persent_price'] = $first_result['cm_price'] - $last_result['cm_price'];
+        $result['display_price'] = $last_result['client_price'] - $last_result['cm_price'];
+        $result['margin'] =  $result['display_price'] - $result['persent_price'];
+        $result['fess'] = $result['margin'] + (0.2 * $result['margin']);
+
 
         if(is_null($mission) || $mission->getClient()->getId() != $this->getUser()->getId())
         {
@@ -203,10 +206,11 @@ class MissionController extends Controller
                     if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
 
+                        $new_result = $missionPaymentRepository->getPrices($result['persent_price'], $margin->getValue(), $tax->getValue(), $cityMakerType);
 
-                        $clientTransaction->setAmount($result['refund_amount']);
-                        $clientTransaction->setTotalAmount($first_result['client_total']);
-                        $clientTransaction->setFee($result['fess']);
+                        $clientTransaction->setAmount($new_result['client_total']);
+                        $clientTransaction->setTotalAmount($new_result['client_total']);
+                        $clientTransaction->setFee($new_result['pcs_total']);
 
                         $status = MissionStatus::TERMINATED;
 
@@ -214,7 +218,7 @@ class MissionController extends Controller
 
                             $clientTransaction->setTransactionType('Refund Partial');
 
-                            $response = $mangoPayService->refundPaymentWithFee($transaction,$result['refund_amount'] + $result['fess'],$result['fess']);
+                            $response = $mangoPayService->refundPaymentWithFee($transaction,$new_result['client_total'] - $new_result['pcs_total'],$new_result['pcs_total']);
                             $clientTransaction->setMangopayTransactionId($response);
 
                         }
