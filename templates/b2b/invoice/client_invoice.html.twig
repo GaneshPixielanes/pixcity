@@ -143,19 +143,35 @@
                                 <td>{{ mission.userMissionPayment.clientTax|round(2, 'floor') }} €</td>
                             </tr>
                         {% endif %}
+                        {% if mission.isTvaApplicable is not null %}
                         <tr>
                             <td></td>
                             <td class="text-dargblue font-weight-bold">SOUS TOTAL HT</td>
                             <td></td>
                             <td class="text-dargblue font-weight-bold">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} € <br><br></td>
                         </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-dargblue font-weight-bold">TOTAL TTC</td>
+                                <td></td>
+                                <td class="text-dargblue font-weight-bold">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td></td>
+                                <td class="text-dargblue font-weight-bold">SOUS TOTAL HT</td>
+                                <td></td>
+                                <td class="text-dargblue font-weight-bold">{{ mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientTax | round(2, 'floor') }} € <br><br></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-dargblue font-weight-bold">TOTAL TTC</td>
+                                <td></td>
+                                <td class="text-dargblue font-weight-bold">{{ mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientTax | round(2, 'floor') }} €</td>
+                            </tr>
+                        {% endif %}
 
-                        <tr>
-                            <td></td>
-                            <td class="text-dargblue font-weight-bold">TOTAL TTC</td>
-                            <td></td>
-                            <td class="text-dargblue font-weight-bold">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</td>
-                        </tr>
+
                         </tbody>
                     </table>
                 </div>
