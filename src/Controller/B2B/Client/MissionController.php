@@ -213,6 +213,7 @@ class MissionController extends Controller
         }
 
 
+
         $userMissionTblId = $missionRepo->findOneBy(['id'=>$id]);
         $tansClientId = $clientInfoRepository->findOneBy(['client'=>$userMissionTblId->getClient()]);
         //$tansClientId = $clientTransactionRepository->findOneBy(['user'=>$userMissionTblId->getClient()]);
