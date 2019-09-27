@@ -6,9 +6,28 @@ require('../components/froala-max') ;
 require('../components/cropper') ;
 
 
+
 jQuery(document).ready(function() {
+
+    var missionCount = $('#api-box').attr('data-mission-count');
+    var lastSelectedStatus = $("#user_pixie_billing_status option:selected");
+    var lastSelectedType = $("#microentreprenuer_type option:selected");
+
+    $('#microentreprenuer_type, #user_pixie_billing_status').on('change', function(e){
+       if(missionCount > 0)
+       {
+           e.preventDefault();
+           e.stopImmediatePropagation();
+           $('#ongoingMissionsModal').modal('show');
+           lastSelectedStatus.prop("selected", true);
+           lastSelectedType.prop("selected", true);
+           return false;
+       }
+    });
+
     $('#microentreprenuer_type').on('change', function()
     {
+
         if($(this).val() == 'without_tva')
         {
             $('#user_pixie_billing_tva').val('');
