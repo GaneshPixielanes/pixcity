@@ -25,7 +25,7 @@
         color:#fff;
         padding:9px 15px;
         border-bottom:1px solid #eee;
-        background-color: #30b996;
+        background-color: #ed5485;
         -webkit-border-top-left-radius: 5px;
         -webkit-border-top-right-radius: 5px;
         -moz-border-radius-topleft: 5px;
@@ -851,19 +851,22 @@
     ></div>
             <input type="hidden" id="hit_url" value="{{ check_url }}">
             <!-- Modal -->
-            <div id="individualAlertModal" class="modal fade alert-modal" role="dialog">
+            <div id="individualAlertModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
 
                     <!-- Modal content-->
                     <div class="modal-content" style="padding:0px">
                         <div class="modal-header modal-header-success">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Info</h4>
+                            <h4 class="modal-title">Alerte</h4>
                         </div>
                         <div class="modal-body">
                             <p>
                                 Vous devez changer votre statut “En cours d’immatriculation” vers un statut “Société” ou “Micro-entreprise” pour pouvoir devenir City-maker services”
                             </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
                         </div>
                     </div>
 
@@ -878,10 +881,13 @@
                     <div class="modal-content" style="padding:0px">
                         <div class="modal-header modal-header-success">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Info</h4>
+                            <h4 class="modal-title">Alerte</h4>
                         </div>
                         <div class="modal-body">
                                 Vous ne pouvez pas changer de statut si vous avez des missions en cours avec des clients
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
                         </div>
                     </div>
 
