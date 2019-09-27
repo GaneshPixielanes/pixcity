@@ -1,2 +1,7 @@
 {% if item.active %}<i class="active-icon material-icons">check_circle</i>{% endif %}
-{{ item.email }}
+<p data-toggle="collapse" data-target="#email{{ item.id }}" style="cursor: pointer">
+    {{ item.email |length > 10 ? item.email|slice(0, 10) ~ '...' : item.email  }}
+</p>
+<div id="email{{ item.id }}" class="collapse">
+    {{ item.email }}
+</div>

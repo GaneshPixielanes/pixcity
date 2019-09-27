@@ -25,7 +25,7 @@ jQuery(document).ready(function() {
             { "data": "roles" },
             { "data": "created_at" },
             { "data": "visible" },
-            { "data": "Auto-login" },
+            // { "data": "Auto-login" },
             { "data": "userRegistrationCheck" },
             { "data": "actions" },
         ],

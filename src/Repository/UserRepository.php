@@ -365,7 +365,7 @@ class UserRepository extends ServiceEntityRepository
                 if(trim($filters["text"]) != ''){
 
                     //$qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :searchText")->setParameter("searchText", "%".$filters["text"]."%");
-                    $qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
+                    $qb = $qb->andWhere("CONCAT(u.firstname, ' ', u.lastname) LIKE :packText OR u.email LIKE :packText")->setParameter('packText','%'.$filters['text'].'%');
                 }
 
             }
