@@ -264,12 +264,16 @@ class MissionController extends Controller
         $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId(),$fee * 100);
 
         return $this->redirect($result);
+//        return $this->render('b2b/client/transaction/payin.html.twig', [
+//            'result' => $result
+//        ]);
     }
 
     /**
-     * @Route("/mission-payin-process/{id}", name="mission_payin_process")
+     * @Route("/mission-payin-process/", name="mission_payin_process")
      */
-    public function customPayinForm($id){
+    public function customPayinForm(){
+        dd($this->getParameter('transactionId'));
         return $this->render('b2b/client/transaction/payin.html.twig');
     }
 
