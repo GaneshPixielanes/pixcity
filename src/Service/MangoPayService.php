@@ -109,10 +109,10 @@ class MangoPayService
         $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
         $payIn->ExecutionDetails->Culture = "EN";
         $payIn->ExecutionDetails->TemplateURLOptions = new MangoPay\PayInTemplateURLOptions();
-        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/'.$transaction;
+        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/';
         $result =  $this->mangoPayApi->PayIns->Create($payIn);
-
-        return $result->ExecutionDetails->TemplateURL;
+        return $result;
+        //return $result->ExecutionDetails->TemplateURL;
 //        return $result->ExecutionDetails->RedirectURL;
     }
 
