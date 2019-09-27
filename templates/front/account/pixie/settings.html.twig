@@ -1113,7 +1113,7 @@
                 $('a[href="#community-manager-tab"]').click();
             }
 
-            if(1 != "{{ app.user.getB2bCmApproval() }}")
+            if(1 != "{{ app.user.getB2bCmApproval() }}" || 2 > "{{ app.user.userRegion | length }}")
             {
                 $('.remove-region').trigger('click');
             }
