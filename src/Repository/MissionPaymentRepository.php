@@ -22,7 +22,7 @@ class MissionPaymentRepository extends ServiceEntityRepository
 
     public function getPrices($price, $margin, $tax, $citymakerType)
     {
-        if($citymakerType != CompanyStatus::COMPANY)
+        if($citymakerType != CompanyStatus::COMPANY && $citymakerType != CompanyStatus::MICRO_ENTREPRENEUR_TVA)
         {
             /* Get CM price details */
             $result['cm_price'] = $price;
