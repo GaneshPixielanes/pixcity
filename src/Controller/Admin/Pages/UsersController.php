@@ -63,7 +63,7 @@ class UsersController extends Controller
                 case "lastname":
                 case "email":
                 case "roles":
-                case "Auto-login":
+//                case "Auto-login":
                 case "createdAt":
                     $orderBy[] = [$columns[$order["column"]], $order["dir"]];
                     break;
@@ -118,7 +118,7 @@ class UsersController extends Controller
                 "roles" => $this->render('admin/users/columns/roles.html.twig', ['item' => $user])->getContent(),
                 "created_at" => $this->render('admin/users/columns/createdAt.html.twig', ['item' => $user])->getContent(),
                 "visible" => $this->render('admin/users/columns/visible.html.twig', ['item' => $user])->getContent(),
-                "Auto-login" => $this->render('admin/users/columns/autologin.html.twig', ['item' => $user])->getContent(),
+//                "Auto-login" => $this->render('admin/users/columns/autologin.html.twig', ['item' => $user])->getContent(),
                 "actions" => $this->render('admin/users/columns/actions.html.twig', ['item' => $user])->getContent(),
                 "userRegistrationCheck" => $userType,
                 "deleted" => $user->getDeleted(),
