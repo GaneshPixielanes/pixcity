@@ -99,7 +99,8 @@ label:
         company: Société
         individualregistration: En cours d'immatriculation
         selfemployed: Auto-entrepreneur
-        microentrepreneur: Micro-entreprise
+        microentrepreneur: Micro-entreprise (non assujetti à la TVA)
+        microentrepreneurtva: Micro-entreprise (assujetti à la TVA)
     company:
         name: Dénomination sociale
     tva: N° de TVA
