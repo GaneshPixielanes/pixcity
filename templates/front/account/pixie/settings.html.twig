@@ -1112,6 +1112,11 @@
             {
                 $('a[href="#community-manager-tab"]').click();
             }
+
+            if(1 != "{{ app.user.getB2bCmApproval() }}")
+            {
+                $('.remove-region').trigger('click');
+            }
         });
     </script>
 {% endblock %}
