@@ -150,9 +150,9 @@ class MissionController extends Controller
             {
                 $mission->setIsTvaApplicable(CompanyStatus::COMPANY);
             }
-            elseif($cityMakerType == CompanyStatus::MICRO_ENTREPRENEUR && $this->getUser()->getPixie()->getBilling()->getTva() != NULL)
+            elseif($cityMakerType == CompanyStatus::MICRO_ENTREPRENEUR_TVA )
             {
-                $mission->setIsTvaApplicable(CompanyStatus::MICRO_ENTREPRENEUR);
+                $mission->setIsTvaApplicable(CompanyStatus::MICRO_ENTREPRENEUR_TVA);
             }
             else
             {
