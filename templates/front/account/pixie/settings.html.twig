@@ -378,7 +378,7 @@
                         <li class="tab6" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#notifications-tab" id="flag" data-id="6" data-noautscroll="true" data-toggle="tab">Notifications</a></li>
 {#                        {% set check_url = '' %}#}
                         <li class="tab7"><a href="#security-tab" id="flag" data-id="7" data-noautscroll="true" data-toggle="tab">Sécurité et confidentialité</a></li>
-                        {% if cardCount > 0 %}
+                        {% if cardCount == 0 %}
                             {%  if '/city-maker/compte/community/manager' in app.request.headers.get('referer') %}
                                 {% set check_url = true %}
                                 <li class="tab8 active"><a href="#community-manager-tab" id="flag" data-id="8" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
@@ -1111,6 +1111,11 @@
             if(findGetParameter('tab') == 'community-manager-tab')
             {
                 $('a[href="#community-manager-tab"]').click();
+            }
+
+            if(1 != "{{ app.user.getB2bCmApproval() }}")
+            {
+                $('.remove-region').trigger('click');
             }
         });
     </script>
