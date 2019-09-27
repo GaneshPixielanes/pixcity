@@ -11,32 +11,8 @@ jQuery(document).ready(function() {
 
     var missionCount = $('#api-box').attr('data-mission-count');
     var lastSelectedStatus = $("#user_pixie_billing_status option:selected");
-    var lastSelectedType = $("#microentreprenuer_type option:selected");
 
-    $('#microentreprenuer_type, #user_pixie_billing_status').on('change', function(e){
-       if(missionCount > 0)
-       {
-           e.preventDefault();
-           e.stopImmediatePropagation();
-           $('#ongoingMissionsModal').modal('show');
-           lastSelectedStatus.prop("selected", true);
-           lastSelectedType.prop("selected", true);
-           return false;
-       }
-    });
-
-    $('#microentreprenuer_type').on('change', function()
-    {
-
-        if($(this).val() == 'without_tva')
-        {
-            $('#user_pixie_billing_tva').val('');
-        }
-        checkPixieStatus();
-
-    });
-
-    if($('#user_pixie_billing_status').val() == 'company' || $('#user_pixie_billing_status').val() == 'microentrepreneur')
+    if($('#user_pixie_billing_status').val() == 'company' || $('#user_pixie_billing_status').val() == 'microentrepreneur' || $('#user_pixie_billing_status').val() == 'microentrepreneurtva')
     {
         $("#user_pixie_billing_status option[value='individualregistration']").remove();
     }
@@ -89,16 +65,10 @@ jQuery(document).ready(function() {
             $("#user_pixie_billing_firstname, #user_pixie_billing_lastname").parents(".form-row").show();
             $("#user_pixie_billing_tva").prop("required", false).parents(".form-row").find("label").first().removeClass("oblig");
         }
-        if($('#user_pixie_billing_status').val() != 'microentrepreneur')
+
+        if($("#user_pixie_billing_status").val() == 'microentrepreneurtva' || isPixieStatusCompany())
         {
-            $('#microentreprenuer_type').parents('.form-row').hide();
-        }
-        else
-        {
-            $('#microentreprenuer_type').parents('.form-row').show();
-        }
-        if($("#microentreprenuer_type").val() == 'with_tva' || isPixieStatusCompany())
-        {
+            console.log('asda');
             $("#user_pixie_billing_tva").parents(".form-row").show();
             $("#user_pixie_billing_tva").prop("required", "required").parents(".form-row").find("label").first().addClass("oblig");
         }
@@ -109,7 +79,16 @@ jQuery(document).ready(function() {
         }
     }
 
-    $("#user_pixie_billing_status").change(checkPixieStatus);
+    // $("#user_pixie_billing_status").change(checkPixieStatus);
+    $('#user_pixie_billing_status').on('change', function () {
+        checkPixieStatus()
+        if(missionCount > 0)
+        {
+
+            $('#ongoingMissionsModal').modal('show');
+            lastSelectedStatus.prop("selected", true);
+        }
+    });
     checkPixieStatus();
 
 
@@ -145,7 +124,7 @@ jQuery(document).ready(function() {
         {
             return true;
         }
-        else if($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() == "microentrepreneur" && $('#microentreprenuer_type').val() == "with_tva")
+        else if($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() == "microentrepreneurtva")
         {
             return true;
         }
