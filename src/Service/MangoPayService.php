@@ -110,8 +110,8 @@ class MangoPayService
         $payIn->ExecutionDetails->TemplateURLOptions = new MangoPay\PayInTemplateURLOptions();
         $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/';
         $result =  $this->mangoPayApi->PayIns->Create($payIn);
-        return $result;
-        //return $result->ExecutionDetails->TemplateURL;
+       // return $result;
+        return $result->ExecutionDetails->TemplateURL;
 //        return $result->ExecutionDetails->RedirectURL;
     }
 
