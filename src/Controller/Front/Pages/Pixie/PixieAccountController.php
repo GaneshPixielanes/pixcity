@@ -25,6 +25,7 @@ use App\Repository\CommunityMediaRepository;
 use App\Repository\OptionRepository;
 use App\Repository\RegionRepository;
 use App\Repository\TransactionRepository;
+use App\Repository\UserMissionRepository;
 use App\Service\FileUploader;
 use App\Utils\Pagination;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -113,7 +114,12 @@ class PixieAccountController extends Controller
     /**
      * @Route("/parametres", name="settings")
      */
-    public function settings(Request $request, UserPasswordEncoderInterface $passwordEncoder, TransactionRepository $transactionRepository,\Swift_Mailer $mailer,CardRepository $cardsRepo)
+    public function settings(Request $request,
+                             UserPasswordEncoderInterface $passwordEncoder,
+                             TransactionRepository $transactionRepository,
+                             CardRepository $cardsRepo,
+                            UserMissionRepository $missionRepo
+    )
     {
         $user = $this->getUser();
         $message = '';
@@ -225,6 +231,9 @@ class PixieAccountController extends Controller
             'status' => CardStatus::VALIDATED
         ]);
 
+        #Number of missions from a user
+        $missionCount = $missionRepo->findOngoingMissions($this->getUser());
+
         //-----------------------------------------------
         // Create the page
 
@@ -239,7 +248,8 @@ class PixieAccountController extends Controller
             'bandDetailsEditable' => $bankDetailsEditable,
             'user' => $user,
             'card' => $card,
-            'cardCount' => $cardCount
+            'cardCount' => $cardCount,
+            'missionCount' => count($missionCount)
         ));
 
     }
