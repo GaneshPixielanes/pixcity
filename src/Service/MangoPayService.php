@@ -77,6 +77,17 @@ class MangoPayService
         return $this->mangoPayApi->Wallets->Get($user);
     }
 
+//    public function getClientId($url)
+//    {
+////        return $this->mangoPayApi->Clients->Get('azimforexprod');
+//
+//        $ClientLogoUpload = new MangoPay\ClientLogoUpload();
+//        $ClientLogoUpload->File = $url;
+//
+//        $Result = $this->mangoPayApi->Clients->UploadLogo($ClientLogoUpload);
+//        return $Result;
+//    }
+
     public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission,$fee)
     {
 
@@ -98,7 +109,7 @@ class MangoPayService
         $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
         $payIn->ExecutionDetails->Culture = "EN";
         $payIn->ExecutionDetails->TemplateURLOptions = new MangoPay\PayInTemplateURLOptions();
-        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/'.$transaction;
+        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://www.pix.city/payin.html/';
         $result =  $this->mangoPayApi->PayIns->Create($payIn);
 
         return $result->ExecutionDetails->RedirectURL;
