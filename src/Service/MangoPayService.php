@@ -29,7 +29,6 @@ class MangoPayService
         $this->mangoPayRefund = new MangoPay\Refund();
     }
 
-
     public function createUser(MangoPay\UserNatural $userNatural)
     {
         return $this->mangoPayApi->Users->Create($userNatural);
@@ -109,11 +108,12 @@ class MangoPayService
         $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
         $payIn->ExecutionDetails->Culture = "EN";
         $payIn->ExecutionDetails->TemplateURLOptions = new MangoPay\PayInTemplateURLOptions();
-        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/';
+        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/'.$transaction;
         $result =  $this->mangoPayApi->PayIns->Create($payIn);
-       // return $result;
+
+//        $this->setCardRegistration($mangoUser->Id);
+
         return $result->ExecutionDetails->TemplateURL;
-//        return $result->ExecutionDetails->RedirectURL;
     }
 
 
@@ -205,5 +205,21 @@ class MangoPayService
     }
     public function getAllUsers($Page=null,$Per_Page=null){
         return $this->mangoPayApi->Users->GetAll($Page,$Per_Page);
+    }
+
+
+    public function setCardRegistration($userID){
+
+        $cardRegister = new \MangoPay\CardRegistration();
+        $cardRegister->UserId = $userID;
+        $cardRegister->Currency = "EUR";
+        $result = $this->mangoPayApi->CardRegistrations->Create($cardRegister);
+
+        $cardRegisterPut = $this->mangoPayApi->CardRegistrations->Get($result->Id);
+        $cardRegisterPut->RegistrationData = $result->PreregistrationData;
+        $response = $this->mangoPayApi->CardRegistrations->Update($cardRegisterPut);
+
+        dd($response);
+
     }
 }

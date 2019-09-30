@@ -99,7 +99,7 @@ class MissionController extends Controller
         {
             $cityMakerType = CompanyStatus::COMPANY;
         }
-        
+
         $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
         $last_result  = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
@@ -170,18 +170,26 @@ class MissionController extends Controller
                         }
 
 
+
                         $client_paid = $first_result['client_total'];
 
                         $fee_percentage = (2 / 100) * $client_paid;
 
                         $fees_creadited = $fee - $fee_percentage;
 
+                        $refund_amount = $client_paid - $fee;
+
+                        if($fees_creadited < 0){
+                            $fees_creadited = 0;
+                            $refund_amount = $client_paid;
+                        }
+
                         $mission->getUserMissionPayment()->setAdjustment($client_paid);
                         $clientTransaction->setTransactionType('Refund-Full');
                         $clientTransaction->setAmount($result['price']);
                         $clientTransaction->setTotalAmount($first_result['client_total']);
                         $clientTransaction->setFee($fees_creadited);
-                        $refund_amount = $client_paid - $fee;
+
                         $response = $mangoPayService->refundPayment($transaction,$refund_amount,$fees_creadited);
 
                         $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());

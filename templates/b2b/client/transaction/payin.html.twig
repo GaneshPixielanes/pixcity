@@ -110,7 +110,27 @@
     <div id="PaylineForm">
         <h2></h2>
         <img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services">
-        <form class="pane"></form>
+        <form action="<?php print $createdCardRegister->CardRegistrationURL; ?>" method="post" class="pane">
+
+                <input type="hidden" name="data" value="<?php print $createdCardRegister->PreregistrationData; ?>" />
+                <input type="hidden" name="accessKeyRef" value="<?php print $createdCardRegister->AccessKey; ?>" />
+                <input type="hidden" name="returnURL" value="<?php print $returnUrl; ?>" />
+
+                <label for="cardNumber">Card Number</label>
+                <input type="text" name="cardNumber" value="" />
+                <div class="clear"></div>
+
+                <label for="cardExpirationDate">Expiration Date</label>
+                <input type="text" name="cardExpirationDate" value="" />
+                <div class="clear"></div>
+
+                <label for="cardCvx">CVV</label>
+                <input type="text" name="cardCvx" value="" />
+                <div class="clear"></div>
+
+                <input type="submit" value="Pay" />
+
+        </form>
         <h3></h3>
         <button id="submitButton">Submit</button>
 

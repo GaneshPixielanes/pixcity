@@ -2,6 +2,7 @@
 
 namespace App\Controller\B2B;
 
+use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Controller\B2B\Client\MissionController;
 use App\Entity\Option;
@@ -240,7 +241,13 @@ class ClientController extends Controller
 
         $tax = $options->findOneBy(['slug' => 'tax']);
         $margin = $options->findOneBy(['slug' => 'margin']);
-        $cityMakerType = $mission->getUser()->getPixie()->getBilling()->getStatus();
+
+        $cityMakerType = '';
+        if($mission->getIsTvaApplicable() != NULL)
+        {
+            $cityMakerType = CompanyStatus::COMPANY;
+        }
+
         $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
         $tax = $optionRepository->findBy(['slug' => 'tax']);

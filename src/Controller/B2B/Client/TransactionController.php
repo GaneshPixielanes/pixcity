@@ -20,7 +20,7 @@ class TransactionController extends AbstractController
     public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo)
     {
 
-        $missions_index['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
+        $missions_index['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],['createdAt' => 'DESC']);
         $missions = $missionRepo->findOngoingMissions($this->getUser(), 'client');
 
         #SEO

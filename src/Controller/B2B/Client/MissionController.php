@@ -49,9 +49,9 @@ class MissionController extends Controller
         $options = $this->getDoctrine()->getRepository(Option::class);
         $margin = $options->findOneBy(['slug' => 'margin']);
         $missions['ongoing'] = $missionRepo->findOngoingMissions($this->getUser(),'client');
-        $missions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],[]);
-        $missions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],[]);
-        $missions['created'] = $missionRepo->findBy(['status' => MissionStatus::CREATED, 'client' => $this->getUser()],['id' => 'DESC']);
+        $missions['cancelled'] = $missionRepo->findBy(['status' => MissionStatus::CANCELLED, 'client' => $this->getUser()],['createdAt' => 'DESC']);
+        $missions['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],['createdAt' => 'DESC']);
+        $missions['created'] = $missionRepo->findBy(['status' => MissionStatus::CREATED, 'client' => $this->getUser()],['createdAt' => 'DESC']);
 
         #SEO
         $page = new Page();
