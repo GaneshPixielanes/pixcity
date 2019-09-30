@@ -36,7 +36,11 @@
                             <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}</td>
                             <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
                             <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
-                            <td valign="middle">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</td>
+                            {% if mission.isTvaApplicable is not null %}
+                                <td valign="middle">{{ mission.userMissionPayment.clientTotal |round }} €</td>
+                            {% else %}
+                                <td valign="middle">{{ (mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientTax) | round }} €</td>
+                            {% endif %}
                             <td valign="middle"><span class="text-inprogress">Terminé</span></td>
                             <td valign="middle">
                                 <div class="d-flex align-items-center">
