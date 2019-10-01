@@ -81,6 +81,8 @@ if(device == "Desktop")
 	var APP_ID = "iswx8vq4";
 	var current_user_email = "{{ app.user.email }}";
 	var current_user_name = "{{ app.user.firstName~' '~app.user.lastName }}";
+	var first_name = "{{ app.user.firstName }}";
+	var last_name = "{{ app.user.lastName }}";
 	var current_user_id = "{{ app.user.id }}";
 	var user_type = "{{ user_type }}";
 	window.intercomSettings = {
@@ -88,6 +90,8 @@ if(device == "Desktop")
 	    name: current_user_name, // Full name
 	    email: current_user_email, // Email address
 	    user_id: current_user_id, // current_user_id
+		first_name: first_name,
+		last_name: last_name,
 	    user_type: user_type,
 	    hide_default_launcher: true,
 	  };
@@ -152,11 +156,15 @@ if(device == "Desktop")
 		{	var APP_ID = "iswx8vq4";
 			var current_user_email = "{{ app.user.email }}";
 			var current_user_name = "{{ app.user.firstName~' '~app.user.lastName }}";
+			var first_name = "{{ app.user.firstName }}";
+			var last_name = "{{ app.user.lastName }}";
 			var current_user_id = "{{ app.user.id }}";
 			var user_type = "{{ user_type }}";
 			window.intercomSettings = {
 				app_id: "iswx8vq4",
 				name: current_user_name, // Full name
+				first_name: first_name, // Full name
+				last_name: last_name, // Full name
 				email: current_user_email, // Email address
 				user_id: current_user_id, // current_user_id
 				user_type: user_type,
