@@ -809,7 +809,7 @@
 
                         {% else %}
                         <button type="submit" class="btn btn-pill btn-pink pull-right" id="submitCMDetails">
-                            {% app.user.getB2bCmApproval == 1 %}
+                            {% if app.user.getB2bCmApproval == 1 %}
                                 ACCEDER A MON ESPACE
                             {% else %}
                                 Soumettre ma candidature
