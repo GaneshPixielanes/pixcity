@@ -808,7 +808,13 @@
                             <a href=":javascript;" data-toggle="modal" data-target="#individualAlertModal" class="btn btn-pill btn-pink pull-right">Soumettre ma candidature</a>
 
                         {% else %}
-                        <button type="submit" class="btn btn-pill btn-pink pull-right" id="submitCMDetails">Soumettre ma candidature</button>
+                        <button type="submit" class="btn btn-pill btn-pink pull-right" id="submitCMDetails">
+                            {% app.user.getB2bCmApproval == 1 %}
+                                ACCEDER A MON ESPACE
+                            {% else %}
+                                Soumettre ma candidature
+                            {% endif %}
+                        </button>
                         {% endif %}
                         <a href="{{ path('front_pixie_account_settings') }}" class="btn cancelModif pull-right">Annuler la modification</a>
                     </div>
