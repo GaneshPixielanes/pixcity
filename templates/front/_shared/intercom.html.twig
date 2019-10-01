@@ -139,18 +139,20 @@ if(device == "Desktop")
   window.intercomSettings = {
     app_id: "iswx8vq4",
 	var current_user_email = "{{ app.user.email }}";
+	var current_user_name = "{{ app.user.firstName }}";
 	var first_name = "{{ app.user.lastName }}";
 	var last_name = "{{ app.user.firstName~' '~app.user.lastName }}";
 	var current_user_id = "{{ app.user.id }}";
 	var user_type = "{{ user_type }}";
 	window.intercomSettings = {
-	app_id: APP_ID,
-	name: current_user_name, // Full name
-	user_id: current_user_id, // current_user_id
-	user_type: user_type,
-	first_name: first_name,
-	last_name: last_name,
-	hide_default_launcher: true,
+		app_id: APP_ID,
+		name: current_user_name, // Full name
+		email: current_user_email, // Email address
+		user_id: current_user_id, // current_user_id
+		user_type: user_type,
+		first_name: first_name,
+		last_name: last_name,
+		hide_default_launcher: true,
 	};
   };
 
