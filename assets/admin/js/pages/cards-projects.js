@@ -5,7 +5,22 @@ jQuery(document).ready(function() {
     var routeUpload = $("#api-routes").attr("data-upload-route");
     var routeSaveTemplate = $("#api-routes").attr("data-savetemplate-route");
     var routeLoadTemplate = $("#api-routes").attr("data-loadtemplate-route");
+    var priceFlag = false;
+    $('#card_project_price').on('input',function () {
+        if(priceFlag == false)
+        {
+            $('#priceConfirmationModal').modal('show');
+        }
+    });
 
+    $('#allowPayment').on('click', function () {
+        priceFlag = true;
+    });
+
+    $('#disallowPayment').on('click', function () {
+        priceFlag = false;
+        $('#card_project_price').val(0);
+    });
     //---------------------------------------------
     // Nested selects
     //---------------------------------------------
@@ -128,7 +143,7 @@ jQuery(document).ready(function() {
             $(".upload-zone").removeClass("uploading");
         }).fail(function(xhr, status, error) {
             $container.removeClass("uploading");
-            swal({icon: "error", text: "Votre fichier n'a pas pu être envoyé"});
+            swal({icon: "error", text: "Votre fichier n'a pas pu ï¿½tre envoyï¿½"});
             $(input).val("");
         });
     });
@@ -159,7 +174,7 @@ jQuery(document).ready(function() {
     $("#save-as-template").click(function(){
 
         swal({
-            text: 'Nom du nouveau modèle',
+            text: 'Nom du nouveau modï¿½le',
             content: "input",
             button: {
                 text: "Sauvegarder",
@@ -173,7 +188,7 @@ jQuery(document).ready(function() {
                     url: routeSaveTemplate,
                     data: $("form[name='card_project']").serialize() + '&templateName=' + name,
                     success: function (data) {
-                        swal("Modèle de Card", "Le template de card à bien été créé", "success");
+                        swal("Modï¿½le de Card", "Le template de card ï¿½ bien ï¿½tï¿½ crï¿½ï¿½", "success");
                     }
                 });
             }
@@ -196,7 +211,7 @@ jQuery(document).ready(function() {
 
             swal({
                 title: "Attention",
-                text: "Le contenu du formulaire sera remplacé par celui du modèle.",
+                text: "Le contenu du formulaire sera remplacï¿½ par celui du modï¿½le.",
                 icon: "warning",
                 buttons: [
                     'Annuler',
@@ -214,8 +229,8 @@ jQuery(document).ready(function() {
                         },
                         success: function(data){
                             swal({
-                                title: 'Succès',
-                                text: 'Le modèle a bien été chargé',
+                                title: 'Succï¿½s',
+                                text: 'Le modï¿½le a bien ï¿½tï¿½ chargï¿½',
                                 icon: 'success'
                             });
 
@@ -227,7 +242,7 @@ jQuery(document).ready(function() {
 
 
                 } else {
-                    swal("Opération annulée", "Le modèle n'a pas été chargé", "error");
+                    swal("Opï¿½ration annulï¿½e", "Le modï¿½le n'a pas ï¿½tï¿½ chargï¿½", "error");
                 }
             })
         }

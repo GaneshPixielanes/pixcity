@@ -153,11 +153,13 @@
 <div class="home-page collections-page">
 
     {% block body %}{% endblock %}
+
     {% embed '/v2/_shared/footer.html.twig' %}{% endembed%}
 </div>
 {#<!-- Scripts -->#}
 <script src="{{ absolute_url(asset('build/js/custom.js')) }}"></script>
 
+{% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 

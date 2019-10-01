@@ -47,6 +47,12 @@
         <!-- Delivery is disabled by default via "null://localhost" -->
         <env name="MAILER_URL" value="null://localhost"/>
         <!-- ###- symfony/swiftmailer-bundle ### -->
+
+        <!-- ###+ troopers/mangopay-bundle ### -->
+        <env name="TROOPERS_MANGOPAY_CLIENT_ID" value="aae8996c6caec86ef62438b181a1bdbc"/>
+        <env name="TROOPERS_MANGOPAY_CLIENT_PASSWORD" value="b3d124de25432a75deb6bdd2e2493da2"/>
+        <env name="TROOPERS_MANGOPAY_BASE_URL" value="https://api.sandbox.mangopay.com"/>
+        <!-- ###- troopers/mangopay-bundle ### -->
     </php>
 
     <testsuites>

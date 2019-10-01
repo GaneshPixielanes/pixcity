@@ -507,6 +507,380 @@
             </div>
         </div>
         <!-- levels-->
+        <div class="levels-mobile-wrap py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 levels-mobile-container py-4">
+                        <div class="row levels-slide-container">
+                            <div class="col-md-12 pb-5">
+                                <div class="col-md-12 card p-0 text-center shadow levels-slide">
+                                    <div class="card-header text-white bg-pink ">
+                                        <p class="font-weight-light fz-16">Niveau actuel</p>
+                                        {% if app.user.level == 1 %}
+                                            <img src="{{ asset('build/images/badge-voyager.svg') }}" alt="Voyager" />
+                                        {% elseif app.user.level == 2 %}
+                                            <img src="{{ asset('build/images/badge-explorer.svg') }}" alt="Voyager" />
+                                        {% elseif app.user.level == 3%}
+                                            <img src="{{ asset('build/images/badge-adventurer.svg') }}" alt="Voyager" />
+                                        {% elseif app.user.level == 4%}
+                                            <img src="{{ asset('build/images/badge-ranger.svg') }}" alt="Voyager" />
+                                        {% elseif app.user.level == 5 %}
+                                            <img src="{{ asset('build/images/badge-nomad.svg') }}" alt="Voyager" />
+                                        {% endif %}
+                                        <h5 class="fz-28">{{ ('label.level.level_' ~app.user.level )|trans }}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <img src="{{ asset('build/images/gamification-mobile-card-empty.svg') }}" />
+                                        <p class="card-count text-normalgray fz-24 mt-3 mb-0">{{ app.user.level }}/5</p>
+                                        <p class="card-count-tag text-normalgray fz-16 font-weight-light">Adresses proposées</p>
+                                        <p class="level-desc fz-16 font-weight-light text-darkgray">
+                                            {% if app.user.level == 1 %}
+                                                <p class="level-desc fz-16 font-weight-light text-darkgray">Pour accéder au 1er niveau rémunéré <b>proposez 5 adresses</b></p>
+                                            {% elseif app.user.level == 2 %}
+                                                <p class="level-desc fz-16 font-weight-light text-darkgray">Pour accéder au 1er niveau rémunéré <b>proposez 3 adresses</b></p>
+                                                <p class="mb-0"><a href="javascript:;" class="show-benefits">Voir tous les bénéfices</a></p>
+                                            {% elseif app.user.level == 3%}
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                        Nombre de cards en ligne <span class="d-block text-darkblue font-weight-bold">1</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2">
+                                                        Accès à Pix.City Services <span class="d-block text-darkblue font-weight-bold">Oui</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                        Jeux concours <span class="d-block text-darkblue font-weight-bold">-</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2">
+                                                        Parrainage <span class="d-block text-darkblue font-weight-bold">10€/filleul atteignant le level adventurer</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                        City-Maker du mois <span class="d-block text-darkblue font-weight-bold">-</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 py-2 mt-3">
+                                                        <a href="javascript:;" class="hide-benefits">Masquer tous les bénéfices</a>
+                                                    </div>
+                                                </div>
+                                            {% elseif app.user.level == 4%}
+                                                <p class="level-desc fz-16 font-weight-light text-darkgray">Pour accéder au niveau Explorer <b>proposez encore 10 adresses</b></p>
+                                                <p class="mb-0"><a href="javascript:;" class="show-benefits">Voir tous les bénéfices</a></p>
+                                            {% elseif app.user.level == 5 %}
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                        Nombre de cards en ligne <span class="d-block text-darkblue font-weight-bold">1</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2">
+                                                        Accès à Pix.City Services <span class="d-block text-darkblue font-weight-bold">Oui</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                        Jeux concours <span class="d-block text-darkblue font-weight-bold">-</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2">
+                                                        Parrainage <span class="d-block text-darkblue font-weight-bold">10€/filleul atteignant le level adventurer</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                        City-Maker du mois <span class="d-block text-darkblue font-weight-bold">-</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 py-2 mt-3">
+                                                        <a href="javascript:;" class="hide-benefits">Masquer tous les bénéfices</a>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="card-footer bg-white border border-white">
+                                        <a href="javascript:;" class="btn btn-pink btn-block lh2-5 text-uppercase intercom-pop">Proposer une adresse</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pb-5 levels-slide-card">
+                                <div class="col-md-12 card p-0 text-center shadow levels-slide main-slide">
+                                    <div class="card-header text-white bg-pink ">
+                                        <p class="font-weight-light fz-16">Niveau actuel</p>
+                                        <svg class="mb-3" xmlns="http://www.w3.org/2000/svg" width="23.837" height="40.815" viewBox="0 0 23.837 40.815">
+                                            <g id="Group_103" data-name="Group 103" transform="translate(-1194.959 -58.719)" opacity="">
+                                                <path id="Path_85" data-name="Path 85" d="M1195.459,59.219V74.845l11.2,7.666a8.413,8.413,0,1,0,.409.014l11.224-7.68V59.219Z" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"></path>
+                                            </g>
+                                        </svg>
+                                        <h5 class="fz-28">Voyager</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <img class="badge-image" src="{{ asset('build/images/badge-explorer.svg') }}" />
+                                        <p class="card-level-name text-darkblue fz-20 mt-3 mb-0 text-uppercase">Explorer</p>
+                                        <p class="level-desc fz-16 font-weight-light text-darkgray">Pour accéder au niveau Explorer <b>proposez encore 8 adresses</b></p>
+                                        <p class="mb-0"><a href="javascript:;" class="show-benefits">Voir tous les bénéfices</a></p>
+                                    </div>
+                                    <div class="card-footer bg-white border border-white">
+                                        <a href="javascript:;" class="btn btn-pink btn-block lh2-5 text-uppercase intercom-pop">Proposer une adresse</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 card p-0 text-center shadow levels-slide benefit-slide">
+                                    <div class="card-header text-white bg-pink ">
+                                        <p class="font-weight-light fz-16">Niveau actuel</p>
+                                        <svg class="mb-3" xmlns="http://www.w3.org/2000/svg" width="23.837" height="40.815" viewBox="0 0 23.837 40.815">
+                                            <g id="Group_103" data-name="Group 103" transform="translate(-1194.959 -58.719)" opacity="">
+                                                <path id="Path_85" data-name="Path 85" d="M1195.459,59.219V74.845l11.2,7.666a8.413,8.413,0,1,0,.409.014l11.224-7.68V59.219Z" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"></path>
+                                            </g>
+                                        </svg>
+                                        <h5 class="fz-28">Voyager</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                Nombre de cards en ligne <span class="d-block text-darkblue font-weight-bold">1</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2">
+                                                Accès à Pix.City Services <span class="d-block text-darkblue font-weight-bold">Oui</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                Jeux concours <span class="d-block text-darkblue font-weight-bold">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2">
+                                                Parrainage <span class="d-block text-darkblue font-weight-bold">10€/filleul atteignant le level adventurer</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                City-Maker du mois <span class="d-block text-darkblue font-weight-bold">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 py-2 mt-3">
+                                                <a href="javascript:;" class="hide-benefits">Masquer tous les bénéfices</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if app.user.level == 3 %}
+                            <div class="col-md-12 pb-5 levels-slide-card">
+                                <div class="col-md-12 card p-0 text-center shadow levels-slide main-slide">
+                                    <div class="card-header text-white bg-pink ">
+                                        <p class="font-weight-light fz-16">Niveau actuel</p>
+                                        <svg class="mb-3" xmlns="http://www.w3.org/2000/svg" width="23.837" height="40.815" viewBox="0 0 23.837 40.815">
+                                            <g id="Group_103" data-name="Group 103" transform="translate(-1194.959 -58.719)" opacity="">
+                                                <path id="Path_85" data-name="Path 85" d="M1195.459,59.219V74.845l11.2,7.666a8.413,8.413,0,1,0,.409.014l11.224-7.68V59.219Z" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"></path>
+                                            </g>
+                                        </svg>
+                                        <h5 class="fz-28">Voyager</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <img class="badge-image" src="{{ asset('build/images/badge-adventurer.svg') }}" />
+                                        <p class="card-level-name text-darkblue fz-20 mt-3 mb-0 text-uppercase">Adventurer</p>
+                                        <p class="level-desc fz-16 font-weight-light text-darkgray">Pour accéder au niveau Explorer <b>proposez encore 10 adresses</b></p>
+                                        <p class="mb-0"><a href="javascript:;" class="show-benefits">Voir tous les bénéfices</a></p>
+                                    </div>
+                                    <div class="card-footer bg-white border border-white">
+                                        <a href="javascript:;" class="btn btn-pink btn-block lh2-5 text-uppercase intercom-pop">Proposer une adresse</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 card p-0 text-center shadow levels-slide benefit-slide">
+                                    <div class="card-header text-white bg-pink ">
+                                        <p class="font-weight-light fz-16">Niveau actuel</p>
+                                        <svg class="mb-3" xmlns="http://www.w3.org/2000/svg" width="23.837" height="40.815" viewBox="0 0 23.837 40.815">
+                                            <g id="Group_103" data-name="Group 103" transform="translate(-1194.959 -58.719)" opacity="">
+                                                <path id="Path_85" data-name="Path 85" d="M1195.459,59.219V74.845l11.2,7.666a8.413,8.413,0,1,0,.409.014l11.224-7.68V59.219Z" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"></path>
+                                            </g>
+                                        </svg>
+                                        <h5 class="fz-28">Voyager</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                Nombre de cards en ligne <span class="d-block text-darkblue font-weight-bold">1</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2">
+                                                Accès à Pix.City Services <span class="d-block text-darkblue font-weight-bold">Oui</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                Jeux concours <span class="d-block text-darkblue font-weight-bold">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2">
+                                                Parrainage <span class="d-block text-darkblue font-weight-bold">10€/filleul atteignant le level adventurer</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                City-Maker du mois <span class="d-block text-darkblue font-weight-bold">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 py-2 mt-3">
+                                                <a href="javascript:;" class="hide-benefits">Masquer tous les bénéfices</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% elseif app.user.level == 4 %}
+                            <div class="col-md-12 pb-5 levels-slide-card">
+                                <div class="col-md-12 card p-0 text-center shadow levels-slide main-slide">
+                                    <div class="card-header text-white bg-pink ">
+                                        <p class="font-weight-light fz-16">Niveau actuel</p>
+                                        <svg class="mb-3" xmlns="http://www.w3.org/2000/svg" width="23.837" height="40.815" viewBox="0 0 23.837 40.815">
+                                            <g id="Group_103" data-name="Group 103" transform="translate(-1194.959 -58.719)" opacity="">
+                                                <path id="Path_85" data-name="Path 85" d="M1195.459,59.219V74.845l11.2,7.666a8.413,8.413,0,1,0,.409.014l11.224-7.68V59.219Z" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"></path>
+                                            </g>
+                                        </svg>
+                                        <h5 class="fz-28">Voyager</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <img class="badge-image" src="{{ asset('build/images/badge-ranger.svg') }}" />
+                                        <p class="card-level-name text-darkblue fz-20 mt-3 mb-0 text-uppercase">Ranger</p>
+                                        <p class="level-desc fz-16 font-weight-light text-darkgray">Pour accéder au niveau Explorer <b>proposez encore 15 adresses</b></p>
+                                        <p class="mb-0"><a href="javascript:;" class="show-benefits">Voir tous les bénéfices</a></p>
+                                    </div>
+                                    <div class="card-footer bg-white border border-white">
+                                        <a href="javascript:;" class="btn btn-pink btn-block lh2-5 text-uppercase intercom-pop">Proposer une adresse</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 card p-0 text-center shadow levels-slide benefit-slide">
+                                    <div class="card-header text-white bg-pink ">
+                                        <p class="font-weight-light fz-16">Niveau actuel</p>
+                                        <svg class="mb-3" xmlns="http://www.w3.org/2000/svg" width="23.837" height="40.815" viewBox="0 0 23.837 40.815">
+                                            <g id="Group_103" data-name="Group 103" transform="translate(-1194.959 -58.719)" opacity="">
+                                                <path id="Path_85" data-name="Path 85" d="M1195.459,59.219V74.845l11.2,7.666a8.413,8.413,0,1,0,.409.014l11.224-7.68V59.219Z" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"></path>
+                                            </g>
+                                        </svg>
+                                        <h5 class="fz-28">Voyager</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                Nombre de cards en ligne <span class="d-block text-darkblue font-weight-bold">1</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2">
+                                                Accès à Pix.City Services <span class="d-block text-darkblue font-weight-bold">Oui</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                Jeux concours <span class="d-block text-darkblue font-weight-bold">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2">
+                                                Parrainage <span class="d-block text-darkblue font-weight-bold">10€/filleul atteignant le level adventurer</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                City-Maker du mois <span class="d-block text-darkblue font-weight-bold">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 py-2 mt-3">
+                                                <a href="javascript:;" class="hide-benefits">Masquer tous les bénéfices</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% elseif app.user.level == 5  %}
+                            <div class="col-md-12 pb-5 levels-slide-card">
+                                <div class="col-md-12 card p-0 text-center shadow levels-slide main-slide">
+                                    <div class="card-header text-white bg-pink ">
+                                        <p class="font-weight-light fz-16">Niveau actuel</p>
+                                        <svg class="mb-3" xmlns="http://www.w3.org/2000/svg" width="23.837" height="40.815" viewBox="0 0 23.837 40.815">
+                                            <g id="Group_103" data-name="Group 103" transform="translate(-1194.959 -58.719)" opacity="">
+                                                <path id="Path_85" data-name="Path 85" d="M1195.459,59.219V74.845l11.2,7.666a8.413,8.413,0,1,0,.409.014l11.224-7.68V59.219Z" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"></path>
+                                            </g>
+                                        </svg>
+                                        <h5 class="fz-28">Voyager</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <img class="badge-image" src="{{ asset('build/images/badge-nomad.svg') }}" />
+                                        <p class="card-level-name text-darkblue fz-20 mt-3 mb-0 text-uppercase">Nomad</p>
+                                        <p class="level-desc fz-16 font-weight-light text-darkgray">Pour accéder au niveau Explorer <b>proposez encore 20 adresses</b></p>
+                                        <p class="mb-0"><a href="javascript:;" class="show-benefits">Voir tous les bénéfices</a></p>
+                                    </div>
+                                    <div class="card-footer bg-white border border-white">
+                                        <a href="javascript:;" class="btn btn-pink btn-block lh2-5 text-uppercase intercom-pop">Proposer une adresse</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 card p-0 text-center shadow levels-slide benefit-slide">
+                                    <div class="card-header text-white bg-pink ">
+                                        <p class="font-weight-light fz-16">Niveau actuel</p>
+                                        <svg class="mb-3" xmlns="http://www.w3.org/2000/svg" width="23.837" height="40.815" viewBox="0 0 23.837 40.815">
+                                            <g id="Group_103" data-name="Group 103" transform="translate(-1194.959 -58.719)" opacity="">
+                                                <path id="Path_85" data-name="Path 85" d="M1195.459,59.219V74.845l11.2,7.666a8.413,8.413,0,1,0,.409.014l11.224-7.68V59.219Z" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"></path>
+                                            </g>
+                                        </svg>
+                                        <h5 class="fz-28">Voyager</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                Nombre de cards en ligne <span class="d-block text-darkblue font-weight-bold">1</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2">
+                                                Accès à Pix.City Services <span class="d-block text-darkblue font-weight-bold">Oui</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                Jeux concours <span class="d-block text-darkblue font-weight-bold">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2">
+                                                Parrainage <span class="d-block text-darkblue font-weight-bold">10€/filleul atteignant le level adventurer</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-normalgray py-2 bg-lightgray">
+                                                City-Maker du mois <span class="d-block text-darkblue font-weight-bold">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 py-2 mt-3">
+                                                <a href="javascript:;" class="hide-benefits">Masquer tous les bénéfices</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Services -->
         <div class="row">
             <div class="col-md-12 services-wrap">
@@ -567,7 +941,6 @@
         <!-- Services -->
     </div>
 
-    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
 
 {% endblock %}
 
@@ -585,9 +958,52 @@
                 autoplaySpeed: 3000
             });
             $('[data-toggle="tooltip"]').tooltip();
-
             $('.intercom-pop').on('click', function () {
-               Intercom('show');
+                Intercom('show');
+            });
+            $('.levels-slide-container').slick({
+                dots: false,
+                infinite: true,
+                arrows: true,
+                infinite: false
+                //autoplay: true,
+                //autoplaySpeed: 3000
+            });
+            $('[data-toggle="tooltip"]').tooltip();
+            $(document).on('mouseenter', '.level-table.level-hover-table > tbody > tr', function (e) {
+                /* e.preventDefault()
+                e.stopImmediatePropagation() */
+                // e.stopPropagation()
+                console.log("MouseEnter...")
+                $(this).parents('tbody').find('> tr').removeClass('active-level')
+                $(this).parent('tbody').find('> tr').find('.level-highlight').addClass('d-none')
+                $(this).parent('tbody').find('> tr').find('.level-info').removeClass('d-none')
+
+                $(this).addClass('active-level')
+                $(this).find('.level-info').addClass('d-none')
+                $(this).find('.level-highlight').removeClass('d-none')
+            })
+
+            $(document).on('mouseleave', '.level-table.level-hover-table > tbody > tr', function (e) {
+                /* e.preventDefault()
+                e.stopImmediatePropagation() */
+                // e.stopPropagation()
+                $(this).parents('tbody').find('> tr').removeClass('active-level')
+                $(this).parents('tbody').find('> tr').find('.level-highlight').addClass('d-none')
+                $(this).parents('tbody').find('> tr').find('.level-info').removeClass('d-none')
+            })
+            /*Show iand hide mobile benefits levels*/
+            $('.show-benefits').click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).parents('.levels-slide-card').find('.main-slide').hide();
+                $(this).parents('.levels-slide-card').find('.benefit-slide').show();
+            });
+            $('.hide-benefits').click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).parents('.levels-slide-card').find('.benefit-slide').hide();
+                $(this).parents('.levels-slide-card').find('.main-slide').show();
             });
         });
     </script>
