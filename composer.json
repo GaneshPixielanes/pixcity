@@ -103,7 +103,7 @@
     "extra": {
         "symfony": {
             "id": "01C7HKMVGCPDB780CKZ6V8TX5N",
-            "allow-contrib": false
+            "allow-contrib": true
         }
     }
 }

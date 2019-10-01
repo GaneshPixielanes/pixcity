@@ -1,3 +1,4 @@
+
 /node_modules
 /node_modules/*
 /var/cache/*
@@ -10,6 +11,7 @@
 /assets/v2/node_modules/*
 .env
 webpack.config.js
+/.idea/*
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -35,3 +37,7 @@ yarn-error.log
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
