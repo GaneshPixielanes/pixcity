@@ -1,3 +1,9 @@
+{% set route = app.request.get('_route') %}
+{% if route starts with 'front_pixie_account_homepage' %}
+{% set device = 'Desktop' %}
+{% else %}
+{% set device = '' %}
+{% endif %}
 <script>
 function deleteIntercomCookies()
 {
@@ -24,6 +30,11 @@ function deleteIntercomCookies()
 
 
 function getPlatformType() {
+	var dev = "{{ device }}";
+	if(dev == "Desktop")
+	{
+		return dev;
+	}
 	if(navigator.userAgent.match(/mobile/i)) {
 		return 'Mobile';
 	} else if (navigator.userAgent.match(/iPad|Android|Touch/i)) {
