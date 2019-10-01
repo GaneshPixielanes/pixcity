@@ -58,7 +58,7 @@ var device = getPlatformType();
 {% endif %}
 {% if loginBy == 'login_cm' or loginBy == 'login_client' %}
 {% if loginBy == 'login_cm' %}
-	{%if app.user.pixie is not null %}
+	{%if loginDetails['entity'].pixie is not null %}
 		{% if loginDetails['view_mode'] == 'pixie' %}
 			{% set user_type = 'city maker' %}
 		{% else %}
@@ -79,11 +79,11 @@ if(device == "Desktop")
 
 
 	var APP_ID = "iswx8vq4";
-	var current_user_email = "{{ app.user.email }}";
-	var current_user_name = "{{ app.user.firstName~' '~app.user.lastName }}";
-	var first_name = "{{ app.user.firstName }}";
-	var last_name = "{{ app.user.lastName }}";
-	var current_user_id = "{{ app.user.id }}";
+	var current_user_email = "{{ loginDetails['entity'].email }}";
+	var current_user_name = "{{ loginDetails['entity'].firstName~' '~loginDetails['entity'].lastName }}";
+	var first_name = "{{ loginDetails['entity'].firstName }}";
+	var last_name = "{{ loginDetails['entity'].lastName }}";
+	var current_user_id = "{{ loginDetails['entity'].id }}";
 	var user_type = "{{ user_type }}";
 	window.intercomSettings = {
 	    app_id: APP_ID,
@@ -154,11 +154,11 @@ if(device == "Desktop")
 
 		if(device == "Desktop")
 		{	var APP_ID = "iswx8vq4";
-			var current_user_email = "{{ app.user.email }}";
-			var current_user_name = "{{ app.user.firstName~' '~app.user.lastName }}";
-			var first_name = "{{ app.user.firstName }}";
-			var last_name = "{{ app.user.lastName }}";
-			var current_user_id = "{{ app.user.id }}";
+			var current_user_email = "{{ loginDetails['entity'].email }}";
+			var current_user_name = "{{ loginDetails['entity'].firstName~' '~loginDetails['entity'].lastName }}";
+			var first_name = "{{ loginDetails['entity'].firstName }}";
+			var last_name = "{{ loginDetails['entity'].lastName }}";
+			var current_user_id = "{{ loginDetails['entity'].id }}";
 			var user_type = "{{ user_type }}";
 			window.intercomSettings = {
 				app_id: "iswx8vq4",
