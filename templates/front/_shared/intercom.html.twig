@@ -1,3 +1,4 @@
+
 {% set route = app.request.get('_route') %}
 {% if route starts with 'front_pixie_account_homepage' %}
 {% set device = 'Desktop' %}
@@ -48,18 +49,17 @@ var device = getPlatformType();
 
 </script>
 
-
+{% set user_type = 'not logged in' %}
 {% if app.session.has('login_by')  %}
 	{% set loginDetails = app.session.get('login_by')   %}
 	{% set loginBy = loginDetails['type'] %}
 {% else %}
 	{% set loginBy = 'not-login'   %}
 {% endif %}
-
-{% if loginBy == 'login_cm' and loginBy == 'login_client' %}
+{% if loginBy == 'login_cm' or loginBy == 'login_client' %}
 {% if loginBy == 'login_cm' %}
 	{%if app.user.pixie is not null %}
-		{% if app.user.viewMode == 'pixie' %}
+		{% if loginDetails['view_mode'] == 'pixie' %}
 			{% set user_type = 'city maker' %}
 		{% else %}
 		{% set user_type = 'voyager' %}
@@ -131,6 +131,7 @@ if(device == "Desktop")
 
 </script>
 {% else %}
+{% if app.user == null %}
 <script>
 
 if(device == "Desktop")
@@ -143,6 +144,31 @@ if(device == "Desktop")
 }
 
 </script>
+{% else %}
+
+	<script>
+
+		if(device == "Desktop")
+		{	var APP_ID = "iswx8vq4";
+			var current_user_email = "{{ app.user.email }}";
+			var current_user_name = "{{ app.user.firstName~' '~app.user.lastName }}";
+			var current_user_id = "{{ app.user.id }}";
+			var user_type = "{{ user_type }}";
+			window.intercomSettings = {
+				app_id: "iswx8vq4",
+				name: current_user_name, // Full name
+				email: current_user_email, // Email address
+				user_id: current_user_id, // current_user_id
+				user_type: user_type,
+				hide_default_launcher: true,
+
+			};
+
+			(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/iswx8vq4';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+		}
+
+	</script>
+{% endif %}
 {% endif %}
 <script>
     $('form').on('submit', function(e)
