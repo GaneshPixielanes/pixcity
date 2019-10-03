@@ -259,8 +259,11 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFjaLU8H-TpATXcUcDzKQ4w05pCQ5mAg&libraries=places"
-            defer></script>
+            async defer></script>
 
     <script>
         var coordinates = {};

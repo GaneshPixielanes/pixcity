@@ -29,7 +29,7 @@ $(document).ready(function() {
             center: new google.maps.LatLng(48.8588377, 2.2770196),
             // mapTypeId: google.maps.MapTypeId.ROADMAP,
             // backgroundColor: '#FFF',
-            zoom: 15,
+            zoom: 4,
             pointer: false,
             fullscreenControl: true,
             fullscreenControlOptions: {
@@ -315,13 +315,26 @@ $(document).ready(function() {
                 map.setZoom(15);
             }
         }
+        //marker clusterer added
+        cluster(map, markers);
+
         setTimeout(function() {
             if ($('#pac-input').hasClass('d-none')) {
                 $('#pac-input').removeClass('d-none');
             }
 
         }, 1000);
+    }
+    // Add a marker clusterer to manage the markers.
+    function cluster(map, markers) {
+        setMapOnAll(null);
 
+        var mcOptions = {
+            gridSize: 50,
+            minimumClusterSize: 5,
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        };
+        return new MarkerClusterer(map, markers, mcOptions);
     }
     //Get the locations for the corresponding profile
     function getMarkers()
