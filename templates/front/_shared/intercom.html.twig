@@ -69,7 +69,7 @@ var device = getPlatformType();
 	{% endif %}
 
 {% elseif loginBy == 'login_client' %}
-	{% set user_type = 'city maker' %}
+	{% set user_type = 'client' %}
 {% endif %}
 <script>
 
@@ -93,7 +93,7 @@ if(device == "Desktop")
 		first_name: first_name,
 		last_name: last_name,
 	    user_type: user_type,
-	    hide_default_launcher: true,
+	    hide_default_launcher: false,
 	  };
 	(function(){
 		var w=window;
@@ -168,7 +168,7 @@ if(device == "Desktop")
 				email: current_user_email, // Email address
 				user_id: current_user_id, // current_user_id
 				user_type: user_type,
-				hide_default_launcher: true,
+				hide_default_launcher: false,
 
 			};
 
