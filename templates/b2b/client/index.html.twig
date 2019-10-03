@@ -146,7 +146,7 @@
                                                         {% if pack.deleted == '0' or pack.deleted == null %}
                                                         <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
                                                             <div class="work-title fz-10">Pack {{ pack.packSkill.name }}</div>
-                                                            <div class="work-amount fz-10">{{ pack.userBasePrice }}€</div>
+                                                            <div class="work-amount fz-10">{{ pack.userBasePrice | clientPrice(margin.value)}}€</div>
                                                         </div>
                                                         {% endif %}
                                                     {% endfor %}
