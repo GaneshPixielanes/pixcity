@@ -1,5 +1,10 @@
 require('jquery-validation');
 
+
+
+
+
+
 var $form = $('form[name="client"]');
 
 $form.validate({
@@ -58,3 +63,158 @@ $form.validate({
     }
 });
 
+$(document).ready(function () {
+
+    //Get the SIRET number from the API
+    $('#get-company-info').on('click', function(e){
+        e.preventDefault();
+        $('.enterprise-log').toggle();
+        $('.loader-icon').toggle();
+        var info = $('#company-info').val();
+        var url = ''
+        // GET the info using SIRET number
+        if(info.length == 14)
+        {
+            url = 'https://entreprise.data.gouv.fr/api/sirene/v1/siret/'+info;
+        }
+        else if(info.length == 9)
+        {
+            url = 'https://entreprise.data.gouv.fr/api/sirene/v1/siren/'+info;
+        }
+        else
+        {
+            return false;
+        }
+
+        $.ajax(url,{
+            method: 'GET',
+            success: function (data) {
+                console.log(data);
+                if(info.length == 9)
+                {
+                    var result = {
+                      name:  data.siege_social.nom_raison_sociale,
+                      address: data.siege_social.geo_adresse,
+                      siret: data.siege_social.siret,
+                      street_address: data.siege_social.enseigne,
+                      postal_code: data.siege_social.code_postal,
+                      city: data.siege_social.l6_normalisee.match(/[a-zA-Z]+/),
+                      creation_date: data.siege_social.enseigne
+
+                    };
+                }
+                else if(info.length == 14)
+                {
+                    var result = {
+                        name:  data.etablissement.l1_normalisee,
+                        address: data.etablissement.geo_adresse,
+                        siret: info,
+                        street_address: data.etablissement.l4_normalisee,
+                        postal_code: data.etablissement.code_postal,
+                        city: data.etablissement.l6_normalisee.match(/[a-zA-Z]+/),
+                        date_creation_entreprise: data.etablissement.enseigne
+
+                    };
+                }
+                fillCompanyData(result);
+                $('.enterprise-log').toggle();
+                $('.loader-icon').toggle();
+                $('.registered-log').show();
+                $('.unregistered-log').show();
+                $('.enterprise-log').hide();
+                if(data.total_results == 0)
+                {
+                    $('#company-not-found').show();
+                }
+                else{
+                    // $('#client_clientInfo_siret').val(result.siret);
+                    // $('#client_company').val(result.name);
+                    // $('#client_clientInfo_address').val(result.address);
+                    // $('#client_clientInfo_postalCode').val(result.postal_code);
+                    // $('#client_clientInfo_city').val(result.city);
+                    // $('#client_clientInfo_companyCreationDate').val(result.creation_date);
+                }
+
+            },
+            error: function()
+            {
+                $('.loader-icon').toggle();
+                $('#company-not-found').show();
+            }
+        });
+    });
+
+    $('.reset').on('click', function(e){
+        e.preventDefault();
+        $('#company-info').val('');
+        $('.enterprise-log').show();
+
+    });
+
+    $('#manual-registeration-button').on('click', function (e) {
+        e.preventDefault();
+        $('.company-info').show();
+        $('.unregistered-log').show();
+        $('#company-not-found').hide();
+    });
+    $('#company-info').on('keyup', function (e) {
+        $.ajax('https://entreprise.data.gouv.fr/api/sirene/v1/suggest/'+$( "#company-info" ).val(), {
+            success: function (data) {
+                $('#suggestions').html('<ul class="suggestions-list"></ul>');
+                $.each(data.suggestions, function(key, value){
+                    $('.suggestions-list').append('<li><a href="#" class="suggested-company-name">'+value+'</a></li>');
+                });
+
+            }
+        });
+    });
+
+    $(document).on('click','.suggested-company-name', function(e){
+        e.preventDefault();
+        var company = $(this).text();
+
+        $.ajax('https://entreprise.data.gouv.fr/api/sirene/v1/full_text/'+company, {
+            success: function (data) {
+                var index;
+                $.each(data.suggestions, function(key, value)
+                {
+                    if(value == company)
+                    {
+                        index = key;
+                    }
+                });
+                data = data.etablissement[index];
+                var result = {
+                    name:  data.l1_normalisee,
+                    address: data.geo_adresse,
+                    siret: data.siret,
+                    street_address: data.l4_normalisee,
+                    postal_code: data.code_postal,
+                    city: data.l6_normalisee.match(/[a-zA-Z]+/),
+                    date_creation_entreprise: data.enseigne
+
+                };
+
+                $('.enterprise-log').toggle();
+                $('.loader-icon').toggle();
+                $('.registered-log').show();
+                $('.unregistered-log').show();
+                $('.enterprise-log').hide();
+                fillCompanyData(result);
+            }
+        });
+    });
+
+    function  fillCompanyData(result) {
+        $('.company-name').html(result.name);
+        $('.address').html(result.address);
+        $('#client_clientInfo_siret').val(result.siret);
+        $('#client_company').val(result.name);
+        $('#client_clientInfo_address').val(result.address);
+        $('#client_clientInfo_postalCode').val(result.postal_code);
+        $('#client_clientInfo_city').val(result.city);
+        $('#client_clientInfo_companyCreationDate').val(result.creation_date);
+
+        return true;
+    }
+});

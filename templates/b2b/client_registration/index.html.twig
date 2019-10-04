@@ -2,6 +2,10 @@
 
 {% form_theme form 'b2b/shared/field.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
 
 {% block body %}
     <style>
@@ -135,13 +139,60 @@
                     <div class="row w-100">
                         <div class="col-md-6"></div>
                         <div class="col-md-6 mt-4">
-                            <div class="unregistered-log">
-                                <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.city Services!</h4>
-                                <p class="text-center">Apprenons à mieux nous connaître! 😉</p>
+                            <div class="enterprise-log">
+                                <h4 class="fz-28 text-center font-weight-bold">Créez votre compte sur Pix.City Services</h4>
+                                <p class="text-center">Veuillez patienter, la recherche de votre entreprise est en cours.</p>
+                                <div class="row">
+                                    <div class="col-md-8 m-auto">
+                                        <form action="" method="" class="login-form-elements" accept-charset="utf-8">
+                                            <div class="row">
+                                                <div class="col-md-12 card shadow-sm p-3 mt-5">
+                                                    <p class="font-weight-light text-center text-darkblue">Nom de votre entreprise/SIRET <a href="javascript:;" class="text-darkblue" data-toggle="tooltip" data-placement="top" title="Le SIRET est un numéro unique'identification de votre entreprise. Il est composé de 9 chiffres. Le SIREN est composé de 14 chiffres. Ces 2 numéros se trouvent sur vos documents officiels"><i class="fas fa-info-circle"></i></a></p>
+                                                    <input type="text" id="company-info" class="form-control mb-3 bg-lightgray text-center" placeholder="Nom/Siret/Siren" />
+                                                    <div id="suggestions"></div>
+                                                    <div class="custom-control custom-checkbox mb-1 text-center">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheckEntre">
+                                                        <label class="custom-control-label fz-12" for="customCheckEntre">Entreprise en cours d'immatriculation</label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 mt-4 text-center">
+                                                    <button class="btn btn-pink btn-pill w-30 lh2 fz-12" id="get-company-info">Valider</button>
+                                                </div>
+                                                <div class="col-md-12 mb-4 text-center">
+                                                    <a href="javascript" class="btn btn-link text-pink fz-12 reset">Retour</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="registered-log" style="display:none">
+                                <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.City Service !</h4>
+                                <p class="text-center">Apprenons à mieux nous connaître 😉</p>
+                                <div class="row">
+                                    <div class="col-md-8 m-auto">
+                                        <div class="row">
+                                            <div class="col-md-12 card shadow-sm mb-3 p-3 text-center">
+                                                <a href="javascript:" class="upload-company-logo mx-auto">
+                                                    <img class="company-logo mx-auto mb-2" src="../images/login-reg-place.svg">
+                                                </a>
+                                                <!--  <img class="company-logo mx-auto mb-2" src="../images/login-reg-place.svg" -->
+                                                <p class="font-weight-bold text-pink m-0 company-name">Cacatoès Design Studio</p>
+                                                <p class="font-weight-light m-0 "><span class="address"></span></p>
+{#                                                <p class="m-0">753 261 863</p>#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="unregistered-log" style="display:none">
                                 <div class="row">
                                     <div class="col-md-8 m-auto">
 
-                                        <div class="row">
+                                        <div class="row company-info">
                                             <div class="col-md-12 card shadow-sm mb-3 p-3">
                                                 <p class="font-weight-light text-center mb-4">Votre entreprise</p>
                                                 <input name="file-avatar" id="client-logo" type="file" class="file-input d-none" required  data-msg-required="Merci d'uploader votre logo." accept="image/*"/>
@@ -209,6 +260,40 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row loader-icon" style="display:none">
+                                <div class="col-md-12 loader-container">
+                                    <div class="loader m-auto"></div>
+                                </div>
+                            </div>
+                            <div class="error-log" style="display:none" id="company-not-found">
+                                <h4 class="fz-28 font-weight-bold">Désolé nous n’avons pas pu identifier votre entreprise</h4>
+                                <p>Veuillez vérifier les points suivants :</p>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-1">
+                                        <i class="fas fa-check text-pink"></i>
+                                    </div>
+                                    <div class="col-md-11">
+                                        Vérifiez bien que votre entreprise est bien immatriculée sur le centre des Impôts de votre région. Sinon contactez votre centre avant de retenter votre inscription
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-1">
+                                        <i class="fas fa-check text-pink"></i>
+                                    </div>
+                                    <div class="col-md-11">
+                                        Vérifiez bien que votre entreprise est bien immatriculée sur le centre des Impôts de votre région. Sinon contactez votre centre avant de retenter votre inscription
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <a href="javascript:;" class="btn btn-pink btn-pill btn-block lh2" id="manual-registeration-button">Identification manuelle</a>
+                                    </div>
+                                    <div class="col-md-2 mb-4">
+                                        <a href="javascript:;" class="btn btn-link text-pink lh2 reset">Retour</a>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="welcome-log d-none">
                                 <img src="/images/login-welcome-mail.png" width="64" height="70" class="m-auto d-block mb-3">
                                 <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.City !</h4>
@@ -233,6 +318,7 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     {#    <script type="text/javascript" src="{{ absolute_url(asset('build/b2b/js/client_registration.js')) }}"></script>#}
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     {#    <script type="text/javascript" src="{{ asset('build/b2b/js/client_registration.js') }}"></script>#}
@@ -278,5 +364,6 @@
 
 {% block javascripts_footer %}
     {{ parent() }}
-
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 {% endblock %}
