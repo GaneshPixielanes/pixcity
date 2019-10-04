@@ -263,10 +263,9 @@ class MissionController extends Controller
         //Create Payin
         $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId(),$fee * 100);
 
-        return $this->redirect($result);
-//        return $this->render('b2b/client/transaction/payin.html.twig', [
-//            'result' => $result
-//        ]);
+        return $this->render('b2b/client/transaction/payin_test.html.twig',[
+            'url' => $result,
+        ]);
     }
 
     /**
