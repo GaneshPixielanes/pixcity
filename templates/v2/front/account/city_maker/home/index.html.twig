@@ -519,13 +519,13 @@
                                         {% if app.user.level == 1 %}
                                             <img src="{{ asset('build/images/badge-voyager.svg') }}" alt="Voyager" />
                                         {% elseif app.user.level == 2 %}
-                                            <img src="{{ asset('build/images/badge-explorer.svg') }}" alt="Voyager" />
+                                            <img src="{{ asset('build/images/badge-explorer.svg') }}" alt="Explorer" />
                                         {% elseif app.user.level == 3%}
-                                            <img src="{{ asset('build/images/badge-adventurer.svg') }}" alt="Voyager" />
+                                            <img src="{{ asset('build/images/badge-adventurer.svg') }}" alt="Adventurer" />
                                         {% elseif app.user.level == 4%}
-                                            <img src="{{ asset('build/images/badge-ranger.svg') }}" alt="Voyager" />
+                                            <img src="{{ asset('build/images/badge-ranger.svg') }}" alt="Ranger" />
                                         {% elseif app.user.level == 5 %}
-                                            <img src="{{ asset('build/images/badge-nomad.svg') }}" alt="Voyager" />
+                                            <img src="{{ asset('build/images/badge-nomad.svg') }}" alt="Nomad" />
                                         {% endif %}
                                         <h5 class="fz-28">{{ ('label.level.level_' ~app.user.level )|trans }}</h5>
                                     </div>
@@ -612,6 +612,7 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if app.user.level == 2 %}
                             <div class="col-md-12 pb-5 levels-slide-card">
                                 <div class="col-md-12 card p-0 text-center shadow levels-slide main-slide">
                                     <div class="card-header text-white bg-pink ">
@@ -677,6 +678,7 @@
                                     </div>
                                 </div>
                             </div>
+                            {% endif %}
                             {% if app.user.level == 3 %}
                             <div class="col-md-12 pb-5 levels-slide-card">
                                 <div class="col-md-12 card p-0 text-center shadow levels-slide main-slide">
