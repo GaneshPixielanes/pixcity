@@ -21,6 +21,7 @@ $(document).ready(function() {
     var cityMaker = $("#api-box").attr('data-city-maker-id');
     var cardLatitude = $("#api-box").attr('data-latitude');
     var cardLongitude = $("#api-box").attr('data-longitude');
+    var clusterMarker = '';
 
     // Display map
     function myMap() {
@@ -154,7 +155,7 @@ $(document).ready(function() {
         // });
 
         setMapOnAll(null);
-
+        markers = [];
         $.each(positions, function(key, position) {
 
             if(position.latitude == cardLatitude && position.longitude == cardLongitude)
@@ -327,6 +328,10 @@ $(document).ready(function() {
     }
     // Add a marker clusterer to manage the markers.
     function cluster(map, markers) {
+        if(clusterMarker != '')
+        {
+            clusterMarker.clearMarkers();
+        }
         setMapOnAll(null);
 
         var mcOptions = {
@@ -334,7 +339,9 @@ $(document).ready(function() {
             minimumClusterSize: 5,
             imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
         };
-        return new MarkerClusterer(map, markers, mcOptions);
+
+        clusterMarker = new MarkerClusterer(map, markers, mcOptions);
+        return clusterMarker;
     }
     //Get the locations for the corresponding profile
     function getMarkers()
