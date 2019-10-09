@@ -75,7 +75,6 @@ class User implements UserInterface, EquatableInterface
     private $currentLocation;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=10)
      */
     private $gender;

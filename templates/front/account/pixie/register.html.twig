@@ -22,31 +22,19 @@
             <div class="col-md-4 left">
 
                 <h1>Créez votre compte City-maker</h1>
-                <p class="intro-tab intro-tab-general">
-                    Vous souhaitez devenir City-maker ?
+                <p class="intro-tab intro-tab-general intro-tab-regions">
+                    Installez-vous, prenez 6 minutes dans votre journée, une photo de vous et un café ;)
                     <br>
                     <br>
-                    Installez-vous, prenez 6 minutes dans votre journée, une photo de vous, vos infos bancaires et un café ;)
+                    C’est parti !
                     <br>
-                    <br>C’est parti !
                     <br>
-                    <br>Sur ce 1er onglet, remplissez vos infos générales.
+                    Sur ce 1er onglet, remplissez vos infos générales.
                     <br>
                     <br>Les champs notés * sont obligatoires.
                 </p>
-                <p class="intro-tab intro-tab-regions">
-                    Cliquez sur les 2 régions sur lesquelles vous souhaitez rédiger des cards.
-                    <br>
-                    <br>Elles se colorent en rose lors de votre choix.
-                </p>
-                <p class="intro-tab intro-tab-likes">
-                    Ces 2 emplacements “J’aime / J’aime pas” sont en train d’évoluer ! Ne les remplissez pas pour l’instant ;)
-                    <br>Ils apparaissent ici pour l’instant mais seront cachés sur le site
-                    <br>
-                    <br>Choisissez vos 5 catégories préférées !
-                    <br>
-                    <br>Elles seront affichées dans votre profil mais peuvent être sensiblement différentes des cards que vous rédigerez.
-                </p>
+
+
                 <p class="intro-tab intro-tab-remuneration" style="display: none;">
                     Plus qu’une étape !
                     <br>
@@ -85,7 +73,7 @@
 
                             <div class="form-group col-sm-12 input-container">
                                 <span class="maj">Informations générales</span>
-
+                                Uploadez votre photo de profil <span style="color: #fd6b84;">*</span>
                                 <div class="portraitCompte fa fa-user user-avatar-field upload-zone">
                                     <input name="file-avatar" type="file" class="file-input" data-type="single" />
                                     <div class="field">{{ form_widget(form.avatar.name) }}</div>
@@ -111,9 +99,9 @@
 
 
                             {{ form_row(form.currentLocation, {'icon': 'fa-home'}) }}
-                            {{ form_row(form.gender) }}
+{#                            {{ form_row(form.gender) }}#}
 
-                            {{ form_row(form.birthLocation) }}
+{#                            {{ form_row(form.birthLocation) }}#}
 
                         {% endif %}
 
