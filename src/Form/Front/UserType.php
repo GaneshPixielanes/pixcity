@@ -61,31 +61,32 @@ class UserType extends AbstractType
                         'year' => 'label.year', 'month' => 'label.month', 'day' => 'label.day',
                     )
                 ))
-                ->add('birthLocation', EntityType::class, array(
-                    'class' => Region::class,
-                    'label' => 'label.birth_place',
-                    'help' => 'help.birth_place',
-                    'required' => true,
-                    'placeholder' => 'label.select.region',
-                    'choice_label' => 'name',
-                ))
+//                ->add('birthLocation', EntityType::class, array(
+//                    'class' => Region::class,
+//                    'label' => 'label.birth_place',
+//                    'help' => 'help.birth_place',
+//                    'required' => true,
+//                    'placeholder' => 'label.select.region',
+//                    'choice_label' => 'name',
+//                ))
                 ->add('currentLocation', TextType::class, array(
                     'label' => 'label.currentLocation',
                     'attr' => ['placeholder' => 'label.zipcode'],
                 ))
-                ->add('gender', ChoiceType::class, array(
-                    'label' => 'label.gender',
-                    'multiple' => false,
-                    'expanded' => true,
-                    'choices'  => array(
-                        'label.male' => 'male',
-                        'label.female' => 'female'
-                    ),
-                    'attr' => [
-                        'rowClass' => 'radios'
-                    ],
-                    'required' => true,
-                ));
+//                ->add('gender', ChoiceType::class, array(
+//                    'label' => 'label.gender',
+//                    'multiple' => false,
+//                    'expanded' => true,
+//                    'choices'  => array(
+//                        'label.male' => 'male',
+//                        'label.female' => 'female'
+//                    ),
+//                    'attr' => [
+//                        'rowClass' => 'radios'
+//                    ],
+//                    'required' => true,
+//                ))
+              ;
         }
 
         $builder
