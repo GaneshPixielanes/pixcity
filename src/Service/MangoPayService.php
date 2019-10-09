@@ -113,7 +113,7 @@ class MangoPayService
 
 //        $this->setCardRegistration($mangoUser->Id);
 
-        return $result->ExecutionDetails->TemplateURL;
+        return $result->ExecutionDetails->RedirectURL;
     }
 
 
