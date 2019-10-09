@@ -185,6 +185,7 @@ class MissionController extends Controller
 
         if($result['tax'] != 0){
 
+
             $tax_value = $tax->getValue() / 100 * $margin;
 
             if($mission->getStatus() != MissionStatus::CREATED){
@@ -285,9 +286,7 @@ class MissionController extends Controller
         //Create Payin
         $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId(),$fee * 100);
 
-        return $this->render('b2b/client/transaction/payin_test.html.twig',[
-            'url' => $result,
-        ]);
+        return $this->redirect($result);
     }
 
     /**
