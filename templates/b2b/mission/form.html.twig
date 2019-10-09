@@ -630,7 +630,7 @@
                             $('[name="mission[description]"]').text(result.data.description).trigger('input');
                             $('[name="mission[description]"]').val(result.data.description).trigger('input');
                             $('.fr-view').html(result.data.description);
-                            $('[name="mission[title]"]').val(result.data.title);
+                            $('[name="mission[title]"]').val('exemple de titre de mission : '+result.data.title);
                             $('.pack-title-container').find('.inputlength').html(result.data.title.length);
                             console.log(result.data.title.length);
                             var basePrice = result.data.price;
