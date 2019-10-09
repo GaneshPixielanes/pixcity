@@ -30,7 +30,7 @@ $(document).ready(function() {
             center: new google.maps.LatLng(48.8588377, 2.2770196),
             // mapTypeId: google.maps.MapTypeId.ROADMAP,
             // backgroundColor: '#FFF',
-            zoom: 4,
+            zoom: 15,
             pointer: false,
             fullscreenControl: true,
             fullscreenControlOptions: {
