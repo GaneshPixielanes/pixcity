@@ -107,10 +107,8 @@
 
 {% block _mission_title_widget %}
     <div class="pack-title-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Le titre de votre mission</h5>
-        <p class="text-textgray">Le titre doit permettre à votre client de comprendre
-            instantanément
-            votre prestation</p>
+        <h5 class="text-darkgray mb-0">Le titre de votre mission <span style="color: #fd6b84;">*</span></h5>
+        <p class="text-textgray">Le titre doit permettre à votre client de comprendre instantanément votre prestation. Personnalisez-le titre comme vous le souhaitez</p>
         <input class="form-control bg-lightwhite pack-title" maxlength="64" type="text"
                placeholder="Je m’occupe de vos réseaux sociaux " name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" data-bind="pcs-mission-name" {% if form.vars.value != '' %}readonly="readonly"{% endif %}/>
         <p class="mb-0 fz-12 text-textgray mt-2" data-bind="mission-title"><span class="inputlength">{{ form.vars.value | length }}</span>/<span
@@ -120,7 +118,7 @@
 
 {% block _mission_description_widget %}
     <div class="pack-description-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Décrivez votre mission</h5>
+        <h5 class="text-darkgray mb-0">Décrivez votre mission <span style="color: #fd6b84;">*</span> </h5>
         <p class="text-textgray">N’hésitez pas à être le plus précis possible dans la
             description de
             votre prestation !
@@ -140,7 +138,7 @@
 
 {% block _mission_missionBasePrice_widget %}
     <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
+        <h5 class="text-darkgray mb-0">Fixez votre prix <span style="color: #fd6b84;">*</span> </h5>
         <p class="text-textgray">Si vous ne savez pas comment définir vos prix,  <a href="{{ url('front_faq_index') }}">consultez notre FAQ</a></p>
         <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
         <div class="d-flex align-items-center">
@@ -165,7 +163,7 @@
 {% block _mission_region_widget %}
 
     <div class="pack-region-container col-sm-12 mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Zone géographique</h5>
+        <h5 class="text-darkgray mb-0"><Zone géographique <span style="color: #fd6b84;">*</span> /h5>
         <p class="text-textgray">Choisissez la région où vous souhaitez intervenir pour réaliser le pack décrit ci-dessus. Les régions affichées sont par défaut celles que vous préalablement renseignées dans votre profil city-maker. N’oubliez pas que vous devez vous trouver à moins d’1h du lieu d’intervention du pack (environ !). Pour dé-sélectionner une région, cliquez simplement dessus.</p>
 
         <div class="row">
@@ -268,7 +266,7 @@
 
 {% block _mission_missionMedia_widget %}
     <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr')  }}" id="media-block" >
-        <h5 class="text-darkgray mb-0">Photos</h5>
+        <h5 class="text-darkgray mb-0">Photos <span style="color: #fd6b84;">*</span></h5>
         <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre
             bibliothèque
             ou en télécharger des nouvelles pour illustrer votre pack.</p>
@@ -379,7 +377,10 @@
 
 {% block _mission_documents_widget %}
     <div class="work-documents-container col-sm-12 border-bottom mt-2 mb-4 pb-4"  id="mission-documents-upload" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr') }} ">
-        <h5 class="text-darkgray mb-3">Documents de travail</h5>
+        <h5 class="text-darkgray mb-3">Documents de travail <span style="color: #fd6b84;">*</span> </h5>
+        <p class="text-textgray mb-0">
+            Uploadez ici un document avec les éléments dont vous aurez besoin pour la mission ou votre cahier des charges personnalisé ex: le logo client ....
+        </p>
         <table class="table table-sm table-borderless table-striped work-documents-list-table">
             <thead>
             <tr class="text-normalgray fz-12">
