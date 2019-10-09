@@ -187,9 +187,17 @@ class MissionController extends Controller
 
             $tax_value = $tax->getValue() / 100 * $margin;
 
-            if($result['need_to_pay'] != 0){
+            if($mission->getStatus() != MissionStatus::CREATED){
 
-                $fee = $amount - ($margin + $tax_value);
+                if($result['need_to_pay'] != 0){
+
+                    $fee = $amount - ($margin + $tax_value);
+
+                }else{
+
+                    $fee = $margin + $tax_value;
+
+                }
 
             }else{
 
@@ -197,13 +205,27 @@ class MissionController extends Controller
 
             }
 
+
+
         }else{
 
-            if($result['need_to_pay'] != 0){
-                $fee = $amount - $margin;
+            if($mission->getStatus() != MissionStatus::CREATED){
+
+                if($result['need_to_pay'] != 0){
+
+                    $fee = $amount - $margin;
+
+                }else{
+
+                    $fee = $margin;
+                }
+
             }else{
+
                 $fee = $margin;
+
             }
+
 
 
         }
