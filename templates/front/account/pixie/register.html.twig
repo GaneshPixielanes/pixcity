@@ -33,16 +33,21 @@
                     <br>
                     <br>Les champs notés * sont obligatoires.
                 </p>
-
+                <p class="intro-tab intro-tab-likes">
+                    Choisissez vos 5 catégories préférées !
+                    <br>
+                    <br>
+                    Elles seront affichées dans votre profil mais peuvent être sensiblement différentes des cards que vous rédigerez.
+                    <br>
+                </p>
 
                 <p class="intro-tab intro-tab-remuneration" style="display: none;">
-                    Plus qu’une étape !
+                    <br> <h4>GAINS PIX.CITY :</h4> Vous rédigez des cards et participez aux différents jeux concours mensuels. Vous n’avez pas à remplir d'éléments supplémentaires car nous avons déjà toutes vos informations ;) N’oubliez pas de cliquer sur “Créer mon compte” en bas à droite avant de quitter cette page!
                     <br>
-                    <br>- Si vous êtes une société, remplissez bien les champs avec une croix rose qui sont obligatoires et n’oubliez pas vos infos bancaires.
-                    <br>
-                    <br>- Si vous êtes micro-entrepreneur, remplissez bien les champs avec une croix rose qui sont obligatoires et n’oubliez pas vos infos bancaires. 
-                    <br>
-                    <br>- Si vous n’avez encore pas choisi votre statut, vous pouvez cocher en cours d’immatriculation. Il faudra néanmoins choisir pour être payé pour les cards que vous aurez faites.
+                    <br><h4>GAINS PIX.CITY SERVICES :</h4>
+                Vous avez au moins une card publiée sur pix.city et avez soumis votre candidature. Vous devez remplir les champs ci-dessous (les champs obligatoires ont une croix rose). N’oubliez pas de cliquer sur “Créer mon compte” en bas à droite avant de quitter cette page!
+
+                <br>
                 </p>
 
             </div>
@@ -54,7 +59,7 @@
                             <li class="tab1 active"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
                             <li class="tab2"><a href="#regions-tab" data-noautscroll="true" data-toggle="tab">Régions</a></li>
                             <li class="tab3"><a href="#jaime-jaimepas-tab" data-noautscroll="true" data-toggle="tab">Catégories favorites</a></li>
-                            <li class="tab4"><a href="#remuneration-tab" data-noautscroll="true" data-toggle="tab">Rémunération</a></li>
+                            <li class="tab4"><a href="#remuneration-tab" data-noautscroll="true" data-toggle="tab">GAINS</a></li>
                         </ul>
                     </div>
                 </div>
@@ -97,8 +102,31 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-6 address-module form-group">
 
-                            {{ form_row(form.currentLocation, {'icon': 'fa-home'}) }}
+                                {{ form_label(form.pixie.billing.address.address) }}
+
+                                <div class="row">
+                                    <div class="col-xs-12 input-container">
+                                        {{ form_widget(form.pixie.billing.address.address) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 input-container">
+                                        {{ form_widget(form.pixie.billing.address.zipcode) }}
+                                    </div>
+                                    <div class="col-md-7 input-container">
+                                        {{ form_widget(form.pixie.billing.address.city) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 input-container">
+                                        {{ form_widget(form.pixie.billing.address.country) }}
+                                    </div>
+                                </div>
+                            </div>
+
+{#                            {{ form_row(form.currentLocation, {'icon': 'fa-home'}) }}#}
 {#                            {{ form_row(form.gender) }}#}
 
 {#                            {{ form_row(form.birthLocation) }}#}
@@ -187,7 +215,7 @@
 
                     <div class="tab-pane tp2" data-slug="likes" id="jaime-jaimepas-tab">
                         <div class="col-sm-12 maj">
-                            J'aime / J'aime pas</div>
+                            J'aime/J'aime pas</div>
 
                         <div class="col-sm-6 form-row form-group">
                             <div class="row">
@@ -238,9 +266,42 @@
                     <div class="tab-pane tp4" data-slug="remuneration" id="remuneration-tab">
 
                         <div class="col-sm-12">
-                            <span class="maj">Rétribution monétaire</span>
+                            <span class="maj">Informations bancaires</span>
                             <div>
                                 En publiant des cards, vous participez à un jeu concours mensuel avec des lots à gagner ou des gains versés directement sur votre compte bancaire.
+                            </div>
+                            <br>
+                            <div>
+                                <h4>INFORMATIONS GÉNÉRALES</h4>
+                                <table class="table">
+                                    <tr>
+                                        <th>Prénom</th>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Numéro de téléphone</th>
+                                        <th>Date de naissance</th>
+                                        <th>Adresse</th>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="fname"></span></td>
+                                        <td><span class="lname"></span></td>
+                                        <td><span class="email"></span></td>
+                                        <td><span class="telep"></span></td>
+                                        <td>
+                                            <span class="dobd"></span>-
+                                            <span class="dobm"></span>-
+                                            <span class="doby"></span>
+                                        </td>
+                                        <td>
+                                            <p class="address"></p>
+                                            <p class="zipcode"></p>
+                                            <p class="city"></p>
+                                            <p class="country"></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <h4>RÉSEAUX SOCIAUX</h4>
+
                             </div>
                         </div>
 
@@ -253,31 +314,6 @@
                         {{ form_row(form.pixie.billing.companyName) }}
                         {{ form_row(form.pixie.billing.firstname) }}
                         {{ form_row(form.pixie.billing.lastname) }}
-                        {{ form_row(form.pixie.billing.phone) }}
-
-                        <div class="col-md-6 address-module form-group">
-
-                            {{ form_label(form.pixie.billing.address.address) }}
-
-                            <div class="row">
-                                <div class="col-xs-12 input-container">
-                                    {{ form_widget(form.pixie.billing.address.address) }}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5 input-container">
-                                    {{ form_widget(form.pixie.billing.address.zipcode) }}
-                                </div>
-                                <div class="col-md-7 input-container">
-                                    {{ form_widget(form.pixie.billing.address.city) }}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 input-container">
-                                    {{ form_widget(form.pixie.billing.address.country) }}
-                                </div>
-                            </div>
-                        </div>
 
                         {{ form_row(form.pixie.billing.tva) }}
 

@@ -295,5 +295,38 @@ jQuery(document).ready(function() {
     //Remove the delete option for the first element i.e; Instagram.
     $('a.delete-item:first').html('');
 
+    $( "[name='user[firstname]']" ).change(function() {
+        $(".fname").text($( this ).val());
+    });
+    $( "[name='user[lastname]']" ).change(function() {
+        $(".lname").text($( this ).val());
+    });
+    $( "[name='user[phone]']" ).change(function() {
+        $(".telep").text($( this ).val());
+    });
+    $( "[name='user[birthdate][day]']" ).change(function() {
+        $(".dobd").text($( this ).val());
+    });
+    $( "[name='user[birthdate][month]']" ).change(function() {
+        $(".dobm").text($( this ).val());
+    });
+    $( "[name='user[birthdate][year]']" ).change(function() {
+        $(".doby").text($( this ).val());
+    });
+    $( "[name='user[pixie][billing][address][address]']" ).change(function() {
+        $(".address").text($( this ).val());
+    });
+    $( "[name='user[pixie][billing][address][zipcode]']" ).change(function() {
+        $(".zipcode").text($( this ).val());
+    });
+    $( "[name='user[pixie][billing][address][city]']" ).change(function() {
+        $(".city").text($( this ).val());
+    });
+    $( "[name='user[pixie][billing][address][country]']" ).change(function() {
+        $(".country").text($( this ).val());
+    });
+    $( "[name='user[email]']" ).change(function() {
+        $(".email").text($( this ).val());
+    });
 
 });
