@@ -49,6 +49,31 @@ class UserMissionRepository extends ServiceEntityRepository
         return $result;
     }
 
+    public function findDraftAndOngoingMissions($user, $type = 'cm')
+    {
+        $result = $this->createQueryBuilder('m')
+            ->where('m.status = :ongoing OR m.status = :cancel_requested OR m.status = :terimate_requested OR m.status = :draft')
+            ->leftJoin('m.missionLogs', 'logs')
+            ->setParameter('ongoing', MissionStatus::ONGOING)
+            ->setParameter('cancel_requested', MissionStatus::CANCEL_REQUEST_INITIATED)
+            ->setParameter('terimate_requested', MissionStatus::TERMINATE_REQUEST_INITIATED)
+            ->setParameter('draft', MissionStatus::CREATED);
+        if ($type == 'client') {
+            $result = $result->andWhere('m.client = :user')->setParameter('user', $user)
+                ->andWhere('m.missionAgreedClient = 1')
+                ->andWhere('logs.isActive = 1');
+
+        } else {
+            $result = $result->andWhere('m.user = :user')->setParameter('user', $user);
+
+        }
+
+        $result = $result->orderBy('m.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
     public function findMissionsWithLimit($filters = [], $user = null, $page = 1, $limit = 10)
     {
         return $this->createQueryBuilder('m')

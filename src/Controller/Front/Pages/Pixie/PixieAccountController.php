@@ -212,8 +212,7 @@ class PixieAccountController extends Controller
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+
             // Add the flash message
             $this->addFlash('account_saved_settings', '');
 
@@ -232,8 +231,7 @@ class PixieAccountController extends Controller
         ]);
 
         #Number of missions from a user
-        $missionCount = $missionRepo->findOngoingMissions($this->getUser());
-
+        $missionCount = $missionRepo->findDraftAndOngoingMissions($this->getUser());
         //-----------------------------------------------
         // Create the page
 
