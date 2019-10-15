@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MissionLogRepository")
+ * @ORM\EntityListeners({"App\Entity\Listener\MissionLogListener"})
  * @ORM\Table(name="pxl_b2b_user_mission_logs")
  */
 class MissionLog
@@ -56,6 +57,21 @@ class MissionLog
      * @ORM\Column(type="integer")
      */
     private $createdBy;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $quotationfile;
+
+//    /**
+//     * @ORM\OneToOne(targetEntity="App\Entity\UserMission", mappedBy="log")
+//     */
+////    private $userMisson;
 
     public function getId(): ?int
     {
@@ -157,4 +173,29 @@ class MissionLog
 
         return $this;
     }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getQuotationfile(): ?string
+    {
+        return $this->quotationfile;
+    }
+
+    public function setQuotationfile(?string $quotationfile): self
+    {
+        $this->quotationfile = $quotationfile;
+
+        return $this;
+    }
+
 }

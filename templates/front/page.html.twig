@@ -1,13 +1,85 @@
 {% extends 'front/base.html.twig' %}
 
 {% block body %}
+    <style>
+        .social-btn > a:hover{
+            color: #20c997 !important;
+        }
+        .social-wrap {
+            clear: both;
+            background: #0e3757;
+        }
+        .container-propos, .container-social {
+            float: left;
+            width: 25%;
+            padding: 40px 0;
+            margin-right: 10px;
+        }
+        .brand-footer {
+            float: left;
+            width: 22%;
+            padding-top: 40px;
+        }
+        .container-propos h4, .container-social h4 {
+            font-size: 15px;
+            text-transform: uppercase;
+            color: #30b495;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        .container-propos ul, .container-social ul, ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        .container-propos ul li a, .container-social ul li a {
+            text-decoration: none;
+            display: inline-block;
+            color: #146a7d;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .container-social ul li a i {
+            font-size: 18px;
+            margin-right: 5px;
+        }
+        .container-social ul li a i, .container-social ul li a span, .switch-map label, .switch-map span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .container-propos ul li a:focus, .container-propos ul li a:hover, .container-social ul li a:focus, .container-social ul li a:hover {
+            color: #30b495;
+        }
+        .footer-wrap {
+            clear: both;
+            background: #0c314d;
+            padding: 20px 0;
+            color: #8396a4;
+            font-size: 18px;
+        }
+        .brand-footer img {
+            width: 120px;
+        }
+    </style>
+    {% if app.session.has('login_by')  %}
+        {% set loginDetails = app.session.get('login_by')   %}
+        {% set loginBy = loginDetails['type'] %}
+    {% else %}
+        {% set loginBy = 'not-login'   %}
+    {% endif %}
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
                 {% if header_has_search is defined %}<button type="button" id="btnTSearch" class="navbar-toggle" data-toggle="collapse" data-target="#searchNavBar"><span class="fa fa-search"></span></button>{% endif %}
-                <a class="navbar-brand" href="{{ path('front_homepage_index') }}"><img src="{{ asset('build/images/logo-color.svg') }}" alt="Pix.City" /></a>
+{#                <a class="navbar-brand" href="{{ path('front_homepage_index') }}"><img src="{{ asset('build/images/logo-color.svg') }}" alt="Pix.City" /></a>#}
+                {% if page.platform == 0 %}
+                    <a class="navbar-brand" href="{{ path('front_homepage_index') }}"><img src="{{ asset('build/images/header-logo-main.svg') }}" alt="Pix.City" /></a>
+                {% else %}
+                    <a class="navbar-brand" href="{{ path('front_homepage_index') }}"><img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
+                {% endif %}
+
             </div>
 
             {% if header_has_search is defined %}
@@ -19,7 +91,8 @@
 
                 <ul class="nav navbar-nav navbar-right">
 
-                    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+{#                    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}#}
+                    {% if loginBy == 'not-login' %}
                         <li id="connexion" class="btn transFx fa fa-arrow-square-right {% if header_has_search is defined %}btn-circle{% endif %}">
                             <a href="{{ path('front_login') }}">
                                 {% if header_has_search is defined %}
@@ -30,7 +103,19 @@
                             </a>
                         </li>
                     {% else %}
-
+                        <div class="pull-right" style="padding:10px;">
+                            <div class="col-md-6 social-btn logged-social-btn">
+                                <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank" style="color:black;">
+                                    <i class="fab fa-2x fa-facebook-f"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-6 social-btn logged-social-btn">
+                                <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank" style="color:black;">
+                                    <i class="fab fa-2x fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% if loginBy == 'login_cm' %}
                         <li id="accountMenu" class="dropdown arrow">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="background-image: url({{ app.user.getAvatarUrl() | imagine_filter('user_avatar') }})"></a>
                             <ul class="dropdown-menu" role="menu">
@@ -43,10 +128,11 @@
                                     </li>
                                     {#}
                                     <li><a href="{{ path('front_pixie_account_card_address') }}"><i class="fa fa-address-book"></i>Envoyer Addresses</a></li> #}
+                                    {% if app.user.level >= 1 %}<a class="dropdown-item" href="{{ path('front_pixie_account_homepage') }}"><i class="fas fa-home"></i>Accueil</a> {% endif %}
                                     <li><a href="{{ path('front_pixie_account_cards_projects') }}"><i class="fa fa-inbox-in"></i>Demandes de Cards</a></li>
                                     <li><a href="{{ path('front_pixie_account_cards_status') }}"><i class="fa fa-pause-circle"></i>Cards en attente</a></li>
                                     <li><a href="{{ path('front_pixie_account_cards_validated') }}"><i class="fa fa-check-circle"></i>Cards validées</a></li>
-                                    <li><a href="{{ path('front_pixie_account_cards_payments') }}"><i class="fa fa-euro-sign"></i>Mes rémunérations</a></li>
+                                    <li><a href="{{ path('front_pixie_account_cards_payments') }}"><i class="fa fa-euro-sign"></i>Mes gains</a></li>
                                     <li><a href="{{ path('front_pixie_account_settings') }}"><i class="fa fa-cog"></i>Paramètres</a></li>
 
                                 {% else %}
@@ -64,9 +150,41 @@
                                 <li><a href="{{ path('front_signout') }}" class="btn-logout"><i class="fa fa-power-off"></i>Déconnexion</a></li>
                             </ul>
                         </li>
+                        {% else %}
+
+{#                            <div class="pull-right" style="padding:10px;">#}
+{#                                <div class="col-md-6 social-btn logged-social-btn">#}
+{#                                    <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank" style="color:black;">#}
+{#                                        <i class="fab fa-2x fa-facebook-f"></i>#}
+{#                                    </a>#}
+{#                                </div>#}
+{#                                <div class="col-md-6 social-btn logged-social-btn">#}
+{#                                    <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank" style="color:black;">#}
+{#                                        <i class="fab fa-2x fa-instagram"></i>#}
+{#                                    </a>#}
+{#                                </div>#}
+{#                            </div>#}
+                            <li id="accountMenu" class="dropdown arrow">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="background-image: url({{ asset('/uploads/clients/'~loginDetails['entity'].id~'/'~loginDetails['entity'].profilePhoto) | imagine_filter('user_avatar') }})"></a>
+                                <ul class="dropdown-menu" role="menu">
+                                        <li id="accountMenuTitle">
+                                            Mon compte Client
+                                        </li>
+                                        {#}
+                                        <li><a href="{{ path('front_pixie_account_card_address') }}"><i class="fa fa-address-book"></i>Envoyer Addresses</a></li> #}
+                                        <li><a href="{{ path('b2b_client_main_index') }}"><i class="fa fa-inbox-in"></i>Accueil</a></li>
+                                        <li><a href="{{ path('b2b_client_mission_list') }}"><i class="fa fa-pause-circle"></i>Mes missions</a></li>
+                                        <li><a href="{{ path('client_transaction_index') }}"><i class="fa fa-check-circle"></i>Facturation</a></li>
+                                        <li><a href="{{ path('client_email_inbox') }}"><i class="fa fa-cog"></i>Email</a></li>
+
+                                    <li><a href="/client/signout"" class="btn-logout"><i class="fa fa-power-off"></i>Déconnexion</a></li>
+                                </ul>
+                            </li>
+
+                        {% endif %}
                     {% endif %}
 
-                    {% if not is_granted('ROLE_PIXIE') %}
+                    {% if loginBy == 'not-login' or (loginBy == 'login_cm' and not is_granted('ROLE_PIXIE'))  %}
                         <li id="inscription" class="btn ghost transFx fa fa-user-plus">
                             <a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):'/city-maker/inscription/mode' }}">
                             {#<a href="{{ (is_granted('ROLE_USER'))?path('front_pixie_register'):path('front_user_register_mode') }}">#}

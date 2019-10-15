@@ -1,0 +1,410 @@
+{% extends 'b2b/base.html.twig' %}
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+{% block body_class %}{{ parent() }} home bgPictos{% endblock %}
+ {% block stylesheets %}
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
+     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
+ {% endblock %}
+{% block body %}
+    {% embed '/v2/_shared/header_faq.html.twig' %}{% endembed%}
+
+    <div class="home">
+
+        <div class="faq-page" id="top">
+            <div class="search-faq-wrap shadow">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-7 mx-auto search-faq py-4">
+                            <label class="fz-28 font-weight-bold text-darkblue">Rechercher</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control faq" placeholder="Rechercher par sujet ou mot-clé" aria-label="Search with topic or keywords">
+                                <div class="input-group-append">
+                                    <button class="btn btn-pink btn-no-hover" type="button" id="btnFaqSearch">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-page-wrap">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 my-5">
+                            <div class="row">
+                                <div class="col-md-3 column-left">
+                                    <ul class="categories sticky-top">
+                                        <li><a href="#top" class="btn btn-block btn-link btn-green mb-3 text-left"><i class="fas fa-store mr-2"></i> Je suis client <span class="badge badge-light">{{ clientCount|length }}</span></a></li>
+                                        <li><a href="#cmFAQ" class="btn btn-block btn-link btn-green mb-3 text-left"><i class="fas fa-user-tie mr-2"></i> Je suis city-maker <span class="badge badge-light">{{ cmCount|length }}</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-9 column-right">
+                                    <div class="row">
+                                        <div class="col-md-12 categorie-faqs-container">
+                                            <div class="row">
+                                                <div class="col-md-12 categorie-title">
+                                                    <h2 class="fz-28 font-weight-regular text-darkblue mb-2" id="clientFAQ">Questions / Réponses côté Client</h2>
+                                                    <br>
+                                                </div>
+
+                                            </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 categorie-faqs">
+                                                        <div class="row">
+                                                            <div class="col-md-12 mb-3 faq-container">
+                                                                {% if faqs0 %}
+                                                                <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>QUESTIONS JURIDIQUES</h5>
+                                                                {% for faq in faqs0 %}
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingOne">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechClient{{ faq.id }}" aria-expanded="false" aria-controls="collapseFour">
+                                                                                        <i class="fas fa-chevron-right"></i>  {{ faq.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTechClient{{ faq.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                     {{ faq.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                                {% if faqs1 %}
+                                                                <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>QUESTIONS GENERALES</h5>
+                                                                {% for faq in faqs1 %}
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingOne">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechClient{{ faq.id }}" aria-expanded="false" aria-controls="collapseFour">
+                                                                                        <i class="fas fa-chevron-right"></i>  {{ faq.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTechClient{{ faq.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                     {{ faq.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                                {% if faqs2 %}
+
+                                                                <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>LES DEVIS, PACKS ET MISSIONS</h5>
+                                                                {% for faq in faqs2 %}
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingOne">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechClient{{ faq.id }}" aria-expanded="false" aria-controls="collapseFour">
+                                                                                        <i class="fas fa-chevron-right"></i>  {{ faq.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTechClient{{ faq.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                     {{ faq.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                                {% if faqs3 %}
+
+                                                                <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>LE PAIEMENT COTE CLIENT</h5>
+                                                                {% for faq in faqs3 %}
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingOne">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechClient{{ faq.id }}" aria-expanded="false" aria-controls="collapseFour">
+                                                                                        <i class="fas fa-chevron-right"></i>  {{ faq.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTechClient{{ faq.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                     {{ faq.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                                {% if faqs4 %}
+
+                                                                <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>COMMENT DEVENIR CLIENT SUR PIX.CITY SERVICES ? </h5>
+                                                                {% for faq in faqs4 %}
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingOne">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTechClient{{ faq.id }}" aria-expanded="false" aria-controls="collapseFour">
+                                                                                        <i class="fas fa-chevron-right"></i>  {{ faq.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTechClient{{ faq.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                     {{ faq.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 categorie-faqs-container">
+                                            <div class="row">
+                                                <div class="col-md-12 categorie-title">
+                                                    <h2 class="fz-28 font-weight-regular text-darkblue mb-2" id="cmFAQ">Questions / Réponses côté City-maker</h2>
+                                                    <br>
+                                                </div>
+                                            </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 categorie-faqs">
+                                                        <div class="row">
+                                                            <div class="col-md-12 mb-3 faq-container">
+                                                                {% if faqsCm0 %}
+                                                                    <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>QUESTIONS JURIDIQUES</h5>
+                                                                    {% for faqCm in faqsCm0 %}
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingTwo">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTech{{ faqCm.id }}" aria-expanded="false" aria-controls="collapseFive">
+                                                                                        <i class="fas fa-chevron-right"></i> {{ faqCm.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTech{{ faqCm.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                    {{ faqCm.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                                {% if faqsCm1 %}
+                                                                    <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>QUESTIONS GENERALES</h5>
+                                                                    {% for faqCm in faqsCm1 %}
+
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingTwo">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTech{{ faqCm.id }}" aria-expanded="false" aria-controls="collapseFive">
+                                                                                        <i class="fas fa-chevron-right"></i> {{ faqCm.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTech{{ faqCm.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                    {{ faqCm.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                                {% if faqsCm2 %}
+                                                                    <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>LES DEVIS, PACKS ET MISSIONS</h5>
+                                                                    {% for faqCm in faqsCm2 %}
+
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingTwo">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTech{{ faqCm.id }}" aria-expanded="false" aria-controls="collapseFive">
+                                                                                        <i class="fas fa-chevron-right"></i> {{ faqCm.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTech{{ faqCm.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                    {{ faqCm.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                                {% if faqsCm3 %}
+                                                                    <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>LE PAIEMENT DU CITY-MAKER</h5>
+                                                                    {% for faqCm in faqsCm3 %}
+
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingTwo">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTech{{ faqCm.id }}" aria-expanded="false" aria-controls="collapseFive">
+                                                                                        <i class="fas fa-chevron-right"></i> {{ faqCm.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTech{{ faqCm.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                    {{ faqCm.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                                {% if faqsCm4 %}
+                                                                    <h5 class="d-block pb-2 mb-2 border-bottom text-pink font-weight-bold"><i class="fas fa-cogs mr-2"></i>COMMENT DEVENIR CITY-MAKER SUR PIX.CITY SERVICES ? </h5>
+                                                                    {% for faqCm in faqsCm4 %}
+
+                                                                    <div class="faq-list" id="accordion" >
+                                                                        <div class="card mb-3 shadow-sm ">
+                                                                            <div class="card-header" id="headingTwo">
+                                                                                <h5 class="mb-0">
+                                                                                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTech{{ faqCm.id }}" aria-expanded="false" aria-controls="collapseFive">
+                                                                                        <i class="fas fa-chevron-right"></i> {{ faqCm.title }}
+                                                                                    </button>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div id="collapseTech{{ faqCm.id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                                                <div class="card-body">
+                                                                                    {{ faqCm.description | raw }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    {% embed '/v2/_shared/footer_faq.html.twig' %}{% endembed%}
+{% endblock %}
+{% block javascripts %}
+
+    {{ parent() }}
+    <script type="text/javascript" href="{{ absolute_url('/assets/js/faqs/custom.js') }}"></script>
+    <script type="text/javascript" href="{{ absolute_url('/assets/js/faqs/js-bundle.js') }}"></script>
+    <script>
+        /* custom per page scripts */
+        /* Search faq */
+        $(function () {
+            function FullTextContains(innerText, searchTerm) {
+                for (x = 0; x < searchTerm.length; x++) {
+                    if (innerText.toLowerCase().indexOf(searchTerm[x].toLowerCase()) >= 0) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            $('.faq').on('keyup input', function (e) {
+                var text = $.trim($(this).val());
+                if (e.keyCode == 13) {
+                    SearchFAQ(text);
+                } else if (text == '') {
+                    SearchFAQ('');
+                }
+            });
+            $('#btnFaqSearch').on('click', function (e) {
+                var text = $.trim($('.faq').val());
+                SearchFAQ(text);
+            });
+            function SearchFAQ(searchTermText) {
+                var searchTerm = searchTermText.split(' ');
+                if (searchTermText != '') {
+                    $(".faq-list .card").filter(function (index) {
+                        var panelText = $.trim($(this).text());
+                        if (FullTextContains(panelText, searchTerm) == true) {
+                            //console.log("found it");
+                            return true;
+                        } else {
+                            //console.log("not found");
+                            $(this).slideUp();
+                            return false;
+                        }
+                    }).slideDown();
+                } else {
+                    $(".faq-list .card").slideDown();
+                }
+            }
+            /* Smooth Scrolling */
+            // Select all links with hashes
+            $('a[href*="#"]')
+            // Remove links that don't actually link to anything
+                .not('[href="#"]')
+                .not('[href="#0"]')
+                .click(function(event) {
+                    // On-page links
+                    if (
+                        location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+                        &&
+                        location.hostname == this.hostname
+                    ) {
+                        // Figure out element to scroll to
+                        var target = $(this.hash);
+                        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                        // Does a scroll target exist?
+                        if (target.length) {
+                            // Only prevent default if animation is actually gonna happen
+                            event.preventDefault();
+                            $('html, body').animate({
+                                scrollTop: target.offset().top + (-100)
+                            }, 1000, function() {
+                                // Callback after animation
+                                // Must change focus!
+                                var $target = $(target);
+                                $target.focus();
+                                if ($target.is(":focus")) { // Checking if the target was focused
+                                    return false;
+                                } else {
+                                    $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+                                    $target.focus(); // Set focus again
+                                };
+                            });
+                        }
+                    }
+                });
+        });
+        $(document).ready(function () {
+            $("#on-login-click").click(function () {
+                window.location.href = "/connexion";
+            });
+            $("#devenir-city-maker").click(function () {
+                window.location.href = "/devenez-city-maker";
+            });
+        });
+    </script>
+{% endblock %}

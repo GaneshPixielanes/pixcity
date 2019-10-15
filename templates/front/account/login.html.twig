@@ -59,6 +59,9 @@
                         <button class="btn transFx green btn-submit fa fa-envelope" type="submit"><span>Envoyer</span></button>
                     </div>
                     <div class="col-xs-12 text-center">
+                        <a class="btn transFx btn-primary fas fa-envelope" href="/client/register" style="background: #ed5485;margin-bottom:10px"><span>PAS ENCORE DE COMPTE CLIENT</span></a>
+                    </div>
+                    <div class="col-xs-12 text-center">
                         <a class="btn transFx btn-primary fa fa-envelope" href="/utilisateur/inscription/mode" style="background: #103558"><span>PAS ENCORE DE COMPTE VOYAGEUR</span></a>
                     </div>
                 </div>
@@ -78,4 +81,41 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function()
+        {
+            if($('[name="_username"').val() != '')
+            {
+                loginCheck();
+            }
+            $('[name="_username"]').on('input', function()
+            {
+                loginCheck();
+            });
+
+            function loginCheck()
+            {
+                $.ajax('/connexion/check-user',{
+                    method:'POST',
+                    data:{
+                        'email': $('[name="_username"]').val()
+                    },
+                    success:function(result) {
+
+                        if(result.success == false)
+                        {
+                            $('.btn-submit').addClass('disabled');
+                        }
+                        else
+                        {
+                            $('.btn-submit').removeClass('disabled');
+                            // $('[name="_target_path"]').val(result.url);
+                            $('form#sign_in').attr('action',result.url);
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
 {% endblock %}

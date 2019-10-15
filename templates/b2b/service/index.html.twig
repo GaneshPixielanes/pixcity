@@ -1,0 +1,375 @@
+{% extends 'b2b/client/base.html.twig' %}
+{% import "b2b/shared/macros.html.twig" as macro %}
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+{% import 'b2b/shared/macros.html.twig' as macros %}
+{% block title %}Client | Home {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
+{% endblock %}
+{% block newbody %}
+
+
+    <div class="services-home-page">
+        {% for message in app.flashes('contact_send') %}
+            <div class="alert alert-dismissible" role="alert" style="background-color: #30b996;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong></strong> {{ message }}
+            </div>
+        {% endfor %}
+
+        <!-- Banner Starts-->
+        <div class="banner-wrap">
+            <div class="banner-image"></div>
+            <div class="banner-content w-100">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 d-flex align-items-center content">
+                            <form action="{{ path('b2b_client_search_index') }}" method="get">
+                                <div class="w-100">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <h1 class="fz-28 font-weight-bold main-title">La solution de community management local</h1>
+                                            <p class="fz-20 font-weight-light">Un(e) community-manager / influenceur(-euse) local(e), basé(e) près de chez vous, vous accompagne pour gérer la visibilité locale de votre enseigne, commerce, établissement.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <div class="input-group shadow">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-default">
+                                                        <i class="fas fa-search"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="search" name="search" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="Essayez : Community-Manager, Influenceur local">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <select name="regions[]" class="selectpicker shadow" data-width="100%" data-live-search="true" data-size="5" title="Toutes régions">
+                                                <option value="">Toutes régions</option>
+                                                {% for region in regions %}
+                                                    <option value="{{ region.slug }}">{{ region.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5 ml-auto">
+                                            <button type="submit" class="btn btn-darkblue btn-block lh2 shadow-lg search-service">Rechercher</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Banner Ends-->
+        <!-- Services Starts-->
+        <div class="container mb-3">
+            <div class="row">
+                <div class="col-md-6 cm-faces-image">
+                    <img src="../images/cm-faces.svg" alt="CMs Faces">
+                </div>
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                    <div class="w-100">
+                        <h2 class="fz-28 font-weight-bold">Votre city-maker : celui qui fera à votre place…</h2>
+                        <h4 class="fz-20 font-weight-regular">Ce que vous n’avez pas le temps de faire pour être visible localement.</h4>
+                        <p class="fz-16 font-weight-light">Votre city-maker est votre influenceur local légitime. Il vit dans votre région, il est peut-etre déjà venu dans votre établissement et saura vous faire rayonner localement!</p>
+                        <h4 class="fz-20 font-weight-regular">Une offre clé en main :</h4>
+                        <ul class="p-0 m-0">
+                            <li class="fz-16 font-weight-light ml-3">1° Vous êtes en contact direct avec le city-maker,</li>
+                            <li class="fz-16 font-weight-light ml-3">2° Il se déplace chez vous, </li>
+                            <li class="fz-16 font-weight-light ml-3">3° Community manager : il gère pour vous vos comptes Instagram, Facebook, Google My Business,</li>
+                            <li class="fz-16 font-weight-light ml-3">4° Influenceur : il organise des évènements et jeux concours pour faire grandir votre communauté.</li>
+                        </ul>
+                        <!-- <p class="fz-16 font-weight-light">La solution : <a href="javascript:;" title="Pix.City Services">Pix.City Services</a> propose une mise en relation avec un city-maker local dédié qui gérera pour vous vos photos, textes et vidéos pour être visible sur ces réseaux.</p>
+                        <p class="fz-16 font-weight-light mt-3"><a href="javascript:;">En savoir +</a></p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Services Ends-->
+        <!-- Activity Starts -->
+        <div class="container mb-3">
+            <div class="row">
+                <div class="col-md-4 activity-image-mobile">
+                    <img src="../images/activity-home.svg" />
+                </div>
+                <div class="col-md-7 d-flex align-items-center justify-content-center">
+                    <div class="activity-content w-100">
+                        <h4 class="fz-20 font-weight-regular">Le statut des city-makers est vérifié :</h4>
+                        <p class="fz-16 font-weight-light">Vous travaillerez avec des city-makers ayant un profil auto-entrepreneur ou ayant une entreprise et qui auront souscrit à une Responsabilité Civile professionnelle.</p>
+                        <h4 class="fz-20 font-weight-regular">Les paiements sont sécurisés :</h4>
+                        <p class="fz-16 font-weight-light">Le montant de la mission est conservé sur un compte sécurisé dès la signature du devis et le paiement du city-maker se fait uniquement lorsque la mission est terminée.</p>
+                        <h4 class="fz-20 font-weight-regular">L’historique est conservé :</h4>
+                        <p class="fz-16 font-weight-light">Vous contractez via la plateforme avec le city-maker que vous avez choisi. Votre espace client vous permet de consulter vos discussions, vos factures et vos missions à tout moment.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 activity-image">
+                    <img src="../images/activity-home.svg" />
+                </div>
+            </div>
+        </div>
+        <!-- Activity Ends -->
+        <!-- City makers Wall Starts-->
+        <div class="container mb-5 mt-n5">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-normalgray m-0 fz-15 font-weight-light text-center">Il y a forcément un city-maker pour vous !</p>
+                    <h2 class="fz-32 font-weight-bold text-center">Découvrez vos partenaires de demain !</h2>
+                    <!-- CM Masonry columns Starts -->
+                    <div class="row">
+                        <div class="col-md-12 client-wall-members mt-4">
+                            <div class="card-columns">
+                                {% for user in users %}
+                                    {% if user.userPacks is defined and user.userPacks is not empty %}
+                                        {{ macro.cityMaker(user) }}
+                                    {% endif %}
+
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- CM Masonry columns Ends -->
+                </div>
+            </div>
+        </div>
+        <!-- City makers Wall Ends-->
+
+        <!-- Testtimonials Starts -->
+        <div class="testimonials-wrap">
+            <div class="testimonials-container pb-2 mb-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 testimonials text-center mt-n4">
+                            <i class="far fa-comment-dots text-white fz-35"></i>
+                            <h4 class="fz-28 font-weight-light text-center text-white mb-3">Nos clients et city-makers témoignent</h4>
+                            <div class="row testimonial-slider-container">
+                                <div class="col-md-4 testimonial-slider">
+                                    <div class="testimonial-card card p-3 mb-3">
+                                        <div class="testimonial-user text-center">
+                                            <img src="{{ asset('assets/images/juliagauthier.jpg') }}" class="rounded-circle mx-auto">
+                                            <h4 class="fz-16 font-weight-bold text-center m-0">Julia</h4>
+                                            <p class="fz-12 text-center text-normalgray mb-0">@_juliagauthier_ - City-maker</p>
+                                        </div>
+                                        <div class="testimonial-quote fz-16 text-center font-weight-light">
+                                            « Mon premier contrat signé grâce à Pix.city se passe parfaitement bien. Ils m’ont permis de développer davantage mon activité d’auto-entrepreneur avec des missions qui correspondaient parfaitement à mes compétences professionnelles. Je me suis engagée sur un contrat à long terme grâce à Pix.city, merci mille fois ! »
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 testimonial-slider">
+                                    <div class="testimonial-card card p-3 mb-3">
+                                        <div class="testimonial-user">
+                                            <img src="../images/USER-AVATAR.jpg" class="rounded-circle mx-auto">
+                                            <h4 class="fz-16 font-weight-bold text-center m-0">JP & Alex</h4>
+                                            <p class="fz-12 text-center text-normalgray mb-0">@voici_paris - City-maker</p>
+                                        </div>
+                                        <div class="testimonial-quote fz-16 text-center font-weight-light">
+                                            “La fiabilité, la sécurité, la commodité et le support de pix.City centralisé à la disposition des entrepreneurs en soif de succès et de nouveaux clients, tout en un seul outil!”
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 testimonial-slider">
+                                    <div class="testimonial-card card p-3 mb-3">
+                                        <div class="testimonial-user">
+                                            <img src="{{ asset('assets/images/olivier.JPG') }}" class="rounded-circle mx-auto">
+                                            <h4 class="fz-16 font-weight-bold text-center m-0">Olivier</h4>
+                                            <p class="fz-12 text-center text-normalgray mb-0">Coiffeur L’olivier à Chantilly - Client</p>
+                                        </div>
+                                        <div class="testimonial-quote fz-16 text-center font-weight-light">
+                                            « Le premier contact avec Pix.City a été vraiment agréable, ils ont su comprendre mon métier et me proposer une prestation adéquate. J’ai pu choisir parmi 3 CITY-MAKERS, j’ai porté mon choix sur  @_juliagauthier_ , nous avons fait la première journée de lancement ensemble, un vrai plaisir. Je me sens vraiment libéré du poids de la gestion des réseaux sociaux qui me prenait beaucoup de temps et qui nécessite de vraies compétences ! »
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Testtimonials Ends -->
+        <!-- Digital Presence Starts-->
+        <!-- <h2 class="fz-32 font-weight-bold text-center mb-3">Votre présence digitale à un coût modéré avec <img src="../images/presence-logo.svg"></h2>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 card p-3 shadow-lg mb-4">
+                    <div class="row">
+                        <div class="col-md-3 text-center border-right">
+                            <img src="../images/presence-community-illus.svg" class="mb-4" alt="Community Manager">
+                            <h4 class="fz-16 text-darkblue font-weight-bold">COMMUNITY MANAGER</h4>
+                            <p class="fz-12 font-weight-light mb-4">Gestion de vos comptes Instagram et Google My Business. Mise en ligne 16 publications/mois</p>
+                            <p class="fz-12">12 publications Instagram</p>
+                            <p class="fz-12">Diffusion sur instagram Pro & Facebook</p>
+                            <p class="fz-12">Gestion des commentaires Instagram</p>
+                            <p class="fz-12">Création des accroches et des hastags</p>
+                            <p class="fz-12">4 publications Google My Business </p>
+                            <p class="fz-12">Création et diffusion des posts</p>
+                            <p class="fz-12">Création des accroches</p>
+                            <p class="fz-12">1 shooting photo tous les 2 mois</p>
+                        </div>
+                        <div class="col-md-3 text-center border-right">
+                            <img src="../images/presence-influence-illus.svg" class="mb-4" alt="Influence Locale">
+                            <h4 class="fz-16 text-pink font-weight-bold">INFLUENCE LOCALE</h4>
+                            <p class="fz-12 font-weight-light mb-4">Publication de posts sponsorisés sur le compte du City-Maker</p>
+                            <p class="fz-12">Réalisation de la création</p>
+                            <p class="fz-12">Réalisation du contenu des posts</p>
+                            <p class="fz-12">Création des accroches & des hashtags</p>
+                            <p class="fz-12">Diffusion sur le compte Instagram du city-maker sous le format d’un post sponsorisé</p>
+                        </div>
+                        <div class="col-md-3 text-center border-right pt-2">
+                            <img src="../images/presence-photography-illus.svg" class="mb-4" alt="Photographe">
+                            <h4 class="fz-16 text-blue font-weight-bold">PHOTOGRAPHE</h4>
+                            <p class="fz-12 font-weight-light mb-4">Shooting photo selon vos besoins par nos City-Makers certifiés !</p>
+                            <p class="fz-12">Réalisation d’un shooting photo sur le lieu du client.</p>
+                            <p class="fz-12">Shooting de X photos par heure (par téléphone mobile ou appareil photo pro).</p>
+                            <p class="fz-12">Utilisation des photos à destination des réseaux sociaux</p>
+                            <p class="fz-12">Livraison sous différents supports avec retouche comprise</p>
+                        </div>
+                        <div class="col-md-3 text-center d-flex align-items-center justify-content-center">
+                            <div class="w-100">
+                                <img src="../images/presence-mesure-illus.svg" class="mb-3" alt="Sur Mesure">
+                                <h4 class="fz-16 text-yellow font-weight-bold">SUR MESURE</h4>
+                                <p class="fz-12 font-weight-light mb-3">Au delà de 5 points de ventes, contactez-nous directement pour un service plus personnalisé à l’adresse <a href="javascript:;">services@pix.city</a></p>
+                                <a href="javascript:;" class="btn btn-white-cancel lh2 shadow-lg">Nous contacter</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center fz-12 font-weight-light mt-3">
+                            * Exemple de packs proposés par des city-makers sur la plateforme Pix.City Services. &nbsp; **Ces packs sont indépendants les uns des autres et sont tarifés librement par les city-makers
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mx-auto mb-5">
+                    <a href="javascript:;" class="btn btn-darkblue btn-block lh2">Trouver mon city-maker !</a>
+                </div>
+            </div>
+        </div> -->
+        <!-- Digital Presence Ends-->
+        <!-- Contact Form Wrap Starts -->
+        <div class="container my-5 pb-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="fz-28 font-weight-light text-darkblue">Besoin d’aide ?</h4>
+                    <p class="fz-16 font-weight-light">Vous êtes à la tête d’un groupe de boutiques/commerces ou d’un Réseau de franchisés ? Vous avez besoin d’une solution personnalisée car vous avez besoin de plusieurs city-makers ? </p>
+                    <p class="fz-16 font-weight-light">Remplissez le formulaire de contact et nous vous répondrons au plus vite.</p>
+                    <p class="fz-16 font-weight-light">A très vite sur Pix.City Services.</p>
+                </div>
+                <div class="col-md-6 contact-form-container">
+                    <form action="{{ path('b2b_contact_services') }}" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group shadow-lg">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="contact[firstName]" class="form-control" placeholder="Nom" aria-label="Nom" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group shadow-lg">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="contact[lastName]" class="form-control" placeholder="Prénom" aria-label="Prénom" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div class="input-group shadow-lg">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                                    </div>
+                                    <input type="email" name="contact[email]" class="form-control" placeholder="Email" aria-label="Email" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div class="input-group shadow-lg">
+                                    <textarea class="form-control" name="contact[message]" placeholder="Dites nous comment vous aider" rows="10" aria-label="With textarea" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 ml-auto">
+                                <button type="submit" id="sendInfo" class="btn btn-darkblue btn-block lh2 shadow-lg">Envoyer <i class="far fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Contact Form Wrap Ends -->
+    </div>
+
+    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        /* custom per page scripts */
+        $('.cm-slider').slick({
+            arrows: true,
+            centerMode: true,
+            centerPadding: '0px',
+            slidesPerRow: 3,
+            slidesToShow: 3,
+            infinite: true,
+        });
+        $('.cm-pack-slider').slick({
+            arrows: true,
+            slidesPerRow: 1,
+            slidesToShow: 1,
+            infinite: true,
+        });
+        $('.testimonial-slider-container').slick({
+            arrows: false,
+            dots: true,
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            responsive: [
+                {
+                    breakpoint: 760,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 540,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
+        /* Send info contact form*/
+        /* toasts initialization */
+        $("#sendInfo").click(function(){
+            $('.send-info-toast').toast('show');
+        });
+        $(document).on('hidden.bs.toast', function () {
+            $('.send-info-toast').css({
+                'z-index': '1032'
+            })
+        });
+        $('.mobile-filter').hide();
+    </script>
+{% endblock %}

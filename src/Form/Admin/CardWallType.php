@@ -40,7 +40,8 @@ class CardWallType extends AbstractType
                 'attr' => [
                     'rowClass' => 'type-froala'
                 ],
-                'toolbarStickyOffset' =>  70
+                'toolbarStickyOffset' =>  70,
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('indexed', SwitchType::class, array('label' => 'label.indexed', 'required' => false))
 

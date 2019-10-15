@@ -1,0 +1,240 @@
+
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% for data in tickit_data.getMessages %}
+    {% set files = [] %}
+    {% if data.attachment is not empty %}
+        {% set files = data.attachment | split(',') %}
+    {% endif %}
+    {% if data.filname is not empty %}
+        {% set filenames = data.filname | split(',') %}
+    {% endif %}
+    <div class="card">
+        <!-- Mail header -->
+        <div class="card-header">
+            <div class="mb-2 d-flex align-items-center justify-content-between">
+                <button type="" class="btn btn-textgray back-to-inbox" data-toggle="tooltip" title="Back to inbox">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <h5 class="text-darkblue mb-0 mx-3">{{ tickit_data.object }}</h5>
+                {#            <button type="button" class="btn btn-pink" data-toggle="tooltip" title="Forward">#}
+                {#                <i class="fas fa-share"></i>#}
+                {#            </button>#}
+            </div>
+            {% if data.type == 1 %}
+                {% set from = data.getTicket().getClient() %}
+            {% else %}
+                {% set from = data.getTicket().cm() %}
+            {% endif %}
+
+
+
+            {% set difference = date(nowDate).diff(date(data.createdAt | date('Y-m-d'))) %}
+
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    {#                <img src="/images/USER-AVATAR.jpg" alt="" class="rounded-circle btn-circle-50 mr-2">#}
+                    <div class="d-flex flex-column">
+                        <div class="sender-email"><span class="font-weight-bold">{{ ('b2b.label.from')| trans }}:</span> <a
+                                    href="mailto:test@rest123.com" class="text-textgray">{{ from.email }}</a></div>
+                        {#                    <div class="to-email"><span class="font-weight-bold">To:</span>me</div>#}
+                    </div>
+                </div>
+                <div class="align-self-start">
+                    {% if difference.d == 0  %}
+                        <div class="time-of-email">{{ data.createdAt | date('M d, Y  H:i  A') }}({{ difference.h~' heure : '~difference.h~' min' }} depuis)</div>
+                    {% else %}
+                        <div class="time-of-email">{{ data.createdAt | date('M d, Y  H:i  A') }}( {{ ('b2b.label.to_days_start')| trans }} {{ difference.d }}  {{ ('b2b.label.to_days_end')| trans }})</div>
+                    {% endif %}
+                    <small class="text-normalgray">({{ files | length }} {{ ('b2b.label.file')| trans }})</small>
+                </div>
+            </div>
+
+        </div>
+        <!-- Mail header ends -->
+        <!-- Mail body -->
+        <div class="card-body">
+            <div class="message-body">
+                <p>{{ data.content | raw }}</p>
+            </div>
+        </div>
+        <!-- Mail body ends -->
+        <!-- Mail footer -->
+        <div class="card-footer">
+            <div class="attachments mb-3">
+                <ul class="attachments-list d-flex mx-n2">
+                    {% if data.attachment is not empty %}
+                        {% for file in files %}
+                            {% set ext = file |split('.')|last %}
+
+                            <li class="attachment-item px-2 w-20">
+                                <div class="card">
+                                    <div class="card-body d-flex justify-content-center">
+                                        {#                                        <i class="fas fa-file-word fz-40"></i>#}
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <a href="javascript:;"
+                                           class="fz-12 text-decoration-none d-block mb-2 line-height-normal">
+                                            <i class="fas fa-paperclip"></i>
+                                            {% if filenames[loop.index-1] is defined %}
+                                                {{ filenames[loop.index-1] | truncate(13) }}
+                                            {% endif %}
+                                            {#                                            <small class="d-block text-textgray mt-1">1,243 KB</small>#}
+                                        </a>
+                                        <a href="{{ url('b2b_email_attachment_download',{'id':data.id,'filename':file}) }}" class="btn btn-normalgray btn-sm align-self-end"><i
+                                                    class="fas fa-cloud-download-alt"></i></a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+
+
+                </ul>
+            </div>
+            <div class="float-right">
+                <button type="button" class="btn btn-textgray mr-2 reply-btn" data-toggle="tooltip" title="Reply"><i
+                            class="fas fa-reply"></i></button>
+                {#            <button type="reset" class="btn btn-textgray mr-2" data-toggle="tooltip" title="Reply all"><i#}
+                {#                        class="fas fa-reply-all"></i></button>#}
+                {#            <button type="button" class="btn btn-pink" data-toggle="tooltip" title="Forward"><i#}
+                {#                        class="fas fa-share"></i></button>#}
+            </div>
+            {#        <button type="" class="btn btn-textgray back-to-inbox mr-2" data-toggle="tooltip" title="Back to inbox">#}
+            {#            <i class="fas fa-chevron-left"></i></button>#}
+            {#        <button type="button" class="btn btn-outline-textgray" data-toggle="tooltip" title="Delete"><i#}
+            {#                    class="fas fa-trash"></i></button>#}
+        </div>
+        <!-- Mail footer ends -->
+    </div>
+{% endfor %}
+
+<hr>
+<div class="card reply-card d-none">
+    <!-- Mail header -->
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="text-darkblue mb-0">{{ ('b2b.label.reply')| trans }}</h5>
+        <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="" data-original-title="Discard"><i class="fas fa-times mr-1"></i> {{ ('b2b.label.discard')| trans }}</button>
+    </div>
+    <!-- Mail header ends -->
+    <!-- Mail body -->
+    <div class="card-body">
+
+
+        <div class="form-group">
+            <label for="emailMessage" class="fz-14">Message:</label>
+            <textarea name="compose-message" class="form-control fz-14" id="comment" cols="30"
+                      rows="10"></textarea>
+        </div>
+        <div class="">
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupFileAddon01"><i class="fas fa-paperclip"></i></span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" multiple class="custom-file-input" id="inputGroupFile01"
+                           aria-describedby="inputGroupFileAddon01">
+                    <label class="custom-file-label mb-0 fz-14" for="inputGroupFile01" id="fileList-comment">{{ ('b2b.label.attachment')| trans }}</label>
+                </div>
+            </div>
+            {#            <small>Max. 32MB</small>#}
+            <!-- <p class="help-block">Max. 32MB</p> -->
+        </div>
+    </div>
+    <!-- Mail body ends -->
+    <!-- Mail footer -->
+    <div class="card-footer">
+        <div class="float-right">
+            <button type="submit" id="subit-comment" class="btn btn-pink send-message" data-toggle="tooltip" title="Send">{{ ('b2b.label.send')| trans }} <i class="fas fa-paper-plane ml-1"></i></button>
+        </div>
+        <button type="reset" class="btn btn-outline-textgray cancel-compose" data-toggle="tooltip" title="Discard"><i class="fas fa-times mr-1"></i> {{ ('b2b.label.discard')| trans }}</button>
+    </div>
+    <!-- Mail footer ends -->
+</div>
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+    <script src="{{ absolute_url('/assets/js/froala-language.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            var editor = new FroalaEditor('#comment',{
+                key:'iTB2xA5C4C1C2uzbtA3mfdhnD5D4H4C2C3A6B5C2B4A4==',
+                language: 'fr',
+                placeholderText:'Ecrivez votre texte',
+            });
+
+
+            $(".reply-btn").click(function (e) {
+                $('.reply-card').removeClass('d-none');
+            });
+
+            $(".cancel-compose").click(function (e) {
+                $('.reply-card').addClass('d-none');
+            });
+
+            $("#inputGroupFile01").on('change',function () {
+                readURLComment(this);
+            });
+
+            function readURLComment(input) {
+                if (input.files && input.files[0]) {
+
+                    var output = document.getElementById('fileList-comment');
+                    $("#fileList-comment").text(' ');
+
+                    for (var i = 0; i < input.files.length; ++i) {
+                        output.innerHTML += input.files.item(i).name + '-';
+                    }
+
+                }
+            }
+
+            $("#subit-comment").on('click',function () {
+                var data = new FormData();
+                var comment = $("#comment").val();
+                var id = '{{ tickit_data.id }}';
+
+                var files = $("#inputGroupFile01").prop('files');
+
+                $.each(files, function( index, value ) {
+                    data.append('file_'+index,value);
+                });
+
+                $.each(files, function( index, value ) {
+                    data.append('file_'+index,value);
+                });
+
+                data.append('comment',comment);
+                data.append('id',id);
+
+                $.ajax({
+                    url:"{{ path('b2b_email_reply') }}",
+                    type:"POST",
+                    data:data,
+                    cacheable: false,
+                    processData: false,
+                    contentType: false,
+                    success: function(data){
+                        // location.reload();
+                        $('.view-email-container').fadeOut();
+                        $('.inbox-body, .email-options').slideDown(function(){
+                            $(this).parents('.simplebar-content').animate({
+                                scrollTop: 0
+                            }, '200');
+                        });
+
+                    }
+                });
+            });
+
+        })
+    </script>
+{% endblock %}
+
+
+

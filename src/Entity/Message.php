@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
+ * @ORM\Table(name="pxl_b2b_message")
  */
 class Message
 {
@@ -56,6 +57,11 @@ class Message
      * @ORM\Column(type="datetime")
      */
     private $updated_at;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $filname;
 
     public function getId(): ?int
     {
@@ -154,6 +160,18 @@ class Message
     public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getFilname(): ?string
+    {
+        return $this->filname;
+    }
+
+    public function setFilname(?string $filname): self
+    {
+        $this->filname = $filname;
 
         return $this;
     }

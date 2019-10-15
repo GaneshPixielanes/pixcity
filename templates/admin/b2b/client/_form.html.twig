@@ -1,0 +1,109 @@
+{{ form_start(form) }}
+    {#{{ form_widget(form) }}#}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.company) }}
+    {{ form_row(form.profilePhoto) }}
+<br/>
+<ul class="repeater-container user-profilePhoto">
+    <li class="align-center">
+        {% if form.vars.data.profilePhoto  %}
+            <img class="thumb" src="{{ asset('/uploads/clients/'~form.vars.data.id~'/'~form.vars.data.profilePhoto) | imagine_filter('bg_card_item' )}}" width="20%">
+        {% endif %}
+
+        {#<div class="upload-zone">#}
+            {#<input type="file" id="profilePhoto" name="profilePhoto"/>#}
+            {#<label>Profile Photo</label>#}
+            {#<a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">#}
+                {#<i class="material-icons">add</i>#}
+            {#</a>#}
+            {#<div class="progress">#}
+                {#<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>#}
+            {#</div>#}
+        {#</div>#}
+    </li>
+</ul>
+<br/>
+    {{ form_row(form.email) }}
+    {{ form_row(form.plainPassword) }}
+    {{ form_row(form.clientInfo) }}
+    {#{{ form_row(form.roles) }}#}
+<br>
+<br>
+{#<div class="row form-row form-line">#}
+    {#<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">#}
+        {#<label class="form-label required">Proof for Mangopay KYC</label>#}
+    {#</div>#}
+    {#<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 form-control-field">#}
+        {#<div class="user-avatar">#}
+            {#<ul class="repeater-container user-bannerImage">#}
+                {#<li class="align-left">#}
+                    {#{% if form.vars.data.clientInfo.mangopayKycFile  %}#}
+                        {#{% if form.vars.data.clientInfo.mangopayKycFile|split('.')|last  == 'pdf' %}#}
+                            {#<div class="col-md-2">#}
+                                {#<a href="{{ url('admin_client_download',{'id':form.vars.data.clientInfo.id, 'fldName':'addr1'}) }}" class="btn btn-sm btn-info">Download</a>#}
+                            {#</div>#}
+                            {#<br>#}
+                            {#<br>#}
+                            {#<br>#}
+                        {#{% else %}#}
+                            {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/client/'~form.vars.data.clientInfo.id~'/addr1/'~form.vars.data.clientInfo.mangopayKycFile}}" width="20%">#}
+                        {#{% endif %}#}
+                    {#{% endif %}#}
+
+                    {#<div class="upload-zone">#}
+                        {#<input type="file" id="mangopayKycFile"  class="filestyle" data-icon="false"/>#}
+                        {#<input type="hidden" name="client[clientInfo][mangopayKycFile]" value="{{ form.vars.data.clientInfo.mangopayKycFile }}"/>#}
+
+                        {#<a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">#}
+                            {#<i class="material-icons">add</i>#}
+                        {#</a>#}
+                        {#<div class="progress">#}
+                            {#<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</li>#}
+            {#</ul>#}
+        {#</div>#}
+
+    {#</div>#}
+{#</div>#}
+{#<div class="row form-row form-line">#}
+    {#<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">#}
+        {#<label class="form-label required">Address Proof for Mangopay KYC</label>#}
+    {#</div>#}
+    {#<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 form-control-field">#}
+        {#<div  class="user-avatar">#}
+            {#<ul class="repeater-container user-mangopayKycAddr">#}
+                {#<li class="align-left">#}
+                    {#{% if form.vars.data.clientInfo.mangopayKycAddr  %}#}
+                        {#{% if form.vars.data.clientInfo.mangopayKycAddr|split('.')|last  == 'pdf' %}#}
+                            {#<div class="col-md-2">#}
+                                {#<a href="{{ url('admin_client_download',{'id':form.vars.data.clientInfo.id, 'fldName':'addr2'}) }}" class="btn btn-sm btn-info">Download</a>#}
+                            {#</div>#}
+                            {#<br>#}
+                            {#<br>#}
+                            {#<br>#}
+                        {#{% else %}#}
+                            {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/client/'~form.vars.data.clientInfo.id~'/addr2/'~form.vars.data.clientInfo.mangopayKycAddr}}" width="20%">#}
+                        {#{% endif %}#}
+                    {#{% endif %}#}
+
+                    {#<div class="upload-zone">#}
+                        {#<input type="file" id="mangopayKycAddr"  class="filestyle" data-icon="false"/>#}
+                        {#<input type="hidden" name="client[clientInfo][mangopayKycAddr]" value="{{ form.vars.data.clientInfo.mangopayKycAddr }}"/>#}
+
+                        {#<a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">#}
+                            {#<i class="material-icons">add</i>#}
+                        {#</a>#}
+                        {#<div class="progress">#}
+                            {#<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</li>#}
+            {#</ul>#}
+        {#</div>#}
+    {#</div>#}
+{#</div>#}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

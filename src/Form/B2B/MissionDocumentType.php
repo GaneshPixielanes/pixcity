@@ -14,6 +14,7 @@ class MissionDocumentType extends AbstractType
     {
         $builder
             ->add('name',HiddenType::class)
+            ->add('originalName',HiddenType::class)
         ;
     }
 

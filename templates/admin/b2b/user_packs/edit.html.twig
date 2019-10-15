@@ -1,0 +1,76 @@
+{% extends 'admin/page.html.twig' %}
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.packsList'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.packsList'|trans }}
+                </h2>
+            </div>
+            <div class="body">
+                <h1>Edit UserPacks</h1>
+
+                {{ include('admin/b2b/user_packs/_form.html.twig', {'button_label': 'Update'}) }}
+
+                <a href="{{ path('admin_user_packs_index') }}">back to list</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#banner-image-upload').change(function()
+            {
+                var data = new FormData();
+                data.append('file',$(this)[0].files[0]);
+                $.ajax('{{ url('admin_user_packs_upload') }}',{
+                    method: 'POST',
+                    processData: false,
+                    cacheable:false,
+                    data:data,
+                    contentType: false,
+                    success: function(result)
+                    {
+                        if(result.success == true)
+                        {
+                            $('[name="user_packs[bannerImage]"').val(result.fileName);
+                        }
+                    }
+                });
+            });
+            $('#packPhotos').change(function()
+            {
+                var data = new FormData();
+                data.append('file',$(this)[0].files[0]);
+                data.append('id',{{ user_pack.id }});
+                $.ajax('{{ url('admin_user_packs_upload_pack') }}',{
+                    method: 'POST',
+                    processData: false,
+                    cacheable:false,
+                    data:data,
+                    contentType: false,
+                    success: function(result)
+                    {
+                        if(result.success == true)
+                        {
+                            $('[name="user_packs[packPhotos]"').val(result.fileName);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

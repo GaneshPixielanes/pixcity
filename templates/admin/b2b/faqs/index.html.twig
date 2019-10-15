@@ -1,0 +1,67 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.faqs'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.faqs'|trans }}
+                </h2>
+                <a href="{{ path('admin_faqs_new') }}" class="btn btn-green">Create new</a>
+            </div>
+            <div class="body">
+                <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="4">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            {#<th>Description</th>#}
+                            {#<th>Subcategory</th>#}
+                            <th>CreatedAt</th>
+                            <th>UpdatedAt</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for faq in faqs %}
+                        <tr>
+                            <td>{{ faq.id }}</td>
+                            <td>{{ faq.title }}</td>
+                            <td>{{ faq.category }}</td>
+                            {#<td>{{ faq.description }}</td>#}
+                            {#<td>{{ faq.subcategory }}</td>#}
+                            <td data-order='{{ faq.createdAt|date('YmdHi') }}'>{{ faq.createdAt ? faq.createdAt|localizeddate('medium', 'short') : '' }}</td>
+                            <td data-order='{{ faq.updatedAt|date('YmdHi') }}'>{{ faq.updatedAt ? faq.updatedAt|localizeddate('medium', 'short') : '' }}</td>
+                            <td class="text-right">
+                                <div class="item-actions">
+                                    <a href="{{ path('admin_faqs_show', {'id': faq.id}) }}"  class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
+                                    <a href="{{ path('admin_faqs_edit', {'id': faq.id}) }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">edit</i></a>
+
+                                    <form method="post" class="delete-form" action="{{ path('admin_faqs_delete', {'id': faq.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ faq.id) }}">
+                                        <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

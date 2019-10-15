@@ -1,0 +1,28 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+    <p>Bonjour {{ firstName }},</p>
+
+
+    <p>Merci encore pour ta dernière card. Comme elle est canon, elle sera en ligne dans quelques minutes sur Pix.City et tu vas pouvoir la partager sur Instagram (et tes autres réseaux !).</p>
+
+    <p>Tu peux la consulter ici !</p>
+
+    <p>
+        TOUTES NOS FELICITATIONS !! Tu augmentes de niveau, tu deviens désormais {{ level }}. Tu peux aller sur ton <a href="{{ url('front_pixie_account_homepage') }}">compte</a>  pour voir les lots à gagner pour ce niveau ce mois-ci
+    <br/>
+    Si ça te tente, pourquoi ne pas faire un post sur ton insta ? Nous pourrions ainsi te reposter et parler de toi!
+    <br/>
+    Nous te proposons de publier ces deux photos que tu as publiées dans ta CARD. Pense à nous faire un petit coucou dans ton post en ajoutant @pix_city ;)
+    </p>
+    <p>
+        #pixcity #pixcity{{ city }} #pixcity{{ region }}
+    </p>
+    <p>
+
+    Merci,
+    </p>
+    <p>
+    La Team Pix.City
+    </p>
+{% endblock %}

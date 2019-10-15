@@ -1,18 +1,34 @@
 {% extends 'b2b/page.html.twig' %}
-
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
 {% import 'b2b/shared/macros.html.twig' as macros %}
 
 {% block content %}
-
             <div class="tab-pane active" id="myPacks" role="tabpanel">
+
                 <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
                     <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-dungeon fz-30 mr-2"></i> Mes Packs
                     </div>
-                    {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
-                        <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"
-                           onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle
-                            mission</a>
-                    {% endif %}
+{#                    <div class="col-md-7 ml-auto mt-2 mt-lg-0">#}
+{#                        <div class="row">#}
+{#                            <div class="offset-md-6 col-md-4">#}
+{#                                {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}#}
+{#                                    <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"#}
+{#                                       onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle#}
+{#                                        mission</a>#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                            <div class="col-md-1 col-2">#}
+{#                                <a href="/connexion/signout" class="btn btn-outline-darkblue btn-pill">Logout</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+                    <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+                        <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-dungeon fz-30 mr-2"></i> Mes Packs</div>
+                        {% embed 'b2b/shared/_notification_header.html.twig' with {'notifications':notifications} %}{% endembed %}
+
+                    </div>
                 </div>
                     {% if packs | length == 0 %}
                     <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
@@ -27,7 +43,7 @@
                             <p> Un pack est une compétence détaillée avec un tarif et des photos l’illustrant.
                             </p>
                             <div class="d-block text-center mt-4">
-                                <a href="javascript:;" class="btn btn-darkblue btn-pill">Créer un pack</a>
+                                <a href="javascript:;" class="btn btn-darkblue btn-pill add-package">Créer un pack</a>
                             </div>
                         </div>
                     </div>
@@ -36,7 +52,7 @@
                         <div class="col-md-12 tab-pane-content p-4">
                             <div class="col-md-12 content-top-header d-flex align-items-center">
                                 <div class="col-md-12 content-top-header d-flex align-items-center">
-                                    <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> packs disponibles</h4>
+                                    <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> {% if packs | length > 1 %}packs disponibles{% else %}pack disponible {% endif %}</h4>
                                     <div class="filter-packages d-flex">
                                         <label class="text-seagreen m-0 mr-3 d-none active">
                                             <input type="checkbox" name="filterpackage" value="all">
@@ -86,10 +102,15 @@
     {{ parent() }}
     <script src="{{ asset('/assets/js/jquery-validation/dist/jquery.validate.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/pages/main.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/assets/js/pages/pack.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('build/b2b/js/pack.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/mission.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+
     <script>
         $(document).ready(function () {
+
+
+
             $("#pack_userBasePrice").on('change', function () {
 
                 var actual_price = $("#pack_userBasePrice").val();
@@ -209,23 +230,23 @@
 
 
 
-            $('body').on('click', '.save-changes', function () {
-                var data = $(this).parents('form').serialize();
-                var url = '';
-
-                if ($(this).attr('data-mode') == 'edit') {
-                    url = '/b2b/pack/edit-pack/' + $(this).attr('data-id')
-                } else {
-                    url = '/api/pack/create';
-                }
-                $.ajax($(this).attr('data-url'), {
-                    type: 'POST',
-                    data: data,
-                    success: function (result) {
-                        location.href = '/b2b/pack/success';
-                    }
-                });
-            });
+            // $('body').on('click', '.save-changes', function () {
+            //     var data = $(this).parents('form').serialize();
+            //     var url = '';
+            //
+            //     if ($(this).attr('data-mode') == 'edit') {
+            //         url = '/b2b/pack/edit-pack/' + $(this).attr('data-id')
+            //     } else {
+            //         url = '/api/pack/create';
+            //     }
+            //     $.ajax($(this).attr('data-url'), {
+            //         type: 'POST',
+            //         data: data,
+            //         success: function (result) {
+            //             location.href = '/b2b/pack/success';
+            //         }
+            //     });
+            // });
 
         });
 
@@ -233,9 +254,9 @@
 
         $(document).ready(function () {
             // Adding a new pack
-            $('.add-package-to-list > a').on('click', function () {
-                $('#pack-form').load('/api/pack/create');
-            });
+            // $('.add-package-to-list > a').on('click', function () {
+            //     $('#pack-form').load('/api/pack/create');
+            // });
 
             // Deleting a pack
             $('.delete-pack').on('click', function () {
@@ -250,7 +271,7 @@
             $('body').on('click', "#confirmPackDelete",function () {
 
                 var id = $(this).attr('data-id');
-                $.ajax('/b2b/pack/delete-pack/'+id,{
+                $.ajax('/city-maker/pack/delete-pack/'+id,{
                     success: function (result) {
                         $('.package-list-item[data-id="'+id+'"]').remove();
                         $('.total-packs-available').html($('.package-item').length);

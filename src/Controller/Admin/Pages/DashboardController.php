@@ -35,6 +35,47 @@ class DashboardController extends Controller
     public function index(Request $request, AuthenticationUtils $authUtils, UserRepository $users, CardProjectRepository $projects, CardRepository $cards)
     {
 
+        $em= $this->getDoctrine()->getManager();
+        $cmUpgrade = $em->createQuery('SELECT count(usr) as allCmCount FROM App:User as usr WHERE usr.active = 1 AND usr.b2b_cm_approval =1');
+        $cmUpgradeB2b =  $cmUpgrade->getResult();
+
+        $clientQuery = $em->createQuery('SELECT count(clint) as allClientCount FROM App:Client as clint');
+        $clientData =  $clientQuery->getResult();
+
+        $activePackQuery = $em->createQuery('SELECT count(pck) as allpckCount FROM App:UserPacks as pck WHERE pck.active = 1');
+        $activePack =  $activePackQuery->getResult();
+
+        $userMissionQuery = $em->createQuery("SELECT count(msn) as allmsnCount FROM App:UserMission as msn WHERE msn.status = 'ongoing' ");
+        $userMission =  $userMissionQuery->getResult();
+
+
+        $cmUpgradeGraph = $em->createQuery("SELECT DATE(c.cmUpgradeB2bDate) as ym ,COUNT(c) as Nos FROM App:User as c WHERE c.b2b_cm_approval = 1 AND c.cmUpgradeB2bDate is not null GROUP BY ym");
+        $arr = array();
+        $cmUpgradeGraphData = $cmUpgradeGraph->getResult();
+
+        foreach ($cmUpgradeGraphData as $k => $value){
+            $arr[$k]['ym'] = $value['ym'];
+            $arr[$k]['Nos'] = $value['Nos'];
+        }
+
+        $clientUpgradeGraph = $em->createQuery("SELECT DATE(c.createdAt) as clientCreated ,COUNT(c) as Nos FROM App:Client as c GROUP BY clientCreated");
+
+        $arrClient = array();
+        $clientResult = $clientUpgradeGraph->getResult();
+        foreach ($clientResult as $k => $value){
+            $arrClient[$k]['clientCreated'] = $value['clientCreated'];
+            $arrClient[$k]['Nos'] = $value['Nos'];
+        }
+
+//        $clientUpgradeQuery = $em->createQuery('SELECT count(createdAt) as unitCount, DATE(createdAt) as cDate FROM App:Client GROUP BY DATE(createdAt)');
+//        $clientUpgrade =  $clientUpgradeQuery->getResult();
+//
+//        $clientArr = array();
+//        foreach ($clientUpgrade as $k => $v){
+//            $clientArr['date'] = $v['cDate'];
+//            $clientArr['units'] = $v['unitCount'];
+//        }
+//        dd($clientArr);die;
         //------------------------------------------
         // Get users stats
         //------------------------------------------
@@ -135,6 +176,12 @@ class DashboardController extends Controller
         }
 
         return $this->render('admin/dashboard/index.html.twig', array(
+            'cmUpgradeB2b'=>$cmUpgradeB2b,
+            'clientData'=>$clientData,
+            'activePack'=>$activePack,
+            'userMission'=>$userMission,
+            'cmData'=>json_encode($arr),
+            'clientsData'=>json_encode($arrClient),
             'stats' => [
                 'pixies' => $totalPixies,
                 'users' => $totalUsers,
@@ -151,6 +198,4 @@ class DashboardController extends Controller
             ]
         ));
     }
-
-
 }

@@ -21,7 +21,7 @@ class PageCategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, PageCategory::class);
     }
 
-    public function findAllActive($regions = [])
+    public function findAllActive($regions = [], $userEmail = null)
     {
         $qb = $this->createQueryBuilder("p")
             ->addSelect(["p", "r", "t", "bg", "COUNT(cards.id) as totalCards, r.coordinates as coordinates"])
@@ -30,7 +30,7 @@ class PageCategoryRepository extends ServiceEntityRepository
                 ->leftJoin("p.background", "bg")
 
             ->leftJoin("r.cards", "cards", Join::WITH, "cards.status = :status")->setParameter("status", CardStatus::VALIDATED)
-
+            ->leftJoin("cards.pixie", "uid")
             ->where("p.hidden = false")
 
             ->groupBy('p.id');
@@ -41,6 +41,12 @@ class PageCategoryRepository extends ServiceEntityRepository
                     $ids[] = $region->getId();
                 }
                 $qb = $qb->andWhere("r IN (:regions)")->setParameter("regions", $ids);
+            }
+            /*if($userEmail != null){
+                $qb = $qb->andWhere("uid.email IN ('ganesh@pix.city','bsingh@pix.cityy')");
+            }*/
+            if($userEmail != null){
+                $qb = $qb->andWhere("uid.email NOT IN (".$userEmail.")");
             }
 
             return $qb->getQuery()

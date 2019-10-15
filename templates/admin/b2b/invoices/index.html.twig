@@ -1,0 +1,61 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+    <ol class="breadcrumb breadcrumb-col-teal">
+        <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+        <li class="active">{{ 'label.invoices'|trans }}</li>
+    </ol>
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        {{ 'label.invoices'|trans }}
+                    </h2>
+                </div>
+                <div class="body">
+                    <table class="table table-striped table-middle-aligned active-datatable" data-defaultsortby="8">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Mission Title</th>
+                                <th>CM</th>
+                                <th>Client</th>
+                                <th>Company</th>
+                                <th>Mission Creation Date</th>
+                                <th>Mission Termination Date</th>
+                                <th>Invoiced Amount (incl Tax)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for user_mission in user_missions %}
+                            <tr>
+                                <td>{{ user_mission.id }}</td>
+                                <td>{{ user_mission.title }}</td>
+                                <td>{{ user_mission.user.firstname ~' '~ user_mission.user.lastname}}</td>
+                                <td>{{ user_mission.client.firstName ~' '~ user_mission.client.lastName}}</td>
+                                <td>{{ user_mission.client.company }}</td>
+                                <td data-order='{{ user_mission.createdAt|date('YmdHi') }}'>{{ user_mission.createdAt ? user_mission.createdAt|localizeddate('medium', 'short') : '' }}</td>
+                                <td data-order='{{ user_mission.updatedAt|date('YmdHi') }}'>{{ user_mission.updatedAt ? user_mission.updatedAt|localizeddate('medium', 'short') : '' }}</td>
+                                <td>{{ user_mission.userMissionPayment.clientTotal|number_format(2, '.', ',') }}</td>
+                                <td class="text-right">
+                                    <div class="item-actions">
+                                        <a href="{{ path('admin_admins_show_invoices', {'id': user_mission.id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">visibility</i></a>
+                                        <a href="{{ path('admin_admins_download_invoices', {'id': user_mission.id}) }}" title="{{ 'action.download'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">save_alt</i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="8">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

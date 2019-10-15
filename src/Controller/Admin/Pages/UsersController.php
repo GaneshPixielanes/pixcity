@@ -2,19 +2,25 @@
 
 namespace App\Controller\Admin\Pages;
 
+use App\Constant\ViewMode;
 use App\Entity\Card;
 use App\Entity\User;
 use App\Entity\UserMedia;
 use App\Form\Admin\UserType;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
+use App\Service\MangoPayService;
+use MangoPay\UserNatural;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -45,7 +51,7 @@ class UsersController extends Controller
      */
     public function ajax(Request $request, UserRepository $usersRepo)
     {
-        $columns = ["id", "firstname", "lastname", "email", "roles", "createdAt","registrationCheck", "actions"];
+        $columns = ["id", "firstname", "lastname", "email", "roles", "createdAt","registrationCheck", "actions","Auto-login"];
 
         $orders = $request->query->get("order");
         $orderBy = [];
@@ -57,6 +63,7 @@ class UsersController extends Controller
                 case "lastname":
                 case "email":
                 case "roles":
+//                case "Auto-login":
                 case "createdAt":
                     $orderBy[] = [$columns[$order["column"]], $order["dir"]];
                     break;
@@ -111,6 +118,7 @@ class UsersController extends Controller
                 "roles" => $this->render('admin/users/columns/roles.html.twig', ['item' => $user])->getContent(),
                 "created_at" => $this->render('admin/users/columns/createdAt.html.twig', ['item' => $user])->getContent(),
                 "visible" => $this->render('admin/users/columns/visible.html.twig', ['item' => $user])->getContent(),
+//                "Auto-login" => $this->render('admin/users/columns/autologin.html.twig', ['item' => $user])->getContent(),
                 "actions" => $this->render('admin/users/columns/actions.html.twig', ['item' => $user])->getContent(),
                 "userRegistrationCheck" => $userType,
                 "deleted" => $user->getDeleted(),
@@ -125,10 +133,21 @@ class UsersController extends Controller
      * @Route("/new", name="new")
      * @Method({"GET", "POST"})
      */
-    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader)
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader,AuthorizationCheckerInterface $authChecker)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $userLogged = $this->getUser();
+        $roleSet = 'b2c';
+        if($userLogged->getViewMode() == ViewMode::B2B) {
+            if ($authChecker->isGranted('ROLE_B2C')) {
+                $roleSet = 'b2b';
+            }
+        }else{
+            $roleSet = 'b2c';
+        }
+
+
+        $form = $this->createForm(UserType::class, $user,["type"=>"editFromAdmin","roleSet"=>$roleSet]);
 
         //-------------------------------------------------------
         // User it's not a Pixie, remove the datas
@@ -153,6 +172,27 @@ class UsersController extends Controller
                     $user->getPixie()->getBilling()->setRib($fileName);
                 }
             }
+            /************ACTIVE CODE TO B2B APPROVAL AND REJECT DATE**********************************/
+            $date = new \DateTime();
+            if($userLogged->getViewMode() == ViewMode::B2B) {
+                if ($authChecker->isGranted('ROLE_B2C')) {
+                    if ($user->getB2bCmApproval() == 1) {
+                        //ACTIVATED DATE
+                        $user->setCmApprovalDate($date);
+                        $user->setCmUpgradeB2bDate($date);
+                    }
+                    elseif ($user->getB2bCmApproval() == 0){
+                        //REJECTED DATE
+                        $user->setCmRejectedDate($date);
+                        $user->setCmUpgradeB2bDate($date);
+                    }
+                    else{
+                        // ON WAITING
+                        $user->setCmUpgradeB2bDate($date);
+                    }
+                }
+            }
+            /************END CODE TO TO B2B APPROVAL AND REJECT DATE**********************************/
 
             // Save the user
             $entityManager = $this->getDoctrine()->getManager();
@@ -175,13 +215,13 @@ class UsersController extends Controller
      * @Route("/{id}/edit", requirements={"id": "\d+"}, name="edit")
      * @Method({"GET", "POST"})
      */
-    public function edit(Request $request, User $editedUser, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader)
+    public function edit(Request $request, User $editedUser, UserPasswordEncoderInterface $passwordEncoder, FileUploader $fileUploader,AuthorizationCheckerInterface $authChecker,MangoPayService $mangoPayService)
     {
 
         //-------------------------------------------------------
         // PIXIE RIB
         // Create a file from the string stored in database
-
+        $date = new \DateTime();
         if($editedUser->getPixie() && $editedUser->getPixie()->getBilling()) {
             $previousRib = $editedUser->getPixie()->getBilling()->getRib();
             if ($previousRib) {
@@ -191,8 +231,17 @@ class UsersController extends Controller
             }
         }
 
-
-        $form = $this->createForm(UserType::class, $editedUser, ["type"=>"editFromAdmin"]);
+        $user = $this->getUser();
+        $roleSet = 'b2c';
+        if($user->getViewMode() == ViewMode::B2B) {
+            if ($authChecker->isGranted('ROLE_B2C')) {
+                $roleSet = 'b2b';
+            }
+        }else{
+            $roleSet = 'b2c';
+        }
+        $mangoPayFilePrevName = $editedUser->getMangopayKycFile();
+        $form = $this->createForm(UserType::class, $editedUser, ["type"=>"editFromAdmin","roleSet"=>$roleSet]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -222,6 +271,66 @@ class UsersController extends Controller
                         $editedUser->getPixie()->getBilling()->setRib($previousRib);
                 }
             }
+            /************ACTIVE CODE TO B2B APPROVAL AND REJECT DATE**********************************/
+            if($user->getViewMode() == ViewMode::B2B) {
+                if ($authChecker->isGranted('ROLE_B2C')) {
+                    if ($editedUser->getB2bCmApproval() == 1) {
+                        //ACTIVATED DATE
+                        $editedUser->setCmApprovalDate($date);
+                    }
+                    elseif ($editedUser->getB2bCmApproval() == 0){
+                        //REJECTED DATE
+                        $editedUser->setCmRejectedDate($date);
+                    }
+                    else{
+                        // ON WAITING
+                    }
+                }
+            }
+            /************END CODE TO TO B2B APPROVAL AND REJECT DATE**********************************/
+
+            /************ACTIVE CODE TO CREATE MANGOPAY  AND KYC**********************************/
+//            if($user->getViewMode() == ViewMode::B2B) {
+//                if ($authChecker->isGranted('ROLE_B2C')) {
+//                    if($editedUser->getB2bCmApproval() == 1) {
+//                        // Create a mango pay user
+//                        if($editedUser->getMangopayUserId() == null){
+//                            $mangoUser = new UserNatural();
+//
+//                            $mangoUser->PersonType = "NATURAL";
+//                            $mangoUser->FirstName = $editedUser->getFirstname();
+//                            $mangoUser->LastName = $editedUser->getLastname();
+//                            $mangoUser->Birthday = 1409735187;
+//                            $mangoUser->Nationality = "FR";
+//                            $mangoUser->CountryOfResidence = "FR";
+//                            $mangoUser->Email = $editedUser->getEmail();
+//                            $mangoUser = $mangoPayService->createUser($mangoUser);
+//                            //Create a wallet
+//                            $wallet = $mangoPayService->getWallet($mangoUser->Id);
+//
+//                            $editedUser->setMangopayUserId($mangoUser->Id);
+//                            $editedUser->setMangopayWalletId($wallet->Id);
+//                            $editedUser->setMangopayCreatedAt(new \DateTime());
+//
+//                        }
+//                        if($editedUser->getMangopayKycFile() == null){
+//                            $editedUser->setMangopayKycStatus('PENDING');
+//                        }
+//                        //FILE RENAME AS PER DATE
+//                        if($mangoPayFilePrevName != null){
+//                            $mangopayKycFileName = 'uploads/mangopay_kyc/cm/'.$editedUser->getId().'/addr1/'.$mangoPayFilePrevName;
+//                            $ext = pathinfo('uploads/mangopay_kyc/cm/'.$editedUser->getId().'/addr1/'.$mangoPayFilePrevName,PATHINFO_EXTENSION);
+//                            rename($mangopayKycFileName,preg_replace('/\\.[^.\\s]{3,4}$/', '', $mangopayKycFileName).'_'.$date->format('Ymd').'.'.$ext);
+//                        }
+//
+//                        if($editedUser->getMangopayKycFile() != null){
+//                            $editedUser->setMangopayKycStatus('WAITING_FOR_SUBMISSION');
+//                            $editedUser->setMangopayKycCreated(new \DateTime());
+//                        }
+//                    }
+//                }
+//
+//            }
 
 
             // Save the user
@@ -358,4 +467,50 @@ class UsersController extends Controller
         return $this->redirectToRoute('admin_users_list');
     }
 
+//    /**
+//     * @Route("upload/mangopaykyc", name="mangopaykyc")
+//     */
+//    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
+//    {
+//        $file = $request->files->get('file');
+//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/'.$request->get('id').'/addr1/', true);
+//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+//    }
+//    /**
+//     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
+//     */
+//    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
+//    {
+//        $file = $request->files->get('file');
+//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/'.$request->get('id').'/addr2/', true);
+//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+//    }
+//    /**
+//     * @Route("download/{id}/{fldName}",name="download")
+//     */
+//    public function download($id,$fldName, UserRepository $userRepository)
+//    {
+//        $userTbl = $userRepository->find($id);
+//        $folderName = $fldName;
+//        $kycFile = '';
+//        if($folderName == 'addr1'){
+//            $kycFile = $userTbl->getMangopayKycFile();
+//        }else{
+//            $kycFile = $userTbl->getMangopayKycAddr();
+//        }
+//
+//        $date = new \DateTime();
+//        $response = new BinaryFileResponse('uploads/mangopay_kyc/cm/'.$userTbl->getId().'/'.$folderName.'/'.$kycFile);
+//      //  $ext = pathinfo('uploads/mangopay_kyc/cm/'.$userTbl->getId().'/addr1/'.$userTbl->getMangopayKycFile(),PATHINFO_EXTENSION);
+//
+//        $response->headers->set('Content-Type','text/plain');
+//        $response->setContentDisposition(
+//            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+//            //$kycFile.'_'.$date->format('Ymd').'.'.$ext
+//            $kycFile
+//        );
+//
+//        return $response;
+//
+//    }
 }

@@ -77,6 +77,7 @@ class CardProjectType extends AbstractType
                 'toolbarButtons' => ['bold', 'italic', 'underline'],
                 'quickInsertTags' => [],
                 'required' => false,
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('categories', EntityType::class, array(
                 'label' => 'label.categories',
@@ -109,7 +110,8 @@ class CardProjectType extends AbstractType
                 'toolbarStickyOffset' =>  70,
                 'heightMin' => 100,
                 'toolbarButtons' => ['bold', 'italic', 'underline'],
-                'quickInsertTags' => []
+                'quickInsertTags' => [],
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('attachments', CollectionType::class, array(
                 'required' => true,

@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
+ * @ORM\EntityListeners({"App\Entity\Listener\ClientListener"})
  * @ORM\Table(name="pxl_b2b_client")
  * * @UniqueEntity(
  *     fields={"email"},
@@ -77,7 +78,14 @@ class Client implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
-
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $deleted = false;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
     /**
      * @var \DateTime $createdAt
      *
@@ -204,6 +212,34 @@ class Client implements UserInterface
     {
         $this->roles = $roles;
     }
+    /**
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param mixed $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    }
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
 
     public function getEmail(): ?string
     {
@@ -488,6 +524,11 @@ class Client implements UserInterface
         return $this;
     }
 
+
+    public function getEncryptedId(){
+
+        return base64_encode($this->getId());
+    }
 
 
 }

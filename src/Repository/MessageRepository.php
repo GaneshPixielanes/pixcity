@@ -59,4 +59,11 @@ class MessageRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getOneOrNullResult();
     }
+
+    public function getMessagesCountByclient($value){
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.ticket = :id')
+            ->setParameter('id',$value)
+            ->getQuery()->getResult();
+    }
 }

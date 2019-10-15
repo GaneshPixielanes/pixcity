@@ -94,7 +94,9 @@ class MissionType extends AbstractType
                     'error_bubbling' => false,
                     'by_reference' => false
                 ])
-            ->add('missionBasePrice', TextType::class)
+            ->add('missionBasePrice', TextType::class,[
+                'label' => false
+            ])
 //            ->add('dueDate', DateType::class)
 //            ->add('conditionsAgreed', ChoiceType::class,[
 //                'choices' => ['Yes' => 1, 'No' => 0],
@@ -133,6 +135,18 @@ class MissionType extends AbstractType
                 'error_bubbling' => false,
                 'by_reference' => false
             ])
+
+            ->add('missionRegions', EntityType::class, array(
+                'label' => 'regions',
+                'class' => Region::class,
+                'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => true,
+                'query_builder' => function(EntityRepository $er) use($regions)
+                {
+                    return $er->createQueryBuilder('p')->where('p.id IN (:regions)')->setParameter('regions',$regions);
+                }
+            ))
         ;
     }
 

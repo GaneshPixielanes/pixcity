@@ -3,6 +3,143 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('build/admin/js/pages/dashboard.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script type="text/javascript">
+        window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(231,233,237)',
+            lowred: 'rgb(249,202,202)'
+        };
+
+        //var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var config = {
+            type: 'line',
+            data: {
+                labels: ["1", "February", "March", "April", "May", "June", "July"],
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: window.chartColors.red,
+                    borderColor: window.chartColors.red,
+                    data: [5, 10, 25, 15, 10, 20, 30],
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                title:{
+                    display:true,
+                    text:'CM Upgrade'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Month'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value, index, values) {
+                                if (value % 5 === 0) {
+                                    return value;
+                                } else {
+                                    return ' ';
+                                }
+                            },
+                        }
+                    }]
+                }
+            }
+        };
+
+        window.onload = function() {
+            var dataVal= $('#cmGraph').attr('data-values');
+            var my_json = JSON.parse(dataVal);
+            var datas = [];
+            var labels = [];
+            var array = JSON.parse(my_json);
+            array.forEach(function(object) {
+                datas.push(object.Nos);
+            });
+            array.forEach(function(object) {
+                labels.push(object.ym);
+            });
+            var ctx = document.getElementById("cmGraph").getContext("2d");
+            window.myLine = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'CM Upgradation',
+                        borderColor: window.chartColors.red,
+                        backgroundColor: window.chartColors.lowred,
+                        data: datas,
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+
+            var clientGraph= $('#clientGraph').attr('data-values');
+            var clientJson = JSON.parse(clientGraph);
+            var datasArr = [];
+            var labelsArr = [];
+            var arrayCM = JSON.parse(clientJson);
+            arrayCM.forEach(function(object) {
+                datasArr.push(object.Nos);
+            });
+            arrayCM.forEach(function(object) {
+                labelsArr.push(object.clientCreated);
+            });
+
+            var cmctx = document.getElementById("clientGraph").getContext("2d");
+            window.myLine = new Chart(cmctx, {
+                type: 'line',
+                data: {
+                    labels: labelsArr,
+                    datasets: [{
+                        label: 'Client registrations',
+                        borderColor: window.chartColors.red,
+                        backgroundColor: window.chartColors.lowred,
+                        data: datasArr,
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        };
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -19,8 +156,8 @@
                     <i class="material-icons">group</i>
                 </div>
                 <div class="content">
-                    <div class="text">Nombre d'utilisateurs</div>
-                    <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{ stats.users }}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Nombre d'utilisateurs{% elseif app.user.viewMode == "b2b" %} Nb of CM {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}{{ stats.users }}{% elseif app.user.viewMode == "b2b" %}  <a href="{{ url('admin_admins_cm_lists') }}"><span class="text">{{ cmUpgradeB2b[0].allCmCount }}</span>{% endif %}</a></div>
                 </div>
             </div>
         </div>
@@ -30,8 +167,8 @@
                     <i class="material-icons">account_circle</i>
                 </div>
                 <div class="content">
-                    <div class="text">Nombre de Pixies</div>
-                    <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{{ stats.pixies }}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Nombre de Pixies{% elseif app.user.viewMode == "b2b" %} Nb of Clients {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}{{ stats.pixies }}{% elseif app.user.viewMode == "b2b" %}  <a href="{{ url('admin_client_index') }}"><span class="text">{{ clientData[0].allClientCount }}</span></a>{% endif %}</div>
                 </div>
             </div>
         </div>
@@ -41,8 +178,8 @@
                     <i class="material-icons">view_carousel</i>
                 </div>
                 <div class="content">
-                    <div class="text">Nombre de Cards</div>
-                    <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">{{ stats.cards }}</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Nombre de Cards{% elseif app.user.viewMode == "b2b" %} Nb of packs {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}{{ stats.cards }}{% elseif app.user.viewMode == "b2b" %} <a href="{{ url('admin_user_packs_index') }}"><span class="text">{{ activePack[0].allpckCount }}</span></a>{% endif %}</div>
                 </div>
             </div>
         </div>
@@ -52,14 +189,14 @@
                     <i class="material-icons">help</i>
                 </div>
                 <div class="content">
-                    <div class="text">-</div>
-                    <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">-</div>
+                    <div class="text">{% if app.user.viewMode == "b2c" %}Help{% elseif app.user.viewMode == "b2b" %} Nb of ongoing missions {% endif %}</div>
+                    <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">{% if app.user.viewMode == "b2c" %}-{% elseif app.user.viewMode == "b2b" %} <a href="{{ url('admin_user_mission_index') }}"><span class="text">{{ userMission[0].allmsnCount }}</span></a>{% endif %}</div>
                 </div>
             </div>
         </div>
     </div>
     <!-- #END# Widgets -->
-
+    {% if app.user.viewMode == "b2c" %}
     <!-- Graph -->
     <div class="row clearfix">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -215,5 +352,25 @@
         </div>
         <!-- #END# Task Info -->
     </div>
-
+    {% elseif app.user.viewMode == "b2b" %}
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <div class="row clearfix">
+                            <div class="col-xs-12 col-sm-6">
+                                <h2>Visites</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="canvas-holder" class="body" style="width: 100%; height: 30%">
+                        <canvas id="cmGraph" data-values="{{ cmData |json_encode}}"></canvas>
+                    </div>
+                    <div id="canvas-holder" class="body" style="width: 100%; height: 30%">
+                        <canvas id="clientGraph" data-values="{{ clientsData |json_encode}}"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

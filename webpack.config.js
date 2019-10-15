@@ -67,6 +67,7 @@ Encore
     .addEntry('front/js/pages/pixie-card-creation', './assets/front/js/pages/pixie-card-creation.js')
     .addEntry('front/js/pages/user-collections', './assets/front/js/pages/user-collections.js')
     .addEntry('front/js/pages/user-calendars', './assets/front/js/pages/user-calendars.js')
+
     // .addEntry('front/js/pages/pixie-address', './assets/front/js/pages/pixie-address.js')
 
     .addEntry('js/simplebar', './assets/v2/node_modules/simplebar/dist/simplebar.min.js')
@@ -77,13 +78,19 @@ Encore
     .addEntry('js/bootstrap-select', './assets/v2/js/bootstrap-select.min.js')
     // .addEntry('js/lazy', './assets/v2/js/jquery.lazy.min.js')
     .addEntry('js/dropzone', './assets/v2/js/dropzone.js')
-
+    .addEntry('js/scroll', './assets/front/js/pages/scroll-jax.js')
+    .addEntry('js/scrollMapCount', './assets/front/js/pages/scroll-map-count.js')
+    .addEntry('js/scrollTopCard', './assets/front/js/pages/scroll-top-cards.js')
+    .addEntry('js/scrollBecomeCityMaker', './assets/front/js/pages/become-city-mker.js')
     // B2B
 
     .addEntry('b2b/js/app', './assets/b2b/js/app.js')
     .addEntry('b2b/js/client_registration', './assets/b2b/js/client_registration.js')
-    .addEntry('b2b/js/mission', './assets/b2b/js/mission.js')
+    .addEntry('b2b/js/client_profile', './assets/b2b/js/client_profile.js')
+    .addEntry('js/cookiealert', './assets/v2/js/cookiealert.js')
+    // .addEntry('b2b/js/mission', './assets/b2b/js/mission.js')
     .addEntry('b2b/js/pack', './assets/b2b/js/pack.js')
+    .addEntry('b2b/js/bind','./assets/b2b/js/bind.js')
 
 
 
@@ -101,9 +108,11 @@ Encore
     .addStyleEntry('css/lightgallery', './assets/v2/node_modules/lightgallery/src/css/lightgallery.css')
     .addStyleEntry('css/style', './assets/v2/css/style.css')
     .addStyleEntry('css/main', './assets/v2/css/main.scss')
-    .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
-    .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
-    .addStyleEntry('css/simple-sidebar', './assets/v2/css/simple-sidebar.css')
+    .addStyleEntry('css/header','./assets/front/internal-page-styles.css')
+    .addStyleEntry('css/cookiealert', './assets/v2/css/cookiealert.css')
+    // .addStyleEntry('css/dropzone', './assets/v2/css/dropzone.css')
+    // .addStyleEntry('css/dropzon', './assets/v2/css/dropzon.css')
+    // .addStyleEntry('css/simple-sidebar', './assets/v2/css/simple-sidebar.css')
 
 
 

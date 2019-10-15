@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use App\Constant\ViewMode;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -40,7 +40,19 @@ class Admin implements UserInterface
      * @ORM\Column(type="string", length=50)
      */
     private $lastname;
-
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $position;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profilePhoto;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $linkedinProfile;
     /**
      * @Assert\NotBlank()
      * @Assert\Email()
@@ -97,16 +109,32 @@ class Admin implements UserInterface
      */
     private $configUpdatedBy;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $viewMode = "";
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\BlogCategory", mappedBy="definedBy")
+     */
+    private $blogCategorys;
 
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\BlogPost", mappedBy="createdBy")
+     */
+    private $blogPosts;
 
 
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->packs = new ArrayCollection();
+        $this->blogCategorys = new ArrayCollection();
+        $this->blogPosts = new ArrayCollection();
     }
-
+    public function __toString() {
+        return $this->getFirstname()." ".$this->getLastname();
+    }
 
 
 
@@ -234,6 +262,40 @@ class Admin implements UserInterface
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
+    }
+
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
+
+    public function getProfilePhoto(): ?string
+    {
+        return $this->profilePhoto;
+    }
+
+    public function setProfilePhoto(?string $profilePhoto): self
+    {
+        $this->profilePhoto = $profilePhoto;
+
+        return $this;
+    }
+
+    public function getLinkedinProfile(): ?string
+    {
+        return $this->linkedinProfile;
+    }
+
+    public function setLinkedinProfile(?string $linkedinProfile): self
+    {
+        $this->linkedinProfile = $linkedinProfile;
+
+        return $this;
     }
 
     /**
@@ -383,4 +445,81 @@ class Admin implements UserInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getViewMode()
+    {
+        return (isset($this->viewMode) && $this->viewMode !== "")?$this->viewMode:ViewMode::B2C;
+    }
+
+    /**
+     * @param mixed $viewMode
+     */
+    public function setViewMode($viewMode)
+    {
+        $this->viewMode = isset($viewMode)?$viewMode:ViewMode::B2C;
+    }
+    /**
+     * @return Collection|BlogPost[]
+     */
+    public function getBlogPosts(): Collection
+    {
+        return $this->blogPosts;
+    }
+
+    public function addBlogPost(BlogPost $blogPost): self
+    {
+        if (!$this->blogPosts->contains($blogPost)) {
+            $this->blogPosts[] = $blogPost;
+            $blogPost->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogPost(BlogPost $blogPost): self
+    {
+        if ($this->blogPosts->contains($blogPost)) {
+            $this->blogPosts->removeElement($blogPost);
+            // set the owning side to null (unless already changed)
+            if ($blogPost->getCreatedBy() === $this) {
+                $blogPost->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection|BlogCategory[]
+     */
+    public function getBlogCategorys(): Collection
+    {
+        return $this->blogCategorys;
+    }
+
+    public function addBlogCategory(BlogCategory $blogCategory): self
+    {
+        if (!$this->blogCategorys->contains($blogCategory)) {
+            $this->blogCategorys[] = $blogCategory;
+            $blogCategory->setDefinedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogCategory(BlogCategory $blogCategory): self
+    {
+        if ($this->blogCategorys->contains($blogCategory)) {
+            $this->blogCategorys->removeElement($blogCategory);
+            // set the owning side to null (unless already changed)
+            if ($blogCategory->getDefinedBy() === $this) {
+                $blogCategory->getDefinedBy(null);
+            }
+        }
+
+        return $this;
+    }
 }

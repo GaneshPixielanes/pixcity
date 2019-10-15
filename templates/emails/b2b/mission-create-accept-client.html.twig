@@ -1,0 +1,90 @@
+{% extends 'emails/b2b/base.html.twig' %}
+
+{% block body %}
+
+    <tr>
+        <td valign="top" style="font-size:1px; line-height:1px;" height="40" class="height20">
+            <!--[if gt mso 14]>&nbsp;<![endif]-->
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" height="" class="text-darkgray text-left" style="font-size: 16px; font-family: 'Montserrat', sans-serif; color: #4A4B4D; font-weight: bold; line-height: 1.6!important;" align="left">
+            Bonjour,
+{#            {{ mission.user.firstName }}#}
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" style="font-size:1px; line-height:1px;" height="10" class="">
+            <!--[if gt mso 14]>&nbsp;<![endif]-->
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" height="" class="text-darkgray text-left" style="font-size: 12px; font-family: 'Montserrat', sans-serif; color: #4A4B4D; line-height: 1.6!important;" align="left">
+            Notre partenaire a bien reçu votre pré-paiement. Le city-maker va être averti du cantonnement de cette somme et il va pouvoir démarrer la mission.
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" style="font-size:1px; line-height:1px;" height="40" class="height20">
+            <!--[if gt mso 14]>&nbsp;<![endif]-->
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="font-family: 'Montserrat', sans-serif; font-size:16px; color:#103558;"
+            valign="middle">
+            <table width="288" class="inner-contents" border="0" cellspacing="0" cellpadding="0" align="center">
+                <tbody>
+                <tr>
+                    <!--[if lt IE 9 | mso]>
+                    <td width="5" style="font-family:Arial; font-size:16px; color:#103558;" valign="middle"><img
+                            style="display:block; border:none;" src="http://pixielanes.in/new/images/cta-left.png"
+                            width="25" height="48" alt=""/></td>
+                    <![endif]-->
+                    <td bgcolor="#009cde"
+                        style="font-family: 'Montserrat', sans-serif; font-size:16px; color:#ffffff; background-color:#103558; -moz-border-radius: 25px; -webkit-border-radius: 25px; border-radius: 25px;"
+                        valign="middle">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                            <tr>
+                                <td style="font-family: 'Montserrat', sans-serif; font-size:16px; color:#FFFFFF;"
+                                    valign="middle" align="center" height="48"><a
+                                            style="display:block; text-decoration:none; color:#ffffff; padding:10px 0px 10px 0px; font-size: 16px;"
+                                            href="{{ url('b2b_client_main_index') }}" target="_blank">VOIR DEVIS
+                                        <img style="vertical-align: middle;"
+                                             src="http://pixielanes.in/new/images/pix-city-services-02.png" alt=""></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <!--[if lt IE 9 | mso]>
+                    <td width="5" style="font-family:Arial; font-size:16px; color:#103558;" valign="middle"><img
+                            style="display:block; border:none;" src="http://pixielanes.in/new/images/cta-right.png"
+                            width="5" height="40" alt=""/></td>
+                    <![endif]-->
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" height="" class="text-darkgray text-left"
+            style="font-size: 12px; font-family: 'Montserrat', sans-serif; color: #4A4B4D; line-height: 1.6!important;"
+            align="left">
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" height="" class="text-darkgray text-left"
+            style="font-size: 12px; font-family: 'Montserrat', sans-serif; color: #4A4B4D; line-height: 1.6!important;"
+            align="left">
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" height="" class="text-darkgray text-left"
+            style="font-size: 12px; font-family: 'Montserrat', sans-serif; color: #4A4B4D; line-height: 1.6!important;"
+            align="left">
+            &nbsp;
+        </td>
+    </tr>
+{% endblock %}

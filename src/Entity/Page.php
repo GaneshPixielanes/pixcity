@@ -61,7 +61,10 @@ class Page
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $indexed = true;
-
+    /**
+     * @ORM\Column(type="smallint", nullable=false, options={"default" : 0})
+     */
+    private $platform;
 
     /**
      * @var \DateTime $createdAt
@@ -237,6 +240,19 @@ class Page
     public function setSlider($slider)
     {
         $this->slider = $slider;
+    }
+
+
+    public function getPlatform(): ?int
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(?int $platform): self
+    {
+        $this->platform = $platform;
+
+        return $this;
     }
 
 

@@ -34,7 +34,27 @@
          data-savetemplate-route="{{ path('admin_cards_projects_ajax_save_template') }}"
          data-loadtemplate-route="{{ path('admin_cards_projects_ajax_load_template') }}"
     ></div>
+    <!-- Modal -->
+    <div id="priceConfirmationModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Alert</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sûr(e) de vouloir rémunérer cette card?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="disallowPayment">Non</button>
+                    <button type="button" class="btn btn-green" data-dismiss="modal" id="allowPayment">Oui</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 {% endblock %}
 
 

@@ -61,6 +61,15 @@ class UserMission
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $missionBasePrice;
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $deleted = false;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     /**
      * @var \DateTime $createdAt
@@ -153,6 +162,29 @@ class UserMission
      */
     private $missionLogs;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\missionLog")
+     */
+    private $log;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Royalties", mappedBy="mission", cascade={"persist", "remove"})
+     */
+    private $royalties;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Region")
+     * @ORM\JoinTable(name="pxl_b2b_mission_regions",
+     *      joinColumns={@ORM\JoinColumn(name="mission_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="region_id", referencedColumnName="id")})
+     */
+    private $missionRegions;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $isTvaApplicable;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
@@ -160,6 +192,7 @@ class UserMission
         $this->clientTransactions = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->missionLogs = new ArrayCollection();
+        $this->missionRegions = new ArrayCollection();
     }
 
     protected function datePath(){
@@ -279,6 +312,34 @@ class UserMission
     public function setMissionBasePrice(?string $missionBasePrice): self
     {
         $this->missionBasePrice = $missionBasePrice;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param mixed $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    }
+
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }
@@ -587,4 +648,96 @@ class UserMission
 
         return $this;
     }
+
+    public function getLog(): ?missionLog
+    {
+        return $this->log;
+    }
+
+    public function setLog(?missionLog $log): self
+    {
+        $this->log = $log;
+
+        return $this;
+    }
+
+    public function getActiveLog()
+    {
+        $log = $this->missionLogs->filter(function (MissionLog $logs){
+            return $logs->getIsActive() == 1;
+        });
+        $log = array_values($log->toArray());
+        return (isset($log) && count($log) > 0)?$log[0]:null;
+    }
+
+    public function getRoyalties(): ?Royalties
+    {
+        return $this->royalties;
+    }
+
+    public function setRoyalties(Royalties $royalties): self
+    {
+        $this->royalties = $royalties;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $royalties->getMission()) {
+            $royalties->setMission($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMissionRegions()
+    {
+        return $this->missionRegions;
+    }
+
+    public function addMissionRegions(Region $region)
+    {
+        $this->missionRegions[] = $region;
+    }
+
+    /**
+     * @param mixed $missionRegions
+     */
+    public function setMissionRegions($missionRegions): void
+    {
+        $this->missionRegions = $missionRegions;
+    }
+
+    public function getQuatationPdf(){
+
+        return base64_encode("uploads/missions/temp/".$this->getId().'/'.$this->getMissionLogs()->last()->getQuotationfile());
+    }
+
+    public function getClientInvoice(){
+
+        return base64_encode("invoices/".$this->getId().'/PX-'.$this->getId().'-'.$this->getActiveLog()->getId().'-client.pdf');
+    }
+
+    public function getCityMakerInvoice(){
+
+        return base64_encode("invoices/".$this->getId().'/PX-'.$this->getId().'-'.$this->getActiveLog()->getId().'-cm.pdf');
+    }
+
+    public function getPcsInvoice(){
+        return base64_encode("invoices/".$this->getId().'/PX-'.$this->getId().'-'.$this->getActiveLog()->getId().'-pcs.pdf');
+    }
+
+    public function getIsTvaApplicable(): ?string
+    {
+        return $this->isTvaApplicable;
+    }
+
+    public function setIsTvaApplicable(?string $isTvaApplicable): self
+    {
+        $this->isTvaApplicable = $isTvaApplicable;
+
+        return $this;
+    }
+
+
 }

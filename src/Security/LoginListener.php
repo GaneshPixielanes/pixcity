@@ -5,6 +5,7 @@ namespace App\Security;
 use App\Constant\AfterLoginAction;
 use App\Constant\SessionName;
 use App\Entity\Card;
+use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -29,6 +30,7 @@ class LoginListener
         $user = $event->getAuthenticationToken()->getUser();
 
         if($user instanceof User){
+            $this->session->set('login_by',['type' => 'login_cm','entity' => $user,'image' => $user->getAvatar()->getName(),'view_mode' => $user->getViewMode()]);
 
             //----------------------------------------
             // After login actions
@@ -36,6 +38,7 @@ class LoginListener
 
             $afterLoginAction = $this->session->get(SessionName::AFTER_LOGIN_ACTION_NAME);
             $afterLoginValue = $this->session->get(SessionName::AFTER_LOGIN_ACTION_VALUE);
+
             if($afterLoginAction){
 
                 switch($afterLoginAction){
@@ -89,6 +92,9 @@ class LoginListener
                 $this->em->flush();
 
             }
+        }elseif($user instanceof Client){
+
+            $this->session->set('login_by',['type' => 'login_client','entity' => $user]);
         }
     }
 }

@@ -68,14 +68,12 @@ class User implements UserInterface, EquatableInterface
     private $birthLocation;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Regex("/^(?:0[1-9]|[1-9]\d)\d{3}$/")
      * @ORM\Column(type="string", length=16)
      */
     private $currentLocation;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=10)
      */
     private $gender;
@@ -269,6 +267,12 @@ class User implements UserInterface, EquatableInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $deleted = false;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
@@ -315,7 +319,7 @@ class User implements UserInterface, EquatableInterface
     private $userPacks;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="user", cascade={"persist", "remove"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="App\Entity\UserMission", mappedBy="user", cascade={"persist", "remove"})
      */
     private $userMission;
 
@@ -338,14 +342,14 @@ class User implements UserInterface, EquatableInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\Region")
      * @ORM\JoinTable(name="pxl_b2b_regions_users")
      */
-        private $userRegion;
+    private $userRegion;
 
 
 
-        /**
-         * @ORM\OneToMany(targetEntity="App\Entity\CommunityMedia", mappedBy="user",cascade={"persist"})
-         */
-        private $communityMedia;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CommunityMedia", mappedBy="user",cascade={"persist"})
+     */
+    private $communityMedia;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Skill")
@@ -355,10 +359,10 @@ class User implements UserInterface, EquatableInterface
      */
     private $userSkills;
 
-     /**
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $cm_upgrade_b2b_date;
+    private $cmUpgradeB2bDate;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Notifications", mappedBy="user")
@@ -369,11 +373,62 @@ class User implements UserInterface, EquatableInterface
      * @ORM\Column(type="integer", nullable=true)
      */
     private $b2b_cm_approval;
-
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $cmApprovalDate;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $cmRejectedDate;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ticket", mappedBy="cm")
      */
     private $tickets;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Royalties", mappedBy="cm", cascade={"persist", "remove"})
+     */
+    private $royalties;
+
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mangopayUserId;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mangopayWalletId;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $mangopayCreatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mangopayKycFile;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mangopayKycAddr;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mangopayKycStatus;
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $mangopayKycCreated;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $level = 1;
 
     //--------------------------------------------------------------
     // Constructor
@@ -640,7 +695,10 @@ class User implements UserInterface, EquatableInterface
     //--------------------------------------------------------------
 
     public function getSlug(){
-        return 'abc';
+        if($this->getPixie() == null)
+        {
+            return 'abc';
+        }
         $slugify = new Slugify();
         $region = (count($this->getPixie()->getRegions()) > 0)?$this->getPixie()->getRegions()[0]:"";
         return $slugify->slugify($this->firstname." ".$this->lastname." ".$region);
@@ -759,7 +817,7 @@ class User implements UserInterface, EquatableInterface
      */
     public function setCreatedAt($createdAt)
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime("now");
     }
 
     /**
@@ -1222,6 +1280,17 @@ class User implements UserInterface, EquatableInterface
         $this->deleted = $deleted;
     }
 
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
     /**
      * @return mixed
      */
@@ -1660,12 +1729,12 @@ class User implements UserInterface, EquatableInterface
 
     public function getCmUpgradeB2bDate(): ?\DateTimeInterface
     {
-        return $this->cm_upgrade_b2b_date;
+        return $this->cmUpgradeB2bDate;
     }
 
-    public function setCmUpgradeB2bDate(?\DateTimeInterface $cm_upgrade_b2b_date): self
+    public function setCmUpgradeB2bDate(?\DateTimeInterface $cmUpgradeB2bDate): self
     {
-        $this->cm_upgrade_b2b_date = $cm_upgrade_b2b_date;
+        $this->cmUpgradeB2bDate = $cmUpgradeB2bDate;
 
         return $this;
     }
@@ -1712,7 +1781,28 @@ class User implements UserInterface, EquatableInterface
 
         return $this;
     }
+    public function getCmApprovalDate(): ?\DateTimeInterface
+    {
+        return $this->cmApprovalDate;
+    }
 
+    public function setCmApprovalDate(?\DateTimeInterface $cmApprovalDate): self
+    {
+        $this->cmApprovalDate = $cmApprovalDate;
+
+        return $this;
+    }
+    public function getCmRejectedDate(): ?\DateTimeInterface
+    {
+        return $this->cmRejectedDate;
+    }
+
+    public function setCmRejectedDate(?\DateTimeInterface $cmRejectedDate): self
+    {
+        $this->cmRejectedDate = $cmRejectedDate;
+
+        return $this;
+    }
     /**
      * @return Collection|Ticket[]
      */
@@ -1744,6 +1834,133 @@ class User implements UserInterface, EquatableInterface
         return $this;
     }
 
+    public function getRoyalties(): ?Royalties
+    {
+        return $this->royalties;
+    }
 
+    public function setRoyalties(Royalties $royalties): self
+    {
+        $this->royalties = $royalties;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $royalties->getCm()) {
+            $royalties->setCm($this);
+        }
+
+        return $this;
+    }
+    public function getMangopayUserId(): ?int
+    {
+        return $this->mangopayUserId;
+    }
+
+    public function setMangopayUserId(int $mangopayUserId): self
+    {
+        $this->mangopayUserId = $mangopayUserId;
+
+        return $this;
+    }
+
+    public function getMangopayWalletId(): ?int
+    {
+        return $this->mangopayWalletId;
+    }
+
+    public function setMangopayWalletId(int $mangopayWalletId): self
+    {
+        $this->mangopayWalletId = $mangopayWalletId;
+
+        return $this;
+    }
+
+    public function getMangopayCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->mangopayCreatedAt;
+    }
+
+    public function setMangopayCreatedAt(?\DateTimeInterface $mangopayCreatedAt): self
+    {
+        $this->mangopayCreatedAt = $mangopayCreatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMangopayKycFile()
+    {
+        return $this->mangopayKycFile;
+    }
+
+    /**
+     * @param mixed $mangopayKycFile
+     */
+    public function setMangopayKycFile($mangopayKycFile)
+    {
+        $this->mangopayKycFile = $mangopayKycFile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMangopayKycAddr()
+    {
+        return $this->mangopayKycAddr;
+    }
+
+    /**
+     * @param mixed $mangopayKycAddr
+     */
+    public function setMangopayKycAddr($mangopayKycAddr)
+    {
+        $this->mangopayKycAddr = $mangopayKycAddr;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMangopayKycStatus()
+    {
+        return $this->mangopayKycStatus;
+    }
+
+    /**
+     * @param mixed $mangopayKycStatus
+     */
+    public function setMangopayKycStatus($mangopayKycStatus)
+    {
+        $this->mangopayKycStatus = $mangopayKycStatus;
+    }
+
+    public function getMangopayKycCreated(): ?\DateTimeInterface
+    {
+        return $this->mangopayKycCreated;
+    }
+
+    public function setMangopayKycCreated(?\DateTimeInterface $mangopayKycCreated): self
+    {
+        $this->mangopayKycCreated = $mangopayKycCreated;
+
+        return $this;
+    }
+
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(?int $level): self
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    public function getEncryptedId(){
+
+        return base64_encode($this->getId());
+    }
 
 }

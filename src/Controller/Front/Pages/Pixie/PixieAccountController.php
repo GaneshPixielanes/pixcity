@@ -4,6 +4,7 @@ namespace App\Controller\Front\Pages\Pixie;
 
 
 use App\Constant\CardProjectStatus;
+use App\Constant\CardStatus;
 use App\Constant\CompanyStatus;
 use App\Constant\TransactionStatus;
 use App\Entity\Card;
@@ -21,8 +22,10 @@ use App\Repository\CardCategoryRepository;
 use App\Repository\CardProjectRepository;
 use App\Repository\CardRepository;
 use App\Repository\CommunityMediaRepository;
+use App\Repository\OptionRepository;
 use App\Repository\RegionRepository;
 use App\Repository\TransactionRepository;
+use App\Repository\UserMissionRepository;
 use App\Service\FileUploader;
 use App\Utils\Pagination;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -111,7 +114,12 @@ class PixieAccountController extends Controller
     /**
      * @Route("/parametres", name="settings")
      */
-    public function settings(Request $request, UserPasswordEncoderInterface $passwordEncoder, TransactionRepository $transactionRepository,\Swift_Mailer $mailer,CardRepository $cardsRepo)
+    public function settings(Request $request,
+                             UserPasswordEncoderInterface $passwordEncoder,
+                             TransactionRepository $transactionRepository,
+                             CardRepository $cardsRepo,
+                            UserMissionRepository $missionRepo
+    )
     {
         $user = $this->getUser();
         $message = '';
@@ -169,24 +177,24 @@ class PixieAccountController extends Controller
 
                     $user->setCmUpgradeB2bDate(new \DateTime('now'));
                     $user->setRoles(["ROLE_USER", "ROLE_PIXIE","ROLE_CM"]);
-                    $user->setB2bCmApproval(0);
+                    $user->setB2bCmApproval(2);
                     $entityManager->persist($user);
                     $entityManager->flush();
 
-                    $message = (new \Swift_Message('Hello Email'))
-                        ->setFrom('noreply@pix.city')
-                        ->setTo($user->getEmail())
-                        ->setBody(
-                            $this->renderView(
-                                'b2b/emails/cm_registration.html.twig',
-                                ['user' => $user]
-                            ),
-                            'text/html'
-                        )
-                    ;
-
-
-                    $mailer->send($message);
+//                    $message = (new \Swift_Message('Hello Email'))
+//                        ->setFrom('noreply@pix.city')
+//                        ->setTo($user->getEmail())
+//                        ->setBody(
+//                            $this->renderView(
+//                                'b2b/emails/cm_registration.html.twig',
+//                                ['user' => $user]
+//                            ),
+//                            'text/html'
+//                        )
+//                    ;
+//
+//
+//                    $mailer->send($message);
 
                     return $this->redirectToRoute('front_pixie_account_manager_thank_you');
 
@@ -204,8 +212,7 @@ class PixieAccountController extends Controller
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+
             // Add the flash message
             $this->addFlash('account_saved_settings', '');
 
@@ -217,7 +224,14 @@ class PixieAccountController extends Controller
             }
 
         }
+        #Get the number of valid cards
+        $cardCount = $cardsRepo->count([
+            'pixie' => $this->getUser(),
+            'status' => CardStatus::VALIDATED
+        ]);
 
+        #Number of missions from a user
+        $missionCount = $missionRepo->findDraftAndOngoingMissions($this->getUser());
         //-----------------------------------------------
         // Create the page
 
@@ -231,7 +245,9 @@ class PixieAccountController extends Controller
             'errors' => $errors,
             'bandDetailsEditable' => $bankDetailsEditable,
             'user' => $user,
-            'card' => $card
+            'card' => $card,
+            'cardCount' => $cardCount,
+            'missionCount' => count($missionCount)
         ));
 
     }
@@ -314,9 +330,9 @@ class PixieAccountController extends Controller
         $pixieBilling = $user->getPixie()->getBilling();
 //        dd($pixieBilling->getAddress()-);
         if(
-           $pixieBilling->getBillingIban() == 'FR3330002005500000157841Z25' &&
-           $pixieBilling->getBillingBic() == 'CRLYFRPP' &&
-           strtoupper($pixieBilling->getAddress()->getAddress()) == "27 RUE ARAGO"
+            $pixieBilling->getBillingIban() == 'FR3330002005500000157841Z25' &&
+            $pixieBilling->getBillingBic() == 'CRLYFRPP' &&
+            strtoupper($pixieBilling->getAddress()->getAddress()) == "27 RUE ARAGO"
         )
         {
             $isWrongData = true;
@@ -328,7 +344,8 @@ class PixieAccountController extends Controller
         $filters = [
             "pixie" => $this->getUser()->getId(),
             "status" => [CardProjectStatus::VALIDATED],
-            "no_transaction" => true
+            "no_transaction" => true,
+            "priceGreaterThanZero" => true
         ];
         $unpayedProjects = $projectsRepo->search($filters, 1, 100);
 
@@ -350,8 +367,8 @@ class PixieAccountController extends Controller
         // Create the page
 
         $page = new Page();
-        $page->setName("Mes rémunérations");
-        $page->setMetaTitle("Mes rémunérations");
+        $page->setName("Mes gains");
+        $page->setMetaTitle("Mes gains");
         $page->setIndexed(false);
 
         return $this->render('front/account/pixie/cards-payments.html.twig', array(
@@ -375,9 +392,9 @@ class PixieAccountController extends Controller
         // The created card will be associated with the project
         // All new address will be stored as a card here
         $card = new Card();
-        
+
         $form = $this->createForm(CardType::class, $card);
-        
+
         $form->handleRequest($request);
 
         // Form validation check
@@ -480,8 +497,6 @@ class PixieAccountController extends Controller
             mkdir($uploadDir, 0775, true);
         }
 
-
-
         if ($file->move($uploadDir, $fileName)) {
             $em = $this->getDoctrine()->getManager();
 
@@ -548,4 +563,39 @@ class PixieAccountController extends Controller
 
     }
 
+
+    /**
+     * @Route("upload/mangopaykyc", name="mangopaykyc")
+     */
+    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr1/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+    /**
+     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
+     */
+    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
+    {
+        $file = $request->files->get('file');
+        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/addr2/'.$request->get('id'), true);
+        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+    }
+
+    /**
+     * @Route("/accueil", name="homepage")
+     */
+    public function homepage(OptionRepository $optionRepository)
+    {
+        $user = $this->getUser();
+        $url = $optionRepository->findOneBy(['slug'=>'cm-winning-blog-url']);
+        if($user->getLevel() == null || $user->getLevel() == 0)
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
+        return $this->render('v2/front/account/city_maker/home/index.html.twig',[
+           'url' => $url->getValue()
+        ]);
+    }
 }

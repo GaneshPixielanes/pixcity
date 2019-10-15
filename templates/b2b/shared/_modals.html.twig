@@ -43,7 +43,7 @@
             <div class="modal-body">
                 <p>Êtes-vous sur de vouloir supprimer votre pack?
                     Cette action est irréversible, vous ne pourrez plus accéder au pack supprimé.</p>
-                <p>Si vous avez des question sur le fonctionnement Pix.City Services, n’hésitez pas à consulter les pages de FAQ.</p>
+                <p>Si vous avez des question sur le fonctionnement Pix.City Services, n’hésitez pas à consulter les <a href="{{ url('front_faq_index') }}">pages de FAQ.</a></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
@@ -65,7 +65,7 @@
             </div>
             <div class="modal-body">
                 <p>Êtes-vous sûr(e) de vouloir annuler l'édition de votre pack ? Toutes les modifications apportées ne seront pas sauvegardées.</p>
-                <p>Si vous avez des questions sur cette annulation, n'hésitez pas à consulter notre page d'aide.</p>
+                <p>Si vous avez des questions sur cette annulation, n'hésitez pas à consulter  <a href="{{ url('front_faq_index') }}" target="_blank">notre page d'aide</a>.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
@@ -75,6 +75,7 @@
     </div>
 </div>
 <!-- Cancel pack edition confirmation modal ends -->
+
 <!-- Cancel mission edition confirmation modal -->
 <div class="modal fade alert-modal cancel-mission-edition-confirmation-modal" id="cancelMissionEditionConfirmation" tabindex="-1" role="dialog" aria-labelledby="cancelMissionEditionConfirmation" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -87,18 +88,20 @@
             </div>
             <div class="modal-body">
                 <p>Êtes-vous sur de vouloir annuler l'édition de votre mission?
-                    Toutes les modifications apporter en cours de route ne seront pas sauvegarder.</p>
+                    Toutes les modifications apportées en cours de route ne seront pas sauvegardées.
+                </p>
                 <p>Si vous avez des questions sur le fonctionnementde Pix.City services, n’hésitez pas à
-                    à consulter nos pages d’aide dédiées</p>
+                    à consulter nos <a href="{{ url('front_faq_index') }}" target="_blank">pages d’aide dédiées</a>.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
-                <button type="button" class="btn btn-pink close-preview">ANNULER LA CREATION</button>
+                <button type="button" class="btn btn-pink close-preview">ANNULER L'ÉDITION</button>
             </div>
         </div>
     </div>
 </div>
 <!-- Cancel mission edition confirmation modal ends -->
+
 <!-- Mission edition confirmation modal -->
 <div class="modal fade alert-modal mission-edition-confirmation-modal" id="missionEditionConfirmation" tabindex="-1" role="dialog" aria-labelledby="missionEditionConfirmation" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -113,16 +116,18 @@
                 <p>Attention, les informations que vous avez modifiés vont générer un nouveau devis
                     à votre client.</p>
                 <p>Voulez-vous continuer ?
-                    <a href="javascript:;" class="d-block">Voir le nouveau devis.</a></p>
+{#                    <a href="javascript:;" id="quatation-link" class="d-block" download>Voir le nouveau devis.</a>#}
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
-                <button type="button" class="btn btn-pink">ENVOYER DEVIS</button>
+                <button type="button" class="btn btn-pink mission-log-update">ENVOYER DEVIS</button>
             </div>
         </div>
     </div>
 </div>
 <!-- Mission edition confirmation modal ends -->
+
 <!-- End mission confirmation modal -->
 <div class="modal fade alert-modal end-mission-confirmation-modal" id="endMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="endMissionConfirmation" aria-hidden="true" style="">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -136,7 +141,7 @@
             <div class="modal-body">
                 <p>En cliquant sur « terminer la mission », une notification de fin de mission sera envoyée au client.</p>
                 <p>Dès sa validation, le paiement de votre mission pourra avoir lieu sous 48h.</p>
-                <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="javascript:;">FAQ</a> ».</p>
+                <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="{{ url('front_faq_index') }}">FAQ</a></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
@@ -173,3 +178,199 @@
 </div>
 <!-- Saved changes toast ends -->
 <!-- Toasts ends -->
+
+<!-- Remove document confirmation modal -->
+<div class="modal fade alert-modal remove-document-confirmation-modal" id="removeDocumentConfirmation" tabindex="-1" role="dialog" aria-labelledby="removePackConfirmation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fz-16">Supprimer le Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Supprimer un document
+                </p>
+                <p>
+                    Êtes-vous sûr de vouloir supprimer ce document ?
+                    Si vous avez des questions sur le fonctionnement de Pix.City Services, n’hésitez pas à consulter nos <a href="{{ url('front_faq_index') }}">pages de FAQ.</a>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
+                <button type="button" class="btn btn-pink" id="confirmDocumentDelete" data-id="">SUPPRIMER DOCUMENT</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Remove documents confirmation modal ends -->
+
+<!-- Cancel Mission Success modal -->
+<div class="modal fade alert-modal cancel-mission-confirmation-modal" id="cancelMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="removePackConfirmation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fz-16">Annuler La Mission</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+
+                    Vous avez demandé une annulation de la mission.<br/>
+                    Une action est requise côté client pour l'annulation définitive de la mission.<br/>
+                    Une fois validée, le compte du client sera re- crédité du montant de la mission.<br/>
+                    Si vous avez des questions, consultez notre <a href="{{ url('front_faq_index') }}">FAQ</a>.<br/>
+
+                </p>
+            </div>
+            <div class="modal-footer">
+{#                <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>#}
+                <button type="button" class="btn btn-pink" id="confirmMissionCancel" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cancel Mission Success modal ends -->
+{% if notifications is defined %}
+<!-- Notification Modal Starts -->
+<div class="modal fade alert-modal" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">Notifications</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if app.user.notifications | length == 0 %}
+                        <p>
+                            Vous n’avez pas encore de notifications
+                        </p>
+                        {% endif %}
+{#                        {% if app.user.notifications | length == 0 %}#}
+{#                        {% endif %}#}
+                        {% for notification in app.user.notifications|sort|reverse %}
+                        <a href="javascript:;" class="notification-card card p-3 text-darkblue text-decoration-none mb-2 unread">
+                            <div class="row">
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    {% if
+                                        notification.type == 'edit_mission_cm' or notification.type == 'terminate_mission_cm' or notification.type == 'cancel_mission_cm' or notification.type == 'mission_client_paid'
+                                        or notification.type == 'edit_mission' or notification.type == 'terminate_mission' or notification.type == 'mission_paid' or notification.type == 'cancel_mission'
+                                    %}
+                                        <i class="fas fa-check-circle text-green fz-40"></i>
+                                    {% elseif
+                                        notification.type == 'create_mission_cm' or notification.type == 'mission_accepted_edit' or notification.type == 'mission_client_paid' or notification.type == 'terminate_mission_accept' or notification.type == 'mission_request'
+                                        or notification.type == 'create_mission' or notification.type == 'cancel_mission_accept' or notification.type == 'mission_accepted_edit_client' or notification.type == 'mission_cliet_paid_complete'
+                                    %}
+                                        <i class="fas fa-piggy-bank fz-40"></i>
+                                    {% elseif notification.client is not null %}
+                                        <img src="/uploads/clients/{{ notification.client.id }}/{{ notification.client.profilePhoto }}" class="notification-img rounded-circle">
+                                    {% endif %}
+                                </div>
+                                <div class="col-11">
+                                    <h6 class="mb-0 font-weight-normal">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
+                                    <p class="mb-1 font-weight-light">{{ notification.message }}</p>
+                                    <small class="text-normalgray fz-10">09 AVRIL 2019 - 12:39{{ notification.createdAt | date('d M Y - H:i') }}</small>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Notification Modal Ends -->
+{% endif %}
+
+<!-- My facturation contents -->
+<div class="facturation-show-container col-sm-12 p-0 vh-100">
+    <div class="overlay-dashboard"></div>
+    <div class="col-sm-10 offset-sm-2 facturation-show-content bg-white p-0">
+        <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-invoice-preview">
+            <i class="fal fa-times fz-20 opacity-50"></i>
+        </a>
+        <object
+                id="object-invoice-path"
+                data=""
+                type="application/pdf"
+                width="100%"
+                height="100%">
+            <iframe
+                    id="invoice-path"
+                    src=""
+                    width="100%"
+                    height="100%"
+                    style="border: none;">
+                <p>Your browser does not support PDFs.
+                    <a href="https://example.com/test.pdf">Download the PDF</a>.</p>
+            </iframe>
+        </object>
+    </div>
+    <nav class="col-sm-10 offset-sm-2 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
+        <div class="container-fluid align-items-center justify-content-end">
+            <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
+                <!-- <div class="client-image btn-circle-50 p-0 mr-3">
+                    <img src="../images/USER-AVATAR.jpg" class="img-fluid rounded-circle" alt="client Logo">
+                </div>
+                <div class="client-name-mission-status mr-4">
+                    <p class="mb-0 fz-11 text-inprogress mission-status">Mission en cours</p>
+                    <p class="mb-0 text-darkgray client-name">@Lily_Bordeaux</p>
+                </div>
+                <div class="mr-4">
+                    <p class="mb-0 fz-12 text-normalgray">Région</p>
+                    <p class="mb-0 text-darkgray client-region">PARIS</p>
+                </div>
+                <div class="mr-4">
+                        <p class="mb-0 fz-12 text-normalgray">Prix</p>
+                        <p class="mb-0 text-darkgray user-price">160€</p>
+                </div>
+                <div class="mission-invoice d-flex align-items-center mr-4">
+                    <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-35 mr-2"></i></p>
+                    <p class="mb-0 text-darkgray">
+                        Devis PX-13032109-00752
+                        <a href="javascript:;" class="d-block fz-12 text-inprogress">Version 1: 03/04/2019</a>
+                    </p>
+                </div> -->
+                <div class="d-flex w-100 justify-content-center">
+                    <a href="javascript:;" class="btn btn-green btn-pill validate-quote"><i class="fas fa-check fz-14 mr-2"></i>Devis validé</a>
+                    {#                                <a href="javascript:;" class="btn btn-green btn-pill validate-the-quote">Valider le devis</a>#}
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<!-- My facturation contents ends -->
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+<!-- Pack agreement modal -->
+<div class="modal fade alert-modal" id="packAgreementModal" tabindex="-1" role="dialog" aria-labelledby="packAgreementModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">Mandat de facturation</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% embed 'b2b/shared/_pack_agreement.html.twig' %}{% endembed %}
+                    </div>N
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Pack agreement modal ends -->
+{% endif %}

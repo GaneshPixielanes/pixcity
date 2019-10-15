@@ -33,7 +33,7 @@
                                                     <img  class="rounded-circle" src="/uploads/clients/{{ client.data.id }}/{{ client.data.profilePhoto }}">
                                                 </div>
                                                 <div class="col-md-8 fz-14 text-darkblue">
-                                                    {{ client.data.company }} <span class="d-block fz-12 text-seagreen">{{ client.data.firstName~' '~client.data.lastName}}</span>
+                                                    {{ client.data.company }} <span class="d-block fz-12 text-seagreen">{{ client.data.firstName~' '~client.data. LastName}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -59,7 +59,13 @@
                         <ul class="d-flex w-100">
                             {% set data = form.vars.data %}
                             {% for choice in form.vars.choices %}
-                            <li class="col-md-4 mb-4 pack-info" data-id="{{ choice.data.id }}" data-price="{{ choice.data.totalPrice }}" data-banner-image="{{ choice.data.bannerImage }}" data-banner-image-url="/uploads/pack/banner/{{ choice.data.bannerImage }}">
+                            <li class="col-md-4 mb-4 pack-info"
+                                data-id="{{ choice.data.id }}"
+                                data-price="{{ choice.data.totalPrice }}"
+                                data-banner-image="{{ choice.data.bannerImage }}"
+                                data-banner-image-url="/uploads/pack/banner/{{ choice.data.bannerImage }}"
+                                data-description="{{ choice.data.description }}"
+                            >
                                 <a href="javascript:;" class="card">
                                     {% if data.id is defined and choice.data.id == data.id %}
                                     <input class="select" type="radio" name="{{ form.vars.full_name }}" value="{{ choice.data.id }}" checked>
@@ -91,7 +97,7 @@
     <div class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
         <img src="{% if form.vars.value == '' %}https://via.placeholder.com/1280x336?text=S%27il%20vous%20pla%C3%AEt%20t%C3%A9l%C3%A9charger%20l%27image%20de%20la%20banni%C3%A8re%20ici{% else %}{% endif %}" class="cover-image w-100 h-100" alt="Mission Cover Image">
         <div class="edit-image">
-            <input type="file" name="myFile" data-toggle="tooltip" title="" data-original-title="Edit Cover image" id="banner-image-upload">
+            <input type="file" name="myFile" data-toggle="tooltip" title="" data-original-title="Modifier l’image" id="banner-image-upload">
             <input type="hidden" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}"/>
             <a href="javascript:;" class="btn btn-lightgray btn-pill">Modifier</a>
 
@@ -101,10 +107,8 @@
 
 {% block _mission_title_widget %}
     <div class="pack-title-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Le titre de votre mission</h5>
-        <p class="text-textgray">Le titre doit permettre à votre client de comprendre
-            instantanément
-            votre prestation</p>
+        <h5 class="text-darkgray mb-0">Le titre de votre mission <span style="color: #fd6b84;">*</span></h5>
+        <p class="text-textgray">Le titre doit permettre à votre client de comprendre instantanément votre prestation. Personnalisez-le titre comme vous le souhaitez</p>
         <input class="form-control bg-lightwhite pack-title" maxlength="64" type="text"
                placeholder="Je m’occupe de vos réseaux sociaux " name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" data-bind="pcs-mission-name" {% if form.vars.value != '' %}readonly="readonly"{% endif %}/>
         <p class="mb-0 fz-12 text-textgray mt-2" data-bind="mission-title"><span class="inputlength">{{ form.vars.value | length }}</span>/<span
@@ -114,31 +118,32 @@
 
 {% block _mission_description_widget %}
     <div class="pack-description-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Décrivez votre mission</h5>
+        <h5 class="text-darkgray mb-0">Décrivez votre mission <span style="color: #fd6b84;">*</span> </h5>
         <p class="text-textgray">N’hésitez pas à être le plus précis possible dans la
             description de
             votre prestation !
             Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez
             pas à lire
-            notre <a href="javascript:;">FAQ</a></p>
-        <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200"
-                  placeholder="Décrivez de la manière la plus précise possible ce que vous allez faire pour votre client" id="" cols="30" rows="10" name="{{ form.vars.full_name }}" {% if form.vars.value != '' %}readonly="readonly"{% endif %}>{{ form.vars.value }}</textarea>
-        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength missionDescriptionLength">0</span>/<span
-                    class="input-maxlength">1200</span></p>
+            notre <a href="{{ url('front_faq_index') }}">FAQ</a></p>
+{#        <p>#}
+{#            Pour plus d’informations concernant les conditions d’assurance et les exclusions,#}
+{#        </p>#}
+        <textarea class="form-control bg-lightwhite fz-14 pack-description" id="mission-faorla-description" cols="30" rows="10" name="{{ form.vars.full_name }}" {% if form.vars.value != '' %}readonly="readonly"{% endif %}>{{ form.vars.value }}</textarea>
+        <p class="mb-0 fz-12 text-textgray mt-2">Max. 1200 car.</p>
+{#        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength missionDescriptionLength">0</span>/<span#}
+{#                    class="input-maxlength">1200</span></p>#}
     </div>
 
 {% endblock %}
 
 {% block _mission_missionBasePrice_widget %}
     <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
-        <p class="text-textgray">Besoin de conseils. <a href="javascript:;">Consultez notre
-                FAQ
-                City-Maker Services.</a></p>
+        <h5 class="text-darkgray mb-0">Fixez votre prix <span style="color: #fd6b84;">*</span> </h5>
+        <p class="text-textgray">Si vous ne savez pas comment définir vos prix,  <a href="{{ url('front_faq_index') }}">consultez notre FAQ</a></p>
         <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
         <div class="d-flex align-items-center">
             <div class="input-group w-10">
-                <input name="{{ form.vars.full_name }}" type="text" class="form-control fz-16 font-weight-bold bg-lightwhite"
+                <input name="{{ form.vars.full_name }}" type="number" class="form-control fz-16 font-weight-bold bg-lightwhite only-numeric"
                        placeholder="120" aria-label="Pack price" aria-describedby="pack-price" value="{{ form.vars.value }}" data-bind="cm-base-price">
                 <input type="hidden" class="cm-base-price" data-bind="cm-client-price" data-bind-callback="calculateClientPrice" />
                 <div class="input-group-append">
@@ -151,14 +156,15 @@
                 <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16 cm-client-price ">€</span>
             </p>
         </div>
+        <small>Les chiffres après la virgule ne sont pas autorisés</small>
     </div>
 {% endblock %}
 
 {% block _mission_region_widget %}
 
     <div class="pack-region-container col-sm-12 mt-2 mb-4 pb-4">
-        <h5 class="text-darkgray mb-0">Zone géographique</h5>
-        <p class="text-textgray">Choisissez la région où vous souhaitez intervenir pour réaliser le pack décrit ci-dessus.Les régions affichées sont par défaut celles que vous préalablement renseignées dans votre profil city-maker. N’oubliez pas que vous devez vous trouver à moins d’1h du lieu d’intervention du pack (environ !). Pour dé-sélectionner une région, cliquez simplement dessus.</p>
+        <h5 class="text-darkgray mb-0"><Zone géographique <span style="color: #fd6b84;">*</span> /h5>
+        <p class="text-textgray">Choisissez la région où vous souhaitez intervenir pour réaliser le pack décrit ci-dessus. Les régions affichées sont par défaut celles que vous préalablement renseignées dans votre profil city-maker. N’oubliez pas que vous devez vous trouver à moins d’1h du lieu d’intervention du pack (environ !). Pour dé-sélectionner une région, cliquez simplement dessus.</p>
 
         <div class="row">
             <div class="col-md-6 choose-regions-container">
@@ -167,7 +173,7 @@
                         <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
                             {% set data = form.vars.data %}
                             <select class="selectpicker" data-width="100%" data-live-search="true"
-                                    title="Choose a region from the list" name="{{ form.vars.full_name }}">
+                                    title="Sélectionnez une région" name="{{ form.vars.full_name }}">
                                 {% for choice in form.vars.choices %}
                                     {% if data.id is defined and data.id == choice.value %}
                                         <option value="{{ choice.data.id }}" selected>{{ choice.data.name }}</option>
@@ -260,13 +266,12 @@
 
 {% block _mission_missionMedia_widget %}
     <div class="pack-photos-container edit upload-images-container col-sm-12 border-bottom mt-2 mb-4 pb-4" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr')  }}" id="media-block" >
-        <h5 class="text-darkgray mb-0">Photos</h5>
+        <h5 class="text-darkgray mb-0">Photos <span style="color: #fd6b84;">*</span></h5>
         <p class="text-textgray mb-0">Vous pouvez choisir les photos de votre
             bibliothèque
-            ou en
-            téléchargez des nouvelles pour illustrer votre pack.</p>
+            ou en télécharger des nouvelles pour illustrer votre pack.</p>
         <small class="text-textgray">Format : JPEG, PNG. Taille : 2Mo max</small>
-        <div class="form-group dropzone clearfix mt-3 dz-clickable" id="photos-dropzone " style="{% if form.vars.value != '' %}display:none{% endif %}">
+        <div class="form-group dropzone clearfix mt-3 dz-clickable" id="photos-dropzone">
             <!-- <div class="row">
                                     <div class="col-md-12 upload-area">
                                         <div class="area-label text-center p-4">
@@ -299,29 +304,40 @@
 {% block _mission_axaInsurance_widget %}
     <div class="row">
         <div class="col-d-12 card p-5 mb-4">
-            <h4 class="fz-24">Assurance Axa</h4>
+            <h4 class="fz-24">L’assurance Pix.City Services</h4>
             <p class="fz-16 font-weight-light">Pix.City Services s'associe avec AXA pour vous proposer
                 une
                 responsabilité civile professionnelle pour toute mission qui commence sur notre
                 plateforme
                 (et contractualisée par son intermédiaire). Cette assurance est gratuite pour les
-                city-makers. N'hésitez pas à consulter notre page FAQ en cas de questions !</p>
+                city-makers. N'hésitez pas à consulter notre page <a href="{{ url('front_faq_index') }}">FAQ</a> en cas de questions !</p>
+            <p>
+                Vous pouvez vous référer aux <a href="/assets/documents/conditions-generales.pdf" target="_blank">Conditions Générales d’Assurance</a> ou consulter l’extrait de <a href="/assets/documents/conditions-particulières.pdf" target="_blank">Conditions particulières</a>
+            </p>
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="customControlInline" name="{{ form.vars.full_name }}" value="1">
                 <label class="custom-control-label fz-16 text-textgray mr-4"
-                       for="customControlInline">Souscrire à l'assurance Axa</label><img
-                        src="{{ absolute_url('/assets/images/axa-logo.png') }}">
+                       for="customControlInline">Souscrire à l’assurance en partenariat avec Axa</label><img
+                        src="{{ absolute_url('/assets/images/axa_logo.png') }}" style="height:32px;width:32px">
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="acceptAgreement"  value="1">
+                <label class="custom-control-label fz-16 text-textgray mr-4"
+                       for="acceptAgreement"> J’accepte les conditions générales de ventes et services de <a href="https://docs.google.com/document/d/1UKKQBA3rl-LGjtMfJJvjTHtaDo9U1Yc2nTxFjqn4oXM/edit#heading=h.mgkbkicnug0t" target="_blank">Pix.City Services</a></label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="acceptMangoPay"  value="1">
+                <label class="custom-control-label fz-16 text-textgray mr-4"
+                       for="acceptMangoPay">J’accepte les CGU de <a href="/assets/documents/PSP_MANGOPAY_FR.pdf" target="_blank">Mango Pay</a></label>
             </div>
             <div class="row">
                 <div class="col-md-6 fz-14 font-weight-light mt-3">
                     <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Garantie
-                                            de paiement</span> même si votre client arrête la mission avant son terme
+                                            de dommages </span> causés par les travaux après leur achèvement<br/> (droit à l’image, propriété intellectuelle)
                 </div>
                 <div class="col-md-6 fz-14 font-weight-light mt-3">
-                    <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Protection
-                                            juridique en cas d’accidents</span> ou de dégâts provoqués lors de la
-                    Prestation
-                    (Franchise 150€)
+                    <i class="fas fa-check text-green mr-2"></i> <span class="font-weight-normal">Prise en charge des conséquences des dommages (corporels, matériels, immatériels, etc.)
+                        que vous pouvez causer à autrui au cours d’une mission
                 </div>
             </div>
         </div>
@@ -342,7 +358,7 @@
                     <a href="javascript:;" class="btn btn-pink mr-4" id="uploadTermFile"><i
                                 class="fas fa-upload"></i> Upload</a> <span class="fz-14">Télécharger mes GCV
                                             (format .pdf 5mo max)</span>
-                    <input type="file" class="d-none" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief"/>
+                    <input type="file" class="d-none" id="brief-file-upload" accept=".doc, .docx, .pdf, .xls, .xlsx" data-upload-type="brief" />
                     <input type="hidden" id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" />
                 </div>
                 <div class="col-md-12">
@@ -361,7 +377,10 @@
 
 {% block _mission_documents_widget %}
     <div class="work-documents-container col-sm-12 border-bottom mt-2 mb-4 pb-4"  id="mission-documents-upload" data-prototype="{{ form_widget(form.vars.prototype) |e('html_attr') }} ">
-        <h5 class="text-darkgray mb-3">Documents de travail</h5>
+        <h5 class="text-darkgray mb-3">Documents de travail <span style="color: #fd6b84;">*</span> </h5>
+        <p class="text-textgray mb-0">
+            Uploadez ici un document avec les éléments dont vous aurez besoin pour la mission ou votre cahier des charges personnalisé ex: le logo client ....
+        </p>
         <table class="table table-sm table-borderless table-striped work-documents-list-table">
             <thead>
             <tr class="text-normalgray fz-12">
@@ -379,7 +398,7 @@
             <tfoot>
             <tr class="">
                 <td colspan="7" class="pt-4 text-center">
-                    <input type="file" class="d-none" id="document-file-upload" multiple/>
+                    <input type="file" class="d-none" id="document-file-upload" multiple accept=".doc, .docx, .pdf, .xls, .xlsx" />
                     <a href="javascript:;" class="btn btn-outline-darkblue btn-pill add-a-document">Ajouter
                         un document</a>
                 </td>
@@ -413,7 +432,7 @@
 {% block _client_clientInfo_siret_widget %}
     <div class="row">
         <div class="col-md-12 mb-3">
-            <label>N° SIRET</label>
+            <label>Numéro d’immatriculation (SIRET)</label>
             <input type="text" class="form-control bg-lightgray" placeholder="000 000 000 00000" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
         </div>
     </div>
@@ -422,7 +441,7 @@
 {% block _client_company_widget %}
     <div class="row">
         <div class="col-md-12 mb-3">
-            <label>IDENTIFIANT APE</label>
+            <label>Nom de votre entreprise (raison sociale)</label>
             <input type="text" class="form-control bg-lightgray" placeholder="Programmation informatique" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
         </div>
     </div>
@@ -499,10 +518,16 @@
 {% endblock %}
 
 {% block _client_email_widget %}
+
     <div class="row">
         <div class="col-md-12 mb-3">
             <label>VOTRE EMAIL</label>
-            <input type="email" class="form-control bg-lightgray" placeholder="email@domain.com" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
+            {% if form.vars.value is empty %}
+                <input type="email" class="form-control bg-lightgray" placeholder="email@domain.com" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" >
+            {% else %}
+                <input type="email" class="form-control bg-lightgray" placeholder="email@domain.com" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" readonly="readonly">
+
+            {% endif %}
         </div>
     </div>
 {% endblock %}
@@ -517,4 +542,81 @@
 </div>
 {% endblock %}
 
+{% block _pack_packRegions_widget %}
+    {% if form.vars.data is empty %}
+        {% for choice in form.vars.choices %}
+            <div class="row" data-pack-region-id="{{ choice.data.id }}">
+                <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
+                    <select class="selectpicker" data-width="100%" data-live-search="true"
+                            title="Choose a region from the list" readonly="readonly" disabled>
+                        <option value="{{ choice.data.name }}" selected>{{ choice.data.name }}</option>
+                    </select>
+                    <input type="checkbox" name="{{ form.vars.full_name }}[]" value="{{ choice.data.id }}" checked="checked" class="pack-region-select"/>
+                </div>
+                <div class="col-md-2 mb-3 d-flex align-items-center">
+                    <a href="#" class="remove-pack-region" data-id="{{ choice.data.id }}"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
 
+        {% for choice in form.vars.choices %}
+
+        {% set checked = false %}
+        {% for value in form.vars.data %}
+            {% if value.id == choice.data.id %}
+                {% set checked = true %}
+            {% endif %}
+        {% endfor %}
+        <div class="row" data-pack-region-id="{{ choice.data.id }}" {% if checked != true %}style="display:none !important"{% endif %}>
+            <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop" >
+                <select class="selectpicker" data-width="100%" data-live-search="true"
+                        title="Choose a region from the list" readonly="readonly" disabled>
+                    <option value="{{ choice.data.name }}" selected>{{ choice.data.name }}</option>
+                </select>
+                <input type="checkbox" name="{{ form.vars.full_name }}[]" value="{{ choice.data.id }}" {% if checked == true %} checked="checked" {% endif %}class="pack-region-select"/>
+            </div>
+            <div class="col-md-2 mb-3 d-flex align-items-center">
+                <a href="#" class="remove-pack-region" data-id="{{ choice.data.id }}"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+    <div class="col-md-3 mb-3"  >
+        <a href="#" class="btn btn-block adding-block add-pack-region" {% if form.vars.data | length > 1 %}style="display:none !important;"{% endif %}><i class="fa fa-plus"></i></a>
+    </div>
+{% endblock %}
+
+
+
+{% block _mission_missionRegions_widget %}
+    {% if form.vars.data is empty %}
+        {#  This content will be filled via AJAX during mission creation as it depends on the pack selected #}
+    {% else %}
+
+        {% for choice in form.vars.choices %}
+
+            {% set checked = false %}
+            {% for value in form.vars.data %}
+                {% if value.id == choice.data.id %}
+                    {% set checked = true %}
+                {% endif %}
+            {% endfor %}
+            <div class="row" data-mission-region-id="{{ choice.data.id }}" {% if checked != true %}style="display:none !important"{% endif %}>
+                <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop" >
+                    <select class="selectpicker" data-width="100%" data-live-search="true"
+                            title="Choose a region from the list" readonly="readonly" disabled>
+                        <option value="{{ choice.data.name }}" selected>{{ choice.data.name }}</option>
+                    </select>
+                    <input type="checkbox" name="{{ form.vars.full_name }}[]" value="{{ choice.data.id }}" {% if checked == true %} checked="checked" {% endif %}class="mission-region-select"/>
+                </div>
+                <div class="col-md-2 mb-3 d-flex align-items-center">
+                    <a href="#" class="remove-mission-region" data-id="{{ choice.data.id }}"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="col-md-3 mb-3"  >
+        <a href="#" class="btn btn-block adding-block add-mission-region" {% if form.vars.data | length > 1 %}style="display:none !important;"{% endif %}><i class="fa fa-plus"></i></a>
+    </div>
+{% endblock %}

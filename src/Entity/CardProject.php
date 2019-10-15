@@ -89,10 +89,9 @@ class CardProject
     private $minWords = 0;
 
     /**
-     * @Assert\GreaterThan(value=0, groups = {"assignation"})
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $price;
+    private $price = 0;
 
     /**
      * @Assert\NotBlank()

@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use App\Repository\CardCategoryRepository;
- 
 
 use App\Repository\CardRepository;
 /**
@@ -33,37 +32,37 @@ class CardExtractionsController extends Controller
      */
     public function index(Request $request)
     {
-		$filterForm = $this->createForm(CardExtractionsType::class);
+        $filterForm = $this->createForm(CardExtractionsType::class);
         $filterForm->handleRequest($request);
 
-		$data = $request->query->get('card_extractions');
-		$query =$date_from=$date_to='';
-		if(isset($data)){
-			$date_from = new \DateTime($data['startDate']);
-			$date_to = new \DateTime($data['endDate']);  
-			
-			$em = $this->getDoctrine()->getEntityManager();
-			$qb = $em->createQueryBuilder();
-			
-			$query = $qb
-				->select(["c", "u", "r", "d"])
-				->from('App\Entity\Card', 'c')
-				->leftJoin('c.address', 'u')
-				->leftJoin('c.region', 'r')
-				->leftJoin('c.department', 'd')  
-				->where('c.createdAt >= :date_from')
-				->andWhere('c.createdAt <= :date_to')			 
-				->setParameter('date_from',$date_from->format('Y-m-d'))
-				->setParameter('date_to', $date_to->format('Y-m-d'))
-				->getQuery()
-				->getResult();
-			;
-		}
+        $data = $request->query->get('card_extractions');
+        $query =$date_from=$date_to='';
+        if(isset($data)){
+            $date_from = new \DateTime($data['startDate']);
+            $date_to = new \DateTime($data['endDate']);
+
+            $em = $this->getDoctrine()->getEntityManager();
+            $qb = $em->createQueryBuilder();
+
+            $query = $qb
+                ->select(["c", "u", "r", "d"])
+                ->from('App\Entity\Card', 'c')
+                ->leftJoin('c.address', 'u')
+                ->leftJoin('c.region', 'r')
+                ->leftJoin('c.department', 'd')
+                ->where('c.createdAt >= :date_from')
+                ->andWhere('c.createdAt <= :date_to')
+                ->setParameter('date_from',$date_from->format('Y-m-d'))
+                ->setParameter('date_to', $date_to->format('Y-m-d'))
+                ->getQuery()
+                ->getResult();
+            ;
+        }
         return $this->render('admin/card_extractions/index.html.twig',[
-			'filterForm' => $filterForm->createView(),
-			'list' => $query,
-			'date_from' =>$date_from,
-			'date_to' =>$date_to
+            'filterForm' => $filterForm->createView(),
+            'list' => $query,
+            'date_from' =>$date_from,
+            'date_to' =>$date_to
         ]);
     }
 
@@ -158,38 +157,38 @@ class CardExtractionsController extends Controller
      */
     public function categoriesIndex(Request $request)
     {
-		$filterForm = $this->createForm(CardExtractionsType::class);
+        $filterForm = $this->createForm(CardExtractionsType::class);
         $filterForm->handleRequest($request);
 
-		$data = $request->query->get('card_extractions');
-		$query =$date_from=$date_to='';
+        $data = $request->query->get('card_extractions');
+        $query =$date_from=$date_to='';
 
-		if(isset($data)){
-			$date_from = new \DateTime($data['startDate']);
-			$date_to = new \DateTime($data['endDate']);  
-			
-			$em = $this->getDoctrine()->getEntityManager();
-			$qb = $em->createQueryBuilder();
-			
-			$query = $qb
-				->select(["c", "u", "r", "d"])
-				->from('App\Entity\Card', 'c')
-				->leftJoin('c.address', 'u')
-				->leftJoin('c.region', 'r')
-				->leftJoin('c.department', 'd') 
-				->where('c.createdAt >= :date_from')
-				->andWhere('c.createdAt <= :date_to')			 
-				->setParameter('date_from', $date_from)
-				->setParameter('date_to', $date_to)
-				->getQuery()
-				->getResult();
-			;
-		}
+        if(isset($data)){
+            $date_from = new \DateTime($data['startDate']);
+            $date_to = new \DateTime($data['endDate']);
+
+            $em = $this->getDoctrine()->getEntityManager();
+            $qb = $em->createQueryBuilder();
+
+            $query = $qb
+                ->select(["c", "u", "r", "d"])
+                ->from('App\Entity\Card', 'c')
+                ->leftJoin('c.address', 'u')
+                ->leftJoin('c.region', 'r')
+                ->leftJoin('c.department', 'd')
+                ->where('c.createdAt >= :date_from')
+                ->andWhere('c.createdAt <= :date_to')
+                ->setParameter('date_from', $date_from)
+                ->setParameter('date_to', $date_to)
+                ->getQuery()
+                ->getResult();
+            ;
+        }
         return $this->render('admin/card_extractions/categories.html.twig',[
             'filterForm' => $filterForm->createView(),
-			'list' => $query,
-			'date_from' =>$date_from,
-			'date_to' =>$date_to
+            'list' => $query,
+            'date_from' =>$date_from,
+            'date_to' =>$date_to
         ]);
     }
 

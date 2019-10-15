@@ -8,12 +8,12 @@
     <!-- my billing -->
     <div class="tab-pane active" id="billing" role="tabpanel">
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-            <div class="d-flex align-items-center fz-20 text-darkblue"><i
-                        class="fas fa-file-invoice-dollar fz-30 mr-2"></i>Facturation</div>
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-file-invoice-dollar fz-30 mr-2"></i> Facturation</div>
+            {% embed 'b2b/shared/_notification_header.html.twig' with {'notifications':notifications} %}{% endembed %}
 
         </div>
-        <div class="col-md-12 tab-pane-content p-4" data-simplebar>
-            {% if missions['terminated'] is not empty %}
+        <div class="col-md-12 tab-pane-content p-4">
+            {% if missions_index['terminated'] is not empty %}
             <table class="table table-sm table-borderless my-billings-list-table">
                 <thead>
                 <tr class="text-normalgray fz-12">
@@ -28,7 +28,7 @@
                 </thead>
                 <tbody>
 
-                    {% for mission in missions['terminated'] %}
+                    {% for mission in missions_index['terminated'] %}
                         <tr class="text-darkgray fz-14">
                             <td valign="middle" class="text-center">
                                 <i class="far fa-file-alt fz-25"></i>
@@ -36,12 +36,19 @@
                             <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}</td>
                             <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
                             <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
-                            <td valign="middle">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</td>
-                            <td valign="middle"><span class="text-inprogress">Completed</span></td>
+                            {% if mission.isTvaApplicable is not null %}
+                                <td valign="middle">{{ mission.userMissionPayment.clientTotal |round }} €</td>
+                            {% else %}
+                                <td valign="middle">{{ (mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientTax) | round }} €</td>
+                            {% endif %}
+                            <td valign="middle"><span class="text-inprogress">Terminé</span></td>
                             <td valign="middle">
-                                <div class="d-flex align-items-center pay-online">
-                                    <a href="javascript:;" class="preview-invoice text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none preview-my-mission" data-id="{{ mission.id }}"><i class="fas fa-eye fz-16"></i></a>
-{#                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>#}
+                                <div class="d-flex align-items-center">
+{#                                    <a href="javascript:;" class="btn btn-darkblue fz-10 check-the-quote">VOIR LE DEVIS</a>#}
+                                     <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}"><i class="fas fa-eye fz-16"></i></a>
+                                     <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getClientInvoice() }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+
+                                    {#                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>#}
                                 </div>
                             </td>
                         </tr>
@@ -60,13 +67,14 @@
                             <img class="img-fluid" src="/images/dash-mymissions-empty.png"
                                  alt="My Missions">
                         </div>
-                        <h4 class="mt-4 text-darkblue">On attend le premier message !</h4>
-                        <p> Ça y est votre profil et vos packs sont à jour !
-                            Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
-                            une bonne négociation !
+                        <h4 class="mt-4 text-darkblue">Espace facturation</h4>
+                        <p> Vous trouverez ici les factures correspondantes à vos missions. Pour rappel une facture est
+                            émise et sera disponible lorsque la mission est terminée, c’est à dire terminée côté
+                            city-maker et validée de votre côté aussi. La facture est faite au nom du city-maker avec qui
+                            vous avez contractualisé. Ayant effectué un paiement de cantonnement lors de la signature
+                            du devis, le montant final de la mission sera envoyé au city-maker lorsque la mission sera en statut “terminée”.
+                            Pour toute question sur le fonctionnement de la plateforme, n’hésitez pas à consulter <a href="{{ path('front_faq_index') }}">notre FAQ</a>.
                         </p>
-                        <p> Pour toute question, n’hésitez pas à consulter les <a href="javascript:;">FAQ (+
-                                lien).</a> </p>
                     </div>
                 </div>
 
@@ -75,4 +83,8 @@
     </div>
     <!-- my billing end here -->
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://pspdfkit.your-site.com/pspdfkit.js"></script>
 {% endblock %}

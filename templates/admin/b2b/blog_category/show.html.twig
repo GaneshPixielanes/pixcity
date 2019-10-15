@@ -1,0 +1,49 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.blogcategory'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.blogcategory'|trans }}
+                </h2>
+                <a href="{{ path('admin_blog_category_index') }}" class="btn btn-green">back to list</a>
+
+                <a href="{{ path('admin_blog_category_edit', {'id': blog_category.id}) }}" class="btn btn-green">edit</a>
+
+                {{ include('admin/b2b/blog_category/_delete_form.html.twig') }}
+            </div>
+            <div class="body">
+                <table class="table">
+                    <tbody>
+
+                        <tr>
+                            <th>Title</th>
+                            <td>{{ blog_category.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Created By</th>
+                            <td>{{ blog_category.definedBy ? blog_category.definedBy.firstname ~' '~ blog_category.definedBy.lastname : ''}}</td>
+                        </tr>
+                        <tr>
+                            <th>CreatedAt</th>
+                            <td>{{ blog_category.createdAt ? blog_category.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>UpdatedAt</th>
+                            <td>{{ blog_category.updatedAt ? blog_category.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

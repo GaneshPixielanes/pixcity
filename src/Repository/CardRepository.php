@@ -105,7 +105,7 @@ class CardRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function search($filters = [], $page = 1, $pageSize = 10, $orderByType = "popular")
+    public function search($filters = [], $page = 1, $pageSize = 10, $orderByType = "popular",$userEmail=null)
     {
         $qb = $this->_buildQuery();
         $qb = $this->_applyFilters($qb, $filters);
@@ -121,7 +121,12 @@ class CardRepository extends ServiceEntityRepository
         foreach($searchOrderBy as $order){
             $qb = $qb->addOrderBy('c.'.$order[0], $order[1]);
         }
-
+//        if($userEmail != null){
+//            $qb = $qb->andWhere("p.email IN ('ganesh@pix.city','bsingh@pix.cityy')");
+//        }
+        if($userEmail != null){
+            $qb = $qb->andWhere("p.email NOT IN (".$userEmail.") AND p.visible = 1");
+        }
         /*
         $qb = $qb
             ->setFirstResult($pageSize * ($page-1))
@@ -142,9 +147,15 @@ class CardRepository extends ServiceEntityRepository
 
     }
 
-    public function countSearchResult($filters = [])
+    public function countSearchResult($filters = [], $userEmail=null)
     {
         $qb = $this->_buildCountQuery();
+        if($userEmail != null){
+            $qb = $qb->andWhere("p.email NOT IN (".$userEmail.") AND p.visible = 1");
+        }
+//        if($userEmail == null){
+//            $qb = $qb->andWhere("p.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");
+//        }
         $qb = $this->_applyFilters($qb, $filters);
 
         return $qb
@@ -163,16 +174,25 @@ class CardRepository extends ServiceEntityRepository
     }
 
 
-    public function countCardsByRegion($regionId)
+    public function countCardsByRegion($regionId,$userEmail=null)
     {
-        return $this->createQueryBuilder('c')
+        $qb = $this->createQueryBuilder('c')
             ->select('COUNT(c.id)')
+            ->leftJoin("c.pixie", "p")
             ->where('c.region = :region')->setParameter('region', $regionId)
             ->andWhere('c.status = :status')->setParameter('status', CardStatus::VALIDATED)
-            ->getQuery()
+            ;
+        if($userEmail != null){
+            $qb = $qb->andWhere("p.email NOT IN (".$userEmail.") AND p.visible = 1");
+        }
+//        if($userEmail == null){
+//            $qb = $qb->andWhere("p.email NOT IN ('ganesh@pix.city','bsingh@pix.cityy')");
+//        }
+        $qb = $qb->getQuery()
             ->useResultCache(true, 0, "countCardsByRegion_".$regionId)
             ->getSingleScalarResult()
             ;
+        return $qb;
     }
 
     public function findCardBySlug($slug)
@@ -229,17 +249,20 @@ class CardRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findAllCardsValidated($filters = [])
+    public function findAllCardsValidated($filters = [],$userEmail=null)
     {
         $qb = $this->_buildQuery();
         $qb = $this->_applyFilters($qb, $filters);
 
-        $result = $qb->select(["address.latitude, address.longitude, c.id, category.icon"])
+        $qb = $qb->select(["address.latitude, address.longitude, c.id, category.icon"])
                  ->andWhere('c.status = :status')
                  ->setParameter('status',CardStatus::VALIDATED)
-                 ->getQuery()
-                 ->getResult();
-
+                 ;
+        if($userEmail != null){
+            $qb = $qb->andWhere("p.email NOT IN (".$userEmail.") AND p.visible = 1");
+        }
+        $result = $qb->getQuery()
+                    ->getResult();
         return $result;         
     }
 

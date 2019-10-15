@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserPackMediaRepository")
+ * @ORM\Table(name="pxl_b2b_user_pack_media")
  */
 class UserPackMedia
 {

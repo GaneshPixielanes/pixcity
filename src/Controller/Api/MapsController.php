@@ -10,6 +10,7 @@ use App\Entity\UserInstagramDetailsApi;
 use App\Entity\InstagramTrends;
 use App\Repository\InstagramTrendsRepository;
 use App\Repository\CardRepository;
+use App\Repository\OptionRepository;
 use App\Repository\RegionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
@@ -581,18 +582,31 @@ class MapsController extends AbstractController
     /**
      * @Route("/find-all-card/{slug}/{category}",defaults={"slug"=null, "category" = null},name="_find_all_card")
      */
-    public function findAllCard(CardRepository $cardRepo, Request $request)
+    public function findAllCard(CardRepository $cardRepo, Request $request,
+                                OptionRepository $optionRepository)
     {
+        $testAccounts = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
         $slug = $request->get('slug');
         $category = $request->get('category');
 
         $em = $this->getDoctrine()->getManager();
-
+        $loggedUser = $this->getUser();
         $result = $em->getRepository(Card::class)->createQuerybuilder('c')
                 ->select(["a.latitude, a.longitude, c.id, t.icon"])
+                ->leftJoin('c.pixie','p')
                 ->join('c.address','a')
                 ->join('c.categories','t')
                 ->join('c.region','r');
+        if($loggedUser) {
+            if (strpos($testAccounts->getValue(), $loggedUser->getEmail()) !== false) { //in
+                $result = $result;
+            }
+            else{
+                $result = $result->andWhere("p.email NOT IN (".$testAccounts->getValue().") AND p.visible = 1");
+            }
+        }else{
+            $result = $result->andWhere("p.email NOT IN (".$testAccounts->getValue().") AND p.visible = 1");
+        }
         if(null !== $request->get('category') && 'all' !== $request->get('category'))
         {
           $result= $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
@@ -601,7 +615,6 @@ class MapsController extends AbstractController
         {
           $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
         }
-
 
         $result = $result->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
                   ->getQuery()
@@ -613,8 +626,12 @@ class MapsController extends AbstractController
     /**
     * @Route("/all-cards",name="_all_card")
     */
-    public function allCards(Request $request, CardRepository $cardRepo)
+    public function allCards(Request $request, CardRepository $cardRepo, OptionRepository $optionRepository)
     {
+        $testAccountsAsClient = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
+        $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $loggedUserSession = $this->get('session')->get('login_by');
+        $loggedUser = $loggedUserSession['entity'];
        # Get the corresponding filters
         
        $filters['regions'] = $request->get('regions');
@@ -626,8 +643,18 @@ class MapsController extends AbstractController
        }
 
        # Get the markers w.r.t the filters
+        if($loggedUser){
+            if(strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false) { //in
+                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters)));
+            }
+            else{
+                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters,  $testAccountsAsCm->getValue())));
+            }
+        }
+        else{
+            return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters, $testAccountsAsCm->getValue())));
+        }
 
-       return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters)));
     }
 
     /**

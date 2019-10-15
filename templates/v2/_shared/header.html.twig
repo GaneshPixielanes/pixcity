@@ -1,6 +1,17 @@
 <nav class="navbar navbar-expand-lg fixed-top nav-bar-main">
 	<div class="container">
+
+		{% if app.session.has('login_by')  %}
+			{% set loginDetails = app.session.get('login_by')   %}
+			{% set loginBy = loginDetails['type'] %}
+		{% else %}
+			{% set loginBy = 'not-login'   %}
+		{% endif %}
+
 		<a class="navbar-brand" href="/"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
+
+
+
 		<div class="col-3 ml-auto social-mobile">
 			<div class="row">
 				<div class="col-6 social-mobile-btn">
@@ -15,11 +26,17 @@
 				</div>
 			</div>
 		</div>
+
+
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-		<img src="{{ absolute_url(asset('build/images/menu.svg')) }}" />
+			<img src="{{ absolute_url(asset('build/images/menu.svg')) }}" />
 		</button>
+
+
+
+
 		<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-			{% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+			{% if loginBy == 'not-login' %}
 			<div class="col-md-5 ml-auto mt-2 mt-lg-0">
 				<div class="row">
 					<div class="col-md-6">
@@ -41,82 +58,141 @@
 				</div>
 			</div>
 			{% else %}
-			<div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
-				<div class="row">
-					<div class="col-md-8 logged-profile-menu-hover">
-						<a href="javascript:;" class="logged-profile">
-							<img src="{% if app.user.getAvatarUrl() is defined and app.user.getAvatarUrl() is not null %}{{ app.user.getAvatarUrl() | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="rounded-circle" alt="{{app.user }}">
-						</a>
-						<div class="logged-dropdown-menu">
-							<div class="card">
-									<div class="card-body p-0">
-										{% if app.user.viewMode == "pixie" %}
-
-											<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CITY-MAKER <i class="fas fa-retweet"></i></a>
-											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
-											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i>Cards en attente</a>
-											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_validated') }}"><i class="far fa-check-circle"></i>Cards Validees</a>
-											<a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i>Mes rémunérations</a>
-											<a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
-											<a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
-
-											{% if app.user.getCmUpgradeB2bDate == null %}
-												{% if card is defined and card != 0 %}
-													<a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_community_manager') }}">
-														<div class="col-3 pl-0">
-															<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
-														</div>
-														<div class="col-6">
-															<div class="row">
-																<div class="col-12">Espace Services</div>
-																<div class="col-12">
-																	<img src="/assets/images/footer-logo-main.svg" width="58">
+				{% if loginBy == 'login_cm' %}
+					<div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
+						<div class="row">
+							<div class="col-md-8 logged-profile-menu-hover">
+								<a href="javascript:;" class="logged-profile">
+									<img src="{% if app.user.getAvatarUrl() is defined and app.user.getAvatarUrl() is not null %}{{ app.user.getAvatarUrl() | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="rounded-circle" alt="{{app.user }}">
+								</a>
+								<div class="logged-dropdown-menu">
+									<div class="card">
+											<div class="card-body p-0">
+												{% if app.user.viewMode == "pixie" %}
+													<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CITY-MAKER <i class="fas fa-retweet"></i></a>
+													{% if app.user.level >= 1 %}<a class="dropdown-item" href="{{ path('front_pixie_account_homepage') }}"><i class="fas fa-home"></i>Accueil</a> {% endif %}
+													<a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
+													<a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i>Cards en attente</a>
+													<a class="dropdown-item" href="{{ path('front_pixie_account_cards_validated') }}"><i class="far fa-check-circle"></i>Cards Validees</a>
+													<a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i>Mes gains</a>
+													<a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
+													<a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
+													{% if app.user.getB2bCmApproval() != "0" and app.user.level > 1 %}
+													{% if app.user.getB2bCmApproval() == "2" or app.user.getB2bCmApproval() == null %}
+														{% if app.user.getCmUpgradeB2bDate()  != null %}
+															<a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_manager_thank_you') }}">
+																<div class="col-3 pl-0">
+																	<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
 																</div>
+																<div class="col-6">
+																	<div class="row">
+																		<div class="col-12">Espace Services</div>
+																		<div class="col-12">
+																			<img src="/assets/images/footer-logo-main.svg" width="58">
+																		</div>
+																	</div>
+																</div>
+																<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+																	<i class="fas fa-arrow-right"></i>
+																</div>
+															</a>
+														{% else %}
+															<a class="dropdown-item user-link p-3 d-flex" href="/city-maker/compte/community/manager">
+																<div class="col-3 pl-0">
+																	<img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
+																</div>
+																<div class="col-6">
+																	<div class="row">
+																		<div class="col-12">Espace Services</div>
+																		<div class="col-12">
+																			<img src="/assets/images/footer-logo-main.svg" width="58">
+																		</div>
+																	</div>
+																</div>
+																<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+																	<i class="fas fa-arrow-right"></i>
+																</div>
+															</a>
+														{% endif %}
+													{% else %}
+														<a class="dropdown-item user-link-logged p-3 d-flex" href="{{ url('b2b_community_manager_index') }}">
+															<div class="col-9 pl-0">
+																Espace <img src="/assets/images/footer-logo-main.svg" width="58"> Services
 															</div>
-														</div>
-														<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
-															<i class="fas fa-arrow-right"></i>
-														</div>
-													</a>
+															<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+																<i class="fas fa-arrow-right"></i>
+															</div>
+														</a>
+													{% endif %}
 												{% endif %}
-											{% else %}
-												<a class="dropdown-item user-link-logged p-3 d-flex" href="/community-manager/profile">
-													<div class="col-9 pl-0">
-														Espace BtoB <img src="/assets/images/footer-logo-main.svg" width="58">
-													</div>
-													<div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
-														<i class="fas fa-arrow-right"></i>
-													</div>
-												</a>
-											{% endif %}
+												{% else %}
 
-                                        {% else %}
+													<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE VOYAGEUR <i class="fas fa-retweet"></i></a>
+													<a class="dropdown-item" href="{{ path('front_user_account_cards') }}"><i class="fas fa-cog"></i>Mes Cards</a>
+													<a class="dropdown-item" href="{{ path('front_user_account_agendas') }}"><i class="far fa-calendar-alt"></i>Mes Agendas</a>
+													<a class="dropdown-item" href="{{ path('front_user_account_pixies') }}"><i class="far fa-user"></i>Mes City-makers Favoris</a>
+													<a class="dropdown-item" href="{{ path('front_user_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
+													<a class="dropdown-item" href="{{ path('front_signout') }}"><i class="fas fa-power-off"></i>Deconnexion</a>
 
-											<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE VOYAGEUR <i class="fas fa-retweet"></i></a>
-											<a class="dropdown-item" href="{{ path('front_user_account_cards') }}"><i class="fas fa-cog"></i>Mes Cards</a>
-											<a class="dropdown-item" href="{{ path('front_user_account_agendas') }}"><i class="far fa-calendar-alt"></i>Mes Agendas</a>
-											<a class="dropdown-item" href="{{ path('front_user_account_pixies') }}"><i class="far fa-user"></i>Mes City-makers Favoris</a>
-											<a class="dropdown-item" href="{{ path('front_user_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
-											<a class="dropdown-item" href="{{ path('front_signout') }}"><i class="fas fa-power-off"></i>Deconnexion</a>
+												{% endif %}
 
-										{% endif %}
-
-									</div>
+											</div>
+										</div>
 								</div>
+							</div>
+							<div class="col-md-2 col-6 social-btn logged-social-btn">
+								<a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+									<i class="fab fa-facebook-f"></i>
+								</a>
+							</div>
+							<div class="col-md-2 col-6 social-btn logged-social-btn">
+								<a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+									<i class="fab fa-instagram"></i>
+								</a>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-2 col-6 social-btn logged-social-btn">
-						<a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
-							<i class="fab fa-facebook-f"></i>
-						</a>
-					</div>
-					<div class="col-md-2 col-6 social-btn logged-social-btn">
-						<a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
-							<i class="fab fa-instagram"></i>
-						</a>
-					</div>
-				</div>
-			</div>
+					{% elseif loginBy == 'login_client'  %}
+
+						<div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
+							<div class="row">
+								<div class="col-md-8 logged-profile-menu-hover">
+									<a href="javascript:;" class="logged-profile">
+										{% if loginDetails['entity'].profilePhoto is defined and loginDetails['entity'].profilePhoto is not null  %}
+											<img  src="{{ asset('/uploads/clients/'~loginDetails['entity'].id~'/'~loginDetails['entity'].profilePhoto) | imagine_filter('user_avatar') }}"  class="rounded-circle"/>
+										{% else %}
+											<img src="/uploads/avatars/default-avatar.png" alt=""  class="rounded-circle"/>
+										{% endif %}
+
+									</a>
+									<div class="logged-dropdown-menu">
+										<div class="card">
+											<div class="card-body p-0">
+												<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CLIENT &nbsp;<i class="fas"></i></a>
+												<a class="dropdown-item" href="{{ path('b2b_client_main_index') }}"><i class="fas fa-home"></i>Accueil</a>
+												<a class="dropdown-item" href="{{ path('b2b_client_mission_list') }}"><i class="fas fa-briefcase"></i>Mes missions</a>
+												<a class="dropdown-item" href="{{ path('client_transaction_index') }}"><i class="fas fa-file-invoice-dollar"></i>Facturation</a>
+												<a class="dropdown-item" href="{{ path('client_email_inbox') }}"><i class="fas fa-envelope"></i>Email</a>
+												<a class="dropdown-item" href="/client/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2 col-6 social-btn logged-social-btn">
+									<a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+										<i class="fab fa-facebook-f"></i>
+									</a>
+								</div>
+								<div class="col-md-2 col-6 social-btn logged-social-btn">
+									<a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+										<i class="fab fa-instagram"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+
+					{% endif %}
 
 			{% endif %}
 		</div>

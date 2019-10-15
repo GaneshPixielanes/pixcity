@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MissionDocumentRepository")
+ * @ORM\Table(name="pxl_b2b_mission_document")
  */
 class MissionDocument
 {
@@ -34,6 +35,11 @@ class MissionDocument
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $originalName;
 
     public  function __toString()
     {
@@ -77,6 +83,18 @@ class MissionDocument
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getOriginalName(): ?string
+    {
+        return $this->originalName;
+    }
+
+    public function setOriginalName(?string $originalName): self
+    {
+        $this->originalName = $originalName;
 
         return $this;
     }

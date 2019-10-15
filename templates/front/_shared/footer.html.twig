@@ -1,64 +1,52 @@
-
+<div class="social-wrap">
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <div class="col-sm-3">
-                    <a class="brand" href="{{ path('front_homepage_index') }}"><img src="{{ asset('build/images/logo-pc-white.svg') }}" alt="PIXCITY" /></a>
+            <div class="col-md-12">
+                <div class="brand-footer">
+                    {% if page.platform == 0 %}
+                        <img src="{{ absolute_url(asset('build/images/footer-logo-main.svg')) }}">
+                    {% else %}
+                        <a  href="{{ path('front_homepage_index') }}"><img src="/assets/images/services-footer-logo.svg" alt="Pix.City Services"></a>
+                    {% endif %}
                 </div>
-                <div class="col-md-3 col-3 container-insta-image">
-                    {{ menu('footer-1', 'footerMenu') | raw }}
+                <div class="container-propos">
+                    <h4>A Propos De Nous</h4>
+                    {% if page.platform == 0 %}
+                        {{ menu('footer-1', 'footerMenu') | raw }}
+                        {{ menu('footer-2', 'footerMenu') | raw }}
+                    {% else %}
+                        {{ menu('footer-3', 'footerMenu') | raw }}
+                        <ul>
+                            {#<li>#}
+                                {#<a href="https://www.pix.city/services">Pix.city Services</a>#}
+                            {#</li>#}
+                            <li>
+                                <a href="{{ path('front_faq_index') }}">FAQ de Pix.City Services</a>
+                            </li>
+                        </ul>
+                    {% endif %}
                 </div>
-                <div class="col-sm-4">
-                    {{ menu('footer-2', 'footerMenu') | raw }}
+                <div class="container-social">
+                    <h4>Pix.city Sur Les Reseaux Sociaux</h4>
+                    <ul>
+                        <li><a href="https://www.facebook.com/pix.city.france/"><i class="fab fa-facebook-square"></i> <span>Facebook</span></a></li>
+                        <li><a href="https://www.linkedin.com/company/pixcityservices/"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a></li>
+                        <li><a href="https://instagram.com/pix_city/"><i class="fab fa-instagram"></i> <span>Instagram</span></a></li>
+                    </ul>
                 </div>
             </div>
             <!--googleoff: all-->
-            <!-- INSTAGRAM FEED -->
-            <div id="feedInstagram" class="col-md-4">
-                <div class="col-md-12">
-                    <div id="headerFeedInstagram">
-                        <a class="linkInstagram" href="{{ options()["instagram-link"] }}" rel="noopener" target="_blank"><i class="fab fa-instagram"></i>Instagram</a><a class="linkInstaProfile" rel="noopener" href="{{ options()["instagram-link"] }}" target="_blank">@pix_city</a>
-                    </div>
-
-                    <ul>
-                    {% for post in instagramFeed() %}
-
-                        <li>
-                            <a href="{{ post.link }}" target="_blank" rel="noopener" title="{{ post.title }}">
-                                <img src="{{ post.image }}" alt="{{ post.title }}">
-                            </a>
-                        </li>
-
-                    {% endfor %}
-                    </ul>
-
-                </div>
-            </div>
             <!--googleon: all-->
         </div>
-        <div class="col-md-12">
-            <hr>
-
-        </div>
-
-        <div id="footerEnd" class="col-md-12">
-
-            <span class="credits">{{ options()["copyright"] }}</span>
-            <ul class="socialMenu">
-                <li class="fab fa-facebook">
-                    <a href="{{ options()["facebook-link"] }}" target="_blank" rel="noopener"></a>
-                </li>
-                <li class="fab fa-linkedin">
-                    <a href="{{ options()["linkedin-link"] }}" target="_blank" rel="noopener"></a>
-                </li>
-                <li class="fab fa-instagram">
-                    <a href="{{ options()["instagram-link"] }}" target="_blank" rel="noopener"></a>
-                </li>
-            </ul>
-        </div>
-
-
     </div>
     <!--/.container-->
-
-</footer>
+</div>
+<div class="footer-wrap">
+    <div class="container">
+        {% if page.platform == 0 %}
+            {{ options()["copyright"] }}
+        {% else %}
+            © 2019 Pix City Services
+        {% endif %}
+    </div>
+</div>

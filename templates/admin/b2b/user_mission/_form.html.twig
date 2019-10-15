@@ -1,0 +1,40 @@
+{{ form_start(form) }}
+    {#{{ form_widget(form) }}#}
+    <ul class="repeater-container user-bannerImage">
+        <li class="align-center">
+            {% if form.vars.data.bannerImage  %}
+                <img class="thumb" src="{{ form.vars.data.bannerUrl }}" width="20%">
+            {% endif %}
+
+            <div class="upload-zone">
+                <input type="file" id="banner-image-upload"/>
+                <label>Image bannière</label>
+                <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                    <i class="material-icons">add</i>
+                </a>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <br/>
+     {{ form_row(form.user) }}
+     {{ form_row(form.client) }}
+     {{ form_row(form.region) }}
+     {{ form_row(form.title) }}
+     {{ form_row(form.description) }}
+     {{ form_row(form.briefFiles) }}
+     {{ form_row(form.missionBasePrice) }}
+     {{ form_row(form.status) }}
+
+     {#{{ form_row(form.conditionsAgreed) }}#}
+     {{ form_row(form.axaInsurance) }}
+     {{ form_row(form.generalConditionsBrief) }}
+     {{ form_row(form.missionAgreedClient) }}
+     {{ form_row(form.cancelReason) }}
+     {{ form_row(form.cancelledBy) }}
+     {{ form_row(form.referencePack) }}
+
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

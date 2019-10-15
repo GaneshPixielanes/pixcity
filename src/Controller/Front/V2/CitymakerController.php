@@ -7,6 +7,7 @@ use App\Entity\Card;
 use App\Entity\Page;
 use App\Repository\CardRepository;
 use App\Repository\CardCategoryRepository;
+use App\Repository\OptionRepository;
 use App\Repository\PageCategoryRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,9 +28,11 @@ class CitymakerController extends SearchPageController
 
             $found = false;
             foreach($this->regions as &$region){
-                if($userRegion[0]->getId() === $region['infos']->getId()){
-                    $region['pixies'][] = $user;
-                    $found = true;
+                if(($userRegion[0] != null) && ($region['infos'] != null)) {
+                    if ($userRegion[0]->getId() === $region['infos']->getId()) {
+                        $region['pixies'][] = $user;
+                        $found = true;
+                    }
                 }
             }
 
@@ -51,9 +54,11 @@ class CitymakerController extends SearchPageController
         UserRepository $usersRepo,
         PageCategoryRepository $pagesCategoriesRepo,
         CardRepository $cardsRepo,
-        CardCategoryRepository $categoryRepo
+        CardCategoryRepository $categoryRepo,
+        OptionRepository $optionRepository
     )
     {
+        $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
         $user = $usersRepo->searchUserById($request->attributes->get("id"));
         if(!$user->getActive() || !$user->getVisible())
         {
@@ -106,8 +111,13 @@ class CitymakerController extends SearchPageController
 
         $page->setMetaTitle($metaTitle);
         $page->setMetaDescription("Découvrez le profil de ".$user->getFirstname()." ".$user->getLastname().", city-maker sur Pix.city. ");
-
         $page->setIndexed(true);
+        $metaRobot = '';
+        if(strpos($testAccountsAsCm->getValue(),$user->getEmail()) !== false) {
+            $metaRobot = 'NOINDEX, NOFOLLOW';
+        }else{
+            $metaRobot = 'index,follow';
+        }
         $categories = $categoryRepo->findCategoriesByCityMaker($request->attributes->get("id"));
         return $this->render('v2/front/citymaker/index.html.twig', [
             'page' => $page,
@@ -118,7 +128,8 @@ class CitymakerController extends SearchPageController
             'totalLikes' => $totalLikes,
             'cardsPerCategory' => $cardsPerCategory,
             'cardsPerRegion' => $cardsPerRegion,
-            'categories'=>$categories
+            'categories'=>$categories,
+            'metaRobot' =>$metaRobot
         ]);
     }
 
@@ -128,14 +139,19 @@ class CitymakerController extends SearchPageController
     public function index(
         Request $request,
         UserRepository $usersRepo,
-        PageCategoryRepository $pagesCategoryRepo
+        PageCategoryRepository $pagesCategoryRepo,
+        OptionRepository $optionRepository
     ){
         ini_set('memory_limit','1024M');
+        $testAccountsAsClient = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
+        $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $loggedUserSession = $this->get('session')->get('login_by');
+        $loggedUser = $loggedUserSession['entity'];
 
         $searchParams = $this->getSearchParams($request);
 
         $pageCategory = null;
-
+        //$loggedUser = $this->getUser();
         if($request->attributes->get("slug") && $request->attributes->get("slug") !== "france") {
             $filters = [
                 "regions" => [$request->attributes->get("slug")],
@@ -143,7 +159,17 @@ class CitymakerController extends SearchPageController
                 "text" => $searchParams["text"]
             ];
 
-            $pixies = $usersRepo->searchPixies($filters);
+            if($loggedUser){
+                if(strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false){ //in
+                    $pixies = $usersRepo->searchPixies($filters);
+                }
+                else{
+                    $pixies = $usersRepo->searchPixies($filters,$testAccountsAsCm->getValue());
+                }
+            }
+            else{
+                $pixies = $usersRepo->searchPixies($filters,$testAccountsAsCm->getValue());
+            }
             $pageCategory = $pagesCategoryRepo->findOneBySlug($request->attributes->get("slug"));
         }
         else{
@@ -153,8 +179,18 @@ class CitymakerController extends SearchPageController
                 "text" => $searchParams["text"]
             ];
 
-            $pixies = $usersRepo->searchPixies($filters);
-        }   
+            if($loggedUser){
+                if(strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false){ //in
+                    $pixies = $usersRepo->searchPixies($filters);
+                }
+                else{
+                    $pixies = $usersRepo->searchPixies($filters,$testAccountsAsCm->getValue());
+                }
+            }
+            else{
+                $pixies = $usersRepo->searchPixies($filters,$testAccountsAsCm->getValue());
+            }
+        }
         $this->_groupPixiesByRegions($pixies);
 
 
@@ -176,7 +212,7 @@ class CitymakerController extends SearchPageController
             $page->setIndexed(true);
         }
 
-
+//dd($this->regions);
         return $this->render('front/pixies/index.html.twig', [
             'page' => $page,
             'filters' => $searchParams,

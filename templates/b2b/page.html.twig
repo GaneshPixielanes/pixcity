@@ -1,6 +1,7 @@
 {% extends 'b2b/base.html.twig' %}
 
 {% block body %}
+
     <div class="container-fluid bg-dashboard">
         <div class="row">
             <!-- Add packs -->
@@ -15,41 +16,54 @@
                     </figure>
                 </div>
                 <ul class="nav nav-tabs nav-tabs-sticky flex-column pt-3 flex-grow-1 border-0 dashboard-menu" id="cmDashboardMainNav" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('b2b_community_manager_index') }}" aria-controls="home"><i
+                    <li class="nav-item ">
+                        <a class="nav-link {% if(app.request.pathinfo == '/community-manager/profile') %}active{% endif %}" href="{{ url('b2b_community_manager_index') }}" aria-controls="home"><i
                                     class="fas fa-home"></i>Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('b2b_pack_list') }}" aria-controls="myPacks"><i
+                        <a class="nav-link {% if(app.request.pathinfo == '/b2b/pack/list') %}active{% endif %}" href="{{ url('b2b_pack_list') }}" aria-controls="myPacks"><i
                                     class="fas fa-dungeon"></i>Mes packs</a>
                     </li>
                     {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('b2b_mission_list') }}" aria-controls="myMissions"><i
+                        <a class="nav-link {% if(app.request.pathinfo == '/community-manager/mission/list') %}active{% endif %}" href="{{ url('b2b_mission_list') }}" aria-controls="myMissions"><i
                                     class="fas fa-briefcase"></i>Mes missions</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('b2b_community_manager_invoice_list') }}" aria-controls="billing"><i
+                        <a class="nav-link {% if(app.request.pathinfo == '/community-manager/invoice/list') %}active{% endif %}" href="{{ url('b2b_community_manager_invoice_list') }}" aria-controls="billing"><i
                                     class="fas fa-file-invoice-dollar"></i>Facturation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if(app.request.pathinfo == '/city-maker/email-invoi/inbox') %}active{% endif %}" href="{{ url('b2b_email_inbox') }}" aria-controls="email"><i
+                                    class="fas fa-envelope"></i>Email</a>
                     </li>
                 </ul>
                 <footer class="text-center p-2 text-pink fz-11">
+{#                    <div class="row">#}
+{#                        <div class="col-md-12">#}
+{#                            <a href="{{ url('front_faq_index') }}" class="d-block fz-16 text-darkblue text-center" target="_blank">#}
+{#                                <i class="far fa-question-circle"></i>#}
+{#                                <p>FAQ</p>#}
+{#                            </a>#}
+{#                        </div>#}
+
+{#                    </div>#}
                     <div class="row">
                         <div class="col-md-6">
-                            <a href="javascript:;" class="d-block fz-16 text-darkblue text-center">
-                                <i class="far fa-question-circle"></i>
+                            <a href="{{ url('front_faq_index') }}" class="d-block fz-16 text-darkblue text-center"  target="_blank">
+                                <i class="far fa-question-circle mr-0"></i>
                                 <p>FAQ</p>
                             </a>
                         </div>
                         <div class="col-md-6">
-                            <a href="javascript:;" class="d-block fz-16 text-darkblue text-center">
-                                <i class="fas fa-blog"></i>
+                            <a href="/blog" class="d-block fz-16 text-darkblue text-center" target="_blank">
+                                <i class="fas fa-blog mr-0"></i>
                                 <p>Blog</p>
                             </a>
                         </div>
                     </div>
-                    <a href="javascript:;" class="text-pink"><i class="fas fa-cog"></i>Retourner sur Pix.city Services</a>
+                    <a href="{{ url('front_homepage_index') }}" class="text-pink"><i class="fas fa-cog"></i>Retourner sur Pix.city</a>
                 </footer>
             </div>
             <div class="col-md-10 offset-md-2 dash-right vh-100 p-0">
@@ -60,6 +74,10 @@
             </div>
             {{ include('b2b/shared/_modals.html.twig') }}
             <!-- Dashboard contents ends -->
+
+            <!-- Intercom messenger -->
+{#            {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}#}
+
         </div>
     </div>
 {% endblock %}
@@ -105,10 +123,7 @@
 
 
         $(document).ready(function () {
-            // Adding a new pack
-            $('.add-package-to-list > a').on('click', function () {
-                // $('#pack-form').load('/api/pack/create');
-            });
+
 
             // Deleting a pack
             $('.delete-pack').on('click', function () {
@@ -123,7 +138,7 @@
             $('body').on('click', "#confirmPackDelete",function () {
 
                 var id = $(this).attr('data-id');
-                $.ajax('/b2b/pack/delete-pack/'+id,{
+                $.ajax('/city-maker/pack/delete-pack/'+id,{
                     success: function (result) {
                         $('.package-list-item[data-id="'+id+'"]').remove();
                         $('.total-packs-available').html($('.package-item').length);
@@ -191,75 +206,7 @@
     <script>
         $(document).ready(function()
         {
-            $(document).on('click','.terminate-mission-activate',function () {
-               $('#terminate-mission').attr('terminate-data-id',$(this).attr('data-id'));
-            });
 
-            $(document).on('click','.cancel-mission-activate', function () {
-                $('#cancel-mission-btn').attr('data-id',$(this).attr('data-id'));
-            });
-
-            $('#cancel-mission-btn').on('click', function (e) {
-                $.ajax('/community-manager/mission/status',{
-                    type: 'POST',
-                    data: {
-                        'id': $(this).attr('data-id'),
-                        'status': 'cancel',
-                        'cancelledBy': $('.select-canceller option:selected').val(),
-                        'reason':$('.cancel-reason').text(),
-                        '_token':"{{ csrf_token(app.user.id) }}"
-                    },
-                    success:function(result)
-                    {
-                        if(result.success == true)
-                        {
-                            $('.close-preview-edit').trigger('click');
-                            $('.btn-white-cancel').trigger('click');
-                        }
-                        else
-                        {
-                            alert('Sorry! Status couldn\'t be updated');
-                        }
-                    }
-                })
-            });
-            $('#terminate-mission').on('click', function(e){
-
-                e.preventDefault();
-
-                updateStatus($(this).attr('terminate-data-id'),'terminate');
-            });
-
-            $('#cancel-mission').on('click', function (e)
-            {
-                e.preventDefault();
-
-                updateStatus($(this).attr('cancel-data-id'),'cancel');
-            });
-
-            function updateStatus(id, status)
-            {
-                $.ajax('/community-manager/mission/status',{
-                    type: 'POST',
-                    data: {
-                        'id': id,
-                        'status': status,
-                        '_token':"{{ csrf_token(app.user.id) }}"
-                    },
-                    success:function(result)
-                    {
-                        if(result.success == true)
-                        {
-                            $('.close-preview-edit').trigger('click');
-                            $('.btn-white-cancel').trigger('click');
-                        }
-                        else
-                        {
-                            alert('Sorry! Status couldn\'t be updated');
-                        }
-                    }
-                })
-            }
 
         });
 
@@ -269,9 +216,9 @@
             $(document).on('keyup','#pack_userBasePrice',function () {
                 var basePrice = $(this).val();
                 var clientPrice = (100 * basePrice)/(100 - tax);
-                $('#clientPrice').html(clientPrice.toFixed(2)+"€");
+                $('#clientPrice').html(Math.round(clientPrice.toFixed(2))+"€");
                 $('.user-price').html('');
-                $('#user-price').html(clientPrice.toFixed(2)+"€");
+                $('#user-price').html(Math.round(clientPrice.toFixed(2))+"€");
 
             });
         })

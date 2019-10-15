@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title of the document</title>
+    <style type= “text/css“>
+        #PaylineForm {
+            font-family:Tahoma, sans-serif;
+            font-size: 76%;
+            margin:0 auto;
+            width:750px;
+        }
+
+        #PaylineForm h2 {
+            margin: 0;
+            padding:0;
+            font-size: 1em;
+            line-height:1.5em;
+            color:orange;
+        }
+
+        #PaylineForm h3 {
+            margin: 0;
+            margin-bottom:.5em;
+            font-size: 1em;
+            font-weight: bold;
+            color:#333;
+        }
+
+        #PaylineForm input[type=radio],
+        #PaylineForm label,
+        #PaylineForm label img,
+        .checkable * {
+            vertical-align:middle;
+        }
+
+        #PaylineForm form {
+            margin:0;
+        }
+
+        /* Panel contenant les champs */
+
+        #PaylineForm .pane {
+            padding:.5em;
+            margin-bottom:.5em;
+            background-color: #efefef;
+            border: 1px solid orange;
+        }
+
+        #PaylineForm div.radio {
+            margin-bottom:.5em;
+        }
+
+        /* Bouton de validation*/
+
+        #PaylineForm #submitButton {
+            background-color:orange;
+            color:white;
+            font-weight: bold;
+        }
+
+        /* Bouton d'annulation */
+
+        #PaylineForm #cancelButton {
+            background-color:orange;
+            color:white;
+        }
+
+        /* Message de feed-back de paiement */
+
+        .paymentmessage {
+            text-align:center;
+            background: #fefefe;
+            line-height: 3em;
+        }
+
+        /* Zone contenant le bouton */
+
+        #actionButtons {
+            text-align: center;
+        }
+
+        /* Messages d'erreur */
+
+        #PaylineForm ul.errors,
+        #PaylineForm ul.errors li {
+            margin:0;
+            padding:0;
+            list-style: none;
+        }
+
+        #PaylineForm ul.errors {
+            padding:.5em
+            margin-bottom:1em;
+            color:red;
+            background-color: #ffe;
+            border:1px solid #ccc;
+        }
+
+        /* Champs désactivés */
+
+        .disabled {
+            background-color: #fafafa;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="PaylineForm">
+        <h2></h2>
+        <h2></h2>
+        <h2></h2>
+        <img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services">
+        <form action="<?php print $createdCardRegister->CardRegistrationURL; ?>" method="post" class="pane">
+
+                <input type="hidden" name="data" value="<?php print $createdCardRegister->PreregistrationData; ?>" />
+                <input type="hidden" name="accessKeyRef" value="<?php print $createdCardRegister->AccessKey; ?>" />
+                <input type="hidden" name="returnURL" value="<?php print $returnUrl; ?>" />
+
+                <label for="cardNumber">Card Number</label>
+                <input type="text" name="cardNumber" value="" />
+                <div class="clear"></div>
+
+                <label for="cardExpirationDate">Expiration Date</label>
+                <input type="text" name="cardExpirationDate" value="" />
+                <div class="clear"></div>
+
+                <label for="cardCvx">CVV</label>
+                <input type="text" name="cardCvx" value="" />
+                <div class="clear"></div>
+
+                <input type="submit" value="Pay" />
+
+        </form>
+        <h3></h3>
+        <button id="submitButton">Submit</button>
+
+        <img src="https://www.mangopay.com/terms/powered-by-mangopay.png" alt="">
+    </div>
+</body>
+
+</html>

@@ -1,17 +1,40 @@
 {% extends 'b2b/page.html.twig' %}
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
 
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
 {% import 'b2b/shared/macros.html.twig' as macros %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock %}
 
 {% block content %}
     <div class="tab-pane active" id="home" role="tabpanel">
+{#        <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">#}
+{#            <div class="d-flex align-items-center fz-20 text-darkblue"><a href="{{ url('b2b_community_manager_index') }}" style="color:#103358;text-decoration: none;"><i class="fas fa-home fz-30 mr-2"></i> Accueil </a>#}
+{#            </div>#}
+{#            <div class="col-md-7 ml-auto mt-2 mt-lg-0">#}
+{#                <div class="row">#}
+{#                    <div class="offset-md-6 col-md-4">#}
+{#                        {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}#}
+{#                            <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"#}
+{#                               onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle#}
+{#                                mission</a>#}
+{#                        {% endif %}#}
+{#                    </div>#}
+{#                    <div class="col-md-1 col-2">#}
+{#                        <a href="/connexion/signout" class="btn btn-outline-darkblue btn-pill">Logout</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-            <div class="d-flex align-items-center fz-20 text-darkblue"><a href="{{ url('b2b_community_manager_index') }}" style="color:#103358;text-decoration: none;"><i class="fas fa-home fz-30 mr-2"></i> Accueil </a>
-            </div>
-            {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
-            <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"
-               onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle
-                mission</a>
-            {% endif %}
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Accueil</div>
+            {% embed 'b2b/shared/_notification_header.html.twig' with {'notifications':notifications} %}{% endembed %}
+
         </div>
         {% if packs | length == 0 and missions | length == 0 %}
             <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
@@ -20,7 +43,7 @@
                         <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-home-empty.png') }}" alt="Dashboard Home">
                     </div>
                     <h4 class="mt-4 text-darkblue font-weight-bold">Bien débuter sur Pix.city services </h4>
-                    <p> Bienvenue sur votre espace city maker Services !
+                    <p> Bienvenue sur votre espace !
                         Retrouvez ici toutes les informations concernant vos packs, vos missions en
                         cours et votre facturation.
                     </p>
@@ -38,6 +61,7 @@
                 <small>Dernière connexion lun 11 mars</small>
             </div>
             <div class="col-md-12 alert-notifications">
+
                 {% for notification in notifications %}
                     <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2"
                          role="alert" >
@@ -51,9 +75,14 @@
                         </div>
                         <div class="col-md-3 d-flex justify-content-end">
                             {% if notification.type == 'terminated' %}
-                            <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>
+                                <a href="/client/mission/list" class="btn btn-darkblue fz-10">VOIR MISSION</a>
+                            {% endif %}
+                            {% if notification.type == 'mission_client_paid' or notification.type == 'edit_mission_cm' or notification.type == 'mission_accepted_edit' or notification.type == 'cancel_mission_cm'%}
+                                <a href="javascript:;" class="btn btn-darkblue fz-10 load-mission" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR MISSION</a>
                             {% endif %}
                         </div>
+
+
                         <button type="button" class="close align-self-start mark-notification-read" data-dismiss="alert" aria-label="Close"  data-id="{{ notification.id }}"s>
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -64,31 +93,34 @@
                         <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Voir tout</a>
                     </div>
                     <div class="w-100 text-center my-4 show-less">
-                        <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Reduire</a>
+                        <a href="javascript:;" class="btn btn-white bg-white text-darkblue shadow-sm">Réduire</a>
                     </div>
                 {% endif %}
 
             </div>
             <div class="col-md-12 content-top-header d-flex align-items-center">
-                <h4 class="mb-0"><span class="total-packs-available">{{ packs | length }}</span> packs disponible{% if packs|length > 1 %}s{% endif %}</h4>
+                <h4 class="mb-0">
+{#                    <span class="total-packs-available">{{ packs | length }}</span> #}
+                   {% if packs|length > 1 %}Mes packs publiés {% else %} Mon pack publié {% endif %}
+                </h4>
                 <div class="filter-packages d-flex">
-                    <label class="text-seagreen m-0 mr-3 d-none active">
+                    <label class="text-seagreen m-0 mr-3 d-none active"  data-toggle="tooltip" title="All">
                         <input type="checkbox" name="filterpackage" value="all">
                         <i class="fas fa-sync-alt fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
-                    <label class="text-seagreen m-0 mr-3">
+                    <label class="text-seagreen m-0 mr-3"  data-toggle="tooltip" title="Influenceur">
                         <input type="checkbox" name="filterpackage" value="influencer">
                         <i class="fas fa-map-marked-alt fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
-                    <label class="text-seagreen m-0 mr-3">
+                    <label class="text-seagreen m-0 mr-3"  data-toggle="tooltip" title="Photographe">
                         <input type="checkbox" name="filterpackage" value="photographer">
                         <i class="fas fa-camera fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
-                    <label class="text-seagreen m-0 mr-3">
+                    <label class="text-seagreen m-0 mr-3"  data-toggle="tooltip" title="Community manager">
                         <input type="checkbox" name="filterpackage" value="communitymanager">
                         <i class="far fa-handshake fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
-                    <label class="text-seagreen m-0">
+                    <label class="text-seagreen m-0"  data-toggle="tooltip" title="Autre">
                         <input type="checkbox" name="filterpackage" value="other">
                         <i class="far fa-gem fz-22 d-flex align-items-center justify-content-center"></i>
                     </label>
@@ -114,7 +146,7 @@
                 {% endif %}
             </div>
             <ul class="available-missions-list m-0 mt-3 col-md-12">
-                {% for mission in app.user.userMission %}
+                {% for mission in missions %}
                     <li class="mission-list-item d-flex align-items-center text-darkgray">
                         <i class="fas {{ mission.referencePack.packSkill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
                         <p class="mb-0 px-3 w-40">{{ mission.title }}
@@ -122,8 +154,8 @@
                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                         <p class="w-15 mb-0">{{ mission.client }}</p>
                         <p class="w-15 mb-0 {% if mission.status == 'cancelled' %}text-canceled{% elseif mission.status == 'terminated' %}text-completed{% else %} text-inprogress {% endif %}">{{ ('b2b.label.' ~ mission.status)|trans }}</p>
-                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.cmTotal | number_format(2)}}€</p>
-                        <i class="fas fa-edit preview-edit-mission" data-id="{{ mission.id }}"></i>
+                        <p class="mb-0 px-4 w-10">{% if mission.getActiveLog().userBasePrice is defined %}{{ mission.getActiveLog().userBasePrice |number_format(2)}}{% else %}{{  mission.missionBasePrice }}{% endif %}€</p>
+                        <i class="fas {% if mission.status == 'cancelled' or mission.status == 'terminated'%}fa-eye{% else %}fa-edit{% endif %} preview-edit-mission" data-id="{{ mission.id }}" data-toggle="tooltip" title="éditer"></i>
                     </li>
                 {% endfor %}
             </ul>
@@ -139,9 +171,12 @@
     {{ parent() }}
     <script src="{{ asset('/assets/js/jquery-validation/dist/jquery.validate.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/pages/main.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/assets/js/pages/pack.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('build/b2b/js/pack.js') }}" type="text/javascript"></script>
+{#    <script src="{{ asset('/assets/js/pages/pack.js') }}" type="text/javascript"></script>#}
     <script src="{{ asset('/assets/js/mission.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/assets/js/bind.js') }}" type="text/javascript"></script>
+    <script src="{{ absolute_url(asset('build/b2b/js/bind.js')) }}" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+    <script src="{{ absolute_url('/assets/js/froala-language.js') }}"></script>
     <script>
         $(document).on('keyup','input[name="mission[missionBasePrice]"]', function () {
             $('.user-price').html($(this).val()+'€');

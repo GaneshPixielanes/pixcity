@@ -10,6 +10,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -45,14 +46,19 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'email' => $request->request->get('email'),
-            'password' => $request->request->get('password'),
+            'email' => $request->request->get('_username'),
+            'password' => $request->request->get('_password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
+
+
         $request->getSession()->set(
             Security::LAST_USERNAME,
             $credentials['email']
         );
+
+
+
 
         return $credentials;
     }
@@ -78,14 +84,27 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
     {
         // Check the user's password or other credentials and return true or false
         // If there are no credentials to check, you can just return true
+        if($user->getDeleted() == 1)
+        {
+            $ex = new DisabledException('Client account is disabled.');
+            $ex->setUser($user);
+            throw $ex;
+        }
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+
+        if ($request->getSession()->has('chosen_pack_url')){
+
+            $targetPath = $request->getSession()->get('chosen_pack_url');
+            return new RedirectResponse($targetPath);
+
+        }elseif($targetPath = $this->getTargetPath($request->getSession(), $providerKey)){
             return new RedirectResponse($targetPath);
         }
+
 
         // For example : return new RedirectResponse($this->router->generate('some_route'));
         return new RedirectResponse($this->router->generate('b2b_client_main_index'));
@@ -93,6 +112,6 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
 
     protected function getLoginUrl()
     {
-        return $this->router->generate('b2b_client_login');
+        return $this->router->generate('front_login');
     }
 }

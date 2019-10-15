@@ -1,5 +1,4 @@
 security:
-
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     encoders:
         App\Entity\Admin:
@@ -51,11 +50,11 @@ security:
 
         client_area:
             anonymous: true
-            pattern: ^/client
+            pattern: ^/client|^/freelance
             provider: clients
             form_login:
-                check_path: b2b_client_login
-                login_path: b2b_client_login
+                check_path: front_login
+                login_path: front_login
                 csrf_token_generator: security.csrf.token_manager
                 use_referer: true
             guard:
@@ -63,7 +62,7 @@ security:
                     - App\Security\ClientAuthenticator
             logout:
                 path: '/client/logout'
-                target: '/client/login'
+                target: '/'
                 invalidate_session: false
 
 

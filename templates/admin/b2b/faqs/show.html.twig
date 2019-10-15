@@ -1,0 +1,73 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.faqs'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.faqs'|trans }}
+                </h2>
+                <a href="{{ path('admin_faqs_index') }}" class="btn btn-green">back to list</a>
+
+                <a href="{{ path('admin_faqs_edit', {'id': faq.id}) }}" class="btn btn-green">edit</a>
+
+                {{ include('admin/b2b/faqs/_delete_form.html.twig') }}
+            </div>
+            <div class="body">
+
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Title</th>
+                            <td>{{ faq.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Category</th>
+                            <td>{{ faq.category }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ faq.description| raw  }}</td>
+                        </tr>
+                        <tr>
+                            <th>Subcategory</th>
+                            <td>
+                                {% if faq.subcategory == '0' %}
+                                    QUESTIONS JURIDIQUES
+                                {% elseif faq.subcategory == '1' %}
+                                    QUESTIONS GENERALES
+                                {% elseif faq.subcategory == '2' %}
+                                    LES DEVIS, PACKS ET MISSIONS
+                                {% elseif faq.subcategory == '3' %}
+                                    LE PAIEMENT DU CITY-MAKER
+                                {% elseif faq.subcategory == '4' %}
+                                    COMMENT DEVENIR CITY-MAKER SUR PIX.CITY SERVICES ?
+                                {% elseif faq.subcategory == '5' %}
+                                    LE PAIEMENT COTE CLIENT
+                                {% elseif faq.subcategory == '6' %}
+                                    COMMENT DEVENIR CLIENT SUR PIX.CITY SERVICES ?
+                                {% endif  %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>CreatedAt</th>
+                            <td>{{ faq.createdAt ? faq.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>UpdatedAt</th>
+                            <td>{{ faq.updatedAt ? faq.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

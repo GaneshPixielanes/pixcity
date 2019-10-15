@@ -1,5 +1,12 @@
 {% extends 'b2b/client/base.html.twig' %}
-
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/all.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/plugins-bundle.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/faqs/style.css') }}">
+{% endblock %}
 {% block newbody %}
 
 
@@ -25,11 +32,7 @@
                                 <span class="d-block fz-12 text-seagreen">{{ region.name | upper }}</span>
                             {% endfor %}
 
-                        <p class="fz-15 font-weight-light">Bienvenue sur le profil de @{{ user }}. Vous trouverez ses
-                            compétences listées sous forme de packs. N'hésitez pas à sélectionner un pack et/ou rentrer
-                            en contact avec notre city-maker via notre espace de discussion (en bas à droite de cette
-                            page) pour pour lui poser vos questions ! Attention vous ne pouvez parler qu'à un city-maker
-                            Services à la fois !</p>
+                        <p class="fz-15 font-weight-light">Bienvenue sur le profil de {{ user }}. Vous trouverez ses différents packs de compétences, créés par ses soins. N’hésitez pas à sélectionner un pack pour entrer en contact avec ce city-maker. Vous pourrez alors discuter avec lui et personnaliser le pack avec lui/ elle par la suite selon vos besoins.</p>
                         <div class="row">
                             {% if user.userInstagramDetailsApi is not null %}
                             <div class="col-md-4 p-0 fz-16 font-weight-bold text-center">
@@ -48,7 +51,7 @@
                             <div class="col-md-12 mt-3">
                                 {% for link in user.links %}
                                     {% if link.type == 'instagram' %}
-                                <a href="{{ link.url }}" class="btn btn-blue btn-block">S’abonner sur Instagram <i
+                                <a href="{{ link.url }}" class="btn btn-blue btn-block" target="_blank">S’abonner sur Instagram <i
                                             class="fab fa-instagram"></i></a>
                                     {% endif %}
                                 {% endfor %}
@@ -61,15 +64,15 @@
 
                     <div class="row">
                         <div class="col-md-12 mb-3 breadcrumbs">
-                            <a href="{{ path('b2b_client_main_index') }}">Accueil</a> / <a href="{{  path('b2b_client_search_index') }}">Rechercher un City Maker</a> /
+                            <a href="{{ path('prestations_de_serviceindex') }}">Accueil</a> / <a href="{{  path('b2b_client_search_index') }}">Rechercher un City-Maker</a> /
                             {{ user }}
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12 content-top-header d-flex align-items-center mb-3">
-                            <h4 class="mb-0 font-weight-light"><span
-                                        class="total-packs-available font-weight-bold">{{ packs | length }}</span> packs disponibles</h4>
+                        <div class="col-md-12 content-top-header profile-packs-container d-flex align-items-center mb-3">
+                            <h4 class="mb-0 font-weight-light profile-packs-title"><span
+                                        class="total-packs-available font-weight-bold">{{ packs | length }}</span> pack{% if packs | length >1 %}s{% endif %} disponible{% if packs | length >1 %}s{% endif %}</h4>
                             <div class="filter-packages d-flex">
                                 <label class="text-seagreen m-0 mr-3 d-none active">
                                     <input type="checkbox" name="filterpackage" value="all">
@@ -89,7 +92,9 @@
                                     <ul class="d-flex w-100">
                                         {% for pack in packs %}
                                             <li class="col-md-4 mb-4 pack-item {{  pack.packSkill.slug }}" >
-                                                <a href="javascript:;" class="card" data-id="{{ pack.id }}">
+                                                {% set slug = pack.title | lower | replace({' ':'-', '/':'-'}) %}
+{#                                                <a href="{{ url('b2b_client_pack_select',{'slug':slug,'id':pack.id}) }}" class="card" data-id="{{ pack.id }}">#}
+                                                <a href="{{ url('b2b_front_community_manager_pack_view',{'slug':slug,'id':pack.id}) }}" class="card" data-id="{{ pack.id }}">
                                                     <input class="select" type="checkbox">
                                                     <div class="pack-icon">
                                                         <i class="fas {{ pack.packSkill.icon }}"></i>
@@ -100,7 +105,7 @@
                                                         <h5 class="card-title fz-16 text-darkblue font-weight-bold mb-1">
                                                             {{ pack }}</h5>
                                                         <p class="pack-cost fz-16 font-weight-bold text-normalgray">{{ pack.totalPrice }}€
-                                                            <span class="fz-12 font-weight-light">À partir de</span></p>
+{#                                                            <span class="fz-12 font-weight-light">À partir de</span></p>#}
                                                     </div>
                                                 </a>
                                             </li>
@@ -116,7 +121,87 @@
     </div>
 
 
+    <!-- Modals Starts-->
+    <!-- Folllow the City Maker modal -->
+    <div class="modal fade modal-follow" id="followCityMakerModal" tabindex="-1" role="dialog" aria-labelledby="followCityMakerModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 modal-logo-city-maker">
+                            <img src="../images/header-logo-main.svg" alt="Pix.City" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Vous souhaitez suivre les publications des prochaines cards de ce city-maker?</p>
+                            <p>Cliquez et ajoutez-le à vos city-makers favoris dans votre compte voyageur (en créant ou en accédant à votre compte).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 modal-footer-button">
+                        <a href="javascript:;" class="btn btn-outline-pink btn-block" data-dismiss="modal">PLUS TARD</a>
+                    </div>
+                    <div class="col-md-6 modal-footer-button">
+                        <a href="javascript:;" class="btn btn-green btn-block">ACCEDER A MON COMPTE VOYAGEUR</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Folllow the City Maker modal ends -->
+    <!-- Alert Modal Starts-->
+    <div class="modal fade alert-modal" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Supprimer l’image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sur de vouloir supprimer <b>IMG 003</b> de vos images ? Vous pourrez la remettre en ligne plus tard si vous le souhaitez.</p>
+                    <p>Si vous avez des questions sur le fonctionnement de Pix.City services, n’hésitez pas à à consulter <a href="javascript:;">nos pages d’aide dédiées</a></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                    <button type="button" class="btn btn-pink">SUPPRIMER L’IMAGE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Alert Modal Ends-->
+    <!-- Confirm with Check Modal Starts-->
+    <div class="modal fade confirm-check-modal" id="confirmCheckModal" tabindex="-1" role="dialog" aria-labelledby="followCityMakerModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">Conditions générales d’utilisation Pix.city Services
+                        <span>Dernière étape ! Lisez bien nos conditions d’utilisation et vous pourrez soumettre votre candidature</span>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                    <button type="button" class="btn btn-pink">SUPPRIMER L’IMAGE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Confirm with Check Modal Ends-->
+    <!-- Modals Ends-->
+    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
 {#    {% include 'b2b/shared/modals.html.twig' %}#}
 
 {% endblock %}
@@ -210,21 +295,7 @@
                 filterPackages($(this))
             });
 
-            /* pack preview/edit invoke */
-            $(document).on('click', '.pack-item a', function (e) {
-                e.preventDefault();
 
-                var id = $(this).attr('data-id');
-                $.ajax('/api/pack/view-pack/'+id,{
-                    type: 'GET',
-                    success: function (result) {
-                        $('#preview-details').html(result);
-                        $('.pack-preview-container').fadeIn();
-                        $('body').addClass('overflow-hidden');
-                    }
-                });
-
-            });
             $(document).on('click', '.close-preview-edit', function (e) {
                 e.preventDefault();
                 $('.pack-preview-container').fadeOut();

@@ -3,6 +3,7 @@
 namespace App\Controller\Front\V2;
 
 use App\Repository\CardRepository;
+use App\Repository\OptionRepository;
 use App\Repository\UserRepository;
 use App\Repository\CardCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,8 +24,12 @@ class SearchController extends SearchPageController
     public function index(Request $request,
     CardRepository $cardRepository,
     UserRepository $userRepo,
-    CardCategoryRepository $categoryRepo)
+    CardCategoryRepository $categoryRepo,OptionRepository $optionRepository)
     {
+        $testAccountsAsClient = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
+        $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $loggedUserSession = $this->get('session')->get('login_by');
+        $loggedUser = $loggedUserSession['entity'];
         $filters = [
                     'name' => trim($request->get("search")),
                     'text' => trim($request->get("search")),
@@ -54,13 +59,34 @@ class SearchController extends SearchPageController
         $start = $request->get('start')?$request->get('start'):0;
         $limit = $request->get('limit')?$request->get('limit'):10;
 
-        #Get all cards w.r.t search filters
-        $cards = $cardRepository->search($filters, $start, $limit, 'newest');
+       // $loggedUser = $this->getUser();
+        if($loggedUser){
+            if(strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false){ //in
+                #Get all cards w.r.t search filters
+                $cards = $cardRepository->search($filters, $start, $limit, 'newest');
+                #Get the cards count
+                $cardCount = $cardRepository->countSearchResult($filters);
+                $categories = $categoryRepo->findCategoriesBySearchParam($filters);
+                $pixies = $userRepo->findRandomPixies('');
+            }
+            else{
+                #Get all cards w.r.t search filters
+                $cards = $cardRepository->search($filters, $start, $limit, 'newest',$testAccountsAsCm->getValue());
+                #Get the cards count
+                $cardCount = $cardRepository->countSearchResult($filters,$testAccountsAsCm->getValue());
+                $categories = $categoryRepo->findCategoriesBySearchParam($filters,$testAccountsAsCm->getValue());
+                $pixies = $userRepo->findRandomPixies('',$testAccountsAsCm->getValue());
+            }
+        }
+        else{
+            #Get all cards w.r.t search filters
+            $cards = $cardRepository->search($filters, $start, $limit, 'newest',$testAccountsAsCm->getValue());
+            #Get the cards count
+            $cardCount = $cardRepository->countSearchResult($filters,$testAccountsAsCm->getValue());
+            $categories = $categoryRepo->findCategoriesBySearchParam($filters,$testAccountsAsCm->getValue());
+            $pixies = $userRepo->findRandomPixies('',$testAccountsAsCm->getValue());
+        }
 
-        #Get the cards count
-        $cardCount = $cardRepository->countSearchResult($filters);
-        
-        $categories = $categoryRepo->findCategoriesBySearchParam($filters);
         if(!isset($page)) {
             $page = new Page();
             $page->setName("Wall");
@@ -70,7 +96,7 @@ class SearchController extends SearchPageController
         }
         return $this->render('v2/front/search/index.html.twig', [
             'cards' => $cards,
-            'pixies' => $userRepo->findRandomPixies(),
+            'pixies' => $pixies,
             'totalCards' => $cardCount,
             'categories' => $categories,
 			'filters' => $filters,

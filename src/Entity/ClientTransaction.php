@@ -76,6 +76,21 @@ class ClientTransaction
      */
     private $mission;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $fee;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $transaction_type;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $TotalAmount;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -209,6 +224,42 @@ class ClientTransaction
     public function setMission(?UserMission $mission): self
     {
         $this->mission = $mission;
+
+        return $this;
+    }
+
+    public function getFee(): ?string
+    {
+        return $this->fee;
+    }
+
+    public function setFee(?string $fee): self
+    {
+        $this->fee = $fee;
+
+        return $this;
+    }
+
+    public function getTransactionType(): ?string
+    {
+        return $this->transaction_type;
+    }
+
+    public function setTransactionType(?string $transaction_type): self
+    {
+        $this->transaction_type = $transaction_type;
+
+        return $this;
+    }
+
+    public function getTotalAmount(): ?string
+    {
+        return $this->TotalAmount;
+    }
+
+    public function setTotalAmount(?string $TotalAmount): self
+    {
+        $this->TotalAmount = $TotalAmount;
 
         return $this;
     }

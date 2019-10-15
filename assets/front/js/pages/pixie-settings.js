@@ -1,5 +1,3 @@
-
-
 const firstError = require('../components/first-error') ;
 require('../components/avatar-upload') ;
 require('../components/address') ;
@@ -7,7 +5,17 @@ require('../components/links-collection') ;
 require('../components/froala-max') ;
 require('../components/cropper') ;
 
+
+
 jQuery(document).ready(function() {
+
+    var missionCount = $('#api-box').attr('data-mission-count');
+    var lastSelectedStatus = $("#user_pixie_billing_status option:selected");
+
+    if($('#user_pixie_billing_status').val() == 'company' || $('#user_pixie_billing_status').val() == 'microentrepreneur' || $('#user_pixie_billing_status').val() == 'microentrepreneurtva')
+    {
+        $("#user_pixie_billing_status option[value='individualregistration']").remove();
+    }
     //---------------------------------------------
     // Refresh Froala on tab change (dispatch a window resize event)
     //---------------------------------------------
@@ -47,18 +55,40 @@ jQuery(document).ready(function() {
 
     function checkPixieStatus() {
         if (isPixieStatusCompany()) {
-            $("#user_pixie_billing_companyName").parents(".form-row").show();
+            $("#user_pixie_billing_companyName, #user_pixie_billing_rcs").parents(".form-row").show();
             $("#user_pixie_billing_firstname, #user_pixie_billing_lastname").parents(".form-row").hide();
             $("#user_pixie_billing_tva").prop("required", true).parents(".form-row").find("label").first().addClass("oblig");
         }
         else {
-            $("#user_pixie_billing_companyName").parents(".form-row").hide();
+
+            $("#user_pixie_billing_companyName, #user_pixie_billing_rcs").parents(".form-row").hide();
             $("#user_pixie_billing_firstname, #user_pixie_billing_lastname").parents(".form-row").show();
             $("#user_pixie_billing_tva").prop("required", false).parents(".form-row").find("label").first().removeClass("oblig");
         }
+
+        if($("#user_pixie_billing_status").val() == 'microentrepreneurtva' || isPixieStatusCompany())
+        {
+            console.log('asda');
+            $("#user_pixie_billing_tva").parents(".form-row").show();
+            $("#user_pixie_billing_tva").prop("required", "required").parents(".form-row").find("label").first().addClass("oblig");
+        }
+        else
+        {
+            $("#user_pixie_billing_tva").parents(".form-row").hide();
+            $("#user_pixie_billing_tva").prop("required", false).parents(".form-row").find("label").first().removeClass("oblig")
+        }
     }
 
-    $("#user_pixie_billing_status").change(checkPixieStatus);
+    // $("#user_pixie_billing_status").change(checkPixieStatus);
+    $('#user_pixie_billing_status').on('change', function () {
+        checkPixieStatus()
+        if(missionCount > 0)
+        {
+
+            $('#ongoingMissionsModal').modal('show');
+            lastSelectedStatus.prop("selected", true);
+        }
+    });
     checkPixieStatus();
 
 
@@ -90,7 +120,18 @@ jQuery(document).ready(function() {
     //---------------------------------------------
 
     function isPixieTva() {
-        return ($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() === "company");
+        if($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() === "company")
+        {
+            return true;
+        }
+        else if($("#user_pixie_billing_address_country").val() === "FR" && $("#user_pixie_billing_status").val() == "microentrepreneurtva")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     function checkPixieCountry() {
@@ -130,6 +171,7 @@ jQuery(document).ready(function() {
             "user[pixie][billing][lastname]": {required: isPixieStatusIndividual, maxlength: 50},
 
             "user[pixie][billing][tva]": {required: isPixieTva},
+            "user[pixie][billing][rcs]": {required: isPixieStatusCompany},
 
             "user[pixie][billing][phone]": {minlength: 10, maxlength: 20, phone: true},
 
@@ -174,7 +216,6 @@ jQuery(document).ready(function() {
     // Limit the number of selected regions
 
     $('[name="user[pixie][regions][]"]').on('change', function (evt) {
-        console.log('hi');
         if ($('[name="user[pixie][regions][]"]:checked').length > 2) {
             this.checked = false;
             // $(this).parents(".plCheck").removeClass("clicked");
@@ -186,11 +227,10 @@ jQuery(document).ready(function() {
         });
     });
 
-    $('[name="user[userRegion][0]"]').on('change', function (evt) {
-        console.log($("[name='user[userRegion][0]'] option:selected").text());
+    $(document).on('change','.region-select:first', function (evt) {
         $('[data-original-title]').removeClass('active');
-        $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
-        $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:first option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').addClass('active');
         // if ($('[name="user[userRegion][]"]:selected').length > 2) {
         //     this.checked = false;
         //     evt.preventDefault();
@@ -200,11 +240,10 @@ jQuery(document).ready(function() {
         //     console.log($(this).text());
         // });
     });
-    $('[name="user[userRegion][1]"]').on('change', function (evt) {
-        console.log($("[name='user[userRegion][0]'] option:selected").text());
+    $(document).on('change','.region-select:last', function (evt) {
         $('[data-original-title]').removeClass('active');
-        $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
-        $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:first option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').addClass('active');
         // if ($('[name="user[userRegion][]"]:selected').length > 2) {
         //     this.checked = false;
         //     evt.preventDefault();
@@ -265,6 +304,55 @@ jQuery(document).ready(function() {
 });
 
 $(document).ready(function () {
-    $('[data-original-title="'+$("[name='user[userRegion][0]'] option:selected").text()+'"]').addClass('active');
-    $('[data-original-title="'+$("[name='user[userRegion][1]'] option:selected").text()+'"]').addClass('active');
-})
+    if($('.choose-region-drop').length == 2)
+    {
+        $("#add-cm-region").hide();
+    }
+
+    $('[data-original-title="'+$("[name='user[userRegion][]']:first option:selected").text()+'"]').addClass('active');
+    $('[data-original-title="'+$("[name='user[userRegion][]']:last option:selected").text()+'"]').addClass('active');
+
+    $(document).on('click','.remove-region',function (e) {
+        e.preventDefault();
+        $('[data-original-title]').removeClass('active');
+        $('[data-original-title="'+$(".region-select:first option:selected").text()+'"]').addClass('active');
+        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').addClass('active');
+
+        $('.choose-region-drop:last').remove();
+       $(this).remove();
+        $("#add-cm-region").show();
+    });
+
+    $('#add-cm-region').click(function (e) {
+        e.preventDefault();
+        $select = $('.choose-region-drop').clone();
+        $('.choose-region-drop:last').after($select);
+        $('.choose-region-drop:last').after('<div class="col-md-2"><a class="remove-region" href="#"><i class="fa fa-times"></i></a></div>');
+        $('[data-original-title="'+$(".region-select:last option:selected").text()+'"]').addClass('active');
+
+        $(this).hide();
+    });
+
+    $('li > a').on('click', function () {
+        if($(this).attr('href') == '#community-manager-tab')
+        {
+            $('#user_oldPassword').attr('name','inactivePassword');
+            $('#user_oldPassword').removeAttr('required');
+            $('.password-protected-form').addClass('hidden');
+            $('.save-container').addClass('hidden');
+            $('#submitform').addClass('hidden');
+        }
+        else
+        {
+            $('#user_oldPassword').attr('name','user[oldPassword]');
+            $('#user_oldPassword').attr('required','required');
+            $('.password-protected-form').removeClass('hidden');
+            $('.save-container').removeClass('hidden');
+            $('#submitform').removeClass('hidden');
+        }
+
+    });
+
+
+});
+

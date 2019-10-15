@@ -93,14 +93,15 @@
         <p class="mb-0 col-3"><i class="fas {{ pack.packSkill.icon }} mr-1"></i> {{ pack.packSkill }}
         </p>
         <a href="javascript:;" class="btn btn-darkblue col-2 fz-12 edit-the-pack"
-           data-id="{{ pack.id }}">Éditer le pack</a>
+           data-id="{{ pack.id }}"  >Éditer le pack</a>
         <div class="dropdown">
             <i class="far fa-ellipsis-v fz-18 px-3" data-toggle="dropdown" aria-haspopup="true"
                aria-expanded="false"
                id="packOptions"></i>
-            <div class="dropdown-menu" aria-labelledby="packOptions">
-                <a class="dropdown-item text-darkgray fz-12" href="javascript:;"><i
-                            class="far fa-paper-plane mr-2"></i>
+            <div class="dropdown-menu" aria-labelledby="packOptions" >
+                {% set slug = pack.title | lower | replace({' ':'-', '/':'-'}) %}
+                <a class="dropdown-item text-darkgray fz-12" href="javascript:;" data-sharer="facebook" data-title="{{  pack.title }}" data-url="{{ url('b2b_front_community_manager_pack_view',{'slug':slug,'id':pack.id}) }}"><i
+                            class="far fa-paper-plane mr-2" ></i>
                     Partager</a>
                 <a class="dropdown-item text-pink fz-12 delete-pack" href="javascript:;" data-toggle="modal"
                    data-target="#removePackConfirmation" data-id="{{ pack.id }}"><i class="far fa-times-circle mr-2"></i>
@@ -109,4 +110,55 @@
             </div>
         </div>
     </li>
+{% endmacro %}
+
+{% macro cityMaker(user) %}
+    <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
+        <div class="cm-card-container">
+            <div class="row">
+                <div class="col-md-12 mt-n5 cm-image">
+                    <img class="img-fluid shadow-lg" src="{{ user.getAvatarUrl() }}" alt="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mt-n3 mb-5">
+                    <ul class="d-flex justify-content-center align-items-center cm-packages">
+                        {% for skill in user.userSkill %}
+                            <li><i class="fas {{ skill.icon }} fz-22"></i></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="title text-center fz-28 font-weight-bold">{{ user }}</h4>
+                    {% if user.userRegion.first.name is defined  %}
+                        <p class="region text-center fz-16 text-pink">{{ user.userRegion.first.name }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% for pack in user.userPacks  %}
+                {% if loop.index <= 3 %}
+                    {% if pack.deleted == '0' or  (pack.deleted == null or pack.deleted == 0) %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
+                                    <div class="work-title font-weight-bold fz-14">{{ pack.packSkill.name }}</div>
+                                    <div class="work-amount font-weight-bold fz-16">{{ pack.totalPrice }} €</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-md-12 mt-3">
+                    {% if user.pixie.billing is defined  %}
+                        <a href="{{ url('b2b_front_community_manager_view',{'city':user.pixie.billing.address.city |lower,'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endmacro %}

@@ -1,28 +1,22 @@
 {% extends 'b2b/client/base.html.twig' %}
-
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
 {% import 'b2b/shared/macros.html.twig' as macros %}
 {% block title %}Client | Home {% endblock %}
 
 {% block body %}
-
-
-
-
 
     <!-- Dashboard contents -->
 
     <!-- welcome section -->
     <div class="tab-pane active">
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
-            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Mon profil</div>
-            {% if app.user.userMission is defined %}
-                <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">{{ missions | length }} mission en cours</a>
-            {% else %}
-                <a href="javascript:;" class="btn btn-outline-darkblue btn-pill">0 mission en cours</a>
-            {% endif %}
+            <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-home fz-30 mr-2"></i> Accueil</div>
+            {% embed 'b2b/shared/_notification_header.html.twig' with {'notifications':notifications} %}{% endembed %}
         </div>
 
-        <div class="col-md-12 tab-pane-content p-4" data-simplebar>
+        <div class="col-md-12 tab-pane-content p-4">
             <div class="col-md-12 content-top-header">
                 <h4 class="mb-0 font-weight-bold">Bienvenue {{ app.user.firstName }}</h4>
                 {#                        <small>Dernière connexion Lundi 13 avril 2019</small>#}
@@ -35,19 +29,14 @@
             <div class="col-md-12 alert-notifications">
                 {% for key, notification in notifications %}
                     <div class="alert bg-white fade show shadow align-items-center d-flex justify-content-between my-2" role="alert" >
-
-                        {% if notification.type == 'create_mission' %}
                             <div class="col-md-1 d-flex justify-content-center">
-                                <i class="fas fa-piggy-bank fz-40"></i>
-                            </div>
-                        {% endif %}
-                        {% if notification.type == 'edit_mission' %}
-                            <div class="col-md-1 d-flex justify-content-center">
-                                <i class="fas fa-edit fz-40"></i>
-                            </div>
-                        {% endif %}
 
-
+                                {% if notification.type == 'edit_mission' or notification.type == 'terminate_mission' or notification.type == 'cancel_mission' or notification.type == 'cancel_mission_client'%}
+                                    <i class="fas fa-edit fz-40"></i>
+                                {% else %}
+                                    <i class="fas fa-piggy-bank fz-40"></i>
+                                {% endif %}
+                            </div>
 
                         <div class="col-md-8">
                             <h6 class="mb-0">{{ ('b2b.label.' ~ notification.type)|trans| upper }}</h6>
@@ -55,23 +44,46 @@
                             <small class="text-muted">{{ notification.createdAt | date('d M Y - H:i') }}</small>
                         </div>
 
-                        {#                            {% if notification.type == 'terminated' %}#}
-                        {#                            <div class="col-md-3 d-flex justify-content-end">#}
-                        {#                                <a href="javascript:;" class="btn btn-darkblue fz-10">RÉCLAMER LE PAIMEMENT</a>#}
-                        {#                            </div>#}
-                        {#                            {% endif %}#}
-
                         {% if notification.type == 'create_mission' %}
                             <div class="col-md-3 d-flex justify-content-end">
-                                <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">PAYER EN LIGNE</a>
+                                <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR DEVIS</a>
+                            </div>
+                        {% else %}
+                            <div class="col-md-3 d-flex justify-content-end">
+                                <a href="javascript:;" class="btn btn-darkblue fz-10 preview-my-mission" data-dismiss="alert" aria-label="Close" data-id="{{ notification.notifyby }}" data-notifyby="{{ notification.notifyby }}">VOIR MISSION</a>
                             </div>
                         {% endif %}
 
-                        {% if notification.type == 'edit_mission' %}
-                            <div class="col-md-3 d-flex justify-content-end">
-                                <a href="javascript:;" class="btn btn-darkblue fz-10 pay-online" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">Confirmer la mission</a>
-                            </div>
-                        {% endif %}
+
+
+{#                        {% if notification.type == 'edit_mission' %}#}
+{#                            <div class="col-md-3 d-flex justify-content-end">#}
+{#                                <a href="javascript:;" class="btn btn-darkblue fz-10 preview-my-mission" data-dismiss="alert" aria-label="Close" data-id="{{ notification.notifyby }}" data-notifyby="{{ notification.notifyby }}">VOIR MISSION</a>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+
+{#                        {% if notification.type == 'edit_mission' %}#}
+{#                            <div class="col-md-3 d-flex justify-content-end">#}
+{#                                <a href="javascript:;" class="btn btn-darkblue fz-10 preview-my-mission" data-dismiss="alert" aria-label="Close" data-id="{{ notification.notifyby }}" data-notifyby="{{ notification.notifyby }}">VOIR MISSION</a>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{#                        or notification.type == 'mission_accepted_edit_client'#}
+{#                        {% if notification.type == 'mission_cliet_paid_complete'%}#}
+{#                            <div class="col-md-3 d-flex justify-content-end">#}
+{#                                <a href="javascript:;" class="btn btn-darkblue fz-10 preview-my-mission" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR MISSION</a>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+
+{#                        {% if notification.type == 'cancel_mission' %}#}
+{#                            <div class="col-md-3 d-flex justify-content-end">#}
+{#                                <a href="javascript:;" class="btn btn-darkblue fz-10 preview-my-mission" data-unread="{{ notification.id }}" data-id="{{ notification.notifyby }}">VOIR MISSION</a>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{#                        {% if notification.type == 'terminate_mission_accept' or notification.type == 'terminate_mission_client' or notification.type == 'cancel_mission_client' or notification.type == 'terminate_mission' %}#}
+{#                            <div class="col-md-3 d-flex justify-content-end">#}
+{#                                &nbsp;#}
+{#                            </div>#}
+{#                        {% endif %}#}
 
 
 
@@ -104,7 +116,7 @@
                     <div class="col-md-12 client-wall-members profiles-slider">
                         <div class="slick-profiles-slider px-5">
                             {% for proposal in proposals %}
-                                {% if proposal_unique[proposal.id] is defined %}
+                                {% if proposal_unique[proposal.id] is defined and proposal.user.b2bCmApproval == '1' %}
                                     <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
                                         <div class="cm-card-container">
                                             <div class="row">
@@ -125,24 +137,24 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h4 class="title text-center fz-16 font-weight-bold mb-0">{{ proposal.user.firstname~' '~proposal.user.lastname }}</h4>
-                                                    {% for region in proposal.user.userRegion %}
-                                                        <p class="region text-center fz-14">{{ region.name }}</p>
-                                                    {% endfor %}
+                                                        <p class="region text-center fz-14">{{ proposal.user.userRegion.first.name }}</p>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     {% for pack in proposal.user.userPacks|slice(0, 3) %}
+                                                        {% if pack.deleted == '0' or pack.deleted == null %}
                                                         <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
                                                             <div class="work-title fz-10">Pack {{ pack.packSkill.name }}</div>
-                                                            <div class="work-amount fz-10">{{ pack.userBasePrice }}€</div>
+                                                            <div class="work-amount fz-10">{{ pack.totalPrice }}€</div>
                                                         </div>
+                                                        {% endif %}
                                                     {% endfor %}
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <a href="{{ url('b2b_front_community_manager_view',{'name':proposal.user | lower |replace({' ':'-'}), 'id': proposal.user.id}) }}" class="btn btn-block btn-pink fz-9">DÉCOUVRIR TOUS SES PACKS</a>
+                                                    <a href="{{ url('b2b_front_community_manager_view',{'city':proposal.user.pixie.billing.address.city |lower,'name':proposal.user | lower |replace({' ':'-'}), 'id': proposal.user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -167,13 +179,16 @@
                         {% for mission in missions %}
                             <li class="mission-list-item d-flex align-items-center text-darkgray">
                                 <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                <p class="mb-0 px-3 w-40">{{ mission.description | truncate(150) }}
+                                <p class="mb-0 px-3 w-40">{{ mission.title }}
                                 </p>
                                 <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
-                                <p class="w-15 mb-0">{{ mission.title }}</p>
+                                <p class="w-15 mb-0">{{ mission.user.firstname }}</p>
                                 <p class="w-15 mb-0 text-inprogress">En cours</p>
-                                <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.clientTotal |round(2, 'floor') }} €</p>
-                                <i class="fas fa-eye preview-my-mission" data-id="{{ mission.id }}"></i>
+                                {% if mission.log.userBasePrice is defined %}
+                                    <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round(2, 'floor') }} €</p>
+                                {% endif %}
+                                <i class="fas fa-eye preview-my-mission px-2" data-id="{{ mission.id }}"></i>
+
                             </li>
                         {% endfor %}
                     </ul>
@@ -186,13 +201,13 @@
                         <div class="w-60">
                             <img class="img-fluid" src="/images/dash-home-empty.png" alt="Dashboard Home">
                         </div>
-                        <h4 class="mt-4 text-darkblue font-weight-bold">Bien débuter sur Pix.city services </h4>
-                        <p> Bienvenue sur votre espace Client Services !
-                            Retrouvez ici toutes les informations concernant vos packs, vos missions en
-                            cours et votre facturation.
+                        <h4 class="mt-4 text-darkblue font-weight-bold">Bienvenue sur Pix.City Services !  </h4>
+                        <p>Votre profil client est créé. Vous pouvez trouver dans cet espace les missions que vous avez <br/>
+                            en cours avec vos city-makers, vos factures et les paiements réalisés.
                         </p>
-                        <p> La prochaine étape est de détailler vos compétences en créant vos packs (un pack
-                            est une compétence détaillée avec un tarif).</p>
+                        <p>Un problème de facture, un souci pour se connecter ? Ecrivez-nous à <a href="services@pix.city">services@pix.city</a> <br/>
+                            Pour toute autre question sur le fonctionnement de la plateforme, n’hésitez pas à consulter <br/>
+                            notre  <a href="{{ path('front_faq_index') }}" target="_blank">FAQ </a></p>
                         <div class="d-block text-center mt-4">
                             <a href="{{ path('b2b_client_search_index') }}" class="btn btn-darkblue fz-14"><i class="fas fa-search fz-20 mr-2"></i>Trouver un City-Maker</a>
                         </div>
@@ -229,6 +244,19 @@
                     data: {id: id},
                     success: function(data){
                         console.log('success: ' + data);
+                    }
+                });
+            });
+
+            $(".accept-mission").on('click',function () {
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('b2b_notification_accept_edited_mission') }}',
+                    data: {id: id},
+                    success: function(data){
+                        console.log('success: ' + data);
+
                     }
                 });
             });

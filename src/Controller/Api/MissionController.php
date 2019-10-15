@@ -2,12 +2,20 @@
 
 namespace App\Controller\Api;
 
+use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
+use App\Entity\ClientTransaction;
+use App\Entity\Option;
+use App\Entity\Royalties;
+use App\Repository\ClientTransactionRepository;
+use App\Repository\MissionPaymentRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
 use App\Service\FileUploader;
+use App\Service\Mailer;
+use App\Service\MangoPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
@@ -59,18 +67,63 @@ class MissionController extends Controller
     }
 
     /**
-     * @Route("/status",name="client_status")
+     * @Route("/status/{id}/{mstatus}",name="client_status")
      */
-    public function statusUpdate(UserMissionRepository $missionRepo, Request $request, NotificationsRepository $notificationsRepository,Filesystem $filesystem)
+    public function statusUpdate($id,$mstatus,UserMissionRepository $missionRepo,
+                                 Request $request,
+                                 NotificationsRepository $notificationsRepository,
+                                 Filesystem $filesystem,
+                                 ClientTransactionRepository $clientTransactionRepository,
+                                 MissionPaymentRepository $missionPaymentRepository,
+                                 MangoPayService $mangoPayService,
+                                 Mailer $mailer)
     {
-        $mission = $missionRepo->find($request->get('id'));
+
+        $mission = $missionRepo->activePrices($id);
+
         $status = '';
+
+        $clientTransaction = new ClientTransaction();
+
+        $transaction = $mission->getClientTransactions();
+
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);
+
+        $margin = $options->findOneBy(['slug' => 'margin']);
+
+        $cityMakerType = "";
+
+        if($mission->getIsTvaApplicable() != NULL)
+        {
+            $cityMakerType = CompanyStatus::COMPANY;
+        }
+
+        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $last_result  = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $result = [];
+
+        $result['price'] = $last_result['client_price'];
+        $result['tax'] = $last_result['client_tax'];
+        $result['total'] = $result['price'] + $result['tax'];
+        $result['advance_payment'] = $first_result['client_total'];
+        $result['need_to_pay'] = $result['total'] - $result['advance_payment'];
+        $result['refund_amount'] = $last_result['pcs_total'];
+        $result['persent_price'] = $first_result['cm_price'] - $last_result['cm_price'];
+        $result['display_price'] = $last_result['client_price'] - $last_result['cm_price'];
+        $result['margin'] =  $result['display_price'] - $result['persent_price'];
+        $result['fess'] = $result['margin'] + (0.2 * $result['margin']);
+
 
         if(is_null($mission) || $mission->getClient()->getId() != $this->getUser()->getId())
         {
             return new JsonResponse(['success' => false, 'message' => 'Please login to the right account']);
         }
-        switch($request->get('status'))
+
+        switch($mstatus)
         {
 
             case 'accept':
@@ -78,7 +131,7 @@ class MissionController extends Controller
                     {
                         $status = MissionStatus::ONGOING;
                         $mission->setMissionAgreedClient(1);
-                        $notificationsRepository->insert($mission->getUser(),null,'accept_mission','Mission "'.$mission->getTitle().'" has been accepted by '.$mission->getClient(),1);
+//                        $notificationsRepository->insert($mission->getUser(),null,'accept_mission','Mission "'.$mission->getTitle().'" has been accepted by '.$mission->getClient(),$mission->getId());
                     }
                     else
                     {
@@ -90,23 +143,65 @@ class MissionController extends Controller
                     {
                         $status = MissionStatus::CLIENT_DECLINED;
                         $mission->setMissionAgreedClient(0);
-                        $notificationsRepository->insert($mission->getUser(),null,'deny_mission','Mission "'.$mission->getTitle().'" has been denied by '.$mission->getClient(),1);
+//                        $notificationsRepository->insert($mission->getUser(),null,'deny_mission','Mission "'.$mission->getTitle().'" has been denied by '.$mission->getClient(),$mission->getId());
                     }
                     else{
                         return new JsonResponse(['success' => false, 'message' => 'Illegal operation']);
                     }
                     break;
             case 'cancel':
+
                     if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
                     {
+
                         $status = MissionStatus::CANCELLED;
-                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has accepted cancellation request of mission '.$mission->getTitle(),1);
+
+                        $margin_value = $first_result['client_price'] - $first_result['cm_price'];
+
+                        if($first_result['client_tax'] != 0){
+
+                            $tax_value = $tax->getValue() / 100 * $margin_value;
+
+                            $fee = $margin_value + $tax_value;
+
+                        }else{
+
+                            $fee = $margin_value;
+                        }
+
+
+
+                        $client_paid = $first_result['client_total'];
+
+                        $fee_percentage = (2 / 100) * $client_paid;
+
+                        $fees_creadited = $fee - $fee_percentage;
+
+                        $refund_amount = $client_paid - $fee;
+
+                        if($fees_creadited < 0){
+                            $fees_creadited = 0;
+                            $refund_amount = $client_paid;
+                        }
+
+                        $mission->getUserMissionPayment()->setAdjustment($client_paid);
+                        $clientTransaction->setTransactionType('Refund-Full');
+                        $clientTransaction->setAmount($result['price']);
+                        $clientTransaction->setTotalAmount($first_result['client_total']);
+                        $clientTransaction->setFee($fees_creadited);
+
+                        $response = $mangoPayService->refundPayment($transaction,$refund_amount,$fees_creadited);
+
+                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());
+
+                        $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission_client','L\'annulation de la mission '.$mission->getTitle().' est confirmée. Le pré-paiement que vous avez réalisé lors de l\'acceptation du devis va vous être restitué par notre partenaire Mango Pay sous 4 jours. ',$mission->getId());
+
                         break;
                     }
                     elseif ($mission->getStatus() == MissionStatus::CREATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
                         $status = MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT;
-                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle(),1);
+//                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle(),$mission->getId());
                     }
                     else
                     {
@@ -116,50 +211,34 @@ class MissionController extends Controller
             case 'terminate':
                     if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING)
                     {
+
+                        $new_result = $missionPaymentRepository->getPrices($result['persent_price'], $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+                        $clientTransaction->setAmount($new_result['client_total']);
+                        $clientTransaction->setTotalAmount($new_result['client_total']);
+                        $clientTransaction->setFee($new_result['pcs_total']);
+
                         $status = MissionStatus::TERMINATED;
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),1);
 
-                        $filesystem->mkdir('invoices/'.$mission->getId());
+                        if($result['need_to_pay'] < 0){
 
-                        $filename = $this->createSlug($mission->getTitle());
+                            $clientTransaction->setTransactionType('Refund Partial');
 
-                        $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
+                            $response = $mangoPayService->refundPaymentWithFee($transaction,$new_result['client_total'] - $new_result['pcs_total'],$new_result['pcs_total']);
+                            $clientTransaction->setMangopayTransactionId($response);
 
-                        $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                            $this->renderView('b2b/invoice/client_invoice.html.twig',
-                                array(
-                                    'mission' => $mission
-                                )
-                            ), $clientInvoicePath
-                        );
+                        }
 
-                        $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
 
-                        $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                            $this->renderView('b2b/invoice/cm_invoice.html.twig',
-                                array(
-                                    'mission' => $mission
-                                )
-                            ), $cmInvoicePath
-                        );
-
-                        $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
-
-                        $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                            $this->renderView('b2b/invoice/pcs_invoice.html.twig',
-                                array(
-                                    'mission' => $mission
-                                )
-                            ), $pcsInvoicePath
-                        );
-
+                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. Vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s'est bien passée ! ",$mission->getId());
+                        $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. Votre paiement sera donc déclenché sous 48H via notre partenaire Mango Pay. A très bientôt pour une nouvelle mission sur Pix.City Services. ',$mission->getId());
 
                         break;
                     }
                     elseif ($mission->getStatus() == MissionStatus::CREATED)
                     {
                         $status = MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT;
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),1);
+//                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),$mission->getId());
 
                     }
                     else
@@ -170,13 +249,104 @@ class MissionController extends Controller
 
         }
 
+
+
         $entityManager = $this->getDoctrine()->getManager();
         $mission->setStatus($status);
 
         $entityManager->persist($mission);
+//        $entityManager->flush();
+
+
+        $transaction[0]->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setClientPrice($last_result['client_price']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setClientTax($last_result['client_tax']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setClientTotal($last_result['client_total']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
+        $transaction[0]->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
+        $transaction[0]->getMission()->setMissionBasePrice($last_result['cm_price']);
+
+        $clientTransaction->setUser($mission->getClient());
+        $clientTransaction->setMangopayUserId($transaction[0]->getMangopayUserId());
+        $clientTransaction->setMangopayWalletId($transaction[0]->getMangopayWalletId());
+        $clientTransaction->setPaymentStatus(true);
+        $clientTransaction->setMission($mission);
+
+
+        $entityManager->persist($transaction[0]);
+        $entityManager->persist($clientTransaction);
+//        $entityManager->flush();
+
+//        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
+
+            if($mission->getStatus() == 'terminated'){
+
+                $filesystem->mkdir('invoices/'.$mission->getId(),0777);
+
+                $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
+
+                $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/client_invoice.html.twig',
+                        array(
+                            'mission' => $mission,
+                            'tax' => $tax->getValue()
+                        )
+                    ), $clientInvoicePath
+                );
+
+                $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
+
+                $cmInvoicePath = "invoices/".$mission->getId().'/'.$cm_filename;
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/cm_invoice.html.twig',
+                        array(
+                            'mission' => $mission,
+                            'tax' => $tax->getValue()
+                        )
+                    ), $cmInvoicePath
+                );
+
+                $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
+
+                $pcsInvoicePath = "invoices/".$mission->getId().'/'.$pcs_filename;
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/pcs_invoice.html.twig',
+                        array(
+                            'mission' => $mission
+                        )
+                    ), $pcsInvoicePath
+                );
+
+                $royalties = new Royalties();
+                $royalties->setMission($mission);
+                $royalties->setCm($mission->getUser());
+                $royalties->setTax($tax->getValue());
+                $royalties->setBasePrice($mission->getUserMissionPayment()->getUserBasePrice());
+                $royalties->setTaxValue($mission->getUserMissionPayment()->getCmTax());
+                $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
+                $royalties->setInvoicePath($cmInvoicePath);
+                $royalties->setPaymentType('mango_pay');
+                $royalties->setStatus('pending');
+                $royalties->setBankDetails(json_encode('no_response'));
+                $entityManager->persist($royalties);
+
+            }
         $entityManager->flush();
 
-        return new JsonResponse(['success' => true, 'message' => 'Status has been updated']);
+          if($mission->getStatus() == 'terminated'){
+              $this->addFlash('mission_change_setting', 'Toutes nos félicitations! La mission est terminée');
+          }elseif($mission->getStatus() == 'cancelled'){
+              $this->addFlash('mission_change_setting', 'Félicitations! La mission a bien été annulée');
+          }
+
+          return $this->redirect('/client/mission');
 
     }
 

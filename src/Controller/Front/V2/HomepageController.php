@@ -6,6 +6,7 @@ use App\Constant\CardStatus;
 use App\Entity\Card;
 use App\Repository\CardCategoryRepository;
 use App\Repository\CardRepository;
+use App\Repository\OptionRepository;
 use App\Repository\PageCategoryRepository;
 use App\Repository\PageRepository;
 use App\Repository\UserRepository;
@@ -29,10 +30,74 @@ class HomepageController extends Controller
                                      PageCategoryRepository $pagesCategoriesRepo,
                                      UserRepository $usersRepo,
                                      CardRepository $cardsRepo,
-                                     CardCategoryRepository $categoriesRepo
+                                     CardCategoryRepository $categoriesRepo,
+                                     OptionRepository $optionRepository
     ){
+        $testAccounts = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
+        $testClientAccounts = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
+        //dd($testAccounts->getValue());
+       // $loggedUser = $this->getUser();
+        $loggedUserSession = $this->get('session')->get('login_by');
+        $loggedUser = $loggedUserSession['entity'];
+        $em = $this->getDoctrine()->getManager();
+        if($loggedUser){
+            if(strpos($testAccounts->getValue(),$loggedUser->getEmail()) !== false || strpos($testClientAccounts->getValue(),$loggedUser->getEmail()) !== false){ //in
+                $regions = $pagesCategoriesRepo->findAllActive([],$testAccounts->getValue());
+                // Get the count of cards
+
+                $result = $em->getRepository(Card::class)->createQuerybuilder('c')
+                    ->select(["count(c.id) as card_count, r.id, r.slug"])
+                    ->join("c.region","r")
+                    ->leftJoin("c.pixie","uid")
+                    ->where('c.status = :status')
+//                    ->andWhere("uid.email IN ('ganesh@pix.city','bsingh@pix.cityy')")
+                    ->setParameter("status",CardStatus::VALIDATED)
+                    ->groupBy("r.id")
+                    ->getQuery()
+                    ->getResult();
+
+                $cards = $cardsRepo->search([],1,10,'newest');
+                $popularCards = $cardsRepo->search([],1,    6,'popular');
+                $categories = $categoriesRepo->findAllActiveWithCards();
+                $pixies = $usersRepo->findRandomPixies();
+            }
+            else{
+                $regions = $pagesCategoriesRepo->findAllActive();
+                $result = $em->getRepository(Card::class)->createQuerybuilder('c')
+                    ->select(["count(c.id) as card_count, r.id, r.slug"])
+                    ->join("c.region","r")
+                    ->leftJoin("c.pixie","uid")
+                    ->where('c.status = :status')
+                    ->andWhere("uid.email NOT IN (".$testAccounts->getValue().")")
+                    ->setParameter("status",CardStatus::VALIDATED)
+                    ->groupBy("r.id")
+                    ->getQuery()
+                    ->getResult();
+                $cards = $cardsRepo->search([],1,10,'newest',$testAccounts->getValue());
+                $popularCards = $cardsRepo->search([],1,    6,'popular',$testAccounts->getValue());
+                $categories = $categoriesRepo->findAllActiveWithCards($testAccounts->getValue());
+                $pixies = $usersRepo->findRandomPixies('',$testAccounts->getValue());
+            }
+        }else{
+            $regions = $pagesCategoriesRepo->findAllActive();
+            $result = $em->getRepository(Card::class)->createQuerybuilder('c')
+                ->select(["count(c.id) as card_count, r.id, r.slug"])
+                ->join("c.region","r")
+                ->leftJoin("c.pixie","uid")
+                ->where('c.status = :status')
+                ->andWhere("uid.email NOT IN (".$testAccounts->getValue().")")
+                ->setParameter("status",CardStatus::VALIDATED)
+                ->groupBy("r.id")
+                ->getQuery()
+                ->getResult();
+            $cards = $cardsRepo->search([],1,10,'newest',$testAccounts->getValue());
+            $popularCards = $cardsRepo->search([],1,    6,'popular',$testAccounts->getValue());
+            $categories = $categoriesRepo->findAllActiveWithCards($testAccounts->getValue());
+            $pixies = $usersRepo->findRandomPixies('',$testAccounts->getValue());
+        }
+
         $page = $pagesRepo->findOneBySlug("accueil");
-        $regions = $pagesCategoriesRepo->findAllActive();
+
         $coordinates = array_column($regions,'coordinates');
         $center = [];
         // $coordinates = '';
@@ -47,10 +112,8 @@ class HomepageController extends Controller
 //        dd($coordinates);
         // $coordinates = str_replace('],[',',',$coordinates);
         // $coordinates = rtrim($coordinates,",");
-        $pixies = $usersRepo->findRandomPixies();
-        $cards = $cardsRepo->search([],1,10,'newest');
-        $popularCards = $cardsRepo->search([],1,    6,'popular');
-        $categories = $categoriesRepo->findAllActiveWithCards();
+
+
         $user = $this->getUser();
         $isCardFavoritedFirstTime = false;
 
@@ -85,16 +148,6 @@ class HomepageController extends Controller
             }
         }
 
-        // Get the count of cards
-        $em = $this->getDoctrine()->getManager();
-        $result = $em->getRepository(Card::class)->createQuerybuilder('c')
-            ->select(["count(c.id) as card_count, r.id, r.slug"])
-            ->join("c.region","r")
-            ->where('c.status = :status')
-            ->setParameter("status",CardStatus::VALIDATED)
-            ->groupBy("r.id")
-            ->getQuery()
-            ->getResult();
         $cardPerRegion = array_combine(array_column($result,'slug'),array_column($result,'card_count'));
 
         return $this->render('v2/front/homepage/new.html.twig', [

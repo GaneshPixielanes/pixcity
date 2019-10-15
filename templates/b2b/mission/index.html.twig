@@ -1,15 +1,38 @@
 {% extends 'b2b/page.html.twig' %}
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+        <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock %}
 
 {% block content %}
     <div class="tab-pane active" id="myMissions" role="tabpanel">
         <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
             <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-briefcase fz-30 mr-2"></i> Mes Missions
             </div>
-            {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
-                <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"
-                   onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle
-                    mission</a>
-            {% endif %}
+            <div class="col-md-12 tab-content-header bg-white d-flex justify-content-between align-items-center p-3 shadow-sm">
+                <div class="d-flex align-items-center fz-20 text-darkblue"><i class="fas fa-briefcase fz-30 mr-2"></i> Mes Missions</div>
+                {% embed 'b2b/shared/_notification_header.html.twig' with {'notifications':notifications} %}{% endembed %}
+
+            </div>
+{#            <div class="col-md-7 ml-auto mt-2 mt-lg-0">#}
+{#                <div class="row">#}
+{#                    <div class="offset-md-6 col-md-4">#}
+{#                        {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}#}
+{#                            <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill"#}
+{#                               onclick="{{ url('b2b_mission_create') }}">Créer une nouvelle#}
+{#                                mission</a>#}
+{#                        {% endif %}#}
+{#                    </div>#}
+{#                    <div class="col-md-1 col-2">#}
+{#                        <a href="/connexion/signout" class="btn btn-outline-darkblue btn-pill">Logout</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
         </div>
             {% if missions['ongoing'] | length == 0 and missions['drafts'] | length == 0 and missions['cancelled'] | length == 0 and missions['terminated']| length == 0 %}
 
@@ -51,6 +74,7 @@
                     </nav>
                     <div class="tab-content">
                         <div class="tab-pane active" id="myDrafts" role="tabpanel">
+                            {% if missions['drafts'] | length > 0 %}
                             <ul class="available-missions-list m-0 mt-3 col-md-12">
                                 {% for mission in missions['drafts'] %}
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
@@ -60,13 +84,30 @@
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-inprogress">Draft</p>
-                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.cmTotal | number_format(2) }}€</p>
-                                        <i class="fas fa-eye preview-edit-mission" data-id="{{ mission.id }}"></i>
+                                        <p class="mb-0 px-4 w-10">{% if mission.getActiveLog().userBasePrice is defined %}{{ mission.getActiveLog().userBasePrice |number_format(2)}}{% else %}{{  mission.missionBasePrice }}{% endif %}€</p>
+                                        <i class="fas fa-edit preview-edit-mission" data-id="{{ mission.id }}"></i>
                                     </li>
                                 {% endfor %}
                             </ul>
+                            {% else %}
+                            <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                                <div
+                                        class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                                    <div class="w-35">
+                                        <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
+                                             alt="My Missions">
+                                    </div>
+                                    <h4 class="mt-4 text-darkblue">Vous n’avez pas encore de mission avec ce statut </h4>
+                                    <p> Ça y est votre profil et vos packs sont à jour !
+                                        Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
+                                        une bonne négociation !
+                                    </p>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
                         <div class="tab-pane" id="inProgress" role="tabpanel">
+                            {% if missions['ongoing'] | length > 0 %}
                             <ul class="available-missions-list m-0 mt-3 col-md-12">
                                 {% for mission in missions['ongoing'] %}
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
@@ -76,13 +117,30 @@
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-inprogress">En cours</p>
-                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.userBasePrice | number_format(2) }}€</p>
-                                        <i class="fas fa-eye preview-edit-mission" data-id="{{ mission.id }}"></i>
+                                        <p class="mb-0 px-4 w-10">{% if mission.getActiveLog().userBasePrice is defined %}{{ mission.getActiveLog().userBasePrice |number_format(2)}}{% else %}{{  mission.missionBasePrice }}{% endif %}€</p>
+                                        <i class="fas fa-edit preview-edit-mission" data-id="{{ mission.id }}"></i>
                                     </li>
                                 {% endfor %}
                             </ul>
+                            {% else %}
+                                <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                                    <div
+                                            class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                                        <div class="w-35">
+                                            <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
+                                                 alt="My Missions">
+                                        </div>
+                                        <h4 class="mt-4 text-darkblue">Vous n’avez pas encore de mission avec ce statut</h4>
+                                        <p> Ça y est votre profil et vos packs sont à jour !
+                                            Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
+                                            une bonne négociation !
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="tab-pane" id="completed" role="tabpanel">
+                            {% if missions['terminated'] | length > 0 %}
                             <ul class="available-missions-list m-0 mt-3 col-md-12">
                                 {% for mission in missions['terminated'] %}
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
@@ -91,26 +149,59 @@
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-completed">Terminée</p>
-                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.cmTotal | number_format(2) }}€</p>
-                                        <i class="fas fa-edit preview-edit-mission"></i>
+                                        <p class="mb-0 px-4 w-10">{% if mission.getActiveLog().userBasePrice is defined %}{{ mission.getActiveLog().userBasePrice |number_format(2)}}{% else %}{{  mission.missionBasePrice }}{% endif %}€</p>
+                                        <i class="fas fa-eye preview-edit-mission" data-id="{{ mission.id }}"></i>
                                     </li>
                                 {% endfor %}
                             </ul>
+                            {% else %}
+                                <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                                    <div
+                                            class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                                        <div class="w-35">
+                                            <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
+                                                 alt="My Missions">
+                                        </div>
+                                        <h4 class="mt-4 text-darkblue">Vous n’avez pas encore de mission avec ce statut </h4>
+                                        <p> Ça y est votre profil et vos packs sont à jour !
+                                            Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
+                                            une bonne négociation !
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="tab-pane" id="canceled" role="tabpanel">
+                            {% if missions['cancelled'] | length > 0 %}
                             <ul class="available-missions-list m-0 mt-3 col-md-12">
                                 {% for mission in missions['cancelled'] %}
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
                                         <i class="fas fa-handshake fz-16 btn-circle-32 bg-darkblue text-white"></i>
                                         <p class="mb-0 px-3 w-40">{{ mission.title | raw }}</p>
-                                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}/p>
+                                        <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-canceled">Annulée</p>
-                                        <p class="mb-0 px-4 w-10">{{ mission.userMissionPayment.cmTotal | number_format(2) }}€</p>
-                                        <i class="fas fa-edit preview-edit-mission"></i>
+                                        <p class="mb-0 px-4 w-10">{% if mission.getActiveLog().userBasePrice is defined %}{{ mission.getActiveLog().userBasePrice |number_format(2)}}{% else %}{{  mission.missionBasePrice }}{% endif %}€</p>
+                                        <i class="fas fa-eye preview-edit-mission" data-id="{{ mission.id }}"></i>
                                     </li>
                                 {% endfor %}
                             </ul>
+                            {% else %}
+                                <div class="col-md-12 tab-pane-content p-4 d-flex align-items-center justify-content-center">
+                                    <div
+                                            class="d-flex flex-column justify-content-center w-50 align-items-center text-center">
+                                        <div class="w-35">
+                                            <img class="img-fluid" src="{{ absolute_url('/assets/images/dash-mymissions-empty.png') }}"
+                                                 alt="My Missions">
+                                        </div>
+                                        <h4 class="mt-4 text-darkblue">Vous n’avez pas encore de mission avec ce statut </h4>
+                                        <p> Ça y est votre profil et vos packs sont à jour !
+                                            Soyez patients, vos premiers clients ne vont pas tarder. Nous vous souhaitons
+                                            une bonne négociation !
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -129,6 +220,8 @@
     <script src="{{ asset('/assets/js/pages/main.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/mission.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/assets/js/bind.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/js/froala_editor.pkgd.min.js"></script>
+
     <script>
         $(document).ready(function () {
 

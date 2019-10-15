@@ -1,0 +1,157 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.missions'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.missions'|trans }}
+                </h2>
+                <div>
+                    <a href="{{path('admin_user_mission_index') }}" class="btn waves-effect pull-left"><i class="material-icons">keyboard_backspace</i> <span>{{ 'action.backtolist'|trans }}</span></a>
+
+                    | <a href="{{ path('admin_user_mission_edit', {'id': user_mission.id}) }}" class="btn waves-effect pull-right"><i class="material-icons">edit</i> <span>{{ 'action.edit'|trans }}</span></a>
+                    <form method="post" class="delete-form" action="{{ path('admin_user_mission_delete', {'id': user_mission.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user_mission.id) }}">
+                        <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>User</th>
+                            <td>{{ user_mission.user.firstname~' '~user_mission.user.lastname }} <a href="{{path('admin_user_mission_view', {'id': user_mission.user.id , 'usrtype':'user'})  }}" title="view" class="btn bg-green btn-visit-site"> View All Related</a> </td>
+                        </tr>
+                        <tr>
+                            <th>Client</th>
+                            <td>{{ user_mission.client.firstName~' '~user_mission.client.lastName }} <a href="{{path('admin_user_mission_view', {'id': user_mission.client.id , 'usrtype':'client'})  }}" title="view" class="btn bg-green btn-visit-site"> View All Related</a> </td>
+                        </tr>
+                        <tr>
+                            <th>Titre</th>
+                            <td> {{ user_mission.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ user_mission.description |raw}}</td>
+                        </tr>
+                        <tr>
+                            <th>Image bannière</th>
+                            <td><img src="{{ absolute_url(user_mission.bannerUrl) }}" alt="{{ user_mission.title }}" width="20%" class="img-rounded"></td>
+                        </tr>
+                        <tr>
+                            <th>Documents de travail</th>
+                            <td>
+                                {% for document in user_mission.documents %}
+                                <img src="{{ absolute_url('/uploads/missions/temp/'~document.name) }}" alt="{{ user_mission.title }}" width="20%" class="img-rounded">
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Prix mission CM</th>
+                            <td>{{ user_mission.missionBasePrice ? user_mission.missionBasePrice : 'N/A' }}</td>
+                            
+                        </tr>
+                        <tr>
+                            <th>Date de création</th>
+                            <td>{{ user_mission.createdAt ? user_mission.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date d’update</th>
+                            <td>{{ user_mission.updatedAt ? user_mission.updatedAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>{{ user_mission.status ? user_mission.status|upper|replace({("_"):" "}) : 'N/A' }}</td>
+                        </tr>
+                        {#<tr>#}
+                            {#<th>Due Date</th>#}
+                            {#<td>{{ user_mission.dueDate ? user_mission.dueDate|date('d-M-Y H:i:s') : 'N/A' }}</td>#}
+                        {#</tr>#}
+                        {#<tr>#}
+                            {#<th>Conditions Agreed</th>#}
+                            {#<td>{{ user_mission.conditionsAgreed ? 'Yes' : 'No' }}</td>#}
+                        {#</tr>#}
+                        <tr>
+                            <th>Axa Insurance</th>
+                            <td>{{ user_mission.axaInsurance ? 'Yes' : 'No' }}</td>
+                        </tr>
+                        <tr>
+                            <th>General Conditions Brief</th>
+                            <td>{{ user_mission.generalConditionsBrief ? user_mission.generalConditionsBrief : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mission Agreed Client</th>
+                            <td>{{ user_mission.missionAgreedClient ? 'Yes' : 'No'}}</td>
+                        </tr>
+                        <tr>
+                            <th>Raison annulation</th>
+                            <td>{{ user_mission.cancelReason ? user_mission.cancelReason : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Annulé par</th>
+                            <td>{{ user_mission.cancelledBy ? user_mission.cancelledBy : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                        	<td></td>
+                        	<td>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th> Version Id </th>
+                                        <th> Desc </th>
+                                        <th> Price </th>
+                                        <th> Brief files</th>
+                                        <th> Date and Time</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for missionLog in user_mission.missionLogs %}
+                                        {% if missionLog.isActive == 1 %}
+                                            <tr>
+                                            	<td>{{missionLog.id}}</td>
+                                            	<td>{{missionLog.description|raw}}</td>
+                                                <td >{{ missionLog.userBasePrice }}
+                                                    <span class="label label-success">Active</span>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('admin_user_mission_download', {'id': missionLog.id}) }}" title="{{ 'action.download'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">save_alt</i></a>
+                                                </td>
+                                                <td>{{ missionLog.createdAt ? missionLog.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td>{{missionLog.id}}</td>
+                                                <td>{{missionLog.description|raw}}</td>
+                                                <td>{{ missionLog.userBasePrice }}</td>
+                                                <td>
+                                                    <a href="{{ path('admin_user_mission_download', {'id': missionLog.id}) }}" title="{{ 'action.download'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">save_alt</i></a>
+                                                </td>
+                                                <td>{{ missionLog.createdAt ? missionLog.createdAt|date('d-M-Y H:i:s') : 'N/A' }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% else %}
+                                        <tr>
+                                            <td>no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -5010,7 +5010,7 @@ footer {
     position: absolute;
     width: 100%;
     top: -139px;
-    background-image: url(../img/SVG/bg_footer_pl2.svg);
+    //background-image: url(../img/SVG/bg_footer_pl2.svg);
     background-position: center center;
 }
 
@@ -5083,7 +5083,7 @@ footer .brand img {
 
 .footerMenu li {
     line-height: 17px;
-    margin: 10px 0;
+    margin: 4px 0;
     float: left;
     width: 100%;
 }
@@ -5095,7 +5095,7 @@ footer a:hover {
 }
 
 .footerMenu li a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 #feedInstagram {
@@ -5336,7 +5336,7 @@ footer .socialMenu li:hover:before {
 .plTabs .nav-tabs .active {
     background-color: #fff;
     color: #103558;
-    text-transform: uppercase;
+    //text-transform: uppercase;
     font-family: $fontRegular;
     font-weight: 500;
 }
@@ -5400,7 +5400,7 @@ footer .socialMenu li:hover:before {
     height: 50px;
     min-height: 50px;
     line-height: 1.2em;
-    color: #fff;
+    color: #007bff;
     margin-right: 0;
     border: none;
     border-right: 1px solid #fff;

@@ -1,0 +1,52 @@
+{{ form_start(form) }}
+    {#{{ form_widget(form) }}#}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    <br/>
+    <ul class="repeater-container user-bannerImage">
+        <li class="align-center">
+            {% if form.vars.data.bannerImage  %}
+                <img class="thumb" src="{{ '/uploads/pack/banner/'~form.vars.data.bannerImage}}" width="20%">
+            {% endif %}
+
+            <div class="upload-zone">
+                <input type="file" id="banner-image-upload"/>
+                <label>Image bannière</label>
+                <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                    <i class="material-icons">add</i>
+                </a>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <br/>
+    {{ form_row(form.userBasePrice) }}
+    {{ form_row(form.marginValue) }}
+    {{ form_row(form.totalPrice) }}
+    {#{{ form_row(form.packPhotos) }}#}
+<br/>
+<ul class="repeater-container user-packPhotos">
+    <li class="align-center">
+        {% if form.vars.data.packPhotos  %}
+            <img class="thumb" src="{{ '/uploads/pack/'~form.vars.data.id~'/'~form.vars.data.packPhotos}}" width="20%">
+        {% endif %}
+
+        <div class="upload-zone">
+            <input type="file" id="packPhotos"/>
+            <label>Pack Photos</label>
+            <a href="#" class="btn btn-circle bg-pink waves-effect waves-circle waves-float ajax-upload-item">
+                <i class="material-icons">add</i>
+            </a>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+    </li>
+</ul>
+<br/>
+    {{ form_row(form.active) }}
+    {{ form_row(form.user) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

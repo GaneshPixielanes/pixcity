@@ -1,0 +1,26 @@
+{% if notifications is defined %}
+<div>
+    <a href="javascript:;" class="btn btn-outline-darkblue rounded-circle mr-2 position-relative" data-toggle="modal" data-target="#notificationModal">
+        {% if notifications is defined and notifications | length > 0 %}
+            <span class="new-notification"></span>
+        {% endif %}
+        <i class="far fa-bell"></i>
+    </a>
+    {% if app.user.missionProposalsToCityMaker is defined %}
+
+        {% if app.user.missionProposalsToCityMaker | length > 0 and app.user.userPacks | length > 0 %}
+            <a href="{{ url('b2b_mission_create') }}" class="btn btn-outline-darkblue btn-pill">Créer une nouvelle mission</a>
+        {% endif %}
+
+    {% else %}
+
+        {% if missions is defined %}
+            <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missions|length }} mission{% if missions|length > 1 %}s{% endif %} en cours</a>
+        {% endif %}
+        {% if missionsCount is defined %}
+            <a href="{{ url('b2b_client_mission_list') }}" class="btn btn-outline-darkblue btn-pill">{{ missionsCount }} mission{% if missions|length > 1 %}s{% endif %} en cours</a>
+        {% endif %}
+
+    {% endif %}
+</div>
+{% endif %}

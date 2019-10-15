@@ -12,11 +12,14 @@ use App\Form\Shared\UserLinkType;
 use App\Form\Shared\UserOptinType;
 use App\Form\Shared\UserPixieType;
 use App\Form\Shared\UserMediaType;
+use function Complex\add;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -58,31 +61,32 @@ class UserType extends AbstractType
                         'year' => 'label.year', 'month' => 'label.month', 'day' => 'label.day',
                     )
                 ))
-                ->add('birthLocation', EntityType::class, array(
-                    'class' => Region::class,
-                    'label' => 'label.birth_place',
-                    'help' => 'help.birth_place',
-                    'required' => true,
-                    'placeholder' => 'label.select.region',
-                    'choice_label' => 'name',
-                ))
-                ->add('currentLocation', TextType::class, array(
-                    'label' => 'label.currentLocation',
-                    'attr' => ['placeholder' => 'label.zipcode'],
-                ))
-                ->add('gender', ChoiceType::class, array(
-                    'label' => 'label.gender',
-                    'multiple' => false,
-                    'expanded' => true,
-                    'choices'  => array(
-                        'label.male' => 'male',
-                        'label.female' => 'female'
-                    ),
-                    'attr' => [
-                        'rowClass' => 'radios'
-                    ],
-                    'required' => true,
-                ));
+//                ->add('birthLocation', EntityType::class, array(
+//                    'class' => Region::class,
+//                    'label' => 'label.birth_place',
+//                    'help' => 'help.birth_place',
+//                    'required' => true,
+//                    'placeholder' => 'label.select.region',
+//                    'choice_label' => 'name',
+//                ))
+//                ->add('currentLocation', TextType::class, array(
+//                    'label' => 'label.currentLocation',
+//                    'attr' => ['placeholder' => 'label.zipcode'],
+//                ))
+//                ->add('gender', ChoiceType::class, array(
+//                    'label' => 'label.gender',
+//                    'multiple' => false,
+//                    'expanded' => true,
+//                    'choices'  => array(
+//                        'label.male' => 'male',
+//                        'label.female' => 'female'
+//                    ),
+//                    'attr' => [
+//                        'rowClass' => 'radios'
+//                    ],
+//                    'required' => true,
+//                ))
+              ;
         }
 
         $builder
@@ -164,7 +168,10 @@ class UserType extends AbstractType
                     'required' => true,
                     'constraints' => array(new Valid()),
                     'type' => $options["type"]
-                ));
+                ))
+                //->add('mangopayKycFile',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 1'))
+                //->add('mangopayKycAddr',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 2'))
+            ;
 
         }
 

@@ -1,17 +1,26 @@
+<link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-rc.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+{% form_theme form 'b2b/shared/field.html.twig' %}
 {{ form_start(form,{'attr':{'id' : 'pack-form'}}) }}
 
 {{ form_row(form._token) }}
 
-<div class="col-sm-10 offset-sm-2 pack-creation-content bg-white p-0" data-simplebar>
-    <div
-            class="cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
+<div class="col-sm-10 offset-sm-2 pack-creation-content bg-white p-0 " data-simplebar>
+    <div class="{% if pack.bannerImage != '' %}d-none {% endif %}pack-create-screen cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center bg-lightgray position-relative">
+        <input type="file" name="myFile" data-toggle="tooltip" title="" data-original-title="Changer votre image de couverture " data-upload-type="banner">
+        <i class="far fa-image fz-40"></i>
+        <p class="mb-0 fz-22">Changer votre image de couverture </p>
+        <small class="mb-3 fz-16">Format .png .jpg max 2mo</small>
+        <a href="javascript:;" class="btn btn-outline-normalgray btn-pill create-banner-upload-btn">TELECHARGER</a>
+    </div>
+
+    <div class="{% if pack.bannerImage == '' %}d-none {% endif %}pack-edit-screen cover-image-container text-normalgray d-flex flex-column align-items-center justify-content-center position-relative">
         {% if pack.bannerImage != '' %}
         <img src="/uploads/pack/banner/{{ pack.bannerImage }}" class="cover-image w-100 h-100" alt="Pack Cover Image" id="banner-image">
         {% else %}
         <img src="https://via.placeholder.com/1280x336?text=S%27il%20vous%20pla%C3%AEt%20t%C3%A9l%C3%A9charger%20l%27image%20de%20la%20banni%C3%A8re%20ici" class="cover-image w-100 h-100" alt="Pack Cover Image" id="banner-image">
         {% endif %}
         <div class="edit-image">
-            <input type="file" id="imageUpload"  data-toggle="tooltip" title="Edit Cover image" data-upload-type="banner"/>
+            <input type="file" id="imageUpload"  data-toggle="tooltip" title="Modifier l’image" data-upload-type="banner"/>
             {{ form_row(form.bannerImage) }}
             <a href="javascript:;" class="btn btn-lightgray btn-pill">Modifier</a>
         </div>
@@ -21,10 +30,12 @@
 
     <input name="attached_files" value="" type="hidden"/>
     <div class="pack-details p-3">
+        {% if form.packSkill.vars.data.id is defined %}
         <div class="selected-pack-container edit col-md-12 border-bottom mt-2 mb-4 pb-4">
             <p class="text-textgray mb-0">{{ pack.packSkill | upper }}</p>
             <small>Cette information ne peut pas être modifiée</small>
         </div>
+        {% endif %}
         <div class="select-skills-container edit col-md-12 border-bottom mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Sélectionner une compétence</h5>
             <p class="text-textgray">choisissez une compétence pour créer un pack</p>
@@ -70,9 +81,8 @@
             <p class="text-textgray">N’hésitez pas à être le plus précis possible dans la description de
                 votre prestation !
                 Plus vous le serez, plus il sera facile pour le client de se projeter. N'hésitez pas à lire
-                notre <a href="javascript:;">FAQ</a></p>
-            <textarea class="form-control bg-lightwhite fz-14 pack-description" maxlength="1200" placeholder=""
-                      name="" id="" cols="30"
+                notre <a href="{{ url('front_faq_index') }}" target="_blank ">FAQ</a></p>
+            <textarea class="form-control bg-lightwhite fz-14 pack-description" placeholder="" id="pack-description" cols="30"
                       rows="10" name="{{ form.description.vars.full_name }}" data-bind="pack-description-preview">
                 {% if form.description.vars.data == '' %}
                 Bonjour,
@@ -84,20 +94,20 @@
                                                 - La livraison d’une quarantaine de photos sous 48h après le shooting
                                                 - Je me déplace dans tout Paris
 
-                                                Pour respecter ce tarif les équipes, plats (..) devront être mis en place à mon arrivé.
+                                                Pour respecter ce tarif les équipes, plats (..) devront être mis en place à mon arrivée.
             {% else %}
 
                 {{ form.description.vars.data }}
 
             {% endif %}
             </textarea>
-            <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">256</span>/<span
-                        class="input-maxlength">1200</span></p>
+            <p class="mb-0 fz-12 text-textgray mt-2">Max. 1200 car.</p>
+{#            <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">256</span>/<span#}
+{#                        class="input-maxlength">1200</span></p>#}
         </div>
         <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
-            <p class="text-textgray">Besoin de conseils. <a href="javascript:;">Consultez notre FAQ
-                    City-Maker Services.</a></p>
+            <p class="text-textgray">Si vous ne savez pas comment définir vos prix, <a href="{{ url('front_faq_index') }}" target="_blank ">consultez notre FAQ</a></p>
             <p class="mb-0 fz-10 text-textgray mt-2">Votre prix</p>
             <div class="d-flex align-items-center">
                 <div class="input-group w-10">
@@ -108,9 +118,12 @@
                     </div>
                 </div>
                 <p class="mx-3 inline-block mb-0 text-textgray fz-12"> Ce qui sera affiché sur la plateforme
-                    <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-normalgray">le prix
-                                        affiché sur la platefome sera votre prix auquel s'ajoute la commission payée par le
-                                        client.</span><i class="fas fa-arrow-right fz-16 mx-3"></i><span class="text-pink fz-16f" id="clientPrice">{{ pack.totalPrice }}€</span></p>
+                    <i class="fas fa-arrow-right fz-16 mx-3"></i>
+{#                    <span class="text-normalgray">le prix#}
+{#                                        affiché sur la platefome sera votre prix auquel s'ajoute la commission payée par le#}
+{#                                        client.</span>#}
+{#                    <i class="fas fa-arrow-right fz-16 mx-3"></i>#}
+                    <span class="text-pink fz-16f" id="clientPrice">{{ pack.totalPrice }}€</span></p>
             </div>
             <div class="d-flex align-items-center d-none">
                 <div class="input-group w-10">
@@ -125,8 +138,9 @@
                     <i class="fas fa-arrow-right fz-16 mx-3"></i> <span class="text-pink fz-16 total-pack-price">{{ pack.totalPrice }}€</span>
                 </p>
             </div>
+            <small>Les chiffres après la virgule ne sont pas autorisés<br/></small>
         </div>
-        <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
+        <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4 "{% if pack.id != null and pack.userPackMedia | length == 0 %}style="display:none"{% endif %}>
             <h5 class="text-darkgray mb-0">Photos</h5>
             <div class="pack-photos">
                 <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
@@ -180,29 +194,15 @@
 {#        </div>#}
         <div class="pack-region-container edit col-sm-12 mt-2 mb-4 pb-4">
             <h5 class="text-darkgray mb-0">Zone géographique</h5>
-            <p class="text-textgray">Choisissez la région où vous souhaitez intervenir pour réaliser le pack décrit ci-dessus.Les régions affichées sont par défaut celles que vous préalablement renseignées dans votre profil city-maker. N’oubliez pas que vous devez vous trouver à moins d’1h du lieu d’intervention du pack (environ !). Pour dé-sélectionner une région, cliquez simplement dessus.</p>
+            <p class="text-textgray">
+                Choisissez la région où vous souhaitez intervenir pour réaliser le pack décrit ci-dessus. Les régions affichées sont par défaut celles que vous préalablement renseignées dans votre profil city-maker. N’oubliez pas que vous devez vous trouver à moins d’1h du lieu d’intervention du pack (environ !). Pour dé-sélectionner une région, cliquez simplement dessus
+                .</p>
 
             <div class="row">
+
                 <div class="col-md-6 choose-regions-container">
                     <div class="choose-regions-dropdowns mb-5">
-                        <div class="row">
-                            <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
-                                <select class="selectpicker" data-width="100%" data-live-search="true"
-                                        title="Choose a region from the list" readonly="readonly" disabled>
-                                    <option value="{{ app.user.userRegion.first.name }}" selected>{{ app.user.userRegion.first.name }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        {% if  app.user.userRegion | length > 1 %}
-                        <div class="row">
-                            <div class="col-md-10 mb-3 d-flex align-items-center choose-region-drop">
-                                <select class="selectpicker" data-width="100%" data-live-search="true"
-                                        title="Choose a region from the list" disabled>
-                                    <option value="{{ app.user.userRegion.last.name }}" selected>{{ app.user.userRegion.last.name }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        {% endif %}
+                    {{ form_widget(form.packRegions) }}
                     </div>
                 </div>
                 <div class="col-md-6 choose-region-map d-flex align-items-center justify-content-center ">
@@ -255,7 +255,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <nav
             class="col-sm-10 offset-sm-2 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
@@ -266,7 +265,7 @@
                     <img src="/assets/images/icons/cm-level-badge-01.svg" class="badge-icon" alt="User-Badge">
                 </div>
                 <div class="user-name-level mr-3">
-                    <p class="mb-0 fz-12 text-darkblue experte-level">Experte Pix.City</p>
+                    <p class="mb-0 fz-12 text-darkblue experte-level">Expert Pix.City</p>
                     <p class="mb-0 text-darkgray user-name">@{{ app.user }}</p>
                 </div>
                 <div class=" mr-3">
@@ -279,6 +278,13 @@
                 </div>
             </div>
             <div class="preview-cta d-flex align-items-center">
+                <div class="pack-accept-agreement">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="acceptPackAgreement"  value="1">
+                        <label class="custom-control-label fz-16 text-textgray mr-4"
+                               for="acceptPackAgreement">J’accepte le mandat de <a href="https://docs.google.com/document/d/1YWf3bVAIGBTgnw0ectjV5w9eaDh3RDWksq3RNPSJOZA/edit#" data-toggle="modal" data-target="#packAgreementModal">facturation</a></label>
+                    </div>
+                </div>
                 <a class="preview-pack text-darkgray d-flex flex-column align-items-center mr-3 fz-12 text-decoration-none"
                    href="javascript:;">
                     <i class="fas fa-desktop fz-22"></i> Prévisualiser
@@ -288,23 +294,40 @@
                     <img src="{{ absolute_url('/assets/images/icons/preview-off-icon.svg') }}" alt="Preview off"> Retour à l'édition
                 </a>
                 <a href="javascript:;"
-                   class="btn btn-pink btn-pill disabled fz-12 d-flex align-items-center save-changes pack-save-changes" data-id="{{ pack.id }}" data-url="{% if pack.id is null %}{{ url('b2b_pack_create') }} {% else %}{{ url('b2b_pack_edit',{'id':pack.id}) }}{% endif %}">SAUVEGARDER</a>
+                   class="btn btn-pink btn-pill disabled fz-12 d-flex align-items-center save-changes pack-save-changes" data-id="{{ pack.id }}" data-url="{% if pack.id is null %}{{ url('api_pack_create') }} {% else %}{{ url('api_pack_edit_pack',{'id':pack.id}) }}{% endif %}">SAUVEGARDER</a>
                 <a href="javascript:;"
-                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center save-changes d-none pack-save-changes" data-id="{{ pack.id }}" data-url="{% if pack.id is null %}{{ url('b2b_pack_create') }} {% else %}{{ url('b2b_pack_edit',{'id':pack.id}) }}{% endif %}">SAUVEGARDER</a>
+                   class="btn btn-pink btn-pill fz-12 d-flex align-items-center save-changes d-none pack-save-changes" data-id="{{ pack.id }}" data-url="{% if pack.id is null %}{{ url('api_pack_create') }} {% else %}{{ url('api_pack_edit_pack',{'id':pack.id}) }}{% endif %}">SAUVEGARDER</a>
             </div>
         </div>
     </nav>
 </div>
 
 <div id="dropzone-routes"
-     data-upload-route="{{ path('b2b_pack_fileuploadhandler') }}"
+     data-upload-route="{{ path('api_pack_file_upload') }}"
      data-load-images-route="{{ path('b2b_pack_delete_image') }}"
      data-id="{{ pack.id }}"
      data-delete-route="{{ url('b2b_pack_delete_image') }}"
      {% if pack.id is not null %}
-     data-display-route="/b2b/pack/image-display/{{ pack.id }}"
+     data-display-route="{{ url('api_pack_display_image',{'id':pack.id}) }}"
      {% else %}
      data-display-route="/api/pack/images-community-media"
      {% endif %}
 ></div>
 {{ form_end(form,{render_rest:false}) }}
+
+
+<script>
+
+    new FroalaEditor('#pack-description', {
+        key:'iTB2xA5C4C1C2uzbtA3mfdhnD5D4H4C2C3A6B5C2B4A4==',
+        charCounterMax: 1200,
+        language: 'fr',
+        heightMax:200,
+        events: {
+            contentChanged: function () {
+                $('.pack-description-preview').html(this.html.get());
+
+            }
+        }
+    });
+</script>

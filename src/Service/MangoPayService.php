@@ -2,8 +2,13 @@
 
 namespace App\Service;
 
+use App\Entity\Option;
+use App\Repository\ClientTransactionRepository;
+use App\Repository\UserMissionRepository;
 use MangoPay;
 use MangoPay\DemoWorkflow\MockStorageStrategy;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class MangoPayService
 {
 
@@ -15,13 +20,23 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientId = 'azimforexprod';
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
-        $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
+
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
+
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
+        $this->mangoPayMoney = new MangoPay\Money();
+        $this->mangoPayRefund = new MangoPay\Refund();
     }
 
     public function createUser(MangoPay\UserNatural $userNatural)
     {
         return $this->mangoPayApi->Users->Create($userNatural);
+    }
+
+
+    public function getUser($userId)
+    {
+        return $this->mangoPayApi->Users->Get($userId);
     }
 
     /*
@@ -55,12 +70,29 @@ class MangoPayService
         return $this->mangoPayApi->Wallets->Create($wallet);
     }
 
-    public function getPayIn($mangoUser, $wallet, $amount, $transaction)
+    public function getWalletId($user)
+    {
+        return $this->mangoPayApi->Wallets->Get($user);
+    }
+
+//    public function getClientId($url)
+//    {
+////        return $this->mangoPayApi->Clients->Get('azimforexprod');
+//
+//        $ClientLogoUpload = new MangoPay\ClientLogoUpload();
+//        $ClientLogoUpload->File = $url;
+//
+//        $Result = $this->mangoPayApi->Clients->UploadLogo($ClientLogoUpload);
+//        return $Result;
+//    }
+
+    public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission,$fee)
     {
 
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
+        $payIn->Tag = "Mission-id ".$mission;
         $payIn->PaymentType = MangoPay\PayInPaymentType::Card;
         $payIn->PaymentDetails = new MangoPay\PayInPaymentDetailsCard();
         $payIn->PaymentDetails->CardType = "CB_VISA_MASTERCARD";
@@ -69,13 +101,16 @@ class MangoPayService
         $payIn->DebitedFunds->Amount = $amount;
         $payIn->Fees = new MangoPay\Money();
         $payIn->Fees->Currency = "EUR";
-        $payIn->Fees->Amount = 0;
+        $payIn->Fees->Amount = $fee;
         $payIn->ExecutionType = MangoPay\PayInExecutionType::Web;
         $payIn->ExecutionDetails = new MangoPay\PayInExecutionDetailsWeb();
         $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
         $payIn->ExecutionDetails->Culture = "EN";
-
+//        $payIn->ExecutionDetails->TemplateURLOptions = new MangoPay\PayInTemplateURLOptions();
+//        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/'.$transaction;
         $result =  $this->mangoPayApi->PayIns->Create($payIn);
+
+//        $this->setCardRegistration($mangoUser->Id);
 
         return $result->ExecutionDetails->RedirectURL;
     }
@@ -90,4 +125,100 @@ class MangoPayService
 
     }
 
+
+    public function refundPayment($transaction,$amount,$fees){
+
+        $fees = $fees * 100;
+
+        $debitedFund = $amount * 100;
+
+        $PayInId = $transaction[0]->getMangopayTransactionId();
+
+        $Refund = new \MangoPay\Refund();
+
+        $Refund->AuthorId = $transaction[0]->getMangopayUserId();
+        $Refund->Tag = "Mission-id ".$transaction[0]->getMission()->getId();
+        $Refund->DebitedFunds = new \MangoPay\Money();
+        $Refund->DebitedFunds->Currency = "EUR";
+        $Refund->DebitedFunds->Amount = $debitedFund;
+
+        $Refund->Fees = new \MangoPay\Money();
+        $Refund->Fees->Currency = "EUR";
+
+        $Refund->Fees->Amount = - $fees;
+
+        $response = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
+
+        return $response->ResultMessage;
+    }
+
+    public function refundPaymentWithFee($transaction,$amount,$refund_amount){
+
+        $fees = $refund_amount * 100;
+
+        $debitedFund = $amount * 100;
+
+        $PayInId = $transaction[0]->getMangopayTransactionId();
+
+        $Refund = new \MangoPay\Refund();
+
+        $Refund->AuthorId = $transaction[0]->getMangopayUserId();
+
+        $Refund->DebitedFunds = new \MangoPay\Money();
+        $Refund->DebitedFunds->Currency = "EUR";
+        $Refund->DebitedFunds->Amount = $debitedFund;
+
+        $Refund->Fees = new \MangoPay\Money();
+        $Refund->Fees->Currency = "EUR";
+        $Refund->Fees->Amount = - $fees;
+
+        $response = $this->mangoPayApi->PayIns->CreateRefund($PayInId, $Refund);
+
+        return $response->Id;
+    }
+
+    public function kycCreate($mangopayUserId, $filename)
+    {
+        if($this->mangoPayApi->Users->GetKycDocuments($mangopayUserId) == null){
+            //create the doc
+            $KycDocument = new \MangoPay\KycDocument();
+            $KycDocument->Type = "IDENTITY_PROOF";
+            $result = $this->mangoPayApi->Users->CreateKycDocument($mangopayUserId, $KycDocument);
+            $KycDocumentId = $result->Id;
+
+            //add a page to this doc
+
+            $result2 = $this->mangoPayApi->Users->CreateKycPageFromFile($mangopayUserId, $KycDocumentId, $filename);
+
+            //return $result2;
+            //submit the doc for validation
+            $KycDocument = new MangoPay\KycDocument();
+            $KycDocument->Id = $KycDocumentId;
+            $KycDocument->Status = "VALIDATION_ASKED";
+            $result3 = $this->mangoPayApi->Users->UpdateKycDocument($mangopayUserId, $KycDocument);
+            return $result3;
+
+        }else{
+            return $this->mangoPayApi->Users->GetKycDocuments($mangopayUserId);
+        }
+    }
+    public function getAllUsers($Page=null,$Per_Page=null){
+        return $this->mangoPayApi->Users->GetAll($Page,$Per_Page);
+    }
+
+
+    public function setCardRegistration($userID){
+
+        $cardRegister = new \MangoPay\CardRegistration();
+        $cardRegister->UserId = $userID;
+        $cardRegister->Currency = "EUR";
+        $result = $this->mangoPayApi->CardRegistrations->Create($cardRegister);
+
+        $cardRegisterPut = $this->mangoPayApi->CardRegistrations->Get($result->Id);
+        $cardRegisterPut->RegistrationData = $result->PreregistrationData;
+        $response = $this->mangoPayApi->CardRegistrations->Update($cardRegisterPut);
+
+        dd($response);
+
+    }
 }

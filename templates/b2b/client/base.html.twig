@@ -3,9 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
-
-    <meta charset="utf-8" />
+    <title>{% block meta_title %}{% if page.metaTitle is defined %}{{ page.metaTitle }}{% else %}Pix City{% endif %}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% if page.metaDescription is defined %}{{ page.metaDescription | raw }}{% endif %}{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}">
+    {% if pack is defined and pack is not null %}
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content="{{ absolute_url('/uploads/pack/banner/'~pack.bannerImage)  }}" />
+    {% endif %}
     <!-- <link href="images/favicon.ico" rel="icon" type="image/png" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Fonts -->
@@ -14,6 +18,9 @@
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
     <!-- Site CSS -->
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/cookiealert.css')) }}">
+
+
 
     {% block stylesheets %}{% endblock %}
 
@@ -21,11 +28,19 @@
 </head>
 <body>
 
-    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' %}
+    {% if app.session.has('login_by')  %}
+        {% set loginDetails = app.session.get('login_by')   %}
+        {% set loginBy = loginDetails['type'] %}
+    {% else %}
+        {% set loginBy = 'not-login'   %}
+    {% endif %}
+
+    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' and route != 'client_email_inbox' and route != 'client_email_send_emails' %}
         <!-- Header -->
         <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('b2b_client_main_index') }}"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
+                <a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}"><img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
+
                 <div class="col-3 ml-auto social-mobile">
                     <div class="row">
                         <div class="col-6 social-mobile-btn">
@@ -46,14 +61,14 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 
-                    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% if loginBy == 'not-login' %}
                         <div class="col-md-5 ml-auto mt-2 mt-lg-0">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+                                    <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" id="devenir-city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
+                                    <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="on-login-click"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
                                 </div>
                                 <div class="col-md-1 col-6 social-btn">
                                     <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
@@ -68,23 +83,141 @@
                             </div>
                         </div>
                     {% else %}
-                        <div class="col-md-5 ml-auto mt-2 mt-lg-0">
-                            <div class="row">
-                                <div class="offset-md-5 col-md-4">
-                                    <a class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" href="/client/logout"><span class="text">Log out</span><i class="fas fa-sign-in-alt"></i></a>
-                                </div>
-                                <div class="col-md-1 col-6 social-btn">
-                                    <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </a>
-                                </div>
-                                <div class="col-md-1 col-6 social-btn">
-                                    <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
-                                        <i class="fab fa-instagram"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+
+
+                         {% if loginBy == 'login_client' %}
+                             <div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
+                                 <div class="row">
+                                     <div class="col-md-8 logged-profile-menu-hover">
+                                         <a href="javascript:;" class="logged-profile">
+                                             {% if loginDetails['entity'].profilePhoto is defined and loginDetails['entity'].profilePhoto is not null  %}
+                                                 <img  src="{{ asset('/uploads/clients/'~loginDetails['entity'].id~'/'~loginDetails['entity'].profilePhoto) | imagine_filter('user_avatar') }}"  class="rounded-circle"/>
+                                             {% else %}
+                                                 <img src="/uploads/avatars/default-avatar.png" alt=""  class="rounded-circle"/>
+                                             {% endif %}
+
+                                         </a>
+                                         <div class="logged-dropdown-menu">
+                                             <div class="card">
+                                                 <div class="card-body p-0">
+                                                     <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CLIENT &nbsp;<i class="fas"></i></a>
+                                                     <a class="dropdown-item" href="{{ path('b2b_client_main_index') }}"><i class="fas fa-home"></i>Accueil</a>
+                                                     <a class="dropdown-item" href="{{ path('b2b_client_mission_list') }}"><i class="fas fa-briefcase"></i>Mes missions</a>
+                                                     <a class="dropdown-item" href="{{ path('client_transaction_index') }}"><i class="fas fa-file-invoice-dollar"></i>Facturation</a>
+                                                     <a class="dropdown-item" href="{{ path('client_email_inbox') }}"><i class="fas fa-envelope"></i>Email</a>
+                                                     <a class="dropdown-item" href="/client/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-2 col-6 social-btn logged-social-btn">
+                                         <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+                                             <i class="fab fa-facebook-f"></i>
+                                         </a>
+                                     </div>
+                                     <div class="col-md-2 col-6 social-btn logged-social-btn">
+                                         <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+                                             <i class="fab fa-instagram"></i>
+                                         </a>
+                                     </div>
+                                 </div>
+                             </div>
+                         {% elseif loginBy == 'login_cm' %}
+                             <div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
+                                 <div class="row">
+                                     <div class="col-md-8 logged-profile-menu-hover">
+                                         <a href="javascript:;" class="logged-profile">
+                                             {% set date = loginDetails['entity'].avatar.updatedAt | date('Y/m') %}
+                                             <img src="{% if loginDetails['image'] is defined and loginDetails['image'] is not null %}{{ asset('uploads/users/'~date~'/'~loginDetails['image']) | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="rounded-circle" alt="{{ loginDetails['entity'] }}">
+                                         </a>
+                                         <div class="logged-dropdown-menu">
+                                             <div class="card">
+                                                 <div class="card-body p-0">
+                                                     {% if loginDetails['view_mode'] == "pixie" %}
+                                                         <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CITY-MAKER <i class="fas fa-retweet"></i></a>
+                                                         {% if loginDetails['entity'].level >= 1 %}<a class="dropdown-item" href="{{ path('front_pixie_account_homepage') }}"><i class="fas fa-home"></i>Accueil</a> {% endif %}
+                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
+                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i>Cards en attente</a>
+                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_validated') }}"><i class="far fa-check-circle"></i>Cards Validees</a>
+                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i>Mes gains</a>
+                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
+                                                         <a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
+                                                         {% if loginDetails['entity'].getB2bCmApproval() != "0" and loginDetails['entity'].level > 1 %}
+                                                             {% if loginDetails['entity'].getB2bCmApproval() == "2" or loginDetails['entity'].getB2bCmApproval() == null %}
+                                                                 {% if app.user.getCmUpgradeB2bDate()  != null %}
+                                                                     <a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_manager_thank_you') }}">
+                                                                         <div class="col-3 pl-0">
+                                                                             <img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
+                                                                         </div>
+                                                                         <div class="col-6">
+                                                                             <div class="row">
+                                                                                 <div class="col-12">Espace Services</div>
+                                                                                 <div class="col-12">
+                                                                                     <img src="/assets/images/footer-logo-main.svg" width="58">
+                                                                                 </div>
+                                                                             </div>
+                                                                         </div>
+                                                                         <div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+                                                                             <i class="fas fa-arrow-right"></i>
+                                                                         </div>
+                                                                     </a>
+                                                                 {% else %}
+                                                                     <a class="dropdown-item user-link p-3 d-flex" href="/city-maker/compte/community/manager">
+                                                                         <div class="col-3 pl-0">
+                                                                             <img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
+                                                                         </div>
+                                                                         <div class="col-6">
+                                                                             <div class="row">
+                                                                                 <div class="col-12">Espace Services</div>
+                                                                                 <div class="col-12">
+                                                                                     <img src="/assets/images/footer-logo-main.svg" width="58">
+                                                                                 </div>
+                                                                             </div>
+                                                                         </div>
+                                                                         <div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+                                                                             <i class="fas fa-arrow-right"></i>
+                                                                         </div>
+                                                                     </a>
+                                                                 {% endif %}
+                                                             {% else %}
+                                                                 <a class="dropdown-item user-link-logged p-3 d-flex" href="{{ url('b2b_community_manager_index') }}">
+                                                                     <div class="col-9 pl-0">
+                                                                         Espace BtoB <img src="/assets/images/footer-logo-main.svg" width="58">
+                                                                     </div>
+                                                                     <div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+                                                                         <i class="fas fa-arrow-right"></i>
+                                                                     </div>
+                                                                 </a>
+                                                             {% endif %}
+                                                         {% endif %}
+                                                     {% else %}
+
+                                                         <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE VOYAGEUR <i class="fas fa-retweet"></i></a>
+                                                         <a class="dropdown-item" href="{{ path('front_user_account_cards') }}"><i class="fas fa-cog"></i>Mes Cards</a>
+                                                         <a class="dropdown-item" href="{{ path('front_user_account_agendas') }}"><i class="far fa-calendar-alt"></i>Mes Agendas</a>
+                                                         <a class="dropdown-item" href="{{ path('front_user_account_pixies') }}"><i class="far fa-user"></i>Mes City-makers Favoris</a>
+                                                         <a class="dropdown-item" href="{{ path('front_user_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
+                                                         <a class="dropdown-item" href="{{ path('front_signout') }}"><i class="fas fa-power-off"></i>Deconnexion</a>
+
+                                                     {% endif %}
+
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-2 col-6 social-btn logged-social-btn">
+                                         <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+                                             <i class="fab fa-facebook-f"></i>
+                                         </a>
+                                     </div>
+                                     <div class="col-md-2 col-6 social-btn logged-social-btn">
+                                         <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+                                             <i class="fab fa-instagram"></i>
+                                         </a>
+                                     </div>
+                                 </div>
+                             </div>
+                         {% endif %}
                     {% endif %}
 
                 </div>
@@ -93,45 +226,78 @@
         <!-- Header -->
     {% endif %}
 
-    <div class="container-fluid bg-dashboard  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
-        <div class="row">
+    <div class="{{ route starts with 'prestations_de_service' ? '' : 'container-fluid bg-dashboard' }}  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
+
+        <!-- Mobile filter Starts-->
+        <a href="javascript:;" class="mobile-filter position-fixed">
+            <i class="fas fa-filter"></i>
+        </a>
+        <!-- Mobile filter Ends-->
+        <div class="{{ route starts with 'prestations_de_service' ? '' : 'row' }}">
 
 
 
-            {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' or route == 'client_transaction_index' %}
-            <div class="col-md-2 p-sm-0 dash-left vh-100">
-                <div class="user-avatar w-100">
-                    <figure class="position-relative m-0 w-100">
-                        {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
-                            <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
-                        {% else %}
-                            <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
-                        {% endif %}
+            {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' or route == 'client_transaction_index' or  route == 'client_email_inbox' or  route == 'client_email_send_emails' %}
+                <div class="col-md-2 p-sm-0 dash-left vh-100">
+                    <div class="user-avatar w-100">
+                        <figure class="position-relative m-0 w-100">
+                            {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
+                                <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
+                            {% else %}
+                                <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
+                            {% endif %}
 
-                        <figcaption class="position-absolute d-flex align-items-center" id="profile-redirect"><i class="fas fa-user-circle mr-2"></i>
-                            <span>Prévisualiser mon profil</span></figcaption>
-                    </figure>
+                            <figcaption class="position-absolute d-flex align-items-center" id="profile-redirect"><i class="fas fa-user-circle mr-2"></i>
+                                <span>Modifier mon profill</span></figcaption>
+                        </figure>
 
+                    </div>
+                    <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link {% if route == 'b2b_client_main_index'%}active{% endif %}" href="/client/index" role="tab" aria-controls="home">
+                                <i class="fas fa-home"></i>Accueil</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {% if route == 'b2b_client_mission_list'%}active{% endif %}" href="{{ url('b2b_client_mission_list') }}" role="tab" aria-controls="myMissions">
+                                <i class="fas fa-briefcase"></i>Mes missions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="{{ url('client_transaction_index') }}" role="tab" aria-controls="billing">
+                                <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if route == 'client_email_inbox'%}active{% endif %}{% if route == 'client_email_send_emails'%}active{% endif %}" href="{{ url('client_email_inbox') }}" role="tab" aria-controls="billing">
+                                <i class="fas fa-envelope"></i>Email</a>
+                        </li>
+                    </ul>
+                    <footer class="text-center p-2 text-pink fz-11">
+{#                        <div class="row">#}
+{#                            <div class="col-md-12">#}
+{#                                <a href="{{ url('front_faq_index') }}" class="d-block fz-16 text-darkblue text-center" target="_blank">#}
+{#                                    <i class="far fa-question-circle"></i>#}
+{#                                    <p>FAQ</p>#}
+{#                                </a>#}
+{#                            </div>#}
+
+{#                        </div>#}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="{{ url('front_faq_index') }}" class="d-block fz-16 text-darkblue text-center"  target="_blank">
+                                    <i class="far fa-question-circle mr-0"></i>
+                                    <p>FAQ</p>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="/blog" class="d-block fz-16 text-darkblue text-center"  target="_blank">
+                                    <i class="fas fa-blog mr-0"></i>
+                                    <p>Blog</p>
+                                </a>
+                            </div>
+                        </div>
+                        <a href="/client/signout" class="text-pink"><i class="fas fa-cog"></i>Se déconnecter</a>
+                    </footer>
                 </div>
-                <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'b2b_client_main_index'%}active{% endif %}" href="/client/index" role="tab" aria-controls="home">
-                            <i class="fas fa-home"></i>Accueil</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'b2b_client_mission_list'%}active{% endif %}" href="/client/mission/list" role="tab" aria-controls="myMissions">
-                            <i class="fas fa-briefcase"></i>Mes missions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="/client/transaction" role="tab" aria-controls="billing">
-                            <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
-                    </li>
-                </ul>
-                <footer class="text-center p-2 text-pink fz-12">
-                    <i class="fas fa-cog"></i>Retourner sur Pix.city
-                </footer>
-            </div>
 
                 <div class="col-md-10 offset-md-2 dash-right vh-100 p-0">
                     <div class="tab-content">
@@ -203,7 +369,7 @@
                             <p>Êtes-vous sur de vouloir annuler le paiement de la mission ?
                                 Celle-ci ne pourra débuter tant que les fonds n’auront pas été reçus.</p>
                             <p>Si vous avez des questions sur l’annulation du paiement, n’hésitez pas à consulter
-                                notre <a href="javascript:;">page d’aide.</a> </p>
+                                notre <a href="{{ path('front_faq_index') }}">page d’aide.</a> </p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
@@ -213,6 +379,9 @@
                 </div>
             </div>
             <!-- Cancel mission payment modal ends -->
+
+
+
 
             <!-- Cancel missions contents -->
             <div class="cancel-mission-container col-sm-12 p-0 vh-100">
@@ -237,7 +406,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
-                                                <textarea class="form-control form-control bg-lightwhite fz-14 pack-description" cols="30" rows="10">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</textarea>
+                                                <textarea class="form-control form-control bg-lightwhite fz-14 pack-description" cols="30" rows="10"></textarea>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -263,13 +432,29 @@
                             <div class="customer-request-cancellation text-center">
                                 <p class="fz-20 mb-3">A la demande du client, vous avez accepté d’annuler la mission</p>
                                 <p class="fz-16 font-weight-light">Votre mission apparaitra comme annulée dans votre dashboard une fois que votre client l’aura confirmé. </p>
-                                <p class="fz-16 font-weight-light">Si vous avez des  questions, consultez notre <a href="javascript:;">FAQ</a></p>
+                                <p class="fz-16 font-weight-light">Si vous avez des  questions, consultez notre <a href="https://staging.pix.city/front/faq">FAQ</a></p>
                                 <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+            <div class="toast to-validate-quote-toast fade w-100 m-0 bg-darkgray text-white border-0 rounded-0 fixed-top align-items-center d-flex opacity-90"
+                 role="alert" data-delay="5000" aria-live="assertive" aria-atomic="true">
+                <div class="toast-body text-center align-items-center justify-content-center d-flex position-relative w-100 fz-16">
+                    Le prix de la mission a été mis à jour
+                    <button type="button" class="close position-absolute d-flex align-items-center" data-dismiss="toast"
+                            aria-label="Close">
+                        <i class="fas fa-times-circle text-white fz-14"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- To Validate quote toast ends -->
+
+
             <!-- Cancel missions contents ends-->
 
             <!-- End mission confirmation modal -->
@@ -277,28 +462,133 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title fz-16">Vous souhaitez terminer la mission ?</h5>
+                            <h5 class="modal-title fz-16">Vous souhaitez terminer la mission?</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p id="mission-termination-text"></p>
+{#                            <p id="break-up-text"></p>#}
+{#                            <p id="price"></p>#}
+{#                            <p id="tax"></p>#}
+{#                            <hr>#}
+{#                            <p id="total"></p>#}
+{#                            <p id="advance-payment"></p>#}
+{#                            <hr>#}
+{#                            <p id="need-to-pay"></p>#}
+{#                            <p id="mission-termination-text"></p>#}
+                            <p>En cliquant sur “terminer la mission”, une notification de fin de mission sera envoyée au client.</p>
+                            <p>Dès sa validation, le paiement de votre mission pourra avoir lieu sous 48h.</p>
+                            <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="https://staging.pix.city/front/faq">FAQ</a>. Merci !</p>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
-                            <a href="javascript:;" id="mission-terminate" class="btn btn-pink">TERMINER LA MISSION</a>
+                            <a href="javascript:;" id="mission-terminate" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Demande de traitement.." class="btn btn-pink teminate-class">TERMINER LA MISSION</a>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- End mission confirmation modal ends -->
 
+            <!-- End mission cancellation confirmation modal -->
+            <div class="modal fade alert-modal end-mission-confirmation-modal" id="endCancelledMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="endCancelledMissionConfirmation" aria-hidden="true" style="">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title fz-16">Vous souhaitez confirmer l’annulation de la mission ?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+{#                            <p>The Breakup amount</p>#}
+{#                            <p id="price-cancel"></p>#}
+{#                            <p id="tax-cancel"></p>#}
+{#                            <hr>#}
+{#                            <p id="total-cancel"></p>#}
+{#                            <p id="advance-payment-cancel"></p>#}
+{#                            <hr>#}
+{#                            <p id="need-to-pay-cancel"></p>#}
+{#                            <p id="mission-termination-text-cancel"></p>#}
+                            <p>Si vous acceptez d’annuler la mission, l’intégralité du montant de la mission vous sera re-crédité via notre partenaire Mango pay dans les 72h.</p>
+                            <p>Si vous avez la moindre question, n’hésitez pas à contacter directement votre City-Maker.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                            <a href="javascript:;" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Demande de traitement.." id="mission-terminate-cancel" class="btn btn-pink teminate-class-cancel">ANNULER LA MISSION</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End mission confirmation modal ends -->
+
+            <!-- My facturation contents -->
+            <div class="facturation-show-container col-sm-12 p-0 vh-100">
+                <div class="overlay-dashboard"></div>
+                <div class="col-sm-10 offset-sm-2 facturation-show-content bg-white p-0">
+                    <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-invoice-preview">
+                        <i class="fal fa-times fz-20 opacity-50"></i>
+                    </a>
+
+                    <object
+                            id="object-invoice-path"
+                            data=""
+                            type="application/pdf"
+                            width="100%"
+                            height="100%">
+                        <iframe
+                                id="invoice-path"
+                                src=""
+                                width="100%"
+                                height="100%"
+                                style="border: none;">
+                            <p>Your browser does not support PDFs.
+                                <a href="https://example.com/test.pdf">Download the PDF</a>.</p>
+                        </iframe>
+                    </object>
+
+                </div>
+                <nav class="col-sm-10 offset-sm-2 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
+                    <div class="container-fluid align-items-center justify-content-end">
+                        <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
+                            <!-- <div class="client-image btn-circle-50 p-0 mr-3">
+                                <img src="../images/USER-AVATAR.jpg" class="img-fluid rounded-circle" alt="client Logo">
+                            </div>
+                            <div class="client-name-mission-status mr-4">
+                                <p class="mb-0 fz-11 text-inprogress mission-status">Mission en cours</p>
+                                <p class="mb-0 text-darkgray client-name">@Lily_Bordeaux</p>
+                            </div>
+                            <div class="mr-4">
+                                <p class="mb-0 fz-12 text-normalgray">Région</p>
+                                <p class="mb-0 text-darkgray client-region">PARIS</p>
+                            </div>
+                            <div class="mr-4">
+                                    <p class="mb-0 fz-12 text-normalgray">Prix</p>
+                                    <p class="mb-0 text-darkgray user-price">160€</p>
+                            </div>
+                            <div class="mission-invoice d-flex align-items-center mr-4">
+                                <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-35 mr-2"></i></p>
+                                <p class="mb-0 text-darkgray">
+                                    Devis PX-13032109-00752
+                                    <a href="javascript:;" class="d-block fz-12 text-inprogress">Version 1: 03/04/2019</a>
+                                </p>
+                            </div> -->
+                            <div class="d-flex w-100 justify-content-center">
+                                <a href="javascript:;" class="btn btn-green btn-pill validate-quote"><i class="fas fa-check fz-14 mr-2"></i>Devis validé</a>
+{#                                <a href="javascript:;" class="btn btn-green btn-pill validate-the-quote">Valider le devis</a>#}
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- My facturation contents ends -->
+            {{ include('b2b/shared/_client_modals.html.twig') }}
 
         </div>
     </div>
 
-    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' %}
+    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' and route != 'client_email_inbox' and route != 'client_email_send_emails'  %}
 
         <!-- Footer -->
         <div class="social-wrap">
@@ -306,113 +596,103 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="brand-footer">
-                            <img src="/images/footer-logo-main.svg">
+                            {#<img src="/images/footer-logo-main.svg">#}
+                            <img src="/assets/images/services-footer-logo.svg" alt="pix-city-services-footer-logo" >
                         </div>
                         <div class="container-propos">
                             <h4>A Propos De Nous</h4>
+                            {#{{ menu('footer-1', 'footerMenu') | raw }}#}
+                            {#{{ menu('footer-2', 'footerMenu') | raw }}#}
+{#                            {{ menu('footer-3', 'footerMenu') | raw }}#}
                             <ul>
-                                <li><a href="^_^">Mentions Legales</a></li>
-                                <li><a href="^_^">Conditions générales d’utilisation</a></li>
-                                <li><a href="^_^">Politique de protection des données</a></li>
-                                <li><a href="^_^">La FAQ du City-Maker</a></li>
-                                <li><a href="^_^">L’Équipe</a></li>
-                                <li><a href="^_^">Contact</a></li>
+                                <li><a href="{{ path('front_faq_index') }}">FAQ de Pix.City Services</a></li>
                             </ul>
+                            {#<ul>#}
+                            {#<li><a href="^_^">Mentions Legales</a></li>#}
+                            {#<li><a href="^_^">Conditions générales d’utilisation</a></li>#}
+                            {#<li><a href="^_^">Politique de protection des données</a></li>#}
+                            {#<li><a href="^_^">La FAQ du City-Maker</a></li>#}
+                            {#<li><a href="^_^">L’Équipe</a></li>#}
+                            {#<li><a href="^_^">Contact</a></li>#}
+                            {#</ul>#}
                         </div>
                         <div class="container-social">
                             <h4>Pix.city Sur Les Reseaux Sociaux</h4>
                             <ul>
-                                <li><a href="^_^"><i class="fab fa-facebook-square"></i> <span>Facebook</span></a></li>
-                                <li><a href="^_^"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a></li>
-                                <li><a href="^_^"><i class="fab fa-instagram"></i> <span>Instagram</span></a></li>
+                                <li><a href="https://www.facebook.com/pix.city.france/"><i class="fab fa-facebook-square"></i> <span>Facebook</span></a></li>
+                                <li><a href="https://www.linkedin.com/company/pixcityservices/"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a></li>
+                                <li><a href="https://instagram.com/pix_city/"><i class="fab fa-instagram"></i> <span>Instagram</span></a></li>
                             </ul>
                         </div>
-                        <div class="container-insta">
-                            <div class="row">
-                                <div class="col-md-6 col-6 text-left pl-1">
-                                    <h4><i class="fab fa-instagram"></i> Instagram</h4>
-                                </div>
-                                <div class="col-md-6 col-6 text-right pr-1 tag">
-                                    @pix.city
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3 col-3 container-insta-image">
-                                    <a href="javascript:;" target="_blank" rel="noopener">
-                                        <img src="https://scontent.cdninstagram.com/vp/5aace280ab6fe6af8e751c95ad09ec4a/5D1FDD0E/t51.2885-15/e15/c0.126.1080.1080/s150x150/53026482_583867542091943_7089626414636293551_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-3 container-insta-image">
-                                    <a href="javascript:;" target="_blank" rel="noopener">
-                                        <img src="https://scontent.cdninstagram.com/vp/d880fc4db60d51ee64a98cc907ac56de/5D092635/t51.2885-15/e15/c0.135.1080.1080/s150x150/54247548_125889325204658_541676803380358362_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-3 container-insta-image">
-                                    <a href="javascript:;" target="_blank" rel="noopener">
-                                        <img src="https://scontent.cdninstagram.com/vp/6bed99e9fa696f6d5541354a7b84dc52/5D151712/t51.2885-15/e15/c0.135.1080.1080/s150x150/53637635_559627357774426_699703565427063234_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-3 container-insta-image">
-                                    <a href="javascript:;" target="_blank" rel="noopener">
-                                        <img src="https://scontent.cdninstagram.com/vp/1c7df32e8b3867ece19a4006fe9ec8fa/5D22CD11/t51.2885-15/e35/c0.135.1080.1080a/s150x150/53856604_249915129121000_4243293558998398799_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-3 container-insta-image">
-                                    <a href="javascript:;" target="_blank" rel="noopener">
-                                        <img src="https://scontent.cdninstagram.com/vp/5f28df971cfcaf7969efd83b744043ba/5D23CA15/t51.2885-15/e15/c0.127.1080.1080a/s150x150/52273921_261014408164932_744580050313586065_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-3 container-insta-image">
-                                    <a href="javascript:;" target="_blank" rel="noopener">
-                                        <img src="https://scontent.cdninstagram.com/vp/6491c51af5952032959370f8393c4fe3/5D0C48A4/t51.2885-15/e35/s150x150/51960962_294716391203558_1597597711548461940_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-3 container-insta-image">
-                                    <a href="javascript:;" target="_blank" rel="noopener">
-                                        <img src="https://scontent.cdninstagram.com/vp/f0d2c0f5c883a2d4f9317d64b728dfcf/5D14FDB0/t51.2885-15/e15/c0.131.1080.1080/s150x150/52111607_422196091859273_3895223294332133424_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-3 container-insta-image">
-                                    <a href="javascript:;" target="_blank" rel="noopener">
-                                        <img src="https://scontent.cdninstagram.com/vp/261daf3423b6df918a9e8e30f8bf3c6c/5D0D25DD/t51.2885-15/e15/c0.126.1080.1080/s150x150/52161743_179739602998449_4282064336755352876_n.jpg?_nc_ht=scontent.cdninstagram.com">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        {#<div class="container-insta">#}
+                        {#<div class="row">#}
+                        {#<div class="col-md-6 col-6 text-left pl-1">#}
+                        {#<h4><i class="fab fa-instagram"></i> Instagram</h4>#}
+                        {#</div>#}
+                        {#<div class="col-md-6 col-6 text-right pr-1 tag">#}
+                        {#@pix.city#}
+                        {#</div>#}
+                        {#</div>#}
+                        {#<div class="row">#}
+                        {#{% for post in instagramFeed() %}#}
+
+                        {#<div class="col-md-3 col-3 container-insta-image">#}
+                        {#<a href="{{ post.link }}" target="_blank" rel="noopener">#}
+                        {#<img src="{{ post.image }}" alt="{{ post.title }}">#}
+                        {#</a>#}
+                        {#</div>#}
+
+                        {#{% endfor %}#}
+                        {#</div>#}
+                        {#</div>#}
                     </div>
                 </div>
             </div>
         </div>
         <div class="footer-wrap">
             <div class="container">
-                © 2019 Pix City
+                © 2019 Pix City Services
             </div>
         </div>
 
         <!-- Footer ends -->
 
+
+
     {% endif %}
+
 
     <!-- Scripts -->
     <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
     <!-- <script src="js/app.js"></script> -->
     <script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
 
+
+
+
     <script>
         /* custom per page scripts */
 
         $(document).ready(function () {
 
+            $("#on-login-click").click(function () {
+                window.location.href = "/connexion";
+            });
+
+            $("#devenir-city-maker").click(function () {
+                window.location.href = "/devenez-city-maker";
+            });
+
             $("#profile-redirect").on('click',function () {
-                window.location.href = "/client/profile";
+                window.location.href = "{{ url('b2b_client_main_profile') }}";
             });
 
             /* Skills Pack Buttons */
-            $('a.skills-pack').click(function () {
-                // e.preventDefault();
-                $(this).parent('li').siblings().find('a').removeClass('active');
-                $(this).addClass('active');
-            });
+            // $('a.skills-pack').click(function () {
+            //     // e.preventDefault();
+            //     $(this).parent('li').siblings().find('a').removeClass('active');
+            //     $(this).addClass('active');
+            // });
 
             /* Restrict maxlengths for input and textarea fields */
             $('textarea.pack-description, input.pack-title').on("input", function () {
@@ -488,7 +768,7 @@
                 <div class="upload-area mb-4">
                     <div class="area-label text-center p-4">
                         <i class="fas fa-cloud-upload-alt"></i>
-                        <p class="mb-0">Déposez vos images ici</p>
+                        <p class="mb-0">Joindre un document</p>
                         <a href="javascript:;">Depuis votre navigateur</a>
                     </div>
                 </div>
@@ -676,12 +956,31 @@
                             });
                         })
                     } else if ($(this).is('a.check-the-quote')) {
-                        $('.dash-right, .validate-quote').fadeOut()
-                        $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function(){
-                            $('.to-validate-quote-toast').toast('show').css({
-                                'z-index': '1050'
-                            });
+                        $('.dash-right, .validate-quote').fadeOut();
+
+                        var id = $(this).attr('data-id');
+
+                        $.ajax({
+                            url:"{{ path('b2b_client_main_preview_invoice') }}",
+                            type:'GET',
+                            data: {id: id},
+                            dataType:'json',
+                            success: function(data){
+                                console.log(data);
+                                $("#invoice-path").attr('src',data);
+                                $("#object-invoice-path").attr('data',data);
+
+                                $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function () {
+                                    // $('.to-validate-quote-toast').toast('show').css({
+                                    //     'z-index': '1050'
+                                    // });
+                                });
+
+                                return false;
+                            }
                         });
+
+
                     }
                 })
             /* Preview Invoice Ends */
@@ -740,47 +1039,130 @@
             /* Slick slider starts ends */
         });
 
+
+
+
+
         $(document).on('click','#terminateMission',function () {
 
             var amount = $(this).attr('data-adjust-amount');
-            console.log(amount > 0);
-            if(amount > 0){
-                $("#mission-termination-text").text("The access amount "+amount+" you need to pay to terminate the mission");
-                $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+$(this).attr('data-id'));
-            }else{
-                $('#mission-termination-text').text("The remaining amount "+amount+" will be paid back to you within 48 hours");
-                $('#mission-terminate').attr('data-id',$(this).attr('data-id'));
-            }
+            var type = $(this).attr('data-type');
+            var id = $(this).attr('data-id');
+
+            $.ajax({
+                url:"{{ path('b2b_client_main_mission_details') }}",
+                data:{id:id},
+                method:'GET',
+                success:function (data) {
+                    console.log(amount);
+                    if(amount > 0){
+                        if(type == 'terminate'){
+                            $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
+                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
+                            $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+id);
+                            $('#mission-terminate').attr('data-type','terminate');
+                            $(".teminate-class").removeAttr('id','none');
+
+                        }else if(type == 'cancel'){
+                            var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
+                            var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
+
+                            $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
+                            $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
+
+                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
+                            $('#mission-terminate-cancel').attr('data-type','terminate');
+                            $(".teminate-class-cancel").removeAttr('id','none');
+                        }
+
+                    }else if(amount < 0){
+                        console.log(type);
+
+                        if(type == 'terminate'){
+                            $("#break-up-text").text('The Refundable amount will be done once you terminate the mission');
+                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay").text('Refund Amount:'+parseFloat(data.refund_amount).toFixed(2));
+
+                            $('#mission-termination-text').text("The remaining amount "+parseFloat(data.refund_amount).toFixed(2)+" will be paid back to you within 48 hours");
+                            $("#mission-terminate").attr("href","/client/api/mission/status/"+id+'/'+type);
+                            $('#mission-terminate').attr('data-type','terminate');
+                            $(".teminate-class").removeAttr('id','none');
+
+                        }else if (type == 'cancel'){
+
+                            var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
+                            var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
+                            $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
+                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
+                            $('#mission-terminate-cancel').attr('data-type','terminate');
+                            $(".teminate-class-cancel").removeAttr('id','none');
+
+                        }
 
 
+                    }else if(amount == 0){
+
+                        if(type == 'terminate'){
+                            console.log(amount);
+                            $("#break-up-text").text('Please terminate the mission');
+                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
+                            $("#mission-terminate").attr("href","/client/api/mission/status/"+id+'/'+type);
+                            $('#mission-terminate').attr('data-type','terminate');
+                            $(".teminate-class").removeAttr('id','none');
+
+                        }else if (type == 'cancel'){
+
+                            var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
+                            var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
+                            $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
+                            $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                            $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
+                            $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
+                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
+                            $('#mission-terminate-cancel').attr('data-type','terminate');
+                            $(".teminate-class-cancel").removeAttr('id','none');
+
+                        }
+
+
+                    }
+                }
+            })
 
         });
 
-        $(document).on('click','#mission-terminate',function () {
 
-           var id = $(this).attr('data-id');
 
-           $.ajax({
-               url:"{{ path('api_mission_client_status') }}",
-               data: {id: id,status:'terminate'},
-               success:function (data) {
-                window.location.href = "/client/mission/list";
-               }
-           })
-        });
-
-        $(document).on('click','#mission-cancel',function () {
-
-           var id = $(this).attr('data-id');
-
-           $.ajax({
-               url:"{{ path('api_mission_client_status') }}",
-               data: {id: id,status:'cancel'},
-               success:function (data) {
-                window.location.href = "/client/mission/list";
-               }
-           })
-        });
+        (function($) {
+            $.fn.button = function(action) {
+                if (action === 'loading' && this.data('loading-text')) {
+                    this.data('original-text', this.html()).html(this.data('loading-text')).prop('disabled', true);
+                }
+                if (action === 'reset' && this.data('original-text')) {
+                    this.html(this.data('original-text')).prop('disabled', false);
+                }
+            };
+        }(jQuery));
 
         $(document).on('click','#printInvoice',function () {
 
@@ -796,7 +1178,12 @@
 
     {% block javascripts %}{% endblock %}
 
+{#    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}#}
 
+    <!-- Alert about cookie useage -->
+    {% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+    <script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
 </body>
 </html>

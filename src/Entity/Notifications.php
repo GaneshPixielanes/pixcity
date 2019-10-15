@@ -63,6 +63,11 @@ class Notifications
      */
     private $updated_at;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $log_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -172,6 +177,18 @@ class Notifications
     public function setUpdatedAt(?\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getLogId(): ?int
+    {
+        return $this->log_id;
+    }
+
+    public function setLogId(?int $log_id): self
+    {
+        $this->log_id = $log_id;
 
         return $this;
     }

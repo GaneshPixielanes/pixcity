@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/plugins-bundle.css') }}" />
     <!-- Site CSS -->
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/cookiealert.css')) }}">
 
     {% block stylesheets %}{% endblock %}
     <!-- Scripts -->
@@ -23,9 +24,10 @@
 </head>
 <body>
 {% block body %}{% endblock %}
-
+{% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
 {% block javascripts %}{% endblock %}
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+<script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
 <script src="{{ absolute_url('/assets/js/mission.js') }}"></script>
 <script>
     /* Restrict maxlengths for input and textarea fields */

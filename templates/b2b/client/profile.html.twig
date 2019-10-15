@@ -1,57 +1,82 @@
 {% extends 'b2b/base.html.twig' %}
-
+{%  block meta_title %}{{ page.metaTitle }}{% endblock %}
+{%  block meta_description %}{{ page.metaDescription }}{% endblock %}
+{%  block meta_robots %}{% if page.indexed == false %}noindex,follow{% else %}{{ parent() }}{% endif %}{% endblock %}
 {% form_theme form 'b2b/shared/field.html.twig' %}
 
 
 
 {% block body %}
 
+{% embed 'v2/_shared/header_faq.html.twig' %}{% endembed %}
+{#    <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">#}
+{#        <div class="container">#}
+{#            <a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}">#}
+{#                <img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>#}
+{#            <div class="col-3 ml-auto social-mobile">#}
+{#                <div class="row">#}
+{#                    <div class="col-6 social-mobile-btn">#}
+{#                        <a href="javascript:;" title="Facebook">#}
+{#                            <i class="fab fa-facebook-f"></i>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                    <div class="col-6 social-mobile-btn">#}
+{#                        <a href="javascript:;" title="Instagram">#}
+{#                            <i class="fab fa-instagram"></i>#}
+{#                        </a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">#}
+{#                <!-- <span class="navbar-toggler-icon"></span> -->#}
+{#                <img src="{{ absolute_url(asset('build/images/menu.svg')) }}" />#}
+{#            </button>#}
+{#            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">#}
 
-    <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
-        <div class="container">
-            <a class="navbar-brand" href="/client/index"><img src="{{ absolute_url('/assets/images/header-logo-main.svg') }}" alt="Pix.City"></a>
-            <div class="col-3 ml-auto social-mobile">
-                <div class="row">
-                    <div class="col-6 social-mobile-btn">
-                        <a href="javascript:;" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                    </div>
-                    <div class="col-6 social-mobile-btn">
-                        <a href="javascript:;" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                <!-- <span class="navbar-toggler-icon"></span> -->
-                <img src="{{ absolute_url('/assets/images/menu.svg') }}" />
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <div class="col-md-5 ml-auto mt-2 mt-lg-0">
-                    <div class="row">
-                        <div class="col-md-6">
-{#                            <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>#}
-                        </div>
-                        <div class="col-md-4">
-                            <a class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" href="/client/logout"><span class="text">Log out</span><i class="fas fa-sign-in-alt"></i></a>
-                        </div>
-                        <div class="col-md-1 col-6 social-btn">
-                            <a href="javascript:;" title="Facebook">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                        </div>
-                        <div class="col-md-1 col-6 social-btn">
-                            <a href="javascript:;" title="Instagram">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+{#                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}#}
+{#                    <div class="col-md-5 ml-auto mt-2 mt-lg-0">#}
+{#                        <div class="row">#}
+{#                            <div class="col-md-6">#}
+{#                                <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" id="devenir-city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>#}
+{#                            </div>#}
+{#                            <div class="col-md-4">#}
+{#                                <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="on-login-click"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>#}
+{#                            </div>#}
+{#                            <div class="col-md-1 col-6 social-btn">#}
+{#                                <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">#}
+{#                                    <i class="fab fa-facebook-f"></i>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="col-md-1 col-6 social-btn">#}
+{#                                <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">#}
+{#                                    <i class="fab fa-instagram"></i>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% else %}#}
+{#                    <div class="col-md-5 ml-auto mt-2 mt-lg-0">#}
+{#                        <div class="row">#}
+{#                            <div class="offset-md-5 col-md-5">#}
+{#                                <a class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" href="/client/logout"><span class="text">Déconnexion</span><i class="fas fa-sign-in-alt"></i></a>#}
+{#                            </div>#}
+{#                            <div class="col-md-1 col-6 social-btn">#}
+{#                                <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">#}
+{#                                    <i class="fab fa-facebook-f"></i>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="col-md-1 col-6 social-btn">#}
+{#                                <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">#}
+{#                                    <i class="fab fa-instagram"></i>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endif %}#}
+
+{#            </div>#}
+{#        </div>#}
+{#    </nav>#}
     {{ form_start(form) }}
     {{ form_row(form._token) }}
     <div class="login-wrap">
@@ -60,9 +85,9 @@
                 <div class="col-md-12 login-content d-flex align-items-center">
                     <div class="row w-100">
                         <div class="col-md-6"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-2">
                             <div class="unregistered-log">
-                                <h4 class="fz-28 font-weight-bold text-center">{{ app.user }} Profile!</h4>
+{#                                <h4 class="fz-28 font-weight-bold text-center">{{ app.user }} Profile!</h4>#}
                                 <div class="row">
                                     <div class="col-md-8 m-auto">
                                         <form action="" method="" accept-charset="utf-8">
@@ -72,7 +97,7 @@
 
                                                     <label class="btn custom-input-btn">
                                                         <input type="file" name="file-avatar" id="client-logo" style="display:none">
-                                                        <i class="fa fa-cloud-upload"></i> Upload Logo
+                                                        <i class="fa fa-cloud-upload"></i> Télécharger logo
                                                     </label>
                                                     <div class="user-avatar w-100">
                                                         <figure class="position-relative m-0 w-100 mb-2">
@@ -108,6 +133,30 @@
                                                         {{ form_errors(form.clientInfo.business) }}
 
                                                     </div>
+                                                    {#<div class="row">#}
+                                                        {#<div class="col-md-5 input-container">#}
+                                                            {#Adresse Preuve 1:#}
+                                                            {#{% if form.vars.data.clientInfo.mangopayKycFile  %}#}
+                                                                {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/client/addr1/'~form.vars.data.clientInfo.id~'/'~form.vars.data.clientInfo.mangopayKycFile}}" width="20%">#}
+                                                            {#{% endif %}#}
+
+                                                            {#<div class="upload-zone ">#}
+                                                                {#<input type="file" id="mangopayKycFile"  class="filestyle" data-icon="false"/>#}
+                                                                {#<input type="hidden" name="client[clientInfo][mangopayKycFile]" value="{{ form.vars.data.clientInfo.mangopayKycFile }}"/>#}
+                                                            {#</div>#}
+                                                        {#</div>#}
+                                                        {#<div class="col-md-7 input-container">#}
+                                                            {#Adresse Preuve 2:#}
+                                                            {#{% if form.vars.data.clientInfo.mangopayKycAddr  %}#}
+                                                                {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/client/addr2/'~form.vars.data.clientInfo.id~'/'~form.vars.data.clientInfo.mangopayKycAddr}}" width="20%">#}
+                                                            {#{% endif %}#}
+                                                            {#<div class="upload-zone ">#}
+                                                                {#<input type="file" id="mangopayKycAddr"  class="filestyle" data-icon="false"/>#}
+                                                                {#<input type="hidden" name="client[clientInfo][mangopayKycAddr]" value="{{ form.vars.data.clientInfo.mangopayKycAddr }}"/>#}
+                                                            {#</div>#}
+
+                                                        {#</div>#}
+                                                    {#</div>#}
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -130,7 +179,8 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 mb-4 text-center">
-                                                    <button class="btn btn-pink btn-pill mx-auto lh2" type="submit">Save</button>
+                                                    <a href="/client/index" class="btn btn-pink btn-pill mx-auto lh2">Annuler</a>
+                                                    <button class="btn btn-pink btn-pill mx-auto lh2" type="submit">Sauvegarder</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -168,7 +218,9 @@
 
 {% block javascripts %}
     {{ parent() }}
- <script type="text/javascript" src="{{ asset('build/b2b/js/client_registration.js') }}"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+    <script type="text/javascript" src="{{ asset('build/b2b/js/client_profile.js') }}"></script>
 
     <script>
         $(document).on('change', '#client-logo', function () {
@@ -187,7 +239,50 @@
             }).fail(function (xhr, status, error) {
 
             });
-
         });
+
+        {#$(document).ready( function () {#}
+            {#$('#mangopayKycFile').change(function()#}
+            {#{#}
+                {#var data = new FormData();#}
+                {#data.append('file',$(this)[0].files[0]);#}
+                {#data.append('id',{{ user.id }});#}
+                {#$.ajax('{{ url('b2b_client_main_mangopaykyc') }}',{#}
+                    {#method: 'POST',#}
+                    {#processData: false,#}
+                    {#cacheable:false,#}
+                    {#data:data,#}
+                    {#contentType: false,#}
+                    {#success: function(result)#}
+                    {#{#}
+                        {#if(result.success == true)#}
+                        {#{#}
+                            {#$('[name="client[clientInfo][mangopayKycFile]"').val(result.fileName);#}
+                        {#}#}
+                    {#}#}
+                {#});#}
+            {#});#}
+            {#$('#mangopayKycAddr').change(function()#}
+            {#{#}
+                {#var data = new FormData();#}
+                {#data.append('file',$(this)[0].files[0]);#}
+                {#data.append('id',{{ user.id }});#}
+                {#$.ajax('{{ url('b2b_client_main_mangopayKycAddr') }}',{#}
+                    {#method: 'POST',#}
+                    {#processData: false,#}
+                    {#cacheable:false,#}
+                    {#data:data,#}
+                    {#contentType: false,#}
+                    {#success: function(result)#}
+                    {#{#}
+                        {#if(result.success == true)#}
+                        {#{#}
+                            {#$('[name="client[clientInfo][mangopayKycAddr]"').val(result.fileName);#}
+                        {#}#}
+                    {#}#}
+                {#});#}
+            {#});#}
+
+        {#});#}
     </script>
 {% endblock %}

@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClientMissionProposalMediaRepository")
+ * @ORM\Table(name="pxl_b2b_client_mission_proposal_media")
  */
 class ClientMissionProposalMedia
 {

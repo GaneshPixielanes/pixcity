@@ -4,6 +4,7 @@ namespace App\Form\Admin;
 
 use App\Entity\CardCategory;
 use App\Entity\Region;
+use App\Entity\Skill;
 use App\Entity\User;
 use App\Form\Shared\UserLinkType;
 use App\Form\Shared\UserMediaType;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -36,6 +38,7 @@ class UserType extends AbstractType
         $builder
             ->add('active', SwitchType::class, array('label' => 'label.active', 'required' => false))
             ->add('visible', SwitchType::class, array('label' => 'label.visible', 'required' => false))
+            ->add('level',TextType::class, array('label' => 'label.user_level', 'required' => false,'attr'=>array('readonly'=>1)))
             ->add('avatar', UserMediaType::class, array('label' => 'label.avatar', 'required' => true))
             ->add('email', EmailType::class, array('label' => 'label.email'))
             ->add('firstname', TextType::class, array('label' => 'label.firstname'))
@@ -65,7 +68,8 @@ class UserType extends AbstractType
                 'expanded' => true,
                 'choices'  => array(
                     'label.user' => 'ROLE_USER',
-                    'label.pixie' => 'ROLE_PIXIE'
+                    'label.pixie' => 'ROLE_PIXIE',
+                    'label.cm' => 'ROLE_CM'
                 ),
             ))
             ->add('plainPassword', RepeatedType::class, array(
@@ -99,8 +103,34 @@ class UserType extends AbstractType
                 'attr' => [
                     'rowClass' => 'multiple-checkboxes'
                 ]
-            ))
-        ;
+            ));
+        if((!isset($options["type"]) || "editFromAdmin" === $options["type"]) && (!isset($options["roleSet"]) || "b2b" === $options["roleSet"])) {
+            $builder
+                ->add('b2bCmApproval', ChoiceType::class, [
+                    'choices' => [
+                        'Wait for approval' => 2,
+                        'Yes' => 1,
+                        'No' => 0
+                    ],
+                ])
+                ->add('userSkill', EntityType::class, array(
+                    'label' => 'label.skills',
+                    'class' => Skill::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'expanded' => true
+                ))
+                ->add('userRegion', EntityType::class, array(
+                    'label' => 'label.regions',
+                    'class' => Region::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'expanded' => true
+                ))
+                ->add('mangopayKycFile',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 1'))
+                ->add('mangopayKycAddr',HiddenType::class,array('data_class'=> null, 'label' => 'Adresse Preuve 2'))
+            ;
+        }
 
     }
 
@@ -112,7 +142,8 @@ class UserType extends AbstractType
                 User::class,
                 'determineValidationGroups',
             ),
-            'type' => ''
+            'type' => '',
+            'roleSet' => 'b2c',
         ));
 
 

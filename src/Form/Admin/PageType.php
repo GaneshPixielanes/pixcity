@@ -8,6 +8,7 @@ use App\Form\Type\SwitchType;
 use KMS\FroalaEditorBundle\Form\Type\FroalaEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,9 +35,16 @@ class PageType extends AbstractType
                 'attr' => [
                     'rowClass' => 'type-froala'
                 ],
-                'toolbarStickyOffset' =>  70
+                'toolbarStickyOffset' =>  70,
+                'fontFamily' => ['Montserrat'],
             ))
             ->add('indexed', SwitchType::class, array('label' => 'label.indexed', 'required' => false))
+            ->add('platform', ChoiceType::class, [
+                 'choices' => [
+                     'B2C' => 0,
+                     'B2B' => 1
+                 ]
+             ])
         ;
 
     }

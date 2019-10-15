@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Pages;
 
 use App\Constant\CardStatus;
+use App\Constant\UserLevel;
 use App\Entity\Card;
 use App\Entity\CardMedia;
 use App\Entity\ContentDraft;
@@ -10,15 +11,18 @@ use App\Form\Admin\CardsFiltersType;
 use App\Form\Shared\CardType;
 use App\Repository\CardRepository;
 use App\Repository\ContentDraftRepository;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use App\Service\Mailer;
 use Doctrine\ORM\Query;
+use Gedmo\Translatable\TranslatableListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin/cards", name="admin_cards_")
@@ -112,7 +116,13 @@ class CardsController extends Controller
      * @Route("/{id}/edit", requirements={"id": "\d+"}, name="edit")
      * @Method({"GET", "POST"})
      */
-    public function edit(Request $request, Card $card, Mailer $mailer, ContentDraftRepository $contentDraftRepo)
+    public function edit(Request $request,
+                         Card $card,
+                         Mailer $mailer,
+                         ContentDraftRepository $contentDraftRepo,
+                         UserRepository $userRepo,
+                         TranslatorInterface $translator
+    )
     {
 
         $form = $this->createForm(CardType::class, $card, ["type"=>"edit"]);
@@ -123,11 +133,61 @@ class CardsController extends Controller
             if(empty($card->getSlug())){
                 $card->generateSlug();
             }
-
+            #Get the user of the corresponding card
+            $user = $card->getPixie();
             if($form->get('status')->getData() == 'validated')
             {
+
+
+
                 $card->setPublishedAt(new \DateTime());
             }
+
+            $this->getDoctrine()->getManager()->flush();
+            #Calculate the user's level
+            $level = $userRepo->calculateLevel($user->getId());
+            #If the level is about to be updated, send email
+            if($level == $user->getLevel() && $card->getStatus() == CardStatus::VALIDATED)
+            {
+                $project = $card->getProject();
+                $mailer->send($project->getPixie()->getEmail(), 'Bravo ta card a été mise en ligne!', 'emails/pixie-card-validated-success.html.twig', [
+                    'firstName' => $project->getPixie()->getFirstname(),
+                    'cardName' => $project->getName(),
+                    'regionName' => str_replace([' ','-'],'',$project->getRegion()->getName()),
+                    'slug' => $card->getSlug(),
+                    'card' => $card,
+                    'cityName' => str_replace([' ','-'],'',$card->getAddress()->getCity()),
+                    'bannerUrl' =>$card->getMasterhead()->getUrl(),
+                    'thumbUrl' => $card->getThumb()->getUrl()
+                ], [
+                    $card->getMasterhead()->getUrl(),
+                    $card->getThumb()->getUrl()
+                ]);
+            }
+            if($level > $user->getLevel())
+            {
+                #Update the user level
+                $user->setLevel($level);
+                #Log card's level
+                $card->setLevel($level);
+                $levels = UserLevel::getList();
+                $userLevel = array_search('LEVEL_'.$level,$levels);
+                if($level > 2)
+                {
+
+
+                $mailer->send($user->getEmail(),'Félicitations! Tu franchis un niveau sur Pix.city!',
+                    'emails/cm-level-update.html.twig'
+                    ,[
+                        'firstName'=>$card->getProject()->getPixie()->getFirstname(),
+                        'city' => $card->getAddress()->getCity(),
+                        'region' => $card->getProject()->getRegion()->getName(),
+                        'level' => $translator->trans($userLevel)
+                    ], NULL, NULL);
+                }
+
+            }
+
 
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'flash.update.success');
@@ -160,6 +220,8 @@ class CardsController extends Controller
                         ]
                     );
                 }
+//            $clear_cache=shell_exec("fixweb clear_cache");
+//            $clear_cache=shell_exec("chmod -R 777 /home/pixcity/production/var/www/private/var/cache");
 
             return $this->redirectToRoute('admin_cards_list');
         }

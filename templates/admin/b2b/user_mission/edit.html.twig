@@ -1,0 +1,53 @@
+{% extends 'admin/page.html.twig' %}
+{% form_theme form 'admin/_forms/fields.html.twig' %}
+{% block content %}
+
+    <ol class="breadcrumb breadcrumb-col-teal">
+        <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+        <li class="active">{{ 'label.missions'|trans }}</li>
+    </ol>
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Edit User Mission
+                    </h2>
+                </div>
+                <div class="body">
+                    {{ include('admin/b2b/user_mission/_form.html.twig', {'button_label': 'Update'}) }}
+
+                    <a href="{{ path('admin_user_mission_index') }}">back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+            $('#banner-image-upload').change(function()
+            {
+                var data = new FormData();
+                data.append('file',$(this)[0].files[0]);
+                data.append('id',{{ user_mission.id }});
+                $.ajax('{{ url('admin_user_mission_upload') }}',{
+                    method: 'POST',
+                    processData: false,
+                    cacheable:false,
+                    data:data,
+                    contentType: false,
+                    success: function(result)
+                    {
+                        if(result.success == true)
+                        {
+                            $('[name="user_mission[bannerImage]"').val(result.fileName);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

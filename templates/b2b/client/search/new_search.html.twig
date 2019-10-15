@@ -1,85 +1,89 @@
 {% extends 'b2b/client/base.html.twig' %}
 
-{% import 'b2b/shared/macros.html.twig' as macros %}
-{% block title %}Client | Home {% endblock %}
+{% import "b2b/shared/macros.html.twig" as macro %}
 
 {% block newbody %}
 
-
-
     <!-- filter start -->
-    <div class="col-md-2 p-sm-0 wall-left">
-        <div class="row">
-            <form method="GET" >
-            <div class="col-md-12">
-                <div class="col-md-12 py-4 filter-container">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h4 class="font-weight-light fz-16 title">Filter</h4>
-                        </div>
-                        <div class="col-md-8 text-right reload">
-                            <a href="/client/search" class="fz-12 text-normalgray">
-                                <i class="fas fa-redo"></i><span class=" fz-10">RÉINITIALISER</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 mb-4 search-filter">
-                            <input name="search" class="form-control" type="search" placeholder="Rechercher" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="font-weight-light fz-16 title">Région</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 mb-4 filter-checks">
-                            {% for region in regions %}
-                            <div class="custom-control custom-checkbox mb-1">
-                                {% if region.slug in filters['regions'] %}
-                                    <input type="checkbox" name="regions[]" class="custom-control-input" id="customCheck{{ loop.index }}" checked="checked" value="{{ region.slug }}">
-                                {% else %}
-                                    <input type="checkbox" name="regions[]" class="custom-control-input" id="customCheck{{ loop.index }}" value="{{ region.slug }}">
-                                {% endif %}
-                                <label class="custom-control-label text-darkblue" for="customCheck{{ loop.index }}">{{ region.name }}</label>
+
+        <div class="col-md-2 wall-left">
+            <div class="col-md-12 filter-block">
+                <form method="GET" >
+                    <div class="col-md-12 py-4 filter-container">
+                        <div class="row">
+                            <div class="col-md-4 col-6">
+                                <h4 class="font-weight-light fz-16 title">&nbsp;</h4>
                             </div>
-                            {% endfor %}
-
-
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="font-weight-light fz-16 title">Compétence</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 mb-4 filter-checks">
-                            {% for skill in skills %}
-                            <div class="custom-control custom-checkbox mb-1">
-                                {% if skill.id in filters['skills'] %}
-                                    <input type="checkbox" name="skills[]" class="custom-control-input" id="customskillCheck{{ loop.index }}" value="{{ skill.id }}" checked="checked">
-                                {% else %}
-                                    <input type="checkbox" name="skills[]" class="custom-control-input" id="customskillCheck{{ loop.index }}" value="{{ skill.id }}">
-                                {% endif %}
-                                <label class="custom-control-label text-darkblue" for="customskillCheck{{ loop.index }}" value="{{ skill.id }}">{{  skill.name }}</label>
+                            <div class="col-md-8 col-6 text-right reload">
+                                <a href="/freelance/search" class="fz-12 text-normalgray">
+                                    <i class="fas fa-redo"></i><span class=" fz-10">RÉINITIALISER</span>
+                                </a>
                             </div>
-                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-4 search-filter">
+                                <input name="search" class="form-control" type="search" value="{{ text }}" placeholder="Rechercher" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="font-weight-light fz-16 title">Région</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-4 filter-checks">
+                                {% for region in regions %}
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        {% if region.slug in filters['regions'] %}
+                                            <input type="checkbox" name="regions[]" class="custom-control-input" id="customCheck{{ loop.index }}" checked="checked" value="{{ region.slug }}">
+                                        {% else %}
+                                            <input type="checkbox" name="regions[]" class="custom-control-input" id="customCheck{{ loop.index }}" value="{{ region.slug }}">
+                                        {% endif %}
+                                        <label class="custom-control-label text-darkblue" for="customCheck{{ loop.index }}">{{ region.name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="font-weight-light fz-16 title">Compétence</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-4 filter-checks">
+                                {% for skill in skills %}
+                                    <div class="custom-control custom-checkbox mb-1">
+                                        {% if skill.id in filters['skills'] %}
+                                            <input type="checkbox" name="skills[]" class="custom-control-input" id="customskillCheck{{ loop.index }}" value="{{ skill.id }}" checked="checked">
+                                        {% else %}
+                                            <input type="checkbox" name="skills[]" class="custom-control-input" id="customskillCheck{{ loop.index }}" value="{{ skill.id }}">
+                                        {% endif %}
+                                        <label class="custom-control-label text-darkblue" for="customskillCheck{{ loop.index }}" value="{{ skill.id }}">{{  skill.name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {#<div class="row">#}
+                            {#<div class="col-md-12">#}
+                                {#<input type="submit" class="btn btn-block btn-darkblue lh2" value="Search" />#}
+                            {#</div>#}
+                        {#</div>#}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-darkblue btn-block">Rechercher</button>
+                            </div>
+                        </div>
+                        <div class="row close-mobile-filter">
+                            <div class="col-md-12 mt-3">
+                                <a href="javascript:;" class="btn btn-block btn-outline-darkblue">Fermer</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <input type="submit" class="btn btn-block btn-darkblue lh2" value="Search" />
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
-
-            </form>
         </div>
-    </div>
+
+
     <!-- filter end here -->
 
     <!-- cm list -->
@@ -87,7 +91,7 @@
         <div class="col-md-12 p-4">
             <div class="row">
                 <div class="col-md-12 mb-3 breadcrumbs">
-                    <a href="{{ path('b2b_client_main_index') }}">Accueil</a> / Rechercher un City Maker
+                    <a href="{{ path('prestations_de_serviceindex') }}">Accueil</a> / Rechercher un City-Maker
                 </div>
             </div>
             <div class="alert alert-client-wall mb-4" role="alert">
@@ -97,7 +101,7 @@
                 <img src="../images/footer-logo-main.svg">
                 <p>Retrouvez ci-dessous les profils de nos influenceurs locaux.</p>
                 <p>Naviguez et choisissez le city-maker qui vous plait puis rentrez en contact avec lui en cliquant sur son profil. Echangez ensemble en ligne, mettez-vous d’accord et signez un devis pour que la mission commence. C’est parti !</p>
-                <p><img src="../images/play-circle-white.svg"> <a href="javascript:;">Découvrir Pix.city Services</a></p>
+                <p><img src="/images/play-circle-white.svg"> <a href="/freelance">Découvrir Pix.city Services</a></p>
             </div>
             <h1 class="fz-32 font-weight-light mb-4">{{ filters['cm_count'] }} City-Makers sont présents sur Pix.City Services</h1>
             <!-- CM Masonry columns Starts -->
@@ -106,92 +110,82 @@
                     <div class="card-columns">
 
                         {% for user in users %}
-                            {% if user.userPacks is defined and user.userPacks is not empty %}
-                                <div class="card px-3 pb-3 mt-5 mb-4 shadow-sm">
-                                    <div class="cm-card-container">
-                                        <div class="row">
-                                            <div class="col-md-12 mt-n5 cm-image">
-                                                <img class="img-fluid shadow-lg" src="{{ user.getAvatarUrl() }}" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12 mt-n3 mb-5">
-                                                <ul class="d-flex justify-content-center align-items-center cm-packages">
-                                                    {% for skill in user.userSkill %}
-                                                        <li><i class="fas {{ skill.icon }} fz-22"></i></li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h4 class="title text-center fz-28 font-weight-bold">{{ user }}</h4>
-                                                <p class="region text-center fz-16 text-pink">{{ user.userRegion.first.name }}</p>
-                                            </div>
-                                        </div>
-                                        {% if user.userPacks is defined and user.userPacks is not empty %}
-                                            {% for pack in user.userPacks  %}
-                                                {% if loop.index <= 3 %}
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="d-flex bg-lightgray px-2 py-1 mb-2 justify-content-between align-items-center work-relate">
-                                                                <div class="work-title font-weight-bold fz-14">{{ pack.packSkill.name }}</div>
-                                                                <div class="work-amount font-weight-bold fz-16"><span class="d-block fz-12 font-weight-light">À partir de</span>{{ pack.totalPrice }}€</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                        <div class="row">
-                                            <div class="col-md-12 mt-3">
-                                                <a href="{{ url('b2b_front_community_manager_view',{'name':user | lower |replace({' ':'-'}), 'id': user.id}) }}" class="btn btn-block btn-pink lh2">DÉCOUVRIR TOUS SES PACKS</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
-
+                                {% if user.userPacks is defined and user.userPacks is not empty and user.userPacks | length > 0 %}
+                                    {{ macro.cityMaker(user) }}
+                                {% endif %}
                         {% endfor %}
 
                     </div>
                 </div>
             </div>
             <!-- CM Masonry columns Ends -->
-{#            <div class="row">#}
-{#                <div class="col-md-12">#}
-{#                    12 sur 171 résultat#}
-{#                </div>#}
-{#            </div>#}
+            {#            <div class="row">#}
+            {#                <div class="col-md-12">#}
+            {#                    12 sur 171 résultat#}
+            {#                </div>#}
+            {#            </div>#}
 
             <!-- Blog pagination -->
-            {% if users | length > 12 %}
-                {% if filters['total_pages'] != 0 %}
-                <div class="pagination-container my-5">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <ul class="pagination justify-content-center">
-                                    {% if filters['page'] != 1 %}
-                                    <li class="page-item disabled"><a class="page-link" href="/client/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
-                                    {% endif %}
-                                    {% for i in 1..filters['total_pages'] %}
-                                        <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/client/search?page={{ i }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}">{{ i }}</a></li>
-                                    {% endfor %}
-                                    {% if filters['page'] != filters['total_pages'] %}
-                                    <li class="page-item"><a class="page-link" href="/client/search?page={{ filters['page']+1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
-                                    {% endif %}
-                                </ul>
+
+            {% if filters['cm_count'] > 4 %}
+
+{#                {% if filters['total_pages'] != 0 %}#}
+                    <div class="pagination-container my-5">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="pagination justify-content-center">
+                                        {% if filters['page'] != 1 %}
+                                            <li class="page-item"><a class="page-link" href="/freelance/search?page={{ filters['page']-1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}&search={{ text }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
+                                        {% endif %}
+                                        {% for i in 1..filters['total_pages'] %}
+                                            <li class="page-item {% if i == filters['page'] %}active{% endif %}"><a class="page-link" href="/freelance/search?page={{ i }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}&search={{ text }}">{{ i }}</a></li>
+                                        {% endfor %}
+                                        {% if filters['page'] != filters['total_pages'] %}
+                                            <li class="page-item"><a class="page-link" href="/freelance/search?page={{ filters['page']+1 }}&regions%5B%5D={{ filters['regions']|join('&regions%5B%5D=') }}&skills%5B%5D={{ filters['skills']|join('&skills%5B%5D=') }}&search={{ text }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endif %}
-            {% endif %}
+{#            {% endif %}#}
             <!-- Blog pagination -->
         </div>
     </div>
     <!-- cm list end here -->
 
 
+    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+{% endblock %}
+{% block javascripts %}
+
+    <script>
+        /* custom per page scripts */
+        /* Skills Pack Buttons */
+        $('a.skills-pack').click(function (e) {
+            e.preventDefault();
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+                $(this).find('.skill').attr('checked', false);
+            } else {
+                $(this).addClass('active');
+                $(this).find('.skill').attr('checked', true);
+            }
+        });
+        /* Mobile filter show and hide*/
+        $('.mobile-filter').click(function(e) {
+            e.preventDefault();
+            $('.wall-left').slideDown('fast', function(){
+                $('.wall-left').addClass('show');
+            })
+        });
+        $('.close-mobile-filter a').click(function(e) {
+            e.preventDefault();
+            $('.wall-left').slideUp('400', function() {
+                $('.wall-left').removeClass('show');
+            });
+        });
+    </script>
 {% endblock %}

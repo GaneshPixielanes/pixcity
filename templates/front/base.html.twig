@@ -39,6 +39,9 @@
         {% endif %} 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ absolute_url(asset('build/front/css/app.css')) }}">
+            <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/cookiealert.css')) }}">
+            <link rel="stylesheet" href="{{ asset('build/css/header.css') }}" />
+
         {% endblock %}
 
 
@@ -46,7 +49,67 @@
             <script src="{{ absolute_url(asset('build/front/js/app.js')) }}"></script>
         {% endblock %}
 
-
+        {#footer#}
+        <style>
+            .social-btn > a:hover{
+                color: #20c997 !important;
+            }
+            .social-wrap {
+                clear: both;
+                background: #0e3757;
+            }
+            .container-propos, .container-social {
+                float: left;
+                width: 25%;
+                padding: 40px 0;
+                margin-right: 10px;
+            }
+            .brand-footer {
+                float: left;
+                width: 22%;
+                padding-top: 40px;
+            }
+            .container-propos h4, .container-social h4 {
+                font-size: 15px;
+                text-transform: uppercase;
+                color: #30b495;
+                margin-bottom: 20px;
+                font-weight: 400;
+            }
+            .container-propos ul, .container-social ul, ul {
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+            }
+            .container-propos ul li a, .container-social ul li a {
+                text-decoration: none;
+                display: inline-block;
+                color: #146a7d;
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            .container-social ul li a i {
+                font-size: 18px;
+                margin-right: 5px;
+            }
+            .container-social ul li a i, .container-social ul li a span, .switch-map label, .switch-map span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .container-propos ul li a:focus, .container-propos ul li a:hover, .container-social ul li a:focus, .container-social ul li a:hover {
+                color: #30b495;
+            }
+            .footer-wrap {
+                clear: both;
+                background: #0c314d;
+                padding: 20px 0;
+                color: #8396a4;
+                font-size: 18px;
+            }
+            .brand-footer img {
+                width: 120px;
+            }
+        </style>
         
     </head>
     <body class="{% block body_class %}{% if not is_granted('IS_AUTHENTICATED_FULLY') %}logged-out{% else %}logged-in{% endif %} {% endblock %}">
@@ -92,5 +155,9 @@
         {% block javascripts_footer %}{% endblock %}
                 <!-- Intercom messenger -->
         {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+        <!-- Alert about cookie useage -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+        <script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
     </body>
 </html>
