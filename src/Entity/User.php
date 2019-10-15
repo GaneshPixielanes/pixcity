@@ -68,7 +68,6 @@ class User implements UserInterface, EquatableInterface
     private $birthLocation;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Regex("/^(?:0[1-9]|[1-9]\d)\d{3}$/")
      * @ORM\Column(type="string", length=16)
      */

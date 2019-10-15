@@ -69,10 +69,10 @@ class UserType extends AbstractType
 //                    'placeholder' => 'label.select.region',
 //                    'choice_label' => 'name',
 //                ))
-                ->add('currentLocation', TextType::class, array(
-                    'label' => 'label.currentLocation',
-                    'attr' => ['placeholder' => 'label.zipcode'],
-                ))
+//                ->add('currentLocation', TextType::class, array(
+//                    'label' => 'label.currentLocation',
+//                    'attr' => ['placeholder' => 'label.zipcode'],
+//                ))
 //                ->add('gender', ChoiceType::class, array(
 //                    'label' => 'label.gender',
 //                    'multiple' => false,
