@@ -1,0 +1,173 @@
+{% extends 'b2b/base.html.twig' %}
+
+{% block body %}
+
+    <div class="login-wrap main-login mt-0">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <a class="navbar-brand" href="javascript:;"><img src="../images/header-logo-main.svg" alt="Pix.City"></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 login-content">
+                    <div class="row">
+                        <div class="col-md-4 d-none d-md-block">
+
+                        </div>
+                        <div class="col-12 col-md-6 ml-auto px-md-5 d-md-table">
+                            <div class="main-log pb-3 p-md-0 d-md-table-cell align-middle">
+                                <div class="bg-white shadow-sm">
+                                    <h4 class="fz-28 text-center font-weight-normal pt-2">Connexion à votre compte</h4>
+                                    <nav class="internal-nav">
+                                        <ul class="nav nav-tabs nav-fill border-0 line-tabs line-tabs-hover" id="dashboardMyMissions" role="tablist">
+                                            <li class="nav-item darkblue">
+                                                <a class="nav-link text-normalgray active" data-toggle="tab" href="#customer-login" role="tab" aria-controls="customer-login">Je suis client</a>
+                                            </li>
+                                            <li class="nav-item pink">
+                                                <a class="nav-link text-normalgray" data-toggle="tab" href="#city-maker-login" role="tab" aria-controls="city-maker-login">Je suis City-Maker</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="customer-login" role="tabpanel">
+                                            <form action="{{ path('b2b_client_login') }}" method="POST" accept-charset="utf-8">
+                                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                                <div class="col-md-12 px-0 py-3 px-md-5">
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3">
+                                                            <label>VOTRE EMAIL</label>
+                                                            <input type="email" value="" name="email" id="inputEmail" class="form-control bg-lightgray" placeholder="email@domain.com">                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label>VOTRE MOT DE PASSE</label>
+                                                            <input type="password" name="password" id="inputPassword" class="form-control bg-lightgray pr-5" placeholder="8 caractères, 1 majuscule">                                                            <span toggle="#password-field" class="fas fa-eye password-show-icon toggle-password"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mt-4 d-flex align-items-center justify-content-between">
+                                                            <a href="javascript:;" class="text-darkblue">Mot de passe oublié ?</a>
+                                                            <button class="btn btn-darkblue btn-pill float-right lh2">Connexion</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 px-md-4 my-3">
+                                                    <div class="row">
+                                                        <div class="col-md-12 px-4 d-flex align-items-center divider-center-text">
+                                                            <div class="d-none d-md-block col-md-3 bg-textgray"></div>
+                                                            <div class="col-12 col-md-6 text-textgray text-center">Ou connectez-vous avec</div>
+                                                            <div class="d-none d-md-block col-md-3 bg-textgray"></div>
+                                                            <!-- <span class="bg-textgray my-2 m-md-0"></span>
+                                                            <span class="text-textgray text-center flex-grow-1">Ou connectez-vous avec</span>
+                                                            <span class="bg-textgray my-2 m-md-0"></span> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 px-md-4">
+                                                    <div class="row">
+                                                        <div class="col-md-12 px-4 d-flex align-items-center justify-content-center">
+                                                            <ul class="social-media-logins d-flex">
+                                                                <li class="list-item px-2">
+                                                                    <a href="javascript:;" class="btn btn-googlered btn-circle-48"><i class="fab fa-google"></i></a>
+                                                                </li>
+                                                                <li class="list-item px-2">
+                                                                    <a href="javascript:;" class="btn btn-facebook btn-circle-48"><i class="fab fa-facebook-f"></i></a>
+                                                                </li>
+                                                                <li class="list-item px-2">
+                                                                    <a href="javascript:;" class="btn btn-linkedin btn-circle-48"><i class="fab fa-linkedin-in"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 p-3 text-center">
+                                                    <span class="block">Pas encore de compte client ?</span>
+                                                    <a href="javascript:;" class="d-block text-blue">Créez-vous un compte sur Pix.City Services</a>
+                                                </div>
+                                                <div class="col-md-12 bg-darkgray p-2 text-center">
+                                                    <a href="javascript:;" class="text-white">Vous avez un compte voyageur ?</a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane" id="city-maker-login" role="tabpanel">
+                                            <form action="{{ path('front_new_login') }}" id="sign_in" method="POST">
+                                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                                {% if redirect is not null %}
+                                                    <input type="hidden" name="_target_path" value="{{ redirect }}" />
+                                                {% endif %}
+                                                <div class="col-md-12 px-0 py-3 px-md-5">
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3">
+                                                            <label>VOTRE EMAIL</label>
+                                                            <input class="form-control" type="email" name="_username" placeholder="{{ 'label.email'|trans }}" required autofocus value="{{ last_username }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label>VOTRE MOT DE PASSE</label>
+                                                            <input class="form-control bg-lightgray pr-5" id="password-field" type="password" name="_password" placeholder="{{ 'label.password'|trans }}" required>
+
+                                                            <span toggle="#password-field" class="fas fa-eye password-show-icon toggle-password"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mt-4 d-flex align-items-center justify-content-between">
+                                                            <a href="{{ path('front_forgot_password') }}" class="text-darkblue">Mot de passe oublié ?</a>
+                                                            <button class="btn btn-pink btn-pill float-right lh2">Connexion</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 px-md-4 my-3">
+                                                    <div class="row">
+                                                        <div class="col-md-12 px-4 d-flex align-items-center divider-center-text">
+                                                            <div class="d-none d-md-block col-md-3 bg-textgray"></div>
+                                                            <div class="col-12 col-md-6 text-textgray text-center">Ou connectez-vous avec</div>
+                                                            <div class="d-none d-md-block col-md-3 bg-textgray"></div>
+                                                            <!-- <span class="bg-textgray my-2 m-md-0"></span>
+                                                            <span class="text-textgray text-center flex-grow-1">Ou connectez-vous avec</span>
+                                                            <span class="bg-textgray my-2 m-md-0"></span> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 px-md-4">
+                                                    <div class="row">
+                                                        <div class="col-md-12 px-4 d-flex align-items-center justify-content-center">
+                                                            <ul class="social-media-logins d-flex">
+                                                                <li class="list-item px-2">
+                                                                    <a href="javascript:;" class="btn btn-googlered btn-circle-48"><i class="fab fa-google"></i></a>
+                                                                </li>
+                                                                <li class="list-item px-2">
+                                                                    <a href="javascript:;" class="btn btn-facebook btn-circle-48"><i class="fab fa-facebook-f"></i></a>
+                                                                </li>
+                                                                <li class="list-item px-2">
+                                                                    <a href="javascript:;" class="btn btn-linkedin btn-circle-48"><i class="fab fa-linkedin-in"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 p-3 text-center">
+                                                    <span class="block">Vous voulez devenir City-Maker ?</span>
+                                                    <a href="javascript:;" class="d-block text-blue">Découvrez l’aventure Pix.City Services</a>
+                                                </div>
+                                                <div class="col-md-12 bg-darkgray p-2 text-center">
+                                                    <a href="javascript:;" class="text-white">Vous avez un compte voyageur ?</a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
