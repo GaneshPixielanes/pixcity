@@ -62,6 +62,8 @@ jQuery(document).ready(function() {
         $newFormLi.find(".user-link").attr("data-type", type);
         $newFormLi.find("select").val(type);
         $newFormLi.find("label").text(linkTypes[type].name);
+        $newFormLi.find("label").addClass(linkTypes[type].name);
+        $newFormLi.find("."+linkTypes[type].name).after('<span style="color: #fd6b84;"> * </span>');
         $newFormLi.find(".link-icon").addClass(linkTypes[type].icon);
 
         $collectionHolder.find(".add-item").parents("li").before($newFormLi.hide().fadeIn(300));
