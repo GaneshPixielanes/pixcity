@@ -648,10 +648,10 @@ class MapsController extends AbstractController
         # Get the markers w.r.t the filters
         if($loggedUser){
             if(strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false) { //in
-                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters)));
+                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters), $arr));
             }
             else{
-                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters,  $testAccountsAsCm->getValue())));
+                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters,  $testAccountsAsCm->getValue(), $arr)));
             }
         }
         else{
