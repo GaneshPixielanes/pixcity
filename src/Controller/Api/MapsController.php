@@ -57,10 +57,10 @@ class MapsController extends AbstractController
             foreach($cards as $card)
             {
                 $result[] = [
-                  'latitude' => trim($card->getAddress()->getLatitude()),
-                  'longitude' => trim($card->getAddress()->getLongitude()),
-                  'icon' => $card->getCategories()->first()->getIcon(),
-                  'id' => $card->getId()
+                    'latitude' => trim($card->getAddress()->getLatitude()),
+                    'longitude' => trim($card->getAddress()->getLongitude()),
+                    'icon' => $card->getCategories()->first()->getIcon(),
+                    'id' => $card->getId()
                 ];
             }
         }
@@ -108,10 +108,10 @@ class MapsController extends AbstractController
 
         $card = $cardRepo->find($id);
         $cards = $cardRepo->findBy(['status' => CardStatus::VALIDATED,'gmbFlag' => 0],['createdAt' => 'ASC'],9);
-                $message = [];
+        $message = [];
         foreach($cards as $card){
             sleep(2);
-                        // dd($card->getCardDetailsApi());
+            // dd($card->getCardDetailsApi());
             if(is_null($card->getCardDetailsApi()))
             {
                 $response = json_decode($this->getPlaceDetails($card));
@@ -134,7 +134,7 @@ class MapsController extends AbstractController
                     }
                     if(isset($result->rating))
                     {
-                      $details->setRating($result->rating);
+                        $details->setRating($result->rating);
                     }
                     $details->setCategory(json_encode($result->types));
                     $details->setFullResponse(json_encode($result));
@@ -142,7 +142,7 @@ class MapsController extends AbstractController
                     $details->setCreatedAt(new \DateTime());
                     $details->setCard($card);
 
-                                        $card->setGmbFlag('1');
+                    $card->setGmbFlag('1');
 
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($card);
@@ -154,13 +154,13 @@ class MapsController extends AbstractController
                 }
                 else
                 {
-                                    $card->setGmbFlag('2');
+                    $card->setGmbFlag('2');
 
-                                    $entityManager = $this->getDoctrine()->getManager();
-                                    $entityManager->persist($card);
-                                    $entityManager->flush();
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($card);
+                    $entityManager->flush();
 
-                  $message[] = JsonResponse::fromJsonString(json_encode(['success' => false, 'message' => 'API did not return any result, please try again','description' => json_encode($response)]));
+                    $message[] = JsonResponse::fromJsonString(json_encode(['success' => false, 'message' => 'API did not return any result, please try again','description' => json_encode($response)]));
                 }
             }
         }
@@ -215,7 +215,7 @@ class MapsController extends AbstractController
     private function _getGooglePhoto($photoId)
     {
         $ch = curl_init();
-         $url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoId&key=AIzaSyCMpiZh32qaAGMVSlc2XAptENMQKt-WY6c";
+        $url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoId&key=AIzaSyCMpiZh32qaAGMVSlc2XAptENMQKt-WY6c";
         curl_setopt($ch, CURLOPT_URL,$url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
@@ -243,14 +243,14 @@ class MapsController extends AbstractController
     }
 
     /**
-    * @Route("/update-instagram-flag", name="_update_instagram_flag")
-    */
+     * @Route("/update-instagram-flag", name="_update_instagram_flag")
+     */
     public function updateUserInstagramFlag(UserRepository $userRepo)
     {
         $users = $userRepo->findBy(['visible' => 1, 'igFlag' => 0]);
         $list = [];
         $entityManager = $this->getDoctrine()->getManager();
-        
+
         foreach($users as $user)
         {
             if(!is_null($user->getUserInstagramDetailsApi()))
@@ -265,42 +265,42 @@ class MapsController extends AbstractController
     }
 
     /**
-    *@Route("/instagram-cron/{slug}",name="_instagram_info",defaults={"slug":null})
-    */
+     *@Route("/instagram-cron/{slug}",name="_instagram_info",defaults={"slug":null})
+     */
     public function saveInstagramCron($slug, UserRepository $userRepo, InstagramTrendsRepository $instagramTrendsRepo)
     {
         $result = [];
         switch($slug)
         {
             case 'log':
-                    #Get the users who have been logged today
-                    $users = $instagramTrendsRepo->findTrendLoggedUserId();
-                    foreach($userRepo->findBy(['active' => 1]) as $user)
+                #Get the users who have been logged today
+                $users = $instagramTrendsRepo->findTrendLoggedUserId();
+                foreach($userRepo->findBy(['active' => 1]) as $user)
+                {
+                    #Check if the user has been logged already. If not, add the logs
+                    if(!in_array($user->getId(), array_column($users, 'id')))
                     {
-                        #Check if the user has been logged already. If not, add the logs
-                        if(!in_array($user->getId(), array_column($users, 'id')))
-                        {
-                            $result[] = $this->_saveUserInstagramInfo($user, true);
-                        }
+                        $result[] = $this->_saveUserInstagramInfo($user, true);
                     }
-                    break;
+                }
+                break;
             case 'info':
-                    #Get the users who's Instagram information hasn't been extracted yet
-                    $users = $userRepo->findBy(['igFlag' => 0]);
-                    #Extract information of the users
-                    if(!empty($users))
+                #Get the users who's Instagram information hasn't been extracted yet
+                $users = $userRepo->findBy(['igFlag' => 0]);
+                #Extract information of the users
+                if(!empty($users))
+                {
+                    foreach($users as $user)
                     {
-                        foreach($users as $user)
-                        {
-                            $result[] = $this->_saveUserInstagramInfo($user);
-                        }
+                        $result[] = $this->_saveUserInstagramInfo($user);
                     }
-                    else
-                    {
-                        #All users have got their Instagram information extracted
-                        $result[] = 'No Users left';
-                    }
-                    break;
+                }
+                else
+                {
+                    #All users have got their Instagram information extracted
+                    $result[] = 'No Users left';
+                }
+                break;
         }
 
         return JsonResponse::fromJsonString(json_encode($result));
@@ -325,7 +325,7 @@ class MapsController extends AbstractController
                 $entityManager->flush();
                 return ['success' => false, 'message' => 'User '.$user.' ('.$user->getId().') doesn\'t have a proper IG ID ('.$instagramId.')'];
             }
-            
+
 
             #Get the data filtered out from the API
             $details = $this->_extractInstagramUserDetails($this->_getInstagramInfo($instagram));
@@ -446,14 +446,14 @@ class MapsController extends AbstractController
             $details['rating'] = $cardDetails->getRating();
             $details['website'] = $cardDetails->getWebsite();
             $details['category'] = json_decode($cardDetails->getCategory());
-                        if($date->format('w') == 0)
-                        {
-                            $details['open_status'] = ($week !== '')?$week[6]:'';
-                        }
-                        else
-                        {
-                            $details['open_status'] = ($week !== '')?$week[($date->format('w')-1)]:'';
-                        }
+            if($date->format('w') == 0)
+            {
+                $details['open_status'] = ($week !== '')?$week[6]:'';
+            }
+            else
+            {
+                $details['open_status'] = ($week !== '')?$week[($date->format('w')-1)]:'';
+            }
 
         }
         else
@@ -498,12 +498,12 @@ class MapsController extends AbstractController
         }
         else
         {
-          $details['insta_name'] = '';
-          $details['insta_followers'] = '';
-          $details['insta_followed'] = '';
-          $details['insta_posts'] = '';
-          $details['total_likes'] = '0';
-          $details['insta_url'] = '';
+            $details['insta_name'] = '';
+            $details['insta_followers'] = '';
+            $details['insta_followed'] = '';
+            $details['insta_posts'] = '';
+            $details['total_likes'] = '0';
+            $details['insta_url'] = '';
         }
 
         foreach($card->getMedias() as $media)
@@ -553,27 +553,27 @@ class MapsController extends AbstractController
      */
     public function findRegionCard($id,$slug, CardRepository $cardRepo, Request $request)
     {
-    //        $card = $cardRepo->findBy(['name' => urldecode($slug)]);
+        //        $card = $cardRepo->findBy(['name' => urldecode($slug)]);
         $em = $this->getDoctrine()->getManager();
 
-            $result = $em->getRepository(Card::class)->createQuerybuilder('c')
-                ->select(["a.latitude, a.longitude, c.id, t.icon"])
-                ->join('c.address','a')
-                ->join('c.categories','t')
-                ->join('c.region','r')
-                ->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
-                ->andWhere('c.region = :region')->setParameter('region',$id);
+        $result = $em->getRepository(Card::class)->createQuerybuilder('c')
+            ->select(["a.latitude, a.longitude, c.id, t.icon"])
+            ->join('c.address','a')
+            ->join('c.categories','t')
+            ->join('c.region','r')
+            ->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
+            ->andWhere('c.region = :region')->setParameter('region',$id);
 
-                if(!is_null($request->get('category'))  && $request->get('category') != 'all')
-                {
-                  $result = $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
-                }
-                if(!is_null($slug) && 'na' != $slug && '' != trim($slug))
-                {
-                  $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
-                }
-                $result = $result->getQuery()
-                          ->getResult();
+        if(!is_null($request->get('category'))  && $request->get('category') != 'all')
+        {
+            $result = $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
+        }
+        if(!is_null($slug) && 'na' != $slug && '' != trim($slug))
+        {
+            $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
+        }
+        $result = $result->getQuery()
+            ->getResult();
 
 
         return JsonResponse::fromJsonString(json_encode($result));
@@ -592,11 +592,11 @@ class MapsController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $loggedUser = $this->getUser();
         $result = $em->getRepository(Card::class)->createQuerybuilder('c')
-                ->select(["a.latitude, a.longitude, c.id, t.icon"])
-                ->leftJoin('c.pixie','p')
-                ->join('c.address','a')
-                ->join('c.categories','t')
-                ->join('c.region','r');
+            ->select(["a.latitude, a.longitude, c.id, t.icon"])
+            ->leftJoin('c.pixie','p')
+            ->join('c.address','a')
+            ->join('c.categories','t')
+            ->join('c.region','r');
         if($loggedUser) {
             if (strpos($testAccounts->getValue(), $loggedUser->getEmail()) !== false) { //in
                 $result = $result;
@@ -609,77 +609,80 @@ class MapsController extends AbstractController
         }
         if(null !== $request->get('category') && 'all' !== $request->get('category'))
         {
-          $result= $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
+            $result= $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
         }
         if(!is_null($slug) && 'na' !== $slug && '' !== trim($slug))
         {
-          $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
+            $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
         }
 
         $result = $result->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
-                  ->getQuery()
-                  ->getResult();
+            ->getQuery()
+            ->getResult();
 
         return JsonResponse::fromJsonString(json_encode($result));
     }
 
     /**
-    * @Route("/all-cards",name="_all_card")
-    */
+     * @Route("/all-cards",name="_all_card")
+     */
     public function allCards(Request $request, CardRepository $cardRepo, OptionRepository $optionRepository)
     {
         $testAccountsAsClient = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
         $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
         $loggedUserSession = $this->get('session')->get('login_by');
         $loggedUser = $loggedUserSession['entity'];
-       # Get the corresponding filters
-        
-       $filters['regions'] = $request->get('regions');
-       $filters['text'] = trim($request->get('text'));
-       $filters['content'] = trim($request->get('text'));
-       if(!is_null($request->get('categories')) && !in_array(0,$request->get('categories')))
-       {
-            $filters['categories'] = $request->get('categories');
-       }
+        # Get the corresponding filters
 
-       # Get the markers w.r.t the filters
+        $filters['regions'] = $request->get('regions');
+        $filters['text'] = trim($request->get('text'));
+        $filters['content'] = trim($request->get('text'));
+        if(!is_null($request->get('categories')) && !in_array(0,$request->get('categories')))
+        {
+            $filters['categories'] = $request->get('categories');
+        }
+        #get current location
+        $arr = [];
+        $arr['lat'] = $request->request->get('lat');
+        $arr['lng'] = $request->request->get('lng');
+        # Get the markers w.r.t the filters
         if($loggedUser){
             if(strpos($testAccountsAsClient->getValue(),$loggedUser->getEmail()) !== false || strpos($testAccountsAsCm->getValue(),$loggedUser->getEmail()) !== false) { //in
-                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters)));
+                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters), $arr));
             }
             else{
-                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters,  $testAccountsAsCm->getValue())));
+                return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters,  $testAccountsAsCm->getValue(), $arr)));
             }
         }
         else{
-            return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters, $testAccountsAsCm->getValue())));
+            return JsonResponse::fromJsonString(json_encode($cardRepo->findAllCardsValidated($filters, $testAccountsAsCm->getValue(), $arr)));
         }
 
     }
 
     /**
-    * @Route("/search-cards",name="_search_card")
-    */
+     * @Route("/search-cards",name="_search_card")
+     */
     public function searchCards(Request $request, CardRepository $cardRepo)
     {
-       $em = $this->getDoctrine()->getManager();
-             $filters["regions"] = $request->get('regions');
+        $em = $this->getDoctrine()->getManager();
+        $filters["regions"] = $request->get('regions');
 
-       $result = $em->getRepository(Card::class)->createQuerybuilder('c')
-                   ->select(["a.latitude, a.longitude, c.id, t.icon"])
-                    ->join('c.address','a')
-                    ->leftJoin('c.categories','t')
-                    ->join('c.region','r')
-                    ->andWhere('c.status = :status')
-                    ->andWhere('c.name LIKE :search OR c.content LIKE :search OR r.name LIKE :search')
-                    ->setParameter('status',CardStatus::VALIDATED)
-                    ->setParameter('search','%'.$request->get('search').'%');
-                                        if (!empty($filters["regions"])) {
-                                                $result = $result->andWhere("r IN (:regions) OR r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
-                                        }
-            $result = $result->groupBy('c.id')
-                    ->getQuery()
-                    ->getResult();
+        $result = $em->getRepository(Card::class)->createQuerybuilder('c')
+            ->select(["a.latitude, a.longitude, c.id, t.icon"])
+            ->join('c.address','a')
+            ->leftJoin('c.categories','t')
+            ->join('c.region','r')
+            ->andWhere('c.status = :status')
+            ->andWhere('c.name LIKE :search OR c.content LIKE :search OR r.name LIKE :search')
+            ->setParameter('status',CardStatus::VALIDATED)
+            ->setParameter('search','%'.$request->get('search').'%');
+        if (!empty($filters["regions"])) {
+            $result = $result->andWhere("r IN (:regions) OR r.slug IN (:regions)")->setParameter("regions", $filters["regions"]);
+        }
+        $result = $result->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
 
         return JsonResponse::fromJsonString(json_encode($result));
     }
@@ -701,7 +704,7 @@ class MapsController extends AbstractController
             {
                 if($card->getStatus() == CardStatus::VALIDATED)
                 {
-                  // dd($card->getCategories());
+                    // dd($card->getCategories());
                     if($card->getCategories()->count() != 0)
                     {
                         $result[] = [
@@ -713,12 +716,12 @@ class MapsController extends AbstractController
                     }
                     else
                     {
-                      $result[] = [
-                          'latitude' => trim($card->getAddress()->getLatitude()),
-                          'longitude' => trim($card->getAddress()->getLongitude()),
-                          'icon' => 'fa-tree',
-                          'id' => $card->getId()
-                      ];
+                        $result[] = [
+                            'latitude' => trim($card->getAddress()->getLatitude()),
+                            'longitude' => trim($card->getAddress()->getLongitude()),
+                            'icon' => 'fa-tree',
+                            'id' => $card->getId()
+                        ];
                     }
                 }
 
@@ -768,27 +771,27 @@ class MapsController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $result = $em->getRepository(Card::class)->createQuerybuilder('c')
-                    ->select(["a.latitude, a.longitude, c.id, t.icon"])
-                     ->join('c.address','a')
-                     ->join('c.categories','t')
-                     ->join('c.region','r')
-                     ->join('c.pixie','p')
-                     ->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
-                     ->andWhere('p.id = :user')->setParameter('user',$id);
-                     if(!is_null($request->get('slug')) && 'na' !== $request->get('slug') && '' !== trim($slug))
-                     {
-                       $result = $result->andWhere('c.name LIKE :search OR c.content LIKE :search OR r.name LIKE :search')->setParameter('search','%'.$slug.'%');
-                     }
-                     if(!is_null($request->get('category')) && $request->get('category') != 'all')
-                     {
-                       $result = $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
-                     }
+            ->select(["a.latitude, a.longitude, c.id, t.icon"])
+            ->join('c.address','a')
+            ->join('c.categories','t')
+            ->join('c.region','r')
+            ->join('c.pixie','p')
+            ->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
+            ->andWhere('p.id = :user')->setParameter('user',$id);
+        if(!is_null($request->get('slug')) && 'na' !== $request->get('slug') && '' !== trim($slug))
+        {
+            $result = $result->andWhere('c.name LIKE :search OR c.content LIKE :search OR r.name LIKE :search')->setParameter('search','%'.$slug.'%');
+        }
+        if(!is_null($request->get('category')) && $request->get('category') != 'all')
+        {
+            $result = $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
+        }
 
 
-                     $result = $result->getQuery()
-                     ->getResult();
+        $result = $result->getQuery()
+            ->getResult();
 
-         return JsonResponse::fromJsonString(json_encode($result));
+        return JsonResponse::fromJsonString(json_encode($result));
     }
 
     /**
@@ -810,24 +813,24 @@ class MapsController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $result = $em->getRepository(Card::class)->createQuerybuilder('c')
-                ->select(["a.latitude, a.longitude, c.id, t.icon"])
-                ->join('c.address','a')
-                ->join('c.categories','t')
-                ->join('c.region','r')
-                ->andWhere('c.name LIKE :search OR c.content LIKE :search OR r.name LIKE :search')->setParameter('search','%'.$search.'%');
+            ->select(["a.latitude, a.longitude, c.id, t.icon"])
+            ->join('c.address','a')
+            ->join('c.categories','t')
+            ->join('c.region','r')
+            ->andWhere('c.name LIKE :search OR c.content LIKE :search OR r.name LIKE :search')->setParameter('search','%'.$search.'%');
         if(null !== $request->get('category') && 'all' !== $request->get('category'))
         {
-          $result= $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
+            $result= $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
         }
         if(!is_null($slug) && 'na' !== $slug && '' !== trim($slug))
         {
-          $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
+            $result = $result->andWhere('c.name LIKE :name')->setParameter('name','%'.$slug.'%');
         }
 
 
         $result = $result->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
-                  ->getQuery()
-                  ->getResult();
+            ->getQuery()
+            ->getResult();
 
         return JsonResponse::fromJsonString(json_encode($result));
     }
@@ -845,26 +848,26 @@ class MapsController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $result = $em->getRepository(Card::class)->createQuerybuilder('c')
-                ->select(["a.latitude, a.longitude, c.id, t.icon"])
-                ->join('c.address','a')
-                ->join('c.categories','t')
-                ->join('c.region','r')
-                ->join('c.favoriteUsers','f')
-                ->andWhere('f.id = :user')->setParameter('user',$user->getId());
+            ->select(["a.latitude, a.longitude, c.id, t.icon"])
+            ->join('c.address','a')
+            ->join('c.categories','t')
+            ->join('c.region','r')
+            ->join('c.favoriteUsers','f')
+            ->andWhere('f.id = :user')->setParameter('user',$user->getId());
 
         if(null !== $request->get('category') && $request->get('category') != 'all')
         {
-          $result= $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
+            $result= $result->andWhere('t.id = :category')->setParameter('category',$request->get('category'));
         }
         if(!is_null($slug) && 'na' !== $slug)
         {
-          $result = $result->andWhere('c.name LIKE :search OR c.content LIKE :search OR r.name LIKE :name')->setParameter('name','%'.$slug.'%');
+            $result = $result->andWhere('c.name LIKE :search OR c.content LIKE :search OR r.name LIKE :name')->setParameter('name','%'.$slug.'%');
         }
 
 
         $result = $result->andWhere('c.status = :status')->setParameter('status',CardStatus::VALIDATED)
-                  ->getQuery()
-                  ->getResult();
+            ->getQuery()
+            ->getResult();
 
         return JsonResponse::fromJsonString(json_encode($result));
     }

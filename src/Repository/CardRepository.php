@@ -181,7 +181,7 @@ class CardRepository extends ServiceEntityRepository
             ->leftJoin("c.pixie", "p")
             ->where('c.region = :region')->setParameter('region', $regionId)
             ->andWhere('c.status = :status')->setParameter('status', CardStatus::VALIDATED)
-            ;
+        ;
         if($userEmail != null){
             $qb = $qb->andWhere("p.email NOT IN (".$userEmail.") AND p.visible = 1");
         }
@@ -191,7 +191,7 @@ class CardRepository extends ServiceEntityRepository
         $qb = $qb->getQuery()
             ->useResultCache(true, 0, "countCardsByRegion_".$regionId)
             ->getSingleScalarResult()
-            ;
+        ;
         return $qb;
     }
 
@@ -249,21 +249,25 @@ class CardRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findAllCardsValidated($filters = [],$userEmail=null)
+    public function findAllCardsValidated($filters = [],$userEmail=null,$loc=[])
     {
         $qb = $this->_buildQuery();
         $qb = $this->_applyFilters($qb, $filters);
 
         $qb = $qb->select(["address.latitude, address.longitude, c.id, category.icon"])
-                 ->andWhere('c.status = :status')
-                 ->setParameter('status',CardStatus::VALIDATED)
-                 ;
+            ->andWhere('c.status = :status')
+            ->setParameter('status',CardStatus::VALIDATED)
+        ;
         if($userEmail != null){
             $qb = $qb->andWhere("p.email NOT IN (".$userEmail.") AND p.visible = 1");
         }
+        if($loc['lat'] != null && $loc['lng'] != null){
+            $qb = $qb->andWhere("ACOS( SIN( RADIANS( address.latitude ) ) * SIN( RADIANS( ".$loc['lat']." ) ) + COS( RADIANS( address.latitude ) )
+* COS( RADIANS( ".$loc['lat']." )) * COS( RADIANS( address.longitude ) - RADIANS(  ".$loc['lng']." )) ) * 6380 < 50");
+        }
         $result = $qb->getQuery()
-                    ->getResult();
-        return $result;         
+            ->getResult();
+        return $result;
     }
 
     public function findNextCard($card)

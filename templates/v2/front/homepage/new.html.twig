@@ -129,12 +129,12 @@
                                         {% for category in categories %}
                                             {% for cat in category %}
                                                 {% if cat.name is defined %}
-{#                                                    <li class="btn btn-rollover btn-pink" data-id="{{ cat.id }}" data-slug="{{ cat.slug }}">#}
+                                                    {#                                                    <li class="btn btn-rollover btn-pink" data-id="{{ cat.id }}" data-slug="{{ cat.slug }}">#}
                                                     <li class="btn btn-rollover btn-pink">
                                                         <a href="/recherche/index?start=1&limit=10&search=&categories%5B%5D={{ cat.slug }}" style="color:#ed5485">
                                                             <span class="text">{{ cat.name }}</span><i class="fas {{ cat.icon }}"></i>
                                                         </a>
-{#                                                        <span class="text">{{ cat.name }}</span><i class="fas {{ cat.icon }}"></i>#}
+                                                        {#                                                        <span class="text">{{ cat.name }}</span><i class="fas {{ cat.icon }}"></i>#}
 
                                                     </li>
                                                 {% endif %}
@@ -162,7 +162,7 @@
                     <div id="noResult" class="row no-results d-none">
                         <div class="col-md-12">
                             <p>
-{#                                Aucune Card dans cette catégorie !#}
+                                {#                                Aucune Card dans cette catégorie !#}
                             </p>
                             <div class="noCardIco"></div>
                         </div>
@@ -251,7 +251,7 @@
     </div>
     <div id="api-box" data-api-url="/api/maps/all-cards"
          data-api-search-url="/api/maps/find-all-card/" data-current-location="true" data-show-sidebar="true"
-         data-auto-zoom="false" data-country-code="{{ country }}"
+         data-auto-zoom="false" data-country-code="{{ country }}" data-long="" data-lati=""
     ></div>
 
 
