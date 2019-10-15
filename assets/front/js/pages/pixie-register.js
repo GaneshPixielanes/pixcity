@@ -328,5 +328,22 @@ jQuery(document).ready(function() {
     $( "[name='user[email]']" ).change(function() {
         $(".email").text($( this ).val());
     });
-
+    $("#user_links_0_url").on('input',function () {
+        $(".instagram_txt").html($(this).val()) ;
+    });
+    $("body").on('input','#user_links_1_url',function () {
+        $(".facebook_txt").html($(this).val()) ;
+    });
+    $("body").on('input','#user_links_2_url',function () {
+        $(".twitter_txt").html($(this).val()) ;
+    });
+    $("body").on('input','#user_links_3_url',function () {
+        $(".youtube_txt").html($(this).val()) ;
+    });
+    $("body").on('input','#user_links_4_url',function () {
+        $(".blog_txt").html($(this).val()) ;
+    });
+    $("body").on('input','#user_links_5_url',function () {
+        $(".autre_txt").html($(this).val()) ;
+    });
 });
