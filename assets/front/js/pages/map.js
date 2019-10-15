@@ -84,6 +84,7 @@ $(document).ready(function() {
         };
         map = new google.maps.Map(document.getElementById("map"), mapProp);
         // console.log(JSON.parse(coordinates));
+        // map.getZoom(); //get zoom level
         if (coordinates.length > 1) {
             var flightPlanCoordinates = [coordinates];
 
@@ -119,7 +120,9 @@ $(document).ready(function() {
         google.maps.event.addListener(map, 'bounds_changed', onBoundsChanged);
 
         // Update markers on the map
-        getMarkers()
+        map.addListener('zoom_changed', function() {
+            getMarkers()
+        });
 
     }
 
@@ -478,7 +481,33 @@ $(document).ready(function() {
         var lat = pos.coords.latitude;
         var lng = pos.coords.longitude;
         var latlng = new google.maps.LatLng(lat, lng);
+        $('#api-box').attr('data-long',lng);
+        $('#api-box').attr('data-lati',lat);
 
+        var postlng = $('#api-box').attr('data-long');
+        var postlat = $('#api-box').attr('data-lati');
+        $.ajax({
+            url: "/api/maps/all-cards",
+            type: "post",
+            data: {
+                'lng':postlng,'lat':postlat,
+                regions: $('.region-selected').val(),
+                categories: categoryList,
+                text: $('[name="search"]').val(),
+                cityMaker: cityMaker
+            } ,
+            success: function (results) {
+                try {
+                    results = JSON.parse(results);
+                } catch (e) {
+                    results = results;
+                }
+                createMarkers(results);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
         currentPositionMarker = new google.maps.Marker({
             map: map,
             icon: '/../../img/MAP/my_pos.png',
@@ -523,8 +552,7 @@ $(document).ready(function() {
         myMap();
 
         if (navigator.geolocation) {
-            var loc = navigator.geolocation.getCurrentPosition(displayAndWatch, locError);
-
+            var loc = navigator.geolocation.getCurrentPosition(setCurrentPosition, locError);
         } else {
             alert("Your browser does not support the Geolocation API");
         }
