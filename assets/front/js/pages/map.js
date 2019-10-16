@@ -120,9 +120,9 @@ $(document).ready(function() {
         google.maps.event.addListener(map, 'bounds_changed', onBoundsChanged);
 
         // Update markers on the map
-        map.addListener('zoom_changed', function() {
+       // map.addListener('zoom_changed', function() {
             getMarkers()
-        });
+        //});
 
     }
 
