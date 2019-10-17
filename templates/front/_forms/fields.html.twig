@@ -220,7 +220,8 @@
             <label>{% if form.vars.value is not null %}{{ form.vars.value.name }}{% endif %}</label>
             <div class="input-group input-container">
                 <div class="input-group-addon"><i class="link-icon {% if form.vars.value is not null %}{{ form.vars.value.icon }}{% endif %}"></i></div>
-                {{ form_widget(form.url, {'attr': {'class': 'form-control'}}) }}
+{#                {{ form_widget(form.url, {'attr': {'class': 'form-control'}}) }}#}
+                <input type="url" class="form-control" name="{{ form.url.vars.full_name }}" required="required" placeholder="URL" inputmode="url">
                 <div class="input-group-addon"><a href="#" class="delete-item"><i class="fa fa-trash-alt"></i></a></div>
             </div>
             {{- form_errors(form) -}}
