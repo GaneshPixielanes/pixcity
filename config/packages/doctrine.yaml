@@ -42,3 +42,7 @@ doctrine:
                  MONTHNAME: DoctrineExtensions\Query\Mysql\Month
                  YEAR: DoctrineExtensions\Query\Mysql\Year
                  DATE: DoctrineExtensions\Query\Mysql\Date
+                 ACOS: DoctrineExtensions\Query\Mysql\Acos
+                 SIN: DoctrineExtensions\Query\Mysql\Sin
+                 RADIANS: DoctrineExtensions\Query\Mysql\Radians
+                 COS: DoctrineExtensions\Query\Mysql\Cos
