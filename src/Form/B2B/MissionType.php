@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Choice;
 
 class MissionType extends AbstractType
 {
@@ -79,7 +80,7 @@ class MissionType extends AbstractType
                 'attr' => ['class' => 'select-user-pack'],
                 'query_builder' => function(EntityRepository $er) use($options)
                 {
-                    return $er->createQueryBuilder('p')->where('p.user = :user AND p.deleted IS NULL')->setParameter('user',$options['user']);
+                    return $er->createQueryBuilder('p')->where('p.user = :user AND (p.deleted IS NULL or p.deleted = 0)')->setParameter('user',$options['user']);
                 }
             ])
             ->add('bannerImage', HiddenType::class)
@@ -94,6 +95,10 @@ class MissionType extends AbstractType
                     'error_bubbling' => false,
                     'by_reference' => false
                 ])
+            ->add('missionType',ChoiceType::class,[
+                'label' => false,
+                'choices' => ['Mission One Shot' => 'one-shot','Mission Recurrente' => 'recurring']
+            ])
             ->add('missionBasePrice', TextType::class,[
                 'label' => false
             ])
