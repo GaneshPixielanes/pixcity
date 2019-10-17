@@ -620,3 +620,34 @@
         <a href="#" class="btn btn-block adding-block add-mission-region" {% if form.vars.data | length > 1 %}style="display:none !important;"{% endif %}><i class="fa fa-plus"></i></a>
     </div>
 {% endblock %}
+
+{% block _client_optin_widget %}
+
+<div class="row" style="padding-top:10px">
+    <div class="col-md-2">
+        <input type="checkbox" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}" {% if form.vars.checked != false %}checked{% endif %} style="-moz-appearance: checkbox;-webkit-appearance: checkbox;"/>
+    </div>
+    <div class="col-md-10">
+        SUBSCRIBE TO B2B EMAILS
+    </div>
+</div>
+{% endblock %}
+
+{% block _mission_missionType_widget %}
+    <div class="d-flex align-items-center my-3">
+        <div class="btn-group btn-group-toggle pill-switch" data-toggle="buttons">
+            {% for choice in form.vars.choices %}
+                {% if form.vars.data == null and loop.index == 1 %}
+                    <label class="btn active">
+                        <input class="" type="radio" name="{{ form.vars.full_name }}" id="option{{ loop.index }}" autocomplete="off" checked="checked" value="{{ choice.value }}"> {{ choice.label }}
+                    </label>
+                    {% else %}
+                    <label class="btn {% if form.vars.data != null and form.vars.data == choice.value %}active{% endif %}">
+                        <input class="" type="radio" name="{{ form.vars.full_name }}" id="option{{ loop.index }}" autocomplete="off"  value="{{ choice.value }}"> {{ choice.label }}
+                    </label>
+                    {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}
