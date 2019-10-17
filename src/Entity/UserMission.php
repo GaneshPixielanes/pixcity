@@ -185,6 +185,11 @@ class UserMission
      */
     private $isTvaApplicable;
 
+    /**
+     * @ORM\Column(type="string", length=55, nullable=true)
+     */
+    private $missionType;
+
     public function __construct()
     {
         $this->userClientActivities = new ArrayCollection();
@@ -735,6 +740,18 @@ class UserMission
     public function setIsTvaApplicable(?string $isTvaApplicable): self
     {
         $this->isTvaApplicable = $isTvaApplicable;
+
+        return $this;
+    }
+
+    public function getMissionType(): ?string
+    {
+        return $this->missionType;
+    }
+
+    public function setMissionType(?string $missionType): self
+    {
+        $this->missionType = $missionType;
 
         return $this;
     }

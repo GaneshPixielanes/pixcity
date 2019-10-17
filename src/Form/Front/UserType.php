@@ -7,6 +7,7 @@ use App\Entity\Region;
 use App\Entity\Skill;
 use App\Entity\User;
 use App\Form\B2B\CommunityMediaType;
+use App\Form\Shared\AddressType;
 use App\Form\Shared\UserAvatarType;
 use App\Form\Shared\UserLinkType;
 use App\Form\Shared\UserOptinType;
@@ -60,6 +61,10 @@ class UserType extends AbstractType
                     'placeholder' => array(
                         'year' => 'label.year', 'month' => 'label.month', 'day' => 'label.day',
                     )
+                ))
+                ->add('address', AddressType::class, array(
+                    'required' => true,
+                    'constraints' => array(new Valid()),
                 ))
 //                ->add('birthLocation', EntityType::class, array(
 //                    'class' => Region::class,

@@ -22,7 +22,10 @@
             <div class="col-md-4 left">
 
                 <h1>Créez votre compte City-maker</h1>
-                <p class="intro-tab intro-tab-general intro-tab-regions">
+                <p class="intro-tab intro-tab-general">
+                    <br>
+                    Vous souhaitez devenir city-maker ?
+                    <br>
                     Installez-vous, prenez 6 minutes dans votre journée, une photo de vous et un café ;)
                     <br>
                     <br>
@@ -32,6 +35,11 @@
                     Sur ce 1er onglet, remplissez vos infos générales.
                     <br>
                     <br>Les champs notés * sont obligatoires.
+                </p>
+                <p class="intro-tab intro-tab-regions"  style="display: none;">
+                    <br>Cliquez sur les 2 régions sur lesquelles vous souhaitez rédiger des cards.
+                    <br>
+                    <br>Elles se colorent en rose lors de votre choix.
                 </p>
                 <p class="intro-tab intro-tab-likes"  style="display: none;">
                     Choisissez vos 5 catégories préférées !
@@ -48,7 +56,7 @@
                     Suivez bien les informations à droite avant la création officielle de votre compte ;)
 
                 <br>
-                En cas de questions, n’hésitez pas à nous écrire sur contact@pix.city
+                    En cas de questions, n’hésitez pas à nous écrire sur <a href="mailto:contact@pix.city" style="color: #fff">contact@pix.city</a>
                 <br>
 
 
@@ -108,24 +116,24 @@
 
                             <div class="col-md-6 address-module form-group">
 
-                                {{ form_label(form.pixie.billing.address.address) }}
+                                {{ form_label(form.address.address) }}
 
                                 <div class="row">
                                     <div class="col-xs-12 input-container">
-                                        {{ form_widget(form.pixie.billing.address.address) }}
+                                        {{ form_widget(form.address.address) }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-5 input-container">
-                                        {{ form_widget(form.pixie.billing.address.zipcode) }}
+                                        {{ form_widget(form.address.zipcode) }}
                                     </div>
                                     <div class="col-md-7 input-container">
-                                        {{ form_widget(form.pixie.billing.address.city) }}
+                                        {{ form_widget(form.address.city) }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12 input-container">
-                                        {{ form_widget(form.pixie.billing.address.country) }}
+                                        {{ form_widget(form.address.country) }}
                                     </div>
                                 </div>
                             </div>
@@ -276,58 +284,41 @@
                             <h4>GAINS PIX.CITY SERVICES :</h4>
                             <p>Vous avez au moins une card publiée sur pix.city et avez soumis votre candidature. Vous devez remplir les champs ci-dessous (les champs obligatoires ont une croix rose). N’oubliez pas de cliquer sur “Créer mon compte” en bas à droite avant de quitter cette page!</p>
                             <br>
-                            <span class="maj">Informations bancaires</span>
+                            <span class="maj">Informations</span>
                             <div>
                                 En publiant des cards, vous participez à un jeu concours mensuel avec des lots à gagner ou des gains versés directement sur votre compte bancaire.
                             </div>
                             <br>
-                            <div>
-                                <h4>INFORMATIONS GÉNÉRALES</h4>
-                                <table class="table">
-                                    <tr>
-                                        <th>Prénom</th>
-                                        <th>Nom</th>
-                                        <th>Email</th>
-                                        <th>Numéro de téléphone</th>
-                                        <th>Date de naissance</th>
-                                        <th>Adresse</th>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="fname"></span></td>
-                                        <td><span class="lname"></span></td>
-                                        <td><span class="email"></span></td>
-                                        <td><span class="telep"></span></td>
-                                        <td>
-                                            <span class="dobd"></span>-
-                                            <span class="dobm"></span>-
-                                            <span class="doby"></span>
-                                        </td>
-                                        <td>
-                                            <p class="address"></p>
-                                            <p class="zipcode"></p>
-                                            <p class="city"></p>
-                                            <p class="country"></p>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <h4>RÉSEAUX SOCIAUX</h4>
-                                <ul>
-                                    <li class="instagram_txt"></li>
-                                    <li class="facebook_txt"></li>
-                                    <li class="twitter_txt"></li>
-                                    <li class="youtube_txt"></li>
-                                    <li class="blog_txt"></li>
-                                    <li class="autre_txt"></li>
-                                </ul>
-                            </div>
-                        </div>
+
 
                         <div class="row">
                             <div class="col-xs-12">
                                 {{ form_row(form.pixie.billing.status) }}
                             </div>
                         </div>
+                            <div class="col-md-6 address-module form-group">
 
+                                {{ form_label(form.pixie.billing.address.address) }}
+
+                                <div class="row">
+                                    <div class="col-xs-12 input-container">
+                                        {{ form_widget(form.pixie.billing.address.address) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 input-container">
+                                        {{ form_widget(form.pixie.billing.address.zipcode) }}
+                                    </div>
+                                    <div class="col-md-7 input-container">
+                                        {{ form_widget(form.pixie.billing.address.city) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 input-container">
+                                        {{ form_widget(form.pixie.billing.address.country) }}
+                                    </div>
+                                </div>
+                            </div>
                         {{ form_row(form.pixie.billing.companyName) }}
                         {{ form_row(form.pixie.billing.firstname) }}
                         {{ form_row(form.pixie.billing.lastname) }}
@@ -337,7 +328,7 @@
                         <!--CHOIX DE REMUNERATION -->
 
                         <div class="col-sm-12 form-group">
-                            <label for="mode-paiement" class="maj">Rémunération</label>
+                            <label for="mode-paiement" class="maj">Informations bancaires</label>
                         </div>
 
                         <div class="row" style="display: none;">

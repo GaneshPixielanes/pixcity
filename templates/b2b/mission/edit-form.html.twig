@@ -183,6 +183,16 @@
             </textarea>
 {#        <p class="mb-0 fz-12 text-textgray mt-2"><span class="inputlength">{{ mission.missionLogs.last.description | length}}</span>/<span class="input-maxlength">1200</span></p>#}
     </div>
+    <div class="d-flex align-items-center my-3">
+        <div class="btn-group btn-group-toggle pill-switch" data-toggle="buttons">
+            <label class="btn {% if mission.missionType == 'one-shot' %}active{% else %}disabled{% endif %}">
+                <input class="" type="radio" id="option1" autocomplete="off" checked="checked" value="">  Mission One Shot
+            </label>
+            <label class="btn {% if mission.missionType == 'recurring' %}active{% else %}disabled{% endif %}">
+                <input class="" type="radio" id="option2" autocomplete="off" checked="checked" value="">  Mission Recurrente
+            </label>
+        </div>
+    </div>
     <div class="pack-price-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
         <h5 class="text-darkgray mb-0">Fixez votre prix</h5>
         <p class="text-textgray">Si vous ne savez pas comment définir vos prix,  <a href="{{ url('front_faq_index') }}">consultez notre FAQ</a></p>

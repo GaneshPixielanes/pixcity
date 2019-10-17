@@ -429,6 +429,10 @@ class User implements UserInterface, EquatableInterface
      * @ORM\Column(type="integer", nullable=true)
      */
     private $level = 1;
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Address", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $address;
 
     //--------------------------------------------------------------
     // Constructor
@@ -1962,5 +1966,19 @@ class User implements UserInterface, EquatableInterface
 
         return base64_encode($this->getId());
     }
+    /**
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
 
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
 }
