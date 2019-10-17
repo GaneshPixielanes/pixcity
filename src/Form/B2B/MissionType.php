@@ -102,6 +102,7 @@ class MissionType extends AbstractType
             ->add('missionBasePrice', TextType::class,[
                 'label' => false
             ])
+            
 //            ->add('dueDate', DateType::class)
 //            ->add('conditionsAgreed', ChoiceType::class,[
 //                'choices' => ['Yes' => 1, 'No' => 0],

@@ -29,6 +29,7 @@ class MangoPayService
         $this->mangoPayRefund = new MangoPay\Refund();
     }
 
+
     public function createUser(MangoPay\UserNatural $userNatural)
     {
         return $this->mangoPayApi->Users->Create($userNatural);
@@ -87,33 +88,35 @@ class MangoPayService
 //        return $Result;
 //    }
 
-    public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission,$fee)
+    public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission,$fee,$card_array)
     {
 
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
-        $payIn->Tag = "Mission-id ".$mission;
-        $payIn->PaymentType = MangoPay\PayInPaymentType::Card;
-        $payIn->PaymentDetails = new MangoPay\PayInPaymentDetailsCard();
-        $payIn->PaymentDetails->CardType = "CB_VISA_MASTERCARD";
+        $payIn->Tag = "Mission-id".$mission;
         $payIn->DebitedFunds = new MangoPay\Money();
-        $payIn->DebitedFunds->Currency = "EUR";
         $payIn->DebitedFunds->Amount = $amount;
+        $payIn->DebitedFunds->Currency = 'EUR';
         $payIn->Fees = new MangoPay\Money();
-        $payIn->Fees->Currency = "EUR";
         $payIn->Fees->Amount = $fee;
-        $payIn->ExecutionType = MangoPay\PayInExecutionType::Web;
-        $payIn->ExecutionDetails = new MangoPay\PayInExecutionDetailsWeb();
-        $payIn->ExecutionDetails->ReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
-        $payIn->ExecutionDetails->Culture = "EN";
-//        $payIn->ExecutionDetails->TemplateURLOptions = new MangoPay\PayInTemplateURLOptions();
-//        $payIn->ExecutionDetails->TemplateURLOptions->PAYLINE = 'https://staging.pix.city/client/mission/mission-payin-process/'.$transaction;
-        $result =  $this->mangoPayApi->PayIns->Create($payIn);
+        $payIn->Fees->Currency = 'EUR';
 
-//        $this->setCardRegistration($mangoUser->Id);
+        // payment type as CARD
 
-        return $result->ExecutionDetails->RedirectURL;
+        $payIn->PaymentDetails = new MangoPay\PayInPaymentDetailsCard();
+        $payIn->PaymentDetails->CardType = $card_array['card_type'];
+        $payIn->PaymentDetails->CardId = $card_array['card_id'];
+
+        // execution type as DIRECT
+        $payIn->ExecutionDetails = new MangoPay\PayInExecutionDetailsDirect();
+        $payIn->ExecutionDetails->SecureModeNeeded = true;
+        $payIn->ExecutionDetails->SecureModeReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
+
+        // create Pay-In
+        $createdPayIn = $this->mangoPayApi->PayIns->Create($payIn);
+
+        return $createdPayIn->Id;
     }
 
 
@@ -126,19 +129,18 @@ class MangoPayService
 
     }
 
-
     public function refundPayment($transaction,$amount,$fees){
 
         $fees = $fees * 100;
 
         $debitedFund = $amount * 100;
 
-        $PayInId = $transaction[0]->getMangopayTransactionId();
+        $PayInId = $transaction->getMangopayTransactionId();
 
         $Refund = new \MangoPay\Refund();
 
-        $Refund->AuthorId = $transaction[0]->getMangopayUserId();
-        $Refund->Tag = "Mission-id ".$transaction[0]->getMission()->getId();
+        $Refund->AuthorId = $transaction->getMangopayUserId();
+        $Refund->Tag = "Mission-id ".$transaction->getMission()->getId();
         $Refund->DebitedFunds = new \MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
         $Refund->DebitedFunds->Amount = $debitedFund;
@@ -159,11 +161,11 @@ class MangoPayService
 
         $debitedFund = $amount * 100;
 
-        $PayInId = $transaction[0]->getMangopayTransactionId();
+        $PayInId = $transaction->getMangopayTransactionId();
 
         $Refund = new \MangoPay\Refund();
 
-        $Refund->AuthorId = $transaction[0]->getMangopayUserId();
+        $Refund->AuthorId = $transaction->getMangopayUserId();
 
         $Refund->DebitedFunds = new \MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
@@ -203,23 +205,38 @@ class MangoPayService
             return $this->mangoPayApi->Users->GetKycDocuments($mangopayUserId);
         }
     }
+
     public function getAllUsers($Page=null,$Per_Page=null){
         return $this->mangoPayApi->Users->GetAll($Page,$Per_Page);
     }
 
 
-    public function setCardRegistration($userID){
+    public function setCardRegistration($naturalUserId){
 
-        $cardRegister = new \MangoPay\CardRegistration();
-        $cardRegister->UserId = $userID;
-        $cardRegister->Currency = "EUR";
-        $result = $this->mangoPayApi->CardRegistrations->Create($cardRegister);
+        $cardRegister = new MangoPay\CardRegistration();
+        $cardRegister->UserId = $naturalUserId;
+        $cardRegister->Currency = 'EUR';
+        $cardRegister->CardType = 'CB_VISA_MASTERCARD';
+        $createdCardRegister = $this->mangoPayApi->CardRegistrations->Create($cardRegister);
 
-        $cardRegisterPut = $this->mangoPayApi->CardRegistrations->Get($result->Id);
-        $cardRegisterPut->RegistrationData = $result->PreregistrationData;
-        $response = $this->mangoPayApi->CardRegistrations->Update($cardRegisterPut);
-
-        dd($response);
-
+        return $createdCardRegister;
     }
+
+    public function finishCardRegistration($card_id,$data){
+
+        $cardRegisterPut = $this->mangoPayApi->CardRegistrations->Get($card_id);
+        $cardRegisterPut->RegistrationData = 'data='.$data;
+        $updatedCardRegister = $this->mangoPayApi->CardRegistrations->Update($cardRegisterPut);
+
+        if($updatedCardRegister->Status != MangoPay\CardRegistrationStatus::Validated || !isset($updatedCardRegister->CardId)){
+            return false;
+        }
+
+
+        $card = $this->mangoPayApi->Cards->Get($updatedCardRegister->CardId);
+
+        return $card;
+    }
+
+
 }

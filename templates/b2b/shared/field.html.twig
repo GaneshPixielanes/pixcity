@@ -108,7 +108,7 @@
 {% block _mission_title_widget %}
     <div class="pack-title-container edit col-sm-12 border-bottom mt-2 mb-4 pb-4">
         <h5 class="text-darkgray mb-0">Le titre de votre mission <span style="color: #fd6b84;">*</span></h5>
-        <p class="text-textgray">Le titre doit permettre à votre client de comprendre instantanément votre prestation. Personnalisez-le titre comme vous le souhaitez</p>
+        <p class="text-textgray">Le titre doit permettre à votre client de comprendre instantanément votre prestation. Personnalisez le titre comme vous le souhaitez</p>
         <input class="form-control bg-lightwhite pack-title" maxlength="64" type="text"
                placeholder="Je m’occupe de vos réseaux sociaux " name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" data-bind="pcs-mission-name" {% if form.vars.value != '' %}readonly="readonly"{% endif %}/>
         <p class="mb-0 fz-12 text-textgray mt-2" data-bind="mission-title"><span class="inputlength">{{ form.vars.value | length }}</span>/<span
@@ -632,6 +632,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 {% block _mission_missionType_widget %}
     <div class="d-flex align-items-center my-3">

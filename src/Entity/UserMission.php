@@ -189,6 +189,7 @@ class UserMission
      * @ORM\Column(type="string", length=55, nullable=true)
      */
     private $missionType;
+    
 
     public function __construct()
     {
@@ -673,6 +674,11 @@ class UserMission
         });
         $log = array_values($log->toArray());
         return (isset($log) && count($log) > 0)?$log[0]:null;
+    }
+
+    public function getActiveLogById(MissionLog $logs)
+    {
+        return $logs;
     }
 
     public function getRoyalties(): ?Royalties

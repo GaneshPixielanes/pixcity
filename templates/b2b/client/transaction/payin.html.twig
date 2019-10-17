@@ -2,142 +2,175 @@
 <html>
 <head>
     <title>Title of the document</title>
-    <style type= “text/css“>
-        #PaylineForm {
-            font-family:Tahoma, sans-serif;
-            font-size: 76%;
-            margin:0 auto;
-            width:750px;
-        }
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-        #PaylineForm h2 {
-            margin: 0;
-            padding:0;
-            font-size: 1em;
-            line-height:1.5em;
-            color:orange;
-        }
-
-        #PaylineForm h3 {
-            margin: 0;
-            margin-bottom:.5em;
-            font-size: 1em;
-            font-weight: bold;
-            color:#333;
-        }
-
-        #PaylineForm input[type=radio],
-        #PaylineForm label,
-        #PaylineForm label img,
-        .checkable * {
-            vertical-align:middle;
-        }
-
-        #PaylineForm form {
-            margin:0;
-        }
-
-        /* Panel contenant les champs */
-
-        #PaylineForm .pane {
-            padding:.5em;
-            margin-bottom:.5em;
-            background-color: #efefef;
-            border: 1px solid orange;
-        }
-
-        #PaylineForm div.radio {
-            margin-bottom:.5em;
-        }
-
-        /* Bouton de validation*/
-
-        #PaylineForm #submitButton {
-            background-color:orange;
-            color:white;
-            font-weight: bold;
-        }
-
-        /* Bouton d'annulation */
-
-        #PaylineForm #cancelButton {
-            background-color:orange;
-            color:white;
-        }
-
-        /* Message de feed-back de paiement */
-
-        .paymentmessage {
-            text-align:center;
-            background: #fefefe;
-            line-height: 3em;
-        }
-
-        /* Zone contenant le bouton */
-
-        #actionButtons {
-            text-align: center;
-        }
-
-        /* Messages d'erreur */
-
-        #PaylineForm ul.errors,
-        #PaylineForm ul.errors li {
-            margin:0;
-            padding:0;
-            list-style: none;
-        }
-
-        #PaylineForm ul.errors {
-            padding:.5em
-            margin-bottom:1em;
-            color:red;
-            background-color: #ffe;
-            border:1px solid #ccc;
-        }
-
-        /* Champs désactivés */
-
-        .disabled {
-            background-color: #fafafa;
-        }
-
-    </style>
 </head>
 
 <body>
 
-    <div id="PaylineForm">
-        <h2></h2>
-        <h2></h2>
-        <h2></h2>
-        <img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services">
-        <form action="<?php print $createdCardRegister->CardRegistrationURL; ?>" method="post" class="pane">
+<div class="container">
+    <div class="row">
+        <!-- You can make it whatever width you want. I'm making it full width
+             on <= small devices and 4/12 page width on >= medium devices -->
+        <div class="">
 
-                <input type="hidden" name="data" value="<?php print $createdCardRegister->PreregistrationData; ?>" />
-                <input type="hidden" name="accessKeyRef" value="<?php print $createdCardRegister->AccessKey; ?>" />
-                <input type="hidden" name="returnURL" value="<?php print $returnUrl; ?>" />
+            <h3>
+                Please do payment before  <span id="countdown">10</span> seconds
+            </h3>
+            <!-- CREDIT CARD FORM STARTS HERE -->
+            <div class="panel panel-default credit-card-box">
+                <div class="panel-heading display-table" >
+                    <div class="row display-tr" >
+                        <h3 class="panel-title display-td" ><img src="/assets/images/services-home-banner-logo.svg" alt="" style="margin-left: 1%;margin-bottom: -4%;"></h3>
+                        <div class="display-td" >
+                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label for="cardNumber">MONTANTE : {{amount}} €</label><br>
+                            <label for="cardNumber">Titre de la mission : {{mission.title}}</label>
+                        </div>
+                    </div>
+                </div>
 
-                <label for="cardNumber">Card Number</label>
-                <input type="text" name="cardNumber" value="" />
-                <div class="clear"></div>
 
-                <label for="cardExpirationDate">Expiration Date</label>
-                <input type="text" name="cardExpirationDate" value="" />
-                <div class="clear"></div>
+                <div class="panel-body">
+                    <form action="{{ createdCardRegister.CardRegistrationURL }}" role="form" id="payment-form" method="POST">
+                        <input type="hidden" name="data" value="{{ createdCardRegister.PreregistrationData }}" />
+                        <input type="hidden" name="accessKeyRef" value="{{ createdCardRegister.AccessKey }}" />
+                        <input type="hidden" name="returnURL" value="{{ returnUrl }}/client/mission/process-mission-request/{{ id }}" />
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="form-group">
+                                    <label for="cardNumber">NUMÉRO DE CARTE</label>
+                                    <div class="input-group">
+                                        <input
+                                                type="tel"
+                                                class="form-control"
+                                                name="cardNumber"
+                                                placeholder="Valid Card Number"
+                                                autocomplete="cc-number"
+                                                required autofocus
+                                        />
+                                        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="form-group">
+                                    <label for="cardExpiry"><span class="hidden-xs">DATE D'EXPIRATION</span><span class="visible-xs-inline">EXP</span> </label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            name="cardExpirationDate"
+                                            placeholder="MM / YY"
+                                            autocomplete="cc-exp"
+                                            required
+                                    />
+                                </div>
+                            </div>
 
-                <label for="cardCvx">CVV</label>
-                <input type="text" name="cardCvx" value="" />
-                <div class="clear"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="form-group">
+                                    <label for="cardCvx">CODE CV</label>
+                                    <input
+                                            type="password"
+                                            class="form-control"
+                                            name="cardCvx"
+                                            placeholder="cardCvx"
+                                            autocomplete="cc-csc"
+                                            required
+                                    />
+                                </div>
+                            </div>
+                        </div>
 
-                <input type="submit" value="Pay" />
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <input class="btn btn-success btn-lg btn-block" type="submit" value="Pay" />
+                            </div>
+                        </div>
+                        <div class="row" style="display:none;">
+                            <div class="col-xs-12">
+                                <p class="payment-errors"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="pull-right" style="font-size: 10pt; line-height: 2em;margin-top: -358px;margin-right: 13%;color: red">
+                        {% if mission.getMissionType == 'one-shot' %}
+                        <p>Please provide the message to client ,The card detailed stored like in Netflex of month payment,<br>this message will show only when CM chose recurring payment</p>
+                        {% endif %}
 
-        </form>
-        <h3></h3>
-        <button id="submitButton">Submit</button>
 
-        <img src="https://www.mangopay.com/terms/powered-by-mangopay.png" alt="">
+                    </div>
+                </div>
+                <div class="row">
+                    <img src="https://www.mangopay.com/terms/powered-by-mangopay.png" alt="" style="height: 100px;margin-left: 67px;"s>
+                </div>
+
+            </div>
+            <!-- CREDIT CARD FORM ENDS HERE -->
+
+
+        </div>
+
+
+
+
+
     </div>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.2.3/jquery.payment.min.js"></script>
+
+
+<script type="text/javascript">
+
+    // Total seconds to wait
+    var seconds = 1080;
+
+    function countdown() {
+        seconds = seconds - 1;
+        if (seconds < 0) {
+            // Chnage your redirection link here
+            window.location = "{{ returnUrl }}/client/mission/";
+        } else {
+            // Update remaining seconds
+            document.getElementById("countdown").innerHTML = seconds;
+            // Count down using javascript
+            window.setTimeout("countdown()", 1000);
+        }
+    }
+
+    // Run countdown function
+    countdown();
+
+</script>
+
+
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+

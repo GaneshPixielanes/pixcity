@@ -278,10 +278,10 @@
                     <div class="tab-pane tp4" data-slug="remuneration" id="remuneration-tab">
 
                         <div class="col-sm-12">
-                            <h4>GAINS PIX.CITY :</h4>
+                            <h4 class="maj">GAINS PIX.CITY :</h4>
                             <p>Vous rédigez des cards et participez aux différents jeux concours mensuels. Vous n’avez pas à remplir d'éléments supplémentaires car nous avons déjà toutes vos informations ;) N’oubliez pas de cliquer sur “Créer mon compte” en bas à droite avant de quitter cette page!</p>
                             <br>
-                            <h4>GAINS PIX.CITY SERVICES :</h4>
+                            <h4 class="maj">GAINS PIX.CITY SERVICES :</h4>
                             <p>Vous avez au moins une card publiée sur pix.city et avez soumis votre candidature. Vous devez remplir les champs ci-dessous (les champs obligatoires ont une croix rose). N’oubliez pas de cliquer sur “Créer mon compte” en bas à droite avant de quitter cette page!</p>
                             <br>
                             <span class="maj">Informations</span>
@@ -296,6 +296,11 @@
                                 {{ form_row(form.pixie.billing.status) }}
                             </div>
                         </div>
+
+                        {{ form_row(form.pixie.billing.companyName) }}
+                        {{ form_row(form.pixie.billing.firstname) }}
+                        {{ form_row(form.pixie.billing.lastname) }}
+                        {{ form_row(form.pixie.billing.phone) }}
                             <div class="col-md-6 address-module form-group">
 
                                 {{ form_label(form.pixie.billing.address.address) }}
@@ -319,10 +324,6 @@
                                     </div>
                                 </div>
                             </div>
-                        {{ form_row(form.pixie.billing.companyName) }}
-                        {{ form_row(form.pixie.billing.firstname) }}
-                        {{ form_row(form.pixie.billing.lastname) }}
-
                         {{ form_row(form.pixie.billing.tva) }}
 
                         <!--CHOIX DE REMUNERATION -->
