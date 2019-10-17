@@ -313,17 +313,17 @@ jQuery(document).ready(function() {
     $( "[name='user[birthdate][year]']" ).change(function() {
         $(".doby").text($( this ).val());
     });
-    $( "[name='user[pixie][billing][address][address]']" ).change(function() {
-        $(".address").text($( this ).val());
+    $( "[name='user[address][address]']" ).change(function() {
+        $("[name='user[pixie][billing][address][address]']").val($( this ).val());
     });
-    $( "[name='user[pixie][billing][address][zipcode]']" ).change(function() {
-        $(".zipcode").text($( this ).val());
+    $( "[name='user[address][zipcode]']" ).change(function() {
+        $("[name='user[pixie][billing][address][zipcode]']").val($( this ).val());
     });
-    $( "[name='user[pixie][billing][address][city]']" ).change(function() {
-        $(".city").text($( this ).val());
+    $( "[name='user[address][city]']" ).change(function() {
+        $("[name='user[pixie][billing][address][city]']").val($( this ).val());
     });
-    $( "[name='user[pixie][billing][address][country]']" ).change(function() {
-        $(".country").text($( this ).val());
+    $( "[name='user[address][country]']" ).change(function() {
+        $("[name='user[pixie][billing][address][country]']").val($( this ).val());
     });
     $( "[name='user[email]']" ).change(function() {
         $(".email").text($( this ).val());

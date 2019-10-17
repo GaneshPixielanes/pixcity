@@ -116,24 +116,24 @@
 
                             <div class="col-md-6 address-module form-group">
 
-                                {{ form_label(form.pixie.billing.address.address) }}
+                                {{ form_label(form.address.address) }}
 
                                 <div class="row">
                                     <div class="col-xs-12 input-container">
-                                        {{ form_widget(form.pixie.billing.address.address) }}
+                                        {{ form_widget(form.address.address) }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-5 input-container">
-                                        {{ form_widget(form.pixie.billing.address.zipcode) }}
+                                        {{ form_widget(form.address.zipcode) }}
                                     </div>
                                     <div class="col-md-7 input-container">
-                                        {{ form_widget(form.pixie.billing.address.city) }}
+                                        {{ form_widget(form.address.city) }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12 input-container">
-                                        {{ form_widget(form.pixie.billing.address.country) }}
+                                        {{ form_widget(form.address.country) }}
                                     </div>
                                 </div>
                             </div>
@@ -296,7 +296,29 @@
                                 {{ form_row(form.pixie.billing.status) }}
                             </div>
                         </div>
+                            <div class="col-md-6 address-module form-group">
 
+                                {{ form_label(form.pixie.billing.address.address) }}
+
+                                <div class="row">
+                                    <div class="col-xs-12 input-container">
+                                        {{ form_widget(form.pixie.billing.address.address) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 input-container">
+                                        {{ form_widget(form.pixie.billing.address.zipcode) }}
+                                    </div>
+                                    <div class="col-md-7 input-container">
+                                        {{ form_widget(form.pixie.billing.address.city) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 input-container">
+                                        {{ form_widget(form.pixie.billing.address.country) }}
+                                    </div>
+                                </div>
+                            </div>
                         {{ form_row(form.pixie.billing.companyName) }}
                         {{ form_row(form.pixie.billing.firstname) }}
                         {{ form_row(form.pixie.billing.lastname) }}
