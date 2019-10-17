@@ -47,4 +47,16 @@ class ClientTransactionRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findLastRow($value)
+    {
+
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.mission  =:val')
+            ->setParameter('val', $value)
+            ->orderBy('t.id','DESC')
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+    }
 }
