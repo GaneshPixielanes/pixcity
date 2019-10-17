@@ -6,6 +6,8 @@ namespace App\Controller\B2B\Client;
 use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientTransaction;
+use App\Entity\MissionRecurring;
+use App\Entity\MissionRecurringPriceLog;
 use App\Entity\Option;
 use App\Entity\Page;
 use App\Entity\Royalties;
@@ -13,6 +15,7 @@ use App\Repository\ClientInfoRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionPaymentRepository;
+use App\Repository\MissionRecurringRepository;
 use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
@@ -30,6 +33,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
@@ -127,19 +131,103 @@ class MissionController extends Controller
     }//End of mission accept
 
     /**
+     * @Route("/process-mission-view/{id}", name="process_mission_view")
+     */
+    public function viewPaymentPage($id,Request $request,
+                                    MangoPayService $mangoPayService,
+                                    UserMissionRepository $missionRepo,
+                                    ClientInfoRepository $clientInfoRepository,
+                                    MissionPaymentRepository $missionPaymentRepository){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $userMissionTblId = $missionRepo->findOneBy(['id'=>$id]);
+
+        $tansClientId = $clientInfoRepository->findOneBy(['client'=>$userMissionTblId->getClient()]);
+
+        $mangopayid = $tansClientId->getMangopayUserId();
+
+        if(isset($mangopayid) == null){
+            // Create a mango pay user
+            $mangoUser = new UserNatural();
+
+            $mangoUser->PersonType = "NATURAL";
+            $mangoUser->FirstName = $this->getUser()->getFirstname();
+            $mangoUser->LastName = $this->getUser()->getLastname();
+            $mangoUser->Birthday = 1409735187;
+            $mangoUser->Nationality = "FR";
+            $mangoUser->CountryOfResidence = "FR";
+            $mangoUser->Email = $this->getUser()->getEmail();
+            $mangoUser = $mangoPayService->createUser($mangoUser);
+            //Create a wallet
+            $wallet = $mangoPayService->getWallet($mangoUser->Id);
+            $tansClientId->setMangopayUserId($mangoUser->Id);
+            $tansClientId->setMangopayWalletId($wallet->Id);
+            $tansClientId->setMangopayCreatedAt(new \DateTime());
+            $em->persist($tansClientId);
+
+            $em->flush();
+        }
+
+
+        $mangoUser = $mangoPayService->getUser($tansClientId->getMangopayUserId());
+
+        $createdCardRegister = $mangoPayService->setCardRegistration($mangoUser->Id);
+
+        $session  = new Session();
+        $session->remove('card_id');
+
+        $session->set('card_id',$createdCardRegister->Id);
+
+        $returnUrl = 'http' . ( isset($_SERVER['HTTPS']) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'];
+
+        $em = $this->getDoctrine()->getManager();
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);
+        $margin = $options->findOneBy(['slug' => 'margin']);
+
+        $mission = $missionRepo->activePrices($id);
+
+        $cityMakerType = '';
+        if($mission->getIsTvaApplicable() != NULL)
+        {
+            $cityMakerType = CompanyStatus::COMPANY;
+        }
+
+
+        $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        return $this->render('b2b/client/transaction/payin.html.twig',[
+            'createdCardRegister' => $createdCardRegister,
+            'returnUrl' => $returnUrl,
+            'id' => $id,
+            'amount' => $last_result['client_total'],
+            'mission' => $mission
+        ]);
+
+    }
+
+
+    /**
      * @param $id
      * @param MangoPayService $mangoPayService
      * @param UserMissionRepository $missionRepo@
      * @Route("/process-mission-request/{id}", name="process_mission_request")
      */
-    public function missionProcess($id,
+    public function missionProcess($id,Request $request,
                                    MangoPayService $mangoPayService,
                                    UserMissionRepository $missionRepo,
                                    MissionPaymentRepository $missionPaymentRepository,
                                    ClientTransactionRepository $clientTransactionRepository,
-                                   ClientInfoRepository $clientInfoRepository
+                                   ClientInfoRepository $clientInfoRepository,
+                                   MissionRecurringRepository $missionRecurringRepository
     )
     {
+
+
+
+
         $em = $this->getDoctrine()->getManager();
         $options = $this->getDoctrine()->getRepository(Option::class);
 
@@ -185,20 +273,11 @@ class MissionController extends Controller
 
         if($result['tax'] != 0){
 
-
             $tax_value = $tax->getValue() / 100 * $margin;
 
-            if($mission->getStatus() != MissionStatus::CREATED){
+            if($result['need_to_pay'] != 0){
 
-                if($result['need_to_pay'] != 0){
-
-                    $fee = $amount - ($margin + $tax_value);
-
-                }else{
-
-                    $fee = $margin + $tax_value;
-
-                }
+                $fee = $amount - ($margin + $tax_value);
 
             }else{
 
@@ -206,34 +285,19 @@ class MissionController extends Controller
 
             }
 
-
-
         }else{
 
-            if($mission->getStatus() != MissionStatus::CREATED){
-
-                if($result['need_to_pay'] != 0){
-
-                    $fee = $amount - $margin;
-
-                }else{
-
-                    $fee = $margin;
-                }
-
+            if($result['need_to_pay'] != 0){
+                $fee = $amount - $margin;
             }else{
-
                 $fee = $margin;
-
             }
-
 
 
         }
 
-
-
         $userMissionTblId = $missionRepo->findOneBy(['id'=>$id]);
+
         $tansClientId = $clientInfoRepository->findOneBy(['client'=>$userMissionTblId->getClient()]);
         //$tansClientId = $clientTransactionRepository->findOneBy(['user'=>$userMissionTblId->getClient()]);
         $mangopayid = $tansClientId->getMangopayUserId();
@@ -282,11 +346,64 @@ class MissionController extends Controller
 
         $em->flush();
 
+        $payment_type = $mission->getMissionType();$card_array = [];
 
-        //Create Payin
-        $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId(),$fee * 100);
+        $session  = new Session();
 
-        return $this->redirect($result);
+        $em = $this->getDoctrine()->getManager();
+
+        $card = $mangoPayService->finishCardRegistration($session->get('card_id'),$request->get('data'));
+
+        if($card){
+
+            if($payment_type != 'one-shot'){
+
+                $serializer = $this->container->get('serializer');
+                $card_details = new MissionRecurring();
+                $card_details->setClient($userMissionTblId->getClient());
+                $card_details->setMission($userMissionTblId);
+                $card_details->setCardType($card->CardProvider);
+                $card_details->setCardId($card->Id);
+                $card_details->setPaymentDate(new \DateTime());
+                $card_details->setInvoiceDate(new \DateTime());
+                $card_details->setPaymentStatus('pending');
+                $card_details->setCardAlias($card->Alias);
+                $card_details->setCardExpirationDate($card->ExpirationDate);
+                $card_details->setCardResponse($serializer->serialize($card, 'json'));
+                $card_details->setCreatedAt(new \DateTime());
+                $card_details->setUpdatedAt(new \DateTime());
+
+                $em->persist($card_details);
+
+                $mission_price_log = new MissionRecurringPriceLog();
+                $mission_price_log->setMission($userMissionTblId);
+                $mission_price_log->setActivePrice($mission->getActiveLog());
+                $mission_price_log->setCycle(1);
+                $mission_price_log->setMonth(date('F'));
+                $mission_price_log->setYear(date('Y'));
+
+                $em->persist($mission_price_log);
+
+                $em->flush();
+
+            }
+
+            $card_array['card_type'] = $card->CardProvider;
+            $card_array['card_id'] = $card->Id;
+
+            $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId(),$fee * 100,$card_array);
+
+            return $this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);//$this->redirect($result);//$this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);
+
+        }else{
+
+            return $this->render('b2b/client/transaction/failed.html.twig',['response' => 'card is not properly. your transaction is not completed']);
+
+        }
+
+
+
+
     }
 
     /**
@@ -298,9 +415,9 @@ class MissionController extends Controller
     }
 
     /**
-     * @Route("/mission-accept-process/{id}", name="mission_accept_process")
+     * @Route("/mission-accept-process/{id}/{transaction_id}", name="mission_accept_process")
      */
-    public function missionAcceptProcess($id, ClientTransactionRepository $transactionRepo,
+    public function missionAcceptProcess($id,$transaction_id ,ClientTransactionRepository $transactionRepo,
                                          ClientRepository $clientRepository,
                                          UserMissionRepository $missionRepo,
                                          Request $request,
@@ -310,14 +427,15 @@ class MissionController extends Controller
                                          MissionPaymentRepository $missionPaymentRepository)
     {
 
-        $response = $mangoPayService->getResponse($request->get('transactionId'));
+        $response = $mangoPayService->getResponse($transaction_id);
 
         if($response->Status != 'FAILED'){
 
             $transaction = $transactionRepo->find($id);
+
             $mission_id = $transaction->getMission();
 
-            $transaction->setMangopayTransactionId($request->get('transactionId'));
+            $transaction->setMangopayTransactionId($transaction_id);
             $transaction->setPaymentStatus(true);
 
             $transaction->getMission()->setMissionAgreedClient(1);
@@ -409,6 +527,7 @@ class MissionController extends Controller
                 $royalties->setTotalPrice($mission_id->getUserMissionPayment()->getCmTotal());
                 $royalties->setInvoicePath($cmInvoicePath);
                 $royalties->setStatus('pending');
+                $royalties->setCycle('1');
                 $royalties->setBankDetails(json_encode($response));
                 $em->persist($royalties);
                 $em->flush();
@@ -441,12 +560,45 @@ class MissionController extends Controller
             return $this->render('b2b/client/transaction/success.html.twig');
 
         }else{
-
-            return $this->render('b2b/client/transaction/failed.html.twig');
+            $error = $this->mangoPayErrorResponses($response->ResultCode);
+            return $this->render('b2b/client/transaction/failed.html.twig',['response' => $error]);
 
         }
 
 
+
+    }
+
+    public function mangoPayErrorResponses($code){
+
+
+        $errors['009199'] = ['The error due to Card is not supported by Mangopay ,Amount is higher than the maximum amount per transaction,Operation doesn’t fit to your Mangopay account settings and Use of a non-3DSecure test card for a payment which requires 3DSecure'];
+        $errors['001999'] = ['An incident or connection issue has occured and closed all transactions'];
+        $errors['001001'] = ['The e-wallet does not contain enough funds to process the transaction'];
+        $errors['001002'] = ['The user ID used as Author has to be the wallet owner'];
+        $errors['001013'] = ['The user\'s bank has rejected the transaction. Users should contact his/her bank for more information.'];
+        $errors['105101'] = ['The card number given doesn’t match the real number of the card.'];
+        $errors['105102'] = ['The card holder name given doesn’t match the real owner of the card'];
+        $errors['105103'] = ['The Personal Identification Number code is invalid. The user should check card information and retry.'];
+        $errors['105104'] = ['The Personal Identification Number format is invalid. The user should check card information and retry'];
+        $errors['101101'] = ['The error "Do not honor" is a message from the bank. You could get it for several raisons: Maximum amount spent per month has been reached on this card // Maximum amount spent on internet per month has been reached on this card // No more funds on bank account'];
+        $errors['101105'] = ['The card has expired'];
+        $errors['101106'] = ['The card is inactive'];
+        $errors['101109'] = ['The payment period has expired'];
+        $errors['101410'] = ['This is a card limitation on spent amount'];
+        $errors['101116'] = ['The number of authorised daily transactions has been exceeded. Please contact our support to adjust the number of daily transactions.'];
+        $errors['105202'] = ['Card number: invalid format'];
+        $errors['105203'] = ['Expiry date: missing or invalid format'];
+        $errors['105204'] = ['CVV: missing or invalid format'];
+        $errors['02625'] = ['Invalid card number'];
+        $errors['02626'] = ['Invalid date. Use mmdd format'];
+        $errors['02627'] = ['Invalid CCV number'];
+
+        if(isset($errors[$code])){
+            return $errors[$code][0];
+        }else{
+            return 'please check in MangoPay for more details for the code '.$code;
+        }
 
     }
 
