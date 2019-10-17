@@ -36,7 +36,6 @@
                             {% endfor %}
                         </ul>
                     </div>
-                    
                     {% endif %}
                     {% if mission.briefFiles is not null or mission.briefFiles != '' %}
                         <div class="work-documents-container preview col-sm-12 mt-2 mb-4 pb-4">
@@ -44,7 +43,7 @@
                             <ul class="work-documents-list m-0 p-0">
                                 <li class="work-documents-list-item p-3 d-flex align-items-center justify-content-between bg-lightwhite">
                                     <p class="mb-0 fz-14"><i class="far fa-file-alt fz-16 mr-2"></i> Brief mission {{ mission.user.firstname }}</p>
-                                    <a href="{{ url("b2b_client_mission_process_mission_view", {'id': mission.id}) }}"><i class="fas fa-download fz-16"></i></a>
+                                    <a href="{{ url('b2b_mission_download',{'id':mission.id}) }}"><i class="fas fa-download fz-16"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -151,7 +150,7 @@
                                         data-toggle="modal" data-target="#cancelMissionPayment">Annuler</button>
 
 {#                                <button type="button" class="btn btn-darkblue disabled confirm-payment">Payer 149.00€</button>#}
-                                <a href="{{ url("b2b_client_mission_process_mission_request", {'id': mission.id}) }}" class="btn btn-darkblue disabled" id="term-condition">Payer {{ last_result['client_total'] |round(2, 'floor') }} €</a>
+                                <a href="{{ url("b2b_client_mission_process_mission_view", {'id': mission.id}) }}" class="btn btn-darkblue disabled" id="term-condition">Payer {{ last_result['client_total'] |round(2, 'floor') }} €</a>
 
                             </div>
                         </div>
