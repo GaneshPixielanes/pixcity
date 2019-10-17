@@ -189,6 +189,7 @@ class UserMission
      * @ORM\Column(type="string", length=55, nullable=true)
      */
     private $missionType;
+    
 
     public function __construct()
     {
