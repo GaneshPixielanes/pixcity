@@ -676,6 +676,11 @@ class UserMission
         return (isset($log) && count($log) > 0)?$log[0]:null;
     }
 
+    public function getActiveLogById(MissionLog $logs)
+    {
+        return $logs;
+    }
+
     public function getRoyalties(): ?Royalties
     {
         return $this->royalties;

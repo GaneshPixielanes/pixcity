@@ -86,6 +86,11 @@ class Royalties
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $cycle;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -231,6 +236,18 @@ class Royalties
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCycle(): ?int
+    {
+        return $this->cycle;
+    }
+
+    public function setCycle(int $cycle): self
+    {
+        $this->cycle = $cycle;
 
         return $this;
     }
