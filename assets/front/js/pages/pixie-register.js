@@ -296,13 +296,13 @@ jQuery(document).ready(function() {
     $('a.delete-item:first').html('');
 
     $( "[name='user[firstname]']" ).change(function() {
-        $(".fname").text($( this ).val());
+        $("[name='user[pixie][billing][firstname]']").val($( this ).val());
     });
     $( "[name='user[lastname]']" ).change(function() {
-        $(".lname").text($( this ).val());
+        $("[name='user[pixie][billing][lastname]']").val($( this ).val());
     });
     $( "[name='user[phone]']" ).change(function() {
-        $(".telep").text($( this ).val());
+        $("[name='user[pixie][billing][phone]']").val($( this ).val());
     });
     $( "[name='user[birthdate][day]']" ).change(function() {
         $(".dobd").text($( this ).val());
