@@ -195,14 +195,42 @@ class MissionController extends Controller
             $cityMakerType = CompanyStatus::COMPANY;
         }
 
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);
+        $margin = $options->findOneBy(['slug' => 'margin']);
+
+        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
         $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $result['price'] = $last_result['client_price'];
+        $result['tax'] = $last_result['client_tax'];
+        $result['total'] = $result['price'] + $result['tax'];
+        $result['advance_payment'] = $first_result['client_total'];
+        $result['need_to_pay'] = $result['total'] -  $result['advance_payment'];
+
+        $amount = 0;$fee = 0;
+
+        if($mission->getStatus() == MissionStatus::CREATED){
+
+            $amount = $result['total'];
+
+            $margin = $last_result['client_price'] - $last_result['cm_price'];
+
+        }elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING){
+
+            $margin = $last_result['cm_price'] - $first_result['cm_price'];
+
+            $amount = $result['need_to_pay'];
+
+        }
 
         return $this->render('b2b/client/transaction/payin.html.twig',[
             'createdCardRegister' => $createdCardRegister,
             'returnUrl' => $returnUrl,
             'id' => $id,
-            'amount' => $last_result['client_total'],
+            'amount' => $amount,
             'mission' => $mission
         ]);
 

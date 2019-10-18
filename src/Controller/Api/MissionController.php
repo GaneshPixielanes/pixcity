@@ -13,6 +13,7 @@ use App\Repository\MissionPaymentRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
+use App\Repository\MissionRecurringPriceLogRepository;
 use App\Service\FileUploader;
 use App\Service\Mailer;
 use App\Service\MangoPayService;
@@ -75,6 +76,7 @@ class MissionController extends Controller
                                  Filesystem $filesystem,
                                  ClientTransactionRepository $clientTransactionRepository,
                                  MissionPaymentRepository $missionPaymentRepository,
+                                 MissionRecurringPriceLogRepository $missionRecurringPriceLogRepository,
                                  MangoPayService $mangoPayService,
                                  Mailer $mailer)
     {
@@ -85,7 +87,7 @@ class MissionController extends Controller
 
         $clientTransaction = new ClientTransaction();
 
-        $transaction = $mission->getClientTransactions();
+        $transaction = $clientTransactionRepository->findLastRow($mission->getId());
 
         $options = $this->getDoctrine()->getRepository(Option::class);
 
@@ -258,25 +260,25 @@ class MissionController extends Controller
 //        $entityManager->flush();
 
 
-        $transaction[0]->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
-        $transaction[0]->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
-        $transaction[0]->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
-        $transaction[0]->getMission()->getUserMissionPayment()->setClientPrice($last_result['client_price']);
-        $transaction[0]->getMission()->getUserMissionPayment()->setClientTax($last_result['client_tax']);
-        $transaction[0]->getMission()->getUserMissionPayment()->setClientTotal($last_result['client_total']);
-        $transaction[0]->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
-        $transaction[0]->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
-        $transaction[0]->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
-        $transaction[0]->getMission()->setMissionBasePrice($last_result['cm_price']);
+        $transaction->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
+        $transaction->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
+        $transaction->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
+        $transaction->getMission()->getUserMissionPayment()->setClientPrice($last_result['client_price']);
+        $transaction->getMission()->getUserMissionPayment()->setClientTax($last_result['client_tax']);
+        $transaction->getMission()->getUserMissionPayment()->setClientTotal($last_result['client_total']);
+        $transaction->getMission()->getUserMissionPayment()->setPcsPrice($last_result['pcs_price']);
+        $transaction->getMission()->getUserMissionPayment()->setPcsTax($last_result['pcs_tax']);
+        $transaction->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
+        $transaction->getMission()->setMissionBasePrice($last_result['cm_price']);
 
         $clientTransaction->setUser($mission->getClient());
-        $clientTransaction->setMangopayUserId($transaction[0]->getMangopayUserId());
-        $clientTransaction->setMangopayWalletId($transaction[0]->getMangopayWalletId());
+        $clientTransaction->setMangopayUserId($transaction->getMangopayUserId());
+        $clientTransaction->setMangopayWalletId($transaction->getMangopayWalletId());
         $clientTransaction->setPaymentStatus(true);
         $clientTransaction->setMission($mission);
 
 
-        $entityManager->persist($transaction[0]);
+        $entityManager->persist($transaction);
         $entityManager->persist($clientTransaction);
 //        $entityManager->flush();
 
@@ -324,6 +326,8 @@ class MissionController extends Controller
                     ), $pcsInvoicePath
                 );
 
+                $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
+
                 $royalties = new Royalties();
                 $royalties->setMission($mission);
                 $royalties->setCm($mission->getUser());
@@ -333,6 +337,7 @@ class MissionController extends Controller
                 $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
                 $royalties->setInvoicePath($cmInvoicePath);
                 $royalties->setPaymentType('mango_pay');
+                $royalties->setCycle($last_row->getCycle() - 1);
                 $royalties->setStatus('pending');
                 $royalties->setBankDetails(json_encode('no_response'));
                 $entityManager->persist($royalties);
