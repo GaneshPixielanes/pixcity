@@ -139,6 +139,11 @@ class Client implements UserInterface
      */
     private $clientTransactions;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $linkedinId;
+
     public function __construct()
     {
         $this->clientMissionProposals = new ArrayCollection();
@@ -528,6 +533,18 @@ class Client implements UserInterface
     public function getEncryptedId(){
 
         return base64_encode($this->getId());
+    }
+
+    public function getLinkedinId(): ?string
+    {
+        return $this->linkedinId;
+    }
+
+    public function setLinkedinId(?string $linkedinId): self
+    {
+        $this->linkedinId = $linkedinId;
+
+        return $this;
     }
 
 

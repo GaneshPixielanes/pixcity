@@ -41,6 +41,94 @@ class LoginController extends Controller
     //-----------------------------------------------------------------
 
     /**
+    * @Route("/voyager-login",name="voyager_login")
+    */
+    public function voyagerLogin(Request $request, AuthenticationUtils $authUtils)
+    {
+        //------------------------------------
+        // Save action for after login
+        //------------------------------------
+
+        $session = $request->getSession();
+
+        // Reset actual values
+        $session->remove(SessionName::AFTER_LOGIN_ACTION_NAME);
+        $session->remove(SessionName::AFTER_LOGIN_ACTION_NAME);
+
+        if($session->has('login_by')){
+            return $this->redirect('/');
+        }
+
+
+        // Retrieve last visited page
+        $referer = $request->headers->get("referer");
+        if(
+            $referer && strtolower(parse_url($referer, PHP_URL_HOST)) === strtolower($request->getHost())
+            && $referer !== $this->generateUrl("front_login", [], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_forgot_password", [], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_pixie_register", [], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_pixie_register_mode", [], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_user_register", [], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_user_register_mode", [], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_login_facebook", ["type" => "user"], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_login_facebook", ["type" => "pixie"], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_login_facebook_check", [], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_login_google", ["type" => "user"], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_login_google", ["type" => "pixie"], UrlGeneratorInterface::ABSOLUTE_URL)
+            && $referer !== $this->generateUrl("front_login_google_check", [], UrlGeneratorInterface::ABSOLUTE_URL)
+        ){
+            $session->set(SessionName::LOGIN_REDIRECT, $referer);
+
+        }else{
+
+            $referer = $session->get(SessionName::LOGIN_REDIRECT)?$session->get(SessionName::LOGIN_REDIRECT):null;
+
+        }
+
+        $addFavoritePixie = $request->query->get("addFavoritePixie");
+        if($addFavoritePixie){
+            $session->set(SessionName::AFTER_LOGIN_ACTION_NAME, AfterLoginAction::ADD_FAVORITE_PIXIE);
+            $session->set(SessionName::AFTER_LOGIN_ACTION_VALUE, $addFavoritePixie);
+        }
+
+        $addFavoriteCard = $request->query->get("addFavoriteCard");
+        if($addFavoriteCard){
+            $session->set(SessionName::AFTER_LOGIN_ACTION_NAME, AfterLoginAction::ADD_FAVORITE_CARD);
+            $session->set(SessionName::AFTER_LOGIN_ACTION_VALUE, $addFavoriteCard);
+        }
+
+        $addLikeCard = $request->query->get("addLikeCard");
+        if($addLikeCard){
+            $session->set(SessionName::AFTER_LOGIN_ACTION_NAME, AfterLoginAction::ADD_LIKE_CARD);
+            $session->set(SessionName::AFTER_LOGIN_ACTION_VALUE, $addLikeCard);
+        }
+
+        //------------------------------------
+        // Login
+
+        // get the login error if there is one
+        $error = $authUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authUtils->getLastUsername();
+
+        $page = new Page();
+        $page->setIndexed(false);
+
+
+        
+        return $this->render('b2b/voyager-login.html.twig', array(
+            'page' => $page,
+            'last_username' => $lastUsername,
+            'error'         => $error,
+            'redirect'      => $referer,
+            'login_type'    => "user"
+        ));
+        // return $this->render('b2b/voyager-login.html.twig', array(
+        //     'login_type'    => "user"
+        // ));
+    }
+    /**
      * @Route("", name="login")
      */
     public function login(Request $request, AuthenticationUtils $authUtils)
@@ -116,11 +204,23 @@ class LoginController extends Controller
         $page = new Page();
         $page->setIndexed(false);
 
-        return $this->render('front/account/login.html.twig', array(
+        // return $this->render('front/account/login.html.twig', array(
+        //     'page' => $page,
+        //     'last_username' => $lastUsername,
+        //     'error'         => $error,
+        //     'redirect'      => $referer,
+        // ));          
+        // if(!is_null($error) && $request->get('login_type') == null)
+        // {
+        //     return $this->redirectToRoute('front_voyager_login', ['error' => $error]);
+        // }
+        
+        return $this->render('b2b/login.html.twig', array(
             'page' => $page,
             'last_username' => $lastUsername,
             'error'         => $error,
             'redirect'      => $referer,
+            'login_type'    => $request->get('login_type')?$request->get('login_type'):"client"
         ));
     }
 
