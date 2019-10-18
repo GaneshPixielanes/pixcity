@@ -1,0 +1,84 @@
+{% extends 'b2b/base.html.twig' %}
+
+{% block body %}
+        <div class="login-wrap main-login mt-0 account-login">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 wall-image">
+                        <a class="navbar-brand" href="javascript:;">
+                            <img class="d-none d-md-block" src="{{ asset('build/images/services-footer-logo.svg') }}" alt="Pix.City">
+                            <img class="d-md-none" src="{{ asset('build/images/services-home-banner-logo.svg') }}" alt="Pix.City">
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-6 px-md-5 account-login-content d-md-table">
+                        <div class="main-log bg-white pb-3 p-md-0 d-md-table-cell align-middle">
+                            <h4 class="fz-34 text-center my-2 mb-md-3 mt-md-0">Votre compte voyageur</h4>
+                            <p class="text-center mb-2">Connectez-vous à votre compte voyageur pix.city.</p>
+                            <div class="voyageur-login" role="">
+                                <form action="{{ url('front_login') }}" method="POST" accept-charset="utf-8">
+                                	<input type="hidden" name="login_type" value="user" />
+                                	<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                	{% if error is defined and error != null %}
+                                	<div class="text-center" style="color:#ed5485;padding:10px">
+                                	    {{ error.messageKey|trans(error.messageData, 'security') }}
+                                	</div>
+                                	{% endif %}
+                                    <div class="col-md-12 px-0 py-3">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label>VOTRE EMAIL</label>
+                                                <input type="email" class="form-control bg-lightgray" placeholder="email@domain.com" name="_username" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label>VOTRE MOT DE PASSE</label>
+                                                <input name="_password" type="password" id="password-field" class="form-control bg-lightgray pr-5" placeholder="8 caractères, 1 majuscule" required>
+                                                <span toggle="#password-field" class="fas fa-eye password-show-icon toggle-password"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 mt-4 d-flex align-items-center justify-content-between">
+                                                <a href="{{ path('front_forgot_password') }}" class="text-darkblue">Mot de passe oublié ?</a>
+                                                <button class="btn btn-darkblue btn-pill float-right lh2">Connexion</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 my-3 p-0">
+                                        <div class="row">
+                                            <div class="col-md-12 d-flex align-items-center divider-center-text">
+                                                <div class="d-none d-md-block col-md-3 bg-textgray"></div>
+                                                <div class="col-12 col-md-6 text-textgray text-center">Ou connectez-vous avec</div>
+                                                <div class="d-none d-md-block col-md-3 bg-textgray"></div>
+                                                <!-- <span class="bg-textgray my-2 m-md-0"></span>
+                                                <span class="text-textgray text-center flex-grow-1">Ou connectez-vous avec</span>
+                                                <span class="bg-textgray my-2 m-md-0"></span> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 p-0">
+                                        <div class="row">
+                                            <div class="col-md-12 px-4 d-flex align-items-center justify-content-center">
+                                                <ul class="social-media-logins d-flex">
+                                                    <li class="list-item px-2">
+                                                        <a href="{{ path('front_login_google', {type: 'user'}) }}" class="btn btn-googlered btn-circle-48"><i class="fab fa-google"></i></a>
+                                                    </li>
+                                                    <li class="list-item px-2">
+                                                        <a href="{{ path('front_login_facebook', {type: 'user'}) }}" class="btn btn-facebook btn-circle-48"><i class="fab fa-facebook-f"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 p-0 my-3 text-center">
+                                        <span class="block">Pas encore de compte voyageur ?</span>
+                                        <a href="javascript:;" class="d-block text-blue">Créez votre compte</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}	
