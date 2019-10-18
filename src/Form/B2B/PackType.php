@@ -38,7 +38,7 @@ class PackType extends AbstractType
             ->add('title',TextType::class,['label' => false,'attr' => [
                 'maxlength' => '64',
                 'class' => 'form-control bg-lightwhite pack-title',
-                'placeholder' => 'Je m’occupe de vos réseaux sociaux '
+                'placeholder' => 'Exemple de titre de pack: Je m’occupe de vos réseaux sociaux '
             ]])
             ->add('description',TextareaType::class,['label' => 'Description','attr' => [
                 'maxlength' => '1200',
