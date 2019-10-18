@@ -18,7 +18,7 @@ security:
         users:
             entity:
                 class: App\Entity\User
-                property: email
+                property: email     
 
         clients:
             entity:
@@ -60,6 +60,8 @@ security:
             guard:
                 authenticators:
                     - App\Security\ClientAuthenticator
+                    - App\Security\LinkedinAuthenticator
+                entry_point: App\Security\LinkedinAuthenticator
             logout:
                 path: '/client/logout'
                 target: '/'
