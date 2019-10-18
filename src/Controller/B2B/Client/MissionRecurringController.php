@@ -119,7 +119,7 @@ class MissionRecurringController extends Controller
                     $card_array['card_type'] = $mission_card->getCardType();
                     $card_array['card_id'] = $mission_card->getCardId();
 
-                    $transaction_id  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId(),$fee * 100,$card_array);
+                    $transaction_id  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getMission()->getId(),$fee * 100,$card_array);
 
                     //check the response of the MangoPay,after Pay in
                     $response = $mangoPayService->getResponse($transaction_id);
