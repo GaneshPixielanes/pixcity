@@ -21,9 +21,9 @@ class InstagramCronController extends Controller
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery("SELECT g
                     FROM App:UserLink AS g
-                    INNER JOIN App:UserInstagramDetailsApi as uig WITH g.user = uig.user
-                    WHERE g.type='instagram' AND uig.processed = 0 ORDER BY g.id ASC");
-        $query->setMaxResults(2);
+                    WHERE g.type='instagram' AND g.processed = 0 ORDER BY g.id ASC");
+//        INNER JOIN App:UserInstagramDetailsApi as uig WITH g.user = uig.user AND uig.processed = 0
+        $query->setMaxResults(5);
         $result =  $query->getResult();
 
         foreach ($result as &$value)
@@ -50,20 +50,27 @@ class InstagramCronController extends Controller
 
                     if($userInstagram == null){
                         $userInstagram = new UserInstagramDetailsApi();
+                        $userInstagram->setUser($value->getUser());
                         $userInstagram->setNoOfPosts($totalPost);
                         $userInstagram->setNoOfFollowers($followers);
                         $userInstagram->setNoOfFollowed($following);
                         $userInstagram->setUpdatedAt(new \DateTime());
+                        $userInstagram->setCreatedAt(new \DateTime());
                         $userInstagram->setName($full_name);
                         $userInstagram->setProcessed(1);
+                        $value->setProcessed(1);
                     }else{
+                        $userInstagram->setUser($value->getUser());
                         $userInstagram->setNoOfPosts($totalPost);
                         $userInstagram->setNoOfFollowers($followers);
                         $userInstagram->setNoOfFollowed($following);
                         $userInstagram->setUpdatedAt(new \DateTime());
+                        $userInstagram->setCreatedAt(new \DateTime());
                         $userInstagram->setName($full_name);
                         $userInstagram->setProcessed(1);
+                        $value->setProcessed(1);
                     }
+                    $em->persist($value);
                     $em->persist($userInstagram);
                     $em->flush();
                 }

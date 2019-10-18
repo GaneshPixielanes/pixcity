@@ -34,7 +34,10 @@ class UserLink
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="links")
      */
     private $user;
-
+    /**
+     * @ORM\Column(type="smallint", nullable=false, options={"default" : 0})
+     */
+    private $processed;
 
     /**
      * @return mixed
@@ -132,5 +135,16 @@ class UserLink
         $this->user = $user;
     }
 
+    public function getProcessed(): ?int
+    {
+        return $this->processed;
+    }
+
+    public function setProcessed(?int $processed): self
+    {
+        $this->processed = $processed;
+
+        return $this;
+    }
 
 }
