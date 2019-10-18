@@ -194,7 +194,7 @@ class MissionRecurringController extends Controller
 
         foreach ($missions as $mission){
 
-            if($mission->getPaymentStatus() == 'pending'){
+            if($mission->getMission()->getStatus() == MissionStatus::ONGOING){
 
                 $cityMakerType = '';
                 if($mission->getMission()->getIsTvaApplicable() != NULL){

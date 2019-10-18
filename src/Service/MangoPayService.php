@@ -94,7 +94,7 @@ class MangoPayService
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
-        $payIn->Tag = "Mission-id".$mission;
+        $payIn->Tag = "Mission-id ".$mission;
         $payIn->DebitedFunds = new MangoPay\Money();
         $payIn->DebitedFunds->Amount = $amount;
         $payIn->DebitedFunds->Currency = 'EUR';
