@@ -43,7 +43,7 @@
                             <ul class="work-documents-list m-0 p-0">
                                 <li class="work-documents-list-item p-3 d-flex align-items-center justify-content-between bg-lightwhite">
                                     <p class="mb-0 fz-14"><i class="far fa-file-alt fz-16 mr-2"></i> Brief mission {{ mission.user.firstname }}</p>
-                                    <a href="{{ url("b2b_client_mission_process_mission_view", {'id': mission.id}) }}"><i class="fas fa-download fz-16"></i></a>
+                                    <a href="{{ url('b2b_mission_download',{'id':mission.id}) }}"><i class="fas fa-download fz-16"></i></a>
                                 </li>
                             </ul>
                         </div>
