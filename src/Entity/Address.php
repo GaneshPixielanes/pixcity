@@ -19,39 +19,35 @@ class Address
     private $id;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Length(max=50)
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $address = "";
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=16)
+     * @ORM\Column(type="string", length=16, nullable=true)
      */
     private $zipcode = "";
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Length(max=50)
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $city = "";
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Length(max=50)
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $country = "";
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $latitude = "";
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $longitude = "";
 
