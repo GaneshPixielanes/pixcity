@@ -39,7 +39,7 @@ class LinkedinAuthenticator extends SocialAuthenticator
     public function supports(Request $request)
     {
         // continue ONLY if the current ROUTE matches the check ROUTE
-        return true;
+        return $request->attributes->get('_route') === 'connect_linkedin_start';
     }
 
     public function getCredentials(Request $request)
