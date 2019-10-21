@@ -71,7 +71,7 @@
                             <li class="tab1 active"><a href="#general-tab" data-noautscroll="true" data-toggle="tab">Général</a></li>
                             <li class="tab2"><a href="#regions-tab" data-noautscroll="true" data-toggle="tab">Régions</a></li>
                             <li class="tab3"><a href="#jaime-jaimepas-tab" data-noautscroll="true" data-toggle="tab">Catégories favorites</a></li>
-                            <li class="tab4"><a href="#remuneration-tab" data-noautscroll="true" data-toggle="tab">GAINS</a></li>
+                            <li class="tab4"><a href="#remuneration-tab" data-noautscroll="true" data-toggle="tab">Gains</a></li>
                         </ul>
                     </div>
                 </div>
@@ -226,37 +226,36 @@
 
 
                     <div class="tab-pane tp2" data-slug="likes" id="jaime-jaimepas-tab">
-                        <div class="col-sm-12 maj">
-                            J'aime/J'aime pas</div>
+{#                        <div class="col-sm-12 maj">J'aime/J'aime pas</div>#}
 
-                        <div class="col-sm-6 form-row form-group">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <label>{{ form_label(form.pixie.likeText) }}...</label>
-                                </div>
-                                <div class="col-xs-6 text-right">
-                                    <div class="count-words-status like">Mots <span class="current"></span>/<span class="limit">500</span></div>
-                                </div>
-                            </div>
-                            <div class="input-container">
-                                {{ form_widget(form.pixie.likeText, {'toolbarStickyOffset': 0}) }}
-                                {{ form_errors(form.pixie.likeText) }}
-                            </div>
-                        </div>
+{#                        <div class="col-sm-6 form-row form-group">#}
+{#                            <div class="row">#}
+{#                                <div class="col-xs-6">#}
+{#                                    <label>{{ form_label(form.pixie.likeText) }}...</label>#}
+{#                                </div>#}
+{#                                <div class="col-xs-6 text-right">#}
+{#                                    <div class="count-words-status like">Mots <span class="current"></span>/<span class="limit">500</span></div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="input-container">#}
+{#                                {{ form_widget(form.pixie.likeText, {'toolbarStickyOffset': 0}) }}#}
+{#                                {{ form_errors(form.pixie.likeText) }}#}
+{#                            </div>#}
+{#                        </div>#}
 
                         <div class="col-sm-6 input-container form-row form-group">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <label>{{ form_label(form.pixie.dislikeText) }}...</label>
-                                </div>
-                                <div class="col-xs-6 text-right">
-                                    <div class="count-words-status dislike">Mots <span class="current"></span>/<span class="limit">500</span></div>
-                                </div>
-                            </div>
-                            <div class="input-container">
-                                {{ form_widget(form.pixie.dislikeText) }}
-                                {{ form_errors(form.pixie.dislikeText) }}
-                            </div>
+{#                            <div class="row">#}
+{#                                <div class="col-xs-6">#}
+{#                                    <label>{{ form_label(form.pixie.dislikeText) }}...</label>#}
+{#                                </div>#}
+{#                                <div class="col-xs-6 text-right">#}
+{#                                    <div class="count-words-status dislike">Mots <span class="current"></span>/<span class="limit">500</span></div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="input-container">#}
+{#                                {{ form_widget(form.pixie.dislikeText) }}#}
+{#                                {{ form_errors(form.pixie.dislikeText) }}#}
+{#                            </div>#}
                         </div>
 
                         <div class="col-md-12 maj">
@@ -278,15 +277,14 @@
                     <div class="tab-pane tp4" data-slug="remuneration" id="remuneration-tab">
 
                         <div class="col-sm-12">
-                            <h4 class="maj">GAINS PIX.CITY :</h4>
-                            <p>Vous rédigez des cards et participez aux différents jeux concours mensuels. Vous n’avez pas à remplir d'éléments supplémentaires car nous avons déjà toutes vos informations ;) N’oubliez pas de cliquer sur “Créer mon compte” en bas à droite avant de quitter cette page!</p>
-                            <br>
-                            <h4 class="maj">GAINS PIX.CITY SERVICES :</h4>
-                            <p>Vous avez au moins une card publiée sur pix.city et avez soumis votre candidature. Vous devez remplir les champs ci-dessous (les champs obligatoires ont une croix rose). N’oubliez pas de cliquer sur “Créer mon compte” en bas à droite avant de quitter cette page!</p>
-                            <br>
+                           <br>
                             <span class="maj">Informations</span>
                             <div>
-                                En publiant des cards, vous participez à un jeu concours mensuel avec des lots à gagner ou des gains versés directement sur votre compte bancaire.
+                                En contribuant sur Pix.City, vous allez pouvoir recevoir des gains (en euros ou en bons cadeaux). Il faut donc enregistrer vos infos bancaires pour déclencher les paiements.
+<br>
+<br>
+                                En étant influenceur ou community manager sur Pix.City Services, vous allez être rémunéré.e par votre client via notre partenaire Mango Pay. Il faut donc enregistrer vos infos bancaires pour déclencher les paiements.
+
                             </div>
                             <br>
 
