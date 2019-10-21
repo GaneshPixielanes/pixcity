@@ -269,17 +269,22 @@
         </div>
         <div class="row">
             <div class="col-md-12 city-maker-info">
-                <p>{{ user.firstName~' '~user.lastName }} <span>{% if user.pixie.regions|length > 0 %}<span class="pixieRegion">{{ user.pixie.regions[0] }}</span>{% endif %}</span></p>
+                <p>{{ user.firstName~' '~user.lastName }}
+                    <span>{% if user.pixie.regions|length > 0 %}
+                        <span class="pixieRegion">{{ user.pixie.regions[0]|length > 13 ? user.pixie.regions[0]|slice(0, 13) ~ '...' : user.pixie.regions[0]  }}</span>
+                        {% endif %}
+                    </span>
+                </p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12 d-flex justify-content-between my-2">
                 <span data-toggle="tooltip" data-placement="bottom" data-container="body" title="Suivre le City Maker">
-                    {% if app.user | instant %}
+{#                    {% if app.user | instant %}#}
                     <a href="javascript:;" class="col-md-3 city-maker-cta cta-follow-city-maker {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" {% if app.user is  null %} data-toggle="modal" data-target="#followCityMakerModal" {% endif %} data-id="{{ user.id }}">
                         <i class="far fa-user-circle"></i>
                     </a>
-                    {% endif %}
+{#                    {% endif %}#}
                 </span>
                 <span>
                     <a href="{{ user.getInstagram() }}" target="_blank" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Consultez le profil Instagram de notre City Maker!">
