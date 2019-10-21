@@ -321,15 +321,20 @@
             $("#btn-save").click(function (e) {
                 e.preventDefault();
                 var formIsValid = '';
-                if ($('[name="user[pixie][regions][]"]:checked').length == 0) {
-                    formIsValid ='';
-                    $('.regionfield').css("display", "block");
-                }else{
-                    formIsValid = $form.valid();
-                    $('.regionfield').css("display", "none");
-                }
+                if($('[name="user[roles][]"]:checked').length > 1 ){
+                    if ($('[name="user[pixie][regions][]"]:checked').length == 0) {
+                        formIsValid ='';
+                        $('.regionfield').css("display", "block");
+                    }else{
+                        formIsValid = $form.valid();
+                        $('.regionfield').css("display", "none");
+                    }
 
-                if (formIsValid) {
+                    if (formIsValid) {
+                        $form.submit();
+                    }
+                }
+                else{
                     $form.submit();
                 }
             });
