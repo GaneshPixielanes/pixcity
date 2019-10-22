@@ -43,12 +43,12 @@
                                                     <div class="row">
                                                         <div class="col-md-12 mb-3">
                                                             <label>VOTRE EMAIL</label>
-                                                            <input type="email" value="" name="_username" id="inputEmail" class="form-control bg-lightgray" placeholder="email@domain.com">                                                        </div>
+                                                            <input type="email" value="" name="_username" id="inputEmail" class="form-control bg-lightgray" placeholder="email@domain.com" required>                                                        </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <label>VOTRE MOT DE PASSE</label>
-                                                            <input type="password" name="_password" id="inputPassword" class="form-control bg-lightgray pr-5" placeholder="8 caractères, 1 majuscule">                                                            <span toggle="#password-field" class="fas fa-eye password-show-icon toggle-password"></span>
+                                                            <input type="password" name="_password" id="inputPassword" class="form-control bg-lightgray pr-5" placeholder="8 caractères, 1 majuscule" required>                                                            <span toggle="#password-field" class="fas fa-eye password-show-icon toggle-password"></span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -75,13 +75,13 @@
                                                         <div class="col-md-12 px-4 d-flex align-items-center justify-content-center">
                                                             <ul class="social-media-logins d-flex">
                                                                 <li class="list-item px-2">
-                                                                    <a href="javascript:;" class="btn btn-googlered btn-circle-48"><i class="fab fa-google"></i></a>
+                                                                    <a href="{{ path('connect_google_start') }}" class="btn btn-googlered btn-circle-48"><i class="fab fa-google"></i></a>
                                                                 </li>
                                                                 <li class="list-item px-2">
-                                                                    <a href="javascript:;" class="btn btn-facebook btn-circle-48"><i class="fab fa-facebook-f"></i></a>
+                                                                    <a href="{{ path('connect_facebook_start') }}" class="btn btn-facebook btn-circle-48"><i class="fab fa-facebook-f"></i></a>
                                                                 </li>
                                                                 <li class="list-item px-2">
-                                                                    <a href="javascript:;" class="btn btn-linkedin btn-circle-48"><i class="fab fa-linkedin-in"></i></a>
+                                                                    <a href="{{ path('connect_linkedin_start') }}" class="btn btn-linkedin btn-circle-48"><i class="fab fa-linkedin-in"></i></a>
                                                                 </li>
                                                             </ul>
                                                         </div>
