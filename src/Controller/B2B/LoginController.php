@@ -30,13 +30,16 @@ class LoginController extends Controller
     /**
      * @Route("/client/login", name="b2b_client_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils,Request $request): Response
+    public function login(AuthenticationUtils $authenticationUtils,Request $request)
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
+//        if($request->isMethod('POST'))
+//        {
+//            dd($lastUsername);
+//        }
         return $this->render('b2b/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'login_type' => 'client']);
     }
 
@@ -57,7 +60,7 @@ class LoginController extends Controller
     public function connectLinkedinCheck(ClientRegistry $clientRegistry)
     {
         return $clientRegistry->getClient('linkedin')
-                              ->redirect(['r_liteprofile','r_emailaddress']);
+            ->redirect(['r_liteprofile','r_emailaddress']);
     }
 
     /**
@@ -107,7 +110,7 @@ class LoginController extends Controller
             }
 
             $client = $clientRepository->findOneBy(['googleId'=>$id]);
-            $this->loginClient($client);
+            $this->loginClient($request,$client);
 
             return $this->redirect('/');
 
@@ -145,7 +148,7 @@ class LoginController extends Controller
             }
 
             $client = $clientRepository->findOneBy(['facebookId'=>$id]);
-            $this->loginClient($client);
+            $this->loginClient($request,$client);
 
             return $this->redirect('/');
 
@@ -181,12 +184,12 @@ class LoginController extends Controller
             }
             else
             {
+                $client = $clientRepository->findOneBy(['linkedinId'=>$id]);
+                $this->loginClient($request, $client);
 
+                return $this->redirect('/');
             }
-            $client = $clientRepository->findOneBy(['linkedinId'=>$id]);
-            $this->loginClient($client);
 
-            return $this->redirect('/');
 
         }catch (IdentityProviderException $e)
         {
@@ -194,7 +197,7 @@ class LoginController extends Controller
         }
     }
 
-    public function loginClient($client)
+    public function loginClient(Request $request,$client)
     {
 
         $this->session->set('login_by',['type' => 'login_client','entity' => $client]);

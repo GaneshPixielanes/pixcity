@@ -52,15 +52,13 @@ security:
             anonymous: true
             pattern: ^/client|^/freelance
             provider: clients
-            form_login:
-                check_path: front_login
-                login_path: front_login
-                csrf_token_generator: security.csrf.token_manager
-                use_referer: true
+            json_login:
+                check_path: b2b_client_login
+                username_path: security.credentials.login
+                password_path: security.credentials.password
             guard:
                 authenticators:
                     - App\Security\ClientAuthenticator
-                    - App\Security\LinkedinAuthenticator
                 entry_point: App\Security\ClientAuthenticator
             logout:
                 path: '/client/logout'
