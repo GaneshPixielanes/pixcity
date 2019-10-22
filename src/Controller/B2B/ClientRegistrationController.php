@@ -58,9 +58,9 @@ class ClientRegistrationController extends AbstractController
         $session = $request->getSession();
 
 
-        if($session->has('login_by')){
-            return $this->redirect('/');
-        }
+//        if($session->has('login_by')){
+//            return $this->redirect('/');
+//        }
 
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
@@ -113,6 +113,9 @@ class ClientRegistrationController extends AbstractController
 //            $file->m
             // Set the user session
             $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
+            $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
+            $this->container->get('security.token_storage')->setToken($token);
+            $this->container->get('session')->set('_security_client_area', serialize($token));
             // Move profile photo to the right directory
             $filesystem->copy('uploads/clients/'.$client->getProfilePhoto(),'uploads/clients/'.$client->getId().'/'.$client->getProfilePhoto());
 
@@ -138,9 +141,7 @@ class ClientRegistrationController extends AbstractController
 //                'client' => $client
 //            ]);
 
-            $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
-            $this->container->get('security.token_storage')->setToken($token);
-            $this->container->get('session')->set('_security_client_area', serialize($token));
+
 
             return $this->render('b2b/client_registration/thanks-you.html.twig');
 

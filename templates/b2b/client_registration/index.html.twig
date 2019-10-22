@@ -130,7 +130,7 @@
             </div>
         </div>
     </nav>
-    {{ form_start(form,{'attr':{'enctype':'multipart/form-data','novalidate':'novalidate'}}) }}
+    <form action="{{ path('b2b_client_auth_register') }}" method="POST" enctype="multipart/form-data">
     {{ form_row(form._token) }}
     <div class="login-wrap">
         <div class="container">
@@ -139,7 +139,7 @@
                     <div class="row w-100">
                         <div class="col-md-6"></div>
                         <div class="col-md-6 mt-4">
-                            <div class="enterprise-log">
+                            <div class="enterprise-log" style="{% if type is defined and type == 'social' %}display:none{% endif %}">
                                 <h4 class="fz-28 text-center font-weight-bold">Créez votre compte sur Pix.City Services</h4>
                                 <p class="text-center">Veuillez patienter, la recherche de votre entreprise est en cours.</p>
                                 <div class="row">
@@ -169,7 +169,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="registered-log" style="display:none">
+                            <div class="registered-log" style="{% if type is not defined %}display:none{% endif %}">
                                 <h4 class="fz-28 font-weight-bold text-center">Bienvenue sur Pix.City Service !</h4>
                                 <p class="text-center">Apprenons à mieux nous connaître 😉</p>
                                 <div class="row">
@@ -177,7 +177,7 @@
                                         <div class="row">
                                             <div class="col-md-12 card shadow-sm mb-3 p-3 text-center">
                                                 <a href="javascript:" class="upload-company-logo mx-auto">
-                                                    <img class="company-logo mx-auto mb-2" src="../images/login-reg-place.svg">
+                                                    <img class="company-logo mx-auto mb-2" src="{{ asset('build/images/login-reg-place.svg') }}">
                                                 </a>
                                                 <!--  <img class="company-logo mx-auto mb-2" src="../images/login-reg-place.svg" -->
                                                 <p class="font-weight-bold text-pink m-0 company-name">Cacatoès Design Studio</p>
@@ -188,7 +188,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="unregistered-log" style="display:none">
+                            <div class="unregistered-log" style="{% if type is not defined %}display:none{% endif %}">
                                 <div class="row">
                                     <div class="col-md-8 m-auto">
 
@@ -206,7 +206,9 @@
                                                         <div class="field">{{ form_widget(form.profilePhoto) }}</div>
                                                     </div>
                                                 </div>
-
+                                                {% if type is defined and type == 'social' %}
+                                                {{ form_widget(form.linkedinId) }}
+                                                {% endif %}
                                                 {{ form_widget(form.clientInfo.siret) }}
                                                 {{ form_errors(form.clientInfo.siret) }}
 
@@ -245,10 +247,10 @@
                                                 </div>
                                                 {{ form_widget(form.email) }}
                                                 {{ form_errors(form.email) }}
-
-                                                {{ form_widget(form.plainPassword) }}
-                                                {{ form_errors(form.plainPassword) }}
-
+                                                <div style="{% if type is defined and type == 'social' %}display:none{% endif %}">
+                                                    {{ form_widget(form.plainPassword) }}
+                                                    {{ form_errors(form.plainPassword) }}
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">

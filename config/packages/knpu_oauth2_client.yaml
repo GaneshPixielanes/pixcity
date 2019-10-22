@@ -17,3 +17,22 @@ knpu_oauth2_client:
             # fields: {}
             # whether to check OAuth2 "state": defaults to true
             # use_state: true
+        google_client:
+            type: google
+            client_id: 473944240347-bgh6pirja7fcka3vo30qaoip76ueoobm.apps.googleusercontent.com
+            client_secret: QOwYVIC_sGfIQuIZInMr_Yc5
+            redirect_route: connect_google_action
+            redirect_params: {}
+            use_state: false
+        facebook_client:
+            # must be "facebook" - it activates that type!
+            type: facebook
+            # add and configure client_id and client_secret in parameters.yml
+            client_id: 574827166596457
+            client_secret: a305a36e9a8e5d6c4c1de679ff203da7
+            # a route name you'll create
+            redirect_route: connect_facebook_action
+            redirect_params: {}
+            graph_api_version: v4.0
+            # whether to check OAuth2 "state": defaults to true
+            use_state: false
