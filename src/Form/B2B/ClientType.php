@@ -29,6 +29,9 @@ class ClientType extends AbstractType
             ->add('email',EmailType::class,[
                 'label'=> 'Email'
             ])
+            ->add('linkedinId',HiddenType::class)
+            ->add('googleId',HiddenType::class)
+
             ->add('plainPassword', PasswordType::class, array(
                 'required' => $requiredOnCreation,
                 'label'=>false
