@@ -1,28 +1,60 @@
-<!-- PL Home Top Banner -->
-<div class="topBanner hp-topBanner">
-    <div class="flexslider introHome">
+{#<!-- PL Home Top Banner -->#}
+{#<div class="topBanner hp-topBanner">#}
+{#    <div class="flexslider introHome">#}
 
-        <ul class="slides">
-            {% for slide in slider.slides %}
-                <li class="slide" style="{% if slide.background is not null %}background-image: url({{ slide.background.getUrl() | imagine_filter('bg_header_slider') }}){% endif %}">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-7">
-                                <div id="txtHome">
-                                    <span class="slideTitle">{{ slide.name }}</span>
-                                    {{ slide.description | raw }}
-                                </div>
-                            </div>
-                            {% if slide.image is not null %}<div id="imgHome" class="col-sm-5 hom" style="background-image: url({{ slide.image.getUrl() }})"></div>{% endif %}
-                        </div>
+{#        <ul class="slides">#}
+{#            {% for slide in slider.slides %}#}
+{#                <li class="slide" style="{% if slide.background is not null %}background-image: url({{ slide.background.getUrl() | imagine_filter('bg_header_slider') }}){% endif %}">#}
+{#                    <div class="container-fluid">#}
+{#                        <div class="row">#}
+{#                            <div class="col-sm-7">#}
+{#                                <div id="txtHome">#}
+{#                                    <span class="slideTitle">{{ slide.name }}</span>#}
+{#                                    {{ slide.description | raw }}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            {% if slide.image is not null %}<div id="imgHome" class="col-sm-5 hom" style="background-image: url({{ slide.image.getUrl() }})"></div>{% endif %}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </li>#}
+{#            {% endfor %}#}
+{#        </ul>#}
+{#        <div class="customNav"></div>#}
+{#    </div>#}
+
+{#    <!--/.row-->#}
+{#    <a id="downBtn" class="fas fa-angle-double-down" href="#homeAnchor"></a>#}
+{#</div>#}
+{#<!--/ PL Home Top Banner -->#}
+{% for slide in slider.slides %}
+<div class="banner-wrap" style="background:url({{ slide.background.getUrl() | imagine_filter('bg_header_slider') }}) !important">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 d-flex align-items-center banner-container">
+                <div class="row full-width">
+                    <div class="col-md-6">
+                        <p class="hash-title"><span>#</span>{{ slide.name }}</p>
+                        <p class="tagine">
+                            {{ slide.description | raw }}
+                        </p>
+                        <form class="form-inline" action="{{ path('front_search_index') }}" method="GET"
+                              id="searchForm">
+                            <input type="hidden" name="start" value="1"/>
+                            <input type="hidden" name="limit" value="10"/>
+                            <input class="form-control mr-sm-2" name="search" type="search"
+                                   placeholder="Rechercher par restaurant ou région" aria-label="Search">
+                            <button class="btn btn-pink my-2 my-sm-0" type="" required="required"
+                                    id="searchFormSubmitButton"><i class="fas fa-search"></i></button>
+                        </form>
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
-        <div class="customNav"></div>
+                </div>
+                <div class="scroll-downs">
+                    <div class="mousey">
+                        <div class="scroller"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!--/.row-->
-    <a id="downBtn" class="fas fa-angle-double-down" href="#homeAnchor"></a>
 </div>
-<!--/ PL Home Top Banner -->
+{% endfor %}
