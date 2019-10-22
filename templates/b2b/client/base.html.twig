@@ -19,8 +19,13 @@
     <!-- Site CSS -->
     <link rel="stylesheet" type="text/css" href="{{ absolute_url('/assets/css/b2b/style.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('build/css/cookiealert.css')) }}">
-
-
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127340360-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-127340360-1');
+    </script>
 
     {% block stylesheets %}{% endblock %}
 
