@@ -60,8 +60,7 @@ security:
             guard:
                 authenticators:
                     - App\Security\ClientAuthenticator
-                    - App\Security\LinkedinAuthenticator
-                entry_point: App\Security\LinkedinAuthenticator
+                entry_point: App\Security\ClientAuthenticator
             logout:
                 path: '/client/logout'
                 target: '/'
