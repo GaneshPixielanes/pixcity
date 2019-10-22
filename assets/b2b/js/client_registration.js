@@ -1,14 +1,10 @@
 require('jquery-validation');
 
-
-
-
-
-
 var $form = $('form[name="client"]');
 
 $form.validate({
     rules:{
+        "file-avatar":{reqyured:true},
         "client[email]":{required: true, email: true, remote: '/client/check-email'},
         "client[firstName]":{required: true, maxlength: 30},
         "client[lastName]":{required: true, maxlength: 30},
@@ -63,6 +59,7 @@ $form.validate({
     }
 });
 
+
 $(document).ready(function () {
 
     //Get the SIRET number from the API
@@ -89,7 +86,10 @@ $(document).ready(function () {
         $.ajax(url,{
             method: 'GET',
             success: function (data) {
-                console.log(data);
+
+                var year = data.etablissement.date_debut_activite.slice(0,4);
+                var month = data.etablissement.date_debut_activite.slice(4,6);
+                var day = data.etablissement.date_debut_activite.slice(6,8);
                 if(info.length == 9)
                 {
                     var result = {
@@ -99,12 +99,13 @@ $(document).ready(function () {
                       street_address: data.siege_social.enseigne,
                       postal_code: data.siege_social.code_postal,
                       city: data.siege_social.l6_normalisee.match(/[a-zA-Z]+/),
-                      creation_date: data.siege_social.enseigne
+                        creation_date: year+'-'+month+'-'+day
 
                     };
                 }
                 else if(info.length == 14)
                 {
+
                     var result = {
                         name:  data.etablissement.l1_normalisee,
                         address: data.etablissement.geo_adresse,
@@ -112,7 +113,7 @@ $(document).ready(function () {
                         street_address: data.etablissement.l4_normalisee,
                         postal_code: data.etablissement.code_postal,
                         city: data.etablissement.l6_normalisee.match(/[a-zA-Z]+/),
-                        date_creation_entreprise: data.etablissement.enseigne
+                        creation_date: year+'-'+month+'-'+day
 
                     };
                 }
@@ -184,6 +185,10 @@ $(document).ready(function () {
                     }
                 });
                 data = data.etablissement[index];
+                var year = data.date_debut_activite.slice(0,4);
+                var month = data.date_debut_activite.slice(4,6);
+                var day = data.date_debut_activite.slice(6,8);
+
                 var result = {
                     name:  data.l1_normalisee,
                     address: data.geo_adresse,
@@ -191,12 +196,12 @@ $(document).ready(function () {
                     street_address: data.l4_normalisee,
                     postal_code: data.code_postal,
                     city: data.l6_normalisee.match(/[a-zA-Z]+/),
-                    date_creation_entreprise: data.enseigne
+                    creation_date: year+'-'+month+'-'+day
 
                 };
 
                 $('.enterprise-log').toggle();
-                $('.loader-icon').toggle();
+                $('.loader-icon').hide();
                 $('.registered-log').show();
                 $('.unregistered-log').show();
                 $('.enterprise-log').hide();
@@ -213,7 +218,7 @@ $(document).ready(function () {
         $('#client_clientInfo_address').val(result.address);
         $('#client_clientInfo_postalCode').val(result.postal_code);
         $('#client_clientInfo_city').val(result.city);
-        $('#client_clientInfo_companyCreationDate').val(result.creation_date);
+        document.getElementById('client_clientInfo_companyCreationDate').valueAsDate = new Date(result.creation_date);
 
         return true;
     }

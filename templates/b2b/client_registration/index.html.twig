@@ -130,7 +130,7 @@
             </div>
         </div>
     </nav>
-    {{ form_start(form,{'attr':{'enctype':'multipart/form-data','novalidate':'novalidate'}}) }}
+    <form action="{{ path('b2b_client_auth_register') }}" method="POST" enctype="multipart/form-data" name="client">
     {{ form_row(form._token) }}
     <div class="login-wrap">
         <div class="container">
@@ -139,12 +139,12 @@
                     <div class="row w-100">
                         <div class="col-md-6"></div>
                         <div class="col-md-6 mt-4">
-                            <div class="enterprise-log">
+                            <div class="enterprise-log" style="">
                                 <h4 class="fz-28 text-center font-weight-bold">Créez votre compte sur Pix.City Services</h4>
                                 <p class="text-center">Veuillez patienter, la recherche de votre entreprise est en cours.</p>
                                 <div class="row">
                                     <div class="col-md-8 m-auto">
-                                        <form action="" method="" class="login-form-elements" accept-charset="utf-8">
+                                        <form action="" name="" method="" class="login-form-elements" accept-charset="utf-8">
                                             <div class="row">
                                                 <div class="col-md-12 card shadow-sm p-3 mt-5">
                                                     <p class="font-weight-light text-center text-darkblue">Nom de votre entreprise/SIRET <a href="javascript:;" class="text-darkblue" data-toggle="tooltip" data-placement="top" title="Le SIRET est un numéro unique'identification de votre entreprise. Il est composé de 9 chiffres. Le SIREN est composé de 14 chiffres. Ces 2 numéros se trouvent sur vos documents officiels"><i class="fas fa-info-circle"></i></a></p>
@@ -177,7 +177,7 @@
                                         <div class="row">
                                             <div class="col-md-12 card shadow-sm mb-3 p-3 text-center">
                                                 <a href="javascript:" class="upload-company-logo mx-auto">
-                                                    <img class="company-logo mx-auto mb-2" src="../images/login-reg-place.svg">
+                                                    <img class="company-logo mx-auto mb-2" src="{{ asset('build/images/login-reg-place.svg') }}">
                                                 </a>
                                                 <!--  <img class="company-logo mx-auto mb-2" src="../images/login-reg-place.svg" -->
                                                 <p class="font-weight-bold text-pink m-0 company-name">Cacatoès Design Studio</p>
@@ -206,7 +206,11 @@
                                                         <div class="field">{{ form_widget(form.profilePhoto) }}</div>
                                                     </div>
                                                 </div>
-
+                                                {% if type is defined and type == 'social' %}
+                                                {{ form_widget(form.linkedinId) }}
+                                                {{ form_widget(form.googleId) }}
+                                                {{ form_widget(form.facebookId) }}
+                                                {% endif %}
                                                 {{ form_widget(form.clientInfo.siret) }}
                                                 {{ form_errors(form.clientInfo.siret) }}
 
@@ -245,10 +249,10 @@
                                                 </div>
                                                 {{ form_widget(form.email) }}
                                                 {{ form_errors(form.email) }}
-
-                                                {{ form_widget(form.plainPassword) }}
-                                                {{ form_errors(form.plainPassword) }}
-
+                                                <div style="{% if type is defined and type == 'social' %}display:none{% endif %}">
+                                                    {{ form_widget(form.plainPassword) }}
+                                                    {{ form_errors(form.plainPassword) }}
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
