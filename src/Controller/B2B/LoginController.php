@@ -45,20 +45,13 @@ class LoginController extends Controller
     /**
      * @Route("/client/login-old", name="b2b_client_login_old")
      */
-<<<<<<< HEAD
-    public function login(AuthenticationUtils $authenticationUtils,Request $request)
-=======
     public function loginOld(AuthenticationUtils $authenticationUtils,Request $request, ClientRepository $clientRepository)
->>>>>>> dfe69d759c2640f4587b5208dc12fb1064e1e9b5
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-//        if($request->isMethod('POST'))
-//        {
-//            dd($lastUsername);
-//        }
+
         return $this->render('b2b/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'login_type' => 'client']);
     }
     /**

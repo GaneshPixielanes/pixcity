@@ -54,11 +54,6 @@ security:
             provider: clients
             json_login:
                 check_path: b2b_client_login
-<<<<<<< HEAD
-                username_path: security.credentials.login
-                password_path: security.credentials.password
-=======
->>>>>>> dfe69d759c2640f4587b5208dc12fb1064e1e9b5
             guard:
                 authenticators:
                     - App\Security\ClientAuthenticator

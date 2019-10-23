@@ -52,30 +52,15 @@ class MissionRecurringController extends Controller
 
             if($mission->getMission()->getStatus() == MissionStatus::ONGOING){
 
-                $cityMakerType = '';
-                if($mission->getMission()->getIsTvaApplicable() != NULL){
-                    $cityMakerType = CompanyStatus::COMPANY;
-                }
-
                 $recurring_date = date('d-m-Y', strtotime('+1 month', strtotime($mission->getPaymentDate()->format('d-m-Y'))));
-//                print_r($recurring_date);
-                //Check the previous date and today's ,if completed the one month
+
                 if(strtotime($recurring_date) == strtotime($today)){
 
-                    //get the last inserted row and get the count of cycle,
-                    $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getMission()->getId());
-
-                    if($last_row != null){
-
-                        $cycle = $last_row->getCycle() + 1;
-
-                    }else{
-
-                        $cycle = 2;
-
+                    $cityMakerType = '';
+                    if($mission->getMission()->getIsTvaApplicable() != NULL){
+                        $cityMakerType = CompanyStatus::COMPANY;
                     }
 
-                    //get the active Base price of mission and calculate the margin and fee for the mangopay
                     $payment = $missionPayment->getPrices($mission->getMission()->getActiveLog()->getUserBasePrice(), $marginOpt->getValue(), $taxOpt->getValue(), $cityMakerType);
 
                     $margin = $payment['client_price'] - $payment['cm_price'];
@@ -139,21 +124,36 @@ class MissionRecurringController extends Controller
                         $ClientTransaction->getMission()->getUserMissionPayment()->setPcsTotal($payment['pcs_total']);
                         $ClientTransaction->getMission()->setMissionBasePrice($payment['cm_price']);
 
+                        $last_cycle = $missionRecurringPriceLogRepository->findLastRow($mission->getMission()->getId());
+
+                        if($last_cycle != null){
+
+                            $cycle = $last_cycle->getCycle() + 1;
+
+                        }else{
+
+                            $cycle = 2;
+
+                        }
+
+                        $mission_price_log = new MissionRecurringPriceLog();
+
+                        $mission_price_log->setMission($mission->getMission());
+                        $mission_price_log->setActivePrice($mission->getMission()->getActiveLog());
+                        $mission_price_log->setCycle($cycle);
+                        $mission_price_log->setMonth(date('F'));
+                        $mission_price_log->setYear(date('Y'));
+                        $mission_price_log->setCreatedAt(new \DateTime());
+                        $mission_price_log->setUpdatedAt(new \DateTime());
+
+                        $em->persist($mission_price_log);
+
                         $em->persist($ClientTransaction);
-
-                        //update new transaction ID
-
 
                         //update next month to execute the mission if still ongoing
                         $mission->setPaymentDate( new \DateTime());
 
-                        if($mission->getPaymentStatus() == 'invoice-generated'){
-                            $mission->setPaymentStatus('pending');
-                        }
-
                         $em->persist($mission);
-
-
 
                         $em->flush();
 
@@ -194,58 +194,27 @@ class MissionRecurringController extends Controller
 
         foreach ($missions as $mission){
 
-            if($mission->getMission()->getStatus() == MissionStatus::ONGOING){
-
-                $cityMakerType = '';
-                if($mission->getMission()->getIsTvaApplicable() != NULL){
-                    $cityMakerType = CompanyStatus::COMPANY;
-                }
-
                 $recurring_date = date('d-m-Y', strtotime('+1 month', strtotime($mission->getInvoiceDate()->format('d-m-Y'))));
 
                 if(strtotime($recurring_date) == strtotime($today)){
 
-                    $last_cycle = $missionRecurringPriceLogRepository->findLastRow($mission->getMission()->getId());
-
-                    if($last_cycle != null){
-
-                        $cycle = $last_cycle->getCycle() + 1;
-
-                    }else{
-
-                        $cycle = 2;
-
-                    }
-
-                    $mission_price_log = new MissionRecurringPriceLog();
-
-                    $mission_price_log->setMission($mission->getMission());
-                    $mission_price_log->setActivePrice($mission->getMission()->getActiveLog());
-                    $mission_price_log->setCycle($cycle);
-                    $mission_price_log->setMonth(date('F'));
-                    $mission_price_log->setYear(date('Y'));
-
-                    $em->persist($mission_price_log);
-
-                    $em->flush();
-
                     $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getMission()->getId());
 
-                    $previous_row = $missionRecurringPriceLogRepository->findPreviousRow($last_row->getId(),$mission->getMission()->getId());
+                    $cycle = $last_row->getCycle();
 
-                    if($previous_row == null){
-                        $previous_row = $last_row;
-                    }
-
-                    $cycle = $last_row->getCycle() - 1;
-
-                    $previous_payment = $mission->getMission()->getActiveLogById($previous_row->getActivePrice());
+                    $previous_payment = $mission->getMission()->getActiveLogById($last_row->getActivePrice());
 
                     $filesystem->mkdir('invoices/Recurring/'.$mission->getMission()->getId().'/'.$cycle,0777);
 
-                    $client_filename = 'PX-'.$mission->getMission()->getId().'-'.$previous_row->getActivePrice()->getId()."-client.pdf";
+                    $client_filename = 'PX-'.$mission->getMission()->getId().'-'.$last_row->getActivePrice()->getId()."-client.pdf";
 
                     $clientInvoicePath = "invoices/Recurring/".$mission->getMission()->getId().'/'.$cycle.'/'.$client_filename;
+
+                    $cityMakerType = '';
+
+                    if($mission->getMission()->getIsTvaApplicable() != NULL){
+                        $cityMakerType = CompanyStatus::COMPANY;
+                    }
 
                     $payment = $missionPayment->getPrices($previous_payment->getUserBasePrice(), $marginOpt->getValue(), $taxOpt->getValue(), $cityMakerType);
 
@@ -262,7 +231,7 @@ class MissionRecurringController extends Controller
                     }
 
 
-                    $cm_filename = 'PX-'.$mission->getMission()->getId().'-'.$previous_row->getActivePrice()->getId()."-cm.pdf";
+                    $cm_filename = 'PX-'.$mission->getMission()->getId().'-'.$last_row->getActivePrice()->getId()."-cm.pdf";
 
                     $cmInvoicePath = "invoices/Recurring/".$mission->getMission()->getId().'/'.$cycle.'/'.$cm_filename;
 
@@ -280,7 +249,8 @@ class MissionRecurringController extends Controller
                     }
 
 
-                    $pcs_filename = 'PX-'.$mission->getMission()->getId().'-'.$previous_row->getActivePrice()->getId()."-pcs.pdf";
+
+                    $pcs_filename = 'PX-'.$mission->getMission()->getId().'-'.$last_row->getActivePrice()->getId()."-pcs.pdf";
 
                     $pcsInvoicePath = "invoices/Recurring/".$mission->getMission()->getId().'/'.$cycle.'/'.$pcs_filename;
 
@@ -298,8 +268,6 @@ class MissionRecurringController extends Controller
 
                     }
 
-
-
                     $royalties = new Royalties();
                     $royalties->setMission($mission->getMission());
                     $royalties->setCm($mission->getMission()->getUser());
@@ -311,34 +279,20 @@ class MissionRecurringController extends Controller
                     $royalties->setStatus('pending');
                     $royalties->setCycle($cycle);
                     $royalties->setBankDetails('through generation cron');
-
                     $em->persist($royalties);
-
-
 
                     $mission->setInvoiceDate(new \DateTime());
                     $mission->setPaymentStatus('invoice-generated');
-
                     $em->persist($mission);
+
 
                     $em->flush();
 
                     $executedMissionIds[] = $mission->getMission()->getId();
 
-//                    $mailer->send('azim@pix.city',
-//                    'MISSION PRE-PAYMENT',
-//                    'emails/b2b/mission-payment-client.html.twig',
-//                    [
-//                        'mission' => $mission->getMission(),
-//                        'month' => $recurring_date
-//                    ],null,'services@pix.city');
-
 
 
                 }
-
-            }
-
 
 
         }

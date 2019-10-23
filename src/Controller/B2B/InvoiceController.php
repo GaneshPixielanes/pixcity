@@ -19,37 +19,44 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class InvoiceController extends Controller
 {
-    /**
-     * @Route("", name="list")
-     */
-    public function index(UserMissionRepository $missionRepo, OptionRepository $optionsRepo, NotificationsRepository $notificationsRepo)
-    {
 
-        if($this->getUser()->getB2bCmApproval() != 1)
-        {
-            return $this->redirectToRoute('front_homepage_index');
-        }
+  /**
+   * @Route("", name="list")
+   */
+  public function index(UserMissionRepository $missionRepo, OptionRepository $optionsRepo, NotificationsRepository $notificationsRepo)
+  {
 
-        $missions = $missionRepo->findBy([
-           'user' => $this->getUser(),
-           'status' => MissionStatus::TERMINATED
-        ]);
+      if($this->getUser()->getB2bCmApproval() != 1)
+      {
+          return $this->redirectToRoute('front_homepage_index');
+      }
 
-        #SEO
-        $page = new Page();
-        $page->setMetaTitle('Pix.city Services : liste des factures');
-        $page->setMetaDescription('Retrouvez dans cet espace toutes les factures de vos missions avec vos clients');
+      $missions = $missionRepo->findBy([
+         'user' => $this->getUser(),
+         'status' => MissionStatus::TERMINATED
+      ]);
 
-        return $this->render('b2b/invoice/index.html.twig', [
-            'missions' => $missions,
-            'tax' => $optionsRepo->findOneBy(['slug' => 'margin']),
-            'notifications' => $notificationsRepo->findBy([
-                'unread' => 1,
-                'user' => $this->getUser()
-            ]),
-            'page' => $page
-        ]);
-    }
+      $missions_ongoing = $missionRepo->findBy([
+          'user' => $this->getUser(),
+          'status' => MissionStatus::ONGOING
+      ]);
+
+      #SEO
+      $page = new Page();
+      $page->setMetaTitle('Pix.city Services : liste des factures');
+      $page->setMetaDescription('Retrouvez dans cet espace toutes les factures de vos missions avec vos clients');
+
+      return $this->render('b2b/invoice/index.html.twig', [
+          'missions' => $missions,
+          'tax' => $optionsRepo->findOneBy(['slug' => 'margin']),
+          'notifications' => $notificationsRepo->findBy([
+              'unread' => 1,
+              'user' => $this->getUser()
+          ]),
+          'page' => $page,
+          'missions_ongoing' => $missions_ongoing
+      ]);
+  }
 
     /**
      * @Route("/generate/{id}", name="generate")
@@ -84,25 +91,32 @@ class InvoiceController extends Controller
     /**
      * @Route("/preview/{id}",name="preview")
      */
-    public function preview($id, UserMissionRepository $missionRepo, Request $request,Filesystem $filesystem)
+    public function preview($id,UserMissionRepository $missionRepo, Request $request,Filesystem $filesystem)
     {
+        $type = $request->get('type');
+
+        $cycle = $request->get('cycle');
+        $logId = $request->get('logid');
         $user = $this->getUser();
         $mission = $missionRepo->findOneBy([
-            'user' => $user,
             'id' => $id,
-            'status' => MissionStatus::TERMINATED
         ]);
 
-
-        $fileName = "PX-".$mission->getId()."-".$mission->getActiveLog()->getId()."-client.pdf";
-
-        $file_path = 'invoices/'.$mission->getId().'/'.$fileName;
+        if($type == 'one-shot'){
+            $fileName = "PX-".$mission->getId()."-".$mission->getActiveLog()->getId()."-cm.pdf";
+            $file_path = 'invoices/'.$mission->getId().'/'.$fileName;
+        }else{
+            $fileName = "PX-".$mission->getId()."-".$logId."-cm.pdf";
+            $file_path = 'invoices/Recurring/'.$mission->getId().'/'.$cycle.'/'.$fileName;
+        }
 
         if($filesystem->exists($file_path)){
+            if($type == 'one-shot'){
+                $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/'.$mission->getId().'/'.$fileName;
+            }else{
+                $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/Recurring/'.$mission->getId().'/'.$cycle.'/'.$fileName;
 
-
-            $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/'.$mission->getId().'/'.$fileName;
-
+            }
 
             return new JsonResponse(['url' => $result]);
 
@@ -119,12 +133,17 @@ class InvoiceController extends Controller
             $this->container->get('knp_snappy.pdf')->generateFromHtml(
                 $this->renderView('b2b/invoice/client_invoice.html.twig',
                     array(
-                        'mission' => $mission
+                        'mission' => $mission,
+                        'tax' => 20
                     )
                 ), $clientInvoicePath
             );
 
-            $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/'.$mission->getId().'/'.$fileName;
+            if($type == 'one-shot'){
+                $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/'.$mission->getId().'/'.$fileName;
+            }else{
+                $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/Recurring/'.$mission->getId().'/'.$cycle.'/'.$fileName;
+            }
 
             return new JsonResponse(['url' => $result]);
 

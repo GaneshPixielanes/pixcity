@@ -188,12 +188,25 @@ class ClientController extends Controller
     public function previewInvoice(Request $request,UserMissionRepository $userMissionRepository){
 
         $id = $request->get('id');
+        $type =  $request->get('type');
+        $cycle = $request->get('cycle');
+        $logId = $request->get('logid');
 
         $mission = $userMissionRepository->find($id);
 
-        $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
+        if($type == 'one-shot'){
 
-        $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/'.$mission->getId().'/'.$client_filename;
+            $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
+
+            $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/'.$mission->getId().'/'.$client_filename;
+
+        }else{
+
+            $client_filename = 'PX-'.$mission->getId().'-'.$logId."-client.pdf";
+
+            $result = "http".(isset($_SERVER['HTTPS']) ? "s" : null).'://'.$_SERVER["HTTP_HOST"].'/invoices/Recurring/'.$mission->getId().'/'.$cycle.'/'.$client_filename;
+
+        }
 
         return new JsonResponse($result);
 

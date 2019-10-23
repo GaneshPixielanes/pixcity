@@ -96,13 +96,50 @@ class DownloadController extends Controller
 
             $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
 
-            $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                $this->renderView('b2b/invoice/client_invoice.html.twig',
-                    array(
-                        'mission' => $mission
-                    )
-                ), $clientInvoicePath
-            );
+            if($type == 'client'){
+
+                if(!$filesystem->exists($clientInvoicePath)){
+
+                    $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                        $this->renderView('b2b/invoice/client_invoice.html.twig',
+                            array(
+                                'mission' => $mission,
+                                'tax' => '20'
+                            )
+                        ), $clientInvoicePath
+                    );
+
+                }
+
+
+            }elseif ($type == 'cm'){
+
+                if(!$filesystem->exists($clientInvoicePath)){
+
+                    $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                        $this->renderView('b2b/invoice/cm_invoice.html.twig',
+                            array(
+                                'mission' => $mission,
+                                'tax' => '20'
+                            )
+                        ), $clientInvoicePath
+                    );
+
+                }
+
+
+            }else{
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/client_invoice.html.twig',
+                        array(
+                            'mission' => $mission,
+                            'tax' => '20'
+                        )
+                    ), $clientInvoicePath
+                );
+            }
+
 
             return $this->downloadFile($clientInvoicePath);
 

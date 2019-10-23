@@ -189,7 +189,7 @@ class UserMission
      * @ORM\Column(type="string", length=55, nullable=true)
      */
     private $missionType;
-    
+
 
     public function __construct()
     {
@@ -631,6 +631,14 @@ class UserMission
     {
         return $this->missionLogs;
     }
+
+    /**
+    * @return Collection|MissionRecurringPriceLog[]
+    */
+   public function getMissionPriceLogs(): Collection
+   {
+       return $this->active_log;
+   }
 
     public function addMissionLog(MissionLog $missionLog): self
     {

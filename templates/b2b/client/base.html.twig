@@ -965,29 +965,31 @@
                             });
                         })
                     } else if ($(this).is('a.check-the-quote')) {
-                        $('.dash-right, .validate-quote').fadeOut();
+                      $('.dash-right, .validate-quote').fadeOut();
 
-                        var id = $(this).attr('data-id');
+                      var id = $(this).attr('data-id');
+                      var type = $(this).attr('data-type');
+                      var cycle = $(this).attr('data-cyle');
+                      var logid = $(this).attr('data-log');
+                      $.ajax({
+                          url:"{{ path('b2b_client_main_preview_invoice') }}",
+                          type:'GET',
+                          data: {id: id,type:type,cycle:cycle,logid:logid},
+                          dataType:'json',
+                          success: function(data){
+                              console.log(data);
+                              $("#invoice-path").attr('src',data);
+                              $("#object-invoice-path").attr('data',data);
 
-                        $.ajax({
-                            url:"{{ path('b2b_client_main_preview_invoice') }}",
-                            type:'GET',
-                            data: {id: id},
-                            dataType:'json',
-                            success: function(data){
-                                console.log(data);
-                                $("#invoice-path").attr('src',data);
-                                $("#object-invoice-path").attr('data',data);
+                              $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function () {
+                                  // $('.to-validate-quote-toast').toast('show').css({
+                                  //     'z-index': '1050'
+                                  // });
+                              });
 
-                                $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function () {
-                                    // $('.to-validate-quote-toast').toast('show').css({
-                                    //     'z-index': '1050'
-                                    // });
-                                });
-
-                                return false;
-                            }
-                        });
+                              return false;
+                          }
+                      });
 
 
                     }

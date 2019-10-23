@@ -10,10 +10,10 @@ use App\Entity\Option;
 use App\Entity\Royalties;
 use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionPaymentRepository;
+use App\Repository\MissionRecurringPriceLogRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserPacksRepository;
-use App\Repository\MissionRecurringPriceLogRepository;
 use App\Service\FileUploader;
 use App\Service\Mailer;
 use App\Service\MangoPayService;
@@ -76,8 +76,8 @@ class MissionController extends Controller
                                  Filesystem $filesystem,
                                  ClientTransactionRepository $clientTransactionRepository,
                                  MissionPaymentRepository $missionPaymentRepository,
-                                 MissionRecurringPriceLogRepository $missionRecurringPriceLogRepository,
                                  MangoPayService $mangoPayService,
+                                 MissionRecurringPriceLogRepository $missionRecurringPriceLogRepository,
                                  Mailer $mailer)
     {
 
@@ -86,6 +86,7 @@ class MissionController extends Controller
         $status = '';
 
         $clientTransaction = new ClientTransaction();
+
 
         $transaction = $clientTransactionRepository->findLastRow($mission->getId());
 
@@ -328,6 +329,8 @@ class MissionController extends Controller
 
                 $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
 
+                $cycle = $last_row->getCycle() - 1;
+
                 $royalties = new Royalties();
                 $royalties->setMission($mission);
                 $royalties->setCm($mission->getUser());
@@ -337,13 +340,15 @@ class MissionController extends Controller
                 $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
                 $royalties->setInvoicePath($cmInvoicePath);
                 $royalties->setPaymentType('mango_pay');
-                $royalties->setCycle($last_row->getCycle() - 1);
                 $royalties->setStatus('pending');
+                $royalties->setCycle($cycle);
                 $royalties->setBankDetails(json_encode('no_response'));
+
                 $entityManager->persist($royalties);
 
             }
-        $entityManager->flush();
+
+          $entityManager->flush();
 
           if($mission->getStatus() == 'terminated'){
               $this->addFlash('mission_change_setting', 'Toutes nos félicitations! La mission est terminée');
