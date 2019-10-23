@@ -109,6 +109,7 @@ jQuery(document).ready(function() {
     var validator = $form.validate({
         ignore: ".tab-pane:not(.active) :hidden",
         rules: {
+            "user[email]":{required:true, remote: '/client/check-email'}
             "user[firstname]": {maxlength: 50},
             "user[lastname]": {maxlength: 50},
             "user[currentLocation]": {digits: true, minlength: 5, maxlength: 5},
