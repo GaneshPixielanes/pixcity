@@ -157,7 +157,13 @@ services:
         class: App\Security\FacebookAuthenticator
         autowire: true
 
+    linkedin_authenticator:
+        class: App\Security\LinkedinAuthenticator
+        autowire: true
 
+    user_authenticator:
+      class: App\Security\UserAuthenticator
+      autowire: true
 
 kms_froala_editor:
   serialNumber: "IH1A5B8C3pD1D1E1A3E1A3A15B3D8C4khpbI2C-21tjf=="

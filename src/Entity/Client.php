@@ -144,6 +144,16 @@ class Client implements UserInterface
      */
     private $linkedinId;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $googleId;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $facebookId;
+
     public function __construct()
     {
         $this->clientMissionProposals = new ArrayCollection();
@@ -363,7 +373,7 @@ class Client implements UserInterface
         return $this;
     }
 
-        public function getUserMission(): ?Collection
+    public function getUserMission(): ?Collection
     {
         return $this->userMission;
     }
@@ -543,6 +553,30 @@ class Client implements UserInterface
     public function setLinkedinId(?string $linkedinId): self
     {
         $this->linkedinId = $linkedinId;
+
+        return $this;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(?string $googleId): self
+    {
+        $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    public function getFacebookId(): ?string
+    {
+        return $this->facebookId;
+    }
+
+    public function setFacebookId(?string $facebookId): self
+    {
+        $this->facebookId = $facebookId;
 
         return $this;
     }
