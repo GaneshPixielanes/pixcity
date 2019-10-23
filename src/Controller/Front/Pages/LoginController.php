@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
@@ -550,5 +551,16 @@ class LoginController extends Controller
         }
 
         return new JsonResponse((['success' => true, 'url' => $this->generateUrl('front_login')]));
+    }
+    /**
+     * @Route("/login_success", name="login_success")
+     */
+    public function postLoginRedirectAction(Request $request,UserRepository $userRepo,UserInterface $user)
+    {
+        if (count($user->getRoles()) > 1){
+            return $this->redirectToRoute("front_pixie_account_homepage");
+        } else {
+            return $this->redirectToRoute("front_homepage_index");
+        }
     }
 }
