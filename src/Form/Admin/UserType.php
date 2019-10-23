@@ -45,23 +45,23 @@ class UserType extends AbstractType
             ->add('lastname', TextType::class, array('label' => 'label.lastname'))
             ->add('phone', TextType::class, array('label' => 'label.phone', 'required' => false))
             ->add('birthdate', BirthdayType::class, array('label' => 'label.birthdate', 'format' => 'dd MMMM yyyy'))
-            ->add('birthLocation', EntityType::class, array(
-                'class' => Region::class,
-                'label' => 'label.region',
-                'required' => true,
-                'placeholder' => 'label.select.region',
-                'choice_label' => 'name',
-            ))
-            ->add('currentLocation', TextType::class, array('label' => 'label.currentLocation'))
-            ->add('gender', ChoiceType::class, array(
-                'label' => 'label.gender',
-                'multiple' => false,
-                'expanded' => true,
-                'choices'  => array(
-                    'label.male' => 'male',
-                    'label.female' => 'female'
-                ),
-            ))
+//            ->add('birthLocation', EntityType::class, array(
+//                'class' => Region::class,
+//                'label' => 'label.region',
+//                'required' => true,
+//                'placeholder' => 'label.select.region',
+//                'choice_label' => 'name',
+//            ))
+//            ->add('currentLocation', TextType::class, array('label' => 'label.currentLocation'))
+//            ->add('gender', ChoiceType::class, array(
+//                'label' => 'label.gender',
+//                'multiple' => false,
+//                'expanded' => true,
+//                'choices'  => array(
+//                    'label.male' => 'male',
+//                    'label.female' => 'female'
+//                ),
+//            ))
             ->add('roles', ChoiceType::class, array(
                 'label' => 'label.role',
                 'multiple' => true,
