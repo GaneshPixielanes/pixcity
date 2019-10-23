@@ -80,7 +80,7 @@ class BlogController extends AbstractController
             'prevNextType' => $prevNextType,
         ]);
     }
-    /*
+    /**
      * @Route("/blogredirect", name="blogredirect")
      */
     public function blogChange(OptionRepository $optionRepository)
