@@ -18,7 +18,7 @@ security:
         users:
             entity:
                 class: App\Entity\User
-                property: email     
+                property: email
 
         clients:
             entity:
@@ -49,18 +49,14 @@ security:
                 invalidate_session: false
 
         client_area:
-            anonymous: true
+            anonymous: ~
             pattern: ^/client|^/freelance
             provider: clients
-            form_login:
-                check_path: front_login
-                login_path: front_login
-                csrf_token_generator: security.csrf.token_manager
-                use_referer: true
+            json_login:
+                check_path: b2b_client_login
             guard:
                 authenticators:
                     - App\Security\ClientAuthenticator
-                entry_point: App\Security\ClientAuthenticator
             logout:
                 path: '/client/logout'
                 target: '/'
@@ -70,14 +66,11 @@ security:
         main:
             anonymous: true
             provider: users
-            user_checker: App\Security\UserChecker
-            form_login:
+            json_login:
                 check_path: front_login
-                login_path: front_login
-                csrf_token_generator: security.csrf.token_manager
-                use_referer: true
             guard:
                 authenticators:
+                    - App\Security\UserAuthenticator
                     - App\Security\GoogleAuthenticator
                     - App\Security\FacebookAuthenticator
                 entry_point: App\Security\GoogleAuthenticator
