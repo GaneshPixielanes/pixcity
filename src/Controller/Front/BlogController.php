@@ -4,6 +4,7 @@ namespace App\Controller\Front;
 
 use App\Entity\Page;
 use App\Repository\BlogPostRepository;
+use App\Repository\OptionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -78,5 +79,13 @@ class BlogController extends AbstractController
             'blogSingle' => $blogSingle,
             'prevNextType' => $prevNextType,
         ]);
+    }
+    /*
+     * @Route("/blogredirect", name="blogredirect")
+     */
+    public function blogChange(OptionRepository $optionRepository)
+    {
+        $blogUrl = $optionRepository->findOneBy(['slug'=>'cm-winning-blog-url']);
+        return $this->redirect($blogUrl->getValue());
     }
 }
