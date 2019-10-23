@@ -11,6 +11,7 @@ use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -18,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Validator\Constraints\Json;
 
 class LoginController extends Controller
 {
@@ -26,11 +28,28 @@ class LoginController extends Controller
     {
         $this->session = $session;
     }
-
     /**
-     * @Route("/client/login", name="b2b_client_login")
+     * @Route("/client/login",name="b2b_client_login", methods={"POST"})
      */
+    public function clientlogin(Request $request)
+    {
+        $user = $this->getUser();
+
+        return $this->json([
+                'username' => $user->getUsername(),
+                'roles' => $user->getRoles(),
+            ]
+        );
+
+    }
+    /**
+     * @Route("/client/login-old", name="b2b_client_login_old")
+     */
+<<<<<<< HEAD
     public function login(AuthenticationUtils $authenticationUtils,Request $request)
+=======
+    public function loginOld(AuthenticationUtils $authenticationUtils,Request $request, ClientRepository $clientRepository)
+>>>>>>> dfe69d759c2640f4587b5208dc12fb1064e1e9b5
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -41,6 +60,29 @@ class LoginController extends Controller
 //            dd($lastUsername);
 //        }
         return $this->render('b2b/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'login_type' => 'client']);
+    }
+    /**
+     * @Route("/client/login/process", name="b2b_client_login_process")
+     */
+    public function processLogin(Request $request, ClientRepository $clientRepository)
+    {
+        if($request->isMethod('POST'))
+        {
+            $client = $clientRepository->findOneBy([
+                'username' => $request->get('_username'),
+                'password' => $request->get('_password')
+            ]);
+
+            if(is_null($client))
+            {
+                return new JsonResponse(['success' =>false,'message'=>'Identifiants invalides.']);
+            }
+            dd($client);
+            $this->loginClient($request, $client);
+            return new JsonResponse(['success'=> true,'redirectTo' => $this->generateUrl('b2b_client_main_profile')]);
+        }
+
+        return new JsonReponse(['success' => false, 'message' => 'Invalid format']);
     }
 
 
