@@ -74,7 +74,13 @@ security:
                 check_path: front_login
                 login_path: front_login
                 csrf_token_generator: security.csrf.token_manager
-                use_referer: true
+                #use_referer: true
+
+                # login success redirecting options
+                always_use_default_target_path: true
+                default_target_path:            front_login_success
+                target_path_parameter:          /
+                use_referer:                    false
             guard:
                 authenticators:
                     - App\Security\GoogleAuthenticator
