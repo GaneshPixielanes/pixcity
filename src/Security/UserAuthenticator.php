@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\Client;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class ClientAuthenticator extends AbstractFormLoginAuthenticator
+class UserAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
@@ -51,6 +52,7 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
             'email' => $data['_username'],
             'password' => $data['_password'],
             'csrf_token' => $data['_csrf_token'],
+            'login_type' => $data['login_type']
         ];
 
         $request->getSession()->set(
@@ -68,7 +70,8 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
 //            throw new InvalidCsrfTokenException();
 //        }
 
-        $user = $this->entityManager->getRepository(Client::class)->findOneBy(['email' => $credentials['email']]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+
         if (!$user || is_null($user)) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Identifiants invalides.');
@@ -81,12 +84,42 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
     {
         // Check the user's password or other credentials and return true or false
         // If there are no credentials to check, you can just return true
-        if($user->getDeleted() == 1)
+        if (!$user instanceof User) {
+            return;
+        }
+        if($credentials['login_type'] == 'cm' && !in_array('ROLE_PIXIE',$user->getRoles()))
         {
-            $ex = new DisabledException('Client account is disabled.');
+            $ex = new DisabledException('User is not a City-maker.');
             $ex->setUser($user);
             throw $ex;
         }
+
+        if($credentials['login_type'] != 'cm' && in_array('ROLE_PIXIE',$user->getRoles()))
+        {
+            $ex = new DisabledException('User is not a Voyaguer.');
+            $ex->setUser($user);
+            throw $ex;
+        }
+
+        if(!$user->isActive()){
+            $ex = new DisabledException('User account is disabled.');
+            $ex->setUser($user);
+            throw $ex;
+        }
+
+        if($user->isDeleted()){
+            $ex = new DisabledException('User account has been deleted.');
+            $ex->setUser($user);
+            throw $ex;
+        }
+
+        if(!$this->passwordEncoder->isPasswordValid($user, $credentials['password']))
+        {
+            $ex = new DisabledException('Identifiants invalides.');
+            $ex->setUser($user);
+            throw $ex;
+        }
+
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
@@ -102,9 +135,19 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        $data = json_decode($request->getContent(), true);
+
+        if($data['login_type'] == 'cm')
+        {
+            $url = $this->router->generate('front_pixie_account_homepage');
+        }
+        else
+        {
+            $url = $this->router->generate('front_homepage_index');
+        }
 
         // For example : return new RedirectResponse($this->router->generate('some_route'));
-        return new JsonResponse(['success' => true, 'url' => $this->router->generate('b2b_client_main_index')]);
+        return new JsonResponse(['success' => true, 'url' => $url]);
     }
 
 

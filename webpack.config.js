@@ -91,6 +91,7 @@ Encore
     // .addEntry('b2b/js/mission', './assets/b2b/js/mission.js')
     .addEntry('b2b/js/pack', './assets/b2b/js/pack.js')
     .addEntry('b2b/js/bind','./assets/b2b/js/bind.js')
+    .addEntry('b2b/js/login','./assets/b2b/js/login.js')
 
 
 
