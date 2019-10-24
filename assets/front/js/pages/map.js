@@ -327,7 +327,7 @@ $(document).ready(function() {
                 $('#pac-input').removeClass('d-none');
             }
 
-        }, 1000);
+        }, 5000);
     }
     // Add a marker clusterer to manage the markers.
     function cluster(map, markers) {
