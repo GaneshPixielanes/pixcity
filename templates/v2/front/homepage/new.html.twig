@@ -243,6 +243,11 @@
     </script>
 
     <script src="{{ asset('build/js/map.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#header-loader').load('/load-header');
+        });
+    </script>
 
 {% endblock %}
 
