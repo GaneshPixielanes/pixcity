@@ -946,7 +946,8 @@
             /* Preview Invoice Starts */
             $(document).on('click',
                 'a.close-invoice-preview, a.preview-invoice, a.validate-quote, a.validate-the-quote, a.check-the-quote',
-                function () {
+                function (e) {
+                    e.preventDefault();
                     if ($(this).is('a.preview-invoice')) {
                         $('.validate-the-quote, .dash-right').fadeOut()
                         $('.facturation-show-container, .validate-quote').fadeIn();
@@ -978,11 +979,10 @@
                           dataType:'json',
                           success: function(data){
                               console.log(data);
-                              $("#invoice-path").attr('src','');
-                              $("#object-invoice-path").attr('data','');
+
                               $("#invoice-path").attr('src',data);
                               $("#object-invoice-path").attr('data',data);
-
+                              $('IFRAME#invoice-path').get(0).contentDocument.location.reload();
                               $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function () {
                                   // $('.to-validate-quote-toast').toast('show').css({
                                   //     'z-index': '1050'
