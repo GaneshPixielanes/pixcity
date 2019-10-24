@@ -280,11 +280,11 @@
         <div class="row">
             <div class="col-md-12 d-flex justify-content-between my-2">
                 <span data-toggle="tooltip" data-placement="bottom" data-container="body" title="Suivre le City Maker">
-{#                    {% if app.user | instant %}#}
+                    {% if app.user is null or app.user | instant %}
                     <a href="javascript:;" class="col-md-3 city-maker-cta cta-follow-city-maker {% if app.user is not null and app.user.hasFavoritePixie(user) %}active{% endif %}" {% if app.user is  null %} data-toggle="modal" data-target="#followCityMakerModal" {% endif %} data-id="{{ user.id }}">
                         <i class="far fa-user-circle"></i>
                     </a>
-{#                    {% endif %}#}
+                    {% endif %}
                 </span>
                 <span>
                     <a href="{{ user.getInstagram() }}" target="_blank" class="col-md-3 city-maker-cta" data-toggle="tooltip" data-placement="bottom" data-container="body" title="Consultez le profil Instagram de notre City Maker!">
