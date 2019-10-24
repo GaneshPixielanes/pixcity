@@ -42,11 +42,7 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-<<<<<<< HEAD
-        return ('front_login' === $request->attributes->get('_route'))
-=======
         return ('front_login' === $request->attributes->get('_route') || 'front_voyager_login' === $request->attributes->get('_route') )
->>>>>>> 8a4dca1944c2d41bcec4d9eb2d694d69d029a33e
             && $request->isMethod('POST');
     }
 
