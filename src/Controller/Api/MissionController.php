@@ -329,7 +329,12 @@ class MissionController extends Controller
 
                 $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
 
-                $cycle = $last_row->getCycle() - 1;
+                $cycle = 0;
+
+                if($last_row != null){
+                    $cycle = $last_row->getCycle() - 1;
+                }
+
 
                 $royalties = new Royalties();
                 $royalties->setMission($mission);
