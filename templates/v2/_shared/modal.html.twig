@@ -26,7 +26,7 @@
             <div class="col-md-6 modal-footer-button">
                 <a href="javascript:;" class="btn btn-green btn-block" onclick="document.getElementById('addCityMakerFavoriteForm').submit();">ACCEDER A MON COMPTE VOYAGEUR</a>
             </div>
-            <form action="{{ path('front_login') }}" method="GET" id="addCityMakerFavoriteForm">
+            <form action="{{ path('front_voyager_login') }}" method="GET" id="addCityMakerFavoriteForm">
               <input type="hidden" name="addFavoritePixie">
             </form>
           </div>
@@ -74,7 +74,7 @@
           </button>
           <div class="modal-body">
               <div class="row">
-                <form action="{{ path('front_login') }}" method="GET" id="addCardFavoriteForm">
+                <form action="{{ path('front_voyager_login') }}" method="GET" id="addCardFavoriteForm">
                   <input type="hidden" name="addFavoriteCard">
                 </form>
                   <div class="col-md-12 modal-logo-city-maker">
@@ -111,7 +111,7 @@
           </button>
           <div class="modal-body">
               <div class="row">
-                <form action="{{ path('front_login') }}" method="GET" id="addCardLikeForm">
+                <form action="{{ path('front_voyager_login') }}" method="GET" id="addCardLikeForm">
                   <input type="hidden" name="addLikeCard">
                 </form>
                   <div class="col-md-12 modal-logo-city-maker">
