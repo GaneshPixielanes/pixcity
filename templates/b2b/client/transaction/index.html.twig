@@ -58,7 +58,8 @@
 
                         {% if mission.getMissionPriceLogs() is not empty %}
                             {% for priceLog in mission.getMissionPriceLogs  %}
-                                {% if priceLog.cycle != 1 %}
+                                {{ loop.length }}
+                                {% if loop.last != loop.length %}
                                     <tr class="text-darkgray fz-14">
                                         <td valign="middle" class="text-center">
                                             <i class="far fa-file-alt fz-25"></i>
@@ -91,10 +92,10 @@
                                             <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}</td>
                                             <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
                                             <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
-                                            {% if priceLog.mission.isTvaApplicable is not null %}
-                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice | price(margin,tax,true) }} €</td>
+                                            {% if mission.isTvaApplicable is not null %}
+                                                <td valign="middle">{{ mission.userMissionPayment.clientTotal |round }} €</td>
                                             {% else %}
-                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice | price(margin,0,false) }} €</td>
+                                                <td valign="middle">{{ (mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientTax) | round }} €</td>
                                             {% endif %}
                                             <td valign="middle"><span class="text-inprogress">Terminé</span></td>
                                             <td valign="middle">
@@ -110,18 +111,8 @@
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-
-
                     {% endif %}
-
-
                 {% endfor %}
-
-
-
-
-
-
                 </tbody>
             </table>
 
@@ -145,6 +136,7 @@
                 </div>
 
             {% endif %}
+
         </div>
     </div>
     <!-- my billing end here -->
