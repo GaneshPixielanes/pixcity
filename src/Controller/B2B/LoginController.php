@@ -70,7 +70,6 @@ class LoginController extends Controller
             {
                 return new JsonResponse(['success' =>false,'message'=>'Identifiants invalides.']);
             }
-            dd($client);
             $this->loginClient($request, $client);
             return new JsonResponse(['success'=> true,'redirectTo' => $this->generateUrl('b2b_client_main_profile')]);
         }
@@ -130,8 +129,8 @@ class LoginController extends Controller
             $id = $user->getId();
             $email = $user->getEmail();
             $data = $user->toArray();
-            $data['localizedFirstName'] = $data['name']['familyName'];
-            $data['localizedLastName'] = $data['name']['givenName'];
+            $data['localizedFirstName'] = $data['name']['givenName'];
+            $data['localizedLastName'] = $data['name']['familyName'];
             $data['email'] = $data['emails'];
             if(is_null($clientRepository->findOneBy(['email'=>$email])))
             {

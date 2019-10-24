@@ -219,11 +219,11 @@ class HomepageController extends Controller
         dd($user);
     }
 
-//    /**
-//     * @Route('/load-header',name="load_header")
-//     */
-//    public function _loadHeader()
-//    {
-//        return $this->render('v2/_shared/header.html.twig');
-//    }
+    /**
+     * @Route("load-header",name="load_header")
+     */
+    public function loadHeader()
+    {
+        return $this->render('v2/_shared/header_ajax.html.twig');
+    }
 }

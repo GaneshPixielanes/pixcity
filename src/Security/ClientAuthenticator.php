@@ -87,6 +87,13 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
             $ex->setUser($user);
             throw $ex;
         }
+
+        if(!$this->passwordEncoder->isPasswordValid($user, $credentials['password']))
+        {
+            $ex = new DisabledException('Identifiants invalides.');
+            $ex->setUser($user);
+            throw $ex;
+        }
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
