@@ -23,7 +23,6 @@ class TransactionController extends AbstractController
     {
         $missions = $missionRepo->findBy([
             'client' => $this->getUser(),
-            'status' => MissionStatus::TERMINATED
         ]);
 
         $missions_ongoing = $missionRepo->findBy([

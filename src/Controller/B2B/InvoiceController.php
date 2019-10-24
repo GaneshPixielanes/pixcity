@@ -33,7 +33,6 @@ class InvoiceController extends Controller
 
       $missions = $missionRepo->findBy([
          'user' => $this->getUser(),
-         'status' => MissionStatus::TERMINATED
       ]);
 
       $missions_ongoing = $missionRepo->findBy([

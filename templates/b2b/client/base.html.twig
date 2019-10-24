@@ -978,6 +978,8 @@
                           dataType:'json',
                           success: function(data){
                               console.log(data);
+                              $("#invoice-path").attr('src','');
+                              $("#object-invoice-path").attr('data','');
                               $("#invoice-path").attr('src',data);
                               $("#object-invoice-path").attr('data',data);
 
