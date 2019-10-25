@@ -137,7 +137,7 @@ class LoginController extends Controller
 
             if(!is_null($tempUser))
             {
-                $roles = $user->getRoles();
+                $roles = $tempUser->getRoles();
                 $this->loginUser($request, $tempUser);
 
                 if(in_array('ROLE_PIXIE',$roles))
@@ -192,7 +192,7 @@ class LoginController extends Controller
 
             if(!is_null($tempUser))
             {
-                $roles = $user->getRoles();
+                $roles = $tempUser->getRoles();
                 $this->loginUser($request, $tempUser);
 
                 if(in_array('ROLE_PIXIE',$roles))
@@ -245,7 +245,7 @@ class LoginController extends Controller
 
             if(!is_null($tempUser))
             {
-                $roles = $user->getRoles();
+                $roles = $tempUser->getRoles();
                 $this->loginUser($request, $tempUser);
 
                 if(in_array('ROLE_PIXIE',$roles))
