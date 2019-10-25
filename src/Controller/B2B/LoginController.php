@@ -168,7 +168,7 @@ class LoginController extends Controller
     /**
      * @Route("/connect/facebook/action", name="connect_facebook_action")
      */
-    public function connectFacebookAction(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository)
+    public function connectFacebookAction(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository,UserRepository $userRepository)
     {
         $client = $clientRegistry->getClient('facebook_client');
 
@@ -212,7 +212,7 @@ class LoginController extends Controller
     /**
      * @Route("/connect/linkedin/action", name="connect_linkedin_check")
      */
-    public function  connectLinkedinAction(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository)
+    public function  connectLinkedinAction(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository,UserRepository $userRepository)
     {
 
         $client = $clientRegistry->getClient('linkedin');
