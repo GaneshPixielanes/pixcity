@@ -120,7 +120,9 @@ class GoogleAuthenticator extends SocialAuthenticator
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey){
-        return null;
+
+        return new RedirectResponse($this->router->generate('front_homepage_check_user'));
+        // return null;
     }
 
 }

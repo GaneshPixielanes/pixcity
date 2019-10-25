@@ -69,7 +69,7 @@
 								<div class="logged-dropdown-menu">
 									<div class="card">
 											<div class="card-body p-0">
-												{% if app.user.viewMode == "pixie" %}
+												{% if app.user.viewMode is defined and app.user.viewMode == "pixie" %}
 													<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CITY-MAKER <i class="fas fa-retweet"></i></a>
 													{% if app.user.level >= 1 %}<a class="dropdown-item" href="{{ path('front_pixie_account_homepage') }}"><i class="fas fa-home"></i>Accueil</a> {% endif %}
 													<a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
@@ -126,9 +126,12 @@
 														</a>
 													{% endif %}
 												{% endif %}
-												{% else %}
-
-													<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE VOYAGEUR <i class="fas fa-retweet"></i></a>
+												{% else %}				
+													<a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE VOYAGEUR
+													{% if app.user.viewMode is defined %}	
+													 <i class="fas fa-retweet"></i>
+													 {% endif %}	
+													 </a>
 													<a class="dropdown-item" href="{{ path('front_user_account_cards') }}"><i class="fas fa-cog"></i>Mes Cards</a>
 													<a class="dropdown-item" href="{{ path('front_user_account_agendas') }}"><i class="far fa-calendar-alt"></i>Mes Agendas</a>
 													<a class="dropdown-item" href="{{ path('front_user_account_pixies') }}"><i class="far fa-user"></i>Mes City-makers Favoris</a>

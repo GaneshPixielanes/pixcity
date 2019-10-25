@@ -226,4 +226,22 @@ class HomepageController extends Controller
     {
         return $this->render('v2/_shared/header_ajax.html.twig');
     }
+
+    /**
+     * @Route("check-user",name="check_user")
+     */
+    public function checkUser()
+    {
+        $user = $this->getUser();
+        $roles = $user->getRoles();
+
+        if(in_array('ROLE_PIXIE', $roles))
+        {
+            return $this->redirectToRoute('front_pixie_account_homepage');
+        }
+        else
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
+    }
 }
