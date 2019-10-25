@@ -137,7 +137,17 @@ class LoginController extends Controller
 
             if(!is_null($tempUser))
             {
+                $roles = $user->getRoles();
                 $this->loginUser($request, $tempUser);
+
+                if(in_array('ROLE_PIXIE',$roles))
+                {
+                    return $this->redirectToRoute('front_pixie_account_homepage');
+                }
+                else
+                {
+                    return $this->redirectToRoute('front_homepage_index');
+                }
             }
             $data = $user->toArray();
             $data['localizedFirstName'] = $data['name']['givenName'];
@@ -182,7 +192,17 @@ class LoginController extends Controller
 
             if(!is_null($tempUser))
             {
+                $roles = $user->getRoles();
                 $this->loginUser($request, $tempUser);
+
+                if(in_array('ROLE_PIXIE',$roles))
+                {
+                    return $this->redirectToRoute('front_pixie_account_homepage');
+                }
+                else
+                {
+                    return $this->redirectToRoute('front_homepage_index');
+                }
             }
             $data['localizedFirstName'] = $data['first_name'];
             $data['localizedLastName'] = $data['last_name'];
@@ -225,7 +245,17 @@ class LoginController extends Controller
 
             if(!is_null($tempUser))
             {
+                $roles = $user->getRoles();
                 $this->loginUser($request, $tempUser);
+
+                if(in_array('ROLE_PIXIE',$roles))
+                {
+                    return $this->redirectToRoute('front_pixie_account_homepage');
+                }
+                else
+                {
+                    return $this->redirectToRoute('front_homepage_index');
+                }
             }
             $id = $user->getId();
             $data = $user->toArray();
@@ -286,9 +316,9 @@ class LoginController extends Controller
         return $form;
     }
 
-    private function loginUser(Request $request, $user)
+    private function loginUser(Request $request, $user):void
     {
-        $roles = $user->getRoles();
+
 
         $this->session->set('login_by',['type' => 'login_client','entity' => $user]);
 
@@ -298,13 +328,6 @@ class LoginController extends Controller
         $this->container->get('session')->set('_security_main_area', serialize($token));
         $event = new InteractiveLoginEvent($request, $token);
         $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
-        if(in_array('ROLE_PIXIE',$roles))
-        {
-            return $this->redirectToRoute('front_pixie_account_homepage');
-        }
-        else
-        {
-            return $this->redirectToRoute('front_homepage_index');
-        }
+
     }
 }
