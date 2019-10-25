@@ -49,4 +49,14 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('build/admin/js/pages/slide.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            var config = {
+                enter: $.FroalaEditor.ENTER_BR,
+                toolbarButtons: ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'outdent', 'indent', 'clearFormatting', 'insertTable', 'html'],
+                toolbarButtonsXS: [ 'bold', 'italic', 'underline']
+            };
+            $('textarea#slider_slide_name').froalaEditor(config);
+        });
+    </script>
 {% endblock %}
