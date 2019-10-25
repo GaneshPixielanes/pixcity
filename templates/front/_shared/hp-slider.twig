@@ -33,7 +33,7 @@
             <div class="col-md-12 d-flex align-items-center banner-container">
                 <div class="row full-width">
                     <div class="col-md-6">
-                        <p class="hash-title"><span>#</span>{{ slide.name }}</p>
+                        <p class="hash-title"><span>#</span>{{ slide.name | raw}}</p>
                         <p class="tagine">
                             {{ slide.description | raw }}
                         </p>
