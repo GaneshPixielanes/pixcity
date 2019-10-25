@@ -140,12 +140,7 @@
 						<div class="row">
 							<div class="col-md-8 logged-profile-menu-hover">
 								<a href="javascript:;" class="logged-profile">
-									{% if loginDetails['entity'].profilePhoto is defined and loginDetails['entity'].profilePhoto is not null  %}
-										<img  src="{{ asset('/uploads/clients/'~loginDetails['entity'].id~'/'~loginDetails['entity'].profilePhoto) | imagine_filter('user_avatar') }}"  class="rounded-circle"/>
-									{% else %}
-										<img src="/uploads/avatars/default-avatar.png" alt=""  class="rounded-circle"/>
-									{% endif %}
-
+									<img  src="{{ asset(loginDetails['entity'].getLogo()) | imagine_filter('user_avatar') }}"  class="rounded-circle"/>
 								</a>
 								<div class="logged-dropdown-menu">
 									<div class="card">
