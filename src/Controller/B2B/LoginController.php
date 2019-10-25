@@ -141,7 +141,7 @@ class LoginController extends Controller
             }
             $data = $user->toArray();
             $data['localizedFirstName'] = $data['name']['givenName'];
-            $data['localizedLastName'] = $data['name']['familyNameb2b'];
+            $data['localizedLastName'] = $data['name']['familyName'];
             $data['email'] = $data['emails'];
             if(is_null($clientRepository->findOneBy(['email'=>$email])))
             {
