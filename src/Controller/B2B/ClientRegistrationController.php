@@ -199,6 +199,10 @@ class ClientRegistrationController extends AbstractController
     public function checkEmail(ClientRepository $clientRepository, UserRepository $userRepository, Request $request)
     {
         $email = $request->get('client')['email'];
+        if(is_null($email))
+        {
+            $email = $request->get('user')['email'];
+        }
         $user = $userRepository->findBy(['email' => $email]);
         $client = $clientRepository->findBy(['email' => $email]);
 

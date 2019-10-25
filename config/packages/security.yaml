@@ -73,7 +73,7 @@ security:
                     - App\Security\UserAuthenticator
                     - App\Security\GoogleAuthenticator
                     - App\Security\FacebookAuthenticator
-                entry_point: App\Security\GoogleAuthenticator
+                entry_point: App\Security\UserAuthenticator
             logout:
                 path: front_logout
                 target: front_homepage_index
