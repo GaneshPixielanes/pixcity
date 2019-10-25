@@ -22,7 +22,7 @@
                 <td>{{ item.position }}</td>
                 <td>{{ item.id }}</td>
                 <td class="drag-handle"><i class="material-icons"  data-id="{{ item.id }}" data-position=" {{ item.position }}">drag_handle</i></td>
-                <td>{{ item.name }}</td>
+                <td>{{ item.name| raw }}</td>
 
                 <td class="text-right">
                     <div class="item-actions">
