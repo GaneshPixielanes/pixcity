@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Constant\SessionName;
 use App\Entity\User;
+use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use League\OAuth2\Client\Provider\GoogleUser;
@@ -74,6 +75,14 @@ class GoogleAuthenticator extends SocialAuthenticator
         $user = $this->em->getRepository(User::class)
             ->findOneBy(['email' => $email]);
 
+        //----------------------------------------------------
+        // If the user is a client, login as a client
+        $clientUser = $this->em->getRepository(Client::class)->findOneBy(['email' => $email]);
+        if($clientUser)
+        {
+            return $clientUser;
+        }    
+
         if($user) {
             $user->setGoogleId($googleUser->getId());
             $this->em->persist($user);
@@ -124,5 +133,6 @@ class GoogleAuthenticator extends SocialAuthenticator
         return new RedirectResponse($this->router->generate('front_homepage_check_user'));
         // return null;
     }
+
 
 }
