@@ -581,5 +581,11 @@ class Client implements UserInterface
         return $this;
     }
 
+    public function getLogo()
+    {
+        $fileName = ($this->getProfilePhoto() != '')?'/uploads/clients/'.$this->getId().'/'.$this->getProfilePhoto():null;
+        return ($fileName)?$fileName:"/assets/images/login-reg-place.svg";
+    }
+
 
 }

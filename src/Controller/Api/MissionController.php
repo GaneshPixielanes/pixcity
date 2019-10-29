@@ -285,7 +285,73 @@ class MissionController extends Controller
 
 //        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
 
-        if($mission->getStatus() == 'terminated'){
+
+            if($mission->getStatus() == 'terminated'){
+
+                $filesystem->mkdir('invoices/'.$mission->getId(),0777);
+
+                $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
+
+                $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/client_invoice.html.twig',
+                        array(
+                            'mission' => $mission,
+                            'tax' => $tax->getValue()
+                        )
+                    ), $clientInvoicePath
+                );
+
+                $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
+
+                $cmInvoicePath = "invoices/".$mission->getId().'/'.$cm_filename;
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/cm_invoice.html.twig',
+                        array(
+                            'mission' => $mission,
+                            'tax' => $tax->getValue()
+                        )
+                    ), $cmInvoicePath
+                );
+
+                $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
+
+                $pcsInvoicePath = "invoices/".$mission->getId().'/'.$pcs_filename;
+
+                $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView('b2b/invoice/pcs_invoice.html.twig',
+                        array(
+                            'mission' => $mission
+                        )
+                    ), $pcsInvoicePath
+                );
+
+                $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
+
+                $cycle = 0;
+
+                if($last_row != null){
+                    $cycle = $last_row->getCycle() - 1;
+                }
+
+
+                $royalties = new Royalties();
+                $royalties->setMission($mission);
+                $royalties->setCm($mission->getUser());
+                $royalties->setTax($tax->getValue());
+                $royalties->setBasePrice($mission->getUserMissionPayment()->getUserBasePrice());
+                $royalties->setTaxValue($mission->getUserMissionPayment()->getCmTax());
+                $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
+                $royalties->setInvoicePath($cmInvoicePath);
+                $royalties->setPaymentType('mango_pay');
+                $royalties->setStatus('pending');
+                $royalties->setCycle($cycle);
+                $royalties->setBankDetails(json_encode('no_response'));
+
+                $entityManager->persist($royalties);
+
 
             $filesystem->mkdir('invoices/'.$mission->getId(),0777);
 
@@ -337,6 +403,7 @@ class MissionController extends Controller
             }
 
 
+
             $royalties = new Royalties();
             $royalties->setMission($mission);
             $royalties->setCm($mission->getUser());
@@ -355,6 +422,7 @@ class MissionController extends Controller
         }
 
         $entityManager->flush();
+
 
         if($mission->getStatus() == 'terminated'){
             $this->addFlash('mission_change_setting', 'Toutes nos félicitations! La mission est terminée');

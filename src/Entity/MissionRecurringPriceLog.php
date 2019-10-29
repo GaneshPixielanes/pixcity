@@ -71,7 +71,7 @@ class MissionRecurringPriceLog
         return $this;
     }
 
-    public function getActivePrice(): ?MissionLog
+        public function getActivePrice(): ?MissionLog
     {
         return $this->active_price;
     }

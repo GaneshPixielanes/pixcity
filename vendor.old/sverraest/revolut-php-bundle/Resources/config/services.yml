@@ -1,0 +1,7 @@
+services:
+  revolut_php.client:
+    class: RevolutPHP\Client
+    arguments: ['%revolut_php_api_key%',"%revolut_php_mode%"]
+    public: true
+
+  RevolutPHP\Client: '@revolut_php.client'

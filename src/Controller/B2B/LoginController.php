@@ -6,6 +6,7 @@ use App\Constant\SessionName;
 use App\Entity\Client;
 use App\Form\B2B\ClientType;
 use App\Repository\ClientRepository;
+use App\Repository\UserRepository;
 use GuzzleHttp\ClientInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
@@ -119,7 +120,11 @@ class LoginController extends Controller
     /**
      * @Route("/connect/google/action", name="connect_google_action")
      */
-    public function connectGoogleAction(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository)
+    public function connectGoogleAction(Request $request,
+                                        ClientRegistry $clientRegistry,
+                                        ClientRepository $clientRepository,
+                                        UserRepository $userRepository
+    )
     {
         $client = $clientRegistry->getClient('google_client');
 
@@ -128,6 +133,22 @@ class LoginController extends Controller
 
             $id = $user->getId();
             $email = $user->getEmail();
+            $tempUser = $userRepository->findOneBy(['email' => $email]);
+
+            if(!is_null($tempUser))
+            {
+                $roles = $tempUser->getRoles();
+                $this->loginUser($request, $tempUser);
+
+                if(in_array('ROLE_PIXIE',$roles))
+                {
+                    return $this->redirectToRoute('front_pixie_account_homepage');
+                }
+                else
+                {
+                    return $this->redirectToRoute('front_homepage_index');
+                }
+            }
             $data = $user->toArray();
             $data['localizedFirstName'] = $data['name']['givenName'];
             $data['localizedLastName'] = $data['name']['familyName'];
@@ -157,7 +178,7 @@ class LoginController extends Controller
     /**
      * @Route("/connect/facebook/action", name="connect_facebook_action")
      */
-    public function connectFacebookAction(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository)
+    public function connectFacebookAction(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository,UserRepository $userRepository)
     {
         $client = $clientRegistry->getClient('facebook_client');
 
@@ -167,6 +188,22 @@ class LoginController extends Controller
             $id = $user->getId();
             $email = $user->getEmail();
             $data = $user->toArray();
+            $tempUser = $userRepository->findOneBy(['email' => $email]);
+
+            if(!is_null($tempUser))
+            {
+                $roles = $tempUser->getRoles();
+                $this->loginUser($request, $tempUser);
+
+                if(in_array('ROLE_PIXIE',$roles))
+                {
+                    return $this->redirectToRoute('front_pixie_account_homepage');
+                }
+                else
+                {
+                    return $this->redirectToRoute('front_homepage_index');
+                }
+            }
             $data['localizedFirstName'] = $data['first_name'];
             $data['localizedLastName'] = $data['last_name'];
             $data['email'] = $email;
@@ -195,7 +232,7 @@ class LoginController extends Controller
     /**
      * @Route("/connect/linkedin/action", name="connect_linkedin_check")
      */
-    public function  connectLinkedinAction(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository)
+    public function  connectLinkedinAction(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository,UserRepository $userRepository)
     {
 
         $client = $clientRegistry->getClient('linkedin');
@@ -204,6 +241,22 @@ class LoginController extends Controller
             $user = $client->fetchUser();
 
             $email = $user->getEmail();
+            $tempUser = $userRepository->findOneBy(['email' => $email]);
+
+            if(!is_null($tempUser))
+            {
+                $roles = $tempUser->getRoles();
+                $this->loginUser($request, $tempUser);
+
+                if(in_array('ROLE_PIXIE',$roles))
+                {
+                    return $this->redirectToRoute('front_pixie_account_homepage');
+                }
+                else
+                {
+                    return $this->redirectToRoute('front_homepage_index');
+                }
+            }
             $id = $user->getId();
             $data = $user->toArray();
             if(is_null($clientRepository->findOneBy(['email'=>$email])))
@@ -263,10 +316,18 @@ class LoginController extends Controller
         return $form;
     }
 
-    private function loginUser(Request $request, $user) : void
+    private function loginUser(Request $request, $user):void
     {
-        $token = new UsernamePasswordToken($user, null, 'client', $user->getRoles());
+
+
+        $this->session->set('login_by',['type' => 'login_client','entity' => $user]);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+
         $this->container->get('security.token_storage')->setToken($token);
-        $this->container->get('session')->set('_security_main', serialize($token));
+        $this->container->get('session')->set('_security_main_area', serialize($token));
+        $event = new InteractiveLoginEvent($request, $token);
+        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+
     }
 }

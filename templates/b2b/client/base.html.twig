@@ -246,12 +246,7 @@
             <div class="col-md-2 p-sm-0 dash-left vh-100">
                 <div class="user-avatar w-100">
                     <figure class="position-relative m-0 w-100">
-                        {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
-                            <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
-                        {% else %}
-                            <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
-                        {% endif %}
-
+                        <img class="img-fluid" src="{{ app.user.getLogo() }}" alt="" />
                         <figcaption class="position-absolute d-flex align-items-center" id="profile-redirect"><i class="fas fa-user-circle mr-2"></i>
                             <span>Modifier mon profill</span></figcaption>
                     </figure>
