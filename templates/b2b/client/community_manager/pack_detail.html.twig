@@ -241,19 +241,19 @@
                     <div class="pack-overview-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
                         <p class="text-textgray text-12 mb-0">{{ pack.packSkill | upper }}</p>
 {#                        <h5 class="text-darkgray mb-3">Shooting photo de votre établissement (plats et locaux) </h5>#}
-                        <h5 class="text-darkgray mb-3">{{ pack.title | raw }}</h5>
+                        <h2 class="text-darkgray mb-3" style="font-size: large;">{{ pack.title | raw }}</h2>
                         <p class="fz-12">
                             {{ pack.description | raw }}
                         </p>
                     </div>
                     {% if pack.userPackMedia | length %}
                         <div class="pack-photos-container col-sm-12 border-bottom mt-2 mb-4 pb-4">
-                            <h5 class="text-darkgray mb-0">Photos</h5>
+                            <h2 class="text-darkgray mb-0" style="font-size: large;">Photos de  {{ pack.user.firstname|upper }}</h2>
                             <div class="pack-photos">
                                 <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
                                     {% for media in pack.userPackMedia %}
                                         <li class="pack-photos-list-item d-inline-flex">
-                                            <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" alt="Pack photo 1">
+                                            <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" alt="{{ pack.user.firstname|lower ~ '-'~pack.packSkill|lower~'-'~ pack.user.userRegion.first.name | lower~'-'~loop.index }}">
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -333,22 +333,23 @@
                     <div class="container-fluid align-items-center justify-content-end">
                         <div class="d-flex user-infos flex-grow-1 justify-content-start align-items-center">
                             <div class="user-image btn-circle-64 badge badge--bottom badge--right p-0 mr-3 d-none d-sm-block">
-                                <img src="{{ pack.user.getAvatar() }}" class="img-fluid rounded-circle" alt="User-Avatar">
-                                <img src="/images/icons/cm-level-badge-01.svg" class="badge-icon" alt="User-Badge">
+                                <img src="{{ pack.user.getAvatar() }}" class="img-fluid rounded-circle" alt="{{pack.user.firstname|lower ~ '-'~pack.packSkill|lower}}">
+                                <img src="/images/icons/cm-level-badge-01.svg" class="badge-icon" alt="{{pack.user.firstname|lower ~ '-'~pack.packSkill|lower}}">
                             </div>
                             <div class="user-name-level mr-3">
                                 <p class="mb-0 fz-12 text-darkblue experte-level">Expert Pix.City</p>
-                                <p class="mb-0 text-darkgray user-name">@{{ pack.user.firstname }}</p>
+                                <h1 class="mb-0 text-darkgray user-name"  style="font-size: small;">@{{ pack.user.firstname }}</h1>
                             </div>
                             <div class="d-none d-sm-block mr-3">
                                 <p class="mb-0 fz-12 text-normalgray">Région</p>
-                                <p class="mb-0 text-darkgray user-region">{{ pack.user.userRegion.first.name | upper }}</p>
+                                <h1 class="mb-0 text-darkgray user-region" style="font-size: small;">{{ pack.user.userRegion.first.name | upper }}</h1>
                             </div>
                             <div class="">
                                 <p class="mb-0 fz-12 text-normalgray">Prix</p>
                                 <p class="mb-0 text-darkgray user-price">{{ pack.totalPrice }}€</p>
                             </div>
                         </div>
+                        <!--googleoff: all-->
                         <div class="preview-cta d-flex align-items-center">
                             {% set slug = pack.title | lower | replace({' ':'-'}) %}
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -363,6 +364,7 @@
 
                             {% endif %}
                         </div>
+                        <!--googleon: all-->
                     </div>
                 </nav>
             </div>
