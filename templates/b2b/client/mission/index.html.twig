@@ -5,7 +5,7 @@
 
 {% block body %}
 
-    <!-- my mission test git -->
+    <!-- my mission -->
 
     <div class="tab-pane active">
 
@@ -47,11 +47,12 @@
                             {% for mission in missions['created'] %}
                                 <li class="mission-list-item d-flex align-items-center text-darkgray">
                                     <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                    <p class="mb-0 px-3 w-40">{{ mission.title }}
+                                    <p class="mb-0 px-3 w-40">{{ mission.title }} {% if mission.missionType == 'one-shot' %}©{% else %}®{% endif %}
                                     </p>
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.user.firstname }}</p>
                                     <p class="w-15 mb-0 text-inprogress">En cours</p>
+                                    <p class="w-15 mb-0">{{ mission.userMissionPayment.createdAt | date('d/m/Y') }}</p>
                                     {% if mission.log.userBasePrice is defined %}
                                         <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round }} €</p>
                                     {% endif %}
@@ -81,11 +82,12 @@
                             {% for mission in missions['ongoing'] %}
                                 <li class="mission-list-item d-flex align-items-center text-darkgray">
                                     <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                    <p class="mb-0 px-3 w-40">{{ mission.title }}
+                                    <p class="mb-0 px-3 w-40">{{ mission.title }} {% if mission.missionType == 'one-shot' %}©{% else %}®{% endif %}
                                     </p>
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.user.firstname }}</p>
                                     <p class="w-15 mb-0 text-inprogress">En cours</p>
+                                    <p class="w-15 mb-0">{{ mission.userMissionPayment.createdAt | date('d/m/Y') }}</p>
                                     {% if mission.log.userBasePrice is defined %}
                                         <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round }} €</p>
                                     {% endif %}
@@ -114,11 +116,12 @@
                             {% for mission in missions['terminated'] %}
                                 <li class="mission-list-item d-flex align-items-center text-darkgray">
                                     <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                    <p class="mb-0 px-3 w-40">{{ mission.title }}
+                                    <p class="mb-0 px-3 w-40">{{ mission.title }} {% if mission.missionType == 'one-shot' %}©{% else %}®{% endif %}
                                     </p>
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.user.firstname }}</p>
                                     <p class="w-15 mb-0 text-inprogress">Terminée</p>
+                                    <p class="w-15 mb-0">{{ mission.userMissionPayment.createdAt | date('d/m/Y') }}</p>
                                     {% if mission.log.userBasePrice is defined %}
                                         <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round }} €</p>
                                     {% endif %}
@@ -147,11 +150,12 @@
                             {% for mission in missions['cancelled'] %}
                                 <li class="mission-list-item d-flex align-items-center text-darkgray">
                                     <i class="fas {{ mission.referencePack.packskill.icon }} fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                    <p class="mb-0 px-3 w-40">{{ mission.title }}
+                                    <p class="mb-0 px-3 w-40">{{ mission.title }} {% if mission.missionType == 'one-shot' %}©{% else %}®{% endif %}
                                     </p>
                                     <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                     <p class="w-15 mb-0">{{ mission.user.firstname }}</p>
                                     <p class="w-15 mb-0 text-inprogress">Annulée</p>
+                                    <p class="w-15 mb-0">{{ mission.userMissionPayment.createdAt | date('d/m/Y') }}</p>
                                     {% if mission.log.userBasePrice is defined %}
                                         <p class="mb-0 px-4 w-10">{{ mission.log.userBasePrice | clientPrice(margin.value) | round }} €</p>
                                     {% endif %}

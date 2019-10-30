@@ -4,7 +4,6 @@ var $form = $('form[name="client"]');
 
 $form.validate({
     rules:{
-        "file-avatar":{reqyured:true},
         "client[email]":{required: true, email: true, remote: '/client/check-email'},
         "client[firstName]":{required: true, maxlength: 30},
         "client[lastName]":{required: true, maxlength: 30},
@@ -60,6 +59,9 @@ $form.validate({
 });
 
 
+jQuery.validator.addMethod("phone", function(value, element) {
+    return this.optional( element ) || /^(\+?\d+){9,}$/.test( value );
+}, 'Numéro de téléphone invalide');
 $(document).ready(function () {
 
     //Get the SIRET number from the API
@@ -80,6 +82,7 @@ $(document).ready(function () {
         }
         else
         {
+            showManuelRegister();
             return false;
         }
 
@@ -94,9 +97,9 @@ $(document).ready(function () {
                 {
                     var result = {
                       name:  data.siege_social.nom_raison_sociale,
-                      address: data.siege_social.geo_adresse,
+                      address: data.siege_social.l4_normalisee,
                       siret: data.siege_social.siret,
-                      street_address: data.siege_social.enseigne,
+                      street_address: data.siege_social.l4_normalisee,
                       postal_code: data.siege_social.code_postal,
                       city: data.siege_social.l6_normalisee.match(/[a-zA-Z]+/),
                         creation_date: year+'-'+month+'-'+day
@@ -108,7 +111,7 @@ $(document).ready(function () {
 
                     var result = {
                         name:  data.etablissement.l1_normalisee,
-                        address: data.etablissement.geo_adresse,
+                        address: data.etablissement.l4_normalisee,
                         siret: info,
                         street_address: data.etablissement.l4_normalisee,
                         postal_code: data.etablissement.code_postal,
@@ -139,16 +142,21 @@ $(document).ready(function () {
             },
             error: function()
             {
-                $('.loader-icon').toggle();
-                $('#company-not-found').show();
+                showManuelRegister();
             }
         });
     });
 
+    function showManuelRegister()
+    {
+        $('.loader-icon').toggle();
+        $('#company-not-found').show();
+    }
     $('.reset').on('click', function(e){
         e.preventDefault();
         $('#company-info').val('');
         $('.enterprise-log').show();
+        $('#company-not-found').hide();
 
     });
 
@@ -191,7 +199,7 @@ $(document).ready(function () {
 
                 var result = {
                     name:  data.l1_normalisee,
-                    address: data.geo_adresse,
+                    address: data.l4_normalisee,
                     siret: data.siret,
                     street_address: data.l4_normalisee,
                     postal_code: data.code_postal,
@@ -223,3 +231,4 @@ $(document).ready(function () {
         return true;
     }
 });
+

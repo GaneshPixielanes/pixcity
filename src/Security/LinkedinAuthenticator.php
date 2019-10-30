@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Constant\SessionName;
+use App\Entity\Client;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient;
@@ -39,7 +40,8 @@ class LinkedinAuthenticator extends SocialAuthenticator
     public function supports(Request $request)
     {
         // continue ONLY if the current ROUTE matches the check ROUTE
-        return true;
+        return $request->attributes->get('_route') === 'connect_linkedin_start';
+
     }
 
     public function getCredentials(Request $request)
@@ -54,42 +56,36 @@ class LinkedinAuthenticator extends SocialAuthenticator
         return $this->fetchAccessToken($this->getLinkedinClient());
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, $userProvider)
     {
         /** @var FacebookUser $facebookUser */
-        $facebookUser = $this->getFacebookClient()
+        $linkedinUser = $this->getLinkedinClient()
             ->fetchUserFromToken($credentials);
-
-        $email = $facebookUser->getEmail();
-
+        $email = $linkedinUser->getEmail();
         // 1) have they logged in with Facebook before? Easy!
-        $existingUser = $this->em->getRepository(User::class)
-            ->findOneBy(['facebookId' => $facebookUser->getId()]);
+        $existingUser = $this->em->getRepository(Client::class)
+            ->findOneBy(['linkedinId' => $linkedinUser->getId()]);
         if ($existingUser) {
             return $existingUser;
         }
 
         // 2) do we have a matching user by email?
-        $user = $this->em->getRepository(User::class)
+        $user = $this->em->getRepository(Client::class)
             ->findOneBy(['email' => $email]);
 
         // 3) Maybe you just want to "register" them by creating
         // a User object
-        $user->setFacebookId($facebookUser->getId());
+        $user->setLinkedinId($linkedinUser->getId());
         $this->em->persist($user);
         $this->em->flush();
 
         return $user;
     }
 
-    /**
-     * @return LinkedInClient
-     */
+
     private function getLinkedinClient()
     {
-        return $this->clientRegistry
-            // "facebook_main" is the key used in config/packages/knpu_oauth2_client.yaml
-            ->getClient('linkedin');
+        return $this->clientRegistry->getClient('linkedin');
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -114,13 +110,7 @@ class LinkedinAuthenticator extends SocialAuthenticator
      * Called when authentication is needed, but it's not sent.
      * This redirects to the 'login'.
      */
-    public function start(Request $request, AuthenticationException $authException = null)
-    {
-//        return new RedirectResponse(
-//            '/connect/', // might be the site, where users choose their oauth provider
-//            Response::HTTP_TEMPORARY_REDIRECT
-//        );
-    }
+    public function start(Request $request, AuthenticationException $authException = null){}
 }
 
 ?>

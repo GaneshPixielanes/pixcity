@@ -31,6 +31,7 @@ class ClientType extends AbstractType
             ])
             ->add('linkedinId',HiddenType::class)
             ->add('googleId',HiddenType::class)
+            ->add('facebookId',HiddenType::class)
 
             ->add('plainPassword', PasswordType::class, array(
                 'required' => $requiredOnCreation,

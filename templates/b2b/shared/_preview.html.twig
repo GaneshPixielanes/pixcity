@@ -10,7 +10,7 @@
 
 </tr>
 <tr>
-    <td>NumÃ©ro de facture PCS </td>
+    <td>Numéro de facture PCS </td>
     <td>Automatique</td>
 </tr>
 <tr>
@@ -31,53 +31,32 @@
     <tr>
         <td>{{ mission.referencePack }}/{{ mission.title }}</td>
         <td>1</td>
-        <td>{{ mission.userMissionPayment.userBasePrice }}â‚¬</td>
+        <td>{{ mission.userMissionPayment.userBasePrice }}€</td>
     </tr>
     <tr>
         <td>Total</td>
         <td></td>
-        <td>{{ mission.userMissionPayment.cmTotal }}â‚¬</td>
+        <td>{{ mission.userMissionPayment.cmTotal }}€</td>
     </tr>
     {% if mission.userMissionPayment.cmTax  > 0 %}
     <tr>
         <td>Tax/VAT</td>
         <td></td>
-        <td>{{ mission.userMissionPayment.cmTax }}â‚¬</td>
-    </tr>
-    {% endif %}
-    {% if mission.userMissionPayment.pcsPrice > 0%}
-    <tr>
-        <td>Pix City Services</td>
-        <td></td>
-        <td>{{ mission.userMissionPayment.pcsPrice }}â‚¬</td>
-    </tr>
-    {% endif %}
-    {% if mission.userMissionPayment.pcsTax > 0 %}
-    <tr>
-        <td>Pix City Services Tax</td>
-        <td></td>
-        <td>{{mission.userMissionPayment.pcsTax  }}â‚¬</td>
+        <td>{{ mission.userMissionPayment.cmTax }}€</td>
     </tr>
     {% endif %}
 
-    {% if mission.userMissionPayment.pcsTotal > 0 %}
-        <tr>
-            <td>Pix City Services Total</td>
-            <td></td>
-            <td>{{mission.userMissionPayment.pcsTotal  }}â‚¬</td>
-        </tr>
-    {% endif %}
 </table>
 {% if mission.userMissionPayment.cmTax == 0 %}
-Conditions d'escompte NÃ©ant / La prestation est rÃ©alisÃ©e et payÃ©e selon les conditions gÃ©nÃ©rales d'utilisation du City Maker, ainsi que selon les stipulations pour autrui nÃ©es de l'acceptation par les parties des conditions gÃ©nÃ©rales Pix.city Services que les parties reconnaissent avoir lues et acceptÃ©es et qui sont disponibles Ã  l'adresse [URL]XXXX.
+Conditions d'escompte Néant / La prestation est réalisée et payée selon les conditions générales d'utilisation du City Maker, ainsi que selon les stipulations pour autrui nées de l'acceptation par les parties des conditions générales Pix.city Services que les parties reconnaissent avoir lues et acceptées et qui sont disponibles à l'adresse [URL]XXXX.
     <br/>
-    TVA non applicable, art. 293 B du CGIÂ 
+    TVA non applicable, art. 293 B du CGI 
     <br/>
-    En cas de retard de paiement s'applique une pÃ©nalitÃ© Ã©gale au taux d'intÃ©rÃªt appliquÃ© par la Banque Centrale EuropÃ©enne (BCE) Ã  son opÃ©ration de refinancement la plus rÃ©cente majorÃ© de 10 points.
+    En cas de retard de paiement s'applique une pénalité égale au taux d'intérêt appliqué par la Banque Centrale Européenne (BCE) à son opération de refinancement la plus récente majoré de 10 points.
     <br/>
-    IndemnitÃ© forfaitaire pour frais de recouvrement de 40 euros
+    Indemnité forfaitaire pour frais de recouvrement de 40 euros
     <br/>
-    CoordonnÃ©es bancaires du CONTRIBUTEUR
+    Coordonnées bancaires du CONTRIBUTEUR
     <table class="table table-striped">
     <tr>
         <th>NOM</th><td></td>
@@ -93,7 +72,7 @@ Conditions d'escompte NÃ©ant / La prestation est rÃ©alisÃ©e et payÃ©e selon les 
     </tr>
     </table>
     <br/>
-    Facture Ã©tablie par Pix.City Services pour le compte du City Maker
+    Facture établie par Pix.City Services pour le compte du City Maker
     <br/>
     La commission de Pix.city Services est de 25% sur le prix TTC.
 {% endif %}

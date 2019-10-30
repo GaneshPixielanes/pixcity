@@ -79,8 +79,8 @@
                                 {% for mission in missions['drafts'] %}
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
                                         <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                        <p class="mb-0 px-3 w-40">{{ mission.title | raw }}
-                                        </p>
+                                        <p class="mb-0 px-3 w-40">{{ mission.title  | raw }} {% if mission.missionType == 'one-shot' %}©{% else %}®{% endif %}
+
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-inprogress">Draft</p>
@@ -112,8 +112,8 @@
                                 {% for mission in missions['ongoing'] %}
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
                                         <i class="fas fa-map-marked-alt fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                        <p class="mb-0 px-3 w-40">{{ mission.title | raw }}
-                                        </p>
+                                        <p class="mb-0 px-3 w-40">{{ mission.title  | raw }} {% if mission.missionType == 'one-shot' %}©{% else %}®{% endif %}
+
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-inprogress">En cours</p>
@@ -145,7 +145,8 @@
                                 {% for mission in missions['terminated'] %}
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
                                         <i class="fas fa-camera fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                        <p class="mb-0 px-3 w-40">{{ mission.title | raw }}</p>
+                                        <p class="mb-0 px-3 w-40">{{ mission.title  | raw }} {% if mission.missionType == 'one-shot' %}©{% else %}®{% endif %}
+
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-completed">Terminée</p>
@@ -177,7 +178,8 @@
                                 {% for mission in missions['cancelled'] %}
                                     <li class="mission-list-item d-flex align-items-center text-darkgray">
                                         <i class="fas fa-handshake fz-16 btn-circle-32 bg-darkblue text-white"></i>
-                                        <p class="mb-0 px-3 w-40">{{ mission.title | raw }}</p>
+                                        <p class="mb-0 px-3 w-40">{{ mission.title  | raw }} {% if mission.missionType == 'one-shot' %}©{% else %}®{% endif %}
+
                                         <p class="mb-0 w-10 px-4 flex-grow-1 text-normalgray">#{{ mission.id }}</p>
                                         <p class="w-15 mb-0">{{ mission.client }}</p>
                                         <p class="w-15 mb-0 text-canceled">Annulée</p>

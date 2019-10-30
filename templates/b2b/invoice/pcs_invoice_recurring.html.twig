@@ -106,7 +106,7 @@
                             </th>
                             <th class="w-30">
                                 <div class="border-right">
-                                    QUANTITE
+                                    NATURE DE LA MISSION
                                 </div>
                             </th>
                             <th class="w-20">
@@ -118,12 +118,12 @@
                         <tr>
                             <td>01</td>
                             <td>{{ mission.referencePack.packskill.name~' / '~mission.title }}</td>
-                            <td>01</td>
+                            <td>{% if mission.getMissionType == 'one-shot' %}One-Shot{% else %}Récurrente{% endif %}</td>
                             <td>{{ payment['cm_price'] |round(2, 'floor') }} €</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td>Sub Total</td>
+                            <td>SOUS-TOTAL HT</td>
                             <td></td>
                             <td>{{ payment['cm_price'] |round(2, 'floor') }} €</td>
                         </tr>
@@ -135,13 +135,13 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>VAT</td>
+                            <td>TVA</td>
                             <td></td>
                             <td>{{ payment['pcs_tax'] | round(2, 'floor') }} €</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td class="text-dargblue font-weight-bold">Grand total</td>
+                            <td class="text-dargblue font-weight-bold">TOTAL TTC</td>
                             <td></td>
                             <td class="text-dargblue font-weight-bold">{{ payment['pcs_total'] |round(2, 'floor') }} €</td>
                         </tr>
@@ -151,7 +151,7 @@
 
                 <div class="col-md-12 invoice-footer mb-3">
                     <p class="text-darkblue font-weight-bold fz-12 mb-1">
-                        NOTICE:
+                        NOTES:
                     </p>
                     <p class="text-textgray fz-10 mb-1">
                         Conditions d'escompte Néant / La prestation est réalisée et payée selon les conditions générales d'utilisation du

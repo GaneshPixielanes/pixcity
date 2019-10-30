@@ -33,743 +33,742 @@
 </head>
 <body>
 
-    {% if app.session.has('login_by')  %}
-        {% set loginDetails = app.session.get('login_by')   %}
-        {% set loginBy = loginDetails['type'] %}
-    {% else %}
-        {% set loginBy = 'not-login'   %}
-    {% endif %}
+{% if app.session.has('login_by')  %}
+    {% set loginDetails = app.session.get('login_by')   %}
+    {% set loginBy = loginDetails['type'] %}
+{% else %}
+    {% set loginBy = 'not-login'   %}
+{% endif %}
 
-    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' and route != 'client_email_inbox' and route != 'client_email_send_emails' %}
-        <!-- Header -->
-        <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
-            <div class="container">
-                <a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}"><img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
+{% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' and route != 'client_email_inbox' and route != 'client_email_send_emails' %}
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('prestations_de_serviceindex') }}"><img src="/assets/images/services-home-banner-logo.svg" alt="Pix.City Services"></a>
 
-                <div class="col-3 ml-auto social-mobile">
-                    <div class="row">
-                        <div class="col-6 social-mobile-btn">
-                            <a href="javascript:;" title="Facebook">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                        </div>
-                        <div class="col-6 social-mobile-btn">
-                            <a href="javascript:;" title="Instagram">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </div>
+            <div class="col-3 ml-auto social-mobile">
+                <div class="row">
+                    <div class="col-6 social-mobile-btn">
+                        <a href="javascript:;" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                    <div class="col-6 social-mobile-btn">
+                        <a href="javascript:;" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
                     </div>
                 </div>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                    <!-- <span class="navbar-toggler-icon"></span> -->
-                    <img src="{{ absolute_url(asset('build/images/menu.svg')) }}" />
-                </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <!-- <span class="navbar-toggler-icon"></span> -->
+                <img src="{{ absolute_url(asset('build/images/menu.svg')) }}" />
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 
-                    {% if loginBy == 'not-login' %}
-                        <div class="col-md-5 ml-auto mt-2 mt-lg-0">
+                {% if loginBy == 'not-login' %}
+                    <div class="col-md-5 ml-auto mt-2 mt-lg-0">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" id="devenir-city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="on-login-click"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
+                            </div>
+                            <div class="col-md-1 col-6 social-btn">
+                                <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-1 col-6 social-btn">
+                                <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+
+
+                    {% if loginBy == 'login_client' %}
+                        <div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <button class="btn btn-rollover btn-outline-seagreen btn-pill btn-block btn-icon-right my-2 my-sm-0 city-maker" id="devenir-city-maker" type="submit"><span class="text">Devenir City Maker</span><i class="fas fa-user-plus"></i></button>
+                                <div class="col-md-8 logged-profile-menu-hover">
+                                    <a href="javascript:;" class="logged-profile">
+                                        {% if loginDetails['entity'].profilePhoto is defined and loginDetails['entity'].profilePhoto is not null  %}
+                                            <img  src="{{ asset('/uploads/clients/'~loginDetails['entity'].id~'/'~loginDetails['entity'].profilePhoto) | imagine_filter('user_avatar') }}"  class="rounded-circle"/>
+                                        {% else %}
+                                            <img src="/uploads/avatars/default-avatar.png" alt=""  class="rounded-circle"/>
+                                        {% endif %}
+
+                                    </a>
+                                    <div class="logged-dropdown-menu">
+                                        <div class="card">
+                                            <div class="card-body p-0">
+                                                <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CLIENT &nbsp;<i class="fas"></i></a>
+                                                <a class="dropdown-item" href="{{ path('b2b_client_main_index') }}"><i class="fas fa-home"></i>Accueil</a>
+                                                <a class="dropdown-item" href="{{ path('b2b_client_mission_list') }}"><i class="fas fa-briefcase"></i>Mes missions</a>
+                                                <a class="dropdown-item" href="{{ path('client_transaction_index') }}"><i class="fas fa-file-invoice-dollar"></i>Facturation</a>
+                                                <a class="dropdown-item" href="{{ path('client_email_inbox') }}"><i class="fas fa-envelope"></i>Email</a>
+                                                <a class="dropdown-item" href="/client/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-rollover btn-green btn-pill btn-block my-2 my-sm-0" type="submit" id="on-login-click"><span class="text">Connexion</span><i class="fas fa-sign-in-alt"></i></button>
-                                </div>
-                                <div class="col-md-1 col-6 social-btn">
+                                <div class="col-md-2 col-6 social-btn logged-social-btn">
                                     <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
                                         <i class="fab fa-facebook-f"></i>
                                     </a>
                                 </div>
-                                <div class="col-md-1 col-6 social-btn">
+                                <div class="col-md-2 col-6 social-btn logged-social-btn">
                                     <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
                                         <i class="fab fa-instagram"></i>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    {% else %}
-
-
-                         {% if loginBy == 'login_client' %}
-                             <div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
-                                 <div class="row">
-                                     <div class="col-md-8 logged-profile-menu-hover">
-                                         <a href="javascript:;" class="logged-profile">
-                                             {% if loginDetails['entity'].profilePhoto is defined and loginDetails['entity'].profilePhoto is not null  %}
-                                                 <img  src="{{ asset('/uploads/clients/'~loginDetails['entity'].id~'/'~loginDetails['entity'].profilePhoto) | imagine_filter('user_avatar') }}"  class="rounded-circle"/>
-                                             {% else %}
-                                                 <img src="/uploads/avatars/default-avatar.png" alt=""  class="rounded-circle"/>
-                                             {% endif %}
-
-                                         </a>
-                                         <div class="logged-dropdown-menu">
-                                             <div class="card">
-                                                 <div class="card-body p-0">
-                                                     <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CLIENT &nbsp;<i class="fas"></i></a>
-                                                     <a class="dropdown-item" href="{{ path('b2b_client_main_index') }}"><i class="fas fa-home"></i>Accueil</a>
-                                                     <a class="dropdown-item" href="{{ path('b2b_client_mission_list') }}"><i class="fas fa-briefcase"></i>Mes missions</a>
-                                                     <a class="dropdown-item" href="{{ path('client_transaction_index') }}"><i class="fas fa-file-invoice-dollar"></i>Facturation</a>
-                                                     <a class="dropdown-item" href="{{ path('client_email_inbox') }}"><i class="fas fa-envelope"></i>Email</a>
-                                                     <a class="dropdown-item" href="/client/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-2 col-6 social-btn logged-social-btn">
-                                         <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
-                                             <i class="fab fa-facebook-f"></i>
-                                         </a>
-                                     </div>
-                                     <div class="col-md-2 col-6 social-btn logged-social-btn">
-                                         <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
-                                             <i class="fab fa-instagram"></i>
-                                         </a>
-                                     </div>
-                                 </div>
-                             </div>
-                         {% elseif loginBy == 'login_cm' %}
-                             <div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
-                                 <div class="row">
-                                     <div class="col-md-8 logged-profile-menu-hover">
-                                         <a href="javascript:;" class="logged-profile">
-                                             {% set date = loginDetails['entity'].avatar.updatedAt | date('Y/m') %}
-                                             <img src="{% if loginDetails['image'] is defined and loginDetails['image'] is not null %}{{ asset('uploads/users/'~date~'/'~loginDetails['image']) | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="rounded-circle" alt="{{ loginDetails['entity'] }}">
-                                         </a>
-                                         <div class="logged-dropdown-menu">
-                                             <div class="card">
-                                                 <div class="card-body p-0">
-                                                     {% if loginDetails['view_mode'] == "pixie" %}
-                                                         <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CITY-MAKER <i class="fas fa-retweet"></i></a>
-                                                         {% if loginDetails['entity'].level >= 1 %}<a class="dropdown-item" href="{{ path('front_pixie_account_homepage') }}"><i class="fas fa-home"></i>Accueil</a> {% endif %}
-                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
-                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i>Cards en attente</a>
-                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_validated') }}"><i class="far fa-check-circle"></i>Cards Validees</a>
-                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i>Mes gains</a>
-                                                         <a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
-                                                         <a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
-                                                         {% if loginDetails['entity'].getB2bCmApproval() != "0" and loginDetails['entity'].level > 1 %}
-                                                             {% if loginDetails['entity'].getB2bCmApproval() == "2" or loginDetails['entity'].getB2bCmApproval() == null %}
-                                                                 {% if app.user.getCmUpgradeB2bDate()  != null %}
-                                                                     <a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_manager_thank_you') }}">
-                                                                         <div class="col-3 pl-0">
-                                                                             <img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
-                                                                         </div>
-                                                                         <div class="col-6">
-                                                                             <div class="row">
-                                                                                 <div class="col-12">Espace Services</div>
-                                                                                 <div class="col-12">
-                                                                                     <img src="/assets/images/footer-logo-main.svg" width="58">
-                                                                                 </div>
-                                                                             </div>
-                                                                         </div>
-                                                                         <div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
-                                                                             <i class="fas fa-arrow-right"></i>
-                                                                         </div>
-                                                                     </a>
-                                                                 {% else %}
-                                                                     <a class="dropdown-item user-link p-3 d-flex" href="/city-maker/compte/community/manager">
-                                                                         <div class="col-3 pl-0">
-                                                                             <img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
-                                                                         </div>
-                                                                         <div class="col-6">
-                                                                             <div class="row">
-                                                                                 <div class="col-12">Espace Services</div>
-                                                                                 <div class="col-12">
-                                                                                     <img src="/assets/images/footer-logo-main.svg" width="58">
-                                                                                 </div>
-                                                                             </div>
-                                                                         </div>
-                                                                         <div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
-                                                                             <i class="fas fa-arrow-right"></i>
-                                                                         </div>
-                                                                     </a>
-                                                                 {% endif %}
-                                                             {% else %}
-                                                                 <a class="dropdown-item user-link-logged p-3 d-flex" href="{{ url('b2b_community_manager_index') }}">
-                                                                     <div class="col-9 pl-0">
-                                                                         Espace BtoB <img src="/assets/images/footer-logo-main.svg" width="58">
-                                                                     </div>
-                                                                     <div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
-                                                                         <i class="fas fa-arrow-right"></i>
-                                                                     </div>
-                                                                 </a>
-                                                             {% endif %}
-                                                         {% endif %}
-                                                     {% else %}
-
-                                                         <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE VOYAGEUR <i class="fas fa-retweet"></i></a>
-                                                         <a class="dropdown-item" href="{{ path('front_user_account_cards') }}"><i class="fas fa-cog"></i>Mes Cards</a>
-                                                         <a class="dropdown-item" href="{{ path('front_user_account_agendas') }}"><i class="far fa-calendar-alt"></i>Mes Agendas</a>
-                                                         <a class="dropdown-item" href="{{ path('front_user_account_pixies') }}"><i class="far fa-user"></i>Mes City-makers Favoris</a>
-                                                         <a class="dropdown-item" href="{{ path('front_user_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
-                                                         <a class="dropdown-item" href="{{ path('front_signout') }}"><i class="fas fa-power-off"></i>Deconnexion</a>
-
-                                                     {% endif %}
-
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-2 col-6 social-btn logged-social-btn">
-                                         <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
-                                             <i class="fab fa-facebook-f"></i>
-                                         </a>
-                                     </div>
-                                     <div class="col-md-2 col-6 social-btn logged-social-btn">
-                                         <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
-                                             <i class="fab fa-instagram"></i>
-                                         </a>
-                                     </div>
-                                 </div>
-                             </div>
-                         {% endif %}
-                    {% endif %}
-
-                </div>
-            </div>
-        </nav>
-        <!-- Header -->
-    {% endif %}
-
-    <div class="{{ route starts with 'prestations_de_service' ? '' : 'container-fluid bg-dashboard' }}  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
-
-        <!-- Mobile filter Starts-->
-        <a href="javascript:;" class="mobile-filter position-fixed">
-            <i class="fas fa-filter"></i>
-        </a>
-        <!-- Mobile filter Ends-->
-        <div class="{{ route starts with 'prestations_de_service' ? '' : 'row' }}">
-
-
-
-            {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' or route == 'client_transaction_index' or  route == 'client_email_inbox' or  route == 'client_email_send_emails' %}
-                <div class="col-md-2 p-sm-0 dash-left vh-100">
-                    <div class="user-avatar w-100">
-                        <figure class="position-relative m-0 w-100">
-                            {% if app.user.profilePhoto is defined and app.user.profilePhoto is not null  %}
-                                <img class="img-fluid" src="/uploads/clients/{{ app.user.id }}/{{ app.user.profilePhoto }}"/>
-                            {% else %}
-                                <img class="img-fluid" src="/uploads/avatars/default-avatar.png" alt="" />
-                            {% endif %}
-
-                            <figcaption class="position-absolute d-flex align-items-center" id="profile-redirect"><i class="fas fa-user-circle mr-2"></i>
-                                <span>Modifier mon profill</span></figcaption>
-                        </figure>
-
-                    </div>
-                    <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link {% if route == 'b2b_client_main_index'%}active{% endif %}" href="/client/index" role="tab" aria-controls="home">
-                                <i class="fas fa-home"></i>Accueil</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link {% if route == 'b2b_client_mission_list'%}active{% endif %}" href="{{ url('b2b_client_mission_list') }}" role="tab" aria-controls="myMissions">
-                                <i class="fas fa-briefcase"></i>Mes missions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="{{ url('client_transaction_index') }}" role="tab" aria-controls="billing">
-                                <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if route == 'client_email_inbox'%}active{% endif %}{% if route == 'client_email_send_emails'%}active{% endif %}" href="{{ url('client_email_inbox') }}" role="tab" aria-controls="billing">
-                                <i class="fas fa-envelope"></i>Email</a>
-                        </li>
-                    </ul>
-                    <footer class="text-center p-2 text-pink fz-11">
-{#                        <div class="row">#}
-{#                            <div class="col-md-12">#}
-{#                                <a href="{{ url('front_faq_index') }}" class="d-block fz-16 text-darkblue text-center" target="_blank">#}
-{#                                    <i class="far fa-question-circle"></i>#}
-{#                                    <p>FAQ</p>#}
-{#                                </a>#}
-{#                            </div>#}
-
-{#                        </div>#}
-                        <div class="row">
-                            <div class="col-md-6">
-                                <a href="{{ url('front_faq_index') }}" class="d-block fz-16 text-darkblue text-center"  target="_blank">
-                                    <i class="far fa-question-circle mr-0"></i>
-                                    <p>FAQ</p>
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                <a href="/blog" class="d-block fz-16 text-darkblue text-center"  target="_blank">
-                                    <i class="fas fa-blog mr-0"></i>
-                                    <p>Blog</p>
-                                </a>
-                            </div>
-                        </div>
-                        <a href="/client/signout" class="text-pink"><i class="fas fa-cog"></i>Se déconnecter</a>
-                    </footer>
-                </div>
-
-                <div class="col-md-10 offset-md-2 dash-right vh-100 p-0">
-                    <div class="tab-content">
-                        {% block body %}{% endblock %}
-                    </div>
-                </div>
-
-            {% else %}
-
-                {% block newbody %}{% endblock %}
-
-            {% endif %}
-
-
-
-
-            <!-- My missions preview contents -->
-            <div class="mission-preview-container col-sm-12 p-0 vh-100">
-                <!-- <div class="overlay-dashboard"></div> -->
-                <div class="col-sm-12 mission-preview-content bg-white p-0" data-simplebar>
-                    <div id="preview-mission"></div>
-                </div>
-            </div>
-            <!-- My missions preview contents ends -->
-
-            <!-- Mission payment contents -->
-            <div class="col-md-12 mission-payment-content p-0 bg-white">
-                <div id="preview-payment"></div>
-            </div>
-            <!-- Mission payment contents ends -->
-
-            <!-- Mission payment acknowledment contents -->
-            <div class="mission-pyament-acknowledgement-container col-sm-12 p-0 vh-100">
-                <div class="overlay-dashboard"></div>
-                <div class="col-sm-10 offset-sm-2 mission-payment-acknowledgement-content bg-white p-0 d-flex align-items-center justify-content-center position-relative"
-                     data-simplebar>
-                    <div class="d-flex align-items-center justify-content-center vh-100 col-sm-10 p-0">
-                        <div class="text-darkgray w-50 d-flex align-items-center flex-column justify-content-center">
-                            <i class="fas fa-check fz-30 my-3 btn-circle-60 bg-green text-white"></i>
-                            <h5 class="font-weight-bold text-center">Votre paiement est validé !</h5>
-                            <p class="text-center">Votre city maker a été notifié ! La mission peut commencer !</p>
-                            <p class="my-3">
-                                <a href="javascript:;" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
-                            </p>
-                            <i class="fas fa-times fz-30 my-3 btn-circle-60 bg-error text-white"></i>
-                            <h5 class="font-weight-bold text-center">Votre paiement a été refusé :-(</h5>
-                            <p class="text-center">Malheureusement votre paiement n'a pas abouti. Veuillez rééssayer ou nous contacter si le refus n'est pas lié à votre banque.</p>
-                            <p class="my-3 d-flex flex-column align-items-center">
-                                <a href="javascript:;" class="btn btn-darkblue btn-pill mb-2 retry-payment">RÉÉSSAYER</a>
-                                <a href="javascript:;" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Mission payment acknowledment contents ends -->
-
-            <!-- Cancel mission payment modal -->
-            <div class="modal fade cancel-created-mission-modal" id="cancelMissionPayment" tabindex="-1" role="dialog" aria-labelledby="cancelMissionPayment" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title font-weight-bold">Vous souhaitez annuler le paiement?</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Êtes-vous sur de vouloir annuler le paiement de la mission ?
-                                Celle-ci ne pourra débuter tant que les fonds n’auront pas été reçus.</p>
-                            <p>Si vous avez des questions sur l’annulation du paiement, n’hésitez pas à consulter
-                                notre <a href="{{ path('front_faq_index') }}">page d’aide.</a> </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
-                            <button type="button" class="btn btn-pink cancel-payment-confirmation" data-dismiss="modal">ANNULER LE PAIEMENT</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Cancel mission payment modal ends -->
-
-
-
-
-            <!-- Cancel missions contents -->
-            <div class="cancel-mission-container col-sm-12 p-0 vh-100">
-                <div class="overlay-dashboard"></div>
-                <div class="col-sm-10 offset-sm-2 cancel-mission-show-content bg-white p-0">
-                    <div class="row">
-                        <div class="col-md-10 mx-auto my-5">
-                            <p class="fz-20 text-error">Annuler la mission</p>
-                            <h2 class="fz-28 font-weight-bold">Shooting soirée d’ouverture du O’Tacos Levallois-Perret</h2>
-                            <p class="fz-15 font-weight-light">Vous souhaitez annuler la mission, merci de remplir les champs ci-dessous. </p>
+                    {% elseif loginBy == 'login_cm' %}
+                        <div class="col-md-3 ml-auto mt-2 mt-lg-0 pr-0 ">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <form action="" method="get" accept-charset="utf-8">
-                                        <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <label>Qui souhaite annuler la mission ?</label>
-                                                <select class="selectpicker" data-width="100%" data-live-search="true">
-                                                    <option value="Nord Pas de Calais">Je souhaite annuler la mission</option>
-                                                    <option value="Upper Normandy">Le client souhaite annuler la mission</option>
-                                                </select>
+                                <div class="col-md-8 logged-profile-menu-hover">
+                                    <a href="javascript:;" class="logged-profile">
+                                        {% set date = loginDetails['entity'].avatar.updatedAt | date('Y/m') %}
+                                        <img src="{% if loginDetails['image'] is defined and loginDetails['image'] is not null %}{{ asset('uploads/users/'~date~'/'~loginDetails['image']) | imagine_filter('user_avatar') }} {% else %}/uploads/avatars/default-avatar.png{% endif %}" class="rounded-circle" alt="{{ loginDetails['entity'] }}">
+                                    </a>
+                                    <div class="logged-dropdown-menu">
+                                        <div class="card">
+                                            <div class="card-body p-0">
+                                                {% if loginDetails['view_mode'] == "pixie" %}
+                                                    <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE CITY-MAKER <i class="fas fa-retweet"></i></a>
+                                                    {% if loginDetails['entity'].level >= 1 %}<a class="dropdown-item" href="{{ path('front_pixie_account_homepage') }}"><i class="fas fa-home"></i>Accueil</a> {% endif %}
+                                                    <a class="dropdown-item" href="{{ path('front_pixie_account_cards_projects') }}"><i class="fas fa-download"></i>Demandes de cards</a>
+                                                    <a class="dropdown-item" href="{{ path('front_pixie_account_cards_status') }}"><i class="fas fa-pause-circle"></i>Cards en attente</a>
+                                                    <a class="dropdown-item" href="{{ path('front_pixie_account_cards_validated') }}"><i class="far fa-check-circle"></i>Cards Validees</a>
+                                                    <a class="dropdown-item" href="{{ path('front_pixie_account_cards_payments') }}"><i class="fas fa-euro-sign"></i>Mes gains</a>
+                                                    <a class="dropdown-item" href="{{ path('front_pixie_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
+                                                    <a class="dropdown-item" href="/connexion/signout"><i class="fas fa-power-off"></i>Deconnexion</a>
+                                                    {% if loginDetails['entity'].getB2bCmApproval() != "0" and loginDetails['entity'].level > 1 %}
+                                                        {% if loginDetails['entity'].getB2bCmApproval() == "2" or loginDetails['entity'].getB2bCmApproval() == null %}
+                                                            {% if app.user.getCmUpgradeB2bDate()  != null %}
+                                                                <a class="dropdown-item user-link p-3 d-flex" href="{{ path('front_pixie_account_manager_thank_you') }}">
+                                                                    <div class="col-3 pl-0">
+                                                                        <img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="row">
+                                                                            <div class="col-12">Espace Services</div>
+                                                                            <div class="col-12">
+                                                                                <img src="/assets/images/footer-logo-main.svg" width="58">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+                                                                        <i class="fas fa-arrow-right"></i>
+                                                                    </div>
+                                                                </a>
+                                                            {% else %}
+                                                                <a class="dropdown-item user-link p-3 d-flex" href="/city-maker/compte/community/manager">
+                                                                    <div class="col-3 pl-0">
+                                                                        <img src="{{ absolute_url('/assets/images/header-drop-service-person.svg') }}">
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="row">
+                                                                            <div class="col-12">Espace Services</div>
+                                                                            <div class="col-12">
+                                                                                <img src="/assets/images/footer-logo-main.svg" width="58">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+                                                                        <i class="fas fa-arrow-right"></i>
+                                                                    </div>
+                                                                </a>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <a class="dropdown-item user-link-logged p-3 d-flex" href="{{ url('b2b_community_manager_index') }}">
+                                                                <div class="col-9 pl-0">
+                                                                    Espace BtoB <img src="/assets/images/footer-logo-main.svg" width="58">
+                                                                </div>
+                                                                <div class="col-3 right-arrow d-flex align-items-center justify-content-end text-right pr-0">
+                                                                    <i class="fas fa-arrow-right"></i>
+                                                                </div>
+                                                            </a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% else %}
+
+                                                    <a class="dropdown-item switch-account switch-account-mode" href="{{ path('front_user_switch_mode') }}">MON COMPTE VOYAGEUR <i class="fas fa-retweet"></i></a>
+                                                    <a class="dropdown-item" href="{{ path('front_user_account_cards') }}"><i class="fas fa-cog"></i>Mes Cards</a>
+                                                    <a class="dropdown-item" href="{{ path('front_user_account_agendas') }}"><i class="far fa-calendar-alt"></i>Mes Agendas</a>
+                                                    <a class="dropdown-item" href="{{ path('front_user_account_pixies') }}"><i class="far fa-user"></i>Mes City-makers Favoris</a>
+                                                    <a class="dropdown-item" href="{{ path('front_user_account_settings') }}"><i class="fas fa-cog"></i>Parametres</a>
+                                                    <a class="dropdown-item" href="{{ path('front_signout') }}"><i class="fas fa-power-off"></i>Deconnexion</a>
+
+                                                {% endif %}
+
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <textarea class="form-control form-control bg-lightwhite fz-14 pack-description" cols="30" rows="10"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <a href="javascript:;" class="close-cancel-mission btn btn-white-cancel btn-block btn-pill lh2">Annuler</a>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <a href="javascript:;" class="btn btn-error btn-block btn-pill lh2">Mettre fin à la mission</a>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-6 social-btn logged-social-btn">
+                                    <a href="https://www.facebook.com/pix.city.france/" title="Facebook" target="_blank">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-2 col-6 social-btn logged-social-btn">
+                                    <a href="https://www.instagram.com/pix_city/" title="Instagram" target="_blank">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+    <!-- Header -->
+{% endif %}
+
+<div class="{{ route starts with 'prestations_de_service' ? '' : 'container-fluid bg-dashboard' }}  {{ route starts with 'b2b_client_search_index' ? 'client-cm-wall' }}">
+
+    <!-- Mobile filter Starts-->
+    <a href="javascript:;" class="mobile-filter position-fixed">
+        <i class="fas fa-filter"></i>
+    </a>
+    <!-- Mobile filter Ends-->
+    <div class="{{ route starts with 'prestations_de_service' ? '' : 'row' }}">
+
+
+
+        {% if route == 'b2b_client_main_index' or route == 'b2b_client_mission_list' or route == 'client_transaction_index' or  route == 'client_email_inbox' or  route == 'client_email_send_emails' %}
+            <div class="col-md-2 p-sm-0 dash-left vh-100">
+                <div class="user-avatar w-100">
+                    <figure class="position-relative m-0 w-100">
+                        <img class="img-fluid" src="{{ app.user.getLogo() }}" alt="" />
+                        <figcaption class="position-absolute d-flex align-items-center" id="profile-redirect"><i class="fas fa-user-circle mr-2"></i>
+                            <span>Modifier mon profill</span></figcaption>
+                    </figure>
+
+                </div>
+                <ul class="nav nav-tabs flex-column pt-3 flex-grow-1 border-0" id="dashboardMainNav" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link {% if route == 'b2b_client_main_index'%}active{% endif %}" href="/client/index" role="tab" aria-controls="home">
+                            <i class="fas fa-home"></i>Accueil</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if route == 'b2b_client_mission_list'%}active{% endif %}" href="{{ url('b2b_client_mission_list') }}" role="tab" aria-controls="myMissions">
+                            <i class="fas fa-briefcase"></i>Mes missions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if route == 'client_transaction_index'%}active{% endif %}" href="{{ url('client_transaction_index') }}" role="tab" aria-controls="billing">
+                            <i class="fas fa-file-invoice-dollar"></i>Facturation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if route == 'client_email_inbox'%}active{% endif %}{% if route == 'client_email_send_emails'%}active{% endif %}" href="{{ url('client_email_inbox') }}" role="tab" aria-controls="billing">
+                            <i class="fas fa-envelope"></i>Email</a>
+                    </li>
+                </ul>
+                <footer class="text-center p-2 text-pink fz-11">
+                    {#                        <div class="row">#}
+                    {#                            <div class="col-md-12">#}
+                    {#                                <a href="{{ url('front_faq_index') }}" class="d-block fz-16 text-darkblue text-center" target="_blank">#}
+                    {#                                    <i class="far fa-question-circle"></i>#}
+                    {#                                    <p>FAQ</p>#}
+                    {#                                </a>#}
+                    {#                            </div>#}
+
+                    {#                        </div>#}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="{{ url('front_faq_index') }}" class="d-block fz-16 text-darkblue text-center"  target="_blank">
+                                <i class="far fa-question-circle mr-0"></i>
+                                <p>FAQ</p>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="/blog" class="d-block fz-16 text-darkblue text-center"  target="_blank">
+                                <i class="fas fa-blog mr-0"></i>
+                                <p>Blog</p>
+                            </a>
+                        </div>
                     </div>
-                    <div class="cancel-mission-commentary-container d-flex align-items-center justify-content-center vh-100">
-                        <div class="cancel-mission-commentary">
-                            <div class="client-request-cancellation text-center">
-                                <p class="fz-20 mb-3">Votre demande d’annulation à bien été envoyée à votre client</p>
-                                <p class="fz-16 font-weight-light">Dès la confirmation d'annulation de la mission côté client, la mission apparaitra comme "annulée" dans votre espace city-maker.</p>
-                                <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
+                    <a href="/client/signout" class="text-pink"><i class="fas fa-cog"></i>Se déconnecter</a>
+                </footer>
+            </div>
+
+            <div class="col-md-10 offset-md-2 dash-right vh-100 p-0">
+                <div class="tab-content">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+
+        {% else %}
+
+            {% block newbody %}{% endblock %}
+
+        {% endif %}
+
+
+
+
+        <!-- My missions preview contents -->
+        <div class="mission-preview-container col-sm-12 p-0 vh-100">
+            <!-- <div class="overlay-dashboard"></div> -->
+            <div class="col-sm-12 mission-preview-content bg-white p-0" data-simplebar>
+                <div id="preview-mission"></div>
+            </div>
+        </div>
+        <!-- My missions preview contents ends -->
+
+        <!-- Mission payment contents -->
+        <div class="col-md-12 mission-payment-content p-0 bg-white">
+            <div id="preview-payment"></div>
+        </div>
+        <!-- Mission payment contents ends -->
+
+        <!-- Mission payment acknowledment contents -->
+        <div class="mission-pyament-acknowledgement-container col-sm-12 p-0 vh-100">
+            <div class="overlay-dashboard"></div>
+            <div class="col-sm-10 offset-sm-2 mission-payment-acknowledgement-content bg-white p-0 d-flex align-items-center justify-content-center position-relative"
+                 data-simplebar>
+                <div class="d-flex align-items-center justify-content-center vh-100 col-sm-10 p-0">
+                    <div class="text-darkgray w-50 d-flex align-items-center flex-column justify-content-center">
+                        <i class="fas fa-check fz-30 my-3 btn-circle-60 bg-green text-white"></i>
+                        <h5 class="font-weight-bold text-center">Votre paiement est validé !</h5>
+                        <p class="text-center">Votre city maker a été notifié ! La mission peut commencer !</p>
+                        <p class="my-3">
+                            <a href="javascript:;" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
+                        </p>
+                        <i class="fas fa-times fz-30 my-3 btn-circle-60 bg-error text-white"></i>
+                        <h5 class="font-weight-bold text-center">Votre paiement a été refusé :-(</h5>
+                        <p class="text-center">Malheureusement votre paiement n'a pas abouti. Veuillez rééssayer ou nous contacter si le refus n'est pas lié à votre banque.</p>
+                        <p class="my-3 d-flex flex-column align-items-center">
+                            <a href="javascript:;" class="btn btn-darkblue btn-pill mb-2 retry-payment">RÉÉSSAYER</a>
+                            <a href="javascript:;" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mission payment acknowledment contents ends -->
+
+        <!-- Cancel mission payment modal -->
+        <div class="modal fade cancel-created-mission-modal" id="cancelMissionPayment" tabindex="-1" role="dialog" aria-labelledby="cancelMissionPayment" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold">Vous souhaitez annuler le paiement?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Êtes-vous sur de vouloir annuler le paiement de la mission ?
+                            Celle-ci ne pourra débuter tant que les fonds n’auront pas été reçus.</p>
+                        <p>Si vous avez des questions sur l’annulation du paiement, n’hésitez pas à consulter
+                            notre <a href="{{ path('front_faq_index') }}">page d’aide.</a> </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white-cancel" data-dismiss="modal">RETOUR</button>
+                        <button type="button" class="btn btn-pink cancel-payment-confirmation" data-dismiss="modal">ANNULER LE PAIEMENT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Cancel mission payment modal ends -->
+
+
+
+
+        <!-- Cancel missions contents -->
+        <div class="cancel-mission-container col-sm-12 p-0 vh-100">
+            <div class="overlay-dashboard"></div>
+            <div class="col-sm-10 offset-sm-2 cancel-mission-show-content bg-white p-0">
+                <div class="row">
+                    <div class="col-md-10 mx-auto my-5">
+                        <p class="fz-20 text-error">Annuler la mission</p>
+                        <h2 class="fz-28 font-weight-bold">Shooting soirée d’ouverture du O’Tacos Levallois-Perret</h2>
+                        <p class="fz-15 font-weight-light">Vous souhaitez annuler la mission, merci de remplir les champs ci-dessous. </p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <form action="" method="get" accept-charset="utf-8">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label>Qui souhaite annuler la mission ?</label>
+                                            <select class="selectpicker" data-width="100%" data-live-search="true">
+                                                <option value="Nord Pas de Calais">Je souhaite annuler la mission</option>
+                                                <option value="Upper Normandy">Le client souhaite annuler la mission</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <textarea class="form-control form-control bg-lightwhite fz-14 pack-description" cols="30" rows="10"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="javascript:;" class="close-cancel-mission btn btn-white-cancel btn-block btn-pill lh2">Annuler</a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="javascript:;" class="btn btn-error btn-block btn-pill lh2">Mettre fin à la mission</a>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="customer-request-cancellation text-center">
-                                <p class="fz-20 mb-3">A la demande du client, vous avez accepté d’annuler la mission</p>
-                                <p class="fz-16 font-weight-light">Votre mission apparaitra comme annulée dans votre dashboard une fois que votre client l’aura confirmé. </p>
-                                <p class="fz-16 font-weight-light">Si vous avez des  questions, consultez notre <a href="https://staging.pix.city/front/faq">FAQ</a></p>
-                                <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
-                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cancel-mission-commentary-container d-flex align-items-center justify-content-center vh-100">
+                    <div class="cancel-mission-commentary">
+                        <div class="client-request-cancellation text-center">
+                            <p class="fz-20 mb-3">Votre demande d’annulation à bien été envoyée à votre client</p>
+                            <p class="fz-16 font-weight-light">Dès la confirmation d'annulation de la mission côté client, la mission apparaitra comme "annulée" dans votre espace city-maker.</p>
+                            <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
+                        </div>
+                        <div class="customer-request-cancellation text-center">
+                            <p class="fz-20 mb-3">A la demande du client, vous avez accepté d’annuler la mission</p>
+                            <p class="fz-16 font-weight-light">Votre mission apparaitra comme annulée dans votre dashboard une fois que votre client l’aura confirmé. </p>
+                            <p class="fz-16 font-weight-light">Si vous avez des  questions, consultez notre <a href="https://staging.pix.city/front/faq">FAQ</a></p>
+                            <a href="javascript:;" class="btn btn-error btn-pill lh2 mx-auto">Retourner au dashboard</a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
 
 
-            <div class="toast to-validate-quote-toast fade w-100 m-0 bg-darkgray text-white border-0 rounded-0 fixed-top align-items-center d-flex opacity-90"
-                 role="alert" data-delay="5000" aria-live="assertive" aria-atomic="true">
-                <div class="toast-body text-center align-items-center justify-content-center d-flex position-relative w-100 fz-16">
-                    Le prix de la mission a été mis à jour
-                    <button type="button" class="close position-absolute d-flex align-items-center" data-dismiss="toast"
-                            aria-label="Close">
-                        <i class="fas fa-times-circle text-white fz-14"></i>
-                    </button>
-                </div>
+        <div class="toast to-validate-quote-toast fade w-100 m-0 bg-darkgray text-white border-0 rounded-0 fixed-top align-items-center d-flex opacity-90"
+             role="alert" data-delay="5000" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body text-center align-items-center justify-content-center d-flex position-relative w-100 fz-16">
+                Le prix de la mission a été mis à jour
+                <button type="button" class="close position-absolute d-flex align-items-center" data-dismiss="toast"
+                        aria-label="Close">
+                    <i class="fas fa-times-circle text-white fz-14"></i>
+                </button>
             </div>
-            <!-- To Validate quote toast ends -->
+        </div>
+        <!-- To Validate quote toast ends -->
 
 
-            <!-- Cancel missions contents ends-->
+        <!-- Cancel missions contents ends-->
 
-            <!-- End mission confirmation modal -->
-            <div class="modal fade alert-modal end-mission-confirmation-modal" id="endMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="endMissionConfirmation" aria-hidden="true" style="">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title fz-16">Vous souhaitez terminer la mission?</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-{#                            <p id="break-up-text"></p>#}
-{#                            <p id="price"></p>#}
-{#                            <p id="tax"></p>#}
-{#                            <hr>#}
-{#                            <p id="total"></p>#}
-{#                            <p id="advance-payment"></p>#}
-{#                            <hr>#}
-{#                            <p id="need-to-pay"></p>#}
-{#                            <p id="mission-termination-text"></p>#}
-                            <p>En cliquant sur “terminer la mission”, une notification de fin de mission sera envoyée au client.</p>
-                            <p>Dès sa validation, le paiement de votre mission pourra avoir lieu sous 48h.</p>
-                            <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="https://staging.pix.city/front/faq">FAQ</a>. Merci !</p>
+        <!-- End mission confirmation modal -->
+        <div class="modal fade alert-modal end-mission-confirmation-modal" id="endMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="endMissionConfirmation" aria-hidden="true" style="">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fz-16">Vous souhaitez terminer la mission?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {#                            <p id="break-up-text"></p>#}
+                        {#                            <p id="price"></p>#}
+                        {#                            <p id="tax"></p>#}
+                        {#                            <hr>#}
+                        {#                            <p id="total"></p>#}
+                        {#                            <p id="advance-payment"></p>#}
+                        {#                            <hr>#}
+                        {#                            <p id="need-to-pay"></p>#}
+                        {#                            <p id="mission-termination-text"></p>#}
+                        <p>En cliquant sur “terminer la mission”, une notification de fin de mission sera envoyée au client.</p>
+                        <p>Dès sa validation, le paiement de votre mission pourra avoir lieu sous 48h.</p>
+                        <p>Vous serez averti sur votre dashboard City-maker. Pour plus d’informations, consultez notre <a href="https://staging.pix.city/front/faq">FAQ</a>. Merci !</p>
 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
-                            <a href="javascript:;" id="mission-terminate" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Demande de traitement.." class="btn btn-pink teminate-class">TERMINER LA MISSION</a>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                        <a href="javascript:;" id="mission-terminate" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Demande de traitement.." class="btn btn-pink teminate-class">TERMINER LA MISSION</a>
                     </div>
                 </div>
             </div>
-            <!-- End mission confirmation modal ends -->
+        </div>
+        <!-- End mission confirmation modal ends -->
 
-            <!-- End mission cancellation confirmation modal -->
-            <div class="modal fade alert-modal end-mission-confirmation-modal" id="endCancelledMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="endCancelledMissionConfirmation" aria-hidden="true" style="">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title fz-16">Vous souhaitez confirmer l’annulation de la mission ?</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-{#                            <p>The Breakup amount</p>#}
-{#                            <p id="price-cancel"></p>#}
-{#                            <p id="tax-cancel"></p>#}
-{#                            <hr>#}
-{#                            <p id="total-cancel"></p>#}
-{#                            <p id="advance-payment-cancel"></p>#}
-{#                            <hr>#}
-{#                            <p id="need-to-pay-cancel"></p>#}
-{#                            <p id="mission-termination-text-cancel"></p>#}
-                            <p>Si vous acceptez d’annuler la mission, l’intégralité du montant de la mission vous sera re-crédité via notre partenaire Mango pay dans les 72h.</p>
-                            <p>Si vous avez la moindre question, n’hésitez pas à contacter directement votre City-Maker.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
-                            <a href="javascript:;" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Demande de traitement.." id="mission-terminate-cancel" class="btn btn-pink teminate-class-cancel">ANNULER LA MISSION</a>
-                        </div>
+        <!-- End mission cancellation confirmation modal -->
+        <div class="modal fade alert-modal end-mission-confirmation-modal" id="endCancelledMissionConfirmation" tabindex="-1" role="dialog" aria-labelledby="endCancelledMissionConfirmation" aria-hidden="true" style="">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fz-16">Vous souhaitez confirmer l’annulation de la mission ?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {#                            <p>The Breakup amount</p>#}
+                        {#                            <p id="price-cancel"></p>#}
+                        {#                            <p id="tax-cancel"></p>#}
+                        {#                            <hr>#}
+                        {#                            <p id="total-cancel"></p>#}
+                        {#                            <p id="advance-payment-cancel"></p>#}
+                        {#                            <hr>#}
+                        {#                            <p id="need-to-pay-cancel"></p>#}
+                        {#                            <p id="mission-termination-text-cancel"></p>#}
+                        <p>Si vous acceptez d’annuler la mission, l’intégralité du montant de la mission vous sera re-crédité via notre partenaire Mango pay dans les 72h.</p>
+                        <p>Si vous avez la moindre question, n’hésitez pas à contacter directement votre City-Maker.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white-cancel" data-dismiss="modal">ANNULER</button>
+                        <a href="javascript:;" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Demande de traitement.." id="mission-terminate-cancel" class="btn btn-pink teminate-class-cancel">ANNULER LA MISSION</a>
                     </div>
                 </div>
             </div>
-            <!-- End mission confirmation modal ends -->
+        </div>
+        <!-- End mission confirmation modal ends -->
 
-            <!-- My facturation contents -->
-            <div class="facturation-show-container col-sm-12 p-0 vh-100">
-                <div class="overlay-dashboard"></div>
-                <div class="col-sm-10 offset-sm-2 facturation-show-content bg-white p-0">
-                    <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-invoice-preview">
-                        <i class="fal fa-times fz-20 opacity-50"></i>
-                    </a>
+        <!-- My facturation contents -->
+        <div class="facturation-show-container col-sm-12 p-0 vh-100">
+            <div class="overlay-dashboard"></div>
+            <div class="col-sm-10 offset-sm-2 facturation-show-content bg-white p-0">
+                <a href="javascript:;" class="btn btn-circle-40 btn-black opacity-50 btn-no-hover close-invoice-preview">
+                    <i class="fal fa-times fz-20 opacity-50"></i>
+                </a>
 
-                    <object
-                            id="object-invoice-path"
-                            data=""
-                            type="application/pdf"
+                <object
+                        id="object-invoice-path"
+                        data=""
+                        type="application/pdf"
+                        width="100%"
+                        height="100%">
+                    <iframe
+                            id="invoice-path"
+                            src=""
                             width="100%"
-                            height="100%">
-                        <iframe
-                                id="invoice-path"
-                                src=""
-                                width="100%"
-                                height="100%"
-                                style="border: none;">
-                            <p>Your browser does not support PDFs.
-                                <a href="https://example.com/test.pdf">Download the PDF</a>.</p>
-                        </iframe>
-                    </object>
+                            height="100%"
+                            style="border: none;">
+                        <p>Your browser does not support PDFs.
+                            <a href="https://example.com/test.pdf">Download the PDF</a>.</p>
+                    </iframe>
+                </object>
 
-                </div>
-                <nav class="col-sm-10 offset-sm-2 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
-                    <div class="container-fluid align-items-center justify-content-end">
-                        <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
-                            <!-- <div class="client-image btn-circle-50 p-0 mr-3">
-                                <img src="../images/USER-AVATAR.jpg" class="img-fluid rounded-circle" alt="client Logo">
-                            </div>
-                            <div class="client-name-mission-status mr-4">
-                                <p class="mb-0 fz-11 text-inprogress mission-status">Mission en cours</p>
-                                <p class="mb-0 text-darkgray client-name">@Lily_Bordeaux</p>
-                            </div>
-                            <div class="mr-4">
-                                <p class="mb-0 fz-12 text-normalgray">Région</p>
-                                <p class="mb-0 text-darkgray client-region">PARIS</p>
-                            </div>
-                            <div class="mr-4">
-                                    <p class="mb-0 fz-12 text-normalgray">Prix</p>
-                                    <p class="mb-0 text-darkgray user-price">160€</p>
-                            </div>
-                            <div class="mission-invoice d-flex align-items-center mr-4">
-                                <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-35 mr-2"></i></p>
-                                <p class="mb-0 text-darkgray">
-                                    Devis PX-13032109-00752
-                                    <a href="javascript:;" class="d-block fz-12 text-inprogress">Version 1: 03/04/2019</a>
-                                </p>
-                            </div> -->
-                            <div class="d-flex w-100 justify-content-center">
-                                <a href="javascript:;" class="btn btn-green btn-pill validate-quote"><i class="fas fa-check fz-14 mr-2"></i>Devis validé</a>
-{#                                <a href="javascript:;" class="btn btn-green btn-pill validate-the-quote">Valider le devis</a>#}
-                            </div>
+            </div>
+            <nav class="col-sm-10 offset-sm-2 navbar navbar-expand-lg fixed-bottom nav-bar-main internal-nav bottom-info-status">
+                <div class="container-fluid align-items-center justify-content-end">
+                    <div class="d-flex client-infos flex-grow-1 justify-content-start align-items-center">
+                        <!-- <div class="client-image btn-circle-50 p-0 mr-3">
+                            <img src="../images/USER-AVATAR.jpg" class="img-fluid rounded-circle" alt="client Logo">
+                        </div>
+                        <div class="client-name-mission-status mr-4">
+                            <p class="mb-0 fz-11 text-inprogress mission-status">Mission en cours</p>
+                            <p class="mb-0 text-darkgray client-name">@Lily_Bordeaux</p>
+                        </div>
+                        <div class="mr-4">
+                            <p class="mb-0 fz-12 text-normalgray">Région</p>
+                            <p class="mb-0 text-darkgray client-region">PARIS</p>
+                        </div>
+                        <div class="mr-4">
+                                <p class="mb-0 fz-12 text-normalgray">Prix</p>
+                                <p class="mb-0 text-darkgray user-price">160€</p>
+                        </div>
+                        <div class="mission-invoice d-flex align-items-center mr-4">
+                            <p class="mb-0 fz-12 text-darkgray"><i class="fas fa-file-invoice-dollar fz-35 mr-2"></i></p>
+                            <p class="mb-0 text-darkgray">
+                                Devis PX-13032109-00752
+                                <a href="javascript:;" class="d-block fz-12 text-inprogress">Version 1: 03/04/2019</a>
+                            </p>
+                        </div> -->
+                        <div class="d-flex w-100 justify-content-center">
+                            <a href="javascript:;" class="btn btn-green btn-pill validate-quote"><i class="fas fa-check fz-14 mr-2"></i>Devis validé</a>
+                            {#                                <a href="javascript:;" class="btn btn-green btn-pill validate-the-quote">Valider le devis</a>#}
                         </div>
                     </div>
-                </nav>
-            </div>
-            <!-- My facturation contents ends -->
-            {{ include('b2b/shared/_client_modals.html.twig') }}
+                </div>
+            </nav>
+        </div>
+        <!-- My facturation contents ends -->
+        {{ include('b2b/shared/_client_modals.html.twig') }}
 
+    </div>
+</div>
+
+{% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' and route != 'client_email_inbox' and route != 'client_email_send_emails'  %}
+
+    <!-- Footer -->
+    <div class="social-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="brand-footer">
+                        {#<img src="/images/footer-logo-main.svg">#}
+                        <img src="/assets/images/services-footer-logo.svg" alt="pix-city-services-footer-logo" >
+                    </div>
+                    <div class="container-propos">
+                        <h4>A Propos De Nous</h4>
+                        {#{{ menu('footer-1', 'footerMenu') | raw }}#}
+                        {#{{ menu('footer-2', 'footerMenu') | raw }}#}
+                        {#                            {{ menu('footer-3', 'footerMenu') | raw }}#}
+                        <ul>
+                            <li><a href="{{ path('front_faq_index') }}">FAQ de Pix.City Services</a></li>
+                        </ul>
+                        {#<ul>#}
+                        {#<li><a href="^_^">Mentions Legales</a></li>#}
+                        {#<li><a href="^_^">Conditions générales d’utilisation</a></li>#}
+                        {#<li><a href="^_^">Politique de protection des données</a></li>#}
+                        {#<li><a href="^_^">La FAQ du City-Maker</a></li>#}
+                        {#<li><a href="^_^">L’Équipe</a></li>#}
+                        {#<li><a href="^_^">Contact</a></li>#}
+                        {#</ul>#}
+                    </div>
+                    <div class="container-social">
+                        <h4>Pix.city Sur Les Reseaux Sociaux</h4>
+                        <ul>
+                            <li><a href="https://www.facebook.com/pix.city.france/"><i class="fab fa-facebook-square"></i> <span>Facebook</span></a></li>
+                            <li><a href="https://www.linkedin.com/company/pixcityservices/"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a></li>
+                            <li><a href="https://instagram.com/pix_city/"><i class="fab fa-instagram"></i> <span>Instagram</span></a></li>
+                        </ul>
+                    </div>
+                    {#<div class="container-insta">#}
+                    {#<div class="row">#}
+                    {#<div class="col-md-6 col-6 text-left pl-1">#}
+                    {#<h4><i class="fab fa-instagram"></i> Instagram</h4>#}
+                    {#</div>#}
+                    {#<div class="col-md-6 col-6 text-right pr-1 tag">#}
+                    {#@pix.city#}
+                    {#</div>#}
+                    {#</div>#}
+                    {#<div class="row">#}
+                    {#{% for post in instagramFeed() %}#}
+
+                    {#<div class="col-md-3 col-3 container-insta-image">#}
+                    {#<a href="{{ post.link }}" target="_blank" rel="noopener">#}
+                    {#<img src="{{ post.image }}" alt="{{ post.title }}">#}
+                    {#</a>#}
+                    {#</div>#}
+
+                    {#{% endfor %}#}
+                    {#</div>#}
+                    {#</div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-wrap">
+        <div class="container">
+            © 2019 Pix City Services
         </div>
     </div>
 
-    {% if route != 'b2b_client_main_index' and route != 'b2b_client_mission_list' and route != 'client_transaction_index' and route != 'client_email_inbox' and route != 'client_email_send_emails'  %}
-
-        <!-- Footer -->
-        <div class="social-wrap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="brand-footer">
-                            {#<img src="/images/footer-logo-main.svg">#}
-                            <img src="/assets/images/services-footer-logo.svg" alt="pix-city-services-footer-logo" >
-                        </div>
-                        <div class="container-propos">
-                            <h4>A Propos De Nous</h4>
-                            {#{{ menu('footer-1', 'footerMenu') | raw }}#}
-                            {#{{ menu('footer-2', 'footerMenu') | raw }}#}
-{#                            {{ menu('footer-3', 'footerMenu') | raw }}#}
-                            <ul>
-                                <li><a href="{{ path('front_faq_index') }}">FAQ de Pix.City Services</a></li>
-                            </ul>
-                            {#<ul>#}
-                            {#<li><a href="^_^">Mentions Legales</a></li>#}
-                            {#<li><a href="^_^">Conditions générales d’utilisation</a></li>#}
-                            {#<li><a href="^_^">Politique de protection des données</a></li>#}
-                            {#<li><a href="^_^">La FAQ du City-Maker</a></li>#}
-                            {#<li><a href="^_^">L’Équipe</a></li>#}
-                            {#<li><a href="^_^">Contact</a></li>#}
-                            {#</ul>#}
-                        </div>
-                        <div class="container-social">
-                            <h4>Pix.city Sur Les Reseaux Sociaux</h4>
-                            <ul>
-                                <li><a href="https://www.facebook.com/pix.city.france/"><i class="fab fa-facebook-square"></i> <span>Facebook</span></a></li>
-                                <li><a href="https://www.linkedin.com/company/pixcityservices/"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a></li>
-                                <li><a href="https://instagram.com/pix_city/"><i class="fab fa-instagram"></i> <span>Instagram</span></a></li>
-                            </ul>
-                        </div>
-                        {#<div class="container-insta">#}
-                        {#<div class="row">#}
-                        {#<div class="col-md-6 col-6 text-left pl-1">#}
-                        {#<h4><i class="fab fa-instagram"></i> Instagram</h4>#}
-                        {#</div>#}
-                        {#<div class="col-md-6 col-6 text-right pr-1 tag">#}
-                        {#@pix.city#}
-                        {#</div>#}
-                        {#</div>#}
-                        {#<div class="row">#}
-                        {#{% for post in instagramFeed() %}#}
-
-                        {#<div class="col-md-3 col-3 container-insta-image">#}
-                        {#<a href="{{ post.link }}" target="_blank" rel="noopener">#}
-                        {#<img src="{{ post.image }}" alt="{{ post.title }}">#}
-                        {#</a>#}
-                        {#</div>#}
-
-                        {#{% endfor %}#}
-                        {#</div>#}
-                        {#</div>#}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-wrap">
-            <div class="container">
-                © 2019 Pix City Services
-            </div>
-        </div>
-
-        <!-- Footer ends -->
+    <!-- Alert about cookie useage -->
+    {% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
+    <!-- Footer ends -->
 
 
 
-    {% endif %}
+{% endif %}
 
 
-    <!-- Scripts -->
-    <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
-    <!-- <script src="js/app.js"></script> -->
-    <script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
+<!-- Scripts -->
+<script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
+<!-- <script src="js/app.js"></script> -->
+<script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+<script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
 
 
-    <script>
-        /* custom per page scripts */
+<script>
+    /* custom per page scripts */
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            $("#on-login-click").click(function () {
-                window.location.href = "/connexion";
-            });
+        $("#on-login-click").click(function () {
+            window.location.href = "/connexion";
+        });
 
-            $("#devenir-city-maker").click(function () {
-                window.location.href = "/devenez-city-maker";
-            });
+        $("#devenir-city-maker").click(function () {
+            window.location.href = "/devenez-city-maker";
+        });
 
-            $("#profile-redirect").on('click',function () {
-                window.location.href = "{{ url('b2b_client_main_profile') }}";
-            });
+        $("#profile-redirect").on('click',function () {
+            window.location.href = "{{ url('b2b_client_main_profile') }}";
+        });
 
-            /* Skills Pack Buttons */
-            // $('a.skills-pack').click(function () {
-            //     // e.preventDefault();
-            //     $(this).parent('li').siblings().find('a').removeClass('active');
-            //     $(this).addClass('active');
-            // });
+        /* Skills Pack Buttons */
+        // $('a.skills-pack').click(function () {
+        //     // e.preventDefault();
+        //     $(this).parent('li').siblings().find('a').removeClass('active');
+        //     $(this).addClass('active');
+        // });
 
-            /* Restrict maxlengths for input and textarea fields */
-            $('textarea.pack-description, input.pack-title').on("input", function () {
-                var maxlength = $(this).attr("maxlength");
-                var currentLength = $(this).val().length;
+        /* Restrict maxlengths for input and textarea fields */
+        $('textarea.pack-description, input.pack-title').on("input", function () {
+            var maxlength = $(this).attr("maxlength");
+            var currentLength = $(this).val().length;
 
-                $(this).next().find('.inputlength').text(currentLength)
-                if (currentLength >= maxlength) {
-                    //         console.log("You have reached the maximum number of characters.");
-                    $(this).next('.text-textgray').append(
-                        `<span class="text-error ml-2">You have reached the maximum number of characters allowed.</span>`
-                    );
-                } else if (currentLength < maxlength) {
-                    //         console.log(maxlength - currentLength + " chars left");
-                    $(this).next('.text-textgray').find('.text-error').fadeOut('fast');
-                }
-            });
-
-            /* Filter packages script */
-            /* $(document).on('click', '.filter-packages  input[type="checkbox"]', function () {
-                $(this).parents('.content-top-header').next().find('.package-list-item')
-                    .removeClass('d-flex').fadeOut('fast');
-
-                var $packlist = $(this).parents('.content-top-header').next().find(
-                    '.package-list-item'),
-                    filter = [];
-                $(this).parents('.filter-packages').find('input[type="checkbox"]:checked')
-                    .each(function () {
-                        var packtype = $(this).val();
-                        filter.push('.' + packtype);
-                    })
-                if (filter.length == 0) {
-                    $packlist.addClass('d-flex').fadeIn();
-                    $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.length);
-                } else {
-                    $packlist.filter(filter.join(',')).addClass('d-flex').fadeIn();
-                    $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.filter(filter.join(',')).length);
-                }
-            }) */
-            function filterPackages(thisObj) {
-                $(thisObj).parents('.content-top-header').next().find('.package-list-item')
-                    .removeClass('d-flex').fadeOut('fast');
-
-                var $packlist = $(thisObj).parents('.content-top-header').next().find(
-                    '.package-list-item'),
-                    filter = [];
-                $(thisObj).parents('.filter-packages').find('input[type="checkbox"]:checked')
-                    .each(function () {
-                        var packtype = $(this).val();
-                        filter.push('.' + packtype);
-                    })
-                console.log(filter);
-                if (filter.length == 0) {
-                    $packlist.addClass('d-flex').fadeIn();
-                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
-                        .length);
-                } else {
-                    $(thisObj).parents('.content-top-header').next().find(
-                        '.package-list-item').filter(filter.join(',')).addClass('d-flex').fadeIn();
-                    $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
-                        .filter(filter.join(',')).length);
-                }
+            $(this).next().find('.inputlength').text(currentLength)
+            if (currentLength >= maxlength) {
+                //         console.log("You have reached the maximum number of characters.");
+                $(this).next('.text-textgray').append(
+                    `<span class="text-error ml-2">You have reached the maximum number of characters allowed.</span>`
+                );
+            } else if (currentLength < maxlength) {
+                //         console.log(maxlength - currentLength + " chars left");
+                $(this).next('.text-textgray').find('.text-error').fadeOut('fast');
             }
+        });
 
-            $('.filter-packages input[type="checkbox"]').click(function () {
-                filterPackages($(this))
-            });
-            /* Filter packages script ends */
+        /* Filter packages script */
+        /* $(document).on('click', '.filter-packages  input[type="checkbox"]', function () {
+            $(this).parents('.content-top-header').next().find('.package-list-item')
+                .removeClass('d-flex').fadeOut('fast');
 
-            /* Images drop zone */
-            /* $('.dropzone .dz-default').html(`<div class="row"><div class="col-md-12 mb-4 upload-area"><div class="area-label text-center p-4"><i class="fas fa-cloud-upload-alt"></i><p>Déposez vos images ici</p><a href="javascript:;">Depuis votre navigateur</a></div></div></div>`); */
-            $('.dropzone .dz-default').html(`
+            var $packlist = $(this).parents('.content-top-header').next().find(
+                '.package-list-item'),
+                filter = [];
+            $(this).parents('.filter-packages').find('input[type="checkbox"]:checked')
+                .each(function () {
+                    var packtype = $(this).val();
+                    filter.push('.' + packtype);
+                })
+            if (filter.length == 0) {
+                $packlist.addClass('d-flex').fadeIn();
+                $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.length);
+            } else {
+                $packlist.filter(filter.join(',')).addClass('d-flex').fadeIn();
+                $(this).parents('.content-top-header').find('.total-packs-available').text($packlist.filter(filter.join(',')).length);
+            }
+        }) */
+        function filterPackages(thisObj) {
+            $(thisObj).parents('.content-top-header').next().find('.package-list-item')
+                .removeClass('d-flex').fadeOut('fast');
+
+            var $packlist = $(thisObj).parents('.content-top-header').next().find(
+                '.package-list-item'),
+                filter = [];
+            $(thisObj).parents('.filter-packages').find('input[type="checkbox"]:checked')
+                .each(function () {
+                    var packtype = $(this).val();
+                    filter.push('.' + packtype);
+                })
+            console.log(filter);
+            if (filter.length == 0) {
+                $packlist.addClass('d-flex').fadeIn();
+                $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                    .length);
+            } else {
+                $(thisObj).parents('.content-top-header').next().find(
+                    '.package-list-item').filter(filter.join(',')).addClass('d-flex').fadeIn();
+                $(thisObj).parents('.content-top-header').find('.total-packs-available').text($packlist
+                    .filter(filter.join(',')).length);
+            }
+        }
+
+        $('.filter-packages input[type="checkbox"]').click(function () {
+            filterPackages($(this))
+        });
+        /* Filter packages script ends */
+
+        /* Images drop zone */
+        /* $('.dropzone .dz-default').html(`<div class="row"><div class="col-md-12 mb-4 upload-area"><div class="area-label text-center p-4"><i class="fas fa-cloud-upload-alt"></i><p>Déposez vos images ici</p><a href="javascript:;">Depuis votre navigateur</a></div></div></div>`); */
+        $('.dropzone .dz-default').html(`
                 <div class="upload-area mb-4">
                     <div class="area-label text-center p-4">
                         <i class="fas fa-cloud-upload-alt"></i>
@@ -779,416 +778,424 @@
                 </div>
             `);
 
-            /* Show only two notifications on load */
-            $('.alert-notifications .alert').not(':lt(2)').removeClass('d-flex').hide();
-            if ($('.alert-notifications .alert').length > 2) {
-                $('.alert-notifications .show-less').hide();
-                $('.alert-notifications .show-more').show();
+        /* Show only two notifications on load */
+        $('.alert-notifications .alert').not(':lt(2)').removeClass('d-flex').hide();
+        if ($('.alert-notifications .alert').length > 2) {
+            $('.alert-notifications .show-less').hide();
+            $('.alert-notifications .show-more').show();
+        }
+        /* Show only two notifications on load ends */
+        /* Show all/less notifications on click */
+        $(document).on('click', '.show-more a, .show-less a', function () {
+            if ($(this).is('.show-less a')) {
+                $(this).parent('.show-less').hide();
+                $(this).parent('.show-less').siblings('.show-more').fadeIn();
+                $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').removeClass(
+                    'd-flex').slideUp();
+            } else if ($(this).is('.show-more a')) {
+                $(this).parent('.show-more').hide();
+                $(this).parent('.show-more').siblings('.show-less').fadeIn();
+                $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').addClass(
+                    'd-flex').slideDown();
             }
-            /* Show only two notifications on load ends */
-            /* Show all/less notifications on click */
-            $(document).on('click', '.show-more a, .show-less a', function () {
-                if ($(this).is('.show-less a')) {
-                    $(this).parent('.show-less').hide();
-                    $(this).parent('.show-less').siblings('.show-more').fadeIn();
-                    $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').removeClass(
-                        'd-flex').slideUp();
-                } else if ($(this).is('.show-more a')) {
-                    $(this).parent('.show-more').hide();
-                    $(this).parent('.show-more').siblings('.show-less').fadeIn();
-                    $(this).parents('.alert-notifications').find('.alert').not(':lt(2)').addClass(
-                        'd-flex').slideDown();
+        })
+        /* Show all/less notifications on click ends */
+
+        /* pack/mission creation/preview/edit invoke */
+        $(document).on('click', '.add-package, .preview-edit-mission, .edit-the-pack, .preview-my-mission',
+            function (e) {
+
+                if ($(this).is('.add-package, .edit-the-pack')) {
+                    $('.dash-right').fadeOut();
+                    $('.pack-creation-edition-container').fadeIn()
+                } else if ($(this).is('.preview-edit-mission')) {
+                    $('.dash-right').fadeOut();
+                    $('.mission-edition-container').fadeIn()
+                } else if ($(this).is('.preview-my-mission')) {
+
+                    $('.dash-left, .dash-right').fadeOut();
+                    $('.mission-preview-container').fadeIn();
+                    var id = $(this).attr('data-id');
+                    var notification_id = $(this).attr('data-unread');
+                    if(notification_id == 'undefined'){
+                        notification_id = 0;
+                    }
+                    $.ajax({
+                        url:"{{ path('b2b_client_main_preview_mission') }}",
+                        type:'GET',
+                        data: {id: id,route: "{{ route }}",notification_id:notification_id},
+                        dataType:'html',
+                        success: function(data){
+                            $("#preview-mission").html(data);
+                            e.stopImmediatePropagation();
+                            return false;
+                        }
+                    });
                 }
-            })
-            /* Show all/less notifications on click ends */
-
-            /* pack/mission creation/preview/edit invoke */
-            $(document).on('click', '.add-package, .preview-edit-mission, .edit-the-pack, .preview-my-mission',
-                function (e) {
-
-                    if ($(this).is('.add-package, .edit-the-pack')) {
-                        $('.dash-right').fadeOut();
-                        $('.pack-creation-edition-container').fadeIn()
-                    } else if ($(this).is('.preview-edit-mission')) {
-                        $('.dash-right').fadeOut();
-                        $('.mission-edition-container').fadeIn()
-                    } else if ($(this).is('.preview-my-mission')) {
-
-                        $('.dash-left, .dash-right').fadeOut();
-                        $('.mission-preview-container').fadeIn();
-                        var id = $(this).attr('data-id');
-                        console.log($(this).attr('data-id'));
-                        $.ajax({
-                            url:"{{ path('b2b_client_main_preview_mission') }}",
-                            type:'GET',
-                            data: {id: id,route: "{{ route }}"},
-                            dataType:'html',
-                            success: function(data){
-                                $("#preview-mission").html(data);
-                                e.stopImmediatePropagation();
-                                return false;
-                            }
-                        });
-                    }
 
 
-                });
-            $(document).on('click', '.close-preview-edit',
-                function () {
-                    $(this).parents('[class*="edition-container"]').fadeOut()
-                    $(this).parents('[class*="edition-container"]').siblings('.dash-right').fadeIn()
-                });
-            $(document).on('click',
-                '.preview-pack, .save-changes, .close-pack-preview, .close-mission-preview, .edit-the-mission, .preview-mission',
-                function (e) {
-                    if ($(this).hasClass('preview-pack')) {
-                        $(this).addClass('d-none');
-                        $(this).next().add($(this).parent('.preview-cta').prev()).removeClass('d-none')
-                        $('.pack-creation-content .edit').hide();
-                        $('.pack-creation-content .preview').show();
-                        $('.preview-pack-toast').toast('show').css({
-                            'z-index': '1050'
-                        });
-                    } else if ($(this).is('.preview-mission')) {
-                        $('.mission-edition-content .edit').fadeOut();
-                        $('.mission-edition-content .preview').fadeIn();
-                        $(this).parent('.preview-cta')
-                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
-                                .find('.cancel-edition, .edit-image'))
-                            .addClass('d-none')
-                        $(this).parent('.preview-cta').siblings('.client-infos, .mission-cta')
-                            .addClass('d-flex')
-                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
-                                .find('.close-preview-edit'))
-                            .fadeIn();
-                    } else if ($(this).is('.edit-the-mission')) {
-                        $('.mission-edition-content .preview').fadeOut();
-                        $('.mission-edition-content .edit').fadeIn();
-                        $(this).parent('.mission-cta')
-                            .add($(this).parent('.mission-cta').siblings('.client-infos'))
-                            .removeClass('d-flex')
-                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
-                                .find('.close-preview-edit'))
-                            .fadeOut();
-                        $(this).parent('.mission-cta').siblings('.preview-cta')
-                            .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
-                                .find('.cancel-edition, .edit-image'))
-                            .removeClass('d-none')
-                    } else if ($(this).hasClass('save-changes')) {
-                        $('.save-changes-toast').toast('show').css({
-                            'z-index': '1050'
-                        });
-                        setTimeout(function () {
-                            window.location = 'client-dashboard-tab-mypacks-felicitations.html';
-                        }, 5000);
-                        // window.location.replace('')
-                    } else if ($(this).hasClass('close-pack-preview')) {
-                        $(this).
-                        add($(this).parent('.d-flex').prev()).addClass('d-none')
-                        $(this).prev().removeClass('d-none');
-                        $('.pack-creation-content .preview').hide();
-                        $('.pack-creation-content .edit').show();
-                    } else if ($(this).is('.close-mission-preview')) {
-                        $('.mission-preview-container').fadeOut()
-                        $('.dash-left, .dash-right').fadeIn()
-                        $("#preview-mission").html('');
-                    }
-                });
-            $(document).on('input change focus',
-                '.pack-creation-content input, .pack-creation-content textarea, .mission-edition-content input, .mission-edition-content textarea',
-                function () {
-                    $(this).parents('.pack-creation-content, .mission-edition-content').find(
-                        '.save-changes').removeClass('disabled')
-                });
-            /* pack/mission creation/preview/edit invoke ends */
-            /* Pay online invoke */
-            $(document).on('click',
-                '.pay-online, .confirm-payment, .retry-payment, .return-to-dashboard, .cancel-payment-confirmation',
-                function (e) {
-                    if ($(this).is('.pay-online')) {
-
-                        var id = $(this).attr('data-id');
-
-                        $.ajax({
-                            url:"{{ path('b2b_client_main_preview_payment') }}",
-                            type:'GET',
-                            data: {id: id},
-                            dataType:'html',
-                            success: function(data){
-                                $("#preview-payment").html(data);
-                                e.stopImmediatePropagation();
-                                return false;
-                            }
-                        });
-                        $('.dash-left, .dash-right').fadeOut();
-                        $('.mission-payment-content').fadeIn();
-                    } else if ($(this).is('.confirm-payment')) {
-                        $('.mission-payment-content').fadeOut();
-                        $('.dash-left, .mission-pyament-acknowledgement-container').fadeIn()
-                    } else if ($(this).is('.retry-payment')) {
-                        $('.dash-left, .mission-pyament-acknowledgement-container').fadeOut()
-                        $('.mission-payment-content').fadeIn();
-                    } else if ($(this).is('.return-to-dashboard')) {
-                        $('.mission-pyament-acknowledgement-container').fadeOut()
-                        $('.dash-left, .dash-right').fadeIn();
-                    } else if ($(this).is('.cancel-payment-confirmation')) {
-                        // e.preventDefault()
-                        $("#preview-payment").html("    ");
-                        $('.mission-payment-content').fadeOut();
-                        $('.dash-left, .dash-right').fadeIn();
-                    }
-                });
-            /* Pay online invoke ends */
-            /* Preview Invoice Starts */
-            $(document).on('click',
-                'a.close-invoice-preview, a.preview-invoice, a.validate-quote, a.validate-the-quote, a.check-the-quote',
-                function () {
-                    if ($(this).is('a.preview-invoice')) {
-                        $('.validate-the-quote, .dash-right').fadeOut()
-                        $('.facturation-show-container, .validate-quote').fadeIn();
-                    } else if ($(this).is('a.close-invoice-preview')) {
-                        $('.facturation-show-container').fadeOut();
-                        $('.validate-the-quote, .dash-right').fadeIn()
-                    } else if ($(this).is('a.validate-quote')) {
-                        $('.validate-quote-toast').toast('show').css({
-                            'z-index': '1050'
-                        });
-                    } else if ($(this).is('a.validate-the-quote')) {
-                        $('.facturation-show-container').fadeOut()
-                        $('.dash-right, .validate-quote').fadeIn('fast', function(){
-                            $('.invoice-signed-toast').toast('show').css({
-                                'z-index': '1050'
-                            });
-                        })
-                    } else if ($(this).is('a.check-the-quote')) {
-                        $('.dash-right, .validate-quote').fadeOut();
-
-                        var id = $(this).attr('data-id');
-
-                        $.ajax({
-                            url:"{{ path('b2b_client_main_preview_invoice') }}",
-                            type:'GET',
-                            data: {id: id},
-                            dataType:'json',
-                            success: function(data){
-                                console.log(data);
-                                $("#invoice-path").attr('src',data);
-                                $("#object-invoice-path").attr('data',data);
-
-                                $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function () {
-                                    // $('.to-validate-quote-toast').toast('show').css({
-                                    //     'z-index': '1050'
-                                    // });
-                                });
-
-                                return false;
-                            }
-                        });
-
-
-                    }
-                })
-            /* Preview Invoice Ends */
-            /* Cancel mission Starts */
-            $(document).on('click', 'a.close-cancel-mission, a.cancel-mission-activate', function () {
-                if ($(this).is('a.cancel-mission-activate')) {
-                    $('.cancel-mission-container').fadeIn();
-                } else if ($(this).is('a.close-cancel-mission')) {
-                    $('.cancel-mission-container').fadeOut();
-                }
-            })
-            /* Cancel mission Ends */
-            /* toasts initialization */
-            $('.toast').toast();
-            $(document).on('hidden.bs.toast', function () {
-                $('.toast').css({
-                    'z-index': ''
-                })
             });
-            /* toasts ends */
-            /* Slick slider starts */
-            $('.slick-profiles-slider').slick({
-                dots: false,
-                infinite: false,
-                speed: 400,
-                slidesToShow: 4,
-                slidesToScroll: 1,
-                responsive: [{
-                    breakpoint: 1024,
+        $(document).on('click', '.close-preview-edit',
+            function () {
+                $(this).parents('[class*="edition-container"]').fadeOut()
+                $(this).parents('[class*="edition-container"]').siblings('.dash-right').fadeIn()
+            });
+        $(document).on('click',
+            '.preview-pack, .save-changes, .close-pack-preview, .close-mission-preview, .edit-the-mission, .preview-mission',
+            function (e) {
+                if ($(this).hasClass('preview-pack')) {
+                    $(this).addClass('d-none');
+                    $(this).next().add($(this).parent('.preview-cta').prev()).removeClass('d-none')
+                    $('.pack-creation-content .edit').hide();
+                    $('.pack-creation-content .preview').show();
+                    $('.preview-pack-toast').toast('show').css({
+                        'z-index': '1050'
+                    });
+                } else if ($(this).is('.preview-mission')) {
+                    $('.mission-edition-content .edit').fadeOut();
+                    $('.mission-edition-content .preview').fadeIn();
+                    $(this).parent('.preview-cta')
+                        .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
+                            .find('.cancel-edition, .edit-image'))
+                        .addClass('d-none')
+                    $(this).parent('.preview-cta').siblings('.client-infos, .mission-cta')
+                        .addClass('d-flex')
+                        .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
+                            .find('.close-preview-edit'))
+                        .fadeIn();
+                } else if ($(this).is('.edit-the-mission')) {
+                    $('.mission-edition-content .preview').fadeOut();
+                    $('.mission-edition-content .edit').fadeIn();
+                    $(this).parent('.mission-cta')
+                        .add($(this).parent('.mission-cta').siblings('.client-infos'))
+                        .removeClass('d-flex')
+                        .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
+                            .find('.close-preview-edit'))
+                        .fadeOut();
+                    $(this).parent('.mission-cta').siblings('.preview-cta')
+                        .add($(this).parents('.bottom-info-status').siblings('.cover-image-container')
+                            .find('.cancel-edition, .edit-image'))
+                        .removeClass('d-none')
+                } else if ($(this).hasClass('save-changes')) {
+                    $('.save-changes-toast').toast('show').css({
+                        'z-index': '1050'
+                    });
+                    setTimeout(function () {
+                        window.location = 'client-dashboard-tab-mypacks-felicitations.html';
+                    }, 5000);
+                    // window.location.replace('')
+                } else if ($(this).hasClass('close-pack-preview')) {
+                    $(this).
+                    add($(this).parent('.d-flex').prev()).addClass('d-none')
+                    $(this).prev().removeClass('d-none');
+                    $('.pack-creation-content .preview').hide();
+                    $('.pack-creation-content .edit').show();
+                } else if ($(this).is('.close-mission-preview')) {
+                    $('.mission-preview-container').fadeOut()
+                    $('.dash-left, .dash-right').fadeIn()
+                    $("#preview-mission").html('');
+                }
+            });
+        $(document).on('input change focus',
+            '.pack-creation-content input, .pack-creation-content textarea, .mission-edition-content input, .mission-edition-content textarea',
+            function () {
+                $(this).parents('.pack-creation-content, .mission-edition-content').find(
+                    '.save-changes').removeClass('disabled')
+            });
+        /* pack/mission creation/preview/edit invoke ends */
+        /* Pay online invoke */
+        $(document).on('click',
+            '.pay-online, .confirm-payment, .retry-payment, .return-to-dashboard, .cancel-payment-confirmation',
+            function (e) {
+                if ($(this).is('.pay-online')) {
+
+                    var id = $(this).attr('data-id');
+                    var notification_id = $(this).attr('data-unread');
+
+                    if(notification_id == 'undefined'){
+                        notification_id = 0;
+                    }
+
+                    $.ajax({
+                        url:"{{ path('b2b_client_main_preview_payment') }}",
+                        type:'GET',
+                        data: {id: id,notification_id:notification_id},
+                        dataType:'html',
+                        success: function(data){
+                            $("#preview-payment").html(data);
+                            e.stopImmediatePropagation();
+                            return false;
+                        }
+                    });
+                    $('.dash-left, .dash-right').fadeOut();
+                    $('.mission-payment-content').fadeIn();
+                } else if ($(this).is('.confirm-payment')) {
+                    $('.mission-payment-content').fadeOut();
+                    $('.dash-left, .mission-pyament-acknowledgement-container').fadeIn()
+                } else if ($(this).is('.retry-payment')) {
+                    $('.dash-left, .mission-pyament-acknowledgement-container').fadeOut()
+                    $('.mission-payment-content').fadeIn();
+                } else if ($(this).is('.return-to-dashboard')) {
+                    $('.mission-pyament-acknowledgement-container').fadeOut()
+                    $('.dash-left, .dash-right').fadeIn();
+                } else if ($(this).is('.cancel-payment-confirmation')) {
+                    // e.preventDefault()
+                    $("#preview-payment").html("    ");
+                    $('.mission-payment-content').fadeOut();
+                    $('.dash-left, .dash-right').fadeIn();
+                }
+            });
+        /* Pay online invoke ends */
+        /* Preview Invoice Starts */
+        $(document).on('click',
+            'a.close-invoice-preview, a.preview-invoice, a.validate-quote, a.validate-the-quote, a.check-the-quote',
+            function (e) {
+                e.preventDefault();
+                if ($(this).is('a.preview-invoice')) {
+                    $('.validate-the-quote, .dash-right').fadeOut()
+                    $('.facturation-show-container, .validate-quote').fadeIn();
+                } else if ($(this).is('a.close-invoice-preview')) {
+                    $('.facturation-show-container').fadeOut();
+                    $('.validate-the-quote, .dash-right').fadeIn()
+                } else if ($(this).is('a.validate-quote')) {
+                    $('.validate-quote-toast').toast('show').css({
+                        'z-index': '1050'
+                    });
+                } else if ($(this).is('a.validate-the-quote')) {
+                    $('.facturation-show-container').fadeOut()
+                    $('.dash-right, .validate-quote').fadeIn('fast', function(){
+                        $('.invoice-signed-toast').toast('show').css({
+                            'z-index': '1050'
+                        });
+                    })
+                } else if ($(this).is('a.check-the-quote')) {
+                    $('.dash-right, .validate-quote').fadeOut();
+
+                    var id = $(this).attr('data-id');
+                    var type = $(this).attr('data-type');
+                    var cycle = $(this).attr('data-cyle');
+                    var logid = $(this).attr('data-log');
+                    $.ajax({
+                        url:"{{ path('b2b_client_main_preview_invoice') }}",
+                        type:'GET',
+                        data: {id: id,type:type,cycle:cycle,logid:logid},
+                        dataType:'json',
+                        success: function(data){
+                            console.log(data);
+
+                            $("#invoice-path").attr('src',data);
+                            $("#object-invoice-path").attr('data',data);
+                            $('IFRAME#invoice-path').get(0).contentDocument.location.reload();
+                            $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function () {
+                                // $('.to-validate-quote-toast').toast('show').css({
+                                //     'z-index': '1050'
+                                // });
+                            });
+
+                            return false;
+                        }
+                    });
+
+
+                }
+            })
+        /* Preview Invoice Ends */
+        /* Cancel mission Starts */
+        $(document).on('click', 'a.close-cancel-mission, a.cancel-mission-activate', function () {
+            if ($(this).is('a.cancel-mission-activate')) {
+                $('.cancel-mission-container').fadeIn();
+            } else if ($(this).is('a.close-cancel-mission')) {
+                $('.cancel-mission-container').fadeOut();
+            }
+        })
+        /* Cancel mission Ends */
+        /* toasts initialization */
+        $('.toast').toast();
+        $(document).on('hidden.bs.toast', function () {
+            $('.toast').css({
+                'z-index': ''
+            })
+        });
+        /* toasts ends */
+        /* Slick slider starts */
+        $('.slick-profiles-slider').slick({
+            dots: false,
+            infinite: false,
+            speed: 400,
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            responsive: [{
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+                {
+                    breakpoint: 600,
                     settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3,
-                        infinite: true,
-                        dots: true
+                        slidesToShow: 2,
+                        slidesToScroll: 2
                     }
                 },
-                    {
-                        breakpoint: 600,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 2
-                        }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1
-                        }
-                    }
-                    // You can unslick at a given breakpoint now by adding:
-                    // settings: "unslick"
-                    // instead of a settings object
-                ]
-            });
-            /* Slick slider starts ends */
-        });
-
-
-
-
-
-        $(document).on('click','#terminateMission',function () {
-
-            var amount = $(this).attr('data-adjust-amount');
-            var type = $(this).attr('data-type');
-            var id = $(this).attr('data-id');
-
-            $.ajax({
-                url:"{{ path('b2b_client_main_mission_details') }}",
-                data:{id:id},
-                method:'GET',
-                success:function (data) {
-                    console.log(amount);
-                    if(amount > 0){
-                        if(type == 'terminate'){
-                            $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
-                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
-                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
-                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                            $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
-                            $("#mission-terminate").attr("href","/client/mission/process-mission-request/"+id);
-                            $('#mission-terminate').attr('data-type','terminate');
-                            $(".teminate-class").removeAttr('id','none');
-
-                        }else if(type == 'cancel'){
-                            var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
-                            var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
-
-                            $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
-                            $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
-                            $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                            $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
-                            $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
-
-                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
-                            $('#mission-terminate-cancel').attr('data-type','terminate');
-                            $(".teminate-class-cancel").removeAttr('id','none');
-                        }
-
-                    }else if(amount < 0){
-                        console.log(type);
-
-                        if(type == 'terminate'){
-                            $("#break-up-text").text('The Refundable amount will be done once you terminate the mission');
-                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
-                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
-                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                            $("#need-to-pay").text('Refund Amount:'+parseFloat(data.refund_amount).toFixed(2));
-
-                            $('#mission-termination-text').text("The remaining amount "+parseFloat(data.refund_amount).toFixed(2)+" will be paid back to you within 48 hours");
-                            $("#mission-terminate").attr("href","/client/api/mission/status/"+id+'/'+type);
-                            $('#mission-terminate').attr('data-type','terminate');
-                            $(".teminate-class").removeAttr('id','none');
-
-                        }else if (type == 'cancel'){
-
-                            var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
-                            var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
-                            $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
-                            $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                            $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
-                            $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
-                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
-                            $('#mission-terminate-cancel').attr('data-type','terminate');
-                            $(".teminate-class-cancel").removeAttr('id','none');
-
-                        }
-
-
-                    }else if(amount == 0){
-
-                        if(type == 'terminate'){
-                            console.log(amount);
-                            $("#break-up-text").text('Please terminate the mission');
-                            $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
-                            $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                            $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
-                            $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                            $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
-                            $("#mission-terminate").attr("href","/client/api/mission/status/"+id+'/'+type);
-                            $('#mission-terminate').attr('data-type','terminate');
-                            $(".teminate-class").removeAttr('id','none');
-
-                        }else if (type == 'cancel'){
-
-                            var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
-                            var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
-                            $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
-                            $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
-                            $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
-                            $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
-                            $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
-                            $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
-                            $('#mission-terminate-cancel').attr('data-type','terminate');
-                            $(".teminate-class-cancel").removeAttr('id','none');
-
-                        }
-
-
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
                     }
                 }
-            })
-
+                // You can unslick at a given breakpoint now by adding:
+                // settings: "unslick"
+                // instead of a settings object
+            ]
         });
+        /* Slick slider starts ends */
+    });
 
 
 
-        (function($) {
-            $.fn.button = function(action) {
-                if (action === 'loading' && this.data('loading-text')) {
-                    this.data('original-text', this.html()).html(this.data('loading-text')).prop('disabled', true);
+
+
+    $(document).on('click','#terminateMission',function () {
+
+        var amount = $(this).attr('data-adjust-amount');
+        var type = $(this).attr('data-type');
+        var id = $(this).attr('data-id');
+
+        $.ajax({
+            url:"{{ path('b2b_client_main_mission_details') }}",
+            data:{id:id},
+            method:'GET',
+            success:function (data) {
+                console.log(amount);
+                if(amount > 0){
+                    if(type == 'terminate'){
+                        $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
+                        $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                        $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                        $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                        $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                        $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
+                        $("#mission-terminate").attr("href","/client/mission/process-mission-view/"+id);
+                        $('#mission-terminate').attr('data-type','terminate');
+                        $(".teminate-class").removeAttr('id','none');
+
+                    }else if(type == 'cancel'){
+                        var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
+                        var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
+
+                        $("#break-up-text").text('The Breakup amount need to pay to terminate the mission');
+                        $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
+                        $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                        $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
+                        $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                        $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
+
+                        $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
+                        $('#mission-terminate-cancel').attr('data-type','terminate');
+                        $(".teminate-class-cancel").removeAttr('id','none');
+                    }
+
+                }else if(amount < 0){
+                    console.log(type);
+
+                    if(type == 'terminate'){
+                        $("#break-up-text").text('The Refundable amount will be done once you terminate the mission');
+                        $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                        $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                        $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                        $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                        $("#need-to-pay").text('Refund Amount:'+parseFloat(data.refund_amount).toFixed(2));
+
+                        $('#mission-termination-text').text("The remaining amount "+parseFloat(data.refund_amount).toFixed(2)+" will be paid back to you within 48 hours");
+                        $("#mission-terminate").attr("href","/client/api/mission/status/"+id+'/'+type);
+                        $('#mission-terminate').attr('data-type','terminate');
+                        $(".teminate-class").removeAttr('id','none');
+
+                    }else if (type == 'cancel'){
+
+                        var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
+                        var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
+                        $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
+                        $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                        $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
+                        $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                        $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
+                        $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
+                        $('#mission-terminate-cancel').attr('data-type','terminate');
+                        $(".teminate-class-cancel").removeAttr('id','none');
+
+                    }
+
+
+                }else if(amount == 0){
+
+                    if(type == 'terminate'){
+                        console.log(amount);
+                        $("#break-up-text").text('Please terminate the mission');
+                        $("#price").text('Price :'+parseFloat(data.price).toFixed(2));
+                        $("#tax").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                        $('#total').text("Total :"+parseFloat(data.total).toFixed(2));
+                        $("#advance-payment").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                        $("#need-to-pay").text('Advance Payment:'+parseFloat(data.need_to_pay).toFixed(2));
+                        $("#mission-terminate").attr("href","/client/api/mission/status/"+id+'/'+type);
+                        $('#mission-terminate').attr('data-type','terminate');
+                        $(".teminate-class").removeAttr('id','none');
+
+                    }else if (type == 'cancel'){
+
+                        var cancel_amount = parseFloat(data.advance_payment).toFixed(2);
+                        var calcPrice = cancel_amount - ( (cancel_amount/100) * 2 );
+                        $("#price-cancel").text('Price :'+parseFloat(data.price).toFixed(2));
+                        $("#tax-cancel").text("Vat :"+parseFloat(data.tax).toFixed(2));
+                        $('#total-cancel').text("Total :"+parseFloat(data.total).toFixed(2));
+                        $("#advance-payment-cancel").text('Advance Payment:'+parseFloat(data.advance_payment).toFixed(2));
+                        $("#need-to-pay-cancel").text('if you cancelled the Mission we will refund you:'+calcPrice.toFixed(2)+' amount to your account,');
+                        $("#mission-terminate-cancel").attr("href","/client/api/mission/status/"+id+'/'+type);
+                        $('#mission-terminate-cancel').attr('data-type','terminate');
+                        $(".teminate-class-cancel").removeAttr('id','none');
+
+                    }
+
+
                 }
-                if (action === 'reset' && this.data('original-text')) {
-                    this.html(this.data('original-text')).prop('disabled', false);
-                }
-            };
-        }(jQuery));
-
-        $(document).on('click','#printInvoice',function () {
-
-            Popup($('.invoice')[0].outerHTML);
-            function Popup(data)
-            {
-                window.print();
-                return true;
             }
-        });
+        })
 
-    </script>
+    });
 
-    {% block javascripts %}{% endblock %}
+
+
+    (function($) {
+        $.fn.button = function(action) {
+            if (action === 'loading' && this.data('loading-text')) {
+                this.data('original-text', this.html()).html(this.data('loading-text')).prop('disabled', true);
+            }
+            if (action === 'reset' && this.data('original-text')) {
+                this.html(this.data('original-text')).prop('disabled', false);
+            }
+        };
+    }(jQuery));
+
+    $(document).on('click','#printInvoice',function () {
+
+        Popup($('.invoice')[0].outerHTML);
+        function Popup(data)
+        {
+            window.print();
+            return true;
+        }
+    });
+
+</script>
+
+{% block javascripts %}{% endblock %}
 
 {#    {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}#}
 
-    <!-- Alert about cookie useage -->
-    {% embed "v2/_shared/cookiealert.html.twig" %}{% endembed %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
-    <script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
 </body>
 </html>

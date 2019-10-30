@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use App\Service\Mailer;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -384,8 +385,19 @@ class LoginController extends Controller
      *
      * @Route("/google/check", name="login_google_check")
      */
-    public function googleLoginCheck(Request $request)
+    public function googleLoginCheck(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository)
     {
+        $user = $clientRegistry->getClient('google_client');
+        $email = $user->getEmail();
+        dd($email);
+        $tempUser = $clientRepository->findOneBy(['email' => $email]);
+
+        if(!is_null($tempUser))
+        {
+            $this->loginClient($request, $tempUser);
+            return $this->redirectToRoute('b2b_client_main_profile');
+        }
+
         $session = $request->getSession();
         return ($session->get(SessionName::LOGIN_REDIRECT))?$this->redirect($session->get(SessionName::LOGIN_REDIRECT)):$this->redirectToRoute('front_homepage_index');
     }
@@ -424,9 +436,18 @@ class LoginController extends Controller
      *
      * @Route("/facebook/check", name="login_facebook_check")
      */
-    public function facebookLoginCheck(Request $request)
+    public function facebookLoginCheck(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository)
     {
+        $user = $clientRegistry->getClient('facebook');
+        $email = $user->getEmail();
         $session = $request->getSession();
+        $tempUser = $clientRepository->findOneBy(['email' => $email]);
+
+        if(!is_null($tempUser))
+        {
+            $this->loginClient($request, $tempUser);
+            return $this->redirectToRoute('b2b_client_main_profile');
+        }
         return ($session->get(SessionName::LOGIN_REDIRECT))?$this->redirect($session->get(SessionName::LOGIN_REDIRECT)):$this->redirectToRoute('front_homepage_index');
     }
 
@@ -563,4 +584,17 @@ class LoginController extends Controller
             return $this->redirectToRoute("front_homepage_index");
         }
     }
+
+    private function loginClient(Request $request,$client)
+{
+
+    $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
+
+    $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
+
+    $this->container->get('security.token_storage')->setToken($token);
+    $this->container->get('session')->set('_security_client_area', serialize($token));
+    $event = new InteractiveLoginEvent($request, $token);
+    $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+}
 }

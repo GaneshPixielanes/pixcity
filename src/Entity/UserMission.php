@@ -186,10 +186,15 @@ class UserMission
     private $isTvaApplicable;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MissionRecurringPriceLog", mappedBy="mission",cascade={"persist"})
+     */
+    private $active_log;
+
+    /**
      * @ORM\Column(type="string", length=55, nullable=true)
      */
     private $missionType;
-    
+
 
     public function __construct()
     {
@@ -199,6 +204,7 @@ class UserMission
         $this->documents = new ArrayCollection();
         $this->missionLogs = new ArrayCollection();
         $this->missionRegions = new ArrayCollection();
+        $this->active_log = new ArrayCollection();
     }
 
     protected function datePath(){
@@ -632,6 +638,16 @@ class UserMission
         return $this->missionLogs;
     }
 
+    /**
+
+     * @return Collection|MissionRecurringPriceLog[]
+     */
+    public function getMissionPriceLogs(): Collection
+    {
+        return $this->active_log;
+    }
+
+
     public function addMissionLog(MissionLog $missionLog): self
     {
         if (!$this->missionLogs->contains($missionLog)) {
@@ -746,6 +762,29 @@ class UserMission
     public function setIsTvaApplicable(?string $isTvaApplicable): self
     {
         $this->isTvaApplicable = $isTvaApplicable;
+
+        return $this;
+    }
+
+    public function addActiveLog(MissionRecurringPriceLog $activeLog): self
+    {
+        if (!$this->active_log->contains($activeLog)) {
+            $this->active_log[] = $activeLog;
+            $activeLog->setMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActiveLog(MissionRecurringPriceLog $activeLog): self
+    {
+        if ($this->active_log->contains($activeLog)) {
+            $this->active_log->removeElement($activeLog);
+            // set the owning side to null (unless already changed)
+            if ($activeLog->getMission() === $this) {
+                $activeLog->setMission(null);
+            }
+        }
 
         return $this;
     }

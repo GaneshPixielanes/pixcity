@@ -30,7 +30,11 @@
                                         <div class="row">
                                             <div class="card-content d-flex justify-content-center align-items-center">
                                                 <div class="col-md-4 text-center">
+                                                    {% if client.data.profilePhoto != '' %}
                                                     <img  class="rounded-circle" src="/uploads/clients/{{ client.data.id }}/{{ client.data.profilePhoto }}">
+                                                    {% else %}
+                                                    <img  class="rounded-circle" src="/assets/images/login-reg-place.svg">
+                                                    {% endif %}
                                                 </div>
                                                 <div class="col-md-8 fz-14 text-darkblue">
                                                     {{ client.data.company }} <span class="d-block fz-12 text-seagreen">{{ client.data.firstName~' '~client.data. LastName}}</span>
@@ -451,7 +455,7 @@
     <div class="row">
         <div class="col-md-12 mb-3">
             <label>ADRESSE</label>
-            <input type="text" class="form-control bg-lightgray" placeholder="80 rue de lourmel" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
+            <input type="text" class="form-control bg-lightgray" placeholder="" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
         </div>
     </div>
 {% endblock %}
@@ -459,7 +463,7 @@
 {% block _client_clientInfo_postalCode_widget %}
         <div class="col-md-6 mb-3">
             <label>CODE POSTAL</label>
-            <input type="text" class="form-control bg-lightgray" placeholder="75015" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
+            <input type="text" class="form-control bg-lightgray" placeholder="" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" value="{{ form.vars.value }}">
         </div>
 {% endblock %}
 
@@ -506,14 +510,14 @@
 {% block _client_firstName_widget %}
     <div class="col-md-6 mb-3">
         <label>VOTRE PRÉNOM</label>
-        <input type="text" class="form-control bg-lightgray" placeholder="Paul" name="{{ form.vars.full_name }}"  value="{{ form.vars.value }}">
+        <input type="text" class="form-control bg-lightgray" placeholder="" name="{{ form.vars.full_name }}"  value="{{ form.vars.value }}">
     </div>
 {% endblock %}
 
 {% block _client_lastName_widget %}
     <div class="col-md-6 mb-3">
         <label>VOTRE NOM</label>
-        <input type="text" class="form-control bg-lightgray" placeholder="Dupont" name="{{ form.vars.full_name }}"  value="{{ form.vars.value }}">
+        <input type="text" class="form-control bg-lightgray" placeholder="" name="{{ form.vars.full_name }}"  value="{{ form.vars.value }}">
     </div>
 {% endblock %}
 
@@ -635,6 +639,8 @@
 
 
 {% block _mission_missionType_widget %}
+    <h5 class="text-darkgray mb-0">Le nature de la mission <span style="color: #fd6b84;">*</span></h5>
+    <p>Une fois votre prix fixé, vous devez choisir la nature de votre mission. Soit c’est une mission « One shot » (une seule fois sans renouvellement automatique. Ex : pour une opération d’influence) soit c’est une mission « Récurrente » (la mission sera reconduite de manière automatique chaque mois sans que vous n’ayez rien à faire. Vous pourrez toujours éditer la mission au besoin mais vous n’aurez pas à la recréer chaque mois. Ex : pour une mission de community management). A vous de fixer vos règles ;) Vous avez des questions ? Consultez notre FAQ sur les conditions de missions J</p>
     <div class="d-flex align-items-center my-3">
         <div class="btn-group btn-group-toggle pill-switch" data-toggle="buttons">
             {% for choice in form.vars.choices %}

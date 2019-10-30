@@ -195,7 +195,7 @@
                                         <div class="row company-info">
                                             <div class="col-md-12 card shadow-sm mb-3 p-3">
                                                 <p class="font-weight-light text-center mb-4">Votre entreprise</p>
-                                                <input name="file-avatar" id="client-logo" type="file" class="file-input d-none" required  data-msg-required="Merci d'uploader votre logo." accept="image/*"/>
+                                                <input name="file-avatar" id="client-logo" type="file" class="file-input d-none" accept="image/*"/>
                                                 <button id="client-logo-select">Choisir un logo</button>
                                                 <div class="thumb" style="background-image: url('/uploads/users')"></div>
 
@@ -352,16 +352,16 @@
             $("#client-logo-select").text(fileName);
         });
 
-        $('form[name="client"]').on('submit', function () {
-           if($('#client-logo').val() == '')
-           {
-               $('.logo-error').remove();
-               $("html, body").animate({ scrollTop: 0 }, "slow");
-               $('#client-logo-select').after('<label for="" class="error logo-error">Merci d\'uploader votre logo.</label>');
-               return false;
-           }
-
-        });
+        // $('form[name="client"]').on('submit', function () {
+        //    if($('#client-logo').val() == '')
+        //    {
+        //        $('.logo-error').remove();
+        //        $("html, body").animate({ scrollTop: 0 }, "slow");
+        //        $('#client-logo-select').after('<label for="" class="error logo-error">Merci d\'uploader votre logo.</label>');
+        //        return false;
+        //    }
+        //
+        // });
     </script>
 
 {% endblock %}

@@ -43,7 +43,7 @@
                             <ul class="work-documents-list m-0 p-0">
                                 <li class="work-documents-list-item p-3 d-flex align-items-center justify-content-between bg-lightwhite">
                                     <p class="mb-0 fz-14"><i class="far fa-file-alt fz-16 mr-2"></i> Brief mission {{ mission.user.firstname }}</p>
-                                    <a href="{{ url('b2b_mission_download',{'id':mission.id}) }}"><i class="fas fa-download fz-16"></i></a>
+                                    <a href="{{ url("b2b_client_mission_process_mission_view", {'id': mission.id}) }}"><i class="fas fa-download fz-16"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -135,7 +135,7 @@
             <div class="col-sm-12">
                 <div class="form py-3">
                     <div class="row">
-                        <p class="fz-10 mb-4">* Ce paiement est assimilé à un cantonnement du montant de la mission. Le paiement ne sera déclenché au city-maker que lorsque la mission sera terminée. Si elle est annulée, l’argent de ce compte de cantonnement vous sera restitué”</p>
+                        <p class="fz-10 mb-4">* Ce paiement est assimilé à un cantonnement de la mission. Le paiement ne sera déclenché au city-maker que lorsque la mission sera terminée dans le cas d’une mission one shot. Dans le cas d’un mission récurrente, le pré-paiement aura lieu chaque mois par prélèvement automatique. Le déclenchement final au city-maker sera fait dans les mêmes conditions qu’une mission one shot</p>
                         <div class="col-sm-12">
                             <div class="d-flex align-items-center justify-content-end position-relative">
 
