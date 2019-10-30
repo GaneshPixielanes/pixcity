@@ -296,16 +296,16 @@ $(document).ready(function() {
 
     $(document).ready(function()
     {
-      $('body').on('click','#logout',function()
+      $('#logout').click(function()
       {
         window.location.href = "/connexion/signout";
       });
-        jQuery('body').on('click','#pc-city-maker-lp',function()
+        jQuery('#pc-city-maker-lp').click(function()
         {
             window.location.href = "/devenez-city-maker";
         });
 
-        jQuery('body').on('click','#pc-login-page',function()
+        jQuery('#pc-login-page').click(function()
         {
             window.location.href = "/connexion";
         })

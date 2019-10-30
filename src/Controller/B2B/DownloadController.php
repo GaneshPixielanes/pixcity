@@ -84,7 +84,7 @@ class DownloadController extends Controller
 
         if($filesystem->exists($file_path)){
 
-           return $this->downloadFile($file_path);
+            return $this->downloadFile($file_path);
 
         }else{
 
@@ -149,7 +149,7 @@ class DownloadController extends Controller
 
 
     /**
-         * @Route("/generate-invoice/{id}", name="generate_invoice")
+     * @Route("/generate-invoice/{id}", name="generate_invoice")
      */
     public function generateInvoiceDownload($id,UserMissionRepository $missionRepository,Filesystem $filesystem)
     {
@@ -279,7 +279,7 @@ class DownloadController extends Controller
 
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT
-            );
+        );
 
         return $response;
 

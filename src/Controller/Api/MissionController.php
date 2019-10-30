@@ -130,125 +130,125 @@ class MissionController extends Controller
         {
 
             case 'accept':
-                    if($mission->getStatus() == MissionStatus::CREATED)
-                    {
-                        $status = MissionStatus::ONGOING;
-                        $mission->setMissionAgreedClient(1);
+                if($mission->getStatus() == MissionStatus::CREATED)
+                {
+                    $status = MissionStatus::ONGOING;
+                    $mission->setMissionAgreedClient(1);
 //                        $notificationsRepository->insert($mission->getUser(),null,'accept_mission','Mission "'.$mission->getTitle().'" has been accepted by '.$mission->getClient(),$mission->getId());
-                    }
-                    else
-                    {
-                        return new JsonResponse(['success' => false, 'message' => 'Illegal operation']);
-                    }
-                    break;
+                }
+                else
+                {
+                    return new JsonResponse(['success' => false, 'message' => 'Illegal operation']);
+                }
+                break;
             case 'deny':
-                    if($mission->getStatus() == MissionStatus::CREATED)
-                    {
-                        $status = MissionStatus::CLIENT_DECLINED;
-                        $mission->setMissionAgreedClient(0);
+                if($mission->getStatus() == MissionStatus::CREATED)
+                {
+                    $status = MissionStatus::CLIENT_DECLINED;
+                    $mission->setMissionAgreedClient(0);
 //                        $notificationsRepository->insert($mission->getUser(),null,'deny_mission','Mission "'.$mission->getTitle().'" has been denied by '.$mission->getClient(),$mission->getId());
-                    }
-                    else{
-                        return new JsonResponse(['success' => false, 'message' => 'Illegal operation']);
-                    }
-                    break;
+                }
+                else{
+                    return new JsonResponse(['success' => false, 'message' => 'Illegal operation']);
+                }
+                break;
             case 'cancel':
 
-                    if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
-                    {
+                if($mission->getStatus() == MissionStatus::CANCEL_REQUEST_INITIATED)
+                {
 
-                        $status = MissionStatus::CANCELLED;
+                    $status = MissionStatus::CANCELLED;
 
-                        $margin_value = $first_result['client_price'] - $first_result['cm_price'];
+                    $margin_value = $first_result['client_price'] - $first_result['cm_price'];
 
-                        if($first_result['client_tax'] != 0){
+                    if($first_result['client_tax'] != 0){
 
-                            $tax_value = $tax->getValue() / 100 * $margin_value;
+                        $tax_value = $tax->getValue() / 100 * $margin_value;
 
-                            $fee = $margin_value + $tax_value;
+                        $fee = $margin_value + $tax_value;
 
-                        }else{
+                    }else{
 
-                            $fee = $margin_value;
-                        }
-
-
-
-                        $client_paid = $first_result['client_total'];
-
-                        $fee_percentage = (2 / 100) * $client_paid;
-
-                        $fees_creadited = $fee - $fee_percentage;
-
-                        $refund_amount = $client_paid - $fee;
-
-                        if($fees_creadited < 0){
-                            $fees_creadited = 0;
-                            $refund_amount = $client_paid;
-                        }
-
-                        $mission->getUserMissionPayment()->setAdjustment($client_paid);
-                        $clientTransaction->setTransactionType('Refund-Full');
-                        $clientTransaction->setAmount($result['price']);
-                        $clientTransaction->setTotalAmount($first_result['client_total']);
-                        $clientTransaction->setFee($fees_creadited);
-
-                        $response = $mangoPayService->refundPayment($transaction,$refund_amount,$fees_creadited);
-
-                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());
-
-                        $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission_client','L\'annulation de la mission '.$mission->getTitle().' est confirmée. Le pré-paiement que vous avez réalisé lors de l\'acceptation du devis va vous être restitué par notre partenaire Mango Pay sous 4 jours. ',$mission->getId());
-
-                        break;
+                        $fee = $margin_value;
                     }
-                    elseif ($mission->getStatus() == MissionStatus::CREATED || $mission->getStatus() == MissionStatus::ONGOING)
-                    {
-                        $status = MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT;
-//                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle(),$mission->getId());
+
+
+
+                    $client_paid = $first_result['client_total'];
+
+                    $fee_percentage = (2 / 100) * $client_paid;
+
+                    $fees_creadited = $fee - $fee_percentage;
+
+                    $refund_amount = $client_paid - $fee;
+
+                    if($fees_creadited < 0){
+                        $fees_creadited = 0;
+                        $refund_amount = $client_paid;
                     }
-                    else
-                    {
-                        return new JsonResponse(['success' => false, 'message' => 'Illegal Operation']);
-                    }
+
+                    $mission->getUserMissionPayment()->setAdjustment($client_paid);
+                    $clientTransaction->setTransactionType('Refund-Full');
+                    $clientTransaction->setAmount($result['price']);
+                    $clientTransaction->setTotalAmount($first_result['client_total']);
+                    $clientTransaction->setFee($fees_creadited);
+
+                    $response = $mangoPayService->refundPayment($transaction,$refund_amount,$fees_creadited);
+
+                    $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());
+
+                    $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission_client','L\'annulation de la mission '.$mission->getTitle().' est confirmée. Le pré-paiement que vous avez réalisé lors de l\'acceptation du devis va vous être restitué par notre partenaire Mango Pay sous 4 jours. ',$mission->getId());
+
                     break;
+                }
+                elseif ($mission->getStatus() == MissionStatus::CREATED || $mission->getStatus() == MissionStatus::ONGOING)
+                {
+                    $status = MissionStatus::CANCEL_REQUEST_INITIATED_CLIENT;
+//                        $notificationsRepository->insert($mission->getUser(),null,'cancel_mission','Client '.$mission->getClient().' has requested for  cancellation of mission '.$mission->getTitle(),$mission->getId());
+                }
+                else
+                {
+                    return new JsonResponse(['success' => false, 'message' => 'Illegal Operation']);
+                }
+                break;
             case 'terminate':
-                    if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING)
-                    {
+                if($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING)
+                {
 
-                        $new_result = $missionPaymentRepository->getPrices($result['persent_price'], $margin->getValue(), $tax->getValue(), $cityMakerType);
+                    $new_result = $missionPaymentRepository->getPrices($result['persent_price'], $margin->getValue(), $tax->getValue(), $cityMakerType);
 
-                        $clientTransaction->setAmount($new_result['client_total']);
-                        $clientTransaction->setTotalAmount($new_result['client_total']);
-                        $clientTransaction->setFee($new_result['pcs_total']);
+                    $clientTransaction->setAmount($new_result['client_total']);
+                    $clientTransaction->setTotalAmount($new_result['client_total']);
+                    $clientTransaction->setFee($new_result['pcs_total']);
 
-                        $status = MissionStatus::TERMINATED;
+                    $status = MissionStatus::TERMINATED;
 
-                        if($result['need_to_pay'] < 0){
+                    if($result['need_to_pay'] < 0){
 
-                            $clientTransaction->setTransactionType('Refund Partial');
+                        $clientTransaction->setTransactionType('Refund Partial');
 
-                            $response = $mangoPayService->refundPaymentWithFee($transaction,$new_result['client_total'] - $new_result['pcs_total'],$new_result['pcs_total']);
-                            $clientTransaction->setMangopayTransactionId($response);
+                        $response = $mangoPayService->refundPaymentWithFee($transaction,$new_result['client_total'] - $new_result['pcs_total'],$new_result['pcs_total']);
+                        $clientTransaction->setMangopayTransactionId($response);
 
-                        }
-
-
-                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. Vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s'est bien passée ! ",$mission->getId());
-                        $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. Votre paiement sera donc déclenché sous 48H via notre partenaire Mango Pay. A très bientôt pour une nouvelle mission sur Pix.City Services. ',$mission->getId());
-
-                        break;
                     }
-                    elseif ($mission->getStatus() == MissionStatus::CREATED)
-                    {
-                        $status = MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT;
+
+
+                    $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. Vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s'est bien passée ! ",$mission->getId());
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. Votre paiement sera donc déclenché sous 48H via notre partenaire Mango Pay. A très bientôt pour une nouvelle mission sur Pix.City Services. ',$mission->getId());
+
+                    break;
+                }
+                elseif ($mission->getStatus() == MissionStatus::CREATED)
+                {
+                    $status = MissionStatus::TERMINATE_REQUEST_INITIATED_CLIENT;
 //                        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has  requested for termination of mission '.$mission->getTitle(),$mission->getId());
 
-                    }
-                    else
-                    {
-                        return new JsonResponse(['success' => false, 'message' => 'Illegal Operation']);
-                    }
-                    break;
+                }
+                else
+                {
+                    return new JsonResponse(['success' => false, 'message' => 'Illegal Operation']);
+                }
+                break;
 
         }
 
@@ -284,6 +284,7 @@ class MissionController extends Controller
 //        $entityManager->flush();
 
 //        $notificationsRepository->insert($mission->getUser(),null,'terminate_mission','Client '.$mission->getClient().' has accepted the request for termination of mission '.$mission->getTitle(),0);
+
 
             if($mission->getStatus() == 'terminated'){
 
@@ -351,17 +352,85 @@ class MissionController extends Controller
 
                 $entityManager->persist($royalties);
 
+
+            $filesystem->mkdir('invoices/'.$mission->getId(),0777);
+
+            $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
+
+            $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
+
+            $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView('b2b/invoice/client_invoice.html.twig',
+                    array(
+                        'mission' => $mission,
+                        'tax' => $tax->getValue()
+                    )
+                ), $clientInvoicePath
+            );
+
+            $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
+
+            $cmInvoicePath = "invoices/".$mission->getId().'/'.$cm_filename;
+
+            $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView('b2b/invoice/cm_invoice.html.twig',
+                    array(
+                        'mission' => $mission,
+                        'tax' => $tax->getValue()
+                    )
+                ), $cmInvoicePath
+            );
+
+            $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
+
+            $pcsInvoicePath = "invoices/".$mission->getId().'/'.$pcs_filename;
+
+            $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView('b2b/invoice/pcs_invoice.html.twig',
+                    array(
+                        'mission' => $mission,
+                        'tax' => $tax->getValue()
+                    )
+                ), $pcsInvoicePath
+            );
+
+            $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
+
+            $cycle = 0;
+
+            if($last_row != null){
+                $cycle = $last_row->getCycle() - 1;
             }
 
-          $entityManager->flush();
 
-          if($mission->getStatus() == 'terminated'){
-              $this->addFlash('mission_change_setting', 'Toutes nos félicitations! La mission est terminée');
-          }elseif($mission->getStatus() == 'cancelled'){
-              $this->addFlash('mission_change_setting', 'Félicitations! La mission a bien été annulée');
-          }
 
-          return $this->redirect('/client/mission');
+            $royalties = new Royalties();
+            $royalties->setMission($mission);
+            $royalties->setCm($mission->getUser());
+            $royalties->setTax($tax->getValue());
+            $royalties->setBasePrice($mission->getUserMissionPayment()->getUserBasePrice());
+            $royalties->setTaxValue($mission->getUserMissionPayment()->getCmTax());
+            $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
+            $royalties->setInvoicePath($cmInvoicePath);
+            $royalties->setPaymentType('mango_pay');
+            $royalties->setStatus('pending');
+            $royalties->setCycle($cycle);
+            $royalties->setBankDetails(json_encode('no_response'));
+
+            $entityManager->persist($royalties);
+
+        }
+
+        $entityManager->flush();
+
+
+        if($mission->getStatus() == 'terminated'){
+            $this->addFlash('mission_change_setting', 'Toutes nos félicitations! La mission est terminée');
+        }elseif($mission->getStatus() == 'cancelled'){
+            $this->addFlash('mission_change_setting', 'Félicitations! La mission a bien été annulée');
+        }
+
+        return $this->redirect('/client/mission');
 
     }
 

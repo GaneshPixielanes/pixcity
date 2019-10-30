@@ -20,52 +20,52 @@ use Symfony\Component\Routing\Annotation\Route;
 class InvoiceController extends Controller
 {
 
-  /**
-   * @Route("", name="list")
-   */
-  public function index(UserMissionRepository $missionRepo, OptionRepository $optionsRepo, NotificationsRepository $notificationsRepo)
-  {
+    /**
+     * @Route("", name="list")
+     */
+    public function index(UserMissionRepository $missionRepo, OptionRepository $optionsRepo, NotificationsRepository $notificationsRepo)
+    {
 
-      if($this->getUser()->getB2bCmApproval() != 1)
-      {
-          return $this->redirectToRoute('front_homepage_index');
-      }
+        if($this->getUser()->getB2bCmApproval() != 1)
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
 
-      $missions = $missionRepo->findBy([
-         'user' => $this->getUser(),
-      ]);
+        $missions = $missionRepo->findBy([
+            'user' => $this->getUser(),
+        ]);
 
-      $missions_ongoing = $missionRepo->findBy([
-          'user' => $this->getUser(),
-          'status' => MissionStatus::ONGOING
-      ]);
+        $missions_ongoing = $missionRepo->findBy([
+            'user' => $this->getUser(),
+            'status' => MissionStatus::ONGOING
+        ]);
 
-      #SEO
-      $page = new Page();
-      $page->setMetaTitle('Pix.city Services : liste des factures');
-      $page->setMetaDescription('Retrouvez dans cet espace toutes les factures de vos missions avec vos clients');
+        #SEO
+        $page = new Page();
+        $page->setMetaTitle('Pix.city Services : liste des factures');
+        $page->setMetaDescription('Retrouvez dans cet espace toutes les factures de vos missions avec vos clients');
 
-      return $this->render('b2b/invoice/index.html.twig', [
-          'missions' => $missions,
-          'tax' => $optionsRepo->findOneBy(['slug' => 'margin']),
-          'notifications' => $notificationsRepo->findBy([
-              'unread' => 1,
-              'user' => $this->getUser()
-          ]),
-          'page' => $page,
-          'missions_ongoing' => $missions_ongoing
-      ]);
-  }
+        return $this->render('b2b/invoice/index.html.twig', [
+            'missions' => $missions,
+            'tax' => $optionsRepo->findOneBy(['slug' => 'margin']),
+            'notifications' => $notificationsRepo->findBy([
+                'unread' => 1,
+                'user' => $this->getUser()
+            ]),
+            'page' => $page,
+            'missions_ongoing' => $missions_ongoing
+        ]);
+    }
 
     /**
      * @Route("/generate/{id}", name="generate")
      */
-        public function generate($id, UserMissionRepository $missionRepo)
+    public function generate($id, UserMissionRepository $missionRepo)
+    {
+        if($this->getUser()->getB2bCmApproval() != 1)
         {
-            if($this->getUser()->getB2bCmApproval() != 1)
-            {
-                return $this->redirectToRoute('front_homepage_index');
-            }
+            return $this->redirectToRoute('front_homepage_index');
+        }
 
         $user = $this->getUser();
 

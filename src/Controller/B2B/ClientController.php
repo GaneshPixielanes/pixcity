@@ -94,7 +94,7 @@ class ClientController extends Controller
         $page->setMetaDescription("Retrouvez dans cet espace votre profil client");
 
         return $this->render('b2b/client/profile.html.twig',[
-           'user' => $user,
+            'user' => $user,
             'tax' => $tax[0],
             'form' => $form->createView(),
             'page' => $page

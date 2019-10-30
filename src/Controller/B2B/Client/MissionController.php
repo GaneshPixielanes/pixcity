@@ -67,8 +67,8 @@ class MissionController extends Controller
             'missions' => $missions,
             'margin' => $margin,
             'notifications' => $notificationsRepository->findBy([
-               'unread' => 1,
-               'client' => $this->getUser()
+                'unread' => 1,
+                'client' => $this->getUser()
             ]),
             'page' => $page
         ]);
@@ -88,7 +88,7 @@ class MissionController extends Controller
 
         return $this->render('/b2b/client/mission/view.html.twig',
             [
-               'mission' => $mission
+                'mission' => $mission
             ]);
     }
 
@@ -126,7 +126,7 @@ class MissionController extends Controller
 
         return $this->render('b2b/client/transaction/mission-accept.html.twig',
             [
-               'mission' => $mission[0]
+                'mission' => $mission[0]
             ]);
 
     }//End of mission accept

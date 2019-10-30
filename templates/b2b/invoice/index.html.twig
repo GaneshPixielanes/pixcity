@@ -120,9 +120,9 @@
                                             <td valign="middle">{{ priceLog.createdAt | date('d/m/Y') }}</td>
                                             <td valign="middle">{{  priceLog.updatedAt | date('d/m/Y') }}</td>
                                             {% if priceLog.mission.isTvaApplicable is not null %}
-                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice + mission.userMissionPayment.cmTax}}€</td>
+                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice + mission.userMissionPayment.cmTax | round }}€</td>
                                             {% else %}
-                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice}}€</td>
+                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice | round }}€</td>
                                             {% endif %}
                                             <td valign="middle"><span class="text-inprogress">Terminé</span></td>
                                             <td valign="middle">
