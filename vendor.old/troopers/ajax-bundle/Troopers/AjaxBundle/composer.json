@@ -1,0 +1,28 @@
+{
+    "name": "troopers/ajax-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony AjaxBundle",
+    "keywords": ["ajax"],
+    "homepage": "http://troopers.agency/bundles/ajax",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Leny Bernard (Troopers)",
+            "email": "leny@troopers.agency",
+            "homepage": "http://troopers.agency"
+        }
+    ],
+    "require-dev": {
+        "symfony/class-loader": "2.1.*"
+    },
+    "autoload": {
+        "psr-0": { "Troopers\\AjaxBundle": "" }
+    },
+    "target-dir": "Troopers/AjaxBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1-dev"
+        }
+    }
+}

@@ -639,12 +639,14 @@ class UserMission
     }
 
     /**
+
      * @return Collection|MissionRecurringPriceLog[]
      */
     public function getMissionPriceLogs(): Collection
     {
         return $this->active_log;
     }
+
 
     public function addMissionLog(MissionLog $missionLog): self
     {

@@ -68,7 +68,7 @@ class CitymakerController extends SearchPageController
 
         $pixies = $usersRepo->findRandomPixies();
 //        $cards = $cardsRepo->search(["pixie"=> $user->getId()], 1, 100);
-        $cards = $cardsRepo->findBy(["pixie" => $user->getId(), "status" => CardStatus::VALIDATED]);
+        $cards = $cardsRepo->findBy(["pixie" => $user->getId(), "status" => CardStatus::VALIDATED],[],12);
 				
         $totalLikes = $cardsRepo->findPixieCardsLikes($user->getId());
         if(empty($totalLikes)) $totalLikes = 0;
@@ -142,6 +142,7 @@ class CitymakerController extends SearchPageController
         PageCategoryRepository $pagesCategoryRepo,
         OptionRepository $optionRepository
     ){
+
         ini_set('memory_limit','1024M');
         $testAccountsAsClient = $optionRepository->findOneBy(['slug'=>'dev-client-email']);
         $testAccountsAsCm = $optionRepository->findOneBy(['slug'=>'dev-cm-email']);
@@ -212,7 +213,7 @@ class CitymakerController extends SearchPageController
             $page->setIndexed(true);
         }
 
-//dd($this->regions);
+
         return $this->render('front/pixies/index.html.twig', [
             'page' => $page,
             'filters' => $searchParams,
