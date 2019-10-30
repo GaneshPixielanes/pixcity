@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Notifications;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use DoctrineExtensions\Query\Mysql\Date;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -34,6 +35,8 @@ class NotificationsRepository extends ServiceEntityRepository
         $notification->setMessage($message);
         $notification->setNotifyBy($notifyBy);
         $notification->setLogId($logId);
+        $notification->setCreatedAt(new \DateTime());
+        $notification->setUpdatedAt(new \DateTime());
         $this->em->persist($notification);
         $this->em->flush();
 
