@@ -816,11 +816,14 @@
                     $('.dash-left, .dash-right').fadeOut();
                     $('.mission-preview-container').fadeIn();
                     var id = $(this).attr('data-id');
-                    console.log($(this).attr('data-id'));
+                    var notification_id = $(this).attr('data-unread');
+                    if(notification_id == 'undefined'){
+                        notification_id = 0;
+                    }
                     $.ajax({
                         url:"{{ path('b2b_client_main_preview_mission') }}",
                         type:'GET',
-                        data: {id: id,route: "{{ route }}"},
+                        data: {id: id,route: "{{ route }}",notification_id:notification_id},
                         dataType:'html',
                         success: function(data){
                             $("#preview-mission").html(data);
@@ -907,11 +910,16 @@
                 if ($(this).is('.pay-online')) {
 
                     var id = $(this).attr('data-id');
+                    var notification_id = $(this).attr('data-unread');
+
+                    if(notification_id == 'undefined'){
+                        notification_id = 0;
+                    }
 
                     $.ajax({
                         url:"{{ path('b2b_client_main_preview_payment') }}",
                         type:'GET',
-                        data: {id: id},
+                        data: {id: id,notification_id:notification_id},
                         dataType:'html',
                         success: function(data){
                             $("#preview-payment").html(data);

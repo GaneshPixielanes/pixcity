@@ -148,6 +148,18 @@ class ClientController extends Controller
     public function previewMission(Request $request,UserMissionRepository $missionRepository,
                                    MissionPaymentRepository $missionPaymentRepository,NotificationsRepository $notificationRepo){
 
+        if($request->get('notification_id') != 0){
+
+            $em = $this->getDoctrine()->getManager();
+
+            $notification = $notificationRepo->find($request->get('notification_id'));
+            $notification->setUnread(0);
+
+            $em->persist($notification);
+            $em->flush();
+
+        }
+
 
         $mission = $missionRepository->activePrices($request->get('id'));
 
@@ -245,7 +257,18 @@ class ClientController extends Controller
     /**
      * @Route("preview-payment", name="preview_payment")
      */
-    public function previewPayment(Request $request,UserMissionRepository $missionRepository,OptionRepository $optionRepository,MissionPaymentRepository $missionPaymentRepository){
+    public function previewPayment(Request $request,UserMissionRepository $missionRepository,OptionRepository $optionRepository,MissionPaymentRepository $missionPaymentRepository,NotificationsRepository $notificationsRepository){
+
+        if($request->get('notification_id') != 0){
+
+            $em = $this->getDoctrine()->getManager();
+
+            $notification = $notificationsRepository->find($request->get('notification_id'));
+            $notification->setUnread(0);
+
+            $em->persist($notification);
+            $em->flush();
+        }
 
 //        $mission = $missionRepository->find($request->get('id'));
         $mission = $missionRepository->activePrices($request->get('id'));
