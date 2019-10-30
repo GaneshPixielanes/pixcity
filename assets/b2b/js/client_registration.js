@@ -58,9 +58,6 @@ $form.validate({
     }
 });
 
-jQuery.validator.addMethod("password", function(value, element) {
-    return this.optional( element ) || /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{8,}$/.test( value );
-}, 'Votre mot de passe doit contenir au moins 8 caractères dont au moins 1 chiffre');
 
 jQuery.validator.addMethod("phone", function(value, element) {
     return this.optional( element ) || /^(\+?\d+){9,}$/.test( value );
@@ -234,3 +231,4 @@ $(document).ready(function () {
         return true;
     }
 });
+

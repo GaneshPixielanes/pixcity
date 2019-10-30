@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="34.405" height="40" viewBox="0 0 48.405 56">
+  <g id="_Map_Marker_-_Cofee_V2_" data-name="📍Map Marker - Cofee [V2]" transform="translate(-249.595 -233)">
+    <g id="_Map_Marker_-_Tourist_V2_" data-name="📍Map Marker - Tourist [V2]" transform="translate(145.595 1)">
+      <g id="_Map_Marker_-_Nature_V2_" data-name="📍Map Marker - Nature [V2]" transform="translate(72)">
+        <path id="_V1_HEXAGONE" data-name="[V1]HEXAGONE" d="M-28.8,0-53,14V42l24.2,14,24.2-14V14Z" transform="translate(85 232)" fill="#ed5485"/>
+        <g id="Category_Icon_-_Bars_and_coffee" data-name="Category Icon - Bars and coffee" transform="translate(-464 189.002)">
+          <path id="Category_Icon_-_Bars_and_coffee-2" data-name="Category Icon - Bars and coffee" d="M9.546,49.6h9.6a4.8,4.8,0,0,0,4.8-4.8h1.6a6.4,6.4,0,0,0,0-12.8H5.946a1.2,1.2,0,0,0-1.2,1.2V44.8A4.8,4.8,0,0,0,9.546,49.6Zm16-14.4a3.2,3.2,0,1,1,0,6.4h-1.6V35.2Zm2.385,19.2H2.362c-2.38,0-3.05-3.2-1.8-3.2H29.724c1.25,0,.59,3.2-1.795,3.2Z" transform="translate(504.056 28.6)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

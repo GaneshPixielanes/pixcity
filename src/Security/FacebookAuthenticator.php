@@ -69,6 +69,13 @@ class FacebookAuthenticator extends SocialAuthenticator
         }
 
         //----------------------------------------------------
+        // If the user is a client, login as a client
+        $clientUser = $this->em->getRepository(Client::class)->findOneBy(['email' => $email]);
+        if($clientUser)
+        {
+            return $clientUser;
+        }    
+        //----------------------------------------------------
         // User email exist - assign facebook ID
 
         $user = $this->em->getRepository(User::class)
@@ -120,7 +127,8 @@ class FacebookAuthenticator extends SocialAuthenticator
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey){
-        return null;
+        
+        return new RedirectResponse($this->router->generate('front_homepage_check_user'));
     }
 
 }

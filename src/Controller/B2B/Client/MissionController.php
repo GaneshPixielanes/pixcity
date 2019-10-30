@@ -15,6 +15,7 @@ use App\Repository\ClientInfoRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionPaymentRepository;
+use App\Repository\MissionRecurringPriceLogRepository;
 use App\Repository\MissionRecurringRepository;
 use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
@@ -66,8 +67,8 @@ class MissionController extends Controller
             'missions' => $missions,
             'margin' => $margin,
             'notifications' => $notificationsRepository->findBy([
-               'unread' => 1,
-               'client' => $this->getUser()
+                'unread' => 1,
+                'client' => $this->getUser()
             ]),
             'page' => $page
         ]);
@@ -87,7 +88,7 @@ class MissionController extends Controller
 
         return $this->render('/b2b/client/mission/view.html.twig',
             [
-               'mission' => $mission
+                'mission' => $mission
             ]);
     }
 
@@ -125,7 +126,7 @@ class MissionController extends Controller
 
         return $this->render('b2b/client/transaction/mission-accept.html.twig',
             [
-               'mission' => $mission[0]
+                'mission' => $mission[0]
             ]);
 
     }//End of mission accept
@@ -195,15 +196,38 @@ class MissionController extends Controller
             $cityMakerType = CompanyStatus::COMPANY;
         }
 
+        $first_result = $missionPaymentRepository->getPrices($mission->getUserMissionPayment()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
         $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
+
+        $result['price'] = $last_result['client_price'];
+        $result['tax'] = $last_result['client_tax'];
+        $result['total'] = $result['price'] + $result['tax'];
+        $result['advance_payment'] = $first_result['client_total'];
+        $result['need_to_pay'] = $result['total'] -  $result['advance_payment'];
+
+        $amount = 0;$fee = 0;
+
+        if($mission->getStatus() == MissionStatus::CREATED){
+
+            $amount = $result['total'];
+
+            $margin = $last_result['client_price'] - $last_result['cm_price'];
+
+        }elseif($mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED || $mission->getStatus() == MissionStatus::ONGOING){
+
+            $margin = $last_result['cm_price'] - $first_result['cm_price'];
+
+            $amount = $result['need_to_pay'];
+
+        }
 
         return $this->render('b2b/client/transaction/payin.html.twig',[
             'createdCardRegister' => $createdCardRegister,
             'returnUrl' => $returnUrl,
             'id' => $id,
-            'amount' => $last_result['client_total'],
-            'mission' => $mission
+            'mission' => $mission,
+            'amount' => $amount
         ]);
 
     }
@@ -299,33 +323,10 @@ class MissionController extends Controller
         $userMissionTblId = $missionRepo->findOneBy(['id'=>$id]);
 
         $tansClientId = $clientInfoRepository->findOneBy(['client'=>$userMissionTblId->getClient()]);
-        //$tansClientId = $clientTransactionRepository->findOneBy(['user'=>$userMissionTblId->getClient()]);
-        $mangopayid = $tansClientId->getMangopayUserId();
-        if(isset($mangopayid) == null){
-            // Create a mango pay user
-            $mangoUser = new UserNatural();
 
-            $mangoUser->PersonType = "NATURAL";
-            $mangoUser->FirstName = $this->getUser()->getFirstname();
-            $mangoUser->LastName = $this->getUser()->getLastname();
-            $mangoUser->Birthday = 1409735187;
-            $mangoUser->Nationality = "FR";
-            $mangoUser->CountryOfResidence = "FR";
-            $mangoUser->Email = $this->getUser()->getEmail();
-            $mangoUser = $mangoPayService->createUser($mangoUser);
-            //Create a wallet
-            $wallet = $mangoPayService->getWallet($mangoUser->Id);
-            $tansClientId->setMangopayUserId($mangoUser->Id);
-            $tansClientId->setMangopayWalletId($wallet->Id);
-            $tansClientId->setMangopayCreatedAt(new \DateTime());
-            $em->persist($tansClientId);
+        $mangoUser = $mangoPayService->getUser($tansClientId->getMangopayUserId());
 
-            $em->flush();
-        }
-        else{
-            $mangoUser = $mangoPayService->getUser($tansClientId->getMangopayUserId());
-            $wallet = $mangoPayService->getWalletId($tansClientId->getMangopayWalletId());
-        }
+        $wallet = $mangoPayService->getWalletId($tansClientId->getMangopayWalletId());
 
         //Create Transaction
         $transaction->setUser($mission->getClient());
@@ -381,6 +382,8 @@ class MissionController extends Controller
                 $mission_price_log->setCycle(1);
                 $mission_price_log->setMonth(date('F'));
                 $mission_price_log->setYear(date('Y'));
+                $mission_price_log->setCreatedAt(new \DateTime());
+                $mission_price_log->setUpdatedAt(new \DateTime());
 
                 $em->persist($mission_price_log);
 
@@ -424,6 +427,7 @@ class MissionController extends Controller
                                          MangoPayService $mangoPayService,
                                          NotificationsRepository $notificationsRepository,
                                          Filesystem $filesystem,
+                                         MissionRecurringPriceLogRepository $missionRecurringPriceLogRepository,
                                          MissionPaymentRepository $missionPaymentRepository)
     {
 
@@ -488,10 +492,14 @@ class MissionController extends Controller
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/client_invoice.html.twig',
                         array(
-                            'mission' => $mission
+                            'mission' => $mission,
+                            'tax' => $tax->getValue()
                         )
                     ), $clientInvoicePath
                 );
+
+
+
 
                 $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
 
@@ -500,7 +508,8 @@ class MissionController extends Controller
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/cm_invoice.html.twig',
                         array(
-                            'mission' => $mission
+                            'mission' => $mission,
+                            'tax' => $tax->getValue()
                         )
                     ), $cmInvoicePath
                 );
@@ -513,10 +522,23 @@ class MissionController extends Controller
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/pcs_invoice.html.twig',
                         array(
-                            'mission' => $mission
+                            'mission' => $mission,
+                            'tax' => $tax->getValue()
                         )
                     ), $pcsInvoicePath
                 );
+
+                $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
+
+                if($last_row != null){
+
+                    $cycle = $last_row->getCycle() + 1;
+
+                }else{
+
+                    $cycle = 2;
+
+                }
 
                 $royalties = new Royalties();
                 $royalties->setMission($mission_id);
@@ -527,7 +549,7 @@ class MissionController extends Controller
                 $royalties->setTotalPrice($mission_id->getUserMissionPayment()->getCmTotal());
                 $royalties->setInvoicePath($cmInvoicePath);
                 $royalties->setStatus('pending');
-                $royalties->setCycle('1');
+                $royalties->setCycle($cycle);
                 $royalties->setBankDetails(json_encode($response));
                 $em->persist($royalties);
                 $em->flush();

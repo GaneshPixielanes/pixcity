@@ -3,7 +3,9 @@
 namespace App\Controller\B2B\Client;
 
 use App\Constant\MissionStatus;
+use App\Entity\Option;
 use App\Entity\Page;
+use App\Repository\MissionRecurringPriceLogRepository;
 use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
@@ -17,11 +19,20 @@ class TransactionController extends AbstractController
     /**
      * @Route("", name="index")
      */
-    public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo)
+    public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo,MissionRecurringPriceLogRepository $missionRecurringPriceLogRepository)
     {
+        $missions = $missionRepo->findBy([
+            'client' => $this->getUser(),
+        ]);
 
-        $missions_index['terminated'] = $missionRepo->findBy(['status' => MissionStatus::TERMINATED, 'client' => $this->getUser()],['createdAt' => 'DESC']);
-        $missions = $missionRepo->findOngoingMissions($this->getUser(), 'client');
+        $missions_ongoing = $missionRepo->findBy([
+            'client' => $this->getUser(),
+            'status' => MissionStatus::ONGOING
+        ]);
+
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);$margin = $options->findOneBy(['slug' => 'margin']);
 
         #SEO
         $page = new Page();
@@ -31,9 +42,11 @@ class TransactionController extends AbstractController
 
         return $this->render('b2b/client/transaction/index.html.twig',[
             'missions' => $missions,
-            'missions_index' => $missions_index,
+            'missions_ongoing' => $missions_ongoing,
             'notifications' => $notificationsRepo->findBy(['client' => $this->getUser(), 'unread' => 1]),
-            'page' => $page
+            'page' => $page,
+            'tax' => $tax->getValue(),
+            'margin' => $margin->getValue()
         ]);
 
     }

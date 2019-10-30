@@ -109,7 +109,6 @@ jQuery(document).ready(function() {
     var validator = $form.validate({
         ignore: ".tab-pane:not(.active) :hidden",
         rules: {
-            "user[email]":{required:true, remote: '/client/check-email'},
             "user[firstname]": {maxlength: 50},
             "user[lastname]": {maxlength: 50},
             "user[currentLocation]": {digits: true, minlength: 5, maxlength: 5},
@@ -296,55 +295,5 @@ jQuery(document).ready(function() {
     //Remove the delete option for the first element i.e; Instagram.
     $('a.delete-item:first').html('');
 
-    $( "[name='user[firstname]']" ).change(function() {
-        $("[name='user[pixie][billing][firstname]']").val($( this ).val());
-    });
-    $( "[name='user[lastname]']" ).change(function() {
-        $("[name='user[pixie][billing][lastname]']").val($( this ).val());
-    });
-    $( "[name='user[phone]']" ).change(function() {
-        $("[name='user[pixie][billing][phone]']").val($( this ).val());
-    });
-    $( "[name='user[birthdate][day]']" ).change(function() {
-        $(".dobd").text($( this ).val());
-    });
-    $( "[name='user[birthdate][month]']" ).change(function() {
-        $(".dobm").text($( this ).val());
-    });
-    $( "[name='user[birthdate][year]']" ).change(function() {
-        $(".doby").text($( this ).val());
-    });
-    $( "[name='user[address][address]']" ).change(function() {
-        $("[name='user[pixie][billing][address][address]']").val($( this ).val());
-    });
-    $( "[name='user[address][zipcode]']" ).change(function() {
-        $("[name='user[pixie][billing][address][zipcode]']").val($( this ).val());
-    });
-    $( "[name='user[address][city]']" ).change(function() {
-        $("[name='user[pixie][billing][address][city]']").val($( this ).val());
-    });
-    $( "[name='user[address][country]']" ).change(function() {
-        $("[name='user[pixie][billing][address][country]']").val($( this ).val());
-    });
-    $( "[name='user[email]']" ).change(function() {
-        $(".email").text($( this ).val());
-    });
-    $("#user_links_0_url").on('input',function () {
-        $(".instagram_txt").html($(this).val()) ;
-    });
-    $("body").on('input','#user_links_1_url',function () {
-        $(".facebook_txt").html($(this).val()) ;
-    });
-    $("body").on('input','#user_links_2_url',function () {
-        $(".twitter_txt").html($(this).val()) ;
-    });
-    $("body").on('input','#user_links_3_url',function () {
-        $(".youtube_txt").html($(this).val()) ;
-    });
-    $("body").on('input','#user_links_4_url',function () {
-        $(".blog_txt").html($(this).val()) ;
-    });
-    $("body").on('input','#user_links_5_url',function () {
-        $(".autre_txt").html($(this).val()) ;
-    });
+
 });

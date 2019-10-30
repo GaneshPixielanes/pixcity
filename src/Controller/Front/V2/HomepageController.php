@@ -6,6 +6,7 @@ use App\Constant\CardStatus;
 use App\Entity\Card;
 use App\Repository\CardCategoryRepository;
 use App\Repository\CardRepository;
+use App\Repository\ClientRepository;
 use App\Repository\OptionRepository;
 use App\Repository\PageCategoryRepository;
 use App\Repository\PageRepository;
@@ -14,7 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
  * @Route("/", name="front_homepage_")
@@ -150,6 +153,10 @@ class HomepageController extends Controller
 
         $cardPerRegion = array_combine(array_column($result,'slug'),array_column($result,'card_count'));
 
+        $country = @unserialize(file_get_contents('http://ip-api.com/php/'.$_SERVER['REMOTE_ADDR']));
+        
+        
+
         return $this->render('v2/front/homepage/new.html.twig', [
             'page' => $page,
             'regions' => $regions,
@@ -222,4 +229,48 @@ class HomepageController extends Controller
     {
         return $this->render('v2/_shared/header_ajax.html.twig');
     }
+
+
+    private function loginClient(Request $request,$client) :void
+    {
+        $session = new Session();
+
+        $session->set('login_by',['type' => 'login_client','entity' => $client]);
+
+        $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
+
+        $this->container->get('security.token_storage')->setToken($token);
+        $this->container->get('session')->set('_security_client_area', serialize($token));
+        $event = new InteractiveLoginEvent($request, $token);
+        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+    }
+
+    /**
+     * @Route("check-user",name="check_user")
+     */
+    public function checkUser(Request $request, ClientRepository $clientRepo)
+    {
+        $user = $this->getUser();
+
+        $client = $clientRepo->findOneBy(['email' => $user->getEmail()]);    
+        if($client)
+        {
+            $this->container->get('security.token_storage')->setToken(null);
+            $this->container->get('session')->invalidate();
+            $this->loginClient($request, $user);
+            return $this->redirectToRoute('b2b_client_main_index');
+        }
+
+        $roles = $user->getRoles();
+
+        if(in_array('ROLE_PIXIE', $roles))
+        {
+            return $this->redirectToRoute('front_pixie_account_homepage');
+        }
+        else
+        {
+            return $this->redirectToRoute('front_homepage_index');
+        }
+    }
 }
+

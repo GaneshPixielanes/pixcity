@@ -1,0 +1,22 @@
+# Image upload
+kms_froala_editor_upload_image:
+    path: /upload_image
+    defaults: { _controller: KMSFroalaEditorBundle:Media:uploadImage }
+
+kms_froala_editor_delete_image:
+    path: /delete_image
+    defaults: { _controller: KMSFroalaEditorBundle:Media:deleteImage }
+
+kms_froala_editor_load_images:
+    path: /load_images
+    defaults: { _controller: KMSFroalaEditorBundle:Media:loadImages }
+
+# File upload
+kms_froala_editor_upload_file:
+    path: /upload_file
+    defaults: { _controller: KMSFroalaEditorBundle:Media:uploadFile }
+
+# Video upload
+kms_froala_editor_upload_video:
+    path: /upload_video
+    defaults: { _controller: KMSFroalaEditorBundle:Media:uploadVideo }

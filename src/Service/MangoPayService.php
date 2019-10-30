@@ -23,7 +23,8 @@ class MangoPayService
 
         $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
 
-//        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
+//      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
+
         $this->mangoPayMoney = new MangoPay\Money();
         $this->mangoPayRefund = new MangoPay\Refund();
     }
@@ -93,7 +94,7 @@ class MangoPayService
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
-        $payIn->Tag = "Mission-id".$mission;
+        $payIn->Tag = "Mission-id ".$mission;
         $payIn->DebitedFunds = new MangoPay\Money();
         $payIn->DebitedFunds->Amount = $amount;
         $payIn->DebitedFunds->Currency = 'EUR';
@@ -129,7 +130,7 @@ class MangoPayService
     }
 
     public function refundPayment($transaction,$amount,$fees){
-
+        
         $fees = $fees * 100;
 
         $debitedFund = $amount * 100;

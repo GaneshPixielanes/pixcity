@@ -114,7 +114,7 @@
                             </th>
                             <th class="w-30">
                                 <div class="border-right">
-                                    QUANTITE
+                                    NATURE DE LA MISSION
                                 </div>
                             </th>
                             <th class="w-20">
@@ -126,34 +126,34 @@
                         <tr>
                             <td>01</td>
                             <td>{{ mission.referencePack.packskill.name~' / '~mission.title }}</td>
-                            <td>01</td>
-                            <td>{{ payment['client_price'] |round(2, 'floor') }} €</td>
+                            <td>{% if mission.getMissionType == 'one-shot' %}One-Shot{% else %}Récurrente{% endif %}</td>
+                            <td>{{ payment['client_price'] |round(2, 'floor') }}€</td>
                         </tr>
-                        <tr>
-                            <td></td>
-                            <td>SOUS-TOTAL</td>
-                            <td></td>
-                            <td>{{ payment['client_price'] |round(2, 'floor') }} €</td>
-                        </tr>
+{#                        <tr>#}
+{#                            <td></td>#}
+{#                            <td>SOUS-TOTAL</td>#}
+{#                            <td></td>#}
+{#                            <td>{{ payment['client_price'] |round(2, 'floor') }}€</td>#}
+{#                        </tr>#}
                         {% if mission.isTvaApplicable is not null %}
                             <tr>
                                 <td></td>
-                                <td>Tax {{tax}}%</td>
+                                <td>TVA {{tax}}%</td>
                                 <td></td>
-                                <td>{{ payment['client_tax'] | round(2, 'floor') }} €</td>
+                                <td>{{ payment['client_tax'] | round(2, 'floor') }}€</td>
                             </tr>
                         {% endif %}
                         <tr>
                             <td></td>
                             <td class="text-dargblue font-weight-bold">SOUS TOTAL HT</td>
                             <td></td>
-                            <td class="text-dargblue font-weight-bold">{{ payment['client_total'] |round(2, 'floor') }} € <br><br></td>
+                            <td class="text-dargblue font-weight-bold">{{ payment['client_total'] |round(2, 'floor') }}€ <br><br></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td class="text-dargblue font-weight-bold">TOTAL TTC</td>
                             <td></td>
-                            <td class="text-dargblue font-weight-bold">{{ payment['client_total'] |round(2, 'floor') }} €</td>
+                            <td class="text-dargblue font-weight-bold">{{ payment['client_total'] |round(2, 'floor') }}€</td>
                         </tr>
 
 
@@ -163,7 +163,7 @@
 
                 <div class="col-md-12 invoice-footer mb-3">
                     <p class="text-darkblue font-weight-bold fz-12 mb-1">
-                        NOTICE:
+                        NOTES:
                     </p>
                     <p class="text-textgray fz-14 mb-1">
                         Conditions d'escompte Néant / La prestation est réalisée et payée selon les conditions générales d'utilisation du City Maker, ainsi que selon les stipulations pour autrui nées de l'acceptation par les parties des conditions générales Pix.city Services que les parties reconnaissent avoir lues et acceptées et qui sont disponibles à l'adresse <a href="https://docs.google.com/document/d/1UKKQBA3rl-LGjtMfJJvjTHtaDo9U1Yc2nTxFjqn4oXM/edit#heading=h.mgkbkicnug0t" target="_blank">Conditions générales d’utilisation et vente Pix.City Services</a>.
@@ -182,7 +182,6 @@
 
                 <div class="invoice-details-table col-md-12 p-0 my-4 text-textgray">
                     <table class="" border="1"  cellpadding="2px" cellspacing="2">
-                        <tr><th colspan="2">Coordonnées bancaires du City-Maker</th></tr>
                         <tr><td>NOM</td><td>{{ mission.user.pixie.billing.firstname }}</td></tr>
                         <tr><td>PAYS</td><td>{% if mission.user.pixie.billing.billingCountry == 'FR' %}France{% endif %}</td></tr>
                         <tr><td>IBAN</td><td>{{ mission.user.pixie.billing.billingIban }}</td></tr>

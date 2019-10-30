@@ -79,26 +79,103 @@
                                     <th class="font-weight-normal w-5"><span class="sr-only">Mission actions</span></th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                {% for mission in missions %}
-                                    <tr class="text-darkgray fz-14">
-                                        <td valign="middle" class="text-center">
-                                            <i class="far fa-file-alt fz-25"></i>
-                                        </td>
-                                        <td valign="middle">{{ mission.title }}</td>
-                                        <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
-                                        <td valign="middle">{{ mission.updatedAt | date('d/m/Y') }}</td>
-                                        <td valign="middle">{{ mission.userMissionPayment.cmTotal }}€</td>
-                                        <td valign="middle"><span class="text-inprogress">En cours</span></td>
-                                        <td valign="middle">
-                                            <div class="d-flex align-items-center">
-                                                <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}"><i class="fas fa-eye fz-16"></i></a>
-                                                <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getCityMakerInvoice() }}/cm" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                <tbody>
+
+                {% for mission in missions %}
+
+                    {% if mission.getMissionType == 'one-shot' and mission.getStatus == 'terminated' %}
+
+                        <tr class="text-darkgray fz-14">
+                            <td valign="middle" class="text-center">
+                                <i class="far fa-file-alt fz-25"></i>
+                            </td>
+                            <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}</td>
+                            <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
+                            <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
+                            {% if mission.isTvaApplicable is not null %}
+                                <td valign="middle">{{ mission.userMissionPayment.cmTotal |round }} €</td>
+                            {% else %}
+                                <td valign="middle">{{ (mission.userMissionPayment.cmTotal - mission.userMissionPayment.cmTax) | round }} €</td>
+                            {% endif %}
+                            <td valign="middle"><span class="text-inprogress">Terminé</span></td>
+                            <td valign="middle">
+                                <div class="d-flex align-items-center">
+                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}" data-type="one-shot"><i class="fas fa-eye fz-16"></i></a>
+                                    <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getCityMakerInvoice() }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+
+                    {% elseif mission.getMissionType == 'recurring' or mission.getStatus == 'terminated' or mission.getStatus == 'ongoing' %}
+
+
+                            {% if mission.getMissionPriceLogs() is not empty %}
+                                {% for priceLog in mission.getMissionPriceLogs  %}
+                                    {% if loop.last != loop.length %}
+                                        <tr class="text-darkgray fz-14">
+                                            <td valign="middle" class="text-center">
+                                                <i class="far fa-file-alt fz-25"></i>
+                                            </td>
+                                            <td valign="middle">PX-{{ priceLog.mission.id }}-{{ mission.createdAt | date('dmy') }}-{{ priceLog.createdAt | date('m-y') }}</td>
+                                            <td valign="middle">{{ priceLog.createdAt | date('d/m/Y') }}</td>
+                                            <td valign="middle">{{  priceLog.updatedAt | date('d/m/Y') }}</td>
+                                            {% if priceLog.mission.isTvaApplicable is not null %}
+                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice + mission.userMissionPayment.cmTax | round }}€</td>
+                                            {% else %}
+                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice | round }}€</td>
+                                            {% endif %}
+                                            <td valign="middle"><span class="text-inprogress">Terminé</span></td>
+                                            <td valign="middle">
+                                                <div class="d-flex align-items-center">
+                                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}" data-type="recurring" data-cyle="{{ priceLog.cycle }}" data-log="{{ priceLog.getActivePrice.id }}"><i class="fas fa-eye fz-16"></i></a>
+                                                    <a href="/client/download/invoice/{{ mission.id }}/{{ priceLog.getCMInvoice() }}/cm" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        {% if mission.getMissionType == 'recurring' and mission.getStatus == 'terminated' %}
+
+                                                <tr class="text-darkgray fz-14">
+                                                    <td valign="middle" class="text-center">
+                                                        <i class="far fa-file-alt fz-25"></i>
+                                                    </td>
+                                                    <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}</td>
+                                                    <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
+                                                    <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
+                                                    {% if mission.isTvaApplicable is not null %}
+                                                        <td valign="middle">{{ mission.userMissionPayment.cmTotal |round }} €</td>
+                                                    {% else %}
+                                                        <td valign="middle">{{ (mission.userMissionPayment.cmTotal - mission.userMissionPayment.cmTax) | round }} €</td>
+                                                    {% endif %}
+                                                    <td valign="middle"><span class="text-inprogress">Terminé</span></td>
+                                                    <td valign="middle">
+                                                        <div class="d-flex align-items-center">
+                                                            <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}" data-type="one-shot"><i class="fas fa-eye fz-16"></i></a>
+                                                            <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getCityMakerInvoice() }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            {% endif %}
+
+                                    {% endif %}
                                 {% endfor %}
-                                </tbody>
+                            {% endif %}
+
+
+                    {% endif %}
+
+
+                {% endfor %}
+
+
+
+
+
+
+                </tbody>
                             </table>
         </div></div></div><div class="simplebar-placeholder" style="width: 1280px; height: 384px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="transform: translate3d(0px, 0px, 0px); visibility: hidden;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="transform: translate3d(0px, 0px, 0px); visibility: hidden;"></div></div></div>
         {% endif %}
@@ -132,7 +209,7 @@
 {#        </div>#}
 {#    </div>#}
 
-    
+
 {% endblock %}
 
 
@@ -149,6 +226,7 @@
                 $('.validate-the-quote, .dash-right').fadeOut()
                 $('.facturation-show-container, .validate-quote').fadeIn();
             } else if ($(this).is('a.close-invoice-preview')) {
+
                 $('.facturation-show-container').fadeOut();
                 $('.validate-the-quote, .dash-right').fadeIn()
             } else if ($(this).is('a.validate-quote')) {
@@ -166,15 +244,19 @@
                 $('.dash-right, .validate-quote').fadeOut();
 
                 var id = $(this).attr('data-id');
-
+                var type = $(this).attr('data-type');
+                var cycle = $(this).attr('data-cyle');
+                var logid = $(this).attr('data-log');
                 $.ajax({
                     url:'/city-maker/factures/preview/'+id,
                     type:'GET',
+                    data: {type:type,cycle:cycle,logid:logid},
                     dataType:'json',
                     success: function(data){
                         console.log(data);
                         $("#invoice-path").attr('src',data.url);
                         $("#object-invoice-path").attr('data',data.url);
+
                         $('.facturation-show-container, .to-validate-quote').fadeIn('slow', function () {
                             // $('.to-validate-quote-toast').toast('show').css({
                             //     'z-index': '1050'

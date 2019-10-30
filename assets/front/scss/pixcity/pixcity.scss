@@ -60,7 +60,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url(../img/JPG/bg_icons.jpg);
+    background-image: url(../../img/JPG/bg_icons.jpg);
     background-repeat: repeat-y;
     background-size: 100%;
     opacity: 0.5;
@@ -265,7 +265,7 @@ html,
     display: block;
     width: 250px;
     height: 50px;
-    background-image: url(../img/SVG/logo-color.svg);
+    background-image: url(../../img/SVG/logo-color.svg);
     background-size: contain;
     background-repeat: no-repeat;
     text-indent: -9999px;
@@ -323,7 +323,7 @@ html,
         top: 0;
         right: 0px;
         background-size: cover;
-        background-image: url(../img/SVG/bg_login_pl2.svg);
+        background-image: url(../../img/SVG/bg_login_pl2.svg);
         background-repeat: no-repeat;
         background-position: top left;
         z-index: 4;
@@ -389,7 +389,7 @@ html,
     right: 0;
     transform: translateX(99%);
     top: 0;
-    background-image: url(../img/SVG/bg_login_pl.svg);
+    background-image: url(../../img/SVG/bg_login_pl.svg);
     background-size: cover;
     background-repeat: no-repeat;
 }*/
@@ -874,11 +874,11 @@ html,
 }
 
 .transFx.sante:before {
-    background-image: url(../img/SVG/sante_white.svg)
+    background-image: url(../../img/SVG/sante_white.svg)
 }
 
 .transFx.local:before {
-    background-image: url(../img/SVG/local_white.svg)
+    background-image: url(../../img/SVG/local_white.svg)
 }
 
 .no-touch {
@@ -1773,14 +1773,14 @@ select:-internal-list-box {
     height: 23px;
     margin-top: 10px;
     float: left;
-    background-image: url(../img/SVG/3-cards-menu-off.svg);
+    background-image: url(../../img/SVG/3-cards-menu-off.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
 #accountMenu .cards:hover i {
-    background-image: url(../img/SVG/cards-active-menu.svg)
+    background-image: url(../../img/SVG/cards-active-menu.svg)
 }
 
 
@@ -1918,7 +1918,7 @@ body {
     height: 64px;
     left: 0;
     bottom: 0;
-    background-image: url(../img/SVG/bg_topBanner.svg);
+    background-image: url(../../img/SVG/bg_topBanner.svg);
     background-position: top center;
     z-index: 10;
 }
@@ -2189,7 +2189,7 @@ h2 span {
 .nbCards:before {
     content: '';
     display: block;
-    background-image: url(../img/SVG/3-cards.svg);
+    background-image: url(../../img/SVG/3-cards.svg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -2586,7 +2586,7 @@ a.discover:hover:after {}
     border-radius: 5px;
     padding: 20px;
     display: block;
-    //background-image: url(../img/thumbnail-default.jpg);
+    //background-image: url(../../img/thumbnail-default.jpg);
 }
 
 .innerLink {
@@ -2719,7 +2719,7 @@ a.discover:hover:after {}
     top: 20px;
     right: 20px;
     display: block;
-    background-image: url(../img/SVG/3-cards.svg);
+    background-image: url(../../img/SVG/3-cards.svg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -2741,12 +2741,12 @@ a.discover:hover:after {}
 }
 
 .card .cardsIco:hover {
-    background-image: url(../img/SVG/cards-active.svg);
+    background-image: url(../../img/SVG/cards-active.svg);
     opacity: 0.5;
 }
 
 .card .cardsIco.active {
-    background-image: url(../img/SVG/cards-active.svg);
+    background-image: url(../../img/SVG/cards-active.svg);
     -webkit-filter: drop-shadow( 0px 0px 0px transparent);
     filter: drop-shadow( 0px 0px 0px transparent);
 }
@@ -2892,11 +2892,11 @@ a.discover:hover:after {}
 }
 
 .tag.local:before {
-    background-image: url(../img/SVG/local_white.svg);
+    background-image: url(../../img/SVG/local_white.svg);
 }
 
 .tag.sante:before {
-    background-image: url(../img/SVG/sante_white.svg);
+    background-image: url(../../img/SVG/sante_white.svg);
 }
 
 .portraitAuth {
@@ -2926,7 +2926,7 @@ a.discover:hover:after {}
     background-color: #038090;
     color: #fff;
     text-align: center;
-    background-image: url(../img/SVG/bg_pixies.svg);
+    background-image: url(../../img/SVG/bg_pixies.svg);
     background-repeat: no-repeat;
     background-position: 0 0;
     width: 100%;
@@ -3070,7 +3070,7 @@ a.discover:hover:after {}
 
 .portraitPixie .nbCardsPixieFav:hover {
     text-indent: -99px;
-    background-image: url(../img/SVG/3-cards.svg);
+    background-image: url(../../img/SVG/3-cards.svg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 50%;
@@ -3171,7 +3171,7 @@ a.discover:hover:after {}
     line-height: 200px;
     color: transparent;
     -webkit-background-clip: text;
-    background-image: url(../img/SVG/mask_HugeTypo.svg);
+    background-image: url(../../img/SVG/mask_HugeTypo.svg);
     //background-position: 100px 0px;
     //background-repeat: no-repeat;
 }
@@ -3310,7 +3310,7 @@ button.white, a.white {
 .hexagon {
     width: 58px;
     height: 65px;
-    background-image: url(../img/SVG/hexagon.svg);
+    background-image: url(../../img/SVG/hexagon.svg);
     background-size: cover;
     background-position: center;
     float: left;
@@ -3335,7 +3335,7 @@ button.white, a.white {
 }
 
 .topBanner .hexagon:hover {
-    background-image: url(../img/SVG/hexagon_pink.svg);
+    background-image: url(../../img/SVG/hexagon_pink.svg);
     color: #fff;
 }
 
@@ -3351,7 +3351,7 @@ button.white, a.white {
     .hexagon {
         width: 114px;
         height: 131px;
-        background-image: url(../img/SVG/hexagon.svg);
+        background-image: url(../../img/SVG/hexagon.svg);
         background-size: cover;
         float: left;
         display: block;
@@ -3727,7 +3727,7 @@ button.white, a.white {
             clear: both;
             width: 20px;
             height: 20px;
-            background-image: url(../img/SVG/3-cards-menu-off2.svg);
+            background-image: url(../../img/SVG/3-cards-menu-off2.svg);
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center center;
@@ -3735,7 +3735,7 @@ button.white, a.white {
 
         &.active{
             &:before{
-                background-image: url(../img/SVG/cards-active-green.svg);
+                background-image: url(../../img/SVG/cards-active-green.svg);
             }
         }
     }
@@ -4566,7 +4566,7 @@ a.nom:hover {
     display: block;
     float: none;
     margin: 0 auto;
-    background-image: url(../img/SVG/hexagon_white.svg);
+    background-image: url(../../img/SVG/hexagon_white.svg);
     font-family: montserrat;
     width: 50px;
     height: 60px;
@@ -4714,7 +4714,7 @@ a.nom:hover {
 
 .profile-template .topBanner {
     min-height: 450px;
-    background-image: url(../img/PNG/bg.png);
+    background-image: url(../../img/PNG/bg.png);
     padding: 30px 15px;
 }
 
@@ -4792,7 +4792,7 @@ a.nom:hover {
     width: 26px;
     height: 30px;
     margin: 5px;
-    background-image: url(../img/SVG/hexagon_blue_small.svg);
+    background-image: url(../../img/SVG/hexagon_blue_small.svg);
     position: relative;
     line-height: 30px;
     color: #FFF;
@@ -4801,7 +4801,7 @@ a.nom:hover {
 }
 
 .rsLink:hover {
-    background-image: url(../img/SVG/hexagon_white_small.svg);
+    background-image: url(../../img/SVG/hexagon_white_small.svg);
     color: #103558
 }
 
@@ -4831,7 +4831,7 @@ a.nom:hover {
     width: 42px;
     height: 38px;
     line-height: 1px;
-    background-image: url(../img/SVG/plCards_blue.svg);
+    background-image: url(../../img/SVG/plCards_blue.svg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -4887,7 +4887,7 @@ a.nom:hover {
 
             &:hover{
                 .hexagon{
-                    background-image: url(../img/SVG/hexagon_pink.svg);
+                    background-image: url(../../img/SVG/hexagon_pink.svg);
                 }
             }
         }
@@ -4900,7 +4900,7 @@ a.nom:hover {
         line-height: 60px;
         float: none;
         margin: 0 auto;
-        background-image: url(../img/SVG/hexagon_blue_deep.svg);
+        background-image: url(../../img/SVG/hexagon_blue_deep.svg);
         position: relative;
 
         .local, .sante{
@@ -4919,10 +4919,10 @@ a.nom:hover {
         }
 
         .local:before{
-            background-image: url(../img/SVG/local_white.svg)
+            background-image: url(../../img/SVG/local_white.svg)
         }
         .sante:before{
-            background-image: url(../img/SVG/sante_white.svg)
+            background-image: url(../../img/SVG/sante_white.svg)
         }
     }
 }
@@ -4982,7 +4982,7 @@ footer {
     width: 100%;
     background-color: #103558;
     color: #fff;
-    background-image: url(../img/SVG/bg_footer.svg);
+    background-image: url(../../img/SVG/bg_footer.svg);
     background-position: -1px 0;
     background-repeat: no-repeat;
     padding-top: 180px;
@@ -5010,7 +5010,7 @@ footer {
     position: absolute;
     width: 100%;
     top: -139px;
-    //background-image: url(../img/SVG/bg_footer_pl2.svg);
+    //background-image: url(../../img/SVG/bg_footer_pl2.svg);
     background-position: center center;
 }
 
@@ -5767,7 +5767,7 @@ select {
 }
 
 .form-group .dropdown {
-    background-image: url(../img/SVG/chevron-down.svg);
+    background-image: url(../../img/SVG/chevron-down.svg);
     background-position: 95% center;
     background-repeat: no-repeat;
 
@@ -6350,7 +6350,7 @@ table.table tr td {
     display: block;
     width: 180px;
     height: 180px;
-    background-image: url(../img/SVG/3-cards-noCard.svg);
+    background-image: url(../../img/SVG/3-cards-noCard.svg);
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
@@ -6551,7 +6551,7 @@ table.table tr td {
     display: block;
     width: 100%;
     height: 100%;
-    background-image: url(../img/SVG/3-cards.svg);
+    background-image: url(../../img/SVG/3-cards.svg);
     background-size: 25px 25px;
     background-position: center center;
     background-repeat: no-repeat;
@@ -7373,19 +7373,19 @@ table.table tr td {
 }
 
 .createCard .transFx.sante:before {
-    background-image: url(../img/SVG/sante_blue_36.svg)
+    background-image: url(../../img/SVG/sante_blue_36.svg)
 }
 
 .createCard .transFx.local:before {
-    background-image: url(../img/SVG/local_blue_36.svg)
+    background-image: url(../../img/SVG/local_blue_36.svg)
 }
 
 .creaCompte .transFx.sante:before {
-    background-image: url(../img/SVG/sante_white_36.svg)
+    background-image: url(../../img/SVG/sante_white_36.svg)
 }
 
 .creaCompte .transFx.local:before {
-    background-image: url(../img/SVG/local_white_36.svg)
+    background-image: url(../../img/SVG/local_white_36.svg)
 }
 
 @media (min-width: 768px) {
@@ -7407,7 +7407,7 @@ table.table tr td {
     height: 22px;
     width: 22px;
     margin: 19px auto;
-    background-image: url(../img/SVG/3-cards-menu-off.svg);
+    background-image: url(../../img/SVG/3-cards-menu-off.svg);
     float: left;
     background-size: contain;
     background-position: center;
@@ -7431,7 +7431,7 @@ table.table tr td {
 
 .navbar .active.fa-cards:before,
 .navbar .fa-cards:hover:before {
-    background-image: url(../img/SVG/cards-active-menu.svg)
+    background-image: url(../../img/SVG/cards-active-menu.svg)
 }
 
 #filters .btn-group a {
@@ -8690,7 +8690,7 @@ a.ui-button:active,
 #navCards.btnTop a:not(.active).cardPlus:hover,
 .col-left-agenda .btnTop button:not(.active).cardPlus:hover {
      &:before{
-         background-image: url(../img/SVG/3-cards-menu-on.svg);
+         background-image: url(../../img/SVG/3-cards-menu-on.svg);
      }
  }
 

@@ -127,7 +127,8 @@ class CityMakerMissionController extends Controller
                     array(
                         'mission' => $mission,
                         'missionLog' => $missionLog,
-                        'last_result' => $last_result
+                        'last_result' => $last_result,
+                        'tax' => $tax
                     )
                 ), $clientInvoicePath
             );

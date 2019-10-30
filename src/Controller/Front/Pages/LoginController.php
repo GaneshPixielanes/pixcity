@@ -387,8 +387,9 @@ class LoginController extends Controller
      */
     public function googleLoginCheck(Request $request, ClientRegistry $clientRegistry, ClientRepository $clientRepository)
     {
-        $user = $clientRegistry->getClient('google');
+        $user = $clientRegistry->getClient('google_client');
         $email = $user->getEmail();
+        dd($email);
         $tempUser = $clientRepository->findOneBy(['email' => $email]);
 
         if(!is_null($tempUser))
@@ -585,15 +586,15 @@ class LoginController extends Controller
     }
 
     private function loginClient(Request $request,$client)
-    {
+{
 
-        $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
+    $this->session->set('login_by',['type' => 'login_client','entity' => $client]);
 
-        $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
+    $token = new UsernamePasswordToken($client, null, 'main', $client->getRoles());
 
-        $this->container->get('security.token_storage')->setToken($token);
-        $this->container->get('session')->set('_security_client_area', serialize($token));
-        $event = new InteractiveLoginEvent($request, $token);
-        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
-    }
+    $this->container->get('security.token_storage')->setToken($token);
+    $this->container->get('session')->set('_security_client_area', serialize($token));
+    $event = new InteractiveLoginEvent($request, $token);
+    $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+}
 }

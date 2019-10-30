@@ -21,7 +21,6 @@ $(document).ready(function() {
     var cityMaker = $("#api-box").attr('data-city-maker-id');
     var cardLatitude = $("#api-box").attr('data-latitude');
     var cardLongitude = $("#api-box").attr('data-longitude');
-    var clusterMarker = '';
 
     // Display map
     function myMap() {
@@ -84,7 +83,6 @@ $(document).ready(function() {
         };
         map = new google.maps.Map(document.getElementById("map"), mapProp);
         // console.log(JSON.parse(coordinates));
-        // map.getZoom(); //get zoom level
         if (coordinates.length > 1) {
             var flightPlanCoordinates = [coordinates];
 
@@ -120,9 +118,7 @@ $(document).ready(function() {
         google.maps.event.addListener(map, 'bounds_changed', onBoundsChanged);
 
         // Update markers on the map
-       // map.addListener('zoom_changed', function() {
-            getMarkers()
-        //});
+        getMarkers()
 
     }
 
@@ -158,7 +154,7 @@ $(document).ready(function() {
         // });
 
         setMapOnAll(null);
-        markers = [];
+
         $.each(positions, function(key, position) {
 
             if(position.latitude == cardLatitude && position.longitude == cardLongitude)
@@ -319,32 +315,13 @@ $(document).ready(function() {
                 map.setZoom(15);
             }
         }
-        //marker clusterer added
-        cluster(map, markers);
-
         setTimeout(function() {
             if ($('#pac-input').hasClass('d-none')) {
                 $('#pac-input').removeClass('d-none');
             }
 
-        }, 5000);
-    }
-    // Add a marker clusterer to manage the markers.
-    function cluster(map, markers) {
-        if(clusterMarker != '')
-        {
-            clusterMarker.clearMarkers();
-        }
-        setMapOnAll(null);
+        }, 1000);
 
-        var mcOptions = {
-            gridSize: 50,
-            minimumClusterSize: 5,
-            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-        };
-
-        clusterMarker = new MarkerClusterer(map, markers, mcOptions);
-        return clusterMarker;
     }
     //Get the locations for the corresponding profile
     function getMarkers()
@@ -481,33 +458,7 @@ $(document).ready(function() {
         var lat = pos.coords.latitude;
         var lng = pos.coords.longitude;
         var latlng = new google.maps.LatLng(lat, lng);
-        $('#api-box').attr('data-long',lng);
-        $('#api-box').attr('data-lati',lat);
 
-        var postlng = $('#api-box').attr('data-long');
-        var postlat = $('#api-box').attr('data-lati');
-        $.ajax({
-            url: "/api/maps/all-cards",
-            type: "post",
-            data: {
-                'lng':postlng,'lat':postlat,
-                regions: $('.region-selected').val(),
-                categories: categoryList,
-                text: $('[name="search"]').val(),
-                cityMaker: cityMaker
-            } ,
-            success: function (results) {
-                try {
-                    results = JSON.parse(results);
-                } catch (e) {
-                    results = results;
-                }
-                createMarkers(results);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus, errorThrown);
-            }
-        });
         currentPositionMarker = new google.maps.Marker({
             map: map,
             icon: '/../../img/MAP/my_pos.png',
@@ -552,7 +503,8 @@ $(document).ready(function() {
         myMap();
 
         if (navigator.geolocation) {
-            var loc = navigator.geolocation.getCurrentPosition(setCurrentPosition, locError);
+            var loc = navigator.geolocation.getCurrentPosition(displayAndWatch, locError);
+
         } else {
             alert("Your browser does not support the Geolocation API");
         }
