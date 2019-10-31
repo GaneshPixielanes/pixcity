@@ -472,10 +472,10 @@ class MissionController extends Controller
             if($transaction->getMission()->getStatus() == MissionStatus::CREATED){
 
                 $transaction->getMission()->setStatus(MissionStatus::ONGOING);
-                $message = $mission_id->getClient().' a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
+                $message = $mission_id->getClient().' a accepté votre devis et a effectué son pré-paiement, la mission (qu\'elle soit récurrente ou one shot) peut démarrer.';
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid',$message,$mission_id->getId());
 
-                $message = 'Notre partenaire a bien reçu votre pré-paiement. Le city-maker va être averti du cantonnement de cette somme et il va pouvoir démarrer la mission. ';
+                $message = 'Notre partenaire a bien reçu votre pré-paiement. Que vous soyez dans le cas d\'une mission one-shot ou récurrente, le city-maker va être averti du cantonnement de cette somme et il pourra démarrer la mission.';
                 $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,$mission_id->getId());
 
             }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){

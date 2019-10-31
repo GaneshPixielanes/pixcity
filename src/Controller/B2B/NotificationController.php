@@ -73,7 +73,7 @@ class NotificationController extends AbstractController
         #Send notification 16
         $notificationsRepository->insert($missionlog->getMission()->getUser(),null,'mission_accepted_edit', $missionlog->getMission()->getClient().' a validé la nouvelle version de votre mission.',$missionlog->getMission()->getId());
         #32 need to send
-        $notificationsRepository->insert(null,$missionlog->getMission()->getClient(),'mission_accepted_edit_client', 'Vous avez accepté la nouvelle version de la mission. Le city-maker va être averti via une notification sur son espace et va pouvoir reprendre la mission.',0);
+        $notificationsRepository->insert(null,$missionlog->getMission()->getClient(),'mission_accepted_edit_client', 'Vous avez accepté la nouvelle version de la mission. Le city-maker va être averti via une notification sur son espace et va pouvoir reprendre la mission (one shot ou récurrente)',0);
 
         ##########################Email starts#######################
         /* Mail sent to CM */
