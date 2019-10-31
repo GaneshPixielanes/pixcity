@@ -153,10 +153,13 @@ class ClientController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $notification = $notificationRepo->find($request->get('notification_id'));
-            $notification->setUnread(0);
+            if($notification->getType() != 'edit_mission'){
+                $notification->setUnread(0);
 
-            $em->persist($notification);
-            $em->flush();
+                $em->persist($notification);
+                $em->flush();
+            }
+
 
         }
 
