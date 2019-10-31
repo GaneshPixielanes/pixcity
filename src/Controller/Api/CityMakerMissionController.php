@@ -140,7 +140,7 @@ class CityMakerMissionController extends Controller
             $em->flush();
 
             /* Notificaton sent to the client informing about the edit*/
-            $message = 'CM '.$mission->getUser().'  a édité la mission '.$mission->getTitle().'. Vous devez valider cette nouvelle version pour que le city-maker puisse continuer la mission';
+            $message = 'CM '.$mission->getUser().'  a édité la mission '.$mission->getTitle().'. Vous devez valider cette nouvelle version pour que le city-maker puisse continuer la mission. En cas de mission one-shot, cette édition vaut pour la mission en cours. En cas de mission récurrente, l\'édition de la mission (prix /description) portera sur le mois suivant, et non le mois en cours';
 //            $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', 'Vous avez édité la mission '.$mission->getId().'. La nouvelle version de cette mission est en cours de validation côté client.');
             $notificationsRepository->insert(null,$mission->getClient(),'edit_mission', $message, $mission->getId(),$missionLog->getId());
 
