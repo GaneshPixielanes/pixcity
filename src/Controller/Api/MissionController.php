@@ -197,7 +197,7 @@ class MissionController extends Controller
 
                     $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());
 
-                    $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission_client','L\'annulation de la mission '.$mission->getTitle().' est confirmée. Le pré-paiement que vous avez réalisé lors de l\'acceptation du devis va vous être restitué par notre partenaire Mango Pay sous 4 jours. ',$mission->getId());
+                    $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission_client','L\'annulation de la mission '.$mission->getTitle().' est confirmée. En cas de mission one-shot, le pré-paiement que vous avez réalisé lors de l\'acceptation du devis va vous être restitué par notre partenaire Mango Pay sous 4 jours. En cas de mission récurrente, l\'annulation vaut pour le mois en cours et le pré-paiement vous sera restitué par notre partenaire Mango Pay sous 4 jours. Les mois précèdents ne sont pas impactés par cette annulation.',$mission->getId());
 
                     break;
                 }
@@ -233,8 +233,8 @@ class MissionController extends Controller
                     }
 
 
-                    $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. Vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s'est bien passée ! ",$mission->getId());
-                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. Votre paiement sera donc déclenché sous 48H via notre partenaire Mango Pay. A très bientôt pour une nouvelle mission sur Pix.City Services. ',$mission->getId());
+                    $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_accept',$mission->getClient()."vient de confirmer la fin de la mission. En cas de mission one-shot, vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une mission récurrente pour la prochaine fois si la mission s'est bien passée ! En cas de mission récurrente, votre mission est définitivement terminée, vous recevrez votre dernier paiement à la date anniversaire mensuelle de la signature du devis initial. ",$mission->getId());
+                    $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. En cas de mission one-shot, le paiement de votre city-maker sera donc déclenché sous 48H via notre partenaire Mango Pay. En cas de mission récurrente, la mission est réputée terminée à la date anniversaire mensuelle de signature du devis initial. Le city-maker sera payé 48h après cette date anniversaire. ',$mission->getId());
 
                     break;
                 }
@@ -294,39 +294,50 @@ class MissionController extends Controller
 
                 $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
 
-                $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                    $this->renderView('b2b/invoice/client_invoice.html.twig',
-                        array(
-                            'mission' => $mission,
-                            'tax' => $tax->getValue()
-                        )
-                    ), $clientInvoicePath
-                );
+                if(!$filesystem->exists($clientInvoicePath)){
+                    $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                        $this->renderView('b2b/invoice/client_invoice.html.twig',
+                            array(
+                                'mission' => $mission,
+                                'tax' => $tax->getValue()
+                            )
+                        ), $clientInvoicePath
+                    );
+                }
+
 
                 $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
 
                 $cmInvoicePath = "invoices/".$mission->getId().'/'.$cm_filename;
 
-                $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                    $this->renderView('b2b/invoice/cm_invoice.html.twig',
-                        array(
-                            'mission' => $mission,
-                            'tax' => $tax->getValue()
-                        )
-                    ), $cmInvoicePath
-                );
+                if(!$filesystem->exists($cmInvoicePath)){
+                    $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                        $this->renderView('b2b/invoice/cm_invoice.html.twig',
+                            array(
+                                'mission' => $mission,
+                                'tax' => $tax->getValue()
+                            )
+                        ), $cmInvoicePath
+                    );
+                }
+
 
                 $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
 
                 $pcsInvoicePath = "invoices/".$mission->getId().'/'.$pcs_filename;
 
-                $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                    $this->renderView('b2b/invoice/pcs_invoice.html.twig',
-                        array(
-                            'mission' => $mission
-                        )
-                    ), $pcsInvoicePath
-                );
+                if(!$filesystem->exists($pcsInvoicePath)){
+
+                    $this->container->get('knp_snappy.pdf')->generateFromHtml(
+                        $this->renderView('b2b/invoice/pcs_invoice.html.twig',
+                            array(
+                                'mission' => $mission
+                            )
+                        ), $pcsInvoicePath
+                    );
+
+                }
+
 
                 $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
 
@@ -351,73 +362,6 @@ class MissionController extends Controller
                 $royalties->setBankDetails(json_encode('no_response'));
 
                 $entityManager->persist($royalties);
-
-
-            $filesystem->mkdir('invoices/'.$mission->getId(),0777);
-
-            $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
-
-            $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
-
-            $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                $this->renderView('b2b/invoice/client_invoice.html.twig',
-                    array(
-                        'mission' => $mission,
-                        'tax' => $tax->getValue()
-                    )
-                ), $clientInvoicePath
-            );
-
-            $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
-
-            $cmInvoicePath = "invoices/".$mission->getId().'/'.$cm_filename;
-
-            $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                $this->renderView('b2b/invoice/cm_invoice.html.twig',
-                    array(
-                        'mission' => $mission,
-                        'tax' => $tax->getValue()
-                    )
-                ), $cmInvoicePath
-            );
-
-            $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
-
-            $pcsInvoicePath = "invoices/".$mission->getId().'/'.$pcs_filename;
-
-            $this->container->get('knp_snappy.pdf')->generateFromHtml(
-                $this->renderView('b2b/invoice/pcs_invoice.html.twig',
-                    array(
-                        'mission' => $mission,
-                        'tax' => $tax->getValue()
-                    )
-                ), $pcsInvoicePath
-            );
-
-            $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
-
-            $cycle = 0;
-
-            if($last_row != null){
-                $cycle = $last_row->getCycle() - 1;
-            }
-
-
-
-            $royalties = new Royalties();
-            $royalties->setMission($mission);
-            $royalties->setCm($mission->getUser());
-            $royalties->setTax($tax->getValue());
-            $royalties->setBasePrice($mission->getUserMissionPayment()->getUserBasePrice());
-            $royalties->setTaxValue($mission->getUserMissionPayment()->getCmTax());
-            $royalties->setTotalPrice($mission->getUserMissionPayment()->getCmTotal());
-            $royalties->setInvoicePath($cmInvoicePath);
-            $royalties->setPaymentType('mango_pay');
-            $royalties->setStatus('pending');
-            $royalties->setCycle($cycle);
-            $royalties->setBankDetails(json_encode('no_response'));
-
-            $entityManager->persist($royalties);
 
         }
 

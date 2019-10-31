@@ -238,11 +238,11 @@ class MissionController extends Controller
             }
 
             /* Notification to CM */
-            $message = $mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getTitle()." auprès de notre partenaire Mango Pay. Dès que le pré-paiement sera fait, vous serez prévenu(e) par notification vous pourrez commencer la mission ";
+            $message = $mission->getClient()." a été prévenu de votre modification de mission et a été sollicité pour effectuer le pré-paiement de la mission ".$mission->getTitle()." auprès de notre partenaire Mango Pay. En cas de mission one-shot, dès que le pré-paiement sera fait, vous serez prévenu(e) par notification et vous pourrez commencer la mission. En cas de mission récurrente, le pré-paiement aura lieu chaque mois, vous serez prévenu(e) par notification que vous pourrez commencer la mission pour le mois concerné. ";
             $notificationsRepository->insert($mission->getUser(),null,'create_mission_cm', $message, $mission->getId(),1);
 
             /* Notification to Client */
-            $message = "CM ".$mission->getUser()." a préparé pour vous un devis pour la mission ".$mission->getTitle().". Cliquez-ici pour accepter le devis et procéder au pré-paiement de la mission via notre partenaire MangoPay.";
+            $message = "CM ".$mission->getUser()." a préparé pour vous un devis pour la mission ".$mission->getTitle().".  Cliquez-ici pour accepter le devis et procéder au pré-paiement de la mission (one-shot ou récurrente) via notre partenaire MangoPay. En cas de mission récurrente, le pré-paiement se fera par la suite à chaque date mensuelle anniversaire par prélèvement automatique via notre partenaire Mango-Pay.";
             $notificationsRepository->insert(null,$mission->getClient(),'create_mission', $message, $mission->getId(),1);
 
             return $this->redirectToRoute('b2b_mission_list');
@@ -326,7 +326,7 @@ class MissionController extends Controller
                                 $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$message, $mission->getId(),1);
 
                                 /* Notification to CM*/
-                                $message = 'Vous avez demandé une annulation de la mission. Une action est requise côté client pour l\'annulation définitive de la mission '.$mission->getTitle().'.';
+                                $message = 'a accepté l\'annulation de la mission '.$mission->getTitle().' En cas de mission one-shot, l\'argent de la mission est restitué au client via le partenaire Mango Pay. En cas de mission récurrente, l\'argent de la mission est restitué au client pour le mois concerné par l\'annulation. Les mois précèdents ne sont pas touchés par cette restitution.';
 
                                 $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_cm',$message, $mission->getId(),1);
                                 break;
@@ -344,11 +344,11 @@ class MissionController extends Controller
                 {
                     $mission->setStatus(MissionStatus::TERMINATE_REQUEST_INITIATED);
                     /* Notification sent to client */
-                    $message = 'CM '.$mission->getUser().'  a validé la fin de la mission. Vous devez terminer la mission pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). ';
+                    $message = 'CM '.$mission->getUser().' a validé la fin de la mission. Vous devez aussi terminer la mission pour déclencher le paiement auprès de notre partenaire MANGO PAY (en cas de mission one shot, le paiement est déclenché 48H après validation auprès de notre partenaire. En cas de mission récurrente, le paiement sera déclenché 48h après la date anniversaire de signature du devis initial).';
                     $notificationsRepository->insert(null,$mission->getClient(),'terminate_mission', $message, $mission->getId(),1);
 
                     /* Notification sent to CM */
-                    $message = 'Vous avez validé la fin de la mission. La validation est en cours côté client pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation auprès de notre partenaire). PS : Pensez à créer une nouvelle mission pour votre client si celle-ci s\'est bien passée ! ';
+                    $message = 'Vous avez validé la fin de la mission. En cas de mission one shot, la validation est en cours côté client pour déclencher votre paiement auprès de notre partenaire MANGO PAY (le paiement est déclenché 48H après validation client auprès de notre partenaire). En cas de mission récurrente, après la validation client, votre tout dernier paiement est déclenché dans les 48h suivant la date anniversaire mensuelle de la signature du devis initial. ';
                     $notificationsRepository->insert($mission->getUser(),null,'terminate_mission_cm', $message, $mission->getId(),1);
 
                     break;
