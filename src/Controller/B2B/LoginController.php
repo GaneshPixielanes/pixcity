@@ -328,6 +328,7 @@ class LoginController extends Controller
         $this->container->get('session')->set('_security_main_area', serialize($token));
         $event = new InteractiveLoginEvent($request, $token);
         $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+        
 
     }
 }
