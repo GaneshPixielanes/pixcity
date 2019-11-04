@@ -19,7 +19,7 @@
         <div class="">
 
             <h3>
-                Please do payment before  <span id="countdown">10</span> seconds
+                <div>Le paiement se termine <span id="time">18:00</span></div>
             </h3>
             <!-- CREDIT CARD FORM STARTS HERE -->
             <div class="panel panel-default credit-card-box">
@@ -34,7 +34,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-4">
-                            <label for="cardNumber">MONTANTE : {{amount}} €</label><br>
+                            <label for="cardNumber">MONTANT : {{amount}} €</label><br>
                             <label for="cardNumber">Titre de la mission : {{mission.title}}</label>
                         </div>
                     </div>
@@ -68,14 +68,45 @@
                             <div class="col-xs-4">
                                 <div class="form-group">
                                     <label for="cardExpiry"><span class="hidden-xs">DATE D'EXPIRATION</span><span class="visible-xs-inline">EXP</span> </label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            name="cardExpirationDate"
-                                            placeholder="MM / YY"
-                                            autocomplete="cc-exp"
-                                            required
-                                    />
+                                    <input type="hidden" name="cardExpirationDate" id="expiry-date">
+                                    <div class="control">
+                                        <select class="span3" id="ccexpirymonth" required>
+                                            <option value=""></option>
+                                            <option class="extraneous" value="01">01</option>
+                                            <option class="extraneous" value="02">02</option>
+                                            <option class="extraneous" value="03">03</option>
+                                            <option class="extraneous" value="04">04</option>
+                                            <option class="extraneous" value="05">05</option>
+                                            <option class="extraneous" value="06">06</option>
+                                            <option class="extraneous" value="07">07</option>
+                                            <option class="extraneous" value="08">08</option>
+                                            <option class="extraneous" value="09">09</option>
+                                            <option class="extraneous" value="10">10</option>
+                                            <option class="extraneous" value="11">11</option>
+                                            <option class="extraneous" value="12">12</option>
+                                        </select>
+
+                                        <select class="span2" id="ccexpiryyear" required>
+                                            <option value=""></option>
+                                            <option class="extraneous" value="15">15</option>
+                                            <option class="extraneous" value="16">16</option>
+                                            <option class="extraneous" value="17">17</option>
+                                            <option class="extraneous" value="18">18</option>
+                                            <option class="extraneous" value="19">19</option>
+                                            <option class="extraneous" value="20">20</option>
+                                            <option class="extraneous" value="21">21</option>
+                                            <option class="extraneous" value="22">22</option>
+                                            <option class="extraneous" value="23">23</option>
+                                            <option class="extraneous" value="24">24</option>
+                                            <option class="extraneous" value="25">25</option>
+                                            <option class="extraneous" value="26">26</option>
+                                            <option class="extraneous" value="27">27</option>
+                                            <option class="extraneous" value="28">28</option>
+                                            <option class="extraneous" value="29">29</option>
+                                            <option class="extraneous" value="30">30</option>
+                                        </select>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -83,7 +114,7 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="form-group">
-                                    <label for="cardCvx">CODE CV</label>
+                                    <label for="cardCvx">CODE CVV2</label>
                                     <input
                                             type="password"
                                             class="form-control"
@@ -108,15 +139,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="row">
-                    <div class="pull-right" style="font-size: 10pt; line-height: 2em;margin-top: -358px;margin-right: 13%;color: red">
-                        {% if mission.getMissionType == 'one-shot' %}
-                            <p>Please provide the message to client ,The card detailed stored like in Netflex of month payment,<br>this message will show only when CM chose recurring payment</p>
-                        {% endif %}
-
-
-                    </div>
-                </div>
+                
                 <div class="row">
                     <img src="https://www.mangopay.com/terms/powered-by-mangopay.png" alt="" style="height: 100px;margin-left: 67px;"s>
                 </div>
@@ -143,21 +166,39 @@
     // Total seconds to wait
     var seconds = 1080;
 
-    function countdown() {
-        seconds = seconds - 1;
-        if (seconds < 0) {
-            // Chnage your redirection link here
-            window.location = "{{ returnUrl }}/client/mission/";
-        } else {
-            // Update remaining seconds
-            document.getElementById("countdown").innerHTML = seconds;
-            // Count down using javascript
-            window.setTimeout("countdown()", 1000);
-        }
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        var end =setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                window.location = "{{ returnUrl }}/client/mission/";
+                clearInterval(end);
+            }
+        }, 1000);
     }
 
-    // Run countdown function
-    countdown();
+    window.onload = function () {
+        var fiveMinutes = 1058,
+            display = document.querySelector('#time');
+        startTimer(fiveMinutes, display);
+    };
+
+    $('#ccexpirymonth, #ccexpiryyear').on('change', function () {
+        // Set the value of a hidden input field for Card
+        $('#expiry-date').val($('#ccexpirymonth').val() + '' + $('#ccexpiryyear').val());
+        // Trigger the "change" event manually
+        var evt = document.createEvent('HTMLEvents');
+        evt.initEvent('change', false, true);
+        document.getElementById('expiry-date').dispatchEvent(evt);
+
+    });
 
 </script>
 

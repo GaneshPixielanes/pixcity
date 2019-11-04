@@ -58,8 +58,7 @@
 
                             {% if mission.getMissionPriceLogs() is not empty %}
                                 {% for priceLog in mission.getMissionPriceLogs  %}
-
-                                    {% if loop.last != loop.length %}
+                                    {% if mission.getMissionType == 'recurring' and loop.last != loop.index %}
                                         <tr class="text-darkgray fz-14">
                                             <td valign="middle" class="text-center">
                                                 <i class="far fa-file-alt fz-25"></i>
@@ -83,13 +82,13 @@
 
                                     {% else %}
 
-                                        {% if mission.getMissionType == 'recurring' and mission.getStatus == 'terminated' %}
+                                        {% if mission.getStatus == 'terminated' %}
 
                                             <tr class="text-darkgray fz-14">
                                                 <td valign="middle" class="text-center">
                                                     <i class="far fa-file-alt fz-25"></i>
                                                 </td>
-                                                <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}</td>
+                                                <td valign="middle">PX-{{ priceLog.mission.id }}-{{ mission.createdAt | date('dmy') }}-{{ priceLog.createdAt | date('m-y') }}</td>
                                                 <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
                                                 <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
                                                 {% if mission.isTvaApplicable is not null %}
