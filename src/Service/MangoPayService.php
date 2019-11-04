@@ -90,11 +90,15 @@ class MangoPayService
 
     public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission,$fee,$card_array)
     {
-
+        if($mission->getMissionType() == 'one-shot'){
+            $tag = 'mission-id '.$mission->getId().' ©';
+        }else{
+            $tag = 'mission-id '.$mission->getId().' ®';
+        }
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
-        $payIn->Tag = "Mission-id ".$mission;
+        $payIn->Tag = $tag;
         $payIn->DebitedFunds = new MangoPay\Money();
         $payIn->DebitedFunds->Amount = $amount;
         $payIn->DebitedFunds->Currency = 'EUR';
