@@ -3,6 +3,7 @@
 namespace App\Controller\B2B;
 
 use App\Constant\MissionStatus;
+use App\Entity\Option;
 use App\Entity\Page;
 use App\Repository\MissionRepository;
 use App\Repository\NotificationsRepository;
@@ -40,6 +41,10 @@ class InvoiceController extends Controller
             'status' => MissionStatus::ONGOING
         ]);
 
+        $options = $this->getDoctrine()->getRepository(Option::class);
+
+        $tax = $options->findOneBy(['slug' => 'tax']);$margin = $options->findOneBy(['slug' => 'margin']);
+
         #SEO
         $page = new Page();
         $page->setMetaTitle('Pix.city Services : liste des factures');
@@ -53,7 +58,9 @@ class InvoiceController extends Controller
                 'user' => $this->getUser()
             ]),
             'page' => $page,
-            'missions_ongoing' => $missions_ongoing
+            'missions_ongoing' => $missions_ongoing,
+            'tax' => $tax->getValue(),
+            'margin' => $margin->getValue()
         ]);
     }
 
