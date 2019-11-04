@@ -394,7 +394,7 @@ class MissionController extends Controller
             $card_array['card_type'] = $card->CardProvider;
             $card_array['card_id'] = $card->Id;
 
-            $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId(),$fee * 100,$card_array);
+            $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission,$fee * 100,$card_array);
 
             return $this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);//$this->redirect($result);//$this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);
 
