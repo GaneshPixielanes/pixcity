@@ -127,7 +127,8 @@ if(device == "Desktop")
 
 	$(document).on('click','.btn-logout, .fa-google, .fa-facebook, .btn-facebook, .btn-linkedin', function()
 	{
-		Intercom('shutdown');
+		deleteIntercomCookies();
+		// Intercom('shutdown');
 	});
 
 	$('.intercom-notifications-dismiss-button').click();
@@ -186,7 +187,7 @@ if(device == "Desktop")
         try{
 
             deleteIntercomCookies();
-            Intercom('shutdown');
+            // Intercom('shutdown');
         }catch (e) {
             // Do Nothing
         }
@@ -198,7 +199,7 @@ if(device == "Desktop")
         try{
 
             deleteIntercomCookies();
-            Intercom('shutdown');
+            // Intercom('shutdown');
         }catch (e) {
             // Do Nothing
         }
