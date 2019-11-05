@@ -63,7 +63,7 @@
                                 Numéro de facture
                             </div>
                             <div class="fz-16 font-weight-normal">
-                                PX-{{mission.id}}-{{ mission.updatedAt | date('dmY') }}
+                                PX-{{mission.id}}-{{ recurring_mission.getInvoiceDate | date('dmY') }}
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                                 Date de facture
                             </div>
                             <div class="fz-16 font-weight-normal">
-                                {{ mission.updatedAt | date('d/m/Y') }}
+                                {{ recurring_mission.getInvoiceDate | date('d/m/Y') }}
                             </div>
                         </div>
                     </div>

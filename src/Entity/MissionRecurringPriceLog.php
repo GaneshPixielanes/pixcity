@@ -143,8 +143,8 @@ class MissionRecurringPriceLog
         return $this;
     }
 
-    public function getClientInvoice(){
-        $cycle = ($this->getCycle() - 1);
+    public function getClientInvoice($cycle){
+
         return base64_encode("invoices/Recurring/".$this->getMission()->getId().'/'.$cycle.'/PX-'.$this->getMission()->getId().'-'.$this->getActivePrice()->getId().'-client.pdf');
     }
 

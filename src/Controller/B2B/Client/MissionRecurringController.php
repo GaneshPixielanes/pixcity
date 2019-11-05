@@ -235,7 +235,8 @@ class MissionRecurringController extends Controller
                                 array(
                                     'mission' => $mission->getMission(),
                                     'payment' => $payment,
-                                    'tax' => $taxOpt->getValue()
+                                    'tax' => $taxOpt->getValue(),
+                                    'recurring_mission' => $mission
                                 )
                             ), $clientInvoicePath
                         );
@@ -253,7 +254,8 @@ class MissionRecurringController extends Controller
                                 array(
                                     'mission' => $mission->getMission(),
                                     'payment' => $payment,
-                                    'tax' => $taxOpt->getValue()
+                                    'tax' => $taxOpt->getValue(),
+                                    'recurring_mission' => $mission
                                 )
                             ), $cmInvoicePath
                         );
@@ -272,7 +274,8 @@ class MissionRecurringController extends Controller
                                 array(
                                     'mission' => $mission->getMission(),
                                     'payment' => $payment,
-                                    'tax' => $taxOpt->getValue()
+                                    'tax' => $taxOpt->getValue(),
+                                    'recurring_mission' => $mission
                                 )
                             ), $pcsInvoicePath
                         );
