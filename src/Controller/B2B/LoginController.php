@@ -164,10 +164,10 @@ class LoginController extends Controller
                     ]);
             }
 
-            $client = $clientRepository->findOneBy(['googleId'=>$id]);
+            $client = $clientRepository->findOneBy(['email'=>$email]);
             $this->loginClient($request,$client);
 
-            return $this->redirect('/');
+            return $this->redirectToRoute('b2b_client_main_index');
 
         }catch (IdentityProviderException $e)
         {
@@ -221,7 +221,7 @@ class LoginController extends Controller
             $client = $clientRepository->findOneBy(['facebookId'=>$id]);
             $this->loginClient($request,$client);
 
-            return $this->redirect('/');
+            return $this->redirectToRoute('b2b_client_main_index');
 
         }catch (IdentityProviderException $e)
         {
@@ -274,7 +274,7 @@ class LoginController extends Controller
                 $client = $clientRepository->findOneBy(['linkedinId'=>$id]);
                 $this->loginClient($request, $client);
 
-                return $this->redirect('/');
+                return $this->redirectToRoute('b2b_client_main_index');
             }
 
 
@@ -328,7 +328,6 @@ class LoginController extends Controller
         $this->container->get('session')->set('_security_main_area', serialize($token));
         $event = new InteractiveLoginEvent($request, $token);
         $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
-        
 
     }
 }
