@@ -7,6 +7,10 @@
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '{{ google_analytics_id }}');
+
+
+        /* Intercom script*/
+        (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/iswx8vq4';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
         </script>
         
         <!-- Hotjar Tracking Code for https://staging.pix.city:8043/ -->
@@ -115,7 +119,32 @@
     <body class="{% block body_class %}{% if not is_granted('IS_AUTHENTICATED_FULLY') %}logged-out{% else %}logged-in{% endif %} {% endblock %}">
 
         {% block body %}{% endblock %}
-
+            {% if app.session.has('login_by') %}
+                {% set loginDetails = app.session.get('login_by')   %}
+                    {% set loginBy = loginDetails['type'] %}
+                    {% if loginBy == 'login_cm' or loginBy == 'login_client' %}
+                    {% if loginBy == 'login_cm' %}
+                        {% if loginDetails['entity'].pixie is not null %}
+                            {% if loginDetails['view_mode'] == 'pixie' %}
+                                {% set user_type = 'city maker' %}
+                            {% else %}
+                                {% set user_type = 'voyager' %}
+                            {% endif %}
+                        {% else %}
+                            {% set user_type = 'voyager' %}
+                        {% endif %}
+                        {% else %}
+                            {% set user_type = 'client' %}
+                        {% endif %}    
+                    {% endif %}   
+                 <div id="intercom-config-box" data-app-id="iswx8vq4" 
+                 data-email="{{ loginDetails['entity'].email }}"
+                 data-first-name="{{ loginDetails['entity'].firstName }}"
+                 data-last-name="{{ loginDetails['entity'].lastName }}"
+                 data-user-id="{{ loginDetails['entity'].id }}"
+                 data-user-type = '{{ user_type }}'
+                 ></div>   
+            {% endif %}   
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div id="api-user-routes"
                  data-follow-pixie="{{ path('api_users_follow_pixie') }}"
@@ -154,10 +183,10 @@
         
         {% block javascripts_footer %}{% endblock %}
                 <!-- Intercom messenger -->
-        {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
         <!-- Alert about cookie useage -->
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
         <script src="{{ absolute_url(asset('build/js/cookiealert.js')) }}"></script>
+        <script src="{{ absolute_url(asset('build/js/intercom.js')) }}"></script>
     </body>
 </html>
