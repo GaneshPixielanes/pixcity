@@ -376,16 +376,7 @@ class MissionController extends Controller
 
                 $em->persist($card_details);
 
-                $mission_price_log = new MissionRecurringPriceLog();
-                $mission_price_log->setMission($userMissionTblId);
-                $mission_price_log->setActivePrice($mission->getActiveLog());
-                $mission_price_log->setCycle(1);
-                $mission_price_log->setMonth(date('F'));
-                $mission_price_log->setYear(date('Y'));
-                $mission_price_log->setCreatedAt(new \DateTime());
-                $mission_price_log->setUpdatedAt(new \DateTime());
 
-                $em->persist($mission_price_log);
 
                 $em->flush();
 
@@ -478,6 +469,17 @@ class MissionController extends Controller
                 $message = 'Notre partenaire a bien reçu votre pré-paiement. Que vous soyez dans le cas d\'une mission one-shot ou récurrente, le city-maker va être averti du cantonnement de cette somme et il pourra démarrer la mission.';
                 $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,$mission_id->getId());
 
+                $mission_price_log = new MissionRecurringPriceLog();
+                $mission_price_log->setMission($mission);
+                $mission_price_log->setActivePrice($mission->getActiveLog());
+                $mission_price_log->setCycle(1);
+                $mission_price_log->setMonth(date('F'));
+                $mission_price_log->setYear(date('Y'));
+                $mission_price_log->setCreatedAt(new \DateTime());
+                $mission_price_log->setUpdatedAt(new \DateTime());
+
+                $em->persist($mission_price_log);
+
             }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){
 
                 $transaction->getMission()->setStatus(MissionStatus::TERMINATED);
@@ -516,7 +518,6 @@ class MissionController extends Controller
 
                 $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
 
-
                 $pcsInvoicePath = "invoices/".$mission->getId().'/'.$pcs_filename;
 
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
@@ -536,9 +537,20 @@ class MissionController extends Controller
 
                 }else{
 
-                    $cycle = 2;
+                    $cycle = 1;
 
                 }
+
+                $mission_price_log = new MissionRecurringPriceLog();
+                $mission_price_log->setMission($mission);
+                $mission_price_log->setActivePrice($mission->getActiveLog());
+                $mission_price_log->setCycle($cycle);
+                $mission_price_log->setMonth(date('F'));
+                $mission_price_log->setYear(date('Y'));
+                $mission_price_log->setCreatedAt(new \DateTime());
+                $mission_price_log->setUpdatedAt(new \DateTime());
+
+                $em->persist($mission_price_log);
 
                 $royalties = new Royalties();
                 $royalties->setMission($mission_id);
@@ -552,6 +564,7 @@ class MissionController extends Controller
                 $royalties->setCycle($cycle);
                 $royalties->setBankDetails(json_encode($response));
                 $em->persist($royalties);
+
                 $em->flush();
 
                 $message = $mission_id->getClient().' a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
@@ -563,6 +576,7 @@ class MissionController extends Controller
             }
 
             $em->persist($transaction);
+
             $em->flush();
 
 
