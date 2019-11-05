@@ -109,10 +109,10 @@ class InvoiceController extends Controller
         ]);
 
         if($type == 'one-shot'){
-            $fileName = "PX-".$mission->getId()."-".$mission->getActiveLog()->getId()."-cm.pdf";
+            $fileName = "PX-".$mission->getId()."-".$mission->getActiveLog()->getId()."-client.pdf";
             $file_path = 'invoices/'.$mission->getId().'/'.$fileName;
         }else{
-            $fileName = "PX-".$mission->getId()."-".$logId."-cm.pdf";
+            $fileName = "PX-".$mission->getId()."-".$logId."-client.pdf";
             $file_path = 'invoices/Recurring/'.$mission->getId().'/'.$cycle.'/'.$fileName;
         }
 
