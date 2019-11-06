@@ -392,6 +392,7 @@ b2b:
         to_days_end: jours
         reply : Répondre
         emptyTable : Vous n’avez pas d’emails
-        invoice_available_client : VOIR FACTURE
+        invoice_available_client : FACTURE DISPONIBLE
+        invoice_available_cm : FACTURE DISPONIBLE
 
 
