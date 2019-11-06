@@ -195,8 +195,10 @@ class MissionController extends Controller
 
                     $response = $mangoPayService->refundPayment($transaction,$refund_amount,$fees_creadited);
 
-                    $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept',$mission->getClient().' a accepté l\'annulation de la mission '.$mission->getTitle().'. L\'argent de la mission lui est retitué via le partenaire Mango Pay.',$mission->getId());
+                    //City-maker-notification
+                    $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_accept','Vous avez demandé une annulation de la mission. Une action est requise côté client pour l\'annulation définitive de la mission '.$mission->getTitle().'. L\'annulation entraine la restitution des fonds pré-payés au client en misison one shot et en mission récurrente (48h après l\'annulation).',$mission->getId());
 
+                    //Client-notification
                     $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission_client','L\'annulation de la mission '.$mission->getTitle().' est confirmée. En cas de mission one-shot, le pré-paiement que vous avez réalisé lors de l\'acceptation du devis va vous être restitué par notre partenaire Mango Pay sous 4 jours. En cas de mission récurrente, l\'annulation vaut pour le mois en cours et le pré-paiement vous sera restitué par notre partenaire Mango Pay sous 4 jours. Les mois précèdents ne sont pas impactés par cette annulation.',$mission->getId());
 
                     break;
