@@ -120,6 +120,16 @@ class UserPixieBilling
      */
     private $rcs;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $mangopay_id;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mangopay_need_to_update;
+
 
 
     //--------------------------------------------------------------
@@ -397,6 +407,30 @@ class UserPixieBilling
     public function setRcs(?string $rcs): self
     {
         $this->rcs = $rcs;
+
+        return $this;
+    }
+
+    public function getMangopayId(): ?int
+    {
+        return $this->mangopay_id;
+    }
+
+    public function setMangopayId(int $mangopay_id): self
+    {
+        $this->mangopay_id = $mangopay_id;
+
+        return $this;
+    }
+
+    public function getMangopayNeedToUpdate(): ?int
+    {
+        return $this->mangopay_need_to_update;
+    }
+
+    public function setMangopayNeedToUpdate(?int $mangopay_need_to_update): self
+    {
+        $this->mangopay_need_to_update = $mangopay_need_to_update;
 
         return $this;
     }

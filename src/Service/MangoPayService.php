@@ -21,7 +21,7 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
-        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
+        $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
 
 //      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
@@ -134,7 +134,7 @@ class MangoPayService
     }
 
     public function refundPayment($transaction,$amount,$fees){
-        
+
         $fees = $fees * 100;
 
         $debitedFund = $amount * 100;
@@ -242,21 +242,21 @@ class MangoPayService
         return $card;
     }
 
-    public function transfer(){
+    public function transfer($city_maker_wallet_id,$client_id,$client_wallet_id,$amount){
 
         $Transfer = new MangoPay\Transfer();
-        $Transfer->AuthorId = '66326339';//Client MangoPayUser ID
+        $Transfer->AuthorId = $client_id;//Client MangoPayUser ID
         $Transfer->DebitedFunds = new MangoPay\Money();
         $Transfer->DebitedFunds->Currency = "EUR";
-        $Transfer->DebitedFunds->Amount = 700;
+        $Transfer->DebitedFunds->Amount = $amount;
         $Transfer->Fees = new MangoPay\Money();
         $Transfer->Fees->Currency = "EUR";
         $Transfer->Fees->Amount = 0;
-        $Transfer->DebitedWalletId = '66326340';//Client Wallet ID
-        $Transfer->CreditedWalletId = '67271565';//User Wallet ID
+        $Transfer->DebitedWalletId = $client_wallet_id;//Client Wallet ID
+        $Transfer->CreditedWalletId = $city_maker_wallet_id;//User Wallet ID
         $result = $this->mangoPayApi->Transfers->Create($Transfer);
-        dd($result);
 
+        return $result;
     }
 
     public function createBankAccount(){
@@ -281,24 +281,24 @@ class MangoPayService
     }
 
 
-    public function payOut(){
-
+    public function getPayOut($cm_user_id,$cm_wallet_id,$amount,$bank_id){
 
         $PayOut = new MangoPay\PayOut();
-        $PayOut->AuthorId = '12345';
-        $PayOut->DebitedWalletId = '1234';
+        $PayOut->AuthorId = $cm_user_id;
+        $PayOut->DebitedWalletId = $cm_wallet_id;
         $PayOut->DebitedFunds = new \MangoPay\Money();
         $PayOut->DebitedFunds->Currency = "EUR";
-        $PayOut->DebitedFunds->Amount = 610;
+        $PayOut->DebitedFunds->Amount = $amount;
         $PayOut->Fees = new \MangoPay\Money();
         $PayOut->Fees->Currency = "EUR";
-        $PayOut->Fees->Amount = 125;
+        $PayOut->Fees->Amount = 0;
         $PayOut->PaymentType = MangoPay\PayOutPaymentType::BankWire;
         $PayOut->MeanOfPaymentDetails = new MangoPay\PayOutPaymentDetailsBankWire();
-        $PayOut->MeanOfPaymentDetails->BankAccountId = '123456';
-
+        $PayOut->MeanOfPaymentDetails->BankAccountId = $bank_id;
 
         $result = $this->mangoPayApi->PayOuts->Create($PayOut);
+
+        return $result;
 
     }
 
