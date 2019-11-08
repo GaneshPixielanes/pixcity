@@ -281,4 +281,26 @@ class MangoPayService
     }
 
 
+    public function payOut(){
+
+
+        $PayOut = new MangoPay\PayOut();
+        $PayOut->AuthorId = '12345';
+        $PayOut->DebitedWalletId = '1234';
+        $PayOut->DebitedFunds = new \MangoPay\Money();
+        $PayOut->DebitedFunds->Currency = "EUR";
+        $PayOut->DebitedFunds->Amount = 610;
+        $PayOut->Fees = new \MangoPay\Money();
+        $PayOut->Fees->Currency = "EUR";
+        $PayOut->Fees->Amount = 125;
+        $PayOut->PaymentType = MangoPay\PayOutPaymentType::BankWire;
+        $PayOut->MeanOfPaymentDetails = new MangoPay\PayOutPaymentDetailsBankWire();
+        $PayOut->MeanOfPaymentDetails->BankAccountId = '123456';
+
+
+        $result = $this->mangoPayApi->PayOuts->Create($PayOut);
+
+    }
+
+
 }
