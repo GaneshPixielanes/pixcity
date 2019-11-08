@@ -1981,4 +1981,34 @@ class User implements UserInterface, EquatableInterface
     {
         $this->address = $address;
     }
+
+    public function getSkill()
+    {
+        $skills = $this->getUserSkill();
+        $list = [];
+        foreach($skills as $skill)
+        {
+            $list[] = $skill->getName();
+        }
+
+        if(in_array('Community manager',$list))
+        {
+            return 'Community manager';
+        }
+        elseif(in_array('Influenceur local', $list))
+        {
+            return 'Influenceur local';
+        }
+        elseif(in_array('Photographe', $list))
+        {
+            return 'Photographe';
+        }
+        elseif(in_array('Autres', $list))
+        {
+            return 'Autres';
+        }
+
+        return 'NA';
+
+    }
 }
