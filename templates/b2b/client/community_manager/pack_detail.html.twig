@@ -254,7 +254,7 @@
                                 <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
                                     {% for media in pack.userPackMedia %}
                                         <li class="pack-photos-list-item d-inline-flex">
-                                            <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" alt="{{ pack.user.firstname|lower ~ '-'~pack.packSkill|lower~'-'~ pack.user.userRegion.first.name | lower~'-'~loop.index }}">
+                                            <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" alt="{{ pack.user.firstname|lower ~ '-'~pack.packSkill|lower~'-'~ pack.user.pixie.billing.address.city | lower~'-'~loop.index }}">
                                         </li>
                                     {% endfor %}
                                 </ul>
