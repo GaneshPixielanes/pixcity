@@ -322,11 +322,11 @@ class MissionController extends Controller
                                 $mission->setCancelledBy($request->get('cancelledBy'));
                                 $mission->setCancelReason($request->get('reason'));
                                 /* Notification to client */
-                                $message = 'CM '.$mission->getUser().'  a demandé une annulation de la mission. Une action est requise de votre côté pour valider l\'annulation définitive de la mission '.$mission->getTitle().'.';
+                                $message = 'CM '.$mission->getUser().' a demandé une annulation de la mission. Une action est requise de votre côté pour valider l\'annulation définitive de la mission '.$mission->getTitle().'. En cas de mission récurrente, l\'annulation concerne le mois en cours. Les précèdentes facturations ne sont pas impactées par cette annulation.';
                                 $notificationsRepository->insert(null,$mission->getClient(),'cancel_mission',$message, $mission->getId(),1);
 
                                 /* Notification to CM*/
-                                $message = 'a accepté l\'annulation de la mission '.$mission->getTitle().' En cas de mission one-shot, l\'argent de la mission est restitué au client via le partenaire Mango Pay. En cas de mission récurrente, l\'argent de la mission est restitué au client pour le mois concerné par l\'annulation. Les mois précèdents ne sont pas touchés par cette restitution.';
+                                $message = 'Vous avez demandé une annulation de la mission. Une action est requise côté client pour l\'annulation définitive de la mission '.$mission->getTitle().'. L\'annulation entraine la restitution des fonds pré-payés au client en misison one shot et en mission récurrente (48h après l\'annulation).';
 
                                 $notificationsRepository->insert($mission->getUser(),null,'cancel_mission_cm',$message, $mission->getId(),1);
                                 break;
