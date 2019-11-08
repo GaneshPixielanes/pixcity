@@ -134,7 +134,7 @@ class MangoPayService
     }
 
     public function refundPayment($transaction,$amount,$fees){
-        
+
         $fees = $fees * 100;
 
         $debitedFund = $amount * 100;
