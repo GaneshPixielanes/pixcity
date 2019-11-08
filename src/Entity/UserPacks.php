@@ -382,4 +382,9 @@ class UserPacks
         return $this;
     }
 
+    public function getSlug()
+    {
+        return str_replace(' ','-',$this->getUser()->getFirstName().'-'.$this->getUser()->getPixie()->getBilling()->getAddress()->getCity().'-'.$this->getTitle());
+    }
+
 }
