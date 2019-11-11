@@ -354,7 +354,7 @@
                         <div class="preview-cta d-flex align-items-center">
                             {% set slug = pack.title | lower | replace({' ':'-'}) %}
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                <a href="{{ url('b2b_client_pack_select',{'slug':slug,'id':pack.id}) }}"
+                                <a href="{{ url('b2b_client_pack_select',{'slug':pack.generateSlug(),'id':pack.id}) }}"
                                    class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
                             {% else %}
 
