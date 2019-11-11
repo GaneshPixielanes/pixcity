@@ -21,24 +21,34 @@ class TransferController extends AbstractController
 
         foreach ($royalties as $royalty){
 
-            $city_maker_wallet_id = $royalty->getCm()->getMangopayWalletId();
-            $client_id = $royalty->getMission()->getClient()->getClientInfo()->getMangopayUserId();
-            $client_wallet_id = $royalty->getMission()->getClient()->getClientInfo()->getMangopayWalletId();
+            if($royalty->getStatus() == 'pending'){
 
-            $amount = $royalty->getBasePrice();
+                $city_maker_wallet_id = $royalty->getCm()->getMangopayWalletId();
+                $client_id = $royalty->getMission()->getClient()->getClientInfo()->getMangopayUserId();
+                $client_wallet_id = $royalty->getMission()->getClient()->getClientInfo()->getMangopayWalletId();
 
-            $result = $mangoPayService->transfer($city_maker_wallet_id,$client_id,$client_wallet_id,(int)$amount * 100);
+                $amount = $royalty->getBasePrice();
 
-            if($result->Status != 'FAILED'){
-                $royalty->setStatus('transfer');
-                $em->persist($royalty);
-                $em->flush();
+                $result = $mangoPayService->transfer($city_maker_wallet_id,$client_id,$client_wallet_id,(int)$amount * 100);
+
+                if($result->Status != 'FAILED'){
+                    $royalty->setStatus('transfer');
+                    $em->persist($royalty);
+                    $em->flush();
+                }
+
             }
 
+
+
         }
+
+        return ['status' => 'succuss'];
     }
 
-
+    /**
+     * @Route("/b2b/payout", name="b2b_payout")
+     */
     public function transferCityMakerBank(RoyaltiesRepository $royaltiesRepository,MangoPayService $mangoPayService){
 
         $royalties = $royaltiesRepository->findAll();
@@ -63,6 +73,8 @@ class TransferController extends AbstractController
 
 
         }
+
+        return ['status' => 'succuss'];
 
     }
 
