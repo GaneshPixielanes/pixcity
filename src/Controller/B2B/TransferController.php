@@ -6,6 +6,7 @@ use App\Repository\RoyaltiesRepository;
 use App\Service\MangoPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TransferController extends AbstractController
 {
@@ -15,7 +16,7 @@ class TransferController extends AbstractController
     public function transferWallet(RoyaltiesRepository $royaltiesRepository,MangoPayService $mangoPayService)
     {
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();$executedMissionIds = [];
 
         $royalties = $royaltiesRepository->findAll();
 
@@ -35,15 +36,14 @@ class TransferController extends AbstractController
                     $royalty->setStatus('transfer');
                     $em->persist($royalty);
                     $em->flush();
+                    $executedMissionIds [] = $royalty->getMission()->getId();
                 }
 
             }
 
-
-
         }
 
-        return ['status' => 'succuss'];
+        return new JsonResponse(['status' => true,'executed_ids' => $executedMissionIds]);
     }
 
     /**
@@ -51,7 +51,9 @@ class TransferController extends AbstractController
      */
     public function transferCityMakerBank(RoyaltiesRepository $royaltiesRepository,MangoPayService $mangoPayService){
 
-        $royalties = $royaltiesRepository->findAll();
+        $em = $this->getDoctrine()->getManager();
+
+        $royalties = $royaltiesRepository->findAll();$executedMissionIds = [];
 
         foreach ($royalties as $royalty){
 
@@ -66,15 +68,19 @@ class TransferController extends AbstractController
                 $bank_id = $royalty->getCm()->getPixie()->getBilling()->getMangopayId();
 
                 $result = $mangoPayService->getPayOut($cm_user_id,$cm_wallet_id,$amount*100,$bank_id);
-                dd($result);
+
+                if($result->Status == 'CREATED'){
+                    $executedMissionIds [] = $royalty->getMission()->getId();
+                    $royalty->setStatus('payout-completed');
+                    $em->persist($royalty);
+                    $em->flush();
+                }
 
             }
 
-
-
         }
 
-        return ['status' => 'succuss'];
+        return new JsonResponse(['status' => true,'executed_ids' => $executedMissionIds]);
 
     }
 
