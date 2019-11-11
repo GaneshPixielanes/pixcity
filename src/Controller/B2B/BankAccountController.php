@@ -20,7 +20,8 @@ class BankAccountController extends AbstractController
 
         foreach ($users as $user){
 
-            if($user->getMangopayUserId() != null || $user->getPixie()->getBilling()->getBillingIban() != null || $user->getPixie()->getBilling()->getBillingBic() != null){
+            if($user->getMangopayUserId() != null || $user->getPixie()->getBilling()->getBillingIban() != null || $user->getPixie()->getBilling()->getBillingBic() != null ||
+                $user->getPixie()->getBilling()->getMangopayNeedToUpdate() != 1){
 
                 $result = $mangoPayService->createBankAccount($user);
 
