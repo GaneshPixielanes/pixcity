@@ -39,7 +39,7 @@ $(document).ready(function () {
            success: function (data) {
                if(data.success == true)
                {
-                  if(typeOf getUrlVars()['redirectToPack'] != 'undefined')
+                  if(typeof getUrlVars()['redirectToPack'] != 'undefined')
                   {
                     location.href = '/freelance/pack/'+getUrlVars()['slug']+'/'+getUrlVars()['redirectToPack']; 
                   }
