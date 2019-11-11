@@ -43,8 +43,12 @@ $(document).ready(function () {
                   {
                     location.href = '/freelance/pack/'+getUrlVars()['slug']+'/'+getUrlVars()['redirectToPack']; 
                   }
-
+                  else
+                  {
                    location.href = data.url;
+                    
+                  }
+
                }
                else
                {
