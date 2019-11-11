@@ -358,7 +358,7 @@
                                    class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
                             {% else %}
 
-                                <a href="/connexion"
+                                <a href="/connexion?redirectToPack={{ pack.id }}&slug={{ pack.generateSlug() }}"
                                    class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack"
                                 {% if loginBy == 'login_cm' %}data-toggle="modal" data-target="#cmErrorModal" {% endif %}
                                 >CHOISIR CE PACK</a>
