@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserPacksRepository")
@@ -387,4 +388,9 @@ class UserPacks
         return str_replace(' ','-',$this->getUser()->getFirstName().'-'.$this->getUser()->getPixie()->getBilling()->getAddress()->getCity().'-'.$this->getTitle());
     }
 
+    public function generateSlug()
+    {
+        $slugify = new Slugify();
+        return $slugify->slugify($this->getUser()->getFirstName().'-'.$this->getUser()->getPixie()->getBilling()->getAddress()->getCity().'-'.$this->getTitle());
+    }
 }
