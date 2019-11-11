@@ -41,7 +41,7 @@ $(document).ready(function () {
                {
                   if(typeof getUrlVars()['redirectToPack'] != 'undefined')
                   {
-                    location.href = '/freelance/pack/'+getUrlVars()['slug']+'/'+getUrlVars()['redirectToPack']; 
+                    location.href = '/freelance/'+getUrlVars()['slug']+'/'+getUrlVars()['redirectToPack']; 
                   }
                   else
                   {
