@@ -259,23 +259,25 @@ class MangoPayService
         return $result;
     }
 
-    public function createBankAccount(){
+    public function createBankAccount($user){
 
-        $UserId = '66326339';
+        $UserId = $user->getMangopayUserId();
         $BankAccount = new MangoPay\BankAccount();
         $BankAccount->Type = "IBAN";
         $BankAccount->Details = new MangoPay\BankAccountDetailsIBAN();
-        $BankAccount->Details->IBAN = "FR7618829754160173622224154";
-        $BankAccount->Details->BIC = "CMBRFR2BCME";
-        $BankAccount->OwnerName = "Joe Bloggs";
-        $BankAccount->OwnerAddress = new \MangoPay\Address();
-        $BankAccount->OwnerAddress->AddressLine1 = 'Address line 1';
-        $BankAccount->OwnerAddress->AddressLine2 = 'Address line 2';
-        $BankAccount->OwnerAddress->City = 'City';
-        $BankAccount->OwnerAddress->Country = 'FR';
-        $BankAccount->OwnerAddress->PostalCode = '11222';
-        $BankAccount->OwnerAddress->Region = 'Region';
+        $BankAccount->Details->IBAN = $user->getPixie()->getBilling()->getBillingIban();
+        $BankAccount->Details->BIC = $user->getPixie()->getBilling()->getBillingBic();
+        $BankAccount->OwnerName = $user->getFirstname().' '.$user->getLastname();
+        $BankAccount->OwnerAddress = new MangoPay\Address();
+        $BankAccount->OwnerAddress->AddressLine1 = $user->getPixie()->getBilling()->getAddress()->getAddress();
+        $BankAccount->OwnerAddress->City = $user->getPixie()->getBilling()->getAddress()->getCity();
+        $BankAccount->OwnerAddress->Country = $user->getPixie()->getBilling()->getAddress()->getCountry();
+        $BankAccount->OwnerAddress->PostalCode = $user->getPixie()->getBilling()->getAddress()->getZipcode();
+        $BankAccount->OwnerAddress->Region = $user->getPixie()->getBilling()->getAddress()->getCity();
+
         $result = $this->mangoPayApi->Users->CreateBankAccount($UserId, $BankAccount);
+
+        return $result;
 
 
     }
