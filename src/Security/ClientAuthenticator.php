@@ -100,14 +100,14 @@ class ClientAuthenticator extends AbstractFormLoginAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
 
-        if ($request->getSession()->has('chosen_pack_url')){
+        // if ($request->getSession()->has('chosen_pack_url')){
 
-            $targetPath = $request->getSession()->get('chosen_pack_url');
-            return new RedirectResponse($targetPath);
+        //     $targetPath = $request->getSession()->get('chosen_pack_url');
+        //     return new RedirectResponse($targetPath);
 
-        }elseif($targetPath = $this->getTargetPath($request->getSession(), $providerKey)){
-            return new RedirectResponse($targetPath);
-        }
+        // }elseif($targetPath = $this->getTargetPath($request->getSession(), $providerKey)){
+        //     return new RedirectResponse($targetPath);
+        // }
 
 
         // For example : return new RedirectResponse($this->router->generate('some_route'));
