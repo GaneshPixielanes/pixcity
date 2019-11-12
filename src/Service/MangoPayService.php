@@ -135,17 +135,23 @@ class MangoPayService
 
     public function refundPayment($transaction,$amount,$fees){
 
+        if($transaction->getMission()->getMissionType() == 'one-shot'){
+            $tag = 'mission-id '.$transaction->getMission()->getId().' ©';
+        }else{
+            $tag = 'mission-id '.$transaction->getMission()->getId().' ®';
+        }
+
         $fees = $fees * 100;
 
         $debitedFund = $amount * 100;
 
         $PayInId = $transaction->getMangopayTransactionId();
 
-        $Refund = new \MangoPay\Refund();
+        $Refund = new MangoPay\Refund();
 
         $Refund->AuthorId = $transaction->getMangopayUserId();
-        $Refund->Tag = "Mission-id ".$transaction->getMission()->getId();
-        $Refund->DebitedFunds = new \MangoPay\Money();
+        $Refund->Tag = $tag;
+        $Refund->DebitedFunds = new MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
         $Refund->DebitedFunds->Amount = $debitedFund;
 
@@ -161,21 +167,27 @@ class MangoPayService
 
     public function refundPaymentWithFee($transaction,$amount,$refund_amount){
 
+        if($transaction->getMission()->getMissionType() == 'one-shot'){
+            $tag = 'mission-id '.$transaction->getMission()->getId().' ©';
+        }else{
+            $tag = 'mission-id '.$transaction->getMission()->getId().' ®';
+        }
+
         $fees = $refund_amount * 100;
 
         $debitedFund = $amount * 100;
 
         $PayInId = $transaction->getMangopayTransactionId();
 
-        $Refund = new \MangoPay\Refund();
+        $Refund = new MangoPay\Refund();
 
         $Refund->AuthorId = $transaction->getMangopayUserId();
-
-        $Refund->DebitedFunds = new \MangoPay\Money();
+        $Refund->Tag = $tag;
+        $Refund->DebitedFunds = new MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
         $Refund->DebitedFunds->Amount = $debitedFund;
 
-        $Refund->Fees = new \MangoPay\Money();
+        $Refund->Fees = new MangoPay\Money();
         $Refund->Fees->Currency = "EUR";
         $Refund->Fees->Amount = - $fees;
 
