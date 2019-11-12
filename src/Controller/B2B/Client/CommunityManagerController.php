@@ -41,7 +41,7 @@ class CommunityManagerController extends AbstractController
         #SEO
         $page = new Page();
         $page->setMetaTitle($user.": ".$user->getSkill()." local à ".$user->getPixie()->getBilling()->getAddress()->getCity());
-        $page->setMetaDescription('Retrouvez toutes les offres de '.$user.' pour des missions de '.$user->getUserSkill()->first().' près de chez vous à '.$user->getPixie()->getBilling()->getAddress()->getCity());
+        $page->setMetaDescription('Retrouvez toutes les offres de '.$user.' pour des missions de '.$user->getSkill().' près de chez vous à '.$user->getPixie()->getBilling()->getAddress()->getCity());
 
 
 
