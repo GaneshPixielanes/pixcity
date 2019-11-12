@@ -271,10 +271,18 @@ class LoginController extends Controller
             }
             else
             {
+
                 $client = $clientRepository->findOneBy(['linkedinId'=>$id]);
                 $this->loginClient($request, $client);
-
-                return $this->redirectToRoute('b2b_client_main_index');
+                if($request->getSession()->has('chosen_pack_url'))
+                {
+                    return $this->redirect($request->getSession()->get('chosen_pack_url'));
+                }
+                else
+                {
+                    return $this->redirectToRoute('b2b_client_main_index');
+                }
+                
             }
 
 
