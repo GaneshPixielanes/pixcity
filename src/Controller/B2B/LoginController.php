@@ -166,7 +166,10 @@ class LoginController extends Controller
 
             $client = $clientRepository->findOneBy(['email'=>$email]);
             $this->loginClient($request,$client);
-
+            if($request->getSession()->has('chosen_pack_url'))
+            {
+                return $this->redirect($request->getSession()->get(SessionName::LOGIN_REDIRECT));
+            }
             return $this->redirectToRoute('b2b_client_main_index');
 
         }catch (IdentityProviderException $e)
@@ -220,7 +223,10 @@ class LoginController extends Controller
 
             $client = $clientRepository->findOneBy(['facebookId'=>$id]);
             $this->loginClient($request,$client);
-
+            if($request->getSession()->has('chosen_pack_url'))
+            {
+                return $this->redirect($request->getSession()->get(SessionName::LOGIN_REDIRECT));
+            }
             return $this->redirectToRoute('b2b_client_main_index');
 
         }catch (IdentityProviderException $e)
@@ -276,7 +282,7 @@ class LoginController extends Controller
                 $this->loginClient($request, $client);
                 if($request->getSession()->has('chosen_pack_url'))
                 {
-                    return $this->redirect($request->getSession()->get('chosen_pack_url'));
+                    return $this->redirect($request->getSession()->get(SessionName::LOGIN_REDIRECT));
                 }
                 else
                 {
