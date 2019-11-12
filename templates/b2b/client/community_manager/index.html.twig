@@ -93,7 +93,7 @@
                                         {% for pack in packs %}
                                             <li class="col-md-4 mb-4 pack-item {{  pack.packSkill.slug }}" >
                                                 {% set slug = pack.title | lower | replace({' ':'-', '/':'-'}) %}
-                                                <a href="{{ url('b2b_front_community_manager_pack_view',{'slug':pack.user.firstname|lower|slug ~ '-'~ pack.user.pixie.billing.address.city |slug | lower~ '-'~ slug,'id':pack.id}) }}" class="card" data-id="{{ pack.id }}">
+                                                <a href="{{ url('b2b_front_community_manager_pack_view',{'slug':pack.generateSlug()}) }}" class="card" data-id="{{ pack.id }}">
                                                     <input class="select" type="checkbox">
                                                     <div class="pack-icon">
                                                         <i class="fas {{ pack.packSkill.icon }}"></i>
