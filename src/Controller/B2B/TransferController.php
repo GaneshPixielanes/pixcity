@@ -16,7 +16,7 @@ class TransferController extends AbstractController
     public function transferWallet(RoyaltiesRepository $royaltiesRepository,MangoPayService $mangoPayService)
     {
 
-        $em = $this->getDoctrine()->getManager();$executedMissionIds = [];
+        $em = $this->getDoctrine()->getManager();$executedMissionIds = [];$incompleteMissionIds = [];
 
         $royalties = $royaltiesRepository->findAll();
 
@@ -37,13 +37,15 @@ class TransferController extends AbstractController
                     $em->persist($royalty);
                     $em->flush();
                     $executedMissionIds [] = $royalty->getMission()->getId();
+                }else{
+                    $incompleteMissionIds [] = $royalty->getMission()->getId();
                 }
 
             }
 
         }
 
-        return new JsonResponse(['status' => true,'executed_ids' => $executedMissionIds]);
+        return new JsonResponse(['completed_mission_id' => $executedMissionIds,'incomplete_mission_id' => $incompleteMissionIds]);
     }
 
     /**
@@ -53,7 +55,7 @@ class TransferController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        $royalties = $royaltiesRepository->findAll();$executedMissionIds = [];
+        $royalties = $royaltiesRepository->findAll();$executedMissionIds = [];$incompleteMissionIds = [];
 
         foreach ($royalties as $royalty){
 
@@ -74,13 +76,15 @@ class TransferController extends AbstractController
                     $royalty->setStatus('payout-completed');
                     $em->persist($royalty);
                     $em->flush();
+                }else{
+                    $incompleteMissionIds [] = $royalty->getMission()->getId();
                 }
 
             }
 
         }
 
-        return new JsonResponse(['status' => true,'executed_ids' => $executedMissionIds]);
+        return new JsonResponse(['completed_mission_id' => $executedMissionIds,'incomplete_mission_id' => $incompleteMissionIds]);
 
     }
 
