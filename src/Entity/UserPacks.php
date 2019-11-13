@@ -391,6 +391,7 @@ class UserPacks
     public function generateSlug()
     {
         $slugify = new Slugify();
+        $slugify->activateRuleSet('french');
         return $slugify->slugify($this->getUser()->getFirstName().'-'.$this->getUser()->getPixie()->getBilling()->getAddress()->getCity().'-'.$this->getTitle());
     }
 }

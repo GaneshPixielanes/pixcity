@@ -40,6 +40,7 @@
     {% set loginBy = 'not-login'   %}
 {% endif %}
 <!-- CM alert modal -->
+<!--googleoff: index-->
 <div class="modal fade alert-modal" id="cmErrorModal" tabindex="-1" role="dialog" aria-labelledby="cmErrorModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -262,7 +263,7 @@
                         </div>
                     {% endif %}
                     <div class="pack-region-container col-sm-12 mt-2 mb-4 pb-4">
-                        <h5 class="text-darkgray mb-3">Zone géographique</h5>
+                        <h2 class="text-darkgray mb-3">Zone géographique</h2>
                         <div class="row">
                             <div class="col-md-6 choose-regions-container">
                                 <div class="choose-regions-dropdowns mb-5">
@@ -693,7 +694,7 @@
         </button>
     </div>
 </div>
-
+<!--googleon: index-->
 <!-- Scripts -->
 <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
 <!-- <script src="js/app.js"></script> -->
