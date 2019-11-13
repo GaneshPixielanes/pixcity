@@ -91,6 +91,27 @@ class Royalties
      */
     private $cycle;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $transfer_id;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $transfer_date;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $payout_id;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $payout_date;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -251,4 +272,54 @@ class Royalties
 
         return $this;
     }
+
+    public function getTransferId(): ?string
+    {
+        return $this->transfer_id;
+    }
+
+    public function setTransferId(?string $transfer_id): self
+    {
+        $this->transfer_id = $transfer_id;
+
+        return $this;
+    }
+
+    public function getTransferDate(): ?\DateTimeInterface
+    {
+        return $this->transfer_date;
+    }
+
+    public function setTransferDate(?\DateTimeInterface $transfer_date): self
+    {
+        $this->transfer_date = $transfer_date;
+
+        return $this;
+    }
+
+    public function getPayoutId(): ?string
+    {
+        return $this->payout_id;
+    }
+
+    public function setPayoutId(?string $payout_id): self
+    {
+        $this->payout_id = $payout_id;
+
+        return $this;
+    }
+
+    public function getPayoutDate(): ?\DateTimeInterface
+    {
+        return $this->payout_date;
+    }
+
+    public function setPayoutDate(?\DateTimeInterface $payout_date): self
+    {
+        $this->payout_date = $payout_date;
+
+        return $this;
+    }
+
+
 }

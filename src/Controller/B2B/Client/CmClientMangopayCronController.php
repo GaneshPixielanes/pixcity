@@ -13,6 +13,7 @@ use App\Repository\ClientRepository;
 use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionPaymentRepository;
 use App\Repository\NotificationsRepository;
+use App\Repository\RoyaltiesRepository;
 use App\Repository\UserMissionRepository;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
@@ -58,21 +59,25 @@ class CmClientMangopayCronController extends Controller
     public function cronCitymakerProcess(
                                    MangoPayService $mangoPayService,
                                    UserRepository $userRepository,
-                                   Mailer $mailer
+                                   Mailer $mailer,
+                                   RoyaltiesRepository $royaltiesRepository
     )
     {
         $userRepositoryTbl = $userRepository->findBy(['active'=> 1, 'visible'=> 1], array('id' => 'DESC'),2);
+
         $missingCm = array();
         foreach ($userRepositoryTbl as $key => $value)
         {
-            if($value->getMangopayUserId() == null && $value->getFirstname() != null && $value->getLastname() != null && $value->getEmail() != null){
+            $check_royalties = $royaltiesRepository->findOneBy(['cm' => $value->getId()]);
+
+            if($value->getMangopayUserId() == null && $value->getFirstname() != null && $value->getLastname() != null && $value->getEmail() != null && $check_royalties != null){
                 // Create a mango pay user
                 $mangoUser = new UserNatural();
 
                 $mangoUser->PersonType = "NATURAL";
                 $mangoUser->FirstName = $value->getFirstname();
                 $mangoUser->LastName = $value->getLastname();
-                $mangoUser->Birthday = 1409735187;
+                $mangoUser->Birthday = strtotime($value->getBirthdate()->format('d/m/Y'));
                 $mangoUser->Nationality = "FR";
                 $mangoUser->CountryOfResidence = "FR";
                 $mangoUser->Email = $value->getEmail();
@@ -171,7 +176,8 @@ class CmClientMangopayCronController extends Controller
                // $filename = 'uploads/mangopay_kyc/client/'.$value->getId().'/addr1/'.$value->getClientInfo()->getMangopayKycFile();
                 //$filename1 = 'uploads/mangopay_kyc/client/'.$value->getId().'/addr2/'.$value->getClientInfo()->getMangopayKycAddr();
                 $res = $mangoPayService->kycCreate($value->getClientInfo()->getMangopayUserId(),$filename);
-               // $mangoPayService->kycCreate($value->getClientInfo()->getMangopayUserId(),$filename1);
+
+                // $mangoPayService->kycCreate($value->getClientInfo()->getMangopayUserId(),$filename1);
                 if(isset($res) != null ){
                     foreach($res as $v){
                         if(isset($v->Status) != null) {
@@ -207,35 +213,42 @@ class CmClientMangopayCronController extends Controller
         $filename = 'uploads/mangopay_kyc/client/addr1/62/6221a61939a729e11a4addace0e80853.png';
         foreach ($userRepositoryTbl as $key => $value)
         {
-            if($value->getMangopayUserId() != null) {
-               // $value->setMangopayKycFile($filename);
-                $value->setMangopayKycCreated(new \DateTime());
-                //  $filename = 'uploads/mangopay_kyc/cm/'.$value->getId().'/addr1/'.$value->getMangopayKycFile();
-                //$filename1 = 'uploads/mangopay_kyc/cm/'.$value->getId().'/addr2/'.$value->getMangopayKycAddr();
+            if($value->getId() != 246){
 
-                $res = $mangoPayService->kycCreate($value->getMangopayUserId(), $filename);
-                //$mangoPayService->kycCreate($value->getMangopayUserId(),$filename1);
+                if($value->getMangopayUserId() != null) {
+                    // $value->setMangopayKycFile($filename);
+                    $value->setMangopayKycCreated(new \DateTime());
+                    //  $filename = 'uploads/mangopay_kyc/cm/'.$value->getId().'/addr1/'.$value->getMangopayKycFile();
+                    //$filename1 = 'uploads/mangopay_kyc/cm/'.$value->getId().'/addr2/'.$value->getMangopayKycAddr();
 
-                if(isset($res) != null ){
-                    foreach($res as $v){
-                        if(isset($v->Status) != null) {
-                            if ($v->Status == "VALIDATION_ASKED" || $v->Status == "CREATED") {
-                                $value->setMangopayKycStatus("UNDER_VERIFICATION");
-                            }
-                            if($v->Status == "SUCCEEDED" || $v->Status == "VALIDATED") {
-                                $value->setMangopayKycStatus("SUCCESS");
-                            }
-                            if($v->Status == "REFUSED") {
-                                $value->setMangopayKycStatus("REJECT");
-                            }
-                            $em = $this->getDoctrine()->getManager();
+                    $res = $mangoPayService->kycCreate($value->getMangopayUserId(), $filename);
 
-                            $em->persist($value);
-                            $em->flush();
+                    //$mangoPayService->kycCreate($value->getMangopayUserId(),$filename1);
+
+                    if(isset($res) != null ){
+                        foreach($res as $v){
+                            if(isset($v->Status) != null) {
+                                if ($v->Status == "VALIDATION_ASKED" || $v->Status == "CREATED") {
+                                    $value->setMangopayKycStatus("UNDER_VERIFICATION");
+                                }
+                                if($v->Status == "SUCCEEDED" || $v->Status == "VALIDATED") {
+                                    $value->setMangopayKycStatus("SUCCESS");
+                                }
+                                if($v->Status == "REFUSED") {
+                                    $value->setMangopayKycStatus("REJECT");
+                                }
+                                $em = $this->getDoctrine()->getManager();
+
+                                $em->persist($value);
+                                $em->flush();
+                            }
                         }
                     }
+
                 }
+
             }
+
         }
         return JsonResponse::create(['success' => true]);
     }
