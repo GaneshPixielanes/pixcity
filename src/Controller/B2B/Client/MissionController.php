@@ -153,9 +153,10 @@ class MissionController extends Controller
             $mangoUser = new UserNatural();
 
             $mangoUser->PersonType = "NATURAL";
+            $mangoUser->Occupation = "Professional";
             $mangoUser->FirstName = $this->getUser()->getFirstname();
             $mangoUser->LastName = $this->getUser()->getLastname();
-            $mangoUser->Birthday = 1409735187;
+            $mangoUser->Birthday = strtotime($this->getUser()->getCreatedAt()->format('d/m/Y'));
             $mangoUser->Nationality = "FR";
             $mangoUser->CountryOfResidence = "FR";
             $mangoUser->Email = $this->getUser()->getEmail();

@@ -200,8 +200,8 @@ class MangoPayService
     {
         if($this->mangoPayApi->Users->GetKycDocuments($mangopayUserId) == null){
             //create the doc
-            $KycDocument = new \MangoPay\KycDocument();
-            $KycDocument->Type = "IDENTITY_PROOF";
+            $KycDocument = new MangoPay\KycDocument();
+            $KycDocument->Type = MangoPay\KycDocumentType::IdentityProof;
             $result = $this->mangoPayApi->Users->CreateKycDocument($mangopayUserId, $KycDocument);
             $KycDocumentId = $result->Id;
 
@@ -213,7 +213,7 @@ class MangoPayService
             //submit the doc for validation
             $KycDocument = new MangoPay\KycDocument();
             $KycDocument->Id = $KycDocumentId;
-            $KycDocument->Status = "VALIDATION_ASKED";
+            $KycDocument->Status = MangoPay\KycDocumentStatus::ValidationAsked;
             $result3 = $this->mangoPayApi->Users->UpdateKycDocument($mangopayUserId, $KycDocument);
             return $result3;
 
