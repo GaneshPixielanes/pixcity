@@ -34,7 +34,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-4">
-                            <label for="cardNumber">MONTANT : {{amount}} €</label><br>
+                            <label for="cardNumber">Montant à payer : {{amount}} €</label><br>
                             <label for="cardNumber">Titre de la mission : {{mission.title}}</label>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                                                 type="tel"
                                                 class="form-control"
                                                 name="cardNumber"
-                                                placeholder="Valid Card Number"
+                                                placeholder="Numéro de carte"
                                                 autocomplete="cc-number"
                                                 required autofocus
                                         />
@@ -114,12 +114,12 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="form-group">
-                                    <label for="cardCvx">CODE CVV2</label>
+                                    <label for="cardCvx">Code de Sécurité / CVV</label>
                                     <input
                                             type="password"
                                             class="form-control"
                                             name="cardCvx"
-                                            placeholder="cardCvx"
+                                            placeholder="Code de Sécurité"
                                             autocomplete="cc-csc"
                                             required
                                     />
@@ -129,7 +129,7 @@
 
                         <div class="row">
                             <div class="col-xs-4">
-                                <input class="btn btn-success btn-lg btn-block" type="submit" value="Payer" />
+                                <input class="btn btn-success btn-lg btn-block" type="submit" value="VALIDER" />
                             </div>
                         </div>
                         <div class="row" style="display:none;">
