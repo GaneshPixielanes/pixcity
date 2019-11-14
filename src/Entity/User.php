@@ -1996,9 +1996,9 @@ class User implements UserInterface, EquatableInterface
             $list[] = $skill->getName();
         }
 
-        if(in_array('Community manager',$list))
+        if(in_array('Community Manager',$list))
         {
-            return 'Community manager';
+            return 'Community Manager';
         }
         elseif(in_array('Influenceur local', $list))
         {
@@ -2008,9 +2008,9 @@ class User implements UserInterface, EquatableInterface
         {
             return 'Photographe';
         }
-        elseif(in_array('Autres', $list))
+        elseif(in_array('Autre', $list))
         {
-            return 'Autres';
+            return 'Autre';
         }
 
         return 'NA';
