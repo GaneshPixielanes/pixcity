@@ -26,16 +26,22 @@
                 <div class="panel-heading display-table" >
                     <div class="row display-tr" >
                         <h3 class="panel-title display-td" ><img src="/assets/images/services-home-banner-logo.svg" alt="" style="margin-left: 1%;margin-bottom: -4%;"></h3>
-                        <div class="display-td" >
-                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                        <div class="display-td col-lg-2 pull-right">
+                            <img class="img-responsive pull-right" src="https://www.mangopay.com/wp-content/themes/mangopay/assets/images/logos/visa.svg?v=2">
+                        </div>
+                        <div class="display-td col-lg-1 pull-right">
+                            <img class="img-responsive pull-right" src="https://www.mangopay.com/wp-content/themes/mangopay/assets/images/logos/mastercard.svg?v=2">
+                        </div>
+                        <div class="display-td col-lg-1 pull-right">
+                            <img class="img-responsive pull-right" src="https://www.mangopay.com/wp-content/themes/mangopay/assets/images/logos/cb.svg?v=2">
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-4">
-                            <label for="cardNumber">Montant à payer : {{amount}} €</label><br>
-                            <label for="cardNumber">Titre de la mission : {{mission.title}}</label>
+                            <p>Montant à payer : {{amount}} €</p>
+                            <p>Titre de la mission : {{mission.title}}</p>
                         </div>
                     </div>
                 </div>
@@ -129,9 +135,12 @@
 
                         <div class="row">
                             <div class="col-xs-4">
-                                <input class="btn btn-success btn-lg btn-block" type="submit" value="VALIDER" />
+                                <input class="btn btn-success btn-lg btn-block" type="submit" value="Payer" />
                             </div>
                         </div>
+                        <br>
+                        <p style="color: red">Bienvenue sur votre espace de pré-paiement Pix.City Services. Vous êtes sur une page de paiement</p>
+                        <p style="color: red">approuvée par notre prestataire bancaire. Toutes vos informations sont sécurisées.</p>
                         <div class="row" style="display:none;">
                             <div class="col-xs-12">
                                 <p class="payment-errors"></p>
