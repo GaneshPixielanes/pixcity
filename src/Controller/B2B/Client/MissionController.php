@@ -149,14 +149,17 @@ class MissionController extends Controller
         $mangopayid = $tansClientId->getMangopayUserId();
 
         if(isset($mangopayid) == null){
+
             // Create a mango pay user
             $mangoUser = new UserNatural();
 
+            $creation_date = date('d-m-Y', strtotime('+0 month', strtotime($this->getUser()->getCreatedAt()->format('d-m-Y'))));
+            dd($creation_date);
             $mangoUser->PersonType = "NATURAL";
             $mangoUser->Occupation = "Professional";
             $mangoUser->FirstName = $this->getUser()->getFirstname();
             $mangoUser->LastName = $this->getUser()->getLastname();
-            $mangoUser->Birthday = strtotime($this->getUser()->getCreatedAt()->format('d/m/Y'));
+            $mangoUser->Birthday = strtotime($creation_date);
             $mangoUser->Nationality = "FR";
             $mangoUser->CountryOfResidence = "FR";
             $mangoUser->Email = $this->getUser()->getEmail();
