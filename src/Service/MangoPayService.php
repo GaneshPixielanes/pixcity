@@ -22,7 +22,7 @@ class MangoPayService
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
         // $this->mangoPayApi->Config->TemporaryFolder = "D:\projects";
-        $this->mangoPayApi->Config->TemporaryFolder = "/uploads/mangopay";
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay";
 
 //      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
