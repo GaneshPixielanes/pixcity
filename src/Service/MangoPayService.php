@@ -21,7 +21,7 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
-        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
+        $this->mangoPayApi->Config->TemporaryFolder = "C:\mangopay";
 
 //      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
@@ -312,6 +312,27 @@ class MangoPayService
 
         $result = $this->mangoPayApi->PayOuts->Create($PayOut);
 
+        return $result;
+
+    }
+
+    public function legalClient($client){
+
+//        $key = md5(uniqid());
+//        $email = $client->getClientInfo()->getEmail() == null ?  $client->getEmail() : $client->getClientInfo()->getEmail();
+//        $user = new MangoPay\UserLegal();
+//        $user->Name = $client->getFirstName();
+//        $user->Email = $email;
+//        $user->LegalPersonType = MangoPay\LegalPersonType::Business;
+//        $user->HeadquartersAddress = $this->getNewAddress();
+//        $user->LegalRepresentativeFirstName = $john->FirstName;
+//        $user->LegalRepresentativeLastName = $john->LastName;
+//        $user->LegalRepresentativeAddress = $john->Address;
+//        $user->LegalRepresentativeEmail = $john->Email;
+//        $user->LegalRepresentativeBirthday = $john->Birthday;
+//        $user->LegalRepresentativeNationality = $john->Nationality;
+//        $user->LegalRepresentativeCountryOfResidence = $john->CountryOfResidence;
+//        $result = $this->_api->Users->Create($user, $key);
         return $result;
 
     }
