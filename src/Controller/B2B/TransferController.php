@@ -30,18 +30,23 @@ class TransferController extends AbstractController
 
                 $amount = $royalty->getBasePrice();
 
-                $result = $mangoPayService->transfer($city_maker_wallet_id,$client_id,$client_wallet_id,(int)$amount * 100);
+                if($city_maker_wallet_id != null){
 
-                if($result->Status != 'FAILED'){
-                    $royalty->setStatus('transfer');
-                    $royalty->setTransferId($result->Id);
-                    $royalty->setTransferDate(new \DateTime());
-                    $em->persist($royalty);
-                    $em->flush();
-                    $executedMissionIds [] = $royalty->getMission()->getId();
-                }else{
-                    $incompleteMissionIds [] = $royalty->getMission()->getId();
+                    $result = $mangoPayService->transfer($city_maker_wallet_id,$client_id,$client_wallet_id,(int)$amount * 100);
+
+                    if($result->Status != 'FAILED'){
+                        $royalty->setStatus('transfer');
+                        $royalty->setTransferId($result->Id);
+                        $royalty->setTransferDate(new \DateTime());
+                        $em->persist($royalty);
+                        $em->flush();
+                        $executedMissionIds [] = $royalty->getMission()->getId();
+                    }else{
+                        $incompleteMissionIds [] = $royalty->getMission()->getId();
+                    }
+
                 }
+
 
             }
 
@@ -71,18 +76,24 @@ class TransferController extends AbstractController
 
                 $bank_id = $royalty->getCm()->getPixie()->getBilling()->getMangopayId();
 
-                $result = $mangoPayService->getPayOut($cm_user_id,$cm_wallet_id,$amount*100,$bank_id);
+                if($cm_user_id != null && $cm_wallet_id != null && $amount > 0){
 
-                if($result->Status == 'CREATED'){
-                    $executedMissionIds [] = $royalty->getMission()->getId();
-                    $royalty->setStatus('payout-completed');
-                    $royalty->setPayoutId($result->Id);
-                    $royalty->setPayoutDate(new \DateTime());
-                    $em->persist($royalty);
-                    $em->flush();
-                }else{
-                    $incompleteMissionIds [] = $royalty->getMission()->getId();
+                    $result = $mangoPayService->getPayOut($cm_user_id,$cm_wallet_id,$amount*100,$bank_id);
+
+                    if($result->Status == 'CREATED'){
+                        $executedMissionIds [] = $royalty->getMission()->getId();
+                        $royalty->setStatus('payout-completed');
+                        $royalty->setPayoutId($result->Id);
+                        $royalty->setPayoutDate(new \DateTime());
+                        $em->persist($royalty);
+                        $em->flush();
+                    }else{
+                        $incompleteMissionIds [] = $royalty->getMission()->getId();
+                    }
+
                 }
+
+
 
             }
 
