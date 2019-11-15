@@ -154,7 +154,7 @@ class MissionController extends Controller
             $mangoUser = new UserNatural();
 
             $creation_date = date('d-m-Y', strtotime('+0 month', strtotime($this->getUser()->getCreatedAt()->format('d-m-Y'))));
-            dd($creation_date);
+
             $mangoUser->PersonType = "NATURAL";
             $mangoUser->Occupation = "Professional";
             $mangoUser->FirstName = $this->getUser()->getFirstname();
@@ -252,9 +252,6 @@ class MissionController extends Controller
                                    MissionRecurringRepository $missionRecurringRepository
     )
     {
-
-
-
 
         $em = $this->getDoctrine()->getManager();
         $options = $this->getDoctrine()->getRepository(Option::class);
@@ -380,8 +377,6 @@ class MissionController extends Controller
 
                 $em->persist($card_details);
 
-
-
                 $em->flush();
 
             }
@@ -428,7 +423,7 @@ class MissionController extends Controller
 
         $response = $mangoPayService->getResponse($transaction_id);
 
-        if($response->Status != 'FAILED'){
+        if($response->Status == 'SUCCEEDED'){
 
             $transaction = $transactionRepo->find($id);
 
@@ -438,6 +433,10 @@ class MissionController extends Controller
             $transaction->setPaymentStatus(true);
 
             $transaction->getMission()->setMissionAgreedClient(1);
+
+            $serializer = $this->container->get('serializer');
+
+            $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
 
             $em = $this->getDoctrine()->getManager();
 
@@ -473,16 +472,21 @@ class MissionController extends Controller
                 $message = 'Notre partenaire a bien reçu votre pré-paiement. Que vous soyez dans le cas d\'une mission one-shot ou récurrente, le city-maker va être averti du cantonnement de cette somme et il pourra démarrer la mission.';
                 $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,$mission_id->getId());
 
-                $mission_price_log = new MissionRecurringPriceLog();
-                $mission_price_log->setMission($mission);
-                $mission_price_log->setActivePrice($mission->getActiveLog());
-                $mission_price_log->setCycle(1);
-                $mission_price_log->setMonth(date('F'));
-                $mission_price_log->setYear(date('Y'));
-                $mission_price_log->setCreatedAt(new \DateTime());
-                $mission_price_log->setUpdatedAt(new \DateTime());
+                if($transaction->getMission()->getMissionType() == 'recurring'){
 
-                $em->persist($mission_price_log);
+                    $mission_price_log = new MissionRecurringPriceLog();
+                    $mission_price_log->setMission($mission);
+                    $mission_price_log->setActivePrice($mission->getActiveLog());
+                    $mission_price_log->setCycle(1);
+                    $mission_price_log->setMonth(date('F'));
+                    $mission_price_log->setYear(date('Y'));
+                    $mission_price_log->setCreatedAt(new \DateTime());
+                    $mission_price_log->setUpdatedAt(new \DateTime());
+
+                    $em->persist($mission_price_log);
+
+                }
+
 
             }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){
 
@@ -503,9 +507,6 @@ class MissionController extends Controller
                         )
                     ), $clientInvoicePath
                 );
-
-
-
 
                 $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
 
@@ -610,7 +611,6 @@ class MissionController extends Controller
     }
 
     public function mangoPayErrorResponses($code){
-
 
         $errors['009199'] = ['The error due to Card is not supported by Mangopay ,Amount is higher than the maximum amount per transaction,Operation doesn’t fit to your Mangopay account settings and Use of a non-3DSecure test card for a payment which requires 3DSecure'];
         $errors['001999'] = ['An incident or connection issue has occured and closed all transactions'];
