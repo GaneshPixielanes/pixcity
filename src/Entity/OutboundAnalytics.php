@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OutboundAnalyticsRepository")
  * @ORM\Table(name="pxl_outbound_cm")
@@ -40,6 +40,7 @@ class OutboundAnalytics
     private $ip;
 
     /**
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
