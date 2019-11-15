@@ -326,5 +326,26 @@ class MangoPayService
 
     }
 
+    public function legalClient($client){
+
+//        $key = md5(uniqid());
+//        $email = $client->getClientInfo()->getEmail() == null ?  $client->getEmail() : $client->getClientInfo()->getEmail();
+//        $user = new MangoPay\UserLegal();
+//        $user->Name = $client->getFirstName();
+//        $user->Email = $email;
+//        $user->LegalPersonType = MangoPay\LegalPersonType::Business;
+//        $user->HeadquartersAddress = $this->getNewAddress();
+//        $user->LegalRepresentativeFirstName = $john->FirstName;
+//        $user->LegalRepresentativeLastName = $john->LastName;
+//        $user->LegalRepresentativeAddress = $john->Address;
+//        $user->LegalRepresentativeEmail = $john->Email;
+//        $user->LegalRepresentativeBirthday = $john->Birthday;
+//        $user->LegalRepresentativeNationality = $john->Nationality;
+//        $user->LegalRepresentativeCountryOfResidence = $john->CountryOfResidence;
+//        $result = $this->_api->Users->Create($user, $key);
+        return $result;
+
+    }
+
 
 }
