@@ -21,7 +21,8 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
-        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
+        // $this->mangoPayApi->Config->TemporaryFolder = "D:\projects";
+        $this->mangoPayApi->Config->TemporaryFolder = "/uploads/mangopay";
 
 //      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
@@ -196,12 +197,21 @@ class MangoPayService
         return $response->Id;
     }
 
-    public function kycCreate($mangopayUserId, $filename)
+    public function kycCreate($mangopayUserId, $filename, $documentType)
     {
-        if($this->mangoPayApi->Users->GetKycDocuments($mangopayUserId) == null){
+        // if($this->mangoPayApi->Users->GetKycDocuments($mangopayUserId) == null){
             //create the doc
             $KycDocument = new MangoPay\KycDocument();
-            $KycDocument->Type = MangoPay\KycDocumentType::IdentityProof;
+            if($documentType === "IdentityProof")
+            {
+                $KycDocument->Type = MangoPay\KycDocumentType::IdentityProof;
+            }
+            else
+            {
+
+                $KycDocument->Type = MangoPay\KycDocumentType::AddressProof;
+            }
+            
             $result = $this->mangoPayApi->Users->CreateKycDocument($mangopayUserId, $KycDocument);
             $KycDocumentId = $result->Id;
 
@@ -217,9 +227,9 @@ class MangoPayService
             $result3 = $this->mangoPayApi->Users->UpdateKycDocument($mangopayUserId, $KycDocument);
             return $result3;
 
-        }else{
-            return $this->mangoPayApi->Users->GetKycDocuments($mangopayUserId);
-        }
+        // }else{
+        //     return $this->mangoPayApi->Users->GetKycDocuments($mangopayUserId);
+        // }
     }
 
     public function getAllUsers($Page=null,$Per_Page=null){
