@@ -41,7 +41,7 @@ class BankAccountController extends AbstractController
 
                     $em->flush();
 
-                    $executedMissionIds [] = $user->getId();
+                    $executedMissionIds[] = $user->getId();
 
                 }
 
@@ -50,7 +50,7 @@ class BankAccountController extends AbstractController
 
         }
 
-        return new JsonResponse(['completed_mission_id' => $executedMissionIds]);
+        return new JsonResponse(['completed_id' => $executedMissionIds]);
 
 
     }
