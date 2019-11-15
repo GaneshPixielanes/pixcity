@@ -434,6 +434,11 @@ class User implements UserInterface, EquatableInterface
      */
     private $address;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mangopayKycId;
+
     //--------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------
@@ -2010,5 +2015,17 @@ class User implements UserInterface, EquatableInterface
 
         return 'NA';
 
+    }
+
+    public function getMangopayKycId(): ?string
+    {
+        return $this->mangopayKycId;
+    }
+
+    public function setMangopayKycId(?string $mangopayKycId): self
+    {
+        $this->mangopayKycId = $mangopayKycId;
+
+        return $this;
     }
 }

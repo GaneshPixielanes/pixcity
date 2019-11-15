@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Title of the document</title>
+    <title>Titre de la mission : {{mission.title}}</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -26,16 +26,22 @@
                 <div class="panel-heading display-table" >
                     <div class="row display-tr" >
                         <h3 class="panel-title display-td" ><img src="/assets/images/services-home-banner-logo.svg" alt="" style="margin-left: 1%;margin-bottom: -4%;"></h3>
-                        <div class="display-td" >
-                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                        <div class="display-td col-lg-1 pull-right" style="width: 153px;margin-left: -17px;margin-top: 6px;">
+                            <img class="img-responsive pull-right" src="https://www.mangopay.com/wp-content/themes/mangopay/assets/images/logos/visa.svg?v=2">
+                        </div>
+                        <div class="display-td col-lg-1 pull-right">
+                            <img class="img-responsive pull-right" src="https://www.mangopay.com/wp-content/themes/mangopay/assets/images/logos/mastercard.svg?v=2">
+                        </div>
+                        <div class="display-td col-lg-1 pull-right">
+                            <img class="img-responsive pull-right" src="https://www.mangopay.com/wp-content/themes/mangopay/assets/images/logos/cb.svg?v=2">
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-4">
-                            <label for="cardNumber">MONTANT : {{amount}} €</label><br>
-                            <label for="cardNumber">Titre de la mission : {{mission.title}}</label>
+                            <p>Montant à payer : {{amount}} €</p>
+                            <p>Titre de la mission : {{mission.title}}</p>
                         </div>
                     </div>
                 </div>
@@ -55,7 +61,7 @@
                                                 type="tel"
                                                 class="form-control"
                                                 name="cardNumber"
-                                                placeholder="Valid Card Number"
+                                                placeholder="Numéro de carte"
                                                 autocomplete="cc-number"
                                                 required autofocus
                                         />
@@ -114,12 +120,12 @@
                         <div class="row">
                             <div class="col-xs-4">
                                 <div class="form-group">
-                                    <label for="cardCvx">CODE CVV2</label>
+                                    <label for="cardCvx">Code de Sécurité / CVV</label>
                                     <input
                                             type="password"
                                             class="form-control"
                                             name="cardCvx"
-                                            placeholder="cardCvx"
+                                            placeholder="Code de Sécurité"
                                             autocomplete="cc-csc"
                                             required
                                     />
@@ -128,10 +134,14 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-4">
-                                <input class="btn btn-success btn-lg btn-block" type="submit" value="Payer" />
+                            <div class="col-md-6">
+                                <a href="/client/mission" class="btn btn-primary btn-lg "/>Annuler</a>
+                                <input class="btn btn-success btn-lg " type="submit" value="Payer" />
                             </div>
                         </div>
+                        <br>
+                        <p>Bienvenue sur votre espace de pré-paiement Pix.City Services. Vous êtes sur une page de paiement </p>
+                        <p>approuvée par notre prestataire bancaire. Toutes vos informations sont sécurisées.</p>
                         <div class="row" style="display:none;">
                             <div class="col-xs-12">
                                 <p class="payment-errors"></p>

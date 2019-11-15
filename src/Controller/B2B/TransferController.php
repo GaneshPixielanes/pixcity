@@ -34,6 +34,8 @@ class TransferController extends AbstractController
 
                 if($result->Status != 'FAILED'){
                     $royalty->setStatus('transfer');
+                    $royalty->setTransferId($result->Id);
+                    $royalty->setTransferDate(new \DateTime());
                     $em->persist($royalty);
                     $em->flush();
                     $executedMissionIds [] = $royalty->getMission()->getId();
@@ -74,6 +76,8 @@ class TransferController extends AbstractController
                 if($result->Status == 'CREATED'){
                     $executedMissionIds [] = $royalty->getMission()->getId();
                     $royalty->setStatus('payout-completed');
+                    $royalty->setPayoutId($result->Id);
+                    $royalty->setPayoutDate(new \DateTime());
                     $em->persist($royalty);
                     $em->flush();
                 }else{
