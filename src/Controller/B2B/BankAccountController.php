@@ -26,7 +26,7 @@ class BankAccountController extends AbstractController
 
             $check_royalties = $royaltiesRepository->findOneBy(['cm' => $user->getId()]);
 
-            if(!is_null($user->getPixie())){
+            if(is_null($user->getPixie())){
 
                 if($user->getMangopayUserId() != null && $user->getPixie()->getBilling()->getBillingIban() != null && $user->getPixie()->getBilling()->getBillingBic() != null &&
                     $user->getPixie()->getBilling()->getMangopayNeedToUpdate() != 1 && $check_royalties != null){
