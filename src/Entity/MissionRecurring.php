@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MissionRecurringRepository")
  * @ORM\Table(name="pxl_b2b_mission_recurring")
@@ -50,6 +50,7 @@ class MissionRecurring
     private $payment_status;
 
     /**
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $created_at;

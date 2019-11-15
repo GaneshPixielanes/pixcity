@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NotificationsRepository")
  * @ORM\Table(name="pxl_b2b_notifications")
@@ -54,6 +54,7 @@ class Notifications
     private $deleted_at;
 
     /**
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $created_at;
