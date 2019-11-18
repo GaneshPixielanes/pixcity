@@ -44,7 +44,7 @@ class TransactionController extends AbstractController
         				case 'IDENTITY_PROOF': 
         										if($document->Status != $user->getMangopayKycStatus())
         										{
-        											if($document->Status == MangoPay\KycDocumentStatus::Refused)
+        											if($document->Status == 'REFUSED')
         											{
         												$refusedUsers['IDENTITY_PROOF'][] = $user;
         											}
@@ -56,7 +56,7 @@ class TransactionController extends AbstractController
         				case 'ADDRESS_PROOF': 
         										if($document->Status != $user->getMangopayKycAddrStatus())
         										{
-        											if($document->Status == MangoPay\KycDocumentStatus::Refused)
+        											if($document->Status == 'REFUSED')
         											{
         												$refusedUsers['ADDRESS_PROOF'][] = $user;
         											}
