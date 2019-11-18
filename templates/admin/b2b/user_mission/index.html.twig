@@ -20,9 +20,10 @@
                         <tr>
                             <th>Id</th>
                             <th>Title</th>
+                            <th class="col-md-1">Type</th>
                             <th>CM</th>
                             <th>Client</th>
-                            <th>MissionBasePrice</th>
+                            <th>Base Price</th>
                             <th>Type</th>
                             <th>Status</th>
                             <th>Created Date</th>
@@ -34,6 +35,13 @@
                         <tr>
                             <td>{{ user_mission.id }}</td>
                             <td>{{ user_mission.title }}</td>
+                            <td  class="col-md-1">
+                                {% if user_mission.missionType == 'one-shot' %}
+                                    <i class="material-icons">copyright</i>
+                                {% else %}
+                                    <i class="material-icons">cached</i>
+                                {% endif %}    
+                            </td>
                             <td>{{ user_mission.user.firstname ~' '~ user_mission.user.lastname}}</td>
                             <td>{{ user_mission.client.firstName ~' '~ user_mission.client.lastName}}</td>
                             <td>{{ user_mission.missionBasePrice }}</td>
@@ -49,6 +57,7 @@
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user_mission.id) }}">
                                         <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
                                     </form>
+                                    <a href="#" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">credit_card</i></a>
                                 </div>
                             </td>
                         </tr>
