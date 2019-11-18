@@ -66,6 +66,10 @@ class CitymakerController extends SearchPageController
             return $this->redirect('/tous-nos-pixies-locaux-france');
         }
 
+        if($request->attributes->get("slug") != $user->getSlug())
+        {
+            return $this->redirect('/profil-pixie-local/'.$user->getSlug().'/'.$user->getId());
+        }
         $pixies = $usersRepo->findRandomPixies();
 //        $cards = $cardsRepo->search(["pixie"=> $user->getId()], 1, 100);
         $cards = $cardsRepo->findBy(["pixie" => $user->getId(), "status" => CardStatus::VALIDATED],[],12);
