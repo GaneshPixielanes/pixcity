@@ -443,7 +443,12 @@
                                         <div class="hidden">
                                         {{ form_widget(form.address.city) }}
                                         </div>
-                                        
+{#                                         <select class="form-control" name="{{ form.userRegion.vars.full_name }}[]">
+                                            {% for region in regions %}
+                                            <option value="{{ region.id }}">{{ region.name}}</option>
+                                            {% endfor %}
+                                        </select> #}
+                                        {{ form_widget(form.birthLocation) }}
                                     </div>
                                 </div>
                                 <div class="row">
