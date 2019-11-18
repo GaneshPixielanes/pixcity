@@ -341,10 +341,14 @@
             // $('#user_roles_1').click(function() {
             //     $("label[for=user_roles_2], input#user_roles_2").toggle(this.checked);
             // });
-            $('#mangopayKycFile').on('change',function()
-            {
-                console.log('File has been selected');
-            });
+
+            document.getElementById('mangopayKycFile').onchange = function () {
+              $(this).after('<div class="row">Selected file: ' + this.value + '</div>');
+            };
+            document.getElementById('mangopayKycAddr').onchange = function () {
+              $(this).after('<div class="row">Selected file: ' + this.value + '</div>');
+            };
+
             // $('#$('').change(function()
             // {
             //     var data = new FormData();
