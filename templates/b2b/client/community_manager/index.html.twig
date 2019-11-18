@@ -25,7 +25,7 @@
                 <div class="col-md-3">
                     <div class="profile-info-container card p-3 text-center">
                         <img class="cm-image mx-auto mb-3" src="{{ user.getAvatar() }}" alt="CM Name">
-                        <h1 class="fz-16 font-weight-bold">{{ user.firstName~' '~user.getSkill()~' '~user.pixie.billing.address.city }}</h1>
+                        <h1 class="fz-16 font-weight-bold">{{ user.firstName}}<br/> {{ user.getSkill() }} <br/> {{ user.pixie.billing.address.city }}</h1>
                         <p class="fz-16">@{{ user }}</p>
                         <p>
                             {% for region in user.userRegion %}
