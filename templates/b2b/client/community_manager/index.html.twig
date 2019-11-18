@@ -25,7 +25,7 @@
                 <div class="col-md-3">
                     <div class="profile-info-container card p-3 text-center">
                         <img class="cm-image mx-auto mb-3" src="{{ user.getAvatar() }}" alt="CM Name">
-                        <h1 class="fz-16 font-weight-bold">{{ user.firstName~' '~user.getSkill()~' '~user.pixie.billing.address.city }}</h1>
+                        <h1 class="fz-16 font-weight-bold">{{ user.firstName}}<br/> {{ user.getSkill() }} <br/> {{ user.pixie.billing.address.city }}</h1>
                         <p class="fz-16">@{{ user }}</p>
                         <p>
                             {% for region in user.userRegion %}
@@ -100,7 +100,7 @@
                                                     </div>
                                                     <img class="card-img-top" src="/uploads/pack/banner/{{ pack.bannerImage }}" alt="">
                                                     <div class="card-body">
-                                                        <h1 class="card-text fz-12 text-normalgray mb-1">{{ pack.packSkill | upper }}</h1>
+                                                        <h3 class="card-text fz-12 text-normalgray mb-1">{{ pack.packSkill | upper }}</h3>
                                                         <h5 class="card-title fz-16 text-darkblue font-weight-bold mb-1">
                                                             {{ pack }}</h5>
                                                         <p class="pack-cost fz-16 font-weight-bold text-normalgray">{{ pack.totalPrice }}€
@@ -119,7 +119,7 @@
         </div>
     </div>
 
-
+    <!--googleoff: index-->
     <!-- Modals Starts-->
     <!-- Folllow the City Maker modal -->
     <div class="modal fade modal-follow" id="followCityMakerModal" tabindex="-1" role="dialog" aria-labelledby="followCityMakerModal" aria-hidden="true">
@@ -201,6 +201,7 @@
     <!-- Confirm with Check Modal Ends-->
     <!-- Modals Ends-->
     {% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
+        <!--googleon: index-->
 {#    {% include 'b2b/shared/modals.html.twig' %}#}
 
 {% endblock %}
