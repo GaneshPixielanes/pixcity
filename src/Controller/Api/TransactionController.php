@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\MangoPayService;
 use App\Repository\UserRepository;
 use App\Servie\Mailer;
+use MangoPay\KycDocumentStatus;
 /**
  * @Route("/api/transaction/", name="api_transaction")
  */
