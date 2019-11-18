@@ -69,17 +69,20 @@ class CommunityManagerController extends AbstractController
     /**
      * @Route("{slug}/{id}",name="pack_view")
      */
-    public function viewPack($id, UserPacksRepository $userPacksRepo)
+    public function viewPack($slug, $id, UserPacksRepository $userPacksRepo)
     {
 
         $pack = $userPacksRepo->findPack($id);
-
         if(empty($pack))
         {
             return $this->redirect('/freelance/search');
         }
 
-        $slug = $this->createSlug($pack->getTitle());
+
+        if($slug != $pack->generateSlug())
+        {
+            return $this->redirect('/freelance/'.$pack->generateSlug().'/'.$pack->getId());
+        }
 
         $session  = new Session();
         $session->set('chosen_pack_url', '/freelance/pack/'.$slug.'/'.$pack->getId());
