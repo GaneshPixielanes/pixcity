@@ -82,6 +82,7 @@ Encore
     .addEntry('js/scrollMapCount', './assets/front/js/pages/scroll-map-count.js')
     .addEntry('js/scrollTopCard', './assets/front/js/pages/scroll-top-cards.js')
     .addEntry('js/scrollBecomeCityMaker', './assets/front/js/pages/become-city-mker.js')
+    .addEntry('js/intercom', './assets/v2/js/intercom.js')
     // B2B
 
     .addEntry('b2b/js/app', './assets/b2b/js/app.js')

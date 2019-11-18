@@ -164,10 +164,13 @@ class LoginController extends Controller
                     ]);
             }
 
-            $client = $clientRepository->findOneBy(['googleId'=>$id]);
+            $client = $clientRepository->findOneBy(['email'=>$email]);
             $this->loginClient($request,$client);
-
-            return $this->redirect('/');
+            if($request->getSession()->has('chosen_pack_url'))
+            {
+                return $this->redirect($request->getSession()->get(SessionName::LOGIN_REDIRECT));
+            }
+            return $this->redirectToRoute('b2b_client_main_index');
 
         }catch (IdentityProviderException $e)
         {
@@ -220,8 +223,11 @@ class LoginController extends Controller
 
             $client = $clientRepository->findOneBy(['facebookId'=>$id]);
             $this->loginClient($request,$client);
-
-            return $this->redirect('/');
+            if($request->getSession()->has('chosen_pack_url'))
+            {
+                return $this->redirect($request->getSession()->get(SessionName::LOGIN_REDIRECT));
+            }
+            return $this->redirectToRoute('b2b_client_main_index');
 
         }catch (IdentityProviderException $e)
         {
@@ -271,10 +277,18 @@ class LoginController extends Controller
             }
             else
             {
+
                 $client = $clientRepository->findOneBy(['linkedinId'=>$id]);
                 $this->loginClient($request, $client);
-
-                return $this->redirect('/');
+                if($request->getSession()->has('chosen_pack_url'))
+                {
+                    return $this->redirect($request->getSession()->get(SessionName::LOGIN_REDIRECT));
+                }
+                else
+                {
+                    return $this->redirectToRoute('b2b_client_main_index');
+                }
+                
             }
 
 

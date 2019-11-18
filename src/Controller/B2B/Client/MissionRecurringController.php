@@ -12,6 +12,7 @@ use App\Repository\ClientInfoRepository;
 use App\Repository\MissionPaymentRepository;
 use App\Repository\MissionRecurringPriceLogRepository;
 use App\Repository\MissionRecurringRepository;
+use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
 use App\Service\Mailer;
 use App\Service\MangoPayService;
@@ -24,6 +25,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MissionRecurringController extends Controller
 {
+
+
+    private $mailer;
+
+    public function __construct(Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     /**
      * @Route("/b2b/client/mission/recurring/", name="b2b_client_mission_recurring")
      */
@@ -104,7 +114,7 @@ class MissionRecurringController extends Controller
                     $card_array['card_type'] = $mission_card->getCardType();
                     $card_array['card_id'] = $mission_card->getCardId();
 
-                    $transaction_id  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getMission()->getId(),$fee * 100,$card_array);
+                    $transaction_id  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getMission(),$fee * 100,$card_array);
 
                     //check the response of the MangoPay,after Pay in
                     $response = $mangoPayService->getResponse($transaction_id);
@@ -180,6 +190,7 @@ class MissionRecurringController extends Controller
                                        Filesystem $filesystem,
                                        MissionRecurringPriceLogRepository $missionRecurringPriceLogRepository,
                                        UserMissionRepository $userMissionRepository,
+                                       NotificationsRepository $notificationsRepository,
                                        Mailer $mailer){
 
         $em = $this->getDoctrine()->getManager();
@@ -224,7 +235,8 @@ class MissionRecurringController extends Controller
                                 array(
                                     'mission' => $mission->getMission(),
                                     'payment' => $payment,
-                                    'tax' => $taxOpt->getValue()
+                                    'tax' => $taxOpt->getValue(),
+                                    'recurring_mission' => $mission
                                 )
                             ), $clientInvoicePath
                         );
@@ -242,7 +254,8 @@ class MissionRecurringController extends Controller
                                 array(
                                     'mission' => $mission->getMission(),
                                     'payment' => $payment,
-                                    'tax' => $taxOpt->getValue()
+                                    'tax' => $taxOpt->getValue(),
+                                    'recurring_mission' => $mission
                                 )
                             ), $cmInvoicePath
                         );
@@ -261,7 +274,8 @@ class MissionRecurringController extends Controller
                                 array(
                                     'mission' => $mission->getMission(),
                                     'payment' => $payment,
-                                    'tax' => $taxOpt->getValue()
+                                    'tax' => $taxOpt->getValue(),
+                                    'recurring_mission' => $mission
                                 )
                             ), $pcsInvoicePath
                         );
@@ -286,11 +300,35 @@ class MissionRecurringController extends Controller
                     $em->persist($mission);
 
 
+
+
+                    /* Mail sent to the CM */
+                    $this->mailer->send($mission->getMission()->getUser()->getEmail(),
+                    "FACTURE DISPONIBLE",
+                    'emails/b2b/mission-client-invoice-available.html.twig',
+                    [
+                        'mission' => $mission->getMission()
+                    ],null,'services@pix.city');
+
+                    /* Mail sent to the Client */
+                    $this->mailer->send($mission->getMission()->getClient()->getEmail(),
+                    "FACTURE DISPONIBLE",
+                    'emails/b2b/mission-cm-invoice-available.html.twig',
+                    [
+                        'mission' => $mission->getMission()
+                    ],null,'services@pix.city');
+
+                    /* Notification sent to client */
+                    $message = 'Votre facture concernant la mission '.$mission->getMission()->getTitle().' est disponible dans votre espace client.';
+                    $notificationsRepository->insert(null,$mission->getMission()->getClient(),'invoice_available_client', $message, $last_row->getActivePrice()->getId(),1);
+
+                    /* Notification sent to CM */
+                    $message = 'Votre facture concernant la mission '.$mission->getMission()->getTitle().' est disponible dans votre espace city-maker.';
+                    $notificationsRepository->insert($mission->getMission()->getUser(),null,'invoice_available_cm', $message, $last_row->getActivePrice()->getId(),1);
+
                     $em->flush();
 
                     $executedMissionIds[] = $mission->getMission()->getId();
-
-
 
                 }
 

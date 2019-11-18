@@ -8,6 +8,10 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', '{{ google_analytics_id }}');
+
+        /* Intercom script*/
+        (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/iswx8vq4';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block meta_title %}Pix.City{% endblock %}</title>
@@ -45,6 +49,32 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% if not is_granted('IS_AUTHENTICATED_FULLY') %}logged-out{% else %}logged-in{% endif %} {% endblock %}">
+                    {% if app.session.has('login_by') %}
+                    {% set loginDetails = app.session.get('login_by')   %}
+                        {% set loginBy = loginDetails['type'] %}
+                        {% if loginBy == 'login_cm' or loginBy == 'login_client' %}
+                        {% if loginBy == 'login_cm' %}
+                            {% if loginDetails['entity'].pixie is not null %}
+                                {% if loginDetails['view_mode'] == 'pixie' %}
+                                    {% set user_type = 'city maker' %}
+                                {% else %}
+                                    {% set user_type = 'voyager' %}
+                                {% endif %}
+                            {% else %}
+                                {% set user_type = 'voyager' %}
+                            {% endif %}
+                            {% else %}
+                                {% set user_type = 'client' %}
+                            {% endif %}    
+                        {% endif %}   
+                     <div id="intercom-config-box" data-app-id="iswx8vq4" 
+                     data-email="{{ loginDetails['entity'].email }}"
+                     data-first-name="{{ loginDetails['entity'].firstName }}"
+                     data-last-name="{{ loginDetails['entity'].lastName }}"
+                     data-user-id="{{ loginDetails['entity'].id }}"
+                     data-user-type = '{{ user_type }}'
+                     ></div>   
+                {% endif %}    
 <nav class="navbar navbar-expand-lg fixed-top shadow-sm nav-bar-main py-0 internal-nav">
     <div class="container">
         <a class="navbar-brand" href="/"><img src="{{ absolute_url(asset('build/images/header-logo-main.svg')) }}" alt="Pix.City"></a>
@@ -161,7 +191,6 @@
 <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
 {#<script src="{{ absolute_url(asset('build/js/custom.js')) }}"></script>#}
 
-{% embed 'front/_shared/intercom.html.twig' %}{% endembed %}
 {#<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>#}
 {#<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>#}
 
@@ -178,6 +207,7 @@
 <!-- <script src="js/app.js"></script> -->
 <script src="{{ absolute_url('/assets/js/custom.js') }}"></script>
 <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@2.9.4/js/froala_editor.min.js'></script>
+<script src="{{ absolute_url(asset('build/js/intercom.js')) }}"></script>
 
 {% block javascripts %}{% endblock %}
 

@@ -434,6 +434,16 @@ class User implements UserInterface, EquatableInterface
      */
     private $address;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mangopayKycId;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mangopayKycAddrStatus;
+
     //--------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------
@@ -1980,5 +1990,59 @@ class User implements UserInterface, EquatableInterface
     public function setAddress($address)
     {
         $this->address = $address;
+    }
+
+    public function getSkill()
+    {
+        $skills = $this->getUserSkill();
+        $list = [];
+        foreach($skills as $skill)
+        {
+            $list[] = $skill->getName();
+        }
+
+        if(in_array('Community Manager',$list))
+        {
+            return 'Community Manager';
+        }
+        elseif(in_array('Influenceur local', $list))
+        {
+            return 'Influenceur local';
+        }
+        elseif(in_array('Photographe', $list))
+        {
+            return 'Photographe';
+        }
+        elseif(in_array('Autre', $list))
+        {
+            return 'Autre';
+        }
+
+        return 'NA';
+
+    }
+
+    public function getMangopayKycId(): ?string
+    {
+        return $this->mangopayKycId;
+    }
+
+    public function setMangopayKycId(?string $mangopayKycId): self
+    {
+        $this->mangopayKycId = $mangopayKycId;
+
+        return $this;
+    }
+
+    public function getMangopayKycAddrStatus(): ?string
+    {
+        return $this->mangopayKycAddrStatus;
+    }
+
+    public function setMangopayKycAddrStatus(?string $mangopayKycAddrStatus): self
+    {
+        $this->mangopayKycAddrStatus = $mangopayKycAddrStatus;
+
+        return $this;
     }
 }

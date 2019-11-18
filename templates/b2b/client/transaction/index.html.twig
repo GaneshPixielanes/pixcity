@@ -26,94 +26,89 @@
                         <th class="font-weight-normal w-5"><span class="sr-only">Mission actions</span></th>
                     </tr>
                     </thead>
-                    <tbody>
+                        <tbody>
 
-                    {% for mission in missions %}
+                        {% for mission in missions %}
 
-                        {% if mission.getMissionType == 'one-shot' and mission.getStatus == 'terminated' %}
+                            {% if mission.getMissionType == 'one-shot' and mission.getStatus == 'terminated' %}
 
-                            <tr class="text-darkgray fz-14">
-                                <td valign="middle" class="text-center">
-                                    <i class="far fa-file-alt fz-25"></i>
-                                </td>
-                                <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}</td>
-                                <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
-                                <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
-                                {% if mission.isTvaApplicable is not null %}
-                                    <td valign="middle">{{ mission.userMissionPayment.clientTotal |round }} €</td>
-                                {% else %}
-                                    <td valign="middle">{{ (mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientTax) | round }} €</td>
-                                {% endif %}
-                                <td valign="middle"><span class="text-inprogress">Terminé</span></td>
-                                <td valign="middle">
-                                    <div class="d-flex align-items-center">
-                                        <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}" data-type="one-shot"><i class="fas fa-eye fz-16"></i></a>
-                                        <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getClientInvoice() }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-
-                        {% elseif mission.getMissionType == 'recurring' or mission.getStatus == 'terminated' or mission.getStatus == 'ongoing' %}
-
-
-                            {% if mission.getMissionPriceLogs() is not empty %}
-                                {% for priceLog in mission.getMissionPriceLogs  %}
-
-                                    {% if loop.last != loop.length %}
-                                        <tr class="text-darkgray fz-14">
-                                            <td valign="middle" class="text-center">
-                                                <i class="far fa-file-alt fz-25"></i>
-                                            </td>
-                                            <td valign="middle">PX-{{ priceLog.mission.id }}-{{ mission.createdAt | date('dmy') }}-{{ priceLog.createdAt | date('m-y') }}</td>
-                                            <td valign="middle">{{ priceLog.createdAt | date('d/m/Y') }}</td>
-                                            <td valign="middle">{{  priceLog.updatedAt | date('d/m/Y') }}</td>
-                                            {% if priceLog.mission.isTvaApplicable is not null %}
-                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice | price(margin,tax,true) | round  }} €</td>
-                                            {% else %}
-                                                <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice | price(margin,0,false) | round }} €</td>
-                                            {% endif %}
-                                            <td valign="middle"><span class="text-inprogress">Terminé</span></td>
-                                            <td valign="middle">
-                                                <div class="d-flex align-items-center">
-                                                    <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}" data-type="recurring" data-cyle="{{ priceLog.cycle }}" data-log="{{ priceLog.getActivePrice.id }}"><i class="fas fa-eye fz-16"></i></a>
-                                                    <a href="/client/download/invoice/{{ mission.id }}/{{ priceLog.getClientInvoice() }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-
+                                <tr class="text-darkgray fz-14">
+                                    <td valign="middle" class="text-center">
+                                        <i class="far fa-file-alt fz-25"></i>
+                                    </td>
+                                    <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}-{{ mission.createdAt | date('m-y') }}</td>
+                                    <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
+                                    <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
+                                    {% if mission.isTvaApplicable is not null %}
+                                        <td valign="middle">{{ mission.userMissionPayment.clientTotal |round }} €</td>
                                     {% else %}
+                                        <td valign="middle">{{ (mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientTax) | round }} €</td>
+                                    {% endif %}
+                                    <td valign="middle"><span class="text-inprogress">Terminé</span></td>
+                                    <td valign="middle">
+                                        <div class="d-flex align-items-center">
+                                            <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}" data-type="one-shot"><i class="fas fa-eye fz-16"></i></a>
+                                            <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getClientInvoice() }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                                        {% if mission.getMissionType == 'recurring' and mission.getStatus == 'terminated' %}
+                            {% elseif mission.getMissionType == 'recurring' or mission.getStatus == 'terminated' or mission.getStatus == 'ongoing' %}
 
+
+                                {% if mission.getMissionPriceLogs() is not empty %}
+                                    {% for priceLog in mission.getMissionPriceLogs  %}
+                                        {% if mission.getMissionType == 'recurring' and loop.last != loop.index %}
                                             <tr class="text-darkgray fz-14">
                                                 <td valign="middle" class="text-center">
                                                     <i class="far fa-file-alt fz-25"></i>
                                                 </td>
-                                                <td valign="middle">PX-{{ mission.id }}-{{ mission.createdAt | date('dmy') }}</td>
-                                                <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
-                                                <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
-                                                {% if mission.isTvaApplicable is not null %}
-                                                    <td valign="middle">{{ mission.userMissionPayment.clientTotal |round }} €</td>
+                                                <td valign="middle">PX-{{ priceLog.mission.id }}-{{ mission.createdAt | date('dmy') }}-{{ priceLog.createdAt | date('m-y') }}</td>
+                                                <td valign="middle">{{ priceLog.createdAt | date('d/m/Y') }}</td>
+                                                <td valign="middle">{{  priceLog.updatedAt | date('d/m/Y') }}</td>
+                                                {% if priceLog.mission.isTvaApplicable is not null %}
+                                                    <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice | price(margin,tax,true) | round  }} €</td>
                                                 {% else %}
-                                                    <td valign="middle">{{ (mission.userMissionPayment.clientTotal - mission.userMissionPayment.clientTax) | round }} €</td>
+                                                    <td valign="middle">{{ priceLog.mission.getActiveLogById(priceLog.getActivePrice).getUserBasePrice | price(margin,0,false) | round }} €</td>
                                                 {% endif %}
                                                 <td valign="middle"><span class="text-inprogress">Terminé</span></td>
                                                 <td valign="middle">
                                                     <div class="d-flex align-items-center">
-                                                        <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}" data-type="one-shot"><i class="fas fa-eye fz-16"></i></a>
-                                                        <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getClientInvoice() }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                                                        <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}" data-type="recurring" data-cyle="{{ priceLog.cycle }}" data-log="{{ priceLog.getActivePrice.id }}"><i class="fas fa-eye fz-16"></i></a>
+                                                        <a href="/client/download/invoice/{{ mission.id }}/{{ priceLog.getClientInvoice(priceLog.cycle) }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
 
-                                        {% endif %}
+                                        {% else %}
 
-                                    {% endif %}
-                                {% endfor %}
+                                            {% if mission.getStatus == 'terminated' %}
+
+                                                <tr class="text-darkgray fz-14">
+                                                    <td valign="middle" class="text-center">
+                                                        <i class="far fa-file-alt fz-25"></i>
+                                                    </td>
+                                                    <td valign="middle">PX-{{ priceLog.mission.id }}-{{ mission.createdAt | date('dmy') }}-{{ priceLog.createdAt | date('m-y') }}</td>
+                                                    <td valign="middle">{{ mission.createdAt | date('d/m/Y') }}</td>
+                                                    <td valign="middle">{{  mission.updatedAt | date('d/m/Y') }}</td>
+                                                    <td valign="middle">{{ mission.userMissionPayment.clientPrice |round }} €</td>
+                                                    <td valign="middle"><span class="text-inprogress">Terminé</span></td>
+                                                    <td valign="middle">
+                                                        <div class="d-flex align-items-center">
+                                                            <a href="javascript:;" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none check-the-quote" data-id="{{ mission.id }}" data-type="one-shot"><i class="fas fa-eye fz-16"></i></a>
+                                                            <a href="/client/download/invoice/{{ mission.id }}/{{ mission.getClientInvoice() }}/client" class="text-darkgray d-flex align-items-center justify-content-center p-2 text-decoration-none"><i class="fas fa-download fz-16"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            {% endif %}
+
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    </tbody>
+                        {% endfor %}
+                        </tbody>
                 </table>
 
             {% else %}

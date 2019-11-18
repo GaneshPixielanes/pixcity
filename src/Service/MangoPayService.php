@@ -21,7 +21,8 @@ class MangoPayService
         $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
-        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
+        // $this->mangoPayApi->Config->TemporaryFolder = "D:\projects";
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay";
 
 //      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
@@ -90,11 +91,15 @@ class MangoPayService
 
     public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission,$fee,$card_array)
     {
-
+        if($mission->getMissionType() == 'one-shot'){
+            $tag = 'mission-id '.$mission->getId().' ©';
+        }else{
+            $tag = 'mission-id '.$mission->getId().' ®';
+        }
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
-        $payIn->Tag = "Mission-id ".$mission;
+        $payIn->Tag = $tag;
         $payIn->DebitedFunds = new MangoPay\Money();
         $payIn->DebitedFunds->Amount = $amount;
         $payIn->DebitedFunds->Currency = 'EUR';
@@ -130,18 +135,24 @@ class MangoPayService
     }
 
     public function refundPayment($transaction,$amount,$fees){
-        
+
+        if($transaction->getMission()->getMissionType() == 'one-shot'){
+            $tag = 'mission-id '.$transaction->getMission()->getId().' ©';
+        }else{
+            $tag = 'mission-id '.$transaction->getMission()->getId().' ®';
+        }
+
         $fees = $fees * 100;
 
         $debitedFund = $amount * 100;
 
         $PayInId = $transaction->getMangopayTransactionId();
 
-        $Refund = new \MangoPay\Refund();
+        $Refund = new MangoPay\Refund();
 
         $Refund->AuthorId = $transaction->getMangopayUserId();
-        $Refund->Tag = "Mission-id ".$transaction->getMission()->getId();
-        $Refund->DebitedFunds = new \MangoPay\Money();
+        $Refund->Tag = $tag;
+        $Refund->DebitedFunds = new MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
         $Refund->DebitedFunds->Amount = $debitedFund;
 
@@ -157,21 +168,27 @@ class MangoPayService
 
     public function refundPaymentWithFee($transaction,$amount,$refund_amount){
 
+        if($transaction->getMission()->getMissionType() == 'one-shot'){
+            $tag = 'mission-id '.$transaction->getMission()->getId().' ©';
+        }else{
+            $tag = 'mission-id '.$transaction->getMission()->getId().' ®';
+        }
+
         $fees = $refund_amount * 100;
 
         $debitedFund = $amount * 100;
 
         $PayInId = $transaction->getMangopayTransactionId();
 
-        $Refund = new \MangoPay\Refund();
+        $Refund = new MangoPay\Refund();
 
         $Refund->AuthorId = $transaction->getMangopayUserId();
-
-        $Refund->DebitedFunds = new \MangoPay\Money();
+        $Refund->Tag = $tag;
+        $Refund->DebitedFunds = new MangoPay\Money();
         $Refund->DebitedFunds->Currency = "EUR";
         $Refund->DebitedFunds->Amount = $debitedFund;
 
-        $Refund->Fees = new \MangoPay\Money();
+        $Refund->Fees = new MangoPay\Money();
         $Refund->Fees->Currency = "EUR";
         $Refund->Fees->Amount = - $fees;
 
@@ -180,12 +197,21 @@ class MangoPayService
         return $response->Id;
     }
 
-    public function kycCreate($mangopayUserId, $filename)
+    public function kycCreate($mangopayUserId, $filename, $documentType)
     {
-        if($this->mangoPayApi->Users->GetKycDocuments($mangopayUserId) == null){
+        // if($this->mangoPayApi->Users->GetKycDocuments($mangopayUserId) == null){
             //create the doc
-            $KycDocument = new \MangoPay\KycDocument();
-            $KycDocument->Type = "IDENTITY_PROOF";
+            $KycDocument = new MangoPay\KycDocument();
+            if($documentType === "IdentityProof")
+            {
+                $KycDocument->Type = MangoPay\KycDocumentType::IdentityProof;
+            }
+            else
+            {
+
+                $KycDocument->Type = MangoPay\KycDocumentType::AddressProof;
+            }
+            
             $result = $this->mangoPayApi->Users->CreateKycDocument($mangopayUserId, $KycDocument);
             $KycDocumentId = $result->Id;
 
@@ -197,13 +223,13 @@ class MangoPayService
             //submit the doc for validation
             $KycDocument = new MangoPay\KycDocument();
             $KycDocument->Id = $KycDocumentId;
-            $KycDocument->Status = "VALIDATION_ASKED";
+            $KycDocument->Status = MangoPay\KycDocumentStatus::ValidationAsked;
             $result3 = $this->mangoPayApi->Users->UpdateKycDocument($mangopayUserId, $KycDocument);
             return $result3;
 
-        }else{
-            return $this->mangoPayApi->Users->GetKycDocuments($mangopayUserId);
-        }
+        // }else{
+        //     return $this->mangoPayApi->Users->GetKycDocuments($mangopayUserId);
+        // }
     }
 
     public function getAllUsers($Page=null,$Per_Page=null){
@@ -236,6 +262,89 @@ class MangoPayService
         $card = $this->mangoPayApi->Cards->Get($updatedCardRegister->CardId);
 
         return $card;
+    }
+
+    public function transfer($city_maker_wallet_id,$client_id,$client_wallet_id,$amount){
+
+        $Transfer = new MangoPay\Transfer();
+        $Transfer->AuthorId = $client_id;//Client MangoPayUser ID
+        $Transfer->DebitedFunds = new MangoPay\Money();
+        $Transfer->DebitedFunds->Currency = "EUR";
+        $Transfer->DebitedFunds->Amount = $amount;
+        $Transfer->Fees = new MangoPay\Money();
+        $Transfer->Fees->Currency = "EUR";
+        $Transfer->Fees->Amount = 0;
+        $Transfer->DebitedWalletId = $client_wallet_id;//Client Wallet ID
+        $Transfer->CreditedWalletId = $city_maker_wallet_id;//User Wallet ID
+        $result = $this->mangoPayApi->Transfers->Create($Transfer);
+
+        return $result;
+    }
+
+    public function createBankAccount($user){
+
+        $UserId = $user->getMangopayUserId();
+        $BankAccount = new MangoPay\BankAccount();
+        $BankAccount->Type = "IBAN";
+        $BankAccount->Details = new MangoPay\BankAccountDetailsIBAN();
+        $BankAccount->Details->IBAN = $user->getPixie()->getBilling()->getBillingIban();
+        $BankAccount->Details->BIC = $user->getPixie()->getBilling()->getBillingBic();
+        $BankAccount->OwnerName = $user->getFirstname().' '.$user->getLastname();
+        $BankAccount->OwnerAddress = new MangoPay\Address();
+        $BankAccount->OwnerAddress->AddressLine1 = $user->getPixie()->getBilling()->getAddress()->getAddress();
+        $BankAccount->OwnerAddress->City = $user->getPixie()->getBilling()->getAddress()->getCity();
+        $BankAccount->OwnerAddress->Country = $user->getPixie()->getBilling()->getAddress()->getCountry();
+        $BankAccount->OwnerAddress->PostalCode = $user->getPixie()->getBilling()->getAddress()->getZipcode();
+        $BankAccount->OwnerAddress->Region = $user->getPixie()->getBilling()->getAddress()->getCity();
+
+        $result = $this->mangoPayApi->Users->CreateBankAccount($UserId, $BankAccount);
+
+        return $result;
+
+
+    }
+
+
+    public function getPayOut($cm_user_id,$cm_wallet_id,$amount,$bank_id){
+
+        $PayOut = new MangoPay\PayOut();
+        $PayOut->AuthorId = $cm_user_id;
+        $PayOut->DebitedWalletId = $cm_wallet_id;
+        $PayOut->DebitedFunds = new \MangoPay\Money();
+        $PayOut->DebitedFunds->Currency = "EUR";
+        $PayOut->DebitedFunds->Amount = $amount;
+        $PayOut->Fees = new \MangoPay\Money();
+        $PayOut->Fees->Currency = "EUR";
+        $PayOut->Fees->Amount = 0;
+        $PayOut->PaymentType = MangoPay\PayOutPaymentType::BankWire;
+        $PayOut->MeanOfPaymentDetails = new MangoPay\PayOutPaymentDetailsBankWire();
+        $PayOut->MeanOfPaymentDetails->BankAccountId = $bank_id;
+
+        $result = $this->mangoPayApi->PayOuts->Create($PayOut);
+
+        return $result;
+
+    }
+
+    public function legalClient($client){
+
+//        $key = md5(uniqid());
+//        $email = $client->getClientInfo()->getEmail() == null ?  $client->getEmail() : $client->getClientInfo()->getEmail();
+//        $user = new MangoPay\UserLegal();
+//        $user->Name = $client->getFirstName();
+//        $user->Email = $email;
+//        $user->LegalPersonType = MangoPay\LegalPersonType::Business;
+//        $user->HeadquartersAddress = $this->getNewAddress();
+//        $user->LegalRepresentativeFirstName = $john->FirstName;
+//        $user->LegalRepresentativeLastName = $john->LastName;
+//        $user->LegalRepresentativeAddress = $john->Address;
+//        $user->LegalRepresentativeEmail = $john->Email;
+//        $user->LegalRepresentativeBirthday = $john->Birthday;
+//        $user->LegalRepresentativeNationality = $john->Nationality;
+//        $user->LegalRepresentativeCountryOfResidence = $john->CountryOfResidence;
+//        $result = $this->_api->Users->Create($user, $key);
+        return $result;
+
     }
 
 

@@ -25,7 +25,7 @@
                 <div class="col-md-3">
                     <div class="profile-info-container card p-3 text-center">
                         <img class="cm-image mx-auto mb-3" src="{{ user.getAvatar() }}" alt="CM Name">
-                        <h4 class="fz-24 font-weight-bold">{{ user }}</h4>
+                        <h1 class="fz-16 font-weight-bold">{{ user.firstName~' '~user.getSkill()~' '~user.pixie.billing.address.city }}</h1>
                         <p class="fz-16">@{{ user }}</p>
                         <p>
                             {% for region in user.userRegion %}
@@ -93,15 +93,14 @@
                                         {% for pack in packs %}
                                             <li class="col-md-4 mb-4 pack-item {{  pack.packSkill.slug }}" >
                                                 {% set slug = pack.title | lower | replace({' ':'-', '/':'-'}) %}
-{#                                                <a href="{{ url('b2b_client_pack_select',{'slug':slug,'id':pack.id}) }}" class="card" data-id="{{ pack.id }}">#}
-                                                <a href="{{ url('b2b_front_community_manager_pack_view',{'slug':pack.user.firstname|lower|slug ~ '-'~ pack.user.userRegion.first.name|slug | lower~ '-'~ slug,'id':pack.id}) }}" class="card" data-id="{{ pack.id }}">
+                                                <a href="{{ url('b2b_front_community_manager_pack_view',{'slug':pack.generateSlug(), 'id':pack.id}) }}" class="card" data-id="{{ pack.id }}">
                                                     <input class="select" type="checkbox">
                                                     <div class="pack-icon">
                                                         <i class="fas {{ pack.packSkill.icon }}"></i>
                                                     </div>
                                                     <img class="card-img-top" src="/uploads/pack/banner/{{ pack.bannerImage }}" alt="">
                                                     <div class="card-body">
-                                                        <p class="card-text fz-12 text-normalgray mb-1">{{ pack.packSkill | upper }}</p>
+                                                        <h1 class="card-text fz-12 text-normalgray mb-1">{{ pack.packSkill | upper }}</h1>
                                                         <h5 class="card-title fz-16 text-darkblue font-weight-bold mb-1">
                                                             {{ pack }}</h5>
                                                         <p class="pack-cost fz-16 font-weight-bold text-normalgray">{{ pack.totalPrice }}€

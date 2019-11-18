@@ -287,6 +287,54 @@ class UsersController extends Controller
                     }
                 }
             }
+
+           if($user->getViewMode() == ViewMode::B2B) {
+               if ($authChecker->isGranted('ROLE_B2C')) {
+                   if($editedUser->getB2bCmApproval() == 1) {
+                        // Create MangoPay User if it's not present
+                        if(is_null($editedUser->getMangopayUserId()))
+                        {
+                            $mangoUser = new UserNatural();
+
+                           $mangoUser->PersonType = "NATURAL";
+                           $mangoUser->FirstName = $editedUser->getFirstname();
+                           $mangoUser->LastName = $editedUser->getLastname();
+                           $mangoUser->Birthday = 1409735187;
+                           $mangoUser->Nationality = "FR";
+                           $mangoUser->CountryOfResidence = "FR";
+                           $mangoUser->Email = $editedUser->getEmail();
+                           $mangoUser = $mangoPayService->createUser($mangoUser);
+                           //Create a wallet
+                           $wallet = $mangoPayService->getWallet($mangoUser->Id);
+
+                           $editedUser->setMangopayUserId($mangoUser->Id);
+                           $editedUser->setMangopayWalletId($wallet->Id);
+                           $editedUser->setMangopayCreatedAt(new \DateTime());
+                        }
+                        //Get the documents uploaded by User
+                        
+                   }
+
+                   if($request->files->get('mangopayKycFile'))
+                   {
+                       $kycFile = $fileUploader->upload($request->files->get('mangopayKycFile'),'kyc-temp',false);
+
+                       $kycIdentityResult = $mangoPayService->kycCreate($editedUser->getMangopayUserId(),'uploads/kyc-temp/'.$kycFile,'IdentityProof');
+                       $editedUser->setMangopayKycFile($kycIdentityResult->Id);
+                       $editedUser->setMangopayKycStatus($kycIdentityResult->Status);
+
+
+                   }
+                   if($request->files->get('mangopayKycAddr'))
+                   {
+                       $kycAddr = $fileUploader->upload($request->files->get('mangopayKycAddr'),'kyc-temp',false);
+                       $kycAddressResult = $mangoPayService->kycCreate($editedUser->getMangopayUserId(),'uploads/kyc-temp/'.$kycAddr,'AddressProof');
+                       $editedUser->setMangopayKycAddr($kycAddressResult->Id);
+                       $editedUser->setMangopayKycAddrStatus($kycAddressResult->Status);
+
+                   }
+               }
+           }
             /************END CODE TO TO B2B APPROVAL AND REJECT DATE**********************************/
 
             /************ACTIVE CODE TO CREATE MANGOPAY  AND KYC**********************************/
@@ -467,50 +515,50 @@ class UsersController extends Controller
         return $this->redirectToRoute('admin_users_list');
     }
 
-//    /**
-//     * @Route("upload/mangopaykyc", name="mangopaykyc")
-//     */
-//    public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
-//    {
-//        $file = $request->files->get('file');
-//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/'.$request->get('id').'/addr1/', true);
-//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
-//    }
-//    /**
-//     * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
-//     */
-//    public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
-//    {
-//        $file = $request->files->get('file');
-//        $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/'.$request->get('id').'/addr2/', true);
-//        return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
-//    }
-//    /**
-//     * @Route("download/{id}/{fldName}",name="download")
-//     */
-//    public function download($id,$fldName, UserRepository $userRepository)
-//    {
-//        $userTbl = $userRepository->find($id);
-//        $folderName = $fldName;
-//        $kycFile = '';
-//        if($folderName == 'addr1'){
-//            $kycFile = $userTbl->getMangopayKycFile();
-//        }else{
-//            $kycFile = $userTbl->getMangopayKycAddr();
-//        }
-//
-//        $date = new \DateTime();
-//        $response = new BinaryFileResponse('uploads/mangopay_kyc/cm/'.$userTbl->getId().'/'.$folderName.'/'.$kycFile);
-//      //  $ext = pathinfo('uploads/mangopay_kyc/cm/'.$userTbl->getId().'/addr1/'.$userTbl->getMangopayKycFile(),PATHINFO_EXTENSION);
-//
-//        $response->headers->set('Content-Type','text/plain');
-//        $response->setContentDisposition(
-//            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-//            //$kycFile.'_'.$date->format('Ymd').'.'.$ext
-//            $kycFile
-//        );
-//
-//        return $response;
-//
-//    }
+   /**
+    * @Route("upload/mangopaykyc", name="mangopaykyc")
+    */
+   public function uploadMangopaykyc(Request $request, FileUploader $fileUploader)
+   {
+       $file = $request->files->get('file');
+       $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/'.$request->get('id').'/addr1/', true);
+       return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+   }
+   /**
+    * @Route("upload/mangopayKycAddr", name="mangopayKycAddr")
+    */
+   public function uploadMangopayAddr(Request $request, FileUploader $fileUploader)
+   {
+       $file = $request->files->get('file');
+       $fileName = $fileUploader->upload($file, 'mangopay_kyc/cm/'.$request->get('id').'/addr2/', true);
+       return JsonResponse::create(['success' => true, 'fileName' => $fileName]);
+   }
+   /**
+    * @Route("download/{id}/{fldName}",name="download")
+    */
+   public function download($id,$fldName, UserRepository $userRepository)
+   {
+       $userTbl = $userRepository->find($id);
+       $folderName = $fldName;
+       $kycFile = '';
+       if($folderName == 'addr1'){
+           $kycFile = $userTbl->getMangopayKycFile();
+       }else{
+           $kycFile = $userTbl->getMangopayKycAddr();
+       }
+
+       $date = new \DateTime();
+       $response = new BinaryFileResponse('uploads/mangopay_kyc/cm/'.$userTbl->getId().'/'.$folderName.'/'.$kycFile);
+     //  $ext = pathinfo('uploads/mangopay_kyc/cm/'.$userTbl->getId().'/addr1/'.$userTbl->getMangopayKycFile(),PATHINFO_EXTENSION);
+
+       $response->headers->set('Content-Type','text/plain');
+       $response->setContentDisposition(
+           ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+           //$kycFile.'_'.$date->format('Ymd').'.'.$ext
+           $kycFile
+       );
+
+       return $response;
+
+   }
 }

@@ -300,15 +300,17 @@ $(document).ready(function() {
       {
         window.location.href = "/connexion/signout";
       });
-        jQuery('#pc-city-maker-lp').click(function()
-        {
-            window.location.href = "/devenez-city-maker";
-        });
 
-        jQuery('#pc-login-page').click(function()
-        {
-            window.location.href = "/connexion";
-        })
+      $('body').on('click','#pc-city-maker-lp', function()
+      {
+        window.location.href = "/devenez-city-maker";
+      });
+
+      $('body').on('click','#pc-login-page', function()
+      {
+        window.location.href = "/connexion";
+      });
+
     });
 
     jQuery(document).ready(function() {

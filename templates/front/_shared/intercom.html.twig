@@ -86,13 +86,13 @@ if(device == "Desktop")
 	var current_user_id = "{{ loginDetails['entity'].id }}";
 	var user_type = "{{ user_type }}";
 	window.intercomSettings = {
-	    app_id: APP_ID,
-	    name: current_user_name, // Full name
-	    email: current_user_email, // Email address
-	    user_id: current_user_id, // current_user_id
-		first_name: first_name,
-		last_name: last_name,
-	    user_type: user_type,
+	    app_id: "iswx8vq4",
+	    name: "{{ loginDetails['entity'].firstName~' '~loginDetails['entity'].lastName }}", // Full name
+	    email: "{{ loginDetails['entity'].email }}", // Email address
+	    user_id: "{{ loginDetails['entity'].id }}", // current_user_id
+		first_name: "{{ loginDetails['entity'].firstName }}",
+		last_name: "{{ loginDetails['entity'].lastName }}",
+	    user_type: "{{ user_type }}",
 	    hide_default_launcher: false,
 	  };
 	(function(){
@@ -125,9 +125,10 @@ if(device == "Desktop")
 					w.addEventListener('load',l,false);
 				}}})();
 
-	$(document).on('click','.btn-logout, .fa-google, .fa-facebook', function()
+	$(document).on('click','.btn-logout, .fa-google, .fa-facebook, .btn-facebook, .btn-linkedin', function()
 	{
-		Intercom('shutdown');
+		deleteIntercomCookies();
+		// Intercom('shutdown');
 	});
 
 	$('.intercom-notifications-dismiss-button').click();
@@ -161,19 +162,20 @@ if(device == "Desktop")
 			var current_user_id = "{{ loginDetails['entity'].id }}";
 			var user_type = "{{ user_type }}";
 			window.intercomSettings = {
-				app_id: "iswx8vq4",
-				name: current_user_name, // Full name
-				first_name: first_name, // Full name
-				last_name: last_name, // Full name
-				email: current_user_email, // Email address
-				user_id: current_user_id, // current_user_id
-				user_type: user_type,
+			    app_id: "iswx8vq4",
+			    name: "{{ loginDetails['entity'].firstName~' '~loginDetails['entity'].lastName }}", // Full name
+			    email: "{{ loginDetails['entity'].email }}", // Email address
+			    user_id: "{{ loginDetails['entity'].id }}", // current_user_id
+				first_name: "{{ loginDetails['entity'].firstName }}",
+				last_name: "{{ loginDetails['entity'].lastName }}",
+			    user_type: "{{ user_type }}",
 				hide_default_launcher: false,
 
 			};
 
-			(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/iswx8vq4';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
-		}
+
+(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/iswx8vq4';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+}
 
 	</script>
 {% endif %}
@@ -185,7 +187,7 @@ if(device == "Desktop")
         try{
 
             deleteIntercomCookies();
-            Intercom('shutdown');
+            // Intercom('shutdown');
         }catch (e) {
             // Do Nothing
         }
@@ -197,7 +199,7 @@ if(device == "Desktop")
         try{
 
             deleteIntercomCookies();
-            Intercom('shutdown');
+            // Intercom('shutdown');
         }catch (e) {
             // Do Nothing
         }

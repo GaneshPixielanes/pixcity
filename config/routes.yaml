@@ -38,6 +38,9 @@ controllers_front_v2:
     type: annotation
 
 
+controllers_front_b2b:
+    resource: ../src/Controller/B2B
+    type: annotation
 
 controllers_front_homepage_v2:
     resource: ../src/Controller/Front/V2/HomepageController.php
@@ -150,6 +153,10 @@ controllers_services:
 
 controllers_download:
     resource: ../src/Controller/B2B/DownloadController.php
+    type: annotation
+
+controllers_freelance_pack_download:
+    resource: ../src/Controller/B2B/Client/CommunityManagerController.php
     type: annotation
 
 controllers_front_regions:

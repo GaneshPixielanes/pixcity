@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommunityManagerController extends AbstractController
 {
     /**
-     * @Route("community-manager-{city}/{name}/{id}", name="view")
+     * @Route("{city}/{name}/{id}", name="view")
      */
     public function index($id, UserRepository $userRepo, UserPacksRepository $packRepo,SkillRepository $skillRepository)
     {
@@ -40,8 +40,8 @@ class CommunityManagerController extends AbstractController
 
         #SEO
         $page = new Page();
-        $page->setMetaTitle($user.":".$user->getUserSkill()->first()." local à ".$user->getPixie()->getBilling()->getAddress()->getCity());
-        $page->setMetaDescription('Retrouvez toutes les offres de '.$user.' pour des missions de '.$user->getUserSkill()->first().' près de chez vous à '.$user->getPixie()->getBilling()->getAddress()->getCity());
+        $page->setMetaTitle($user.": ".$user->getSkill()." local à ".$user->getPixie()->getBilling()->getAddress()->getCity());
+        $page->setMetaDescription('Retrouvez toutes les offres de '.$user.' pour des missions de '.$user->getSkill().' près de chez vous à '.$user->getPixie()->getBilling()->getAddress()->getCity());
 
 
 

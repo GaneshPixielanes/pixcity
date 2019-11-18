@@ -149,13 +149,17 @@ class MissionController extends Controller
         $mangopayid = $tansClientId->getMangopayUserId();
 
         if(isset($mangopayid) == null){
+
             // Create a mango pay user
             $mangoUser = new UserNatural();
 
+            $creation_date = date('d-m-Y', strtotime('+0 month', strtotime($this->getUser()->getCreatedAt()->format('d-m-Y'))));
+
             $mangoUser->PersonType = "NATURAL";
+            $mangoUser->Occupation = "Professional";
             $mangoUser->FirstName = $this->getUser()->getFirstname();
             $mangoUser->LastName = $this->getUser()->getLastname();
-            $mangoUser->Birthday = 1409735187;
+            $mangoUser->Birthday = strtotime($creation_date);
             $mangoUser->Nationality = "FR";
             $mangoUser->CountryOfResidence = "FR";
             $mangoUser->Email = $this->getUser()->getEmail();
@@ -248,9 +252,6 @@ class MissionController extends Controller
                                    MissionRecurringRepository $missionRecurringRepository
     )
     {
-
-
-
 
         $em = $this->getDoctrine()->getManager();
         $options = $this->getDoctrine()->getRepository(Option::class);
@@ -376,17 +377,6 @@ class MissionController extends Controller
 
                 $em->persist($card_details);
 
-                $mission_price_log = new MissionRecurringPriceLog();
-                $mission_price_log->setMission($userMissionTblId);
-                $mission_price_log->setActivePrice($mission->getActiveLog());
-                $mission_price_log->setCycle(1);
-                $mission_price_log->setMonth(date('F'));
-                $mission_price_log->setYear(date('Y'));
-                $mission_price_log->setCreatedAt(new \DateTime());
-                $mission_price_log->setUpdatedAt(new \DateTime());
-
-                $em->persist($mission_price_log);
-
                 $em->flush();
 
             }
@@ -394,7 +384,7 @@ class MissionController extends Controller
             $card_array['card_type'] = $card->CardProvider;
             $card_array['card_id'] = $card->Id;
 
-            $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getId(),$fee * 100,$card_array);
+            $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission,$fee * 100,$card_array);
 
             return $this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);//$this->redirect($result);//$this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);
 
@@ -433,7 +423,7 @@ class MissionController extends Controller
 
         $response = $mangoPayService->getResponse($transaction_id);
 
-        if($response->Status != 'FAILED'){
+        if($response->Status == 'SUCCEEDED'){
 
             $transaction = $transactionRepo->find($id);
 
@@ -443,6 +433,10 @@ class MissionController extends Controller
             $transaction->setPaymentStatus(true);
 
             $transaction->getMission()->setMissionAgreedClient(1);
+
+            $serializer = $this->container->get('serializer');
+
+            $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
 
             $em = $this->getDoctrine()->getManager();
 
@@ -472,11 +466,27 @@ class MissionController extends Controller
             if($transaction->getMission()->getStatus() == MissionStatus::CREATED){
 
                 $transaction->getMission()->setStatus(MissionStatus::ONGOING);
-                $message = $mission_id->getClient().' a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
+                $message = $mission_id->getClient().' a accepté votre devis et a effectué son pré-paiement, la mission (qu\'elle soit récurrente ou one shot) peut démarrer.';
                 $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid',$message,$mission_id->getId());
 
-                $message = 'Notre partenaire a bien reçu votre pré-paiement. Le city-maker va être averti du cantonnement de cette somme et il va pouvoir démarrer la mission. ';
+                $message = 'Notre partenaire a bien reçu votre pré-paiement. Que vous soyez dans le cas d\'une mission one-shot ou récurrente, le city-maker va être averti du cantonnement de cette somme et il pourra démarrer la mission.';
                 $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,$mission_id->getId());
+
+                if($transaction->getMission()->getMissionType() == 'recurring'){
+
+                    $mission_price_log = new MissionRecurringPriceLog();
+                    $mission_price_log->setMission($mission);
+                    $mission_price_log->setActivePrice($mission->getActiveLog());
+                    $mission_price_log->setCycle(1);
+                    $mission_price_log->setMonth(date('F'));
+                    $mission_price_log->setYear(date('Y'));
+                    $mission_price_log->setCreatedAt(new \DateTime());
+                    $mission_price_log->setUpdatedAt(new \DateTime());
+
+                    $em->persist($mission_price_log);
+
+                }
+
 
             }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){
 
@@ -498,9 +508,6 @@ class MissionController extends Controller
                     ), $clientInvoicePath
                 );
 
-
-
-
                 $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
 
                 $cmInvoicePath = "invoices/".$mission->getId().'/'.$cm_filename;
@@ -515,7 +522,6 @@ class MissionController extends Controller
                 );
 
                 $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
-
 
                 $pcsInvoicePath = "invoices/".$mission->getId().'/'.$pcs_filename;
 
@@ -536,9 +542,20 @@ class MissionController extends Controller
 
                 }else{
 
-                    $cycle = 2;
+                    $cycle = 1;
 
                 }
+
+                $mission_price_log = new MissionRecurringPriceLog();
+                $mission_price_log->setMission($mission);
+                $mission_price_log->setActivePrice($mission->getActiveLog());
+                $mission_price_log->setCycle($cycle);
+                $mission_price_log->setMonth(date('F'));
+                $mission_price_log->setYear(date('Y'));
+                $mission_price_log->setCreatedAt(new \DateTime());
+                $mission_price_log->setUpdatedAt(new \DateTime());
+
+                $em->persist($mission_price_log);
 
                 $royalties = new Royalties();
                 $royalties->setMission($mission_id);
@@ -552,6 +569,7 @@ class MissionController extends Controller
                 $royalties->setCycle($cycle);
                 $royalties->setBankDetails(json_encode($response));
                 $em->persist($royalties);
+
                 $em->flush();
 
                 $message = $mission_id->getClient().' a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
@@ -563,6 +581,7 @@ class MissionController extends Controller
             }
 
             $em->persist($transaction);
+
             $em->flush();
 
 
@@ -592,7 +611,6 @@ class MissionController extends Controller
     }
 
     public function mangoPayErrorResponses($code){
-
 
         $errors['009199'] = ['The error due to Card is not supported by Mangopay ,Amount is higher than the maximum amount per transaction,Operation doesn’t fit to your Mangopay account settings and Use of a non-3DSecure test card for a payment which requires 3DSecure'];
         $errors['001999'] = ['An incident or connection issue has occured and closed all transactions'];

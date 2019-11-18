@@ -148,7 +148,7 @@
         <div class="d-flex align-items-center">
             <div class="input-group w-10">
                 <input name="{{ form.vars.full_name }}" type="number" class="form-control fz-16 font-weight-bold bg-lightwhite only-numeric"
-                       placeholder="120" aria-label="Pack price" aria-describedby="pack-price" value="{{ form.vars.value }}" data-bind="cm-base-price">
+                       placeholder="120" aria-label="Pack price" aria-describedby="pack-price" value="{{ form.vars.value }}" data-bind="cm-base-price" >
                 <input type="hidden" class="cm-base-price" data-bind="cm-client-price" data-bind-callback="calculateClientPrice" />
                 <div class="input-group-append">
                                                         <span class="input-group-text bg-textgray border-textgray text-white"
@@ -640,11 +640,11 @@
 
 {% block _mission_missionType_widget %}
     <h5 class="text-darkgray mb-0">Le nature de la mission <span style="color: #fd6b84;">*</span></h5>
-    <p>Une fois votre prix fixé, vous devez choisir la nature de votre mission. Soit c’est une mission « One shot » (une seule fois sans renouvellement automatique. Ex : pour une opération d’influence) soit c’est une mission « Récurrente » (la mission sera reconduite de manière automatique chaque mois sans que vous n’ayez rien à faire. Vous pourrez toujours éditer la mission au besoin mais vous n’aurez pas à la recréer chaque mois. Ex : pour une mission de community management). A vous de fixer vos règles ;) Vous avez des questions ? Consultez notre FAQ sur les conditions de missions J</p>
+    <p>Une fois votre prix fixé, vous devez choisir la nature de votre mission. Soit c’est une mission « One shot » (une seule fois sans renouvellement automatique. Ex : pour une opération d’influence) soit c’est une mission « Récurrente » (la mission sera reconduite de manière automatique chaque mois sans que vous n’ayez rien à faire. Vous pourrez toujours éditer la mission au besoin mais vous n’aurez pas à la recréer chaque mois. Ex : pour une mission de community management). A vous de fixer vos règles ;) Vous avez des questions ? Consultez notre <a href="{{ url('front_faq_index') }}">FAQ</a> sur les conditions de missions.</p>
     <div class="d-flex align-items-center my-3">
         <div class="btn-group btn-group-toggle pill-switch" data-toggle="buttons">
             {% for choice in form.vars.choices %}
-                {% if form.vars.data == null and loop.index == 1 %}
+                {% if form.vars.data == null and loop.index == 2 %}
                     <label class="btn active">
                         <input class="" type="radio" name="{{ form.vars.full_name }}" id="option{{ loop.index }}" autocomplete="off" checked="checked" value="{{ choice.value }}"> {{ choice.label }}
                     </label>

@@ -40,11 +40,12 @@
     {% set loginBy = 'not-login'   %}
 {% endif %}
 <!-- CM alert modal -->
+<!--googleoff: index-->
 <div class="modal fade alert-modal" id="cmErrorModal" tabindex="-1" role="dialog" aria-labelledby="cmErrorModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-weight-bold">Alert</h5>
+                <h5 class="modal-title font-weight-bold">Alerte</h5>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -53,7 +54,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        Vous devez être connecté en tant que client pour choisir ce pack”
+                        Vous devez être connecté en tant que client pour choisir ce pack
                     </div>
                 </div>
             </div>
@@ -254,7 +255,7 @@
                                 <ul class="pack-photos-list d-flex flex-wrap p-0 m-0">
                                     {% for media in pack.userPackMedia %}
                                         <li class="pack-photos-list-item d-inline-flex">
-                                            <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" alt="{{ pack.user.firstname|lower ~ '-'~pack.packSkill|lower~'-'~ pack.user.userRegion.first.name | lower~'-'~loop.index }}">
+                                            <img src="/uploads/pack/{{ pack.id }}/{{ media.name }}" alt="{{ pack.user.firstname|lower ~ '-'~pack.packSkill|lower~'-'~ pack.user.pixie.billing.address.city | lower~'-'~loop.index }}">
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -262,7 +263,7 @@
                         </div>
                     {% endif %}
                     <div class="pack-region-container col-sm-12 mt-2 mb-4 pb-4">
-                        <h5 class="text-darkgray mb-3">Zone géographique</h5>
+                        <h2 class="text-darkgray mb-3">Zone géographique</h2>
                         <div class="row">
                             <div class="col-md-6 choose-regions-container">
                                 <div class="choose-regions-dropdowns mb-5">
@@ -354,11 +355,11 @@
                         <div class="preview-cta d-flex align-items-center">
                             {% set slug = pack.title | lower | replace({' ':'-'}) %}
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                <a href="{{ url('b2b_client_pack_select',{'slug':slug,'id':pack.id}) }}"
+                                <a href="{{ url('b2b_client_pack_select',{'slug':pack.generateSlug(),'id':pack.id}) }}"
                                    class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack">CHOISIR CE PACK</a>
                             {% else %}
 
-                                <a href="/connexion"
+                                <a href="/connexion?redirectToPack={{ pack.id }}&slug={{ pack.generateSlug() }}"
                                    class="btn btn-pink btn-pill fz-12 d-flex align-items-center choose-this-pack"
                                 {% if loginBy == 'login_cm' %}data-toggle="modal" data-target="#cmErrorModal" {% endif %}
                                 >CHOISIR CE PACK</a>
@@ -693,7 +694,7 @@
         </button>
     </div>
 </div>
-
+<!--googleon: index-->
 <!-- Scripts -->
 <script src="{{ absolute_url('/assets/js/js-bundle.js') }}"></script>
 <!-- <script src="js/app.js"></script> -->
