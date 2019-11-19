@@ -623,8 +623,11 @@ class MissionController extends Controller
             $em->persist($transaction);
 
             $em->flush();
+//            $error = 'Your payment is pending from your bank side.Dont worry! we will intimate you when we get the amount from bank';
+            return $this->render('b2b/client/transaction/waiting.html.twig');
 
         }else{
+
             $transaction->setMangopayTransactionId($transaction_id);
             $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
             $em->persist($transaction);
