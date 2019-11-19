@@ -438,7 +438,7 @@ class MissionController extends Controller
         $response = $mangoPayService->getResponse($transaction_id);
 
         $transaction = $transactionRepo->find($id);
-
+        //check the response of the mangopay whether its SUCCEEDED,WAITING and FAILE
         if($response->Status == 'SUCCEEDED') {
 
             $mission_id = $transaction->getMission();
@@ -625,6 +625,11 @@ class MissionController extends Controller
             $em->flush();
 
         }else{
+            $transaction->setMangopayTransactionId($transaction_id);
+            $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
+            $em->persist($transaction);
+
+            $em->flush();
             $error = $this->mangoPayErrorResponses($response->ResultCode);
             return $this->render('b2b/client/transaction/failed.html.twig',['response' => $error]);
 
