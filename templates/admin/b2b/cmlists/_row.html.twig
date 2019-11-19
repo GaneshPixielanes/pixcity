@@ -11,7 +11,7 @@
             {#<span class="slider round"></span>#}
         {#</label>#}
     {#</td>#}
-    <td>
+        <td>
         {% if item[0].b2bCmApproval == 2 %}
             Waiting for Approval
         {% elseif item[0].b2bCmApproval == 1 %}
@@ -22,6 +22,8 @@
             N/A
         {% endif %}
     </td>
+    <td>{{ item[0].mangopayKycStatus }}</td>
+    <td>{{ item[0].mangopayKycAddrStatus }}</td>
     <td class="text-right">
         <div class="item-actions">
             <a title="{{ 'action.edit'|trans }}" href="{{ path('front_auto_login', {'id': item[0].getEncryptedId}) }}" target="_blank" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">

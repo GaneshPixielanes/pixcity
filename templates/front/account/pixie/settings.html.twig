@@ -21,18 +21,7 @@
 {% block page_content %}
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css">
 <style>
-    .modal-header-success {
-        color:#fff;
-        padding:9px 15px;
-        border-bottom:1px solid #eee;
-        background-color: #ed5485;
-        -webkit-border-top-left-radius: 5px;
-        -webkit-border-top-right-radius: 5px;
-        -moz-border-radius-topleft: 5px;
-        -moz-border-radius-topright: 5px;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-    }
+
 
     .felicitation-wrap {
         margin-top: 78px;
@@ -358,6 +347,7 @@
             {% endfor %}
         </ul>
         {% endif %}
+
         <div class="col-md-12 plTabs">
 
             <!-- NAV TABS -->
@@ -367,27 +357,26 @@
                         <p></p>
 
                         {%  if '/city-maker/compte/community/manager' not in app.request.headers.get('referer') %}
-                            <li class="tab1 active" style="{% if cardCount == 0 %}width:15.6%{% endif %}"><a href="#general-tab" id="flag" data-id="1" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                            <li class="tab1 active" style="{% if cardCount == 0 %}width:14.2%{% endif %}"><a href="#general-tab" id="flag" data-id="1" data-noautscroll="true" data-toggle="tab">Général</a></li>
                         {% else %}
-                            <li class="tab1" style="{% if cardCount == 0 %}width:15%{% endif %}"><a href="#general-tab" id="flag" data-id="1" data-noautscroll="true" data-toggle="tab">Général</a></li>
+                            <li class="tab1" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#general-tab" id="flag" data-id="1" data-noautscroll="true" data-toggle="tab">Général</a></li>
                         {% endif %}
-                        <li class="tab2 {% if app.user.googleId != '' or app.user.facebookId != '' %}hidden{% endif %}" style="{% if cardCount == 0 %}width:14.5%{% endif %}"><a href="#connexion-tab" id="flag" data-id="2" data-noautscroll="true" data-toggle="tab">Connexion</a></li>
-                        <li class="tab3" style="{% if cardCount == 0 %}width:14.5%{% endif %}"><a href="#regions-tab" id="flag" data-id="3" data-noautscroll="true" data-toggle="tab">Régions</a></li>
+                        <li class="tab2 {% if app.user.googleId != '' or app.user.facebookId != '' %}hidden{% endif %}" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#connexion-tab" id="flag" data-id="2" data-noautscroll="true" data-toggle="tab">Connexion</a></li>
+                        <li class="tab3" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#regions-tab" id="flag" data-id="3" data-noautscroll="true" data-toggle="tab">Régions</a></li>
                         <li class="tab4" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#jaime-jaimepas-tab" id="flag" data-id="4" data-noautscroll="true" data-toggle="tab" class="disable" disabled="">Catégories favorites</a></li>
                         <li class="tab5" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#remuneration-tab" id="flag" data-id="5" data-noautscroll="true" data-toggle="tab">Rémunération</a></li>
                         <li class="tab6" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#notifications-tab" id="flag" data-id="6" data-noautscroll="true" data-toggle="tab">Notifications</a></li>
-{#                        {% set check_url = '' %}#}
-                        <li class="tab7"><a href="#security-tab" id="flag" data-id="7" data-noautscroll="true" data-toggle="tab">Sécurité et confidentialité</a></li>
+                        {% set check_url = '' %}
+{#                        {% if card != 0 %}#}
+                        <li class="tab7" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#security-tab" id="flag" data-id="7" data-noautscroll="true" data-toggle="tab">Sécurité et confidentialité</a></li>
                         {% if cardCount > 0 %}
                             {%  if '/city-maker/compte/community/manager' in app.request.headers.get('referer') %}
                                 {% set check_url = true %}
-                                <li class="tab8 active"><a href="#community-manager-tab" id="flag" data-id="8" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
+                                <li class="tab8 active" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#community-manager-tab" id="flag" data-id="8" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
                             {% else %}
                                 {% set check_url = false %}
-                                <li class="tab8"><a href="#community-manager-tab" id="flag" data-id="8" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
+                                <li class="tab8" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#community-manager-tab" id="flag" data-id="8" data-noautscroll="true" data-toggle="tab"> Espace Services</a></li>
                             {% endif %}
-                        {% else %}
-                            {% set check_url = '' %}
                         {% endif %}
                     </ul>
                 </div>
@@ -438,13 +427,42 @@
                                     {{ form_widget(form.birthdate) }}
                                 </div>
                             </div>
+                            <div class="col-md-6 address-module form-group">
+                                {{ form_label(form.address.address) }}
 
+                                <div class="row">
+                                    <div class="col-xs-12 input-container">
+                                        {{ form_widget(form.address.address) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5 input-container">
+                                        {{ form_widget(form.address.zipcode) }}
+                                    </div>
+                                    <div class="col-md-7 input-container">
+                                        <div class="hidden">
+                                        {{ form_widget(form.address.city) }}
+                                        </div>
+{#                                         <select class="form-control" name="{{ form.userRegion.vars.full_name }}[]">
+                                            {% for region in regions %}
+                                            <option value="{{ region.id }}">{{ region.name}}</option>
+                                            {% endfor %}
+                                        </select> #}
+                                        {{ form_widget(form.birthLocation) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 input-container">
+                                        {{ form_widget(form.address.country) }}
+                                    </div>
+                                </div>
+                            </div>
+{# 
+                            {{ form_row(form.currentLocation, {'icon': 'fa-home'}) }}
+                            {{ form_row(form.gender) }}
 
-{#                            {{ form_row(form.currentLocation, {'icon': 'fa-home'}) }}#}
-{#                            {{ form_row(form.gender) }}#}
-
-{#                            {{ form_row(form.birthLocation) }}#}
-
+                            {{ form_row(form.birthLocation) }}
+ #}
 
                             <!-- RESEAUX SOCIAUX -->
                             <div class="col-sm-12">
@@ -481,7 +499,8 @@
 
 
                 </div>
-               <!-- CONNEXION -->
+
+                <!-- CONNEXION -->
                 <div class="tab-pane tp2" id="connexion-tab">
                     <div class="row">
 
@@ -550,9 +569,6 @@
 
                         <div class="col-sm-12">
                             <span class="maj">Rétribution monétaire</span>
-{#                            <p>#}
-{#                                En publiant des cards, vous participez à un jeu concours mensuel avec des lots à gagner ou des gains versés directement sur votre compte bancaire.#}
-{#                            </p>#}
                             <p> En contribuant sur Pix.City, vous allez pouvoir recevoir des gains (en euros ou en bons cadeaux). Il faut donc enregistrer vos infos bancaires pour déclencher les paiements.</p>
                             <br>
 
@@ -593,34 +609,9 @@
                                     {{ form_widget(form.pixie.billing.address.country) }}
                                 </div>
                             </div>
-                            {#<div class="row">#}
-                                {#<div class="col-md-5 input-container">#}
-                                    {#Adresse Preuve 1:#}
-                                        {#{% if form.vars.data.mangopayKycFile  %}#}
-                                            {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/cm/addr1/'~form.vars.data.id~'/'~form.vars.data.mangopayKycFile}}" width="20%">#}
-                                        {#{% endif %}#}
-
-                                        {#<div class="upload-zone ">#}
-                                            {#<input type="file" id="mangopayKycFile"  class="filestyle" data-icon="false"/>#}
-                                            {#<input type="hidden" name="user[mangopayKycFile]" value="{{ form.vars.data.mangopayKycFile }}"/>#}
-                                        {#</div>#}
-                                {#</div>#}
-                                {#<div class="col-md-7 input-container">#}
-                                    {#Adresse Preuve 2:#}
-                                    {#{% if form.vars.data.mangopayKycAddr  %}#}
-                                        {#<img class="thumb" src="{{ '/uploads/mangopay_kyc/cm/addr2/'~form.vars.data.id~'/'~form.vars.data.mangopayKycAddr}}" width="20%">#}
-                                    {#{% endif %}#}
-                                        {#<div class="upload-zone ">#}
-                                            {#<input type="file" id="mangopayKycAddr"  class="filestyle" data-icon="false"/>#}
-                                            {#<input type="hidden" name="user[mangopayKycAddr]" value="{{ form.vars.data.mangopayKycAddr }}"/>#}
-                                        {#</div>#}
-
-                                {#</div>#}
-                            {#</div>#}
                         </div>
 
                         {{ form_row(form.pixie.billing.tva) }}
-                        {{ form_row(form.pixie.billing.rcs) }}
 
                         <!--CHOIX DE REMUNERATION -->
 
@@ -666,7 +657,6 @@
                             {{ form_row(form.optin.newsletter) }}
                             {{ form_row(form.optin.pixieCardProjectReceived) }}
                             {{ form_row(form.optin.pixieCardStatusUpdated) }}
-{#                            {{ form_row(form.optin.b2bMails) }}#}
 
                         </div>
                     </div>
@@ -813,13 +803,14 @@
 
                         {% else %}
                         <button type="submit" class="btn btn-pill btn-pink pull-right" id="submitCMDetails">
-                            {% if app.user.getB2bCmApproval == 1 %}
+                            {% if app.user.getB2bCmApproval() == 1 %}
                                 ACCEDER A MON ESPACE
                             {% else %}
                                 Soumettre ma candidature
                             {% endif %}
                         </button>
                         {% endif %}
+
                         <a href="{{ path('front_pixie_account_settings') }}" class="btn cancelModif pull-right">Annuler la modification</a>
                     </div>
                 </div>
@@ -860,30 +851,6 @@
          data-upload-route="{{ path('front_user_ajax_upload_avatar') }}"
     ></div>
             <input type="hidden" id="hit_url" value="{{ check_url }}">
-            <!-- Modal -->
-            <div id="individualAlertModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-
-                    <!-- Modal content-->
-                    <div class="modal-content" style="padding:0px">
-                        <div class="modal-header modal-header-success">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Alerte</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>
-                                Vous devez changer votre statut “En cours d’immatriculation” vers un statut “Société” ou “Micro-entreprise” pour pouvoir devenir City-maker services”
-                            </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-
             <div id="ongoingMissionsModal" class="modal modal1 plConfirm  fade alert-modal " role="dialog">
                 <div class="modal-dialog">
 
@@ -903,8 +870,28 @@
 
                 </div>
             </div>
+            <!-- Modal -->
+            <div id="individualAlertModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Alert</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                Vous devez changer votre statut “En cours d’immatriculation” vers un statut “Société” ou “Micro-entreprise” pour pouvoir devenir City-maker services”
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             <div id="api-box" data-mission-count="{{ missionCount }}" ></div>
+
 {% endblock %}
 
 {% block footer_class %}simpleFooter{% endblock %}
@@ -1064,49 +1051,9 @@
                     $(this).find('.skill').attr( 'checked', true );
                 }
             });
-            {#$('#mangopayKycFile').change(function()#}
-            {#{#}
-                {#var data = new FormData();#}
-                {#data.append('file',$(this)[0].files[0]);#}
-                {#data.append('id',{{ user.id }});#}
-                {#$.ajax('{{ url('front_pixie_account_mangopaykyc') }}',{#}
-                    {#method: 'POST',#}
-                    {#processData: false,#}
-                    {#cacheable:false,#}
-                    {#data:data,#}
-                    {#contentType: false,#}
-                    {#success: function(result)#}
-                    {#{#}
-                        {#if(result.success == true)#}
-                        {#{#}
-                            {#$('[name="user[mangopayKycFile]"').val(result.fileName);#}
-                        {#}#}
-                    {#}#}
-                {#});#}
-            {#});#}
-            {#$('#mangopayKycAddr').change(function()#}
-            {#{#}
-                {#var data = new FormData();#}
-                {#data.append('file',$(this)[0].files[0]);#}
-                {#data.append('id',{{ user.id }});#}
-                {#$.ajax('{{ url('front_pixie_account_mangopayKycAddr') }}',{#}
-                    {#method: 'POST',#}
-                    {#processData: false,#}
-                    {#cacheable:false,#}
-                    {#data:data,#}
-                    {#contentType: false,#}
-                    {#success: function(result)#}
-                    {#{#}
-                        {#if(result.success == true)#}
-                        {#{#}
-                            {#$('[name="user[mangopayKycAddr]"').val(result.fileName);#}
-                        {#}#}
-                    {#}#}
-                {#});#}
-            {#});#}
         });
 
-
+        
         $(document).ready(function () {
             function findGetParameter(parameterName) {
                 var result = null,
@@ -1128,10 +1075,16 @@
                 $('.remove-region').trigger('click');
             }
         });
+
+        $(document).ready(function()
+        {
+               $('#user_address_address').val($('#user_pixie_billing_address_address').val()); 
+               $('#user_address_zipcode').val($('#user_pixie_billing_address_zipcode').val()); 
+               $('#user_address_city').val($('#user_pixie_billing_address_city').val()); 
+        });
     </script>
 {% endblock %}
 
 {% block javascripts_footer %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=googleMapsApiInit&libraries=places" async defer></script>
 {% endblock %}
-

@@ -66,14 +66,14 @@ class UserType extends AbstractType
                     'required' => true,
                     'constraints' => array(new Valid()),
                 ))
-//                ->add('birthLocation', EntityType::class, array(
-//                    'class' => Region::class,
-//                    'label' => 'label.birth_place',
-//                    'help' => 'help.birth_place',
-//                    'required' => true,
-//                    'placeholder' => 'label.select.region',
-//                    'choice_label' => 'name',
-//                ))
+               ->add('birthLocation', EntityType::class, array(
+                   'class' => Region::class,
+                   'label' => false,
+                   'required' => true,
+                   'placeholder' => 'label.select.region',
+                   'choice_label' => 'name',
+                   'attr' => ['class' => 'form-control']
+               ))
 //                ->add('currentLocation', TextType::class, array(
 //                    'label' => 'label.currentLocation',
 //                    'attr' => ['placeholder' => 'label.zipcode'],

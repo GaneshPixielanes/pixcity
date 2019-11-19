@@ -87,6 +87,8 @@
                                 <th>Date of registration</th>
                                 <th>Nb of packs </th>
                                 <th>CM Approval Status </th>
+                                <th>Identification Proof Status</th>
+                                <th>Address Proof Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -95,6 +97,8 @@
                             {% embed "admin/b2b/cmlists/_row.html.twig" with {'item': item} %}{% endembed %}
                         {% else %}
                             <tr>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
