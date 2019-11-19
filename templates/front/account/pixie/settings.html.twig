@@ -366,7 +366,7 @@
                         <li class="tab4" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#jaime-jaimepas-tab" id="flag" data-id="4" data-noautscroll="true" data-toggle="tab" class="disable" disabled="">Catégories favorites</a></li>
                         <li class="tab5" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#remuneration-tab" id="flag" data-id="5" data-noautscroll="true" data-toggle="tab">Rémunération</a></li>
                         <li class="tab6" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#notifications-tab" id="flag" data-id="6" data-noautscroll="true" data-toggle="tab">Notifications</a></li>
-{#                        {% set check_url = '' %}#}
+                        {% set check_url = '' %}
 {#                        {% if card != 0 %}#}
                         <li class="tab7" style="{% if cardCount == 0 %}width:14.3%{% endif %}"><a href="#security-tab" id="flag" data-id="7" data-noautscroll="true" data-toggle="tab">Sécurité et confidentialité</a></li>
                         {% if cardCount > 0 %}
@@ -443,7 +443,12 @@
                                         <div class="hidden">
                                         {{ form_widget(form.address.city) }}
                                         </div>
-                                        
+{#                                         <select class="form-control" name="{{ form.userRegion.vars.full_name }}[]">
+                                            {% for region in regions %}
+                                            <option value="{{ region.id }}">{{ region.name}}</option>
+                                            {% endfor %}
+                                        </select> #}
+                                        {{ form_widget(form.birthLocation) }}
                                     </div>
                                 </div>
                                 <div class="row">

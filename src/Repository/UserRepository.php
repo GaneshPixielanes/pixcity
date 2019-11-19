@@ -462,6 +462,14 @@ class UserRepository extends ServiceEntityRepository
         return false;
     }
 
+    public function findKycEligibleUsers()
+    {
+        $qb = $this->createQueryBuilder('u')
+                   ->andWhere('(u.mangopayKycStatus IN (:status) OR u.mangopayKycAddrStatus IN (:status))')->setParameter('status',['UNDER_VERIFICATION','UNDER_VERIFICATION','CREATED','VALIDATION_ASKED'])
+                   ->andWhere('u.active = :activeStatus')->setParameter('activeStatus',1)
+                   ->getQuery()->getResult();
 
+        return $qb;           
+    }
 
 }
