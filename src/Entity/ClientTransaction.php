@@ -39,7 +39,7 @@ class ClientTransaction
     private $amount;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      */
     private $paymentStatus;
 
@@ -144,7 +144,7 @@ class ClientTransaction
         return $this;
     }
 
-    public function getPaymentStatus(): ?bool
+    public function getPaymentStatus(): ?int
     {
         return $this->paymentStatus;
     }

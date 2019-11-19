@@ -226,13 +226,23 @@ class MissionController extends Controller
 
         }
 
-        return $this->render('b2b/client/transaction/payin.html.twig',[
-            'createdCardRegister' => $createdCardRegister,
-            'returnUrl' => $returnUrl,
-            'id' => $id,
-            'mission' => $mission,
-            'amount' => $amount
-        ]);
+        if($mission->getStatus() == MissionStatus::CREATED || $mission->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){
+
+            return $this->render('b2b/client/transaction/payin.html.twig',[
+                'createdCardRegister' => $createdCardRegister,
+                'returnUrl' => $returnUrl,
+                'id' => $id,
+                'mission' => $mission,
+                'amount' => $amount
+            ]);
+
+        }else{
+
+            return $this->redirect('/client/index');
+
+        }
+
+
 
     }
 
@@ -334,7 +344,7 @@ class MissionController extends Controller
         $transaction->setAmount($amount);
         $transaction->setMangopayUserId($mangoUser->Id);
         $transaction->setMangopayWalletId($wallet->Id);
-        $transaction->setPaymentStatus(false);
+        $transaction->setPaymentStatus(0);
         $transaction->setMission($mission);
         if($result['need_to_pay'] != 0){
             $transaction->setTransactionType('PayIn-Excess');
@@ -368,7 +378,7 @@ class MissionController extends Controller
                 $card_details->setCardId($card->Id);
                 $card_details->setPaymentDate(new \DateTime());
                 $card_details->setInvoiceDate(new \DateTime());
-                $card_details->setPaymentStatus('pending');
+                $card_details->setPaymentStatus('0');
                 $card_details->setCardAlias($card->Alias);
                 $card_details->setCardExpirationDate($card->ExpirationDate);
                 $card_details->setCardResponse($serializer->serialize($card, 'json'));
@@ -421,24 +431,24 @@ class MissionController extends Controller
                                          MissionPaymentRepository $missionPaymentRepository)
     {
 
+        $em = $this->getDoctrine()->getManager();
+
+        $serializer = $this->container->get('serializer');
+
         $response = $mangoPayService->getResponse($transaction_id);
 
-        if($response->Status == 'SUCCEEDED'){
+        $transaction = $transactionRepo->find($id);
 
-            $transaction = $transactionRepo->find($id);
+        if($response->Status == 'SUCCEEDED') {
 
             $mission_id = $transaction->getMission();
 
             $transaction->setMangopayTransactionId($transaction_id);
-            $transaction->setPaymentStatus(true);
+            $transaction->setPaymentStatus(1);
 
             $transaction->getMission()->setMissionAgreedClient(1);
 
-            $serializer = $this->container->get('serializer');
-
             $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
-
-            $em = $this->getDoctrine()->getManager();
 
             $mission = $missionRepo->activePrices($mission_id);
 
@@ -463,16 +473,16 @@ class MissionController extends Controller
             $transaction->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
             $transaction->getMission()->setMissionBasePrice($last_result['cm_price']);
 
-            if($transaction->getMission()->getStatus() == MissionStatus::CREATED){
+            if ($transaction->getMission()->getStatus() == MissionStatus::CREATED) {
 
                 $transaction->getMission()->setStatus(MissionStatus::ONGOING);
-                $message = $mission_id->getClient().' a accepté votre devis et a effectué son pré-paiement, la mission (qu\'elle soit récurrente ou one shot) peut démarrer.';
-                $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid',$message,$mission_id->getId());
+                $message = $mission_id->getClient() . ' a accepté votre devis et a effectué son pré-paiement, la mission (qu\'elle soit récurrente ou one shot) peut démarrer.';
+                $notificationsRepository->insert($mission_id->getUser(), null, 'mission_client_paid', $message, $mission_id->getId());
 
                 $message = 'Notre partenaire a bien reçu votre pré-paiement. Que vous soyez dans le cas d\'une mission one-shot ou récurrente, le city-maker va être averti du cantonnement de cette somme et il pourra démarrer la mission.';
-                $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,$mission_id->getId());
+                $notificationsRepository->insert(null, $mission_id->getClient(), 'mission_cliet_paid_complete', $message, $mission_id->getId());
 
-                if($transaction->getMission()->getMissionType() == 'recurring'){
+                if ($transaction->getMission()->getMissionType() == 'recurring') {
 
                     $mission_price_log = new MissionRecurringPriceLog();
                     $mission_price_log->setMission($mission);
@@ -488,16 +498,16 @@ class MissionController extends Controller
                 }
 
 
-            }elseif($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED){
+            } elseif ($transaction->getMission()->getStatus() == MissionStatus::ONGOING || $transaction->getMission()->getStatus() == MissionStatus::TERMINATE_REQUEST_INITIATED) {
 
                 $transaction->getMission()->setStatus(MissionStatus::TERMINATED);
 
-                $filesystem->mkdir('invoices/'.$mission->getId(),0777);
+                $filesystem->mkdir('invoices/' . $mission->getId(), 0777);
 
 
-                $client_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-client.pdf";
+                $client_filename = 'PX-' . $mission->getId() . '-' . $mission->getActiveLog()->getId() . "-client.pdf";
 
-                $clientInvoicePath = "invoices/".$mission->getId().'/'.$client_filename;
+                $clientInvoicePath = "invoices/" . $mission->getId() . '/' . $client_filename;
 
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/client_invoice.html.twig',
@@ -508,9 +518,9 @@ class MissionController extends Controller
                     ), $clientInvoicePath
                 );
 
-                $cm_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-cm.pdf";
+                $cm_filename = 'PX-' . $mission->getId() . '-' . $mission->getActiveLog()->getId() . "-cm.pdf";
 
-                $cmInvoicePath = "invoices/".$mission->getId().'/'.$cm_filename;
+                $cmInvoicePath = "invoices/" . $mission->getId() . '/' . $cm_filename;
 
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/cm_invoice.html.twig',
@@ -521,9 +531,9 @@ class MissionController extends Controller
                     ), $cmInvoicePath
                 );
 
-                $pcs_filename = 'PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId()."-pcs.pdf";
+                $pcs_filename = 'PX-' . $mission->getId() . '-' . $mission->getActiveLog()->getId() . "-pcs.pdf";
 
-                $pcsInvoicePath = "invoices/".$mission->getId().'/'.$pcs_filename;
+                $pcsInvoicePath = "invoices/" . $mission->getId() . '/' . $pcs_filename;
 
                 $this->container->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView('b2b/invoice/pcs_invoice.html.twig',
@@ -536,26 +546,31 @@ class MissionController extends Controller
 
                 $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
 
-                if($last_row != null){
+                if ($last_row != null) {
 
                     $cycle = $last_row->getCycle() + 1;
 
-                }else{
+                } else {
 
                     $cycle = 1;
 
                 }
 
-                $mission_price_log = new MissionRecurringPriceLog();
-                $mission_price_log->setMission($mission);
-                $mission_price_log->setActivePrice($mission->getActiveLog());
-                $mission_price_log->setCycle($cycle);
-                $mission_price_log->setMonth(date('F'));
-                $mission_price_log->setYear(date('Y'));
-                $mission_price_log->setCreatedAt(new \DateTime());
-                $mission_price_log->setUpdatedAt(new \DateTime());
+                if ($transaction->getMission()->getMissionType() == 'recurring') {
 
-                $em->persist($mission_price_log);
+                    $mission_price_log = new MissionRecurringPriceLog();
+                    $mission_price_log->setMission($mission);
+                    $mission_price_log->setActivePrice($mission->getActiveLog());
+                    $mission_price_log->setCycle($cycle);
+                    $mission_price_log->setMonth(date('F'));
+                    $mission_price_log->setYear(date('Y'));
+                    $mission_price_log->setCreatedAt(new \DateTime());
+                    $mission_price_log->setUpdatedAt(new \DateTime());
+
+                    $em->persist($mission_price_log);
+
+                }
+
 
                 $royalties = new Royalties();
                 $royalties->setMission($mission_id);
@@ -572,11 +587,11 @@ class MissionController extends Controller
 
                 $em->flush();
 
-                $message = $mission_id->getClient().' a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
-                $notificationsRepository->insert($mission_id->getUser(),null,'mission_client_paid',$message,$mission_id->getId());
+                $message = $mission_id->getClient() . ' a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
+                $notificationsRepository->insert($mission_id->getUser(), null, 'mission_client_paid', $message, $mission_id->getId());
 
                 $message = 'Notre partenaire a bien reçu votre pré-paiement. Le city-maker va être averti du cantonnement de cette somme et il va pouvoir démarrer la mission. ';
-                $notificationsRepository->insert(null,$mission_id->getClient(),'mission_cliet_paid_complete',$message,$mission_id->getId());
+                $notificationsRepository->insert(null, $mission_id->getClient(), 'mission_cliet_paid_complete', $message, $mission_id->getId());
 
             }
 
@@ -587,9 +602,9 @@ class MissionController extends Controller
 
             $notification = $notificationsRepository->findBy(['notify_by' => $mission_id]);
 
-            if(!empty($notification)){
+            if (!empty($notification)) {
 
-                if($notification[0]->getType() == 'create_mission'){
+                if ($notification[0]->getType() == 'create_mission') {
 
                     $notification[0]->setUnread(0);
                     $em->persist($notification[0]);
@@ -599,6 +614,15 @@ class MissionController extends Controller
             }
 
             return $this->render('b2b/client/transaction/success.html.twig');
+
+        }elseif($response->Status == 'WAITING'){
+
+            $transaction->setMangopayTransactionId($transaction_id);
+            $transaction->setPaymentStatus(2);
+            $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
+            $em->persist($transaction);
+
+            $em->flush();
 
         }else{
             $error = $this->mangoPayErrorResponses($response->ResultCode);
@@ -633,6 +657,13 @@ class MissionController extends Controller
         $errors['02625'] = ['Invalid card number'];
         $errors['02626'] = ['Invalid date. Use mmdd format'];
         $errors['02627'] = ['Invalid CCV number'];
+        $errors['101399'] = ['Secure mode: 3DSecure authentication is not available'];
+        $errors['101304'] = ['Secure mode: The 3DSecure authentication session has expired'];
+        $errors['101303'] = ['Secure mode: The card is not compatible with 3DSecure'];
+        $errors['101302'] = ['Secure mode: The card is not enrolled with 3DSecure'];
+        $errors['101301'] = ['Secure mode: 3DSecure authentication has failed'];
+        $errors['008515'] = ['Authentication not available: do not benefit from liability shift'];
+
 
         if(isset($errors[$code])){
             return $errors[$code][0];

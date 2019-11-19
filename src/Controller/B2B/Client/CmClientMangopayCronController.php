@@ -63,7 +63,8 @@ class CmClientMangopayCronController extends Controller
                                    RoyaltiesRepository $royaltiesRepository
     )
     {
-        $userRepositoryTbl = $userRepository->findBy(['active'=> 1, 'visible'=> 1], array('id' => 'DESC'),2);
+        $executedIds = [];
+        $userRepositoryTbl = $userRepository->findBy(['active'=> 1, 'visible'=> 1], array('id' => 'DESC'));
 
         $missingCm = array();
         foreach ($userRepositoryTbl as $key => $value)
@@ -92,6 +93,7 @@ class CmClientMangopayCronController extends Controller
 
                 $em->persist($value);
                 $em->flush();
+                $executedIds [] = $value->getId();
             }
             if($value->getMangopayUserId() == null || $value->getFirstname() == null || $value->getLastname() == null || $value->getEmail() || null){
                 $missingCm[] = $value;
@@ -103,7 +105,7 @@ class CmClientMangopayCronController extends Controller
                 'missingRecords' => $missingCm
             ]);
         }
-        return JsonResponse::create(['success' => true]);
+        return JsonResponse::create(['success' => true,'executed_user_id' => $executedIds]);
     }
 //    /**
 //     * @param MangoPayService $mangoPayService
@@ -165,7 +167,7 @@ class CmClientMangopayCronController extends Controller
      */
     public function cronClientKycProcess(MangoPayService $mangoPayService, ClientRepository $clientRepository)
     {
-        $clientRepositoryTbl = $clientRepository->findBy(['deleted'=>null], array('id' => 'DESC'),2);
+        $clientRepositoryTbl = $clientRepository->findBy(['deleted'=>null], array('id' => 'DESC'));
 
         $filename = 'uploads/mangopay_kyc/client/addr1/62/6221a61939a729e11a4addace0e80853.png';
         foreach ($clientRepositoryTbl as $key => $value)
@@ -209,7 +211,7 @@ class CmClientMangopayCronController extends Controller
      */
     public function cronCitymakerKycProcess(MangoPayService $mangoPayService, UserRepository $userRepository)
     {
-        $userRepositoryTbl = $userRepository->findBy(['active'=> 1, 'visible'=> 1],['id'=>'DESC'],2);
+        $userRepositoryTbl = $userRepository->findBy(['active'=> 1, 'visible'=> 1],['id'=>'DESC']);
 
         $filename = 'uploads/mangopay_kyc/client/addr1/62/6221a61939a729e11a4addace0e80853.png';
         foreach ($userRepositoryTbl as $key => $value)
@@ -261,7 +263,7 @@ class CmClientMangopayCronController extends Controller
     public function cronClientKycStatus(MangoPayService $mangoPayService, ClientRepository $clientRepository,
                                         Mailer $mailer)
     {
-        $clientRepositoryTbl = $clientRepository->findBy(['deleted'=>null], array('id' => 'DESC'), 2);
+        $clientRepositoryTbl = $clientRepository->findBy(['deleted'=>null], array('id' => 'DESC'));
 
         $docRejected= array();
         if($clientRepositoryTbl != null) {
