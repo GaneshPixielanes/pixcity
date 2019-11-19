@@ -30,6 +30,7 @@ class PaymentCheckingController extends AbstractController
 
         $serializer = $this->container->get('serializer');
 
+        //waiting payment of status 2
         $payments = $clientTransactionRepository->findBy(['paymentStatus' => '2']);
 
         foreach ($payments as $payment){

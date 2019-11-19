@@ -105,6 +105,7 @@ class CmClientMangopayCronController extends Controller
                 'missingRecords' => $missingCm
             ]);
         }
+        //sends the executed user ids
         return JsonResponse::create(['success' => true,'executed_user_id' => $executedIds]);
     }
 //    /**

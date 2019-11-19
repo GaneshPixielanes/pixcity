@@ -144,6 +144,7 @@ class ClientTransaction
         return $this;
     }
 
+    //change from tinyint to int
     public function getPaymentStatus(): ?int
     {
         return $this->paymentStatus;
