@@ -277,7 +277,7 @@ class MissionController extends Controller
         $clientTransaction->setUser($mission->getClient());
         $clientTransaction->setMangopayUserId($transaction->getMangopayUserId());
         $clientTransaction->setMangopayWalletId($transaction->getMangopayWalletId());
-        $clientTransaction->setPaymentStatus(true);
+        $clientTransaction->setPaymentStatus(1);
         $clientTransaction->setMission($mission);
 
 

@@ -140,8 +140,8 @@
                             </div>
                         </div>
                         <br>
-                        <p>Bienvenue sur votre espace de pré-paiement Pix.City Services. Vous êtes sur une page de paiement </p>
-                        <p>approuvée par notre prestataire bancaire. Toutes vos informations sont sécurisées.</p>
+                        <p>Bienvenue sur votre espace de pré-paiement Pix.City Services. Vous êtes sur une page de paiement approuvée par notre prestataire bancaire.</p>
+                        <p>Toutes vos informations sont sécurisées.</p>
                         <div class="row" style="display:none;">
                             <div class="col-xs-12">
                                 <p class="payment-errors"></p>
@@ -199,6 +199,14 @@
             display = document.querySelector('#time');
         startTimer(fiveMinutes, display);
     };
+
+    $('#payment-form').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
 
     $('#ccexpirymonth, #ccexpiryyear').on('change', function () {
         // Set the value of a hidden input field for Card
