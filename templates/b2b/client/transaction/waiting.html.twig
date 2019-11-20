@@ -1,0 +1,26 @@
+{% extends 'b2b/client/base.html.twig' %}
+
+{% import 'b2b/shared/macros.html.twig' as macros %}
+{% block title %}Client | Home {% endblock %}
+
+{% block newbody %}
+
+
+    <!-- Mission payment acknowledment contents -->
+    <div class="col-sm-10 offset-sm-2 mission-payment-acknowledgement-content bg-white p-0 d-flex align-items-center justify-content-center position-relative"
+         data-simplebar>
+        <div class="d-flex align-items-center justify-content-center vh-100 col-sm-10 p-0">
+            <div class="text-darkgray d-flex align-items-center flex-column justify-content-center">
+                <i class="fa fa-exclamation-triangle fa-2x"></i>
+                <h5 class="font-weight-bold text-center">Your payment is pending from your bank side</h5>
+                <p class="text-center">Dont worry! we will intimate you when we get the amount from bank.</p>
+                <p class="my-3 d-flex flex-column align-items-center">
+                    {#                    <a href="javascript:;" class="btn btn-darkblue btn-pill mb-2 retry-payment">RÉÉSSAYER</a>#}
+                    <a href="/client/index" class="text-inprogress return-to-dashboard">Retourner à mon dashboard</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Mission payment acknowledment contents ends -->
+
+{% endblock %}
