@@ -48,6 +48,8 @@ class MissionRecurringController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $serializer = $this->container->get('serializer');
+
         $today = date('d-m-Y');
 
         $options = $this->getDoctrine()->getRepository(Option::class);
@@ -91,7 +93,6 @@ class MissionRecurringController extends Controller
                     //get the UserNatural id and walled id of MangoPay
                     $transaction = $clientInfoRepository->findOneBy(['client'=>$mission->getClient()]);
 
-
                     $mangoUser = $mangoPayService->getUser($transaction->getMangopayUserId());
                     $wallet = $mangoPayService->getWalletId($transaction->getMangopayWalletId());
 
@@ -119,7 +120,7 @@ class MissionRecurringController extends Controller
                     //check the response of the MangoPay,after Pay in
                     $response = $mangoPayService->getResponse($transaction_id);
 
-                    if ($response->Status != 'FAILED'){
+                    if ($response->Status == 'SUCCEEDED'){
 
                         $ClientTransaction->setMangopayTransactionId($response->Id);
                         $ClientTransaction->setPaymentStatus(true);
@@ -133,7 +134,7 @@ class MissionRecurringController extends Controller
                         $ClientTransaction->getMission()->getUserMissionPayment()->setPcsTax($payment['pcs_tax']);
                         $ClientTransaction->getMission()->getUserMissionPayment()->setPcsTotal($payment['pcs_total']);
                         $ClientTransaction->getMission()->setMissionBasePrice($payment['cm_price']);
-
+                        $ClientTransaction->setMangopayResponse($serializer->serialize($response, 'json'));
                         $last_cycle = $missionRecurringPriceLogRepository->findLastRow($mission->getMission()->getId());
 
                         if($last_cycle != null){
@@ -168,6 +169,23 @@ class MissionRecurringController extends Controller
                         $em->flush();
 
                         $executedMissionIds[] = $mission->getMission()->getId();
+
+                    }elseif($response->Status == 'WAITING'){
+
+                        $ClientTransaction->setMangopayTransactionId($transaction_id);
+                        $ClientTransaction->setPaymentStatus(2);
+                        $ClientTransaction->setMangopayResponse($serializer->serialize($response, 'json'));
+                        $em->persist($ClientTransaction);
+
+                        $em->flush();
+
+                    }else{
+
+                        $ClientTransaction->setMangopayTransactionId($transaction_id);
+                        $ClientTransaction->setMangopayResponse($serializer->serialize($response, 'json'));
+                        $em->persist($ClientTransaction);
+
+                        $em->flush();
 
                     }
 

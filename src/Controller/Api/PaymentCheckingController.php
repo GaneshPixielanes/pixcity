@@ -10,6 +10,7 @@ use App\Repository\ClientTransactionRepository;
 use App\Repository\MissionPaymentRepository;
 use App\Repository\NotificationsRepository;
 use App\Repository\UserMissionRepository;
+use App\Service\Mailer;
 use App\Service\MangoPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,10 +24,10 @@ class PaymentCheckingController extends AbstractController
      */
     public function index(ClientTransactionRepository $clientTransactionRepository,MangoPayService $mangoPayService,
                          UserMissionRepository $userMissionRepository,MissionPaymentRepository $missionPaymentRepository,
-                         NotificationsRepository $notificationsRepository)
+                         NotificationsRepository $notificationsRepository,Mailer $mailer)
     {
 
-        $em = $this->getDoctrine()->getManager();$executedMissionIds = [];
+        $em = $this->getDoctrine()->getManager();$executedMissionIds = [];$failed = [];
 
         $serializer = $this->container->get('serializer');
 
@@ -34,6 +35,8 @@ class PaymentCheckingController extends AbstractController
         $payments = $clientTransactionRepository->findBy(['paymentStatus' => '2']);
 
         foreach ($payments as $payment){
+
+            $mission = $userMissionRepository->activePrices($payment->getMission());
 
             $pay_in_Id = $payment->getMangopayTransactionId();
 
@@ -46,8 +49,6 @@ class PaymentCheckingController extends AbstractController
                     $payment->setPaymentStatus(1);
                     $payment->getMission()->setMissionAgreedClient(1);
                     $payment->setMangopayResponse($serializer->serialize($result, 'json'));
-
-                    $mission = $userMissionRepository->activePrices($payment->getMission());
 
                     $options = $this->getDoctrine()->getRepository(Option::class);
 
@@ -105,9 +106,25 @@ class PaymentCheckingController extends AbstractController
 
                     }
 
+                }else{
+
+                    $failed [] = $mission->getClient();
+                    $payment->setMangopayResponse($serializer->serialize($result, 'json'));
+                    $em->persist($payment);
+
+                    $em->flush();
+
                 }
 
             }
+
+        }
+
+        if(isset($failed) != null){
+
+            $mailer->send("rakesh@pix.city", 'Mission transaction waiting to failed mangopay status', 'emails/mangopay-waiting-error-report.html.twig', [
+                'missingRecords' => $failed
+            ]);
 
         }
 
