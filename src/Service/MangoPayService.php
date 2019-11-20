@@ -8,6 +8,7 @@ use App\Repository\UserMissionRepository;
 use MangoPay;
 use MangoPay\DemoWorkflow\MockStorageStrategy;
 use Symfony\Component\HttpFoundation\Session\Session;
+use function GuzzleHttp\Psr7\str;
 
 class MangoPayService
 {
@@ -22,7 +23,7 @@ class MangoPayService
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
         // $this->mangoPayApi->Config->TemporaryFolder = "D:\projects";
-        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay";
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
 
 //      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
@@ -333,21 +334,22 @@ class MangoPayService
 
     public function legalClient($client){
 
-//        $key = md5(uniqid());
-//        $email = $client->getClientInfo()->getEmail() == null ?  $client->getEmail() : $client->getClientInfo()->getEmail();
-//        $user = new MangoPay\UserLegal();
-//        $user->Name = $client->getFirstName();
-//        $user->Email = $email;
-//        $user->LegalPersonType = MangoPay\LegalPersonType::Business;
-//        $user->HeadquartersAddress = $this->getNewAddress();
-//        $user->LegalRepresentativeFirstName = $john->FirstName;
-//        $user->LegalRepresentativeLastName = $john->LastName;
-//        $user->LegalRepresentativeAddress = $john->Address;
-//        $user->LegalRepresentativeEmail = $john->Email;
-//        $user->LegalRepresentativeBirthday = $john->Birthday;
-//        $user->LegalRepresentativeNationality = $john->Nationality;
-//        $user->LegalRepresentativeCountryOfResidence = $john->CountryOfResidence;
-//        $result = $this->_api->Users->Create($user, $key);
+        $birthday_string =  strtotime(date('d-m-Y',strtotime( $client->getClientInfo()->getCompanyCreationDate()->format('d-m-Y'))));
+
+
+        $email = $client->getClientInfo()->getEmail() == null ?  $client->getEmail() : $client->getClientInfo()->getEmail();
+
+        $User = new MangoPay\UserLegal();
+        $User->Name =$client->getFirstName().' '.$client->getLastName();
+        $User->LegalPersonType = MangoPay\LegalPersonType::Business;
+        $User->Email = $email;
+        $User->LegalRepresentativeFirstName = $client->getFirstName();
+        $User->LegalRepresentativeLastName = $client->getLastName();
+        $User->LegalRepresentativeBirthday = $birthday_string;
+        $User->LegalRepresentativeNationality = "FR";
+        $User->LegalRepresentativeCountryOfResidence = "FR";
+        $result = $this->mangoPayApi->Users->Create($User);
+        dd($result);
         return $result;
 
     }

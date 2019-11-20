@@ -4,6 +4,7 @@ namespace App\Controller\B2B;
 
 use App\Repository\RoyaltiesRepository;
 use App\Repository\UserRepository;
+use App\Service\Mailer;
 use App\Service\MangoPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,11 +15,11 @@ class BankAccountController extends AbstractController
     /**
      * @Route("/b2b/bank/account", name="b2b_bank_account")
      */
-    public function index(UserRepository $userRepository,MangoPayService $mangoPayService,RoyaltiesRepository $royaltiesRepository)
+    public function index(UserRepository $userRepository,MangoPayService $mangoPayService,RoyaltiesRepository $royaltiesRepository,Mailer $mailer)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $executedMissionIds = [];
+        $executedMissionIds = [];$missing = [];
 
         $users = $userRepository->findAll();
 
@@ -45,8 +46,26 @@ class BankAccountController extends AbstractController
 
                 }
 
+                if($user->getPixie()->getBilling()->getBillingIban() != null && $user->getPixie()->getBilling()->getBillingBic() != null){
+
+                    $missing [] = $user;
+
+                }
+
+            }else{
+
+                $missing [] = $user;
+
             }
 
+
+        }
+
+        if(isset($missing) != null){
+
+            $mailer->send("rakesh@pix.city", 'IBAN and BIC details city-makers not persent', 'emails/mangopay-bank-error-report.html.twig', [
+                'missingRecords' => $missing
+            ]);
 
         }
 
