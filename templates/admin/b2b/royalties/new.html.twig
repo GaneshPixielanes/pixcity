@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Royalties{% endblock %}
+
+{% block body %}
+    <h1>Create new Royalties</h1>
+
+    {{ include('royalties/_form.html.twig') }}
+
+    <a href="{{ path('royalties_index') }}">back to list</a>
+{% endblock %}

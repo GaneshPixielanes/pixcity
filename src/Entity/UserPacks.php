@@ -61,6 +61,7 @@ class UserPacks
     private $createdAt;
 
     /**
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
@@ -388,10 +389,10 @@ class UserPacks
         return str_replace(' ','-',$this->getUser()->getFirstName().'-'.$this->getUser()->getPixie()->getBilling()->getAddress()->getCity().'-'.$this->getTitle());
     }
 
+
     public function generateSlug()
     {
         $slugify = new Slugify();
-        $slugify->activateRuleSet('french');
         return $slugify->slugify($this->getUser()->getFirstName().'-'.$this->getUser()->getPixie()->getBilling()->getAddress()->getCity().'-'.$this->getTitle());
     }
 }

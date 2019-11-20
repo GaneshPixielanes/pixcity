@@ -168,7 +168,7 @@ class UserMission
     private $log;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Royalties", mappedBy="mission", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Royalties", mappedBy="mission", cascade={"persist", "remove"})
      */
     private $royalties;
 
