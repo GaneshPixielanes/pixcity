@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Royalties{% endblock %}
+
+{% block body %}
+    <h1>Edit Royalties</h1>
+
+    {{ include('royalties/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('royalties_index') }}">back to list</a>
+
+    {{ include('royalties/_delete_form.html.twig') }}
+{% endblock %}
