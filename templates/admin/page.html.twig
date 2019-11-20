@@ -153,6 +153,12 @@
                                 <span>{{ 'label.missions'|trans }}</span>
                             </a>
                         </li>
+                        <li class="{{ route starts with 'admin_royalties_index' ? 'active' }}">
+                            <a href="{{ path('admin_royalties_index') }}" class="waves-blue-grey">
+                                <i class="material-icons">euro_symbol</i>
+                                <span>{{ 'label.transactions_b2b'|trans }}</span>
+                            </a>
+                        </li>
                         <li class="{{ route starts with 'admin_admins_invoices' ? 'active' }}">
                             <a href="{{ url('admin_admins_invoices') }}" class="waves-blue-grey">
                                 <i class="material-icons">attach_money</i>
