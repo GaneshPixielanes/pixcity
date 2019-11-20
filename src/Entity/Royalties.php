@@ -19,7 +19,7 @@ class Royalties
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\UserMission", inversedBy="royalties", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserMission", inversedBy="royalties", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $mission;

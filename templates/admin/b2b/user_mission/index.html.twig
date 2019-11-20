@@ -45,7 +45,8 @@
                             <td>{{ user_mission.user.firstname ~' '~ user_mission.user.lastname}}</td>
                             <td>{{ user_mission.client.firstName ~' '~ user_mission.client.lastName}}</td>
                             <td>{{ user_mission.missionBasePrice }}</td>
-                            <td>{{ user_mission.referencePack.packSkill.name }} </td>
+{#                            <td>{{ user_mission.referencePack.packSkill.name }} </td>#}
+                            <td></td>
                             <td>{{ user_mission.status ? user_mission.status|upper|replace({("_"):" "}) : 'N/A' }} </td>
                             <td data-order='{{ user_mission.createdAt|date('YmdHi') }}'>{{ user_mission.createdAt ? user_mission.createdAt|localizeddate('medium', 'short') : '' }}</td>
                             <td class="text-right">
@@ -57,7 +58,7 @@
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user_mission.id) }}">
                                         <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
                                     </form>
-                                    <a href="#" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">credit_card</i></a>
+                                    <a href="{{ path('admin_royalties_index', {'id': user_mission.id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">credit_card</i></a>
                                 </div>
                             </td>
                         </tr>

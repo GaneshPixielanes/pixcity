@@ -1,0 +1,98 @@
+{% extends 'admin/page.html.twig' %}
+{% block content %}
+
+<ol class="breadcrumb breadcrumb-col-teal">
+    <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
+    <li class="active">{{ 'label.transactions_b2b'|trans }}</li>
+</ol>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    {{ 'label.transactions_b2b'|trans }}
+                </h2>
+                <a href="{{ path('admin_royalties_index') }}" class="btn btn-green">back to list</a>
+
+                <a href="{{ path('admin_royalties_edit', {'id': royalty.id}) }}" class="btn btn-green">edit</a>
+
+{#                {{ include('admin/b2b/royalties/_delete_form.html.twig') }}#}
+            </div>
+            <div class="body">
+
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ royalty.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Base_price</th>
+                            <td>{{ royalty.basePrice }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tax</th>
+                            <td>{{ royalty.tax }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tax_value</th>
+                            <td>{{ royalty.taxValue }}</td>
+                        </tr>
+                        <tr>
+                            <th>Total_price</th>
+                            <td>{{ royalty.totalPrice }}</td>
+                        </tr>
+                        <tr>
+                            <th>Invoice_path</th>
+                            <td>{{ royalty.invoicePath }}</td>
+                        </tr>
+                        <tr>
+                            <th>Payment_type</th>
+                            <td>{{ royalty.paymentType }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>{{ royalty.status }}</td>
+                        </tr>
+                        <tr>
+                            <th>Bank_details</th>
+                            <td>{{ royalty.bankDetails }}</td>
+                        </tr>
+                        <tr>
+                            <th>CreatedAt</th>
+                            <td>{{ royalty.createdAt ? royalty.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>UpdatedAt</th>
+                            <td>{{ royalty.updatedAt ? royalty.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cycle</th>
+                            <td>{{ royalty.cycle }}</td>
+                        </tr>
+                        <tr>
+                            <th>Transfer_id</th>
+                            <td>{{ royalty.transferId }}</td>
+                        </tr>
+                        <tr>
+                            <th>Transfer_date</th>
+                            <td>{{ royalty.transferDate ? royalty.transferDate|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Payout_id</th>
+                            <td>{{ royalty.payoutId }}</td>
+                        </tr>
+                        <tr>
+                            <th>Payout_date</th>
+                            <td>{{ royalty.payoutDate ? royalty.payoutDate|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
