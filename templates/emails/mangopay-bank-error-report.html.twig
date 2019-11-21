@@ -14,7 +14,7 @@
         <tbody>
         {% for row in missingRecords %}
             <tr>
-                <td>{{ row.id }}/{{ row.pixie.billing.id }}</td>
+                <td>{{ row.id }}/{% if row.pixie.billing is defined %}{{ row.pixie.billing.id }}{% endif %}</td>
                 <td>{{ row.firstName ? row.firstName ~' '~ row.lastName : 'N/A' }}</td>
                 <td>{{ row.email ? row.email : 'N/A' }}</td>
             </tr>
