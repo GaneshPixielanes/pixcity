@@ -59,9 +59,48 @@
                                         <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
                                     </form>
                                     <a href="{{ path('admin_royalties_index', {'id': user_mission.id}) }}" title="{{ 'action.show_more_cards'|trans }}" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">credit_card</i></a>
+
+                                    <a data-toggle="modal" data-target="#myModal{{ user_mission.id }} " class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">account_balance_wallet</i></a>
                                 </div>
                             </td>
                         </tr>
+                        <!-- Modal Start-->
+                        <div class="modal fade" id="myModal{{ user_mission.id }}" role="dialog" tabindex='-1'>
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Pay-In Details</h4>
+                                        <hr>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p> <label>Mission</label> :   {{ user_mission.title }}  &nbsp; &nbsp;|&nbsp; &nbsp; <label>Mission ID</label> : {{ user_mission.id }}</p>
+                                            <hr>
+                                        {% set countCycle = 0 %}
+                                        {% for clientTransactions in user_mission.clientTransactions %}
+                                            {% if clientTransactions.transactionType == "PayIn" %}
+                                                {% set countCycle = countCycle+1 %}
+
+                                                <label>Payment Date</label> : {{ clientTransactions.createdAt ? clientTransactions.createdAt | localizeddate('medium', 'short') : 'NA' }}<br>
+                                                <label>Amount</label> : {{ clientTransactions.amount ? clientTransactions.amount : 'NA' }}<br>
+                                                <label>Transaction Id</label> : <a href="https://dashboard.sandbox.mangopay.com/PayIn/{{ clientTransactions.mangopayTransactionId }}" target="_blank">{{ clientTransactions.mangopayTransactionId ? clientTransactions.mangopayTransactionId : 'NA' }}</a> <br>
+                                                <label>Client</label> : <a href="{{ path('admin_client_index', {'id': user_mission.id}) }}" >{{ user_mission.client ? user_mission.client.firstName~' '~user_mission.client.lastName : 'NA' }}</a><br>
+                                                <label>Cycle</label> : {{ countCycle }}<br>
+                                                <hr>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Modal End-->
                     {% else %}
                         <tr>
                             <td colspan="7">no records found</td>

@@ -18,11 +18,6 @@ class Royalties
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UserMission", inversedBy="royalties", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $mission;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="royalties", cascade={"persist", "remove"})
@@ -111,23 +106,18 @@ class Royalties
      */
     private $payout_date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserMission", inversedBy="royalties")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $mission;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getMission(): ?UserMission
-    {
-        return $this->mission;
-    }
-
-    public function setMission(UserMission $mission): self
-    {
-        $this->mission = $mission;
-
-        return $this;
-    }
 
     public function getCm(): ?User
     {
@@ -317,6 +307,18 @@ class Royalties
     public function setPayoutDate(?\DateTimeInterface $payout_date): self
     {
         $this->payout_date = $payout_date;
+
+        return $this;
+    }
+
+    public function getMission(): ?UserMission
+    {
+        return $this->mission;
+    }
+
+    public function setMission(?UserMission $mission): self
+    {
+        $this->mission = $mission;
 
         return $this;
     }
