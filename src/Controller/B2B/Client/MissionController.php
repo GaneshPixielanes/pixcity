@@ -340,7 +340,7 @@ class MissionController extends Controller
         $wallet = $mangoPayService->getWalletId($tansClientId->getMangopayWalletId());
 
         //Create Transaction
-        $transaction->setUser($mission->getUser());
+        $transaction->setUser($mission->getClient());
         $transaction->setAmount($amount);
         $transaction->setMangopayUserId($mangoUser->Id);
         $transaction->setMangopayWalletId($wallet->Id);
