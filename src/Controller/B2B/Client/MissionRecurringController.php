@@ -99,7 +99,7 @@ class MissionRecurringController extends Controller
                     //Create Transaction
                     $ClientTransaction = new ClientTransaction();
 
-                    $ClientTransaction->setUser($mission->getMission()->getClient());
+                    $ClientTransaction->setUser($mission->getMission()->getUser());
                     $ClientTransaction->setAmount($amount);
                     $ClientTransaction->setMangopayUserId($mangoUser->Id);
                     $ClientTransaction->setMangopayWalletId($wallet->Id);
