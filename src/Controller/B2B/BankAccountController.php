@@ -38,7 +38,7 @@ class BankAccountController extends AbstractController
 
                     if($result['status']){
 
-                        $user->getPixie()->getBilling()->setMangopayId($result->Id);
+                        $user->getPixie()->getBilling()->setMangopayId($result['result']->Id);
 
                         $user->getPixie()->getBilling()->setMangopayNeedToUpdate(1);
 
