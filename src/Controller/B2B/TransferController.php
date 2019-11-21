@@ -63,7 +63,7 @@ class TransferController extends AbstractController
 
         }
 
-        if(isset($missing) != null){
+        if(!empty($missing) != null){
 
             $mailer->send("rakesh@pix.city", 'KYC Issue in transfer wallets amount from city-maker to client ', 'emails/mangopay-transfer-error-report.html.twig', [
                 'missingRecords' => $missing
@@ -128,7 +128,7 @@ class TransferController extends AbstractController
 
         }
 
-        if(isset($missing) != null){
+        if(!empty($missing) != null){
 
             $mailer->send("rakesh@pix.city", 'KYC Issue in pay-out amount of city-makers', 'emails/mangopay-payout-error-report.html.twig', [
                 'missingRecords' => $missing
