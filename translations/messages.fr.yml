@@ -206,7 +206,7 @@ label:
     pages_categories: Pages de catégories
     discovertext: Bouton découvrir
     transactions: Transactions
-    transactions_b2b: Transactions-B2B
+    royalties_b2b: Royalties-B2B
     transactiontype:
         banktransfer: Virement bancaire
         check: Chèque

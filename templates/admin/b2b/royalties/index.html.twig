@@ -3,7 +3,7 @@
 
 <ol class="breadcrumb breadcrumb-col-teal">
     <li><a href="{{ path('admin_dashboard_index') }}"><i class="material-icons">home</i> Accueil</a></li>
-    <li class="active">{{ 'label.transactions_b2b'|trans }}</li>
+    <li class="active">{{ 'label.royalties_b2b'|trans }}</li>
 </ol>
 
 <div class="row clearfix">
@@ -11,7 +11,7 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    {{ 'label.transactions_b2b'|trans }}
+                    {{ 'label.royalties_b2b'|trans }}
                 </h2>
                 <div>
                     <button data-toggle="collapse" data-target="#cards-filters" class="btn bg-pink waves-effect m-r-10"><i class="material-icons">tune</i> <span>{{ 'label.filters'|trans }}</span></button>
@@ -86,7 +86,9 @@
                             <td>{{ royalty.totalPrice }}</td>
                             <td>{{ royalty.cycle}}</td>
                             <td>{{ royalty.status }}</td>
-                            <td>{{ royalty.payoutId ?   royalty.payoutId : '' }}</td>
+                            <td>
+                                <a href="https://dashboard.sandbox.mangopay.com/PayOut/{{ royalty.payoutId }}" target="_blank">{{ royalty.payoutId ? royalty.payoutId : 'NA' }}</a>
+                            </td>
 {#                            <td>#}
 {#                                <a href="{{ path('admin_royalties_show', {'id': royalty.id}) }}">show</a>#}
 {#                            </td>#}
