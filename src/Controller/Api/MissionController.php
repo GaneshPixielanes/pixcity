@@ -274,7 +274,7 @@ class MissionController extends Controller
         $transaction->getMission()->getUserMissionPayment()->setPcsTotal($last_result['pcs_total']);
         $transaction->getMission()->setMissionBasePrice($last_result['cm_price']);
 
-        $clientTransaction->setUser($mission->getClient());
+        $clientTransaction->setUser($mission->getUser());
         $clientTransaction->setMangopayUserId($transaction->getMangopayUserId());
         $clientTransaction->setMangopayWalletId($transaction->getMangopayWalletId());
         $clientTransaction->setPaymentStatus(1);
