@@ -308,7 +308,7 @@ class MangoPayService
 
             $result = $this->mangoPayApi->Users->CreateBankAccount($UserId, $BankAccount);
 
-            $issue = ['status' => true,'user' => $user];
+            $issue = ['status' => true,'user' => $user,'result' => $result];
 
             return $issue;
 
