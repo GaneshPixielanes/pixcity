@@ -30,7 +30,7 @@ class BankAccountController extends AbstractController
             if($user->getPixie() != null){
 
                 if($user->getMangopayUserId() != null && $user->getPixie()->getBilling()->getBillingIban() != null && $user->getPixie()->getBilling()->getBillingBic() != null &&
-                    $user->getPixie()->getBilling()->getMangopayNeedToUpdate() != 1 && $check_royalties == null && $user->getPixie()->getBilling()->getAddress()->getAddress() != null
+                    $user->getPixie()->getBilling()->getMangopayNeedToUpdate() != 1 && $check_royalties != null && $user->getPixie()->getBilling()->getAddress()->getAddress() != null
                     && $user->getPixie()->getBilling()->getAddress()->getCity() != null && $user->getPixie()->getBilling()->getAddress()->getCountry() != null
                     && $user->getPixie()->getBilling()->getAddress()->getZipcode()){
 
@@ -72,7 +72,7 @@ class BankAccountController extends AbstractController
 
         }
 
-        if(isset($missing) != null){
+        if(!empty($missing) != null){
 
             $mailer->send("rakesh@pix.city", 'IBAN and BIC details city-makers not proper or empty', 'emails/mangopay-bank-error-report.html.twig', [
                 'missingRecords' => $missing
