@@ -103,12 +103,12 @@ class TransferController extends AbstractController
                         $result = $mangoPayService->getPayOut($cm_user_id,$cm_wallet_id,$amount*100,$bank_id);
 
                         if($result->Status == 'CREATED'){
-                            $executedMissionIds [] = $royalty->getMission()->getId();
                             $royalty->setStatus('payout-completed');
                             $royalty->setPayoutId($result->Id);
                             $royalty->setPayoutDate(new \DateTime());
                             $em->persist($royalty);
                             $em->flush();
+                            $executedMissionIds [] = $royalty->getMission()->getId();
                         }else{
                             $incompleteMissionIds [] = $royalty->getMission()->getId();
                         }
