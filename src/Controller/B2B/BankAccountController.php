@@ -4,6 +4,7 @@ namespace App\Controller\B2B;
 
 use App\Repository\RoyaltiesRepository;
 use App\Repository\UserRepository;
+use App\Service\Mailer;
 use App\Service\MangoPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,11 +15,11 @@ class BankAccountController extends AbstractController
     /**
      * @Route("/b2b/bank/account", name="b2b_bank_account")
      */
-    public function index(UserRepository $userRepository,MangoPayService $mangoPayService,RoyaltiesRepository $royaltiesRepository)
+    public function index(UserRepository $userRepository,MangoPayService $mangoPayService,RoyaltiesRepository $royaltiesRepository,Mailer $mailer)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $executedMissionIds = [];
+        $executedMissionIds = [];$missing = [];
 
         $users = $userRepository->findAll();
 
@@ -33,20 +34,37 @@ class BankAccountController extends AbstractController
 
                     $result = $mangoPayService->createBankAccount($user);
 
-                    $user->getPixie()->getBilling()->setMangopayId($result->Id);
+                    if($result['status']){
 
-                    $user->getPixie()->getBilling()->setMangopayNeedToUpdate(1);
+                        $user->getPixie()->getBilling()->setMangopayId($result['result']->Id);
 
-                    $em->persist($user);
+                        $user->getPixie()->getBilling()->setMangopayNeedToUpdate(1);
 
-                    $em->flush();
+                        $em->persist($user);
 
-                    $executedMissionIds[] = $user->getId();
+                        $em->flush();
+
+                        $executedMissionIds[] = $user->getId();
+
+                    }else{
+
+                        $missing [] = $result['user'];
+
+                    }
+
 
                 }
 
             }
 
+
+        }
+
+        if(!empty($missing) != null){
+
+            $mailer->send("rakesh@pix.city", 'IBAN and BIC details city-makers not proper or empty', 'emails/mangopay-bank-error-report.html.twig', [
+                'missingRecords' => $missing
+            ]);
 
         }
 

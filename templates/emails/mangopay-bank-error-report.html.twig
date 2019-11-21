@@ -1,0 +1,29 @@
+{% extends 'emails/_base.html.twig' %}
+
+{% block body %}
+    <p>Bonjour Rakesh,</p>
+    <p>The following city-maker list records missing to update the BANK details</p>
+    <table class="table-striped" width="100%">
+        <thead>
+        <tr>
+            <th>CITY-MAKER ID/BILLING ID</th>
+            <th>Full Name</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in missingRecords %}
+            <tr>
+                <td>{{ row.id }}/{% if row.pixie.billing is defined %}{{ row.pixie.billing.id }}{% endif %}</td>
+                <td>{{ row.firstName ? row.firstName ~' '~ row.lastName : 'N/A' }}</td>
+                <td>{{ row.email ? row.email : 'N/A' }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <p>
+        À tout de suite sur Pix.City !
+    </p>
+
+{% endblock %}

@@ -268,9 +268,13 @@ class AdminUsersController extends Controller
         $mission = $userMissionRepository->findOneBy(['id'=>$id]);
         $filename = MissionController::createSlug($mission->getTitle());
 
-        $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
-        $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
-        $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";
+        // $clientInvoicePath = "invoices/".$mission->getId().'/'.$filename."-client.pdf";
+        // $cmInvoicePath = "invoices/".$mission->getId().'/'.$filename."-cm.pdf";
+        // $pcsInvoicePath = "invoices/".$mission->getId().'/'.$filename."-pcs.pdf";       
+
+        $clientInvoicePath = "invoices/".$mission->getId().'/PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId().'-client.pdf';
+        $cmInvoicePath = "invoices/".$mission->getId().'/PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId().'-cm.pdf';
+        $pcsInvoicePath = "invoices/".$mission->getId().'/PX-'.$mission->getId().'-'.$mission->getActiveLog()->getId().'-pcs.pdf';
 
         $files = [];
 
