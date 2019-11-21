@@ -37,7 +37,7 @@ class TransferController extends AbstractController
 
                         $result = $mangoPayService->transfer($city_maker_wallet_id,$client_id,$client_wallet_id,(int)$amount * 100);
 
-                        if($result->Status != 'FAILED'){
+                        if($result->Status == 'SUCCEEDED'){
                             $royalty->setStatus('transfer');
                             $royalty->setTransferId($result->Id);
                             $royalty->setTransferDate(new \DateTime());
