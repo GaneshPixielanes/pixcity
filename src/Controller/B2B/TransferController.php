@@ -52,7 +52,7 @@ class TransferController extends AbstractController
 
                 }else{
 
-                    $missing[] = $royalty->getId();
+                    $missing[] = $royalty->getCm();
 
                 }
 
