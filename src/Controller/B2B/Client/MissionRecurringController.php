@@ -124,6 +124,7 @@ class MissionRecurringController extends Controller
 
                         $ClientTransaction->setMangopayTransactionId($response->Id);
                         $ClientTransaction->setPaymentStatus(true);
+                        $ClientTransaction->getMission()->getUserMissionPayment()->setUser($mission->getMission()->getUser());
                         $ClientTransaction->getMission()->getUserMissionPayment()->setUserBasePrice($payment['cm_price']);
                         $ClientTransaction->getMission()->getUserMissionPayment()->setCmTax($payment['cm_tax']);
                         $ClientTransaction->getMission()->getUserMissionPayment()->setCmTotal($payment['cm_total']);

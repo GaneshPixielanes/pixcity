@@ -462,6 +462,7 @@ class MissionController extends Controller
 
             $last_result = $missionPaymentRepository->getPrices($mission->getActiveLog()->getUserBasePrice(), $margin->getValue(), $tax->getValue(), $cityMakerType);
 
+            $transaction->getMission()->getUserMissionPayment()->setUser($mission->getUser());
             $transaction->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
             $transaction->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
             $transaction->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
