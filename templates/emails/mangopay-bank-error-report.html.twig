@@ -6,7 +6,7 @@
     <table class="table-striped" width="100%">
         <thead>
         <tr>
-            <th>CITY-MAKER ID</th>
+            <th>CITY-MAKER ID/BILLING ID</th>
             <th>Full Name</th>
             <th>Email</th>
         </tr>
@@ -14,7 +14,7 @@
         <tbody>
         {% for row in missingRecords %}
             <tr>
-                <td>{{ row.id }}</td>
+                <td>{{ row.id }}/{{ row.pixie.billing.id }}</td>
                 <td>{{ row.firstName ? row.firstName ~' '~ row.lastName : 'N/A' }}</td>
                 <td>{{ row.email ? row.email : 'N/A' }}</td>
             </tr>
