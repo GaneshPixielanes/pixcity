@@ -262,7 +262,7 @@ class MissionController extends Controller
         $entityManager->persist($mission);
 //        $entityManager->flush();
 
-
+        $transaction->getMission()->getUserMissionPayment()->setUser($mission->getUser());
         $transaction->getMission()->getUserMissionPayment()->setUserBasePrice($last_result['cm_price']);
         $transaction->getMission()->getUserMissionPayment()->setCmTax($last_result['cm_tax']);
         $transaction->getMission()->getUserMissionPayment()->setCmTotal($last_result['cm_total']);
