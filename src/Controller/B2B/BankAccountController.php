@@ -30,21 +30,30 @@ class BankAccountController extends AbstractController
             if($user->getPixie() != null){
 
                 if($user->getMangopayUserId() != null && $user->getPixie()->getBilling()->getBillingIban() != null && $user->getPixie()->getBilling()->getBillingBic() != null &&
-                    $user->getPixie()->getBilling()->getMangopayNeedToUpdate() != 1 && $check_royalties != null && $user->getPixie()->getBilling()->getAddress()->getAddress() != null
+                    $user->getPixie()->getBilling()->getMangopayNeedToUpdate() != 1 && $check_royalties == null && $user->getPixie()->getBilling()->getAddress()->getAddress() != null
                     && $user->getPixie()->getBilling()->getAddress()->getCity() != null && $user->getPixie()->getBilling()->getAddress()->getCountry() != null
                     && $user->getPixie()->getBilling()->getAddress()->getZipcode()){
 
                     $result = $mangoPayService->createBankAccount($user);
 
-                    $user->getPixie()->getBilling()->setMangopayId($result->Id);
+                    if($result['status']){
 
-                    $user->getPixie()->getBilling()->setMangopayNeedToUpdate(1);
+                        $user->getPixie()->getBilling()->setMangopayId($result->Id);
 
-                    $em->persist($user);
+                        $user->getPixie()->getBilling()->setMangopayNeedToUpdate(1);
 
-                    $em->flush();
+                        $em->persist($user);
 
-                    $executedMissionIds[] = $user->getId();
+                        $em->flush();
+
+                        $executedMissionIds[] = $user->getId();
+
+                    }else{
+
+                        $missing [] = $result['user'];
+
+                    }
+
 
                 }
 
@@ -65,7 +74,7 @@ class BankAccountController extends AbstractController
 
         if(isset($missing) != null){
 
-            $mailer->send("rakesh@pix.city", 'IBAN and BIC details city-makers not persent', 'emails/mangopay-bank-error-report.html.twig', [
+            $mailer->send("rakesh@pix.city", 'IBAN and BIC details city-makers not proper or empty', 'emails/mangopay-bank-error-report.html.twig', [
                 'missingRecords' => $missing
             ]);
 
