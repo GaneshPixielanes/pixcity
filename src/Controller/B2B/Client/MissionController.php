@@ -418,7 +418,7 @@ class MissionController extends Controller
 
         }else{
 
-            return $this->render('b2b/client/transaction/failed.html.twig',['response' => 'card is not properly. your transaction is not completed']);
+            return $this->render('b2b/client/transaction/failed.html.twig',['response' => 'card is not proper. your transaction is not completed']);
 
         }
 
@@ -645,7 +645,7 @@ class MissionController extends Controller
 
             $em->flush();
 //            $error = 'Your payment is pending from your bank side.Dont worry! we will intimate you when we get the amount from bank';
-            return $this->render('b2b/client/transaction/waiting.html.twig');
+            return $this->render('b2b/client/transaction/waiting.html.twig',['response' => $response->ResultMessage.' '.$response->ResultCode]);
 
         }else{
 
@@ -654,8 +654,8 @@ class MissionController extends Controller
             $em->persist($transaction);
 
             $em->flush();
-            $error = $this->mangoPayErrorResponses($response->ResultCode);
-            return $this->render('b2b/client/transaction/failed.html.twig',['response' => $error]);
+
+            return $this->render('b2b/client/transaction/failed.html.twig',['response' => $response->ResultMessage.' '.$response->ResultCode]);
 
         }
 
