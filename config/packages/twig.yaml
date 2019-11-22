@@ -7,3 +7,4 @@ twig:
         google_analytics_id: '%google_analytics_id%'
         google_maps_api_key: '%google_maps_api_key%'
         pathToPublic: "%kernel.project_dir%/public"
+        mangopay_base_url: '%mangopay_base_url%'

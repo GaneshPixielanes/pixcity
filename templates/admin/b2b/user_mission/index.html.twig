@@ -85,7 +85,7 @@
 
                                                 <label>Payment Date</label> : {{ clientTransactions.createdAt ? clientTransactions.createdAt | localizeddate('medium', 'short') : 'NA' }}<br>
                                                 <label>Amount</label> : {{ clientTransactions.amount ? clientTransactions.amount : 'NA' }}<br>
-                                                <label>Transaction Id</label> : <a href="https://dashboard.sandbox.mangopay.com/PayIn/{{ clientTransactions.mangopayTransactionId }}" target="_blank">{{ clientTransactions.mangopayTransactionId ? clientTransactions.mangopayTransactionId : 'NA' }}</a> <br>
+                                                <label>Transaction Id</label> : <a href="{{mangopay_base_url}}/PayIn/{{ clientTransactions.mangopayTransactionId }}" target="_blank">{{ clientTransactions.mangopayTransactionId ? clientTransactions.mangopayTransactionId : 'NA' }}</a> <br>
                                                 <label>Client</label> : <a href="{{ path('admin_client_index', {'id': user_mission.id}) }}" >{{ user_mission.client ? user_mission.client.firstName~' '~user_mission.client.lastName : 'NA' }}</a><br>
                                                 <label>Cycle</label> : {{ countCycle }}<br>
                                                 <hr>
