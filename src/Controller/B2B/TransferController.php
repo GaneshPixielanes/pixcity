@@ -37,7 +37,7 @@ class TransferController extends AbstractController
 
                         $result = $mangoPayService->transfer($city_maker_wallet_id,$client_id,$client_wallet_id,(int)$amount * 100);
 
-                        if($result->Status != 'FAILED'){
+                        if($result->Status == 'SUCCEEDED'){
                             $royalty->setStatus('transfer');
                             $royalty->setTransferId($result->Id);
                             $royalty->setTransferDate(new \DateTime());
@@ -82,7 +82,7 @@ class TransferController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();$missing = [];
 
-        $royalties = $royaltiesRepository->findAll();$executedMissionIds = [];$incompleteMissionIds = [];
+        $royalties = $royaltiesRepository->findAll();$payoutExecutedMissionIds = [];$incompleteMissionIds = [];
 
         foreach ($royalties as $royalty){
 
@@ -108,7 +108,7 @@ class TransferController extends AbstractController
                             $royalty->setPayoutDate(new \DateTime());
                             $em->persist($royalty);
                             $em->flush();
-                            $executedMissionIds [] = $royalty->getMission()->getId();
+                            $payoutExecutedMissionIds [] = $royalty->getMission()->getId();
                         }else{
                             $incompleteMissionIds [] = $royalty->getMission()->getId();
                         }
@@ -137,7 +137,7 @@ class TransferController extends AbstractController
         }
 
 
-        return new JsonResponse(['completed_mission_id' => $executedMissionIds,'incomplete_mission_id' => $incompleteMissionIds]);
+        return new JsonResponse(['completed_mission_id' => $payoutExecutedMissionIds,'incomplete_mission_id' => $incompleteMissionIds]);
 
     }
 

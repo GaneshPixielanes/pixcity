@@ -167,10 +167,7 @@ class UserMission
      */
     private $log;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Royalties", mappedBy="mission", cascade={"persist", "remove"})
-     */
-    private $royalties;
+
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Region")
@@ -195,6 +192,11 @@ class UserMission
      */
     private $missionType;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Royalties", mappedBy="mission", orphanRemoval=true)
+     */
+    private $royalties;
+
 
     public function __construct()
     {
@@ -205,6 +207,7 @@ class UserMission
         $this->missionLogs = new ArrayCollection();
         $this->missionRegions = new ArrayCollection();
         $this->active_log = new ArrayCollection();
+        $this->royalties = new ArrayCollection();
     }
 
     protected function datePath(){
@@ -697,22 +700,7 @@ class UserMission
         return $logs;
     }
 
-    public function getRoyalties(): ?Royalties
-    {
-        return $this->royalties;
-    }
 
-    public function setRoyalties(Royalties $royalties): self
-    {
-        $this->royalties = $royalties;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $royalties->getMission()) {
-            $royalties->setMission($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return mixed
@@ -797,6 +785,37 @@ class UserMission
     public function setMissionType(?string $missionType): self
     {
         $this->missionType = $missionType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Royalties[]
+     */
+    public function getRoyalties(): Collection
+    {
+        return $this->royalties;
+    }
+
+    public function addRoyalty(Royalties $royalty): self
+    {
+        if (!$this->royalties->contains($royalty)) {
+            $this->royalties[] = $royalty;
+            $royalty->setMission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoyalty(Royalties $royalty): self
+    {
+        if ($this->royalties->contains($royalty)) {
+            $this->royalties->removeElement($royalty);
+            // set the owning side to null (unless already changed)
+            if ($royalty->getMission() === $this) {
+                $royalty->setMission(null);
+            }
+        }
 
         return $this;
     }

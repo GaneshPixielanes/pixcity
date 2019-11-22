@@ -33,13 +33,18 @@ class ClientController extends AbstractController
      * @Route("", name="index")
      * @Method({"GET"})
      */
-    public function index(ClientRepository $clientRepository,AuthorizationCheckerInterface $authChecker): Response
+    public function index(ClientRepository $clientRepository,AuthorizationCheckerInterface $authChecker,Request $request): Response
     {
         $user = $this->getUser();
         if($user->getViewMode() == ViewMode::B2B){
             if($authChecker->isGranted('ROLE_B2C')) {
                 $em= $this->getDoctrine()->getManager();
-                $query = $em->createQuery('SELECT pbc, COUNT(pbum.client) as missionCount FROM App:Client pbc LEFT JOIN App:UserMission pbum WITH pbum.client = pbc.id WHERE pbc.deleted IS Null OR pbc.deleted = 0 GROUP BY pbc.id ORDER BY pbc.id DESC');
+                $clientId = $request->query->get('id');
+                if(isset($clientId)){
+                    $query = $em->createQuery("SELECT pbc, COUNT(pbum.client) as missionCount FROM App:Client pbc LEFT JOIN App:UserMission pbum WITH pbum.client = pbc.id WHERE (pbc.deleted IS Null OR pbc.deleted = 0 ) AND pbc.id = ".$clientId." GROUP BY pbc.id ORDER BY pbc.id DESC");
+                }else{
+                    $query = $em->createQuery('SELECT pbc, COUNT(pbum.client) as missionCount FROM App:Client pbc LEFT JOIN App:UserMission pbum WITH pbum.client = pbc.id WHERE pbc.deleted IS Null OR pbc.deleted = 0 GROUP BY pbc.id ORDER BY pbc.id DESC');
+                }
                 $result =  $query->getResult();
 
                 return $this->render('admin/b2b/client/index.html.twig', [
