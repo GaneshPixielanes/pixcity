@@ -116,7 +116,6 @@ class MangoPayService
 
         // execution type as DIRECT
         $payIn->ExecutionDetails = new MangoPay\PayInExecutionDetailsDirect();
-        $payIn->ExecutionDetails->SecureMode = "FORCE";
         $payIn->ExecutionDetails->SecureModeNeeded = true;
         $payIn->ExecutionDetails->SecureModeReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
 
