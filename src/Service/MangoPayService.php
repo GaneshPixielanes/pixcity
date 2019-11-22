@@ -23,7 +23,7 @@ class MangoPayService
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
         // $this->mangoPayApi->Config->TemporaryFolder = "D:\projects";
-        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay";
 
 //      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
@@ -116,13 +116,14 @@ class MangoPayService
 
         // execution type as DIRECT
         $payIn->ExecutionDetails = new MangoPay\PayInExecutionDetailsDirect();
+        $payIn->ExecutionDetails->SecureMode = "FORCE";
         $payIn->ExecutionDetails->SecureModeNeeded = true;
         $payIn->ExecutionDetails->SecureModeReturnURL = "http".(isset($_SERVER['HTTPS']) ? "s" : null)."://".$_SERVER["HTTP_HOST"]."/client/mission/mission-accept-process/".$transaction;
 
         // create Pay-In
         $createdPayIn = $this->mangoPayApi->PayIns->Create($payIn);
 
-        return $createdPayIn->Id;
+        return $createdPayIn->ExecutionDetails->SecureModeRedirectURL;
     }
 
 
