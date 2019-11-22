@@ -354,9 +354,7 @@ class MissionController extends Controller
 
         $transaction->setTotalAmount($amount);
         $transaction->setFee($fee);
-        $em->persist($transaction);
 
-        $em->flush();
 
         $payment_type = $mission->getMissionType();$card_array = [];
 
@@ -395,9 +393,18 @@ class MissionController extends Controller
             $card_array['card_id'] = $card->Id;
 
             $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission,$fee * 100,$card_array);
+
             $response = $mangoPayService->getResponse($result);
+
+            $serializer = $this->container->get('serializer');
+
+            $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
+
+            $em->persist($transaction);
+
+            $em->flush();
+
             return $this->redirect($response->ExecutionDetails->SecureModeRedirectURL);
-//            return $this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);//$this->redirect($result);//$this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);
 
         }else{
 
