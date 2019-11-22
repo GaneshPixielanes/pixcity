@@ -407,7 +407,14 @@ class MissionController extends Controller
 
             $em->flush();
 
-            return $this->redirect($response->ExecutionDetails->SecureModeRedirectURL);
+            if($response->Status == 'SUCCEEDED'){
+                return $this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'?transactionId='.$result);
+            }elseif ($response->Status == 'CREATED'){
+                return $this->redirect($response->ExecutionDetails->SecureModeRedirectURL);
+            }elseif ($response->Status == 'FAILED'){
+                return $this->render('b2b/client/transaction/failed.html.twig',['response' => $response->ResultMessage.' '.$response->ResultCode]);
+            }
+
 
         }else{
 
