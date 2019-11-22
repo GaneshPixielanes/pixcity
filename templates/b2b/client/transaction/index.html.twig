@@ -30,7 +30,7 @@
 
                         {% for mission in missions %}
 
-                            {% if mission.getMissionType == 'one-shot' and mission.getStatus == 'terminated' %}
+                            {% if (mission.getMissionType == 'one-shot' or mission.getMissionType == null) and mission.getStatus == 'terminated' %}
 
                                 <tr class="text-darkgray fz-14">
                                     <td valign="middle" class="text-center">
