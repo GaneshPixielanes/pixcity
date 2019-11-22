@@ -55,7 +55,7 @@
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client[0].id) }}">
                                         <button class="btn btn-circle bg-grey waves-effect waves-circle waves-float"><i class="material-icons">delete_forever</i></button>
                                     </form>
-                                    {% if client[0].clientInfo is not null %}
+                                    {% if client[0].clientInfo is not null and client[0].clientInfo.mangopayUserId is not null %}
                                         <a href="{{mangopay_base_url}}/User/{{ client[0].clientInfo.mangopayUserId }}/Details" target="_blank" class="btn btn-circle bg-pink waves-effect waves-circle waves-float"><i class="material-icons">MP</i></a>
                                     {% endif %}
                                 </div>
