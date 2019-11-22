@@ -133,14 +133,15 @@ class UserRepository extends ServiceEntityRepository
     public function searchClients($filters = [], $limit = 12, $page = 1, $isRandom = false,$userEmail=null,$loggedType=null)
     {
 
-        if(isset($filters['skills']) && empty($filters['skills']))
+
+        if(isset($filters['regions'][0]) && trim($filters['regions'][0]) == '' )
         {
-            unset($filters['skills']);
+            $filters['regions'] = null;
         }
 
-        if(isset($filters['regions']) && empty($filters['regions']))
+        if(isset($filters['skills'][0]) && trim($filters['skills'][0]) == '' )
         {
-            unset($filters['regions']);
+            $filters['skills'] = null;
         }
 
         $qb = $this->createQueryBuilder('u')
