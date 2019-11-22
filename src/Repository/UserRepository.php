@@ -132,6 +132,17 @@ class UserRepository extends ServiceEntityRepository
 
     public function searchClients($filters = [], $limit = 12, $page = 1, $isRandom = false,$userEmail=null,$loggedType=null)
     {
+
+        if(isset($filters['skills']) && empty($filters['skills']))
+        {
+            unset($filters['skills']);
+        }
+
+        if(isset($filters['regions']) && empty($filters['regions']))
+        {
+            unset($filters['regions']);
+        }
+
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
