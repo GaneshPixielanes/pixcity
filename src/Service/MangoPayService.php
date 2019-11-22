@@ -23,7 +23,7 @@ class MangoPayService
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
         // $this->mangoPayApi->Config->TemporaryFolder = "D:\projects";
-        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay";
+        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
 
 //      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
@@ -256,18 +256,27 @@ class MangoPayService
 
     public function finishCardRegistration($card_id,$data){
 
-        $cardRegisterPut = $this->mangoPayApi->CardRegistrations->Get($card_id);
-        $cardRegisterPut->RegistrationData = 'data='.$data;
-        $updatedCardRegister = $this->mangoPayApi->CardRegistrations->Update($cardRegisterPut);
+        try{
 
-        if($updatedCardRegister->Status != MangoPay\CardRegistrationStatus::Validated || !isset($updatedCardRegister->CardId)){
+            $cardRegisterPut = $this->mangoPayApi->CardRegistrations->Get($card_id);
+            $cardRegisterPut->RegistrationData = 'data='.$data;
+            $updatedCardRegister = $this->mangoPayApi->CardRegistrations->Update($cardRegisterPut);
+
+            if($updatedCardRegister->Status != MangoPay\CardRegistrationStatus::Validated || !isset($updatedCardRegister->CardId)){
+                return false;
+            }
+
+
+            $card = $this->mangoPayApi->Cards->Get($updatedCardRegister->CardId);
+
+            return $card;
+
+        }catch (MangoPay\Libraries\ResponseException $e){
+
             return false;
+
         }
 
-
-        $card = $this->mangoPayApi->Cards->Get($updatedCardRegister->CardId);
-
-        return $card;
     }
 
     public function transfer($city_maker_wallet_id,$client_id,$client_wallet_id,$amount){
