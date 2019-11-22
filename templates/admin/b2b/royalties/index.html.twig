@@ -87,7 +87,7 @@
                             <td>{{ royalty.cycle}}</td>
                             <td>{{ royalty.status }}</td>
                             <td>
-                                <a href="https://dashboard.sandbox.mangopay.com/PayOut/{{ royalty.payoutId }}" target="_blank">{{ royalty.payoutId ? royalty.payoutId : 'NA' }}</a>
+                                <a href="{{mangopay_base_url}}/PayOut/{{ royalty.payoutId }}" target="_blank">{{ royalty.payoutId ? royalty.payoutId : 'NA' }}</a>
                             </td>
 {#                            <td>#}
 {#                                <a href="{{ path('admin_royalties_show', {'id': royalty.id}) }}">show</a>#}
