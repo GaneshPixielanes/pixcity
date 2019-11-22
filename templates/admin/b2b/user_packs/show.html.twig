@@ -31,7 +31,7 @@
                     <tbody>
                         <tr>
                             <th>CM</th>
-                            <td>{{ user_pack.user.firstname~' '~user_pack.user.lastname }} <a href="{{path('admin_user_packs_view', {'id': user_pack.user.id })  }}" title="view" class="btn bg-green btn-visit-site"> Voir packs du CM</a> </td>
+                            <td>{{ user_pack.user.firstname~' '~user_pack.user.lastname }} <a href="{{path('admin_user_packs_view', {'id': user_pack.user.id , 'usrtype':'user'})  }}" title="view" class="btn bg-green btn-visit-site"> Voir packs du CM</a> </td>
                         </tr>
                         <tr>
                             <th>Titre</th>
