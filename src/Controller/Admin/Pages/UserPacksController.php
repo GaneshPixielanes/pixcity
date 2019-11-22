@@ -163,16 +163,17 @@ class UserPacksController extends Controller
         return md5(uniqid());
     }
     /**
-     * @Route("/view/{id}", name="view", methods={"GET"})
+     * @Route("/view/{id}/{usrtype}", name="view", methods={"GET"})
      */
     public function viewByUser(Request $request,UserPacksRepository $userPacksRepository): Response
     {
         $userId = $request->attributes->get('id');
         $selectedUserRelated = $userPacksRepository->findBy(['user'=>$userId]);
 
-
+        $filename = 'uploads/pack/';
         return $this->render('admin/b2b/user_packs/index.html.twig', [
             'user_packs' => $selectedUserRelated,
+            'filename' => $filename
         ]);
     }
     /**
