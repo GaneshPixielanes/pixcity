@@ -608,11 +608,8 @@ class MissionController extends Controller
 
                 $em->flush();
 
-                $message = $mission_id->getClient() . ' a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
-                $notificationsRepository->insert($mission_id->getUser(), null, 'mission_client_paid', $message, $mission_id->getId());
-
-                $message = 'Notre partenaire a bien reçu votre pré-paiement. Le city-maker va être averti du cantonnement de cette somme et il va pouvoir démarrer la mission. ';
-                $notificationsRepository->insert(null, $mission_id->getClient(), 'mission_cliet_paid_complete', $message, $mission_id->getId());
+                $notificationsRepository->insert($mission_id->getUser(),null,'terminate_mission_accept',$mission_id->getClient()."vient de confirmer la fin de la mission. En cas de mission one-shot, vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une mission récurrente pour la prochaine fois si la mission s'est bien passée ! En cas de mission récurrente, votre mission est définitivement terminée, vous recevrez votre dernier paiement à la date anniversaire mensuelle de la signature du devis initial. ",$mission_id->getId());
+                $notificationsRepository->insert(null,$mission_id->getClient(),'terminate_mission_client','Vous avez déclaré que la mission était terminée. En cas de mission one-shot, le paiement de votre city-maker sera donc déclenché sous 48H via notre partenaire Mango Pay. En cas de mission récurrente, la mission est réputée terminée à la date anniversaire mensuelle de signature du devis initial. Le city-maker sera payé 48h après cette date anniversaire. ',$mission_id->getId());
 
             }
 
