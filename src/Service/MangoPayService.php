@@ -123,7 +123,7 @@ class MangoPayService
         // create Pay-In
         $createdPayIn = $this->mangoPayApi->PayIns->Create($payIn);
 
-        return $createdPayIn->ExecutionDetails->SecureModeRedirectURL;
+        return $createdPayIn->Id;
     }
 
 
