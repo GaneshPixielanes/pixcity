@@ -354,9 +354,7 @@ class MissionController extends Controller
 
         $transaction->setTotalAmount($amount);
         $transaction->setFee($fee);
-        $em->persist($transaction);
 
-        $em->flush();
 
         $payment_type = $mission->getMissionType();$card_array = [];
 
@@ -396,7 +394,17 @@ class MissionController extends Controller
 
             $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission,$fee * 100,$card_array);
 
-            return $this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);//$this->redirect($result);//$this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);
+            $response = $mangoPayService->getResponse($result);
+
+            $serializer = $this->container->get('serializer');
+
+            $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
+
+            $em->persist($transaction);
+
+            $em->flush();
+
+            return $this->redirect($response->ExecutionDetails->SecureModeRedirectURL);
 
         }else{
 
@@ -418,9 +426,9 @@ class MissionController extends Controller
     }
 
     /**
-     * @Route("/mission-accept-process/{id}/{transaction_id}", name="mission_accept_process")
+     * @Route("/mission-accept-process/{id}", name="mission_accept_process")
      */
-    public function missionAcceptProcess($id,$transaction_id ,ClientTransactionRepository $transactionRepo,
+    public function missionAcceptProcess($id ,ClientTransactionRepository $transactionRepo,
                                          ClientRepository $clientRepository,
                                          UserMissionRepository $missionRepo,
                                          Request $request,
@@ -430,6 +438,8 @@ class MissionController extends Controller
                                          MissionRecurringPriceLogRepository $missionRecurringPriceLogRepository,
                                          MissionPaymentRepository $missionPaymentRepository)
     {
+
+        $transaction_id = $request->get('transactionId');
 
         $em = $this->getDoctrine()->getManager();
 
