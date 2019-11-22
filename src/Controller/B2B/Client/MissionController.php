@@ -355,6 +355,9 @@ class MissionController extends Controller
         $transaction->setTotalAmount($amount);
         $transaction->setFee($fee);
 
+        $em->persist($transaction);
+
+        $em->flush();
 
         $payment_type = $mission->getMissionType();$card_array = [];
 
