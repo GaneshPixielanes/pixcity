@@ -287,11 +287,10 @@ class AdminUsersController extends Controller
 
         // Create new Zip Archive.
         $zip = new \ZipArchive();
-
         // The name of the Zip documents.
-        $zipName = 'm_'.$id.'.zip';
+        $zipName = $this->get('kernel')->getProjectDir() . '/public/invoices/'.'m_'.$id.'.zip';
 
-        $zip->open($zipName,  \ZipArchive::CREATE);
+        $fileStatus = $zip->open($zipName,  \ZipArchive::CREATE);
         foreach ($files as $file) {
             $zip->addFromString(basename($file),  file_get_contents($file));
         }
@@ -299,12 +298,11 @@ class AdminUsersController extends Controller
 
         $response = new Response(file_get_contents($zipName));
         $response->headers->set('Content-Type', 'application/zip');
-        $response->headers->set('Content-Disposition', 'attachment;filename="' . $zipName . '"');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . basename($zipName) . '.zip"');
         $response->headers->set('Content-length', filesize($zipName));
 
         @unlink($zipName);
 
-        return $response;
     }
     /**
      * @Route("/{id}", name="show", methods={"GET"})
