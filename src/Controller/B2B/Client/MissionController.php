@@ -525,7 +525,6 @@ class MissionController extends Controller
 
                 $filesystem->mkdir('invoices/' . $mission->getId(), 0777);
 
-
                 $client_filename = 'PX-' . $mission->getId() . '-' . $mission->getActiveLog()->getId() . "-client.pdf";
 
                 $clientInvoicePath = "invoices/" . $mission->getId() . '/' . $client_filename;
@@ -592,6 +591,18 @@ class MissionController extends Controller
 
                 }
 
+                $last_row_royal = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
+
+                if ($last_row_royal != null) {
+
+                    $cycle_royal = $last_row_royal->getCycle();
+
+                } else {
+
+                    $cycle_royal = 1;
+
+                }
+
 
                 $royalties = new Royalties();
                 $royalties->setMission($mission_id);
@@ -602,7 +613,7 @@ class MissionController extends Controller
                 $royalties->setTotalPrice($mission_id->getUserMissionPayment()->getCmTotal());
                 $royalties->setInvoicePath($cmInvoicePath);
                 $royalties->setStatus('pending');
-                $royalties->setCycle($cycle);
+                $royalties->setCycle($cycle_royal);
                 $royalties->setBankDetails(json_encode($response));
                 $em->persist($royalties);
 
