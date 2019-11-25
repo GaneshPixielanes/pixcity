@@ -369,33 +369,11 @@ class MissionController extends Controller
 
         if($card){
 
-            if($payment_type != 'one-shot'){
-
-                $serializer = $this->container->get('serializer');
-                $card_details = new MissionRecurring();
-                $card_details->setClient($userMissionTblId->getClient());
-                $card_details->setMission($userMissionTblId);
-                $card_details->setCardType($card->CardProvider);
-                $card_details->setCardId($card->Id);
-                $card_details->setPaymentDate(new \DateTime());
-                $card_details->setInvoiceDate(new \DateTime());
-                $card_details->setPaymentStatus('0');
-                $card_details->setCardAlias($card->Alias);
-                $card_details->setCardExpirationDate($card->ExpirationDate);
-                $card_details->setCardResponse($serializer->serialize($card, 'json'));
-                $card_details->setCreatedAt(new \DateTime());
-                $card_details->setUpdatedAt(new \DateTime());
-
-                $em->persist($card_details);
-
-                $em->flush();
-
-            }
-
             $card_array['card_type'] = $card->CardProvider;
+
             $card_array['card_id'] = $card->Id;
 
-            $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission,$fee * 100,$card_array);
+            $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission,$fee * 100,$card_array,1);
 
             $response = $mangoPayService->getResponse($result);
 
@@ -404,6 +382,28 @@ class MissionController extends Controller
             $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
 
             $em->persist($transaction);
+
+            $serializer = $this->container->get('serializer');
+            $card_details = new MissionRecurring();
+            $card_details->setClient($userMissionTblId->getClient());
+            $card_details->setMission($userMissionTblId);
+            $card_details->setCardType($card->CardProvider);
+            $card_details->setCardId($card->Id);
+            $card_details->setPaymentDate(new \DateTime());
+            $card_details->setInvoiceDate(new \DateTime());
+            $card_details->setCardAlias($card->Alias);
+            $card_details->setCardExpirationDate($card->ExpirationDate);
+            $card_details->setCardResponse($serializer->serialize($card, 'json'));
+            $card_details->setCreatedAt(new \DateTime());
+            $card_details->setUpdatedAt(new \DateTime());
+
+            if($payment_type != 'one-shot' && $response->Status == 'SUCCEEDED' || $response->Status == 'CREATED'){
+                $card_details->setPaymentStatus(1);
+            }else{
+                $card_details->setPaymentStatus(0);
+            }
+
+            $em->persist($card_details);
 
             $em->flush();
 
@@ -415,14 +415,11 @@ class MissionController extends Controller
                 return $this->render('b2b/client/transaction/failed.html.twig',['response' => $response->ResultMessage.' '.$response->ResultCode]);
             }
 
-
         }else{
 
             return $this->render('b2b/client/transaction/failed.html.twig',['response' => 'card is not proper. your transaction is not completed']);
 
         }
-
-
 
 
     }
