@@ -26,6 +26,7 @@ class TransactionController extends AbstractController
         $refusedUsers['IDENTITY_PROOF'] = [];
         $addressProofCount = 0;
         $identityProofCount = 0;
+        $successList = [];
         if(count($users) == 0)
         {
 
@@ -50,6 +51,10 @@ class TransactionController extends AbstractController
                                                     {
                                                         $refusedUsers['IDENTITY_PROOF'][] = $user;
                                                     }
+                                                    else
+                                                    {
+                                                        $successList[] = $user->getEmail();
+                                                    }
                                                     $user->setMangopayKycStatus($document->Status);
                                                 }
 
@@ -61,6 +66,10 @@ class TransactionController extends AbstractController
                                                     if($document->Status == 'REFUSED')
                                                     {
                                                         $refusedUsers['ADDRESS_PROOF'][] = $user;
+                                                    }
+                                                    else
+                                                    {
+                                                        $successList[] = $user->getEmail();
                                                     }
                                                     $user->setMangopayKycAddrStatus($document->Status);
                                                 }
@@ -87,11 +96,19 @@ class TransactionController extends AbstractController
                     ],[]);
                 }
             }
-
-            return new JsonResponse('["success" => true, "message" => "Process complete"]');
+            if(empty($successList))
+            {
+                return new JsonResponse('["success" => true, "message" => "No profiles in pending state to be verified"]');
+            }
+            else
+            {
+               return new JsonResponse('["success" => true, "message" => "Process complete", "verification list"=>'.implode($successList,',').']'); 
+            }
+            
         }
         catch(\Exception $e)
         {
+            dd($e);
             return new JsonResponse('["success" => false, "message" => "Something went wrong. Please contact dev/support team"]');
         }
     }
