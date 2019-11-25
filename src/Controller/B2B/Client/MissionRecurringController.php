@@ -56,7 +56,7 @@ class MissionRecurringController extends Controller
 
         $taxOpt = $options->findOneBy(['slug' => 'tax']);$marginOpt = $options->findOneBy(['slug' => 'margin']);
 
-        $executedMissionIds = [];
+        $executedMissionIds = [];$issueIds = [];
 
         $missions = $missionRecurringRepository->findAll();
 
@@ -185,7 +185,7 @@ class MissionRecurringController extends Controller
                         $ClientTransaction->setMangopayTransactionId($transaction_id);
                         $ClientTransaction->setMangopayResponse($serializer->serialize($response, 'json'));
                         $em->persist($ClientTransaction);
-
+                        $issueIds[] = $mission->getMission()->getId();
                         $em->flush();
 
                     }
@@ -196,7 +196,7 @@ class MissionRecurringController extends Controller
 
         }
 
-        return new JsonResponse(['status' => true,'executed_ids' => $executedMissionIds]);
+        return new JsonResponse(['status' => true,'executed_ids' => $executedMissionIds,'mission_failed_ids' => $issueIds]);
     }
 
     /**
