@@ -6,6 +6,7 @@ use App\Constant\CompanyStatus;
 use App\Constant\MissionStatus;
 use App\Entity\ClientMissionProposal;
 use App\Entity\ClientTransaction;
+use App\Entity\MissionRecurringPriceLog;
 use App\Entity\Option;
 use App\Entity\Royalties;
 use App\Repository\ClientTransactionRepository;
@@ -349,6 +350,33 @@ class MissionController extends Controller
                     $cycle = $last_row->getCycle() - 1;
                 }
 
+                if ($mission->getMissionType() == 'recurring') {
+
+                    $mission_price_log = new MissionRecurringPriceLog();
+                    $mission_price_log->setMission($mission);
+                    $mission_price_log->setActivePrice($mission->getActiveLog());
+                    $mission_price_log->setCycle($cycle);
+                    $mission_price_log->setMonth(date('F'));
+                    $mission_price_log->setYear(date('Y'));
+                    $mission_price_log->setCreatedAt(new \DateTime());
+                    $mission_price_log->setUpdatedAt(new \DateTime());
+
+                    $entityManager->persist($mission_price_log);
+
+                }
+
+                $last_row_royal = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
+
+                if ($last_row_royal != null) {
+
+                    $cycle_royal = $last_row_royal->getCycle();
+
+                } else {
+
+                    $cycle_royal = 1;
+
+                }
+
 
                 $royalties = new Royalties();
                 $royalties->setMission($mission);
@@ -360,7 +388,7 @@ class MissionController extends Controller
                 $royalties->setInvoicePath($cmInvoicePath);
                 $royalties->setPaymentType('mango_pay');
                 $royalties->setStatus('pending');
-                $royalties->setCycle($cycle);
+                $royalties->setCycle($cycle_royal);
                 $royalties->setBankDetails(json_encode('no_response'));
 
                 $entityManager->persist($royalties);
