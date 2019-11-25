@@ -62,7 +62,7 @@ class MissionRecurringController extends Controller
 
         foreach ($missions as $mission){
 
-            if($mission->getMission()->getStatus() == MissionStatus::ONGOING){
+            if($mission->getMission()->getStatus() == MissionStatus::ONGOING && $mission->getPaymentStatus() == 1){
 
                 $recurring_date = date('d-m-Y', strtotime('+1 month', strtotime($mission->getPaymentDate()->format('d-m-Y'))));
 
@@ -115,7 +115,19 @@ class MissionRecurringController extends Controller
                     $card_array['card_type'] = $mission_card->getCardType();
                     $card_array['card_id'] = $mission_card->getCardId();
 
-                    $transaction_id  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getMission(),$fee * 100,$card_array);
+                    $last_cycle = $missionRecurringPriceLogRepository->findLastRow($mission->getMission()->getId());
+
+                    if($last_cycle != null){
+
+                        $cycle = $last_cycle->getCycle() + 1;
+
+                    }else{
+
+                        $cycle = 2;
+
+                    }
+
+                    $transaction_id  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission->getMission(),$fee * 100,$card_array,$cycle);
 
                     //check the response of the MangoPay,after Pay in
                     $response = $mangoPayService->getResponse($transaction_id);
@@ -136,17 +148,7 @@ class MissionRecurringController extends Controller
                         $ClientTransaction->getMission()->getUserMissionPayment()->setPcsTotal($payment['pcs_total']);
                         $ClientTransaction->getMission()->setMissionBasePrice($payment['cm_price']);
                         $ClientTransaction->setMangopayResponse($serializer->serialize($response, 'json'));
-                        $last_cycle = $missionRecurringPriceLogRepository->findLastRow($mission->getMission()->getId());
 
-                        if($last_cycle != null){
-
-                            $cycle = $last_cycle->getCycle() + 1;
-
-                        }else{
-
-                            $cycle = 2;
-
-                        }
 
                         $mission_price_log = new MissionRecurringPriceLog();
 
@@ -226,7 +228,7 @@ class MissionRecurringController extends Controller
 
                 $recurring_date = date('d-m-Y', strtotime('+1 month', strtotime($mission->getInvoiceDate()->format('d-m-Y'))));
 
-                if(strtotime($recurring_date) == strtotime($today)){
+                if(strtotime($recurring_date) == strtotime($today) && $mission->getPaymentStatus() == 1){
 
                     $last_row = $missionRecurringPriceLogRepository->findLastRow($mission->getMission()->getId());
 

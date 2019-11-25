@@ -100,7 +100,7 @@ class TransferController extends AbstractController
 
                     if($cm_user_id != null && $cm_wallet_id != null && $amount > 0 && $bank_id != null){
 
-                        $result = $mangoPayService->getPayOut($cm_user_id,$cm_wallet_id,$amount*100,$bank_id);
+                        $result = $mangoPayService->getPayOut($cm_user_id,$cm_wallet_id,$amount*100,$bank_id,$royalty->getCycle(),$royalty->getMission());
 
                         if($result->Status == 'CREATED'){
                             $royalty->setStatus('payout-completed');
