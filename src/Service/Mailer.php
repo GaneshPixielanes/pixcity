@@ -4,6 +4,8 @@ namespace App\Service;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use App\Entity\EmailLog;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Mailer
 {
@@ -12,13 +14,15 @@ class Mailer
     private $params;
     private $templating;
     private $logger;
+    private $entityManager;
 
-    public function __construct(ParameterBagInterface $params, \Swift_Mailer $mailer, \Twig_Environment $templating, LoggerInterface $logger)
+    public function __construct(ParameterBagInterface $params, \Swift_Mailer $mailer, \Twig_Environment $templating, LoggerInterface $logger, EntityManagerInterface $entityManager)
     {
         $this->mailer = $mailer;
         $this->params = $params;
         $this->templating = $templating;
         $this->logger = $logger;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -69,6 +73,13 @@ class Mailer
         if(!$this->mailer->send($message)){
             $this->logger->error("EMAIL FAIL : to ".$to." - template " . $template . " : " . $message, $params);
         }
+
+        $emailLog = new EmailLog();
+        $emailLog->setSubject($subject);
+        $emailLog->setBody(strip_tags($template));
+        $emailLog->setAttachments(json_encode($attachmentsa));
+
+        $this->entityManager->getDoctrine()->persist($emaiLLog)->flush();
 
     }
 
