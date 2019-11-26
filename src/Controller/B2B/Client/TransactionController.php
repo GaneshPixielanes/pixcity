@@ -21,9 +21,7 @@ class TransactionController extends AbstractController
      */
     public function index(UserMissionRepository $missionRepo, NotificationsRepository $notificationsRepo,MissionRecurringPriceLogRepository $missionRecurringPriceLogRepository)
     {
-        $missions = $missionRepo->findBy([
-            'client' => $this->getUser(),
-        ]);
+        $missions = $missionRepo->findTerminatedMissions($this->getUser(), 'client');
 
         $missions_ongoing = $missionRepo->findBy([
             'client' => $this->getUser(),

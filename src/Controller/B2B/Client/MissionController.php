@@ -354,6 +354,7 @@ class MissionController extends Controller
 
         $transaction->setTotalAmount($amount);
         $transaction->setFee($fee);
+
         $em->persist($transaction);
 
         $em->flush();
@@ -368,43 +369,57 @@ class MissionController extends Controller
 
         if($card){
 
-            if($payment_type != 'one-shot'){
-
-                $serializer = $this->container->get('serializer');
-                $card_details = new MissionRecurring();
-                $card_details->setClient($userMissionTblId->getClient());
-                $card_details->setMission($userMissionTblId);
-                $card_details->setCardType($card->CardProvider);
-                $card_details->setCardId($card->Id);
-                $card_details->setPaymentDate(new \DateTime());
-                $card_details->setInvoiceDate(new \DateTime());
-                $card_details->setPaymentStatus('0');
-                $card_details->setCardAlias($card->Alias);
-                $card_details->setCardExpirationDate($card->ExpirationDate);
-                $card_details->setCardResponse($serializer->serialize($card, 'json'));
-                $card_details->setCreatedAt(new \DateTime());
-                $card_details->setUpdatedAt(new \DateTime());
-
-                $em->persist($card_details);
-
-                $em->flush();
-
-            }
-
             $card_array['card_type'] = $card->CardProvider;
+
             $card_array['card_id'] = $card->Id;
 
-            $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission,$fee * 100,$card_array);
+            $result  = $mangoPayService->getPayIn($mangoUser, $wallet, $amount * 100, $transaction->getId(),$mission,$fee * 100,$card_array,1);
 
-            return $this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);//$this->redirect($result);//$this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'/'.$result);
+            $response = $mangoPayService->getResponse($result);
+
+            $serializer = $this->container->get('serializer');
+
+            $transaction->setMangopayResponse($serializer->serialize($response, 'json'));
+
+            $em->persist($transaction);
+
+            $serializer = $this->container->get('serializer');
+            $card_details = new MissionRecurring();
+            $card_details->setClient($userMissionTblId->getClient());
+            $card_details->setMission($userMissionTblId);
+            $card_details->setCardType($card->CardProvider);
+            $card_details->setCardId($card->Id);
+            $card_details->setPaymentDate(new \DateTime());
+            $card_details->setInvoiceDate(new \DateTime());
+            $card_details->setCardAlias($card->Alias);
+            $card_details->setCardExpirationDate($card->ExpirationDate);
+            $card_details->setCardResponse($serializer->serialize($card, 'json'));
+            $card_details->setCreatedAt(new \DateTime());
+            $card_details->setUpdatedAt(new \DateTime());
+
+            if($payment_type != 'one-shot' && $response->Status == 'SUCCEEDED' || $response->Status == 'CREATED'){
+                $card_details->setPaymentStatus(1);
+            }else{
+                $card_details->setPaymentStatus(0);
+            }
+
+            $em->persist($card_details);
+
+            $em->flush();
+
+            if($response->Status == 'SUCCEEDED'){
+                return $this->redirect('/client/mission/mission-accept-process/'.$transaction->getId().'?transactionId='.$result);
+            }elseif ($response->Status == 'CREATED'){
+                return $this->redirect($response->ExecutionDetails->SecureModeRedirectURL);
+            }elseif ($response->Status == 'FAILED'){
+                return $this->render('b2b/client/transaction/failed.html.twig',['response' => $response->ResultMessage.' '.$response->ResultCode]);
+            }
 
         }else{
 
-            return $this->render('b2b/client/transaction/failed.html.twig',['response' => 'card is not properly. your transaction is not completed']);
+            return $this->render('b2b/client/transaction/failed.html.twig',['response' => 'card is not proper. your transaction is not completed']);
 
         }
-
-
 
 
     }
@@ -418,9 +433,9 @@ class MissionController extends Controller
     }
 
     /**
-     * @Route("/mission-accept-process/{id}/{transaction_id}", name="mission_accept_process")
+     * @Route("/mission-accept-process/{id}", name="mission_accept_process")
      */
-    public function missionAcceptProcess($id,$transaction_id ,ClientTransactionRepository $transactionRepo,
+    public function missionAcceptProcess($id ,ClientTransactionRepository $transactionRepo,
                                          ClientRepository $clientRepository,
                                          UserMissionRepository $missionRepo,
                                          Request $request,
@@ -430,6 +445,8 @@ class MissionController extends Controller
                                          MissionRecurringPriceLogRepository $missionRecurringPriceLogRepository,
                                          MissionPaymentRepository $missionPaymentRepository)
     {
+
+        $transaction_id = $request->get('transactionId');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -505,7 +522,6 @@ class MissionController extends Controller
 
                 $filesystem->mkdir('invoices/' . $mission->getId(), 0777);
 
-
                 $client_filename = 'PX-' . $mission->getId() . '-' . $mission->getActiveLog()->getId() . "-client.pdf";
 
                 $clientInvoicePath = "invoices/" . $mission->getId() . '/' . $client_filename;
@@ -572,6 +588,18 @@ class MissionController extends Controller
 
                 }
 
+                $last_row_royal = $missionRecurringPriceLogRepository->findLastRow($mission->getId());
+
+                if ($last_row_royal != null) {
+
+                    $cycle_royal = $last_row_royal->getCycle();
+
+                } else {
+
+                    $cycle_royal = 1;
+
+                }
+
 
                 $royalties = new Royalties();
                 $royalties->setMission($mission_id);
@@ -582,17 +610,14 @@ class MissionController extends Controller
                 $royalties->setTotalPrice($mission_id->getUserMissionPayment()->getCmTotal());
                 $royalties->setInvoicePath($cmInvoicePath);
                 $royalties->setStatus('pending');
-                $royalties->setCycle($cycle);
+                $royalties->setCycle($cycle_royal);
                 $royalties->setBankDetails(json_encode($response));
                 $em->persist($royalties);
 
                 $em->flush();
 
-                $message = $mission_id->getClient() . ' a accepté votre devis et a effectué son pré-paiement, la mission peut démarrer. ';
-                $notificationsRepository->insert($mission_id->getUser(), null, 'mission_client_paid', $message, $mission_id->getId());
-
-                $message = 'Notre partenaire a bien reçu votre pré-paiement. Le city-maker va être averti du cantonnement de cette somme et il va pouvoir démarrer la mission. ';
-                $notificationsRepository->insert(null, $mission_id->getClient(), 'mission_cliet_paid_complete', $message, $mission_id->getId());
+                $notificationsRepository->insert($mission_id->getUser(),null,'terminate_mission_accept',$mission_id->getClient()." vient de confirmer la fin de la mission. En cas de mission one-shot, vous recevrez votre paiement sous 48h via notre partenaire Mango Pay. PS : Pensez à créer une mission récurrente pour la prochaine fois si la mission s'est bien passée ! En cas de mission récurrente, votre mission est définitivement terminée, vous recevrez votre dernier paiement à la date anniversaire mensuelle de la signature du devis initial. ",$mission_id->getId());
+                $notificationsRepository->insert(null,$mission_id->getClient(),'terminate_mission_client',' Vous avez déclaré que la mission était terminée. En cas de mission one-shot, le paiement de votre city-maker sera donc déclenché sous 48H via notre partenaire Mango Pay. En cas de mission récurrente, la mission est réputée terminée à la date anniversaire mensuelle de signature du devis initial. Le city-maker sera payé 48h après cette date anniversaire. ',$mission_id->getId());
 
             }
 
@@ -625,7 +650,7 @@ class MissionController extends Controller
 
             $em->flush();
 //            $error = 'Your payment is pending from your bank side.Dont worry! we will intimate you when we get the amount from bank';
-            return $this->render('b2b/client/transaction/waiting.html.twig');
+            return $this->render('b2b/client/transaction/waiting.html.twig',['response' => $response->ResultMessage.' '.$response->ResultCode]);
 
         }else{
 
@@ -634,8 +659,8 @@ class MissionController extends Controller
             $em->persist($transaction);
 
             $em->flush();
-            $error = $this->mangoPayErrorResponses($response->ResultCode);
-            return $this->render('b2b/client/transaction/failed.html.twig',['response' => $error]);
+
+            return $this->render('b2b/client/transaction/failed.html.twig',['response' => $response->ResultMessage.' '.$response->ResultCode]);
 
         }
 

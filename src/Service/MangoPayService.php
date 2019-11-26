@@ -90,13 +90,15 @@ class MangoPayService
 //        return $Result;
 //    }
 
-    public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission,$fee,$card_array)
+    public function getPayIn($mangoUser, $wallet, $amount, $transaction, $mission,$fee,$card_array,$cycle = 1)
     {
+
         if($mission->getMissionType() == 'one-shot'){
-            $tag = 'mission-id '.$mission->getId().' ©';
+            $tag = 'M-id '.$mission->getId().'-C'.$cycle.' ©';
         }else{
-            $tag = 'mission-id '.$mission->getId().' ®';
+            $tag = 'M-id '.$mission->getId().'-C'.$cycle.' ®';
         }
+
         $payIn = new MangoPay\PayIn();
         $payIn->CreditedWalletId = $wallet->Id;
         $payIn->AuthorId = $mangoUser->Id;
@@ -256,18 +258,27 @@ class MangoPayService
 
     public function finishCardRegistration($card_id,$data){
 
-        $cardRegisterPut = $this->mangoPayApi->CardRegistrations->Get($card_id);
-        $cardRegisterPut->RegistrationData = 'data='.$data;
-        $updatedCardRegister = $this->mangoPayApi->CardRegistrations->Update($cardRegisterPut);
+        try{
 
-        if($updatedCardRegister->Status != MangoPay\CardRegistrationStatus::Validated || !isset($updatedCardRegister->CardId)){
+            $cardRegisterPut = $this->mangoPayApi->CardRegistrations->Get($card_id);
+            $cardRegisterPut->RegistrationData = 'data='.$data;
+            $updatedCardRegister = $this->mangoPayApi->CardRegistrations->Update($cardRegisterPut);
+
+            if($updatedCardRegister->Status != MangoPay\CardRegistrationStatus::Validated || !isset($updatedCardRegister->CardId)){
+                return false;
+            }
+
+
+            $card = $this->mangoPayApi->Cards->Get($updatedCardRegister->CardId);
+
+            return $card;
+
+        }catch (MangoPay\Libraries\ResponseException $e){
+
             return false;
+
         }
 
-
-        $card = $this->mangoPayApi->Cards->Get($updatedCardRegister->CardId);
-
-        return $card;
     }
 
     public function transfer($city_maker_wallet_id,$client_id,$client_wallet_id,$amount){
@@ -324,11 +335,18 @@ class MangoPayService
     }
 
 
-    public function getPayOut($cm_user_id,$cm_wallet_id,$amount,$bank_id){
+    public function getPayOut($cm_user_id,$cm_wallet_id,$amount,$bank_id,$cycle = 1,$mission){
+
+        if($mission->getMissionType() == 'one-shot'){
+            $tag = 'M-id '.$mission->getId().'-C'.$cycle.' ©';
+        }else{
+            $tag = 'M-id '.$mission->getId().'-C'.$cycle.' ®';
+        }
 
         $PayOut = new MangoPay\PayOut();
         $PayOut->AuthorId = $cm_user_id;
         $PayOut->DebitedWalletId = $cm_wallet_id;
+        $PayOut->Tag = $tag;
         $PayOut->DebitedFunds = new \MangoPay\Money();
         $PayOut->DebitedFunds->Currency = "EUR";
         $PayOut->DebitedFunds->Amount = $amount;

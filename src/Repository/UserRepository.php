@@ -132,6 +132,18 @@ class UserRepository extends ServiceEntityRepository
 
     public function searchClients($filters = [], $limit = 12, $page = 1, $isRandom = false,$userEmail=null,$loggedType=null)
     {
+
+
+        if(isset($filters['regions'][0]) && trim($filters['regions'][0]) == '' )
+        {
+            $filters['regions'] = null;
+        }
+
+        if(isset($filters['skills'][0]) && trim($filters['skills'][0]) == '' )
+        {
+            $filters['skills'] = null;
+        }
+
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
@@ -167,6 +179,17 @@ class UserRepository extends ServiceEntityRepository
 
     public function searchCommunityManagerCount($filters = [], $limit, $page,$userEmail=null,$loggedType=null)
     {
+
+        if(isset($filters['regions'][0]) && trim($filters['regions'][0]) == '' )
+        {
+            $filters['regions'] = null;
+        }
+
+        if(isset($filters['skills'][0]) && trim($filters['skills'][0]) == '' )
+        {
+            $filters['skills'] = null;
+        }
+        
         $qb = $this->createQueryBuilder('u')
             ->leftJoin('u.avatar', 'avatar')
             ->leftJoin('u.userSkills','s')
