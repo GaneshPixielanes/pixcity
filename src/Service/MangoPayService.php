@@ -19,7 +19,7 @@ class MangoPayService
     public function __construct()
     {
         $dotenv = new Dotenv();
-        $dotenv->load(__DIR__.'/.env');
+        $dotenv->load('../.env');
 
         $this->mangoPayApi = new MangoPay\MangoPayApi();
         $this->mangoPayApi->Config->ClientId = $_ENV['MANGOPAY_CLIENT_ID'];
