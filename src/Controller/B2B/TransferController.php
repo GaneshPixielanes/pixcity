@@ -45,7 +45,7 @@ class TransferController extends AbstractController
                             $em->flush();
                             $executedMissionIds [] = $royalty->getMission()->getId();
                         }else{
-                            $incompleteMissionIds [] = $royalty->getMission()->getId();
+                            $incompleteMissionIds [] = ['mission_id' => $royalty->getMission()->getId(),'mangopay response' => $result->ResultMessage.' '.$result->ResultCode,'CM-Wallet-ID' => $city_maker_wallet_id,'Clint-Wallet-ID' => $client_wallet_id];
                         }
 
                     }
@@ -100,7 +100,7 @@ class TransferController extends AbstractController
 
                     if($cm_user_id != null && $cm_wallet_id != null && $amount > 0 && $bank_id != null){
 
-                        $result = $mangoPayService->getPayOut($cm_user_id,$cm_wallet_id,$amount*100,$bank_id);
+                        $result = $mangoPayService->getPayOut($cm_user_id,$cm_wallet_id,$amount*100,$bank_id,$royalty->getCycle(),$royalty->getMission());
 
                         if($result->Status == 'CREATED'){
                             $royalty->setStatus('payout-completed');
@@ -110,7 +110,7 @@ class TransferController extends AbstractController
                             $em->flush();
                             $payoutExecutedMissionIds [] = $royalty->getMission()->getId();
                         }else{
-                            $incompleteMissionIds [] = $royalty->getMission()->getId();
+                            $incompleteMissionIds [] = ['mission_id' => $royalty->getMission()->getId(),'mangopay response' => $result->ResultMessage.' '.$result->ResultCode,'CM-Wallet-ID' => $cm_wallet_id,'CM-Bank-ID' => $bank_id];
                         }
 
                     }
