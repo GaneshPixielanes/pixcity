@@ -288,53 +288,53 @@ class UsersController extends Controller
                 }
             }
 
-           if($user->getViewMode() == ViewMode::B2B) {
-               if ($authChecker->isGranted('ROLE_B2C')) {
-                   if($editedUser->getB2bCmApproval() == 1) {
-                        // Create MangoPay User if it's not present
-                        if(is_null($editedUser->getMangopayUserId()))
-                        {
-                            $mangoUser = new UserNatural();
-
-                           $mangoUser->PersonType = "NATURAL";
-                           $mangoUser->FirstName = $editedUser->getFirstname();
-                           $mangoUser->LastName = $editedUser->getLastname();
-                           $mangoUser->Birthday = 1409735187;
-                           $mangoUser->Nationality = "FR";
-                           $mangoUser->CountryOfResidence = "FR";
-                           $mangoUser->Email = $editedUser->getEmail();
-                           $mangoUser = $mangoPayService->createUser($mangoUser);
-                           //Create a wallet
-                           $wallet = $mangoPayService->getWallet($mangoUser->Id);
-
-                           $editedUser->setMangopayUserId($mangoUser->Id);
-                           $editedUser->setMangopayWalletId($wallet->Id);
-                           $editedUser->setMangopayCreatedAt(new \DateTime());
-                        }
-                        //Get the documents uploaded by User
-                        
-                   }
-
-                   if($request->files->get('mangopayKycFile'))
-                   {
-                       $kycFile = $fileUploader->upload($request->files->get('mangopayKycFile'),'kyc-temp',false);
-
-                       $kycIdentityResult = $mangoPayService->kycCreate($editedUser->getMangopayUserId(),'uploads/kyc-temp/'.$kycFile,'IdentityProof');
-                       $editedUser->setMangopayKycFile($kycIdentityResult->Id);
-                       $editedUser->setMangopayKycStatus($kycIdentityResult->Status);
-
-
-                   }
-                   if($request->files->get('mangopayKycAddr'))
-                   {
-                       $kycAddr = $fileUploader->upload($request->files->get('mangopayKycAddr'),'kyc-temp',false);
-                       $kycAddressResult = $mangoPayService->kycCreate($editedUser->getMangopayUserId(),'uploads/kyc-temp/'.$kycAddr,'AddressProof');
-                       $editedUser->setMangopayKycAddr($kycAddressResult->Id);
-                       $editedUser->setMangopayKycAddrStatus($kycAddressResult->Status);
-
-                   }
-               }
-           }
+//           if($user->getViewMode() == ViewMode::B2B) {
+//               if ($authChecker->isGranted('ROLE_B2C')) {
+//                   if($editedUser->getB2bCmApproval() == 1) {
+//                        // Create MangoPay User if it's not present
+//                        if(is_null($editedUser->getMangopayUserId()))
+//                        {
+//                            $mangoUser = new UserNatural();
+//
+//                           $mangoUser->PersonType = "NATURAL";
+//                           $mangoUser->FirstName = $editedUser->getFirstname();
+//                           $mangoUser->LastName = $editedUser->getLastname();
+//                           $mangoUser->Birthday = 1409735187;
+//                           $mangoUser->Nationality = "FR";
+//                           $mangoUser->CountryOfResidence = "FR";
+//                           $mangoUser->Email = $editedUser->getEmail();
+//                           $mangoUser = $mangoPayService->createUser($mangoUser);
+//                           //Create a wallet
+//                           $wallet = $mangoPayService->getWallet($mangoUser->Id);
+//
+//                           $editedUser->setMangopayUserId($mangoUser->Id);
+//                           $editedUser->setMangopayWalletId($wallet->Id);
+//                           $editedUser->setMangopayCreatedAt(new \DateTime());
+//                        }
+//                        //Get the documents uploaded by User
+//
+//                   }
+//
+//                   if($request->files->get('mangopayKycFile'))
+//                   {
+//                       $kycFile = $fileUploader->upload($request->files->get('mangopayKycFile'),'kyc-temp',false);
+//
+//                       $kycIdentityResult = $mangoPayService->kycCreate($editedUser->getMangopayUserId(),'uploads/kyc-temp/'.$kycFile,'IdentityProof');
+//                       $editedUser->setMangopayKycFile($kycIdentityResult->Id);
+//                       $editedUser->setMangopayKycStatus($kycIdentityResult->Status);
+//
+//
+//                   }
+//                   if($request->files->get('mangopayKycAddr'))
+//                   {
+//                       $kycAddr = $fileUploader->upload($request->files->get('mangopayKycAddr'),'kyc-temp',false);
+//                       $kycAddressResult = $mangoPayService->kycCreate($editedUser->getMangopayUserId(),'uploads/kyc-temp/'.$kycAddr,'AddressProof');
+//                       $editedUser->setMangopayKycAddr($kycAddressResult->Id);
+//                       $editedUser->setMangopayKycAddrStatus($kycAddressResult->Status);
+//
+//                   }
+//               }
+//           }
             /************END CODE TO TO B2B APPROVAL AND REJECT DATE**********************************/
 
             /************ACTIVE CODE TO CREATE MANGOPAY  AND KYC**********************************/
