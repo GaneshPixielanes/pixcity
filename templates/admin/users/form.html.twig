@@ -41,6 +41,24 @@
 
                 {{ form_row(form.active) }}
                 {{ form_row(form.visible) }}
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label"> &nbsp;</div>
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 form-control-field">
+                        <a href="{{ path('front_auto_login', {'id': user.getEncryptedId}) }}" class="btn btn-md btn-info" target="_blank">
+                            Auto-Login
+                        </a>
+                    </div>
+                </div>
+                    {% if user.mangopayUserId is not null %}
+                        <div class="row form-row form-line">
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                <label class="form-label required">&nbsp; </label>
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 form-control-field">
+                                <a href="{{mangopay_base_url}}/User/{{ user.mangopayUserId }}/Details" target="_blank" class="btn btn-md btn-info">Mango Pay Dashboard</a>
+                            </div>
+                        </div>  
+                    {% endif %}
                 {{ form_row(form.roles) }}
                 {{ form_row(form.level) }}
 
@@ -197,6 +215,7 @@
                         {{ form_row(form.userSkill) }}
                         {{ form_row(form.userRegion) }}
                     </div>
+
                 </div>
                 <br>
                 <br>

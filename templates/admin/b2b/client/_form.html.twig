@@ -24,6 +24,14 @@
     </li>
 </ul>
 <br/>
+<div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label"> &nbsp;</div>
+    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7 form-control-field">
+        <a href="{{ path('front_auto_login_client', {'id': client.getEncryptedId}) }}" class="btn btn-md btn-info" target="_blank">
+            Auto-Login
+        </a>
+    </div>
+</div>
     {{ form_row(form.email) }}
     {{ form_row(form.plainPassword) }}
     {{ form_row(form.clientInfo) }}
