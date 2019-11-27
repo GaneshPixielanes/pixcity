@@ -1,7 +1,6 @@
 <tr data-id="{{ item[0].id }}">
 	<td> {{ item[0].id }}</td>
-    <td>{{ item[0].firstName }}</td>
-    <td>{{ item[0].lastName }}</td>
+    <td>{{ item[0].firstName~' '~item[0].lastName }}</td>
     <td>{{ item[0].email }}</td>
     <td data-order='{{ item[0].cmUpgradeB2bDate|date('YmdHi') }}'> {{ item[0].cmUpgradeB2bDate|localizeddate('medium', 'short') }}</td>
     <td><a href="{{path('admin_user_packs_view', {'id': item[0].id , 'usrtype':'user'})  }}" title="view" > {{ item.userPack }}</a> </td>
@@ -22,8 +21,12 @@
             N/A
         {% endif %}
     </td>
-    <td>{{ item[0].mangopayKycStatus }}</td>
-    <td>{{ item[0].mangopayKycAddrStatus }}</td>
+    <td>{% if item[0].mangopayKycStatus == 'VALIDATED' or item[0].mangopayKycStatus == 'VALIDATED' %} 
+        {{ item[0].mangopayKycStatus }}
+        {% else %}
+         PENDING 
+         {% endif %}   
+    </td>
     <td class="text-right">
         <div class="item-actions">
             <a title="{{ 'action.edit'|trans }}" href="{{ path('front_auto_login', {'id': item[0].getEncryptedId}) }}" target="_blank" class="btn btn-circle bg-pink waves-effect waves-circle waves-float">
