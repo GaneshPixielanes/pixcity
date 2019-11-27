@@ -79,7 +79,7 @@ class Mailer
         $emailLog->setBody(strip_tags($template));
         $emailLog->setAttachment(json_encode($attachments));
 
-        $this->entityManager->getDoctrine()->persist($emaiLLog)->flush();
+        $this->entityManager->persist($emaiLLog)->flush();
 
     }
 
