@@ -9,6 +9,7 @@ use MangoPay;
 use MangoPay\DemoWorkflow\MockStorageStrategy;
 use Symfony\Component\HttpFoundation\Session\Session;
 use function GuzzleHttp\Psr7\str;
+use Symfony\Component\Dotenv\Dotenv;
 
 class MangoPayService
 {
@@ -17,13 +18,16 @@ class MangoPayService
 
     public function __construct()
     {
+        $dotenv = new Dotenv();
+        $dotenv->load('../.env');
+
         $this->mangoPayApi = new MangoPay\MangoPayApi();
-        $this->mangoPayApi->Config->ClientId = 'azimforexprod';
-        $this->mangoPayApi->Config->ClientPassword = '5ahxUPFNpzuBz0kK3P0Fwt6DeK2s6P44530LKLF1anLp3N5yWK';
+        $this->mangoPayApi->Config->ClientId = $_ENV['MANGOPAY_CLIENT_ID'];
+        $this->mangoPayApi->Config->ClientPassword = $_ENV['MANGOPAY_CLIENT_PASSWORD'];
 //        $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
         // $this->mangoPayApi->Config->TemporaryFolder = "D:\projects";
-        $this->mangoPayApi->Config->TemporaryFolder = "uploads/mangopay/";
+        $this->mangoPayApi->Config->TemporaryFolder = $_ENV['MANGOPAY_TEMP_FOLDER'];
 
 //      $this->mangoPayApi->OAuthTokenManager->RegisterCustomStorageStrategy(new MockStorageStrategy());
 
