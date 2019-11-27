@@ -693,7 +693,7 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDFjaLU8H-TpATXcUcDzKQ4w05pCQ5mAg&libraries=places" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places" async defer></script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
 
