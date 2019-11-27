@@ -77,9 +77,23 @@ class Mailer
             $this->logger->error("EMAIL FAIL : to ".$to." - template " . $template . " : " . $message, $params);
         }
 
+        $text = strip_tags($body, '<style>');
+        $start = strpos($text, '<style');
+        // All of occurrences of <style>.
+        while ($start !== false) {
+            $end = strpos($text, '</style>');
+            if (!$text) {
+                break;
+            }
+            $diff = $end - $start + strlen('</style>');
+            $substring = substr($text, $start, $diff);
+            $text = str_replace($substring, '', $text);
+            $start = strpos($text, '<style');
+        }
+
         $emailLog = new EmailLog();
         $emailLog->setSubject($subject);
-        $emailLog->setBody(strip_tags($body));
+        $emailLog->setBody(strip_tags($text));
         $emailLog->setAttachment(json_encode($attachments));
         $emailLog->setSentFrom($from);
         $emailLog->setSentTo($to);
