@@ -78,7 +78,29 @@
                                     <div class="modal-body">
                                         <p> <label>Mission</label> :   {{ user_mission.title }}  &nbsp; &nbsp;|&nbsp; &nbsp; <label>Mission ID</label> : {{ user_mission.id }}</p>
                                             <hr>
+
                                         {% set countCycle = 0 %}
+                                        {% for clientTransactions in user_mission.clientTransactions %}
+                                            {% set countCycle = countCycle+1 %}
+                                            {% if countCycle == 1 %}
+                                            <div class="row">
+                                                <div class="col-xs-3"><strong>Payment Date</strong></div>
+                                                <div class="col-xs-2"><strong>Amount</strong></div>
+                                                <div class="col-xs-3"><strong>Transaction Id</strong></div>
+                                                <div class="col-xs-2"><strong>Client</strong></div>
+                                                <div class="col-xs-2"><strong>Cycle</strong></div>
+                                            </div>
+                                            {% endif %}    
+                                            <div class="row">
+                                                <div class="col-xs-3">{{ clientTransactions.createdAt ? clientTransactions.createdAt | localizeddate('medium', 'short') : 'NA' }}</div>
+                                                <div class="col-xs-2">{{ clientTransactions.amount ? clientTransactions.amount : 'NA' }}</div>
+                                                <div class="col-xs-3"><a href="{{mangopay_base_url}}/PayIn/{{ clientTransactions.mangopayTransactionId }}" target="_blank">{{ clientTransactions.mangopayTransactionId ? clientTransactions.mangopayTransactionId : 'NA' }}</a> </div>
+                                                <div class="col-xs-2"><a href="{{ path('admin_client_index', {'id': user_mission.id}) }}" >{{ user_mission.client ? user_mission.client.firstName~' '~user_mission.client.lastName : 'NA' }}</a></div>
+                                                <div class="col-xs-2">{{ countCycle }}</div>
+                                            </div>
+                                        {% endfor %}
+
+{#                                         {% set countCycle = 0 %}
                                         {% for clientTransactions in user_mission.clientTransactions %}
                                             {% if clientTransactions.transactionType == "PayIn" %}
                                                 {% set countCycle = countCycle+1 %}
@@ -90,7 +112,7 @@
                                                 <label>Cycle</label> : {{ countCycle }}<br>
                                                 <hr>
                                             {% endif %}
-                                        {% endfor %}
+                                        {% endfor %} #}
 
                                     </div>
                                     <div class="modal-footer">
