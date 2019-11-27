@@ -50,13 +50,15 @@ class Mailer
             {
                 $message = $message->setFrom($from, $this->params->get("email_sender_name"));
             }
+
+            $body = $this->templating->render(
+                    $template,
+                    $params
+                );
             $message = $message->setTo($to)
             ->setTo($to)
             ->setBody(
-                $this->templating->render(
-                    $template,
-                    $params
-                ),
+                $body,
                 'text/html'
             )
         ;
@@ -77,7 +79,7 @@ class Mailer
 
         $emailLog = new EmailLog();
         $emailLog->setSubject($subject);
-        $emailLog->setBody(strip_tags($template));
+        $emailLog->setBody(strip_tags($body));
         $emailLog->setAttachment(json_encode($attachments));
         $emailLog->setSentFrom($from);
         $emailLog->setSentTo($to);
