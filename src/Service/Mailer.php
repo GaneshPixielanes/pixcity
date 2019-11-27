@@ -43,6 +43,7 @@ class Mailer
         $message = (new \Swift_Message($subject));
             if(is_null($from))
             {
+                $from = 'contactus@pix.city';
                 $message =  $message->setFrom('contactus@pix.city', $this->params->get("email_sender_name"));
             }
             else
@@ -78,8 +79,11 @@ class Mailer
         $emailLog->setSubject($subject);
         $emailLog->setBody(strip_tags($template));
         $emailLog->setAttachment(json_encode($attachments));
+        $emailLog->setSentFrom($from);
+        $emailLog->setSentTo($to);
 
-        $this->entityManager->persist($emaiLLog)->flush();
+        $this->entityManager->persist($emailLog);
+        $this->entityManager->flush();
 
     }
 

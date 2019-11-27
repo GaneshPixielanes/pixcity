@@ -43,6 +43,11 @@ class EmailLog
      */
     private $attachment;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sentTo;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class EmailLog
     public function setAttachment(?string $attachment): self
     {
         $this->attachment = $attachment;
+
+        return $this;
+    }
+
+    public function getSentTo(): ?string
+    {
+        return $this->sentTo;
+    }
+
+    public function setSentTo(string $sentTo): self
+    {
+        $this->sentTo = $sentTo;
 
         return $this;
     }
